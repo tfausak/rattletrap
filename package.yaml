@@ -1,0 +1,42 @@
+category: Game
+description: Rattletrap parses Rocket League replays.
+executables:
+  rattletrap:
+    dependencies:
+    - base
+    - rattletrap
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
+    main: Main.hs
+    source-dirs: executable
+ghc-options: -Wall
+library:
+  dependencies:
+  - base
+  - binary
+  - bytestring
+  source-dirs: library
+license: MIT
+license-file: LICENSE.markdown
+maintainer: Taylor Fausak
+name: rattletrap
+tests:
+  rattletrap-test:
+    dependencies:
+    - base
+    - binary
+    - bytestring
+    - filepath
+    - rattletrap
+    - tasty
+    - tasty-hspec
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
+    main: Main.hs
+    source-dirs: test
+synopsis: Parse Rocket League replays.
+version: '0.0.0'
