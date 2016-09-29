@@ -1,5 +1,6 @@
 module Rattletrap.Replay where
 
+import Rattletrap.Content
 import Rattletrap.Header
 import Rattletrap.Word32
 
@@ -14,7 +15,7 @@ data Replay = Replay
   , replayHeader :: Header
   , replayContentSize :: Word32
   , replayContentCrc :: Word32
-  , replayContent :: LazyByteString.ByteString
+  , replayContent :: Content
   , replayFooter :: LazyByteString.ByteString
   } deriving (Eq, Ord, Show)
 
@@ -25,7 +26,7 @@ getReplay = do
   header <- getHeader
   contentSize <- getWord32
   contentCrc <- getWord32
-  content <- Binary.getLazyByteString (fromIntegral (word32Value contentSize))
+  content <- getContent
   footer <- Binary.getRemainingLazyByteString
   pure
     Replay
@@ -45,5 +46,5 @@ putReplay replay = do
   putHeader (replayHeader replay)
   putWord32 (replayContentSize replay)
   putWord32 (replayContentCrc replay)
-  Binary.putLazyByteString (replayContent replay)
+  putContent (replayContent replay)
   Binary.putLazyByteString (replayFooter replay)
