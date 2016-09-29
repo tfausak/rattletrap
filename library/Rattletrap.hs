@@ -7,6 +7,7 @@ import Rattletrap.ClassMapping as Export
 import Rattletrap.Content as Export
 import Rattletrap.Dictionary as Export
 import Rattletrap.Float32 as Export
+import Rattletrap.Frame as Export
 import Rattletrap.Header as Export
 import Rattletrap.Int32 as Export
 import Rattletrap.KeyFrame as Export

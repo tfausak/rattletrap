@@ -1,6 +1,7 @@
 module Rattletrap.Content where
 
 import Rattletrap.ClassMapping
+import Rattletrap.Frame
 import Rattletrap.KeyFrame
 import Rattletrap.List
 import Rattletrap.Mark
@@ -9,6 +10,8 @@ import Rattletrap.Text
 import Rattletrap.Word32
 
 import qualified Data.Binary as Binary
+import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as LazyByteString
@@ -17,7 +20,7 @@ data Content = Content
   { contentLevels :: List Text
   , contentKeyFrames :: List KeyFrame
   , contentStreamSize :: Word32
-  , contentStream :: LazyByteString.ByteString
+  , contentFrames :: [Frame]
   , contentMessages :: List Message
   , contentMarks :: List Mark
   , contentPackages :: List Text
@@ -32,6 +35,7 @@ getContent = do
   keyFrames <- getList getKeyFrame
   streamSize <- getWord32
   stream <- Binary.getLazyByteString (fromIntegral (word32Value streamSize))
+  let frames = Binary.runGet (BinaryBit.runBitGet getFrames) stream
   messages <- getList getMessage
   marks <- getList getMark
   packages <- getList getText
@@ -43,7 +47,7 @@ getContent = do
     { contentLevels = levels
     , contentKeyFrames = keyFrames
     , contentStreamSize = streamSize
-    , contentStream = stream
+    , contentFrames = frames
     , contentMessages = messages
     , contentMarks = marks
     , contentPackages = packages
@@ -56,11 +60,25 @@ putContent :: Content -> Binary.Put
 putContent content = do
   putList putText (contentLevels content)
   putList putKeyFrame (contentKeyFrames content)
-  putWord32 (contentStreamSize content)
-  Binary.putLazyByteString (contentStream content)
+  let streamSize = contentStreamSize content
+  putWord32 streamSize
+  let stream =
+        Binary.runPut (BinaryBit.runBitPut (putFrames (contentFrames content)))
+  Binary.putLazyByteString (padLazyByteString (word32Value streamSize) stream)
   putList putMessage (contentMessages content)
   putList putMark (contentMarks content)
   putList putText (contentPackages content)
   putList putText (contentObjects content)
   putList putText (contentNames content)
   putList putClassMapping (contentClassMappings content)
+
+padLazyByteString
+  :: Integral a
+  => a -> LazyByteString.ByteString -> LazyByteString.ByteString
+padLazyByteString size bytes =
+  LazyByteString.concat
+    [ bytes
+    , LazyByteString.replicate
+        (fromIntegral size - LazyByteString.length bytes)
+        0x00
+    ]
