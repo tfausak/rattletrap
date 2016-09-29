@@ -17,11 +17,13 @@ library:
   - base
   - binary
   - bytestring
+  - data-binary-ieee754
   source-dirs: library
 license: MIT
 license-file: LICENSE.markdown
 maintainer: Taylor Fausak
 name: rattletrap
+synopsis: Parse Rocket League replays.
 tests:
   rattletrap-test:
     dependencies:
@@ -38,5 +40,4 @@ tests:
     - -with-rtsopts=-N
     main: Main.hs
     source-dirs: test
-synopsis: Parse Rocket League replays.
 version: '0.0.0'

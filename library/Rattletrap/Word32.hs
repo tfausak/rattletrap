@@ -6,8 +6,8 @@ import qualified Data.Binary.Put as Binary
 import qualified Data.Word as Word
 
 newtype Word32 = Word32
-  { word32Unpack :: Word.Word32
-  }
+  { word32Value :: Word.Word32
+  } deriving (Eq, Ord, Show)
 
 getWord32 :: Binary.Get Word32
 getWord32 = do
