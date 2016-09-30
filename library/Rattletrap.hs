@@ -21,6 +21,7 @@ import Rattletrap.PropertyMapping as Export
 import Rattletrap.PropertyValue as Export
 import Rattletrap.Replay as Export
 import Rattletrap.Replication as Export
+import Rattletrap.ReplicationValue as Export
 import Rattletrap.Text as Export
 import Rattletrap.Word32 as Export
 import Rattletrap.Word64 as Export

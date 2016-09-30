@@ -1,12 +1,14 @@
 module Rattletrap.Replication where
 
 import Rattletrap.CompressedWord
+import Rattletrap.ReplicationValue
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 
 data Replication = Replication
   { replicationActorId :: CompressedWord
+  , replicationValue :: ReplicationValue
   } deriving (Eq, Ord, Show)
 
 getReplications :: BinaryBit.BitGet [Replication]
@@ -28,14 +30,16 @@ getReplication = do
     then pure Nothing
     else do
       actorId <- getCompressedWord maxActorId
-      pure () -- TODO
-      pure (Just Replication {replicationActorId = actorId})
+      value <- getReplicationValue
+      pure
+        (Just
+           Replication {replicationActorId = actorId, replicationValue = value})
 
 putReplication :: Replication -> BinaryBit.BitPut ()
 putReplication replication = do
   BinaryBit.putBool True
   putCompressedWord (replicationActorId replication)
-  pure () -- TODO
+  putReplicationValue (replicationValue replication)
 
 maxActorId :: Word
 maxActorId = 1023
