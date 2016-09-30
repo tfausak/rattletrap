@@ -7,6 +7,7 @@ import Rattletrap.List
 import Rattletrap.Mark
 import Rattletrap.Message
 import Rattletrap.Text
+import Rattletrap.Utility
 import Rattletrap.Word32
 
 import qualified Data.Binary as Binary
@@ -14,7 +15,6 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as LazyByteString
 
 data Content = Content
   { contentLevels :: List Text
@@ -71,14 +71,3 @@ putContent content = do
   putList putText (contentObjects content)
   putList putText (contentNames content)
   putList putClassMapping (contentClassMappings content)
-
-padLazyByteString
-  :: Integral a
-  => a -> LazyByteString.ByteString -> LazyByteString.ByteString
-padLazyByteString size bytes =
-  LazyByteString.concat
-    [ bytes
-    , LazyByteString.replicate
-        (fromIntegral size - LazyByteString.length bytes)
-        0x00
-    ]

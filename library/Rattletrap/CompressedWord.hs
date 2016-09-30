@@ -1,5 +1,7 @@
 module Rattletrap.CompressedWord where
 
+import Rattletrap.Utility
+
 import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
@@ -41,8 +43,3 @@ compressedWordStep checkBit limit current index = do
       if hasBit
         then pure (current + bit)
         else pure current
-
-logBase2
-  :: (Integral a, Integral b)
-  => a -> b
-logBase2 x = floor (logBase (2 :: Float) (fromIntegral x))
