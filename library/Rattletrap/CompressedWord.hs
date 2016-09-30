@@ -35,11 +35,12 @@ compressedWordStep
   :: (Bits.Bits a, Ord a, Num a, Monad m)
   => (Int -> m Bool) -> a -> a -> Int -> m a
 compressedWordStep checkBit limit current index = do
-  let bit = Bits.shiftL 1 index
-  if current + bit >= limit
+  let bit = Bits.bit index
+  let future = current + bit
+  if future >= limit
     then pure current
     else do
       hasBit <- checkBit index
       if hasBit
-        then pure (current + bit)
+        then pure future
         else pure current
