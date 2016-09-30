@@ -10,9 +10,11 @@ import Rattletrap.Dictionary as Export
 import Rattletrap.Float32 as Export
 import Rattletrap.Frame as Export
 import Rattletrap.Header as Export
+import Rattletrap.Initialization as Export
 import Rattletrap.Int32 as Export
 import Rattletrap.KeyFrame as Export
 import Rattletrap.List as Export
+import Rattletrap.Location as Export
 import Rattletrap.Main as Export
 import Rattletrap.Mark as Export
 import Rattletrap.Message as Export
@@ -22,6 +24,7 @@ import Rattletrap.PropertyValue as Export
 import Rattletrap.Replay as Export
 import Rattletrap.Replication as Export
 import Rattletrap.ReplicationValue as Export
+import Rattletrap.Rotation as Export
 import Rattletrap.Text as Export
 import Rattletrap.Utility as Export
 import Rattletrap.Word32 as Export
