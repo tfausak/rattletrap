@@ -4,7 +4,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 
 data AttributeValue
-  = BooleanAttribute
+  = BooleanAttribute Bool
   | ByteAttribute
   | CamSettingsAttribute
   | DemolishAttribute
@@ -32,8 +32,19 @@ data AttributeValue
   | WeldedInfoAttribute
   deriving (Eq, Ord, Show)
 
-getAttributeValue :: BinaryBit.BitGet AttributeValue
-getAttributeValue = fail "getAttributeValue"
+getAttributeValue :: String -> BinaryBit.BitGet AttributeValue
+getAttributeValue name =
+  case name of
+    "Engine.Actor:bBlockActors" -> getBooleanAttribute
+    _ -> fail ("getAttributeValue: " ++ show name)
+
+getBooleanAttribute :: BinaryBit.BitGet AttributeValue
+getBooleanAttribute = do
+  x <- BinaryBit.getBool
+  pure (BooleanAttribute x)
 
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
-putAttributeValue _ = fail "putAttributeValue"
+putAttributeValue value =
+  case value of
+    BooleanAttribute x -> BinaryBit.putBool x
+    _ -> fail "putAttributeValue"

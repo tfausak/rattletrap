@@ -11,14 +11,16 @@ data Attribute = Attribute
   , attributeValue :: AttributeValue
   } deriving (Eq, Ord, Show)
 
-getAttributes :: Word -> BinaryBit.BitGet [Attribute]
-getAttributes limit = do
+getAttributes :: Word
+              -> (CompressedWord -> String)
+              -> BinaryBit.BitGet [Attribute]
+getAttributes limit getName = do
   hasAttribute <- BinaryBit.getBool
   if not hasAttribute
     then pure []
     else do
-      attribute <- getAttribute limit
-      attributes <- getAttributes limit
+      attribute <- getAttribute limit getName
+      attributes <- getAttributes limit getName
       pure (attribute : attributes)
 
 putAttributes :: [Attribute] -> BinaryBit.BitPut ()
@@ -26,10 +28,10 @@ putAttributes attributes = do
   mapM_ putAttribute attributes
   BinaryBit.putBool False
 
-getAttribute :: Word -> BinaryBit.BitGet Attribute
-getAttribute limit = do
+getAttribute :: Word -> (CompressedWord -> String) -> BinaryBit.BitGet Attribute
+getAttribute limit getName = do
   id_ <- getCompressedWord limit
-  value <- getAttributeValue
+  value <- getAttributeValue (getName id_)
   pure Attribute {attributeId = id_, attributeValue = value}
 
 putAttribute :: Attribute -> BinaryBit.BitPut ()

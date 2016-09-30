@@ -31,7 +31,8 @@ getReplicationValue = do
           pure (SpawnedReplication unknown objectId initialization)
         else do
           let limit = error "updated replication attribute id limit"
-          attributes <- getAttributes limit
+          let getName _id = error "updated replication get attribute name"
+          attributes <- getAttributes limit getName
           pure (UpdatedReplication attributes)
     else pure DestroyedReplication
 
