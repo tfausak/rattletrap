@@ -21,7 +21,9 @@ getReplications = do
       pure (replication : replications)
 
 putReplications :: [Replication] -> BinaryBit.BitPut ()
-putReplications = mapM_ putReplication
+putReplications replications = do
+  mapM_ putReplication replications
+  BinaryBit.putBool False
 
 getReplication :: BinaryBit.BitGet (Maybe Replication)
 getReplication = do

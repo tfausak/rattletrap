@@ -1,5 +1,6 @@
 module Rattletrap.ReplicationValue where
 
+import Rattletrap.Attribute
 import Rattletrap.Initialization
 import Rattletrap.Word32
 
@@ -10,7 +11,7 @@ data ReplicationValue
   = SpawnedReplication Bool
                        Word32
                        Initialization
-  | UpdatedReplication
+  | UpdatedReplication [Attribute]
   | DestroyedReplication
   deriving (Eq, Ord, Show)
 
@@ -24,11 +25,14 @@ getReplicationValue = do
         then do
           unknown <- BinaryBit.getBool
           objectId <- getWord32Bits
-          let hasLocation = error "has location"
-          let hasRotation = error "has rotation"
+          let hasLocation = error "spawned replication class has location"
+          let hasRotation = error "spawned replication class has rotation"
           initialization <- getInitialization hasLocation hasRotation
           pure (SpawnedReplication unknown objectId initialization)
-        else fail "get updated replication value"
+        else do
+          let limit = error "updated replication attribute id limit"
+          attributes <- getAttributes limit
+          pure (UpdatedReplication attributes)
     else pure DestroyedReplication
 
 putReplicationValue :: ReplicationValue -> BinaryBit.BitPut ()
@@ -40,8 +44,8 @@ putReplicationValue value =
       BinaryBit.putBool unknown
       putWord32Bits objectId
       putInitialization initialization
-    UpdatedReplication -> do
+    UpdatedReplication attributes -> do
       BinaryBit.putBool True
       BinaryBit.putBool False
-      fail "put updated replication value"
+      putAttributes attributes
     DestroyedReplication -> BinaryBit.putBool False

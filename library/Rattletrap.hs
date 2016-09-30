@@ -2,6 +2,8 @@ module Rattletrap
   ( module Export
   ) where
 
+import Rattletrap.Attribute as Export
+import Rattletrap.AttributeValue as Export
 import Rattletrap.Cache as Export
 import Rattletrap.ClassMapping as Export
 import Rattletrap.CompressedWord as Export
