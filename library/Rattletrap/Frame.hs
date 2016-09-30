@@ -1,6 +1,7 @@
 module Rattletrap.Frame where
 
 import Rattletrap.Float32
+import Rattletrap.Replication
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
@@ -8,7 +9,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 data Frame = Frame
   { frameTime :: Float32
   , frameDelta :: Float32
-    -- TODO: Replications.
+  , frameReplications :: [Replication]
   } deriving (Eq, Ord, Show)
 
 getFrames :: BinaryBit.BitGet [Frame]
@@ -33,9 +34,18 @@ getFrame = do
       delta <- getFloat32Bits
       if time == Float32 0 && delta == Float32 0
         then pure Nothing
-        else pure (Just Frame {frameTime = time, frameDelta = delta})
+        else do
+          replications <- getReplications
+          pure
+            (Just
+               Frame
+               { frameTime = time
+               , frameDelta = delta
+               , frameReplications = replications
+               })
 
 putFrame :: Frame -> BinaryBit.BitPut ()
 putFrame frame = do
   putFloat32Bits (frameTime frame)
   putFloat32Bits (frameDelta frame)
+  putReplications (frameReplications frame)

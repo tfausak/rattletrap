@@ -4,6 +4,7 @@ module Rattletrap
 
 import Rattletrap.Cache as Export
 import Rattletrap.ClassMapping as Export
+import Rattletrap.CompressedWord as Export
 import Rattletrap.Content as Export
 import Rattletrap.Dictionary as Export
 import Rattletrap.Float32 as Export
@@ -19,6 +20,7 @@ import Rattletrap.Property as Export
 import Rattletrap.PropertyMapping as Export
 import Rattletrap.PropertyValue as Export
 import Rattletrap.Replay as Export
+import Rattletrap.Replication as Export
 import Rattletrap.Text as Export
 import Rattletrap.Word32 as Export
 import Rattletrap.Word64 as Export
