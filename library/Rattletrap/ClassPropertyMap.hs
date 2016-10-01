@@ -70,8 +70,8 @@ classesWithRotation =
        stringToText
        ["TAGame.Ball_TA", "TAGame.Car_Season_TA", "TAGame.Car_TA"])
 
-attributeIdLimit :: ClassPropertyMap -> CompressedWord -> Word
-attributeIdLimit _classPropertyMap _actorId = error "attributeIdLimit"
+getAttributeIdLimit :: ClassPropertyMap -> CompressedWord -> Word
+getAttributeIdLimit _classPropertyMap _actorId = error "getAttributeIdLimit"
 
 getAttributeName :: ClassPropertyMap -> CompressedWord -> CompressedWord -> Text
 getAttributeName _classPropertyMap _actorId _attributeId =

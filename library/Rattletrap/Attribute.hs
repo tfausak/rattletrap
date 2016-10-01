@@ -31,7 +31,7 @@ putAttributes attributes = do
 
 getAttribute :: ClassPropertyMap -> CompressedWord -> BinaryBit.BitGet Attribute
 getAttribute classPropertyMap actorId = do
-  let limit = attributeIdLimit classPropertyMap actorId
+  let limit = getAttributeIdLimit classPropertyMap actorId
   id_ <- getCompressedWord limit
   let name = getAttributeName classPropertyMap actorId id_
   value <- getAttributeValue name
