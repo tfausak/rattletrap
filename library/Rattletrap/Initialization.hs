@@ -23,16 +23,16 @@ getInitialization :: Bool -> Bool -> BinaryBit.BitGet Initialization
 getInitialization hasLocation hasRotation = do
   location <-
     if hasLocation
-      then pure Nothing
-      else do
+      then do
         location <- getLocation
         pure (Just location)
+      else pure Nothing
   rotation <-
     if hasRotation
-      then pure Nothing
-      else do
+      then do
         rotation <- getRotation
         pure (Just rotation)
+      else pure Nothing
   pure
     Initialization
     {initializationLocation = location, initializationRotation = rotation}

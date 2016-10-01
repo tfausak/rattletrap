@@ -55,7 +55,9 @@ getContent = do
   caches <- getList getCache
   let classPropertyMap = makeClassPropertyMap objects classMappings caches
   let frames =
-        Binary.runGet (BinaryBit.runBitGet (getFrames classPropertyMap)) stream
+        Binary.runGet
+          (BinaryBit.runBitGet (getFrames classPropertyMap))
+          (reverseBytes stream)
   pure
     Content
     { contentLevels = levels
@@ -79,7 +81,8 @@ putContent content = do
   putWord32 streamSize
   let stream =
         Binary.runPut (BinaryBit.runBitPut (putFrames (contentFrames content)))
-  Binary.putLazyByteString (padBytes (word32Value streamSize) stream)
+  Binary.putLazyByteString
+    (reverseBytes (padBytes (word32Value streamSize) stream))
   putList putMessage (contentMessages content)
   putList putMark (contentMarks content)
   putList putText (contentPackages content)

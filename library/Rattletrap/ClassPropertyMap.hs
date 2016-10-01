@@ -25,6 +25,8 @@ makeObjectMap :: List Text -> Bimap.Bimap Word32 Text
 makeObjectMap objects =
   Bimap.fromList (zip (map Word32 [0 ..]) (listValue objects))
 
+-- TODO: This is just getting the object name. It needs to convert that object
+-- name into a class.
 getClassName :: ClassPropertyMap -> Word32 -> Maybe Text
 getClassName classPropertyMap objectId =
   Bimap.lookup objectId (classPropertyMapObjectMap classPropertyMap)
