@@ -2,9 +2,7 @@ module Rattletrap.ReplicationValue where
 
 import Rattletrap.Attribute
 import Rattletrap.ClassPropertyMap
-import Rattletrap.CompressedWord
 import Rattletrap.Initialization
-import Rattletrap.Text
 import Rattletrap.Word32
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -19,17 +17,7 @@ data ReplicationValue
   deriving (Eq, Ord, Show)
 
 getReplicationValue :: ClassPropertyMap -> BinaryBit.BitGet ReplicationValue
-getReplicationValue _classPropertyMap = do
-  let getClassName :: Word32 -> Text
-      getClassName _objectId = error "get class name"
-      classHasLocation :: Text -> Bool
-      classHasLocation _className = error "class has location"
-      classHasRotation :: Text -> Bool
-      classHasRotation _className = error "class has rotation"
-      attributeIdLimit :: Word
-      attributeIdLimit = error "attribute id limit"
-      getAttributeName :: CompressedWord -> Text
-      getAttributeName _id = error "get attribute name"
+getReplicationValue classPropertyMap = do
   isOpen <- BinaryBit.getBool
   if isOpen
     then do
@@ -38,13 +26,13 @@ getReplicationValue _classPropertyMap = do
         then do
           unknown <- BinaryBit.getBool
           objectId <- getWord32Bits
-          let className = getClassName objectId
+          let className = getClassName classPropertyMap objectId
           let hasLocation = classHasLocation className
           let hasRotation = classHasRotation className
           initialization <- getInitialization hasLocation hasRotation
           pure (SpawnedReplication unknown objectId initialization)
         else do
-          attributes <- getAttributes attributeIdLimit getAttributeName
+          attributes <- getAttributes classPropertyMap
           pure (UpdatedReplication attributes)
     else pure DestroyedReplication
 
