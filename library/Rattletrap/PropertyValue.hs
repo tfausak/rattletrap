@@ -12,7 +12,6 @@ import Rattletrap.Word8
 
 import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
-import qualified Data.Text as Text
 import qualified GHC.Generics as Generics
 
 data PropertyValue a
@@ -37,31 +36,31 @@ getPropertyValue :: Binary.Get a
                  -> Text
                  -> Word64
                  -> Binary.Get (PropertyValue a)
-getPropertyValue getProperty (Text _ kind) _size =
-  case Text.unpack kind of
-    "ArrayProperty\x00" -> do
+getPropertyValue getProperty kind _size =
+  case textToString kind of
+    "ArrayProperty" -> do
       list <- getList (getDictionary getProperty)
       pure (ArrayProperty list)
-    "BoolProperty\x00" -> do
+    "BoolProperty" -> do
       word8 <- getWord8
       pure (BoolProperty word8)
-    "ByteProperty\x00" -> do
+    "ByteProperty" -> do
       k <- getText
       v <- getText
       pure (ByteProperty k v)
-    "FloatProperty\x00" -> do
+    "FloatProperty" -> do
       float32 <- getFloat32
       pure (FloatProperty float32)
-    "IntProperty\x00" -> do
+    "IntProperty" -> do
       int32 <- getInt32
       pure (IntProperty int32)
-    "NameProperty\x00" -> do
+    "NameProperty" -> do
       text <- getText
       pure (NameProperty text)
-    "QWordProperty\x00" -> do
+    "QWordProperty" -> do
       word64 <- getWord64
       pure (QWordProperty word64)
-    "StrProperty\x00" -> do
+    "StrProperty" -> do
       text <- getText
       pure (StrProperty text)
     _ -> fail ("don't know how to read property value " ++ show kind)

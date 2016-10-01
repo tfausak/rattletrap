@@ -7,7 +7,6 @@ import Rattletrap.Text
 import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
-import qualified Data.Text as Text
 import qualified GHC.Generics as Generics
 
 data AttributeValue
@@ -45,8 +44,8 @@ instance Aeson.ToJSON AttributeValue
 
 getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
-  case Text.unpack (textValue name) of
-    "Engine.Actor:bBlockActors\x00" -> getBooleanAttribute
+  case textToString name of
+    "Engine.Actor:bBlockActors" -> getBooleanAttribute
     _ -> fail ("don't know how to read attribute value " ++ show name)
 
 getBooleanAttribute :: BinaryBit.BitGet AttributeValue

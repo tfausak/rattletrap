@@ -40,3 +40,6 @@ stringToText string =
   let value = Text.snoc (Text.pack string) '\x00'
       size = Int32 (fromIntegral (Text.length value))
   in Text {textSize = size, textValue = value}
+
+textToString :: Text -> String
+textToString text = Text.unpack (Text.dropWhileEnd (== '\x00') (textValue text))
