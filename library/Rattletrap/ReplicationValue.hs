@@ -1,6 +1,7 @@
 module Rattletrap.ReplicationValue where
 
 import Rattletrap.Attribute
+import Rattletrap.ClassPropertyMap
 import Rattletrap.CompressedWord
 import Rattletrap.Initialization
 import Rattletrap.Text
@@ -17,8 +18,8 @@ data ReplicationValue
   | DestroyedReplication
   deriving (Eq, Ord, Show)
 
-getReplicationValue :: BinaryBit.BitGet ReplicationValue
-getReplicationValue = do
+getReplicationValue :: ClassPropertyMap -> BinaryBit.BitGet ReplicationValue
+getReplicationValue _classPropertyMap = do
   let getClassName :: Word32 -> Text
       getClassName _objectId = error "get class name"
       classHasLocation :: Text -> Bool

@@ -2,6 +2,7 @@ module Rattletrap.Content where
 
 import Rattletrap.Cache
 import Rattletrap.ClassMapping
+import Rattletrap.ClassPropertyMap
 import Rattletrap.Frame
 import Rattletrap.KeyFrame
 import Rattletrap.List
@@ -37,7 +38,6 @@ getContent = do
   keyFrames <- getList getKeyFrame
   streamSize <- getWord32
   stream <- Binary.getLazyByteString (fromIntegral (word32Value streamSize))
-  let frames = Binary.runGet (BinaryBit.runBitGet getFrames) stream
   messages <- getList getMessage
   marks <- getList getMark
   packages <- getList getText
@@ -45,6 +45,9 @@ getContent = do
   names <- getList getText
   classMappings <- getList getClassMapping
   caches <- getList getCache
+  let classPropertyMap = makeClassPropertyMap objects classMappings caches
+  let frames =
+        Binary.runGet (BinaryBit.runBitGet (getFrames classPropertyMap)) stream
   pure
     Content
     { contentLevels = levels

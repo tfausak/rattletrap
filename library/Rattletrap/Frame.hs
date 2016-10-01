@@ -1,5 +1,6 @@
 module Rattletrap.Frame where
 
+import Rattletrap.ClassPropertyMap
 import Rattletrap.Float32
 import Rattletrap.Replication
 
@@ -12,20 +13,20 @@ data Frame = Frame
   , frameReplications :: [Replication]
   } deriving (Eq, Ord, Show)
 
-getFrames :: BinaryBit.BitGet [Frame]
-getFrames = do
-  maybeFrame <- getFrame
+getFrames :: ClassPropertyMap -> BinaryBit.BitGet [Frame]
+getFrames classPropertyMap = do
+  maybeFrame <- getFrame classPropertyMap
   case maybeFrame of
     Nothing -> pure []
     Just frame -> do
-      frames <- getFrames
+      frames <- getFrames classPropertyMap
       pure (frame : frames)
 
 putFrames :: [Frame] -> BinaryBit.BitPut ()
 putFrames = mapM_ putFrame
 
-getFrame :: BinaryBit.BitGet (Maybe Frame)
-getFrame = do
+getFrame :: ClassPropertyMap -> BinaryBit.BitGet (Maybe Frame)
+getFrame classPropertyMap = do
   isEmpty <- BinaryBit.isEmpty
   if isEmpty
     then pure Nothing
@@ -35,7 +36,7 @@ getFrame = do
       if time == Float32 0 && delta == Float32 0
         then pure Nothing
         else do
-          replications <- getReplications
+          replications <- getReplications classPropertyMap
           pure
             (Just
                Frame
