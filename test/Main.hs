@@ -16,27 +16,27 @@ main = do
   Tasty.defaultMain tests
 
 spec :: Hspec.Spec
-spec = Hspec.describe "Rattletrap" (mapM_ (uncurry itCanRoundTrip) replays)
+spec =
+  Hspec.describe
+    "Rattletrap"
+    (Hspec.context "get and put" (mapM_ (uncurry itCanGetAndPut) replays))
 
-itCanRoundTrip :: String -> String -> Hspec.Spec
-itCanRoundTrip uuid description =
+itCanGetAndPut :: String -> String -> Hspec.Spec
+itCanGetAndPut uuid description =
   Hspec.it
-    (labelFor description)
+    ("a replay " ++ description)
     (do let file = pathToReplay uuid
-        (input, _replay, output) <- process file
+        (input, _replay, output) <- getAndPut file
         Hspec.shouldBe output input)
-
-labelFor :: String -> String
-labelFor description = "can round trip " ++ description
 
 pathToReplay :: String -> FilePath
 pathToReplay uuid =
   FilePath.joinPath ["test", "replays", FilePath.addExtension uuid ".replay"]
 
-process
+getAndPut
   :: FilePath
   -> IO (LazyByteString.ByteString, Rattletrap.Replay, LazyByteString.ByteString)
-process file = do
+getAndPut file = do
   input <- LazyByteString.readFile file
   let replay = Binary.runGet Rattletrap.getReplay input
   let output = Binary.runPut (Rattletrap.putReplay replay)
@@ -44,6 +44,6 @@ process file = do
 
 replays :: [(String, String)]
 replays =
-  [ ("F811C1D24888015E23B598AD8628C742", "a replay without frames")
-  , ("29F582C34A65EB34D358A784CBE3C189", "a replay with frames")
+  [ ("F811C1D24888015E23B598AD8628C742", "with no frames")
+  , ("29F582C34A65EB34D358A784CBE3C189", "with frames")
   ]
