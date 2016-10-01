@@ -12,14 +12,16 @@ data Attribute = Attribute
   , attributeValue :: AttributeValue
   } deriving (Eq, Ord, Show)
 
-getAttributes :: ClassPropertyMap -> BinaryBit.BitGet [Attribute]
-getAttributes classPropertyMap = do
+getAttributes :: ClassPropertyMap
+              -> CompressedWord
+              -> BinaryBit.BitGet [Attribute]
+getAttributes classPropertyMap actorId = do
   hasAttribute <- BinaryBit.getBool
   if not hasAttribute
     then pure []
     else do
-      attribute <- getAttribute classPropertyMap
-      attributes <- getAttributes classPropertyMap
+      attribute <- getAttribute classPropertyMap actorId
+      attributes <- getAttributes classPropertyMap actorId
       pure (attribute : attributes)
 
 putAttributes :: [Attribute] -> BinaryBit.BitPut ()
@@ -27,11 +29,11 @@ putAttributes attributes = do
   mapM_ putAttribute attributes
   BinaryBit.putBool False
 
-getAttribute :: ClassPropertyMap -> BinaryBit.BitGet Attribute
-getAttribute classPropertyMap = do
-  let limit = attributeIdLimit classPropertyMap
+getAttribute :: ClassPropertyMap -> CompressedWord -> BinaryBit.BitGet Attribute
+getAttribute classPropertyMap actorId = do
+  let limit = attributeIdLimit classPropertyMap actorId
   id_ <- getCompressedWord limit
-  let name = getAttributeName classPropertyMap id_
+  let name = getAttributeName classPropertyMap actorId id_
   value <- getAttributeValue name
   pure Attribute {attributeId = id_, attributeValue = value}
 

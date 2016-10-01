@@ -33,7 +33,7 @@ getReplication classPropertyMap = do
     then pure Nothing
     else do
       actorId <- getCompressedWord maxActorId
-      value <- getReplicationValue classPropertyMap
+      value <- getReplicationValue classPropertyMap actorId
       pure
         (Just
            Replication {replicationActorId = actorId, replicationValue = value})

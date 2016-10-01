@@ -26,8 +26,9 @@ classHasLocation _className = error "classHasLocation"
 classHasRotation :: Text -> Bool
 classHasRotation _className = error "classHasRotation"
 
-attributeIdLimit :: ClassPropertyMap -> Word
-attributeIdLimit _classPropertyMap = error "attributeIdLimit"
+attributeIdLimit :: ClassPropertyMap -> CompressedWord -> Word
+attributeIdLimit _classPropertyMap _actorId = error "attributeIdLimit"
 
-getAttributeName :: ClassPropertyMap -> CompressedWord -> Text
-getAttributeName _classPropertyMap _attributeId = error "getAttributeName"
+getAttributeName :: ClassPropertyMap -> CompressedWord -> CompressedWord -> Text
+getAttributeName _classPropertyMap _actorId _attributeId =
+  error "getAttributeName"

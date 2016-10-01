@@ -2,6 +2,7 @@ module Rattletrap.ReplicationValue where
 
 import Rattletrap.Attribute
 import Rattletrap.ClassPropertyMap
+import Rattletrap.CompressedWord
 import Rattletrap.Initialization
 import Rattletrap.Word32
 
@@ -16,8 +17,10 @@ data ReplicationValue
   | DestroyedReplication
   deriving (Eq, Ord, Show)
 
-getReplicationValue :: ClassPropertyMap -> BinaryBit.BitGet ReplicationValue
-getReplicationValue classPropertyMap = do
+getReplicationValue :: ClassPropertyMap
+                    -> CompressedWord
+                    -> BinaryBit.BitGet ReplicationValue
+getReplicationValue classPropertyMap actorId = do
   isOpen <- BinaryBit.getBool
   if isOpen
     then do
@@ -32,7 +35,7 @@ getReplicationValue classPropertyMap = do
           initialization <- getInitialization hasLocation hasRotation
           pure (SpawnedReplication unknown objectId initialization)
         else do
-          attributes <- getAttributes classPropertyMap
+          attributes <- getAttributes classPropertyMap actorId
           pure (UpdatedReplication attributes)
     else pure DestroyedReplication
 
