@@ -1,7 +1,10 @@
 module Rattletrap.AttributeValue where
 
+import Rattletrap.Text
+
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.ByteString.Lazy.Char8 as LazyByteString
 
 data AttributeValue
   = BooleanAttribute Bool
@@ -32,10 +35,10 @@ data AttributeValue
   | WeldedInfoAttribute
   deriving (Eq, Ord, Show)
 
-getAttributeValue :: String -> BinaryBit.BitGet AttributeValue
+getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
-  case name of
-    "Engine.Actor:bBlockActors" -> getBooleanAttribute
+  case LazyByteString.unpack (textValue name) of
+    "Engine.Actor:bBlockActors\x00" -> getBooleanAttribute
     _ -> fail ("getAttributeValue: " ++ show name)
 
 getBooleanAttribute :: BinaryBit.BitGet AttributeValue

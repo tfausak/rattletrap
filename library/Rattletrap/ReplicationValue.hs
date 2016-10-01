@@ -3,6 +3,7 @@ module Rattletrap.ReplicationValue where
 import Rattletrap.Attribute
 import Rattletrap.CompressedWord
 import Rattletrap.Initialization
+import Rattletrap.Text
 import Rattletrap.Word32
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -18,15 +19,15 @@ data ReplicationValue
 
 getReplicationValue :: BinaryBit.BitGet ReplicationValue
 getReplicationValue = do
-  let getClassName :: Word32 -> String
+  let getClassName :: Word32 -> Text
       getClassName _objectId = error "get class name"
-      classHasLocation :: String -> Bool
+      classHasLocation :: Text -> Bool
       classHasLocation _className = error "class has location"
-      classHasRotation :: String -> Bool
+      classHasRotation :: Text -> Bool
       classHasRotation _className = error "class has rotation"
       attributeIdLimit :: Word
       attributeIdLimit = error "attribute id limit"
-      getAttributeName :: CompressedWord -> String
+      getAttributeName :: CompressedWord -> Text
       getAttributeName _id = error "get attribute name"
   isOpen <- BinaryBit.getBool
   if isOpen

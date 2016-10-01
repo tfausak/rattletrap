@@ -2,6 +2,7 @@ module Rattletrap.Attribute where
 
 import Rattletrap.AttributeValue
 import Rattletrap.CompressedWord
+import Rattletrap.Text
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
@@ -12,7 +13,7 @@ data Attribute = Attribute
   } deriving (Eq, Ord, Show)
 
 getAttributes :: Word
-              -> (CompressedWord -> String)
+              -> (CompressedWord -> Text)
               -> BinaryBit.BitGet [Attribute]
 getAttributes limit getName = do
   hasAttribute <- BinaryBit.getBool
@@ -28,7 +29,7 @@ putAttributes attributes = do
   mapM_ putAttribute attributes
   BinaryBit.putBool False
 
-getAttribute :: Word -> (CompressedWord -> String) -> BinaryBit.BitGet Attribute
+getAttribute :: Word -> (CompressedWord -> Text) -> BinaryBit.BitGet Attribute
 getAttribute limit getName = do
   id_ <- getCompressedWord limit
   value <- getAttributeValue (getName id_)
