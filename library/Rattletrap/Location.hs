@@ -1,16 +1,24 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Location where
 
 import Rattletrap.CompressedWord
 
+import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified GHC.Generics as Generics
 
 data Location = Location
   { locationBitSize :: CompressedWord
   , locationDx :: CompressedWord
   , locationDy :: CompressedWord
   , locationDz :: CompressedWord
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generics.Generic, Ord, Show)
+
+instance Aeson.FromJSON Location
+
+instance Aeson.ToJSON Location
 
 getLocation :: BinaryBit.BitGet Location
 getLocation = do

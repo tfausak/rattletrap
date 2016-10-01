@@ -1,15 +1,23 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Message where
 
 import Rattletrap.Text
 import Rattletrap.Word32
 
+import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
+import qualified GHC.Generics as Generics
 
 data Message = Message
   { messageFrame :: Word32
   , messageName :: Text
   , messageValue :: Text
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generics.Generic, Ord, Show)
+
+instance Aeson.FromJSON Message
+
+instance Aeson.ToJSON Message
 
 getMessage :: Binary.Get Message
 getMessage = do

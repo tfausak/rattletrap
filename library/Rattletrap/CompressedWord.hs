@@ -1,16 +1,24 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.CompressedWord where
 
 import Rattletrap.Utility
 
 import qualified Control.Monad as Monad
+import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Bits as Bits
+import qualified GHC.Generics as Generics
 
 data CompressedWord = CompressedWord
   { compressedWordLimit :: Word
   , compressedWordValue :: Word
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generics.Generic, Ord, Show)
+
+instance Aeson.FromJSON CompressedWord
+
+instance Aeson.ToJSON CompressedWord
 
 getCompressedWord :: Word -> BinaryBit.BitGet CompressedWord
 getCompressedWord limit = do

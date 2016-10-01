@@ -1,14 +1,22 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Dictionary where
 
-import Rattletrap.Int32
 import Rattletrap.Text
 
+import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
-import qualified Data.ByteString.Lazy.Char8 as ByteString
+import qualified GHC.Generics as Generics
 
 newtype Dictionary a = Dictionary
   { dictionaryValue :: [(Text, a)]
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generics.Generic, Ord, Show)
+
+instance Aeson.FromJSON a =>
+         Aeson.FromJSON (Dictionary a)
+
+instance Aeson.ToJSON a =>
+         Aeson.ToJSON (Dictionary a)
 
 getDictionary :: Binary.Get a -> Binary.Get (Dictionary a)
 getDictionary getValue = do
@@ -31,4 +39,4 @@ putDictionary putValue (Dictionary elements) = do
   putText noneKey
 
 noneKey :: Text
-noneKey = Text {textSize = Int32 5, textValue = ByteString.pack "None\x00"}
+noneKey = stringToText "None"

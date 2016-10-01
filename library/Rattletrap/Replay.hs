@@ -1,10 +1,14 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Replay where
 
 import Rattletrap.Content
 import Rattletrap.Header
 import Rattletrap.Word32
 
+import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
+import qualified GHC.Generics as Generics
 
 data Replay = Replay
   { replayHeaderSize :: Word32
@@ -13,7 +17,11 @@ data Replay = Replay
   , replayContentSize :: Word32
   , replayContentCrc :: Word32
   , replayContent :: Content
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generics.Generic, Ord, Show)
+
+instance Aeson.FromJSON Replay
+
+instance Aeson.ToJSON Replay
 
 getReplay :: Binary.Get Replay
 getReplay = do

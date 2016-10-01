@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.ReplicationValue where
 
 import Rattletrap.Attribute
@@ -6,8 +8,10 @@ import Rattletrap.CompressedWord
 import Rattletrap.Initialization
 import Rattletrap.Word32
 
+import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified GHC.Generics as Generics
 
 data ReplicationValue
   = SpawnedReplication Bool
@@ -15,7 +19,11 @@ data ReplicationValue
                        Initialization
   | UpdatedReplication [Attribute]
   | DestroyedReplication
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Generics.Generic, Ord, Show)
+
+instance Aeson.FromJSON ReplicationValue
+
+instance Aeson.ToJSON ReplicationValue
 
 getReplicationValue :: ClassPropertyMap
                     -> CompressedWord

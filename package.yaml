@@ -14,6 +14,8 @@ executables:
 ghc-options: -Wall
 library:
   dependencies:
+  - aeson
+  - aeson-pretty
   - base
   - bimap
   - binary
@@ -21,6 +23,7 @@ library:
   - bytestring
   - containers
   - data-binary-ieee754
+  - text
   source-dirs: library
 license: MIT
 license-file: LICENSE.markdown

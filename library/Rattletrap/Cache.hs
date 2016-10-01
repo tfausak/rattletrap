@@ -1,17 +1,25 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Cache where
 
 import Rattletrap.List
 import Rattletrap.PropertyMapping
 import Rattletrap.Word32
 
+import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
+import qualified GHC.Generics as Generics
 
 data Cache = Cache
   { cacheClassId :: Word32
   , cacheParentCacheId :: Word32
   , cacheCacheId :: Word32
   , cachePropertyMappings :: List PropertyMapping
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generics.Generic, Ord, Show)
+
+instance Aeson.FromJSON Cache
+
+instance Aeson.ToJSON Cache
 
 getCache :: Binary.Get Cache
 getCache = do

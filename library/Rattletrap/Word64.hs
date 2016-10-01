@@ -1,13 +1,21 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Word64 where
 
+import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.Word as Word
+import qualified GHC.Generics as Generics
 
 newtype Word64 = Word64
   { word64Value :: Word.Word64
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generics.Generic, Ord, Show)
+
+instance Aeson.FromJSON Word64
+
+instance Aeson.ToJSON Word64
 
 getWord64 :: Binary.Get Word64
 getWord64 = do

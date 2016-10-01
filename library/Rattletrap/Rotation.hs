@@ -1,15 +1,23 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Rotation where
 
 import Rattletrap.Int8
 
+import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified GHC.Generics as Generics
 
 data Rotation = Rotation
   { rotationX :: Maybe Int8
   , rotationY :: Maybe Int8
   , rotationZ :: Maybe Int8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generics.Generic, Ord, Show)
+
+instance Aeson.FromJSON Rotation
+
+instance Aeson.ToJSON Rotation
 
 getRotation :: BinaryBit.BitGet Rotation
 getRotation = do

@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Content where
 
 import Rattletrap.Cache
@@ -12,11 +14,13 @@ import Rattletrap.Text
 import Rattletrap.Utility
 import Rattletrap.Word32
 
+import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
+import qualified GHC.Generics as Generics
 
 data Content = Content
   { contentLevels :: List Text
@@ -30,7 +34,11 @@ data Content = Content
   , contentNames :: List Text
   , contentClassMappings :: List ClassMapping
   , contentCaches :: List Cache
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generics.Generic, Ord, Show)
+
+instance Aeson.FromJSON Content
+
+instance Aeson.ToJSON Content
 
 getContent :: Binary.Get Content
 getContent = do
