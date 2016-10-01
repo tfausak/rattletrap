@@ -7,20 +7,27 @@ import Rattletrap.List
 import Rattletrap.Text
 import Rattletrap.Word32
 
+import qualified Data.Bimap as Bimap
 import qualified Data.Set as Set
 
 data ClassPropertyMap = ClassPropertyMap
-  {
-  } deriving (Eq, Ord, Show)
+  { classPropertyMapObjectMap :: Bimap.Bimap Word32 Text
+  } deriving (Eq, Show)
 
 makeClassPropertyMap :: List Text
                      -> List ClassMapping
                      -> List Cache
                      -> ClassPropertyMap
-makeClassPropertyMap _objects _classMappings _caches = ClassPropertyMap {}
+makeClassPropertyMap objects _classMappings _caches =
+  ClassPropertyMap {classPropertyMapObjectMap = makeObjectMap objects}
 
-getClassName :: ClassPropertyMap -> Word32 -> Text
-getClassName _classPropertyMap _objectId = error "getClassName"
+makeObjectMap :: List Text -> Bimap.Bimap Word32 Text
+makeObjectMap objects =
+  Bimap.fromList (zip (map Word32 [0 ..]) (listValue objects))
+
+getClassName :: ClassPropertyMap -> Word32 -> Maybe Text
+getClassName classPropertyMap objectId =
+  Bimap.lookup objectId (classPropertyMapObjectMap classPropertyMap)
 
 classHasLocation :: Text -> Bool
 classHasLocation className = Set.member className classesWithLocation

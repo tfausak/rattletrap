@@ -15,10 +15,11 @@ ghc-options: -Wall
 library:
   dependencies:
   - base
+  - bimap
   - binary
-  - containers
   - binary-bits
   - bytestring
+  - containers
   - data-binary-ieee754
   source-dirs: library
 license: MIT

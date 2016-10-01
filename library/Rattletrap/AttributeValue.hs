@@ -39,7 +39,7 @@ getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
   case ByteString.unpack (textValue name) of
     "Engine.Actor:bBlockActors\x00" -> getBooleanAttribute
-    _ -> fail ("getAttributeValue: " ++ show name)
+    _ -> fail ("don't know how to read attribute value " ++ show name)
 
 getBooleanAttribute :: BinaryBit.BitGet AttributeValue
 getBooleanAttribute = do

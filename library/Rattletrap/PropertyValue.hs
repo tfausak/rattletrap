@@ -54,7 +54,7 @@ getPropertyValue getProperty (Text _ kind) _size =
     "StrProperty\x00" -> do
       text <- getText
       pure (StrProperty text)
-    _ -> fail ("getPropertyValue: " ++ show kind)
+    _ -> fail ("don't know how to read property value " ++ show kind)
 
 putPropertyValue :: (a -> Binary.Put) -> PropertyValue a -> Binary.Put
 putPropertyValue putProperty value =
