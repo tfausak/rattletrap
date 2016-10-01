@@ -4,7 +4,7 @@ import Rattletrap.Text
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
-import qualified Data.ByteString.Lazy.Char8 as LazyByteString
+import qualified Data.ByteString.Lazy.Char8 as ByteString
 
 data AttributeValue
   = BooleanAttribute Bool
@@ -37,7 +37,7 @@ data AttributeValue
 
 getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
-  case LazyByteString.unpack (textValue name) of
+  case ByteString.unpack (textValue name) of
     "Engine.Actor:bBlockActors\x00" -> getBooleanAttribute
     _ -> fail ("getAttributeValue: " ++ show name)
 

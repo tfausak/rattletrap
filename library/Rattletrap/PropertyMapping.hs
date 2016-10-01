@@ -5,7 +5,7 @@ import Rattletrap.Word32
 import qualified Data.Binary as Binary
 
 data PropertyMapping = PropertyMapping
-  { propertyObjectId :: Word32
+  { propertyMappingObjectId :: Word32
   , propertyMappingStreamId :: Word32
   } deriving (Eq, Ord, Show)
 
@@ -15,9 +15,9 @@ getPropertyMapping = do
   streamId <- getWord32
   pure
     PropertyMapping
-    {propertyObjectId = objectId, propertyMappingStreamId = streamId}
+    {propertyMappingObjectId = objectId, propertyMappingStreamId = streamId}
 
 putPropertyMapping :: PropertyMapping -> Binary.Put
 putPropertyMapping propertyMapping = do
-  putWord32 (propertyObjectId propertyMapping)
+  putWord32 (propertyMappingObjectId propertyMapping)
   putWord32 (propertyMappingStreamId propertyMapping)

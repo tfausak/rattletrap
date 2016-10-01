@@ -6,7 +6,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as LazyByteString
+import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Int as Int
 
 newtype Int8 = Int8
@@ -24,10 +24,9 @@ putInt8 (Int8 int8) = Binary.putInt8 int8
 getInt8Bits :: BinaryBit.BitGet Int8
 getInt8Bits = do
   bytes <- BinaryBit.getLazyByteString 1
-  pure (Binary.runGet getInt8 (reverseLazyByteString bytes))
+  pure (Binary.runGet getInt8 (reverseBytes bytes))
 
 putInt8Bits :: Int8 -> BinaryBit.BitPut ()
 putInt8Bits int8 = do
   let bytes = Binary.runPut (putInt8 int8)
-  BinaryBit.putByteString
-    (LazyByteString.toStrict (reverseLazyByteString bytes))
+  BinaryBit.putByteString (ByteString.toStrict (reverseBytes bytes))

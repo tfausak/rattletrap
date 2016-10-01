@@ -1,7 +1,7 @@
 module Rattletrap.Utility where
 
 import qualified Data.Bits as Bits
-import qualified Data.ByteString.Lazy as LazyByteString
+import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Word as Word
 
 logBase2
@@ -9,15 +9,13 @@ logBase2
   => a -> b
 logBase2 x = floor (logBase (2 :: Float) (fromIntegral x))
 
-padLazyByteString
+padBytes
   :: Integral a
-  => a -> LazyByteString.ByteString -> LazyByteString.ByteString
-padLazyByteString size bytes =
-  LazyByteString.concat
+  => a -> ByteString.ByteString -> ByteString.ByteString
+padBytes size bytes =
+  ByteString.concat
     [ bytes
-    , LazyByteString.replicate
-        (fromIntegral size - LazyByteString.length bytes)
-        0x00
+    , ByteString.replicate (fromIntegral size - ByteString.length bytes) 0x00
     ]
 
 reverseByte :: Word.Word8 -> Word.Word8
@@ -31,5 +29,5 @@ reverseByte byte =
   Bits.shiftL (byte Bits..&. Bits.bit 2) 5 +
   Bits.shiftL (byte Bits..&. Bits.bit 1) 7
 
-reverseLazyByteString :: LazyByteString.ByteString -> LazyByteString.ByteString
-reverseLazyByteString = LazyByteString.map reverseByte
+reverseBytes :: ByteString.ByteString -> ByteString.ByteString
+reverseBytes = ByteString.map reverseByte

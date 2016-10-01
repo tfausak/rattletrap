@@ -4,7 +4,7 @@ import Rattletrap.Int32
 import Rattletrap.Text
 
 import qualified Data.Binary as Binary
-import qualified Data.ByteString.Lazy.Char8 as LazyByteString
+import qualified Data.ByteString.Lazy.Char8 as ByteString
 
 newtype Dictionary a = Dictionary
   { dictionaryValue :: [(Text, a)]
@@ -31,4 +31,4 @@ putDictionary putValue (Dictionary elements) = do
   putText noneKey
 
 noneKey :: Text
-noneKey = Text {textSize = Int32 5, textValue = LazyByteString.pack "None\x00"}
+noneKey = Text {textSize = Int32 5, textValue = ByteString.pack "None\x00"}

@@ -5,11 +5,11 @@ import Rattletrap.Int32
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy.Char8 as LazyByteString
+import qualified Data.ByteString.Lazy.Char8 as ByteString
 
 data Text = Text
   { textSize :: Int32
-  , textValue :: LazyByteString.ByteString
+  , textValue :: ByteString.ByteString
   } deriving (Eq, Ord, Show)
 
 getText :: Binary.Get Text
@@ -25,6 +25,6 @@ putText text = do
 
 stringToText :: String -> Text
 stringToText string =
-  let value = LazyByteString.snoc (LazyByteString.pack string) '\x00'
-      size = Int32 (fromIntegral (LazyByteString.length value))
+  let value = ByteString.snoc (ByteString.pack string) '\x00'
+      size = Int32 (fromIntegral (ByteString.length value))
   in Text {textSize = size, textValue = value}

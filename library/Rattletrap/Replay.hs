@@ -7,7 +7,7 @@ import Rattletrap.Word32
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as LazyByteString
+import qualified Data.ByteString.Lazy as ByteString
 
 data Replay = Replay
   { replayHeaderSize :: Word32
@@ -16,7 +16,7 @@ data Replay = Replay
   , replayContentSize :: Word32
   , replayContentCrc :: Word32
   , replayContent :: Content
-  , replayFooter :: LazyByteString.ByteString
+  , replayFooter :: ByteString.ByteString
   } deriving (Eq, Ord, Show)
 
 getReplay :: Binary.Get Replay

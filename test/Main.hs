@@ -4,7 +4,7 @@ module Main
 
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as LazyByteString
+import qualified Data.ByteString.Lazy as ByteString
 import qualified Rattletrap
 import qualified System.FilePath as FilePath
 import qualified Test.Tasty as Tasty
@@ -33,11 +33,10 @@ pathToReplay :: String -> FilePath
 pathToReplay uuid =
   FilePath.joinPath ["test", "replays", FilePath.addExtension uuid ".replay"]
 
-getAndPut
-  :: FilePath
-  -> IO (LazyByteString.ByteString, Rattletrap.Replay, LazyByteString.ByteString)
+getAndPut :: FilePath
+          -> IO (ByteString.ByteString, Rattletrap.Replay, ByteString.ByteString)
 getAndPut file = do
-  input <- LazyByteString.readFile file
+  input <- ByteString.readFile file
   let replay = Binary.runGet Rattletrap.getReplay input
   let output = Binary.runPut (Rattletrap.putReplay replay)
   pure (input, replay, output)

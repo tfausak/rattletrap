@@ -71,7 +71,7 @@ putContent content = do
   putWord32 streamSize
   let stream =
         Binary.runPut (BinaryBit.runBitPut (putFrames (contentFrames content)))
-  Binary.putLazyByteString (padLazyByteString (word32Value streamSize) stream)
+  Binary.putLazyByteString (padBytes (word32Value streamSize) stream)
   putList putMessage (contentMessages content)
   putList putMark (contentMarks content)
   putList putText (contentPackages content)

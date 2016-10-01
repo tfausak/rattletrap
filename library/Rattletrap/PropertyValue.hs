@@ -9,12 +9,13 @@ import Rattletrap.Word64
 import Rattletrap.Word8
 
 import qualified Data.Binary as Binary
-import qualified Data.ByteString.Lazy.Char8 as LazyByteString
+import qualified Data.ByteString.Lazy.Char8 as ByteString
 
 data PropertyValue a
   = ArrayProperty (List (Dictionary a))
   | BoolProperty Word8
-  | ByteProperty (Text, Text)
+  | ByteProperty Text
+                 Text
   | FloatProperty Float32
   | IntProperty Int32
   | NameProperty Text
@@ -27,7 +28,7 @@ getPropertyValue :: Binary.Get a
                  -> Word64
                  -> Binary.Get (PropertyValue a)
 getPropertyValue getProperty (Text _ kind) _size =
-  case LazyByteString.unpack kind of
+  case ByteString.unpack kind of
     "ArrayProperty\x00" -> do
       list <- getList (getDictionary getProperty)
       pure (ArrayProperty list)
@@ -37,7 +38,7 @@ getPropertyValue getProperty (Text _ kind) _size =
     "ByteProperty\x00" -> do
       k <- getText
       v <- getText
-      pure (ByteProperty (k, v))
+      pure (ByteProperty k v)
     "FloatProperty\x00" -> do
       float32 <- getFloat32
       pure (FloatProperty float32)
@@ -60,7 +61,7 @@ putPropertyValue putProperty value =
   case value of
     ArrayProperty list -> putList (putDictionary putProperty) list
     BoolProperty word8 -> putWord8 word8
-    ByteProperty (k, v) -> do
+    ByteProperty k v -> do
       putText k
       putText v
     FloatProperty float32 -> putFloat32 float32
