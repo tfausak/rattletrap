@@ -16,6 +16,7 @@ library:
   dependencies:
   - base
   - binary
+  - containers
   - binary-bits
   - bytestring
   - data-binary-ieee754
