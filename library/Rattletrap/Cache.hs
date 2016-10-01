@@ -13,8 +13,8 @@ data Cache = Cache
   , cachePropertyMappings :: List PropertyMapping
   } deriving (Eq, Ord, Show)
 
-getMapping :: Binary.Get Cache
-getMapping = do
+getCache :: Binary.Get Cache
+getCache = do
   classId <- getWord32
   parentCacheId <- getWord32
   cacheId <- getWord32
@@ -27,8 +27,8 @@ getMapping = do
     , cachePropertyMappings = propertyMappings
     }
 
-putMapping :: Cache -> Binary.Put
-putMapping cache = do
+putCache :: Cache -> Binary.Put
+putCache cache = do
   putWord32 (cacheClassId cache)
   putWord32 (cacheParentCacheId cache)
   putWord32 (cacheCacheId cache)

@@ -1,5 +1,6 @@
 module Rattletrap.Content where
 
+import Rattletrap.Cache
 import Rattletrap.ClassMapping
 import Rattletrap.Frame
 import Rattletrap.KeyFrame
@@ -27,6 +28,7 @@ data Content = Content
   , contentObjects :: List Text
   , contentNames :: List Text
   , contentClassMappings :: List ClassMapping
+  , contentCaches :: List Cache
   } deriving (Eq, Ord, Show)
 
 getContent :: Binary.Get Content
@@ -42,6 +44,7 @@ getContent = do
   objects <- getList getText
   names <- getList getText
   classMappings <- getList getClassMapping
+  caches <- getList getCache
   pure
     Content
     { contentLevels = levels
@@ -54,6 +57,7 @@ getContent = do
     , contentObjects = objects
     , contentNames = names
     , contentClassMappings = classMappings
+    , contentCaches = caches
     }
 
 putContent :: Content -> Binary.Put
@@ -71,3 +75,4 @@ putContent content = do
   putList putText (contentObjects content)
   putList putText (contentNames content)
   putList putClassMapping (contentClassMappings content)
+  putList putCache (contentCaches content)
