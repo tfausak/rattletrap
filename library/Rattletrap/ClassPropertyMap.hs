@@ -5,9 +5,11 @@ import Rattletrap.ClassMapping
 import Rattletrap.CompressedWord
 import Rattletrap.List
 import Rattletrap.Text
+import Rattletrap.Utility
 import Rattletrap.Word32
 
 import qualified Data.Bimap as Bimap
+import qualified Data.Map as Map
 import qualified Data.Set as Set
 
 data ClassPropertyMap = ClassPropertyMap
@@ -25,11 +27,109 @@ makeObjectMap :: List Text -> Bimap.Bimap Word32 Text
 makeObjectMap objects =
   Bimap.fromList (zip (map Word32 [0 ..]) (listValue objects))
 
--- TODO: This is just getting the object name. It needs to convert that object
--- name into a class.
-getClassName :: ClassPropertyMap -> Word32 -> Maybe Text
-getClassName classPropertyMap objectId =
+getObjectName :: ClassPropertyMap -> Word32 -> Maybe Text
+getObjectName classPropertyMap objectId =
   Bimap.lookup objectId (classPropertyMapObjectMap classPropertyMap)
+
+getClassName :: Text -> Maybe Text
+getClassName rawObjectName =
+  Map.lookup (normalizeObjectName rawObjectName) objectClasses
+
+normalizeObjectName :: Text -> Text
+normalizeObjectName objectName =
+  stringToText
+    (replace
+       "_[0-9]+$"
+       ""
+       (replace "^[A-Z_a-z]+[.]TheWorld:" "TheWorld:" (textToString objectName)))
+
+objectClasses :: Map.Map Text Text
+objectClasses =
+  Map.fromList
+    (map
+       (\(objectName, className) ->
+          (stringToText objectName, stringToText className))
+       [ ("Archetypes.Ball.Ball_Basketball", "TAGame.Ball_TA")
+       , ("Archetypes.Ball.Ball_Default", "TAGame.Ball_TA")
+       , ("Archetypes.Ball.Ball_Puck", "TAGame.Ball_TA")
+       , ("Archetypes.Ball.CubeBall", "TAGame.Ball_TA")
+       , ("Archetypes.Car.Car_Default", "TAGame.Car_TA")
+       , ( "Archetypes.CarComponents.CarComponent_Boost"
+         , "TAGame.CarComponent_Boost_TA")
+       , ( "Archetypes.CarComponents.CarComponent_Dodge"
+         , "TAGame.CarComponent_Dodge_TA")
+       , ( "Archetypes.CarComponents.CarComponent_DoubleJump"
+         , "TAGame.CarComponent_DoubleJump_TA")
+       , ( "Archetypes.CarComponents.CarComponent_FlipCar"
+         , "TAGame.CarComponent_FlipCar_TA")
+       , ( "Archetypes.CarComponents.CarComponent_Jump"
+         , "TAGame.CarComponent_Jump_TA")
+       , ( "Archetypes.GameEvent.GameEvent_Basketball"
+         , "TAGame.GameEvent_Soccar_TA")
+       , ( "Archetypes.GameEvent.GameEvent_BasketballPrivate"
+         , "TAGame.GameEvent_SoccarPrivate_TA")
+       , ( "Archetypes.GameEvent.GameEvent_BasketballSplitscreen"
+         , "TAGame.GameEvent_SoccarSplitscreen_TA")
+       , ( "Archetypes.GameEvent.GameEvent_HockeyPrivate"
+         , "TAGame.GameEvent_SoccarPrivate_TA")
+       , ( "Archetypes.GameEvent.GameEvent_HockeySplitscreen"
+         , "TAGame.GameEvent_SoccarSplitscreen_TA")
+       , ("Archetypes.GameEvent.GameEvent_Items", "TAGame.GameEvent_Soccar_TA")
+       , ("Archetypes.GameEvent.GameEvent_Season:CarArchetype", "TAGame.Car_TA")
+       , ("Archetypes.GameEvent.GameEvent_Season", "TAGame.GameEvent_Season_TA")
+       , ("Archetypes.GameEvent.GameEvent_Soccar", "TAGame.GameEvent_Soccar_TA")
+       , ( "Archetypes.GameEvent.GameEvent_SoccarPrivate"
+         , "TAGame.GameEvent_SoccarPrivate_TA")
+       , ( "Archetypes.GameEvent.GameEvent_SoccarSplitscreen"
+         , "TAGame.GameEvent_SoccarSplitscreen_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_BallFreeze"
+         , "TAGame.SpecialPickup_BallFreeze_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_BallGrapplingHook"
+         , "TAGame.SpecialPickup_GrapplingHook_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_BallLasso"
+         , "TAGame.SpecialPickup_BallLasso_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_BallSpring"
+         , "TAGame.SpecialPickup_BallCarSpring_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_BallVelcro"
+         , "TAGame.SpecialPickup_BallVelcro_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_Batarang"
+         , "TAGame.SpecialPickup_Batarang_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_BoostOverride"
+         , "TAGame.SpecialPickup_BoostOverride_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_CarSpring"
+         , "TAGame.SpecialPickup_BallCarSpring_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_GravityWell"
+         , "TAGame.SpecialPickup_BallGravity_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_StrongHit"
+         , "TAGame.SpecialPickup_HitForce_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_Swapper"
+         , "TAGame.SpecialPickup_Swapper_TA")
+       , ( "Archetypes.SpecialPickups.SpecialPickup_Tornado"
+         , "TAGame.SpecialPickup_Tornado_TA")
+       , ("Archetypes.Teams.Team0", "TAGame.Team_Soccar_TA")
+       , ("Archetypes.Teams.Team1", "TAGame.Team_Soccar_TA")
+       , ( "GameInfo_Basketball.GameInfo.GameInfo_Basketball:GameReplicationInfoArchetype"
+         , "TAGame.GRI_TA")
+       , ( "Gameinfo_Hockey.GameInfo.Gameinfo_Hockey:GameReplicationInfoArchetype"
+         , "TAGame.GRI_TA")
+       , ( "GameInfo_Items.GameInfo.GameInfo_Items:GameReplicationInfoArchetype"
+         , "TAGame.GRI_TA")
+       , ( "GameInfo_Season.GameInfo.GameInfo_Season:GameReplicationInfoArchetype"
+         , "TAGame.GRI_TA")
+       , ( "GameInfo_Soccar.GameInfo.GameInfo_Soccar:GameReplicationInfoArchetype"
+         , "TAGame.GRI_TA")
+       , ("TAGame.CameraSettingsActor_TA:PRI", "TAGame.CameraSettingsActor_TA")
+       , ( "TAGame.Default__CameraSettingsActor_TA"
+         , "TAGame.CameraSettingsActor_TA")
+       , ("TAGame.Default__PRI_TA", "TAGame.PRI_TA")
+       , ("TAGame.Default__VoteActor_TA", "TAGame.VoteActor_TA")
+       , ("TheWorld:PersistentLevel.CrowdActor_TA", "TAGame.CrowdActor_TA")
+       , ("TheWorld:PersistentLevel.CrowdManager_TA", "TAGame.CrowdManager_TA")
+       , ( "TheWorld:PersistentLevel.InMapScoreboard_TA"
+         , "TAGame.InMapScoreboard_TA")
+       , ( "TheWorld:PersistentLevel.VehiclePickup_Boost_TA"
+         , "TAGame.VehiclePickup_Boost_TA")
+       ])
 
 classHasLocation :: Text -> Bool
 classHasLocation className = Set.member className classesWithLocation

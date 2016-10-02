@@ -23,6 +23,7 @@ library:
   - bytestring
   - containers
   - data-binary-ieee754
+  - regex-compat
   - text
   source-dirs: library
 license: MIT

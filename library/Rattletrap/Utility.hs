@@ -3,6 +3,7 @@ module Rattletrap.Utility where
 import qualified Data.Bits as Bits
 import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Word as Word
+import qualified Text.Regex as Regex
 
 logBase2
   :: (Integral a, Integral b)
@@ -17,6 +18,10 @@ padBytes size bytes =
     [ bytes
     , ByteString.replicate (fromIntegral size - ByteString.length bytes) 0x00
     ]
+
+replace :: String -> String -> String -> String
+replace needle replacement haystack =
+  Regex.subRegex (Regex.mkRegex needle) haystack replacement
 
 reverseByte :: Word.Word8 -> Word.Word8
 reverseByte byte =

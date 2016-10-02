@@ -37,14 +37,19 @@ getReplicationValue classPropertyMap actorId = do
         then do
           unknown <- BinaryBit.getBool
           objectId <- getWord32Bits
-          case getClassName classPropertyMap objectId of
+          case getObjectName classPropertyMap objectId of
             Nothing ->
-              fail ("could not find class name for id " ++ show objectId)
-            Just className -> do
-              let hasLocation = classHasLocation className
-              let hasRotation = classHasRotation className
-              initialization <- getInitialization hasLocation hasRotation
-              pure (SpawnedReplication unknown objectId initialization)
+              fail ("could not get object name for id " ++ show objectId)
+            Just objectName ->
+              case getClassName objectName of
+                Nothing ->
+                  fail
+                    ("could not get class name for object " ++ show objectName)
+                Just className -> do
+                  let hasLocation = classHasLocation className
+                  let hasRotation = classHasRotation className
+                  initialization <- getInitialization hasLocation hasRotation
+                  pure (SpawnedReplication unknown objectId initialization)
         else do
           attributes <- getAttributes classPropertyMap actorId
           pure (UpdatedReplication attributes)
