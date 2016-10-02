@@ -46,7 +46,7 @@ getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
   case textToString name of
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
-    _ -> fail ("don't know how to read attribute value " ++ show name)
+    _ -> fail ("don't know how to get attribute value " ++ show name)
 
 getBooleanAttribute :: BinaryBit.BitGet AttributeValue
 getBooleanAttribute = do
@@ -57,4 +57,4 @@ putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
   case value of
     BooleanAttribute x -> BinaryBit.putBool x
-    _ -> fail "putAttributeValue"
+    _ -> fail ("don't know how to put attribute value " ++ show value)
