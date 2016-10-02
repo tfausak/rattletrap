@@ -9,6 +9,7 @@ import Rattletrap.ClassMapping as Export
 import Rattletrap.ClassPropertyMap as Export
 import Rattletrap.CompressedWord as Export
 import Rattletrap.Content as Export
+import Rattletrap.Data as Export
 import Rattletrap.Dictionary as Export
 import Rattletrap.Float32 as Export
 import Rattletrap.Frame as Export
