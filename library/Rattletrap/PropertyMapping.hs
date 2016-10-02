@@ -1,21 +1,13 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.PropertyMapping where
 
 import Rattletrap.Word32
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
-import qualified GHC.Generics as Generics
 
 data PropertyMapping = PropertyMapping
   { propertyMappingObjectId :: Word32
   , propertyMappingStreamId :: Word32
-  } deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON PropertyMapping
-
-instance Aeson.ToJSON PropertyMapping
+  } deriving (Eq, Ord, Show)
 
 getPropertyMapping :: Binary.Get PropertyMapping
 getPropertyMapping = do

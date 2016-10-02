@@ -1,25 +1,17 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.Int8 where
 
 import Rattletrap.Utility
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Int as Int
-import qualified GHC.Generics as Generics
 
 newtype Int8 = Int8
   { int8Value :: Int.Int8
-  } deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON Int8
-
-instance Aeson.ToJSON Int8
+  } deriving (Eq, Ord, Show)
 
 getInt8 :: Binary.Get Int8
 getInt8 = do

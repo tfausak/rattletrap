@@ -1,5 +1,6 @@
 module Rattletrap.Main where
 
+import Rattletrap.JSON ()
 import Rattletrap.Replay
 
 import qualified Data.Aeson as Aeson

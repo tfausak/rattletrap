@@ -1,10 +1,7 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.Float32 where
 
 import Rattletrap.Utility
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
@@ -12,15 +9,10 @@ import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.IEEE754 as IEEE754
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
-import qualified GHC.Generics as Generics
 
 newtype Float32 = Float32
   { float32Value :: Float
-  } deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON Float32
-
-instance Aeson.ToJSON Float32
+  } deriving (Eq, Ord, Show)
 
 getFloat32 :: Binary.Get Float32
 getFloat32 = do

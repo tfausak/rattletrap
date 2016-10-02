@@ -1,25 +1,17 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.Frame where
 
 import Rattletrap.ClassPropertyMap
 import Rattletrap.Float32
 import Rattletrap.Replication
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
-import qualified GHC.Generics as Generics
 
 data Frame = Frame
   { frameTime :: Float32
   , frameDelta :: Float32
   , frameReplications :: [Replication]
-  } deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON Frame
-
-instance Aeson.ToJSON Frame
+  } deriving (Eq, Ord, Show)
 
 getFrames :: ClassPropertyMap -> BinaryBit.BitGet [Frame]
 getFrames classPropertyMap = do

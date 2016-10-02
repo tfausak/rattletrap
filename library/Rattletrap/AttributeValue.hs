@@ -1,13 +1,9 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.AttributeValue where
 
 import Rattletrap.Text
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
-import qualified GHC.Generics as Generics
 
 data AttributeValue
   = BooleanAttribute Bool
@@ -36,11 +32,7 @@ data AttributeValue
   | TeamPaintAttribute
   | UniqueIdAttribute
   | WeldedInfoAttribute
-  deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON AttributeValue
-
-instance Aeson.ToJSON AttributeValue
+  deriving (Eq, Ord, Show)
 
 getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =

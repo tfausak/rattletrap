@@ -1,24 +1,16 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.Replication where
 
 import Rattletrap.ClassPropertyMap
 import Rattletrap.CompressedWord
 import Rattletrap.ReplicationValue
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
-import qualified GHC.Generics as Generics
 
 data Replication = Replication
   { replicationActorId :: CompressedWord
   , replicationValue :: ReplicationValue
-  } deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON Replication
-
-instance Aeson.ToJSON Replication
+  } deriving (Eq, Ord, Show)
 
 getReplications :: ClassPropertyMap -> BinaryBit.BitGet [Replication]
 getReplications classPropertyMap = do

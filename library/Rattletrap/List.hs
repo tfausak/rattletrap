@@ -1,24 +1,14 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.List where
 
 import Rattletrap.Word32
 
 import qualified Control.Monad as Monad
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
-import qualified GHC.Generics as Generics
 
 data List a = List
   { listSize :: Word32
   , listValue :: [a]
-  } deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON a =>
-         Aeson.FromJSON (List a)
-
-instance Aeson.ToJSON a =>
-         Aeson.ToJSON (List a)
+  } deriving (Eq, Ord, Show)
 
 getList :: Binary.Get a -> Binary.Get (List a)
 getList getElement = do

@@ -1,22 +1,12 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.Dictionary where
 
 import Rattletrap.Text
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
-import qualified GHC.Generics as Generics
 
 newtype Dictionary a = Dictionary
   { dictionaryValue :: [(Text, a)]
-  } deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON a =>
-         Aeson.FromJSON (Dictionary a)
-
-instance Aeson.ToJSON a =>
-         Aeson.ToJSON (Dictionary a)
+  } deriving (Eq, Ord, Show)
 
 getDictionary :: Binary.Get a -> Binary.Get (Dictionary a)
 getDictionary getValue = do

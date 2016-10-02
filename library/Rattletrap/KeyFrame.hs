@@ -1,23 +1,15 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.KeyFrame where
 
 import Rattletrap.Float32
 import Rattletrap.Word32
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
-import qualified GHC.Generics as Generics
 
 data KeyFrame = KeyFrame
   { keyFrameTime :: Float32
   , keyFrameFrame :: Word32
   , keyFramePosition :: Word32
-  } deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON KeyFrame
-
-instance Aeson.ToJSON KeyFrame
+  } deriving (Eq, Ord, Show)
 
 getKeyFrame :: Binary.Get KeyFrame
 getKeyFrame = do

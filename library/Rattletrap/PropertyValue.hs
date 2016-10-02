@@ -1,5 +1,3 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.PropertyValue where
 
 import Rattletrap.Dictionary
@@ -10,9 +8,7 @@ import Rattletrap.Text
 import Rattletrap.Word64
 import Rattletrap.Word8
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
-import qualified GHC.Generics as Generics
 
 data PropertyValue a
   = ArrayProperty (List (Dictionary a))
@@ -24,13 +20,7 @@ data PropertyValue a
   | NameProperty Text
   | QWordProperty Word64
   | StrProperty Text
-  deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON a =>
-         Aeson.FromJSON (PropertyValue a)
-
-instance Aeson.ToJSON a =>
-         Aeson.ToJSON (PropertyValue a)
+  deriving (Eq, Ord, Show)
 
 getPropertyValue :: Binary.Get a
                  -> Text

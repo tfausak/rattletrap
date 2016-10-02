@@ -17,6 +17,7 @@ import Rattletrap.Header as Export
 import Rattletrap.Initialization as Export
 import Rattletrap.Int32 as Export
 import Rattletrap.Int8 as Export
+import Rattletrap.JSON as Export ()
 import Rattletrap.KeyFrame as Export
 import Rattletrap.List as Export
 import Rattletrap.Location as Export

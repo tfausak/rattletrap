@@ -1,24 +1,16 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.Attribute where
 
 import Rattletrap.AttributeValue
 import Rattletrap.ClassPropertyMap
 import Rattletrap.CompressedWord
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
-import qualified GHC.Generics as Generics
 
 data Attribute = Attribute
   { attributeId :: CompressedWord
   , attributeValue :: AttributeValue
-  } deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON Attribute
-
-instance Aeson.ToJSON Attribute
+  } deriving (Eq, Ord, Show)
 
 getAttributes :: ClassPropertyMap
               -> CompressedWord

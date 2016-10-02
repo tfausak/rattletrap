@@ -1,26 +1,18 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 module Rattletrap.Text where
 
 import Rattletrap.Int32
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy.Char8 as ByteString
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Encoding
-import qualified GHC.Generics as Generics
 
 data Text = Text
   { textSize :: Int32
   , textValue :: Text.Text
-  } deriving (Eq, Generics.Generic, Ord, Show)
-
-instance Aeson.FromJSON Text
-
-instance Aeson.ToJSON Text
+  } deriving (Eq, Ord, Show)
 
 getText :: Binary.Get Text
 getText = do
