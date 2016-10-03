@@ -1,6 +1,6 @@
 module Rattletrap.Replication where
 
-import Rattletrap.ClassPropertyMap
+import Rattletrap.ClassAttributeMap
 import Rattletrap.CompressedWord
 import Rattletrap.ReplicationValue
 
@@ -12,13 +12,13 @@ data Replication = Replication
   , replicationValue :: ReplicationValue
   } deriving (Eq, Ord, Show)
 
-getReplications :: ClassPropertyMap -> BinaryBit.BitGet [Replication]
-getReplications classPropertyMap = do
-  maybeReplication <- getReplication classPropertyMap
+getReplications :: ClassAttributeMap -> BinaryBit.BitGet [Replication]
+getReplications classAttributeMap = do
+  maybeReplication <- getReplication classAttributeMap
   case maybeReplication of
     Nothing -> pure []
     Just replication -> do
-      replications <- getReplications classPropertyMap
+      replications <- getReplications classAttributeMap
       pure (replication : replications)
 
 putReplications :: [Replication] -> BinaryBit.BitPut ()
@@ -26,14 +26,14 @@ putReplications replications = do
   mapM_ putReplication replications
   BinaryBit.putBool False
 
-getReplication :: ClassPropertyMap -> BinaryBit.BitGet (Maybe Replication)
-getReplication classPropertyMap = do
+getReplication :: ClassAttributeMap -> BinaryBit.BitGet (Maybe Replication)
+getReplication classAttributeMap = do
   hasReplication <- BinaryBit.getBool
   if not hasReplication
     then pure Nothing
     else do
       actorId <- getCompressedWord maxActorId
-      value <- getReplicationValue classPropertyMap actorId
+      value <- getReplicationValue classAttributeMap actorId
       pure
         (Just
            Replication {replicationActorId = actorId, replicationValue = value})

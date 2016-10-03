@@ -6,8 +6,8 @@ import Rattletrap.Attribute as Export
 import Rattletrap.AttributeMapping as Export
 import Rattletrap.AttributeValue as Export
 import Rattletrap.Cache as Export
+import Rattletrap.ClassAttributeMap as Export
 import Rattletrap.ClassMapping as Export
-import Rattletrap.ClassPropertyMap as Export
 import Rattletrap.CompressedWord as Export
 import Rattletrap.Content as Export
 import Rattletrap.Data as Export

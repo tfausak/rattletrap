@@ -1,4 +1,4 @@
-module Rattletrap.ClassPropertyMap where
+module Rattletrap.ClassAttributeMap where
 
 import Rattletrap.Cache
 import Rattletrap.ClassMapping
@@ -13,24 +13,24 @@ import qualified Data.Bimap as Bimap
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 
-data ClassPropertyMap = ClassPropertyMap
-  { classPropertyMapObjectMap :: Bimap.Bimap Word32 Text
+data ClassAttributeMap = ClassAttributeMap
+  { classAttributeMapObjectMap :: Bimap.Bimap Word32 Text
   } deriving (Eq, Show)
 
-makeClassPropertyMap :: List Text
-                     -> List ClassMapping
-                     -> List Cache
-                     -> ClassPropertyMap
-makeClassPropertyMap objects _classMappings _caches =
-  ClassPropertyMap {classPropertyMapObjectMap = makeObjectMap objects}
+makeClassAttributeMap :: List Text
+                      -> List ClassMapping
+                      -> List Cache
+                      -> ClassAttributeMap
+makeClassAttributeMap objects _classMappings _caches =
+  ClassAttributeMap {classAttributeMapObjectMap = makeObjectMap objects}
 
 makeObjectMap :: List Text -> Bimap.Bimap Word32 Text
 makeObjectMap objects =
   Bimap.fromList (zip (map Word32 [0 ..]) (listValue objects))
 
-getObjectName :: ClassPropertyMap -> Word32 -> Maybe Text
-getObjectName classPropertyMap objectId =
-  Bimap.lookup objectId (classPropertyMapObjectMap classPropertyMap)
+getObjectName :: ClassAttributeMap -> Word32 -> Maybe Text
+getObjectName classAttributeMap objectId =
+  Bimap.lookup objectId (classAttributeMapObjectMap classAttributeMap)
 
 getClassName :: Text -> Maybe Text
 getClassName rawObjectName =
@@ -62,9 +62,12 @@ classHasRotation className = Set.member className classesWithRotation
 classesWithRotation :: Set.Set Text
 classesWithRotation = Set.fromList (map stringToText rawClassesWithRotation)
 
-getAttributeIdLimit :: ClassPropertyMap -> CompressedWord -> Word
-getAttributeIdLimit _classPropertyMap _actorId = error "getAttributeIdLimit"
+getAttributeIdLimit :: ClassAttributeMap -> CompressedWord -> Word
+getAttributeIdLimit _classAttributeMap _actorId = error "getAttributeIdLimit"
 
-getAttributeName :: ClassPropertyMap -> CompressedWord -> CompressedWord -> Text
-getAttributeName _classPropertyMap _actorId _attributeId =
+getAttributeName :: ClassAttributeMap
+                 -> CompressedWord
+                 -> CompressedWord
+                 -> Text
+getAttributeName _classAttributeMap _actorId _attributeId =
   error "getAttributeName"

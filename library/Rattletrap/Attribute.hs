@@ -1,7 +1,7 @@
 module Rattletrap.Attribute where
 
 import Rattletrap.AttributeValue
-import Rattletrap.ClassPropertyMap
+import Rattletrap.ClassAttributeMap
 import Rattletrap.CompressedWord
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -12,16 +12,16 @@ data Attribute = Attribute
   , attributeValue :: AttributeValue
   } deriving (Eq, Ord, Show)
 
-getAttributes :: ClassPropertyMap
+getAttributes :: ClassAttributeMap
               -> CompressedWord
               -> BinaryBit.BitGet [Attribute]
-getAttributes classPropertyMap actorId = do
+getAttributes classAttributeMap actorId = do
   hasAttribute <- BinaryBit.getBool
   if not hasAttribute
     then pure []
     else do
-      attribute <- getAttribute classPropertyMap actorId
-      attributes <- getAttributes classPropertyMap actorId
+      attribute <- getAttribute classAttributeMap actorId
+      attributes <- getAttributes classAttributeMap actorId
       pure (attribute : attributes)
 
 putAttributes :: [Attribute] -> BinaryBit.BitPut ()
@@ -29,11 +29,11 @@ putAttributes attributes = do
   mapM_ putAttribute attributes
   BinaryBit.putBool False
 
-getAttribute :: ClassPropertyMap -> CompressedWord -> BinaryBit.BitGet Attribute
-getAttribute classPropertyMap actorId = do
-  let limit = getAttributeIdLimit classPropertyMap actorId
+getAttribute :: ClassAttributeMap -> CompressedWord -> BinaryBit.BitGet Attribute
+getAttribute classAttributeMap actorId = do
+  let limit = getAttributeIdLimit classAttributeMap actorId
   id_ <- getCompressedWord limit
-  let name = getAttributeName classPropertyMap actorId id_
+  let name = getAttributeName classAttributeMap actorId id_
   value <- getAttributeValue name
   pure Attribute {attributeId = id_, attributeValue = value}
 
