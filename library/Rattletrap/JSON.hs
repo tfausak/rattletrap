@@ -5,6 +5,7 @@
 module Rattletrap.JSON where
 
 import Rattletrap.Attribute
+import Rattletrap.AttributeMapping
 import Rattletrap.AttributeValue
 import Rattletrap.Cache
 import Rattletrap.ClassMapping
@@ -23,7 +24,6 @@ import Rattletrap.Location
 import Rattletrap.Mark
 import Rattletrap.Message
 import Rattletrap.Property
-import Rattletrap.PropertyMapping
 import Rattletrap.PropertyValue
 import Rattletrap.Replay
 import Rattletrap.Replication
@@ -155,11 +155,11 @@ instance Aeson.FromJSON Property
 
 instance Aeson.ToJSON Property
 
-deriving instance Generics.Generic PropertyMapping
+deriving instance Generics.Generic AttributeMapping
 
-instance Aeson.FromJSON PropertyMapping
+instance Aeson.FromJSON AttributeMapping
 
-instance Aeson.ToJSON PropertyMapping
+instance Aeson.ToJSON AttributeMapping
 
 deriving instance Generics.Generic (PropertyValue a)
 
