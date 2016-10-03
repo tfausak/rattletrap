@@ -26,7 +26,7 @@ getPropertyValue :: Binary.Get a
                  -> Text
                  -> Word64
                  -> Binary.Get (PropertyValue a)
-getPropertyValue getProperty kind _size =
+getPropertyValue getProperty kind _ =
   case textToString kind of
     "ArrayProperty" -> do
       list <- getList (getDictionary getProperty)

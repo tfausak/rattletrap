@@ -29,13 +29,19 @@ putAttributes attributes = do
   mapM_ putAttribute attributes
   BinaryBit.putBool False
 
-getAttribute :: ClassAttributeMap -> CompressedWord -> BinaryBit.BitGet Attribute
-getAttribute classAttributeMap actorId = do
-  let limit = getAttributeIdLimit classAttributeMap actorId
-  id_ <- getCompressedWord limit
-  let name = getAttributeName classAttributeMap actorId id_
-  value <- getAttributeValue name
-  pure Attribute {attributeId = id_, attributeValue = value}
+getAttribute :: ClassAttributeMap
+             -> CompressedWord
+             -> BinaryBit.BitGet Attribute
+getAttribute classAttributeMap actorId =
+  case getAttributeIdLimit classAttributeMap actorId of
+    Nothing -> fail ("could not get attribute ID limit for " ++ show actorId)
+    Just limit -> do
+      id_ <- getCompressedWord limit
+      case getAttributeName classAttributeMap actorId id_ of
+        Nothing -> fail ("could not get attribute name for " ++ show id_)
+        Just name -> do
+          value <- getAttributeValue name
+          pure Attribute {attributeId = id_, attributeValue = value}
 
 putAttribute :: Attribute -> BinaryBit.BitPut ()
 putAttribute attribute = do

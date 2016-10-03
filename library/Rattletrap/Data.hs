@@ -1,5 +1,8 @@
 module Rattletrap.Data where
 
+rawParentClasses :: [(String, String)]
+rawParentClasses = [] -- TODO
+
 rawClassesWithLocation :: [String]
 rawClassesWithLocation =
   [ "TAGame.Ball_TA"
