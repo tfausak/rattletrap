@@ -1,5 +1,6 @@
 module Rattletrap.Frame where
 
+import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.Float32
 import Rattletrap.Replication
@@ -13,20 +14,24 @@ data Frame = Frame
   , frameReplications :: [Replication]
   } deriving (Eq, Ord, Show)
 
-getFrames :: ClassAttributeMap -> BinaryBit.BitGet [Frame]
-getFrames classAttributeMap = do
-  maybeFrame <- getFrame classAttributeMap
+getFrames :: ClassAttributeMap
+          -> ActorMap
+          -> BinaryBit.BitGet ([Frame], ActorMap)
+getFrames classAttributeMap actorMap = do
+  maybeFrame <- getFrame classAttributeMap actorMap
   case maybeFrame of
-    Nothing -> pure []
-    Just frame -> do
-      frames <- getFrames classAttributeMap
-      pure (frame : frames)
+    Nothing -> pure ([], actorMap)
+    Just (frame, newActorMap) -> do
+      (frames, newerActorMap) <- getFrames classAttributeMap newActorMap
+      pure (frame : frames, newerActorMap)
 
 putFrames :: [Frame] -> BinaryBit.BitPut ()
 putFrames = mapM_ putFrame
 
-getFrame :: ClassAttributeMap -> BinaryBit.BitGet (Maybe Frame)
-getFrame classAttributeMap = do
+getFrame :: ClassAttributeMap
+         -> ActorMap
+         -> BinaryBit.BitGet (Maybe (Frame, ActorMap))
+getFrame classAttributeMap actorMap = do
   isEmpty <- BinaryBit.isEmpty
   if isEmpty
     then pure Nothing
@@ -36,14 +41,16 @@ getFrame classAttributeMap = do
       if time == Float32 0 && delta == Float32 0
         then pure Nothing
         else do
-          replications <- getReplications classAttributeMap
+          (replications, newActorMap) <-
+            getReplications classAttributeMap actorMap
           pure
             (Just
-               Frame
-               { frameTime = time
-               , frameDelta = delta
-               , frameReplications = replications
-               })
+               ( Frame
+                 { frameTime = time
+                 , frameDelta = delta
+                 , frameReplications = replications
+                 }
+               , newActorMap))
 
 putFrame :: Frame -> BinaryBit.BitPut ()
 putFrame frame = do

@@ -1,5 +1,6 @@
 module Rattletrap.ReplicationValue where
 
+import Rattletrap.ActorMap
 import Rattletrap.Attribute
 import Rattletrap.ClassAttributeMap
 import Rattletrap.CompressedWord
@@ -17,10 +18,12 @@ data ReplicationValue
   | DestroyedReplication
   deriving (Eq, Ord, Show)
 
-getReplicationValue :: ClassAttributeMap
-                    -> CompressedWord
-                    -> BinaryBit.BitGet ReplicationValue
-getReplicationValue classAttributeMap actorId = do
+getReplicationValue
+  :: ClassAttributeMap
+  -> ActorMap
+  -> CompressedWord
+  -> BinaryBit.BitGet (ReplicationValue, ActorMap)
+getReplicationValue classAttributeMap actorMap actorId = do
   isOpen <- BinaryBit.getBool
   if isOpen
     then do
@@ -29,6 +32,7 @@ getReplicationValue classAttributeMap actorId = do
         then do
           unknown <- BinaryBit.getBool
           objectId <- getWord32Bits
+          let newActorMap = updateActorMap actorId objectId actorMap
           case getObjectName classAttributeMap objectId of
             Nothing ->
               fail ("could not get object name for id " ++ show objectId)
@@ -41,11 +45,13 @@ getReplicationValue classAttributeMap actorId = do
                   let hasLocation = classHasLocation className
                   let hasRotation = classHasRotation className
                   initialization <- getInitialization hasLocation hasRotation
-                  pure (SpawnedReplication unknown objectId initialization)
+                  pure
+                    ( SpawnedReplication unknown objectId initialization
+                    , newActorMap)
         else do
-          attributes <- getAttributes classAttributeMap actorId
-          pure (UpdatedReplication attributes)
-    else pure DestroyedReplication
+          attributes <- getAttributes classAttributeMap actorMap actorId
+          pure (UpdatedReplication attributes, actorMap)
+    else pure (DestroyedReplication, actorMap)
 
 putReplicationValue :: ReplicationValue -> BinaryBit.BitPut ()
 putReplicationValue value =

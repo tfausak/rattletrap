@@ -1,5 +1,6 @@
 module Rattletrap.ClassAttributeMap where
 
+import Rattletrap.ActorMap
 import Rattletrap.AttributeMapping
 import Rattletrap.Cache
 import Rattletrap.ClassMapping
@@ -180,8 +181,11 @@ classHasRotation className = Set.member className classesWithRotation
 classesWithRotation :: Set.Set Text
 classesWithRotation = Set.fromList (map stringToText rawClassesWithRotation)
 
-getAttributeIdLimit :: ClassAttributeMap -> CompressedWord -> Maybe Word
-getAttributeIdLimit _classAttributeMap _actorId = Nothing -- TODO
+getAttributeIdLimit :: ClassAttributeMap
+                    -> ActorMap
+                    -> CompressedWord
+                    -> Maybe Word
+getAttributeIdLimit _classAttributeMap _actorMap _actorId = Nothing -- TODO
 
 getAttributeName :: ClassAttributeMap
                  -> CompressedWord

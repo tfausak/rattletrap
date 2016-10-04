@@ -2,6 +2,7 @@ module Rattletrap
   ( module Export
   ) where
 
+import Rattletrap.ActorMap as Export
 import Rattletrap.Attribute as Export
 import Rattletrap.AttributeMapping as Export
 import Rattletrap.AttributeValue as Export

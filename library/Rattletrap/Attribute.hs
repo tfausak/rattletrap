@@ -1,5 +1,6 @@
 module Rattletrap.Attribute where
 
+import Rattletrap.ActorMap
 import Rattletrap.AttributeValue
 import Rattletrap.ClassAttributeMap
 import Rattletrap.CompressedWord
@@ -13,15 +14,16 @@ data Attribute = Attribute
   } deriving (Eq, Ord, Show)
 
 getAttributes :: ClassAttributeMap
+              -> ActorMap
               -> CompressedWord
               -> BinaryBit.BitGet [Attribute]
-getAttributes classAttributeMap actorId = do
+getAttributes classAttributeMap actorMap actorId = do
   hasAttribute <- BinaryBit.getBool
   if not hasAttribute
     then pure []
     else do
-      attribute <- getAttribute classAttributeMap actorId
-      attributes <- getAttributes classAttributeMap actorId
+      attribute <- getAttribute classAttributeMap actorMap actorId
+      attributes <- getAttributes classAttributeMap actorMap actorId
       pure (attribute : attributes)
 
 putAttributes :: [Attribute] -> BinaryBit.BitPut ()
@@ -30,10 +32,11 @@ putAttributes attributes = do
   BinaryBit.putBool False
 
 getAttribute :: ClassAttributeMap
+             -> ActorMap
              -> CompressedWord
              -> BinaryBit.BitGet Attribute
-getAttribute classAttributeMap actorId =
-  case getAttributeIdLimit classAttributeMap actorId of
+getAttribute classAttributeMap actorMap actorId =
+  case getAttributeIdLimit classAttributeMap actorMap actorId of
     Nothing -> fail ("could not get attribute ID limit for " ++ show actorId)
     Just limit -> do
       id_ <- getCompressedWord limit

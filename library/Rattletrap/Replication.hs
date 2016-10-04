@@ -1,5 +1,6 @@
 module Rattletrap.Replication where
 
+import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.CompressedWord
 import Rattletrap.ReplicationValue
@@ -12,31 +13,40 @@ data Replication = Replication
   , replicationValue :: ReplicationValue
   } deriving (Eq, Ord, Show)
 
-getReplications :: ClassAttributeMap -> BinaryBit.BitGet [Replication]
-getReplications classAttributeMap = do
-  maybeReplication <- getReplication classAttributeMap
+getReplications :: ClassAttributeMap
+                -> ActorMap
+                -> BinaryBit.BitGet ([Replication], ActorMap)
+getReplications classAttributeMap actorMap = do
+  maybeReplication <- getReplication classAttributeMap actorMap
   case maybeReplication of
-    Nothing -> pure []
-    Just replication -> do
-      replications <- getReplications classAttributeMap
-      pure (replication : replications)
+    Nothing -> pure ([], actorMap)
+    Just (replication, newActorMap) -> do
+      (replications, newerActorMap) <-
+        getReplications classAttributeMap newActorMap
+      pure (replication : replications, newerActorMap)
 
 putReplications :: [Replication] -> BinaryBit.BitPut ()
 putReplications replications = do
   mapM_ putReplication replications
   BinaryBit.putBool False
 
-getReplication :: ClassAttributeMap -> BinaryBit.BitGet (Maybe Replication)
-getReplication classAttributeMap = do
+getReplication
+  :: ClassAttributeMap
+  -> ActorMap
+  -> BinaryBit.BitGet (Maybe (Replication, ActorMap))
+getReplication classAttributeMap actorMap = do
   hasReplication <- BinaryBit.getBool
   if not hasReplication
     then pure Nothing
     else do
       actorId <- getCompressedWord maxActorId
-      value <- getReplicationValue classAttributeMap actorId
+      (value, newActorMap) <-
+        getReplicationValue classAttributeMap actorMap actorId
       pure
         (Just
-           Replication {replicationActorId = actorId, replicationValue = value})
+           ( Replication
+             {replicationActorId = actorId, replicationValue = value}
+           , newActorMap))
 
 putReplication :: Replication -> BinaryBit.BitPut ()
 putReplication replication = do

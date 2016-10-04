@@ -1,5 +1,6 @@
 module Rattletrap.Content where
 
+import Rattletrap.ActorMap
 import Rattletrap.Cache
 import Rattletrap.ClassAttributeMap
 import Rattletrap.ClassMapping
@@ -46,9 +47,9 @@ getContent = do
   classMappings <- getList getClassMapping
   caches <- getList getCache
   let classAttributeMap = makeClassAttributeMap objects classMappings caches
-  let frames =
+  let (frames, _) =
         Binary.runGet
-          (BinaryBit.runBitGet (getFrames classAttributeMap))
+          (BinaryBit.runBitGet (getFrames classAttributeMap makeActorMap))
           (reverseBytes stream)
   pure
     Content
