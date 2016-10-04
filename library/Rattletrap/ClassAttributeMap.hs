@@ -211,7 +211,18 @@ getAttributeIdLimit :: ClassAttributeMap
                     -> ActorMap
                     -> CompressedWord
                     -> Maybe Word
-getAttributeIdLimit _classAttributeMap _actorMap _actorId = Nothing -- TODO
+getAttributeIdLimit classAttributeMap actorMap actorId = do
+  objectId <- Bimap.lookup actorId actorMap
+  objectName <- getObjectName classAttributeMap objectId
+  className <- getClassName objectName
+  let classMap = classAttributeMapClassMap classAttributeMap
+  classId <- Bimap.lookupR className classMap
+  let value = classAttributeMapValue classAttributeMap
+  attributeMap <- Map.lookup classId value
+  let streamIds = Bimap.keys attributeMap
+  let maxStreamId = maximum (Word32 0 : streamIds)
+  let limit = fromIntegral (word32Value maxStreamId)
+  pure limit
 
 getAttributeName :: ClassAttributeMap
                  -> CompressedWord
