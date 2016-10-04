@@ -113,7 +113,9 @@ makeShallowParentMap classMappings caches =
 makeParentMap :: List ClassMapping -> List Cache -> Map.Map Word32 [Word32]
 makeParentMap classMappings caches =
   let shallowParentMap = makeShallowParentMap classMappings caches
-  in Map.map (getParentClasses shallowParentMap) shallowParentMap
+  in Map.mapWithKey
+       (\classId _ -> getParentClasses shallowParentMap classId)
+       shallowParentMap
 
 getParentClasses :: Map.Map Word32 Word32 -> Word32 -> [Word32]
 getParentClasses shallowParentMap classId =
