@@ -219,10 +219,16 @@ getAttributeIdLimit classAttributeMap actorMap actorId = do
   pure limit
 
 getAttributeName :: ClassAttributeMap
+                 -> ActorMap
                  -> CompressedWord
                  -> CompressedWord
                  -> Maybe Text
-getAttributeName _classAttributeMap _actorId _attributeId = Nothing -- TODO
+getAttributeName classAttributeMap actorMap actorId streamId = do
+  attributeMap <- getAttributeMap classAttributeMap actorMap actorId
+  let key = Word32 (fromIntegral (compressedWordValue streamId))
+  attributeId <- Bimap.lookup key attributeMap
+  let objectMap = classAttributeMapObjectMap classAttributeMap
+  Bimap.lookup attributeId objectMap
 
 getAttributeMap
   :: ClassAttributeMap
