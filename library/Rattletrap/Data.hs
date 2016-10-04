@@ -1,7 +1,64 @@
 module Rattletrap.Data where
 
 rawParentClasses :: [(String, String)]
-rawParentClasses = [] -- TODO
+rawParentClasses =
+  [ ("Engine.Actor", "Core.Object")
+  , ("Engine.GameReplicationInfo", "Engine.ReplicationInfo")
+  , ("Engine.Info", "Engine.Actor")
+  , ("Engine.Pawn", "Engine.Actor")
+  , ("Engine.PlayerReplicationInfo", "Engine.ReplicationInfo")
+  , ("Engine.ReplicationInfo", "Engine.Info")
+  , ("Engine.TeamInfo", "Engine.ReplicationInfo")
+  , ("ProjectX.GRI_X", "Engine.GameReplicationInfo")
+  , ("ProjectX.Pawn_X", "Engine.Pawn")
+  , ("ProjectX.PRI_X", "Engine.PlayerReplicationInfo")
+  , ("TAGame.Ball_TA", "TAGame.RBActor_TA")
+  , ("TAGame.CameraSettingsActor_TA", "Engine.ReplicationInfo")
+  , ("TAGame.Car_Season_TA", "TAGame.PRI_TA")
+  , ("TAGame.Car_TA", "TAGame.Vehicle_TA")
+  , ("TAGame.CarComponent_Boost_TA", "TAGame.CarComponent_TA")
+  , ("TAGame.CarComponent_Dodge_TA", "TAGame.CarComponent_TA")
+  , ("TAGame.CarComponent_DoubleJump_TA", "TAGame.CarComponent_TA")
+  , ("TAGame.CarComponent_FlipCar_TA", "TAGame.CarComponent_TA")
+  , ("TAGame.CarComponent_Jump_TA", "TAGame.CarComponent_TA")
+  , ("TAGame.CarComponent_TA", "Engine.ReplicationInfo")
+  , ("TAGame.CrowdActor_TA", "Engine.ReplicationInfo")
+  , ("TAGame.CrowdManager_TA", "Engine.ReplicationInfo")
+  , ("TAGame.GameEvent_Season_TA", "TAGame.GameEvent_Soccar_TA")
+  , ("TAGame.GameEvent_Soccar_TA", "TAGame.GameEvent_Team_TA")
+  , ("TAGame.GameEvent_SoccarPrivate_TA", "TAGame.GameEvent_Soccar_TA")
+  , ( "TAGame.GameEvent_SoccarSplitscreen_TA"
+    , "TAGame.GameEvent_SoccarPrivate_TA")
+  , ("TAGame.GameEvent_TA", "Engine.ReplicationInfo")
+  , ("TAGame.GameEvent_Team_TA", "TAGame.GameEvent_TA")
+  , ("TAGame.GRI_TA", "ProjectX.GRI_X")
+  , ("TAGame.InMapScoreboard_TA", "Engine.Actor")
+  , ("TAGame.PRI_TA", "ProjectX.PRI_X")
+  , ("TAGame.RBActor_TA", "ProjectX.Pawn_X")
+  , ("TAGame.SpecialPickup_BallCarSpring_TA", "TAGame.SpecialPickup_Spring_TA")
+  , ("TAGame.SpecialPickup_BallFreeze_TA", "TAGame.SpecialPickup_Targeted_TA")
+  , ("TAGame.SpecialPickup_BallGravity_TA", "TAGame.SpecialPickup_TA")
+  , ( "TAGame.SpecialPickup_BallLasso_TA"
+    , "TAGame.SpecialPickup_GrapplingHook_TA")
+  , ("TAGame.SpecialPickup_BallVelcro_TA", "TAGame.SpecialPickup_TA")
+  , ("TAGame.SpecialPickup_Batarang_TA", "TAGame.SpecialPickup_BallLasso_TA")
+  , ( "TAGame.SpecialPickup_BoostOverride_TA"
+    , "TAGame.SpecialPickup_Targeted_TA")
+  , ( "TAGame.SpecialPickup_GrapplingHook_TA"
+    , "TAGame.SpecialPickup_Targeted_TA")
+  , ("TAGame.SpecialPickup_HitForce_TA", "TAGame.SpecialPickup_TA")
+  , ("TAGame.SpecialPickup_Spring_TA", "TAGame.SpecialPickup_Targeted_TA")
+  , ("TAGame.SpecialPickup_Swapper_TA", "TAGame.SpecialPickup_Targeted_TA")
+  , ("TAGame.SpecialPickup_TA", "TAGame.CarComponent_TA")
+  , ("TAGame.SpecialPickup_Targeted_TA", "TAGame.SpecialPickup_TA")
+  , ("TAGame.SpecialPickup_Tornado_TA", "TAGame.SpecialPickup_TA")
+  , ("TAGame.Team_Soccar_TA", "TAGame.Team_TA")
+  , ("TAGame.Team_TA", "Engine.TeamInfo")
+  , ("TAGame.Vehicle_TA", "TAGame.RBActor_TA")
+  , ("TAGame.VehiclePickup_Boost_TA", "TAGame.VehiclePickup_TA")
+  , ("TAGame.VehiclePickup_TA", "Engine.ReplicationInfo")
+  , ("TAGame.VoteActor_TA", "Engine.ReplicationInfo")
+  ]
 
 rawClassesWithLocation :: [String]
 rawClassesWithLocation =
