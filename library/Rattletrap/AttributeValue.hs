@@ -1,5 +1,7 @@
 module Rattletrap.AttributeValue where
 
+import Rattletrap.Location
+import Rattletrap.Rotation
 import Rattletrap.Text
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -27,7 +29,11 @@ data AttributeValue
   | QWordAttribute
   | RelativeRotationAttribute
   | ReservationAttribute
-  | RigidBodyStateAttribute
+  | RigidBodyStateAttribute Bool
+                            Location
+                            Rotation
+                            (Maybe Location)
+                            (Maybe Location)
   | StringAttribute
   | TeamPaintAttribute
   | UniqueIdAttribute
@@ -38,6 +44,7 @@ getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
   case textToString name of
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
+    "TAGame.RBActor_TA:ReplicatedRBState" -> getRigidBodyStateAttribute
     _ -> fail ("don't know how to get attribute value " ++ show name)
 
 getBooleanAttribute :: BinaryBit.BitGet AttributeValue
@@ -45,8 +52,43 @@ getBooleanAttribute = do
   x <- BinaryBit.getBool
   pure (BooleanAttribute x)
 
+getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
+getRigidBodyStateAttribute = do
+  isSleeping <- BinaryBit.getBool
+  location <- getLocation
+  rotation <- getRotation
+  linearVelocity <-
+    if isSleeping
+      then pure Nothing
+      else do
+        linearVelocity <- getLocation
+        pure (Just linearVelocity)
+  angularVelocity <-
+    if isSleeping
+      then pure Nothing
+      else do
+        angularVelocity <- getLocation
+        pure (Just angularVelocity)
+  pure
+    (RigidBodyStateAttribute
+       isSleeping
+       location
+       rotation
+       linearVelocity
+       angularVelocity)
+
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
   case value of
     BooleanAttribute x -> BinaryBit.putBool x
+    RigidBodyStateAttribute isSleeping location rotation maybeLinearVelocity maybeAngularVelocity -> do
+      BinaryBit.putBool isSleeping
+      putLocation location
+      putRotation rotation
+      case maybeLinearVelocity of
+        Nothing -> pure ()
+        Just linearVelocity -> putLocation linearVelocity
+      case maybeAngularVelocity of
+        Nothing -> pure ()
+        Just angularVelocity -> putLocation angularVelocity
     _ -> fail ("don't know how to put attribute value " ++ show value)
