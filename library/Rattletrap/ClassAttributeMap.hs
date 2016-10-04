@@ -20,19 +20,45 @@ import qualified Data.Set as Set
 data ClassAttributeMap = ClassAttributeMap
   { classAttributeMapObjectMap :: Bimap.Bimap Word32 Text
   , classAttributeMapClassMap :: Bimap.Bimap Word32 Text
-  , classAttributeMapValue :: Map.Map Word32 (Bimap.Bimap Word32 Text)
+  , classAttributeMapValue :: Map.Map Word32 (Bimap.Bimap Word32 Word32)
   } deriving (Eq, Show)
 
 makeClassAttributeMap :: List Text
                       -> List ClassMapping
                       -> List Cache
                       -> ClassAttributeMap
-makeClassAttributeMap objects classMappings _ =
-  ClassAttributeMap
-  { classAttributeMapObjectMap = makeObjectMap objects
-  , classAttributeMapClassMap = makeClassMap classMappings
-  , classAttributeMapValue = error "CAM value"
-  }
+makeClassAttributeMap objects classMappings caches =
+  let objectMap = makeObjectMap objects
+      classCache = makeClassCache classMappings caches
+      attributeMap = makeAttributeMap caches
+      classIds = map (\(_, classId, _, _) -> classId) classCache
+      parentMap = makeParentMap classMappings caches
+      value =
+        Map.fromList
+          (map
+             (\classId ->
+                let ownAttributes =
+                      Maybe.fromMaybe
+                        Bimap.empty
+                        (Map.lookup classId attributeMap)
+                    parentsAttributes =
+                      case Map.lookup classId parentMap of
+                        Nothing -> []
+                        Just parentClassIds ->
+                          map
+                            (\parentClassId ->
+                               Maybe.fromMaybe
+                                 Bimap.empty
+                                 (Map.lookup parentClassId attributeMap))
+                            parentClassIds
+                    attributes = ownAttributes : parentsAttributes
+                in (classId, Bimap.fromList (concatMap Bimap.toList attributes)))
+             classIds)
+  in ClassAttributeMap
+     { classAttributeMapObjectMap = objectMap
+     , classAttributeMapClassMap = makeClassMap classMappings
+     , classAttributeMapValue = value
+     }
 
 makeClassCache :: List ClassMapping
                -> List Cache
