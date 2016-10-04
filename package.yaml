@@ -3,7 +3,11 @@ description: Rattletrap parses Rocket League replays.
 executables:
   rattletrap:
     dependencies:
+    - aeson
+    - aeson-pretty
     - base
+    - binary
+    - bytestring
     - rattletrap
     ghc-options:
     - -rtsopts
@@ -14,8 +18,6 @@ executables:
 ghc-options: -Wall
 library:
   dependencies:
-  - aeson
-  - aeson-pretty
   - base
   - bimap
   - binary
