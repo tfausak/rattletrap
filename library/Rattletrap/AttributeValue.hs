@@ -4,13 +4,14 @@ import Rattletrap.Int32
 import Rattletrap.Location
 import Rattletrap.Spin
 import Rattletrap.Text
+import Rattletrap.Word8
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 
 data AttributeValue
   = BooleanAttribute Bool
-  | ByteAttribute
+  | ByteAttribute Word8
   | CamSettingsAttribute
   | DemolishAttribute
   | EnumAttribute
@@ -46,6 +47,7 @@ getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
   case textToString name of
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
+    "Engine.PlayerReplicationInfo:Ping" -> getByteAttribute
     "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.RBActor_TA:ReplicatedRBState" -> getRigidBodyStateAttribute
     _ -> fail ("don't know how to get attribute value " ++ show name)
@@ -54,6 +56,11 @@ getBooleanAttribute :: BinaryBit.BitGet AttributeValue
 getBooleanAttribute = do
   x <- BinaryBit.getBool
   pure (BooleanAttribute x)
+
+getByteAttribute :: BinaryBit.BitGet AttributeValue
+getByteAttribute = do
+  byte <- getWord8Bits
+  pure (ByteAttribute byte)
 
 getFlaggedIntAttribute :: BinaryBit.BitGet AttributeValue
 getFlaggedIntAttribute = do
@@ -90,6 +97,7 @@ putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
   case value of
     BooleanAttribute x -> BinaryBit.putBool x
+    ByteAttribute byte -> putWord8Bits byte
     FlaggedIntAttribute flag int -> do
       BinaryBit.putBool flag
       putInt32Bits int
