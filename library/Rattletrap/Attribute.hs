@@ -48,5 +48,6 @@ getAttribute classAttributeMap actorMap actorId =
 
 putAttribute :: Attribute -> BinaryBit.BitPut ()
 putAttribute attribute = do
+  BinaryBit.putBool True
   putCompressedWord (attributeId attribute)
   putAttributeValue (attributeValue attribute)
