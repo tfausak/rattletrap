@@ -1,7 +1,7 @@
 module Rattletrap.AttributeValue where
 
 import Rattletrap.Location
-import Rattletrap.Rotation
+import Rattletrap.Spin
 import Rattletrap.Text
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -31,7 +31,7 @@ data AttributeValue
   | ReservationAttribute
   | RigidBodyStateAttribute Bool
                             Location
-                            Rotation
+                            Spin
                             (Maybe Location)
                             (Maybe Location)
   | StringAttribute
@@ -56,7 +56,7 @@ getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
 getRigidBodyStateAttribute = do
   isSleeping <- BinaryBit.getBool
   location <- getLocation
-  rotation <- getRotation
+  spin <- getSpin
   linearVelocity <-
     if isSleeping
       then pure Nothing
@@ -73,7 +73,7 @@ getRigidBodyStateAttribute = do
     (RigidBodyStateAttribute
        isSleeping
        location
-       rotation
+       spin
        linearVelocity
        angularVelocity)
 
@@ -81,10 +81,10 @@ putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
   case value of
     BooleanAttribute x -> BinaryBit.putBool x
-    RigidBodyStateAttribute isSleeping location rotation maybeLinearVelocity maybeAngularVelocity -> do
+    RigidBodyStateAttribute isSleeping location spin maybeLinearVelocity maybeAngularVelocity -> do
       BinaryBit.putBool isSleeping
       putLocation location
-      putRotation rotation
+      putSpin spin
       case maybeLinearVelocity of
         Nothing -> pure ()
         Just linearVelocity -> putLocation linearVelocity

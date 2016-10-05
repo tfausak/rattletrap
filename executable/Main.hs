@@ -69,6 +69,7 @@ $(Monad.foldM
     , ''Replication
     , ''ReplicationValue
     , ''Rotation
+    , ''Spin
     , ''Text
     , ''Word32
     , ''Word64
