@@ -5,6 +5,7 @@ import Rattletrap.Location
 import Rattletrap.RemoteId
 import Rattletrap.Spin
 import Rattletrap.Text
+import Rattletrap.Word32
 import Rattletrap.Word8
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -22,7 +23,15 @@ data AttributeValue
   | FloatAttribute
   | GameModeAttribute
   | IntAttribute Int32
-  | LoadoutAttribute
+  | LoadoutAttribute Word8
+                     Word32
+                     Word32
+                     Word32
+                     Word32
+                     Word32
+                     Word32
+                     Word32
+                     (Maybe Word32)
   | LoadoutOnlineAttribute
   | LoadoutsAttribute
   | LoadoutsOnlineAttribute
@@ -50,14 +59,24 @@ getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
   case textToString name of
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
+    "Engine.GameReplicationInfo:GameClass" -> getFlaggedIntAttribute
+    "Engine.GameReplicationInfo:ServerName" -> getStringAttribute
     "Engine.PlayerReplicationInfo:bReadyToPlay" -> getBooleanAttribute
     "Engine.PlayerReplicationInfo:Ping" -> getByteAttribute
     "Engine.PlayerReplicationInfo:PlayerID" -> getIntAttribute
     "Engine.PlayerReplicationInfo:PlayerName" -> getStringAttribute
     "Engine.PlayerReplicationInfo:Team" -> getFlaggedIntAttribute
     "Engine.PlayerReplicationInfo:UniqueId" -> getUniqueIdAttribute
+    "ProjectX.GRI_X:bGameStarted" -> getBooleanAttribute
     "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
+    "TAGame.PRI_TA:bOnlineLoadoutSet" -> getBooleanAttribute
+    "TAGame.PRI_TA:ClientLoadout" -> getLoadoutAttribute
+    "TAGame.PRI_TA:PersistentCamera" -> getFlaggedIntAttribute
+    "TAGame.PRI_TA:ReplicatedGameEvent" -> getFlaggedIntAttribute
+    "TAGame.PRI_TA:Title" -> getIntAttribute
+    "TAGame.PRI_TA:TotalXP" -> getIntAttribute
     "TAGame.RBActor_TA:ReplicatedRBState" -> getRigidBodyStateAttribute
+    "TAGame.Team_TA:GameEvent" -> getFlaggedIntAttribute
     _ -> fail ("don't know how to get attribute value " ++ show name)
 
 getBooleanAttribute :: BinaryBit.BitGet AttributeValue
@@ -80,6 +99,25 @@ getIntAttribute :: BinaryBit.BitGet AttributeValue
 getIntAttribute = do
   int <- getInt32Bits
   pure (IntAttribute int)
+
+getLoadoutAttribute :: BinaryBit.BitGet AttributeValue
+getLoadoutAttribute = do
+  version <- getWord8Bits
+  body <- getWord32Bits
+  decal <- getWord32Bits
+  wheels <- getWord32Bits
+  rocketTrail <- getWord32Bits
+  antenna <- getWord32Bits
+  topper <- getWord32Bits
+  g <- getWord32Bits
+  h <-
+    if version > Word8 10
+      then do
+        h <- getWord32Bits
+        pure (Just h)
+      else pure Nothing
+  pure
+    (LoadoutAttribute version body decal wheels rocketTrail antenna topper g h)
 
 getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
 getRigidBodyStateAttribute = do
@@ -127,6 +165,18 @@ putAttributeValue value =
       BinaryBit.putBool flag
       putInt32Bits int
     IntAttribute int -> putInt32Bits int
+    LoadoutAttribute version body decal wheels rocketTrail antenna topper g h -> do
+      putWord8Bits version
+      putWord32Bits body
+      putWord32Bits decal
+      putWord32Bits wheels
+      putWord32Bits rocketTrail
+      putWord32Bits antenna
+      putWord32Bits topper
+      putWord32Bits g
+      case h of
+        Nothing -> pure ()
+        Just x -> putWord32Bits x
     RigidBodyStateAttribute isSleeping location spin maybeLinearVelocity maybeAngularVelocity -> do
       BinaryBit.putBool isSleeping
       putLocation location
