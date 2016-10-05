@@ -21,7 +21,7 @@ data AttributeValue
                         Int32
   | FloatAttribute
   | GameModeAttribute
-  | IntAttribute
+  | IntAttribute Int32
   | LoadoutAttribute
   | LoadoutOnlineAttribute
   | LoadoutsAttribute
@@ -52,6 +52,7 @@ getAttributeValue name =
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
     "Engine.PlayerReplicationInfo:bReadyToPlay" -> getBooleanAttribute
     "Engine.PlayerReplicationInfo:Ping" -> getByteAttribute
+    "Engine.PlayerReplicationInfo:PlayerID" -> getIntAttribute
     "Engine.PlayerReplicationInfo:PlayerName" -> getStringAttribute
     "Engine.PlayerReplicationInfo:Team" -> getFlaggedIntAttribute
     "Engine.PlayerReplicationInfo:UniqueId" -> getUniqueIdAttribute
@@ -74,6 +75,11 @@ getFlaggedIntAttribute = do
   flag <- BinaryBit.getBool
   int <- getInt32Bits
   pure (FlaggedIntAttribute flag int)
+
+getIntAttribute :: BinaryBit.BitGet AttributeValue
+getIntAttribute = do
+  int <- getInt32Bits
+  pure (IntAttribute int)
 
 getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
 getRigidBodyStateAttribute = do
@@ -120,6 +126,7 @@ putAttributeValue value =
     FlaggedIntAttribute flag int -> do
       BinaryBit.putBool flag
       putInt32Bits int
+    IntAttribute int -> putInt32Bits int
     RigidBodyStateAttribute isSleeping location spin maybeLinearVelocity maybeAngularVelocity -> do
       BinaryBit.putBool isSleeping
       putLocation location
