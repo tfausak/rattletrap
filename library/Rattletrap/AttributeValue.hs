@@ -1,5 +1,6 @@
 module Rattletrap.AttributeValue where
 
+import Rattletrap.CompressedWord
 import Rattletrap.Int32
 import Rattletrap.Location
 import Rattletrap.RemoteId
@@ -42,7 +43,13 @@ data AttributeValue
   | PrivateMatchSettingsAttribute
   | QWordAttribute Word64
   | RelativeRotationAttribute
-  | ReservationAttribute
+  | ReservationAttribute CompressedWord
+                         Word8
+                         RemoteId
+                         Word8
+                         (Maybe Text)
+                         Bool
+                         Bool
   | RigidBodyStateAttribute Bool
                             Location
                             Spin
@@ -70,7 +77,11 @@ getAttributeValue name =
     "Engine.PlayerReplicationInfo:UniqueId" -> getUniqueIdAttribute
     "ProjectX.GRI_X:bGameStarted" -> getBooleanAttribute
     "ProjectX.GRI_X:GameServerID" -> getQWordAttribute
+    "ProjectX.GRI_X:ReplicatedGameMutatorIndex" -> getIntAttribute
+    "ProjectX.GRI_X:ReplicatedGamePlaylist" -> getIntAttribute
+    "ProjectX.GRI_X:Reservations" -> getReservationAttribute
     "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
+    "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera" -> getBooleanAttribute
     "TAGame.PRI_TA:bOnlineLoadoutSet" -> getBooleanAttribute
     "TAGame.PRI_TA:ClientLoadout" -> getLoadoutAttribute
     "TAGame.PRI_TA:PersistentCamera" -> getFlaggedIntAttribute
@@ -125,6 +136,22 @@ getQWordAttribute :: BinaryBit.BitGet AttributeValue
 getQWordAttribute = do
   word64 <- getWord64Bits
   pure (QWordAttribute word64)
+
+getReservationAttribute :: BinaryBit.BitGet AttributeValue
+getReservationAttribute = do
+  number <- getCompressedWord 7
+  systemId <- getWord8Bits
+  remoteId <- getRemoteId systemId
+  localId <- getWord8Bits
+  name <-
+    if systemId == Word8 0
+      then pure Nothing
+      else do
+        name <- getTextBits
+        pure (Just name)
+  a <- BinaryBit.getBool
+  b <- BinaryBit.getBool
+  pure (ReservationAttribute number systemId remoteId localId name a b)
 
 getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
 getRigidBodyStateAttribute = do
@@ -185,6 +212,16 @@ putAttributeValue value =
         Nothing -> pure ()
         Just x -> putWord32Bits x
     QWordAttribute word64 -> putWord64Bits word64
+    ReservationAttribute number systemId remoteId localId maybeName a b -> do
+      putCompressedWord number
+      putWord8Bits systemId
+      putRemoteId remoteId
+      putWord8Bits localId
+      case maybeName of
+        Nothing -> pure ()
+        Just name -> putTextBits name
+      BinaryBit.putBool a
+      BinaryBit.putBool b
     RigidBodyStateAttribute isSleeping location spin maybeLinearVelocity maybeAngularVelocity -> do
       BinaryBit.putBool isSleeping
       putLocation location
