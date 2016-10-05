@@ -62,7 +62,11 @@ data AttributeValue
                             (Maybe Location)
                             (Maybe Location)
   | StringAttribute Text
-  | TeamPaintAttribute
+  | TeamPaintAttribute Word8
+                       Word8
+                       Word8
+                       Word32
+                       Word32
   | UniqueIdAttribute Word8
                       RemoteId
                       Word8
@@ -91,6 +95,7 @@ getAttributeValue name =
     "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera" -> getBooleanAttribute
     "TAGame.CameraSettingsActor_TA:PRI" -> getFlaggedIntAttribute
     "TAGame.CameraSettingsActor_TA:ProfileSettings" -> getCamSettingsAttribute
+    "TAGame.Car_TA:TeamPaint" -> getTeamPaintAttribute
     "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount" -> getByteAttribute
     "TAGame.CarComponent_TA:Vehicle" -> getFlaggedIntAttribute
     "TAGame.GameEvent_Soccar_TA:SecondsRemaining" -> getIntAttribute
@@ -208,6 +213,16 @@ getStringAttribute = do
   text <- getTextBits
   pure (StringAttribute text)
 
+getTeamPaintAttribute :: BinaryBit.BitGet AttributeValue
+getTeamPaintAttribute = do
+  team <- getWord8Bits
+  primaryColor <- getWord8Bits
+  accentColor <- getWord8Bits
+  primaryFinish <- getWord32Bits
+  accentFinish <- getWord32Bits
+  pure
+    (TeamPaintAttribute team primaryColor accentColor primaryFinish accentFinish)
+
 getUniqueIdAttribute :: BinaryBit.BitGet AttributeValue
 getUniqueIdAttribute = do
   systemId <- getWord8Bits
@@ -265,6 +280,12 @@ putAttributeValue value =
         Nothing -> pure ()
         Just angularVelocity -> putLocation angularVelocity
     StringAttribute text -> putTextBits text
+    TeamPaintAttribute team primaryColor accentColor primaryFinish accentFinish -> do
+      putWord8Bits team
+      putWord8Bits primaryColor
+      putWord8Bits accentColor
+      putWord32Bits primaryFinish
+      putWord32Bits accentFinish
     UniqueIdAttribute systemId remoteId localId -> do
       putWord8Bits systemId
       putRemoteId remoteId
