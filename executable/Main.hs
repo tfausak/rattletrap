@@ -65,6 +65,7 @@ $(Monad.foldM
     , ''Message
     , ''Property
     , ''PropertyValue
+    , ''RemoteId
     , ''Replay
     , ''Replication
     , ''ReplicationValue

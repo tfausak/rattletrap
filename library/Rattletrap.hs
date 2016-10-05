@@ -26,6 +26,7 @@ import Rattletrap.Mark as Export
 import Rattletrap.Message as Export
 import Rattletrap.Property as Export
 import Rattletrap.PropertyValue as Export
+import Rattletrap.RemoteId as Export
 import Rattletrap.Replay as Export
 import Rattletrap.Replication as Export
 import Rattletrap.ReplicationValue as Export

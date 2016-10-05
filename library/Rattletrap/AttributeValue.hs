@@ -2,6 +2,7 @@ module Rattletrap.AttributeValue where
 
 import Rattletrap.Int32
 import Rattletrap.Location
+import Rattletrap.RemoteId
 import Rattletrap.Spin
 import Rattletrap.Text
 import Rattletrap.Word8
@@ -39,7 +40,9 @@ data AttributeValue
                             (Maybe Location)
   | StringAttribute Text
   | TeamPaintAttribute
-  | UniqueIdAttribute
+  | UniqueIdAttribute Word8
+                      RemoteId
+                      Word8
   | WeldedInfoAttribute
   deriving (Eq, Ord, Show)
 
@@ -47,8 +50,11 @@ getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
   case textToString name of
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
+    "Engine.PlayerReplicationInfo:bReadyToPlay" -> getBooleanAttribute
     "Engine.PlayerReplicationInfo:Ping" -> getByteAttribute
     "Engine.PlayerReplicationInfo:PlayerName" -> getStringAttribute
+    "Engine.PlayerReplicationInfo:Team" -> getFlaggedIntAttribute
+    "Engine.PlayerReplicationInfo:UniqueId" -> getUniqueIdAttribute
     "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.RBActor_TA:ReplicatedRBState" -> getRigidBodyStateAttribute
     _ -> fail ("don't know how to get attribute value " ++ show name)
@@ -99,6 +105,13 @@ getStringAttribute = do
   text <- getTextBits
   pure (StringAttribute text)
 
+getUniqueIdAttribute :: BinaryBit.BitGet AttributeValue
+getUniqueIdAttribute = do
+  systemId <- getWord8Bits
+  remoteId <- getRemoteId systemId
+  localId <- getWord8Bits
+  pure (UniqueIdAttribute systemId remoteId localId)
+
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
   case value of
@@ -118,4 +131,8 @@ putAttributeValue value =
         Nothing -> pure ()
         Just angularVelocity -> putLocation angularVelocity
     StringAttribute text -> putTextBits text
+    UniqueIdAttribute systemId remoteId localId -> do
+      putWord8Bits systemId
+      putRemoteId remoteId
+      putWord8Bits localId
     _ -> fail ("don't know how to put attribute value " ++ show value)
