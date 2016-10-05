@@ -1,6 +1,7 @@
 module Rattletrap.AttributeValue where
 
 import Rattletrap.CompressedWord
+import Rattletrap.Float32
 import Rattletrap.Int32
 import Rattletrap.Location
 import Rattletrap.RemoteId
@@ -16,7 +17,12 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 data AttributeValue
   = BooleanAttribute Bool
   | ByteAttribute Word8
-  | CamSettingsAttribute
+  | CamSettingsAttribute Float32
+                         Float32
+                         Float32
+                         Float32
+                         Float32
+                         Float32
   | DemolishAttribute
   | EnumAttribute
   | ExplosionAttribute
@@ -69,6 +75,7 @@ getAttributeValue name =
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
     "Engine.GameReplicationInfo:GameClass" -> getFlaggedIntAttribute
     "Engine.GameReplicationInfo:ServerName" -> getStringAttribute
+    "Engine.Pawn:PlayerReplicationInfo" -> getFlaggedIntAttribute
     "Engine.PlayerReplicationInfo:bReadyToPlay" -> getBooleanAttribute
     "Engine.PlayerReplicationInfo:Ping" -> getByteAttribute
     "Engine.PlayerReplicationInfo:PlayerID" -> getIntAttribute
@@ -82,6 +89,14 @@ getAttributeValue name =
     "ProjectX.GRI_X:Reservations" -> getReservationAttribute
     "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera" -> getBooleanAttribute
+    "TAGame.CameraSettingsActor_TA:PRI" -> getFlaggedIntAttribute
+    "TAGame.CameraSettingsActor_TA:ProfileSettings" -> getCamSettingsAttribute
+    "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount" -> getByteAttribute
+    "TAGame.CarComponent_TA:Vehicle" -> getFlaggedIntAttribute
+    "TAGame.GameEvent_Soccar_TA:SecondsRemaining" -> getIntAttribute
+    "TAGame.GameEvent_TA:BotSkill" -> getIntAttribute
+    "TAGame.GameEvent_TA:ReplicatedStateName" -> getIntAttribute
+    "TAGame.GameEvent_Team_TA:MaxTeamSize" -> getIntAttribute
     "TAGame.PRI_TA:bOnlineLoadoutSet" -> getBooleanAttribute
     "TAGame.PRI_TA:ClientLoadout" -> getLoadoutAttribute
     "TAGame.PRI_TA:PersistentCamera" -> getFlaggedIntAttribute
@@ -101,6 +116,16 @@ getByteAttribute :: BinaryBit.BitGet AttributeValue
 getByteAttribute = do
   byte <- getWord8Bits
   pure (ByteAttribute byte)
+
+getCamSettingsAttribute :: BinaryBit.BitGet AttributeValue
+getCamSettingsAttribute = do
+  fov <- getFloat32Bits
+  height <- getFloat32Bits
+  angle <- getFloat32Bits
+  distance <- getFloat32Bits
+  stiffness <- getFloat32Bits
+  swivelSpeed <- getFloat32Bits
+  pure (CamSettingsAttribute fov height angle distance stiffness swivelSpeed)
 
 getFlaggedIntAttribute :: BinaryBit.BitGet AttributeValue
 getFlaggedIntAttribute = do
@@ -195,6 +220,13 @@ putAttributeValue value =
   case value of
     BooleanAttribute x -> BinaryBit.putBool x
     ByteAttribute byte -> putWord8Bits byte
+    CamSettingsAttribute fov height angle distance stiffness swivelSpeed -> do
+      putFloat32Bits fov
+      putFloat32Bits height
+      putFloat32Bits angle
+      putFloat32Bits distance
+      putFloat32Bits stiffness
+      putFloat32Bits swivelSpeed
     FlaggedIntAttribute flag int -> do
       BinaryBit.putBool flag
       putInt32Bits int
