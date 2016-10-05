@@ -6,6 +6,7 @@ import Rattletrap.RemoteId
 import Rattletrap.Spin
 import Rattletrap.Text
 import Rattletrap.Word32
+import Rattletrap.Word64
 import Rattletrap.Word8
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -39,7 +40,7 @@ data AttributeValue
   | MusicStingerAttribute
   | PickupAttribute
   | PrivateMatchSettingsAttribute
-  | QWordAttribute
+  | QWordAttribute Word64
   | RelativeRotationAttribute
   | ReservationAttribute
   | RigidBodyStateAttribute Bool
@@ -68,6 +69,7 @@ getAttributeValue name =
     "Engine.PlayerReplicationInfo:Team" -> getFlaggedIntAttribute
     "Engine.PlayerReplicationInfo:UniqueId" -> getUniqueIdAttribute
     "ProjectX.GRI_X:bGameStarted" -> getBooleanAttribute
+    "ProjectX.GRI_X:GameServerID" -> getQWordAttribute
     "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.PRI_TA:bOnlineLoadoutSet" -> getBooleanAttribute
     "TAGame.PRI_TA:ClientLoadout" -> getLoadoutAttribute
@@ -118,6 +120,11 @@ getLoadoutAttribute = do
       else pure Nothing
   pure
     (LoadoutAttribute version body decal wheels rocketTrail antenna topper g h)
+
+getQWordAttribute :: BinaryBit.BitGet AttributeValue
+getQWordAttribute = do
+  word64 <- getWord64Bits
+  pure (QWordAttribute word64)
 
 getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
 getRigidBodyStateAttribute = do
@@ -177,6 +184,7 @@ putAttributeValue value =
       case h of
         Nothing -> pure ()
         Just x -> putWord32Bits x
+    QWordAttribute word64 -> putWord64Bits word64
     RigidBodyStateAttribute isSleeping location spin maybeLinearVelocity maybeAngularVelocity -> do
       BinaryBit.putBool isSleeping
       putLocation location
