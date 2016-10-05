@@ -28,7 +28,7 @@ data AttributeValue
   | ExplosionAttribute
   | FlaggedIntAttribute Bool
                         Int32
-  | FloatAttribute
+  | FloatAttribute Float32
   | GameModeAttribute
   | IntAttribute Int32
   | LoadoutAttribute Word8
@@ -77,6 +77,9 @@ getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
   case textToString name of
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
+    "Engine.Actor:bCollideActors" -> getBooleanAttribute
+    "Engine.Actor:bProjTarget" -> getBooleanAttribute
+    "Engine.Actor:DrawScale" -> getFloatAttribute
     "Engine.GameReplicationInfo:GameClass" -> getFlaggedIntAttribute
     "Engine.GameReplicationInfo:ServerName" -> getStringAttribute
     "Engine.Pawn:PlayerReplicationInfo" -> getFlaggedIntAttribute
@@ -97,9 +100,14 @@ getAttributeValue name =
     "TAGame.CameraSettingsActor_TA:ProfileSettings" -> getCamSettingsAttribute
     "TAGame.Car_TA:TeamPaint" -> getTeamPaintAttribute
     "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount" -> getByteAttribute
+    "TAGame.CarComponent_TA:ReplicatedActive" -> getByteAttribute
     "TAGame.CarComponent_TA:Vehicle" -> getFlaggedIntAttribute
+    "TAGame.CrowdActor_TA:ModifiedNoise" -> getFloatAttribute
+    "TAGame.CrowdActor_TA:ReplicatedOneShotSound" -> getFlaggedIntAttribute
+    "TAGame.GameEvent_Soccar_TA:RoundNum" -> getIntAttribute
     "TAGame.GameEvent_Soccar_TA:SecondsRemaining" -> getIntAttribute
     "TAGame.GameEvent_TA:BotSkill" -> getIntAttribute
+    "TAGame.GameEvent_TA:ReplicatedGameStateTimeRemaining" -> getIntAttribute
     "TAGame.GameEvent_TA:ReplicatedStateName" -> getIntAttribute
     "TAGame.GameEvent_Team_TA:MaxTeamSize" -> getIntAttribute
     "TAGame.PRI_TA:bOnlineLoadoutSet" -> getBooleanAttribute
@@ -110,6 +118,8 @@ getAttributeValue name =
     "TAGame.PRI_TA:TotalXP" -> getIntAttribute
     "TAGame.RBActor_TA:ReplicatedRBState" -> getRigidBodyStateAttribute
     "TAGame.Team_TA:GameEvent" -> getFlaggedIntAttribute
+    "TAGame.Vehicle_TA:bDriving" -> getBooleanAttribute
+    "TAGame.Vehicle_TA:ReplicatedThrottle" -> getByteAttribute
     _ -> fail ("don't know how to get attribute value " ++ show name)
 
 getBooleanAttribute :: BinaryBit.BitGet AttributeValue
@@ -137,6 +147,11 @@ getFlaggedIntAttribute = do
   flag <- BinaryBit.getBool
   int <- getInt32Bits
   pure (FlaggedIntAttribute flag int)
+
+getFloatAttribute :: BinaryBit.BitGet AttributeValue
+getFloatAttribute = do
+  float <- getFloat32Bits
+  pure (FloatAttribute float)
 
 getIntAttribute :: BinaryBit.BitGet AttributeValue
 getIntAttribute = do
@@ -245,6 +260,7 @@ putAttributeValue value =
     FlaggedIntAttribute flag int -> do
       BinaryBit.putBool flag
       putInt32Bits int
+    FloatAttribute float -> putFloat32Bits float
     IntAttribute int -> putInt32Bits int
     LoadoutAttribute version body decal wheels rocketTrail antenna topper g h -> do
       putWord8Bits version
