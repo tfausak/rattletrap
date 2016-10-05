@@ -37,7 +37,7 @@ data AttributeValue
                             Spin
                             (Maybe Location)
                             (Maybe Location)
-  | StringAttribute
+  | StringAttribute Text
   | TeamPaintAttribute
   | UniqueIdAttribute
   | WeldedInfoAttribute
@@ -48,6 +48,7 @@ getAttributeValue name =
   case textToString name of
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
     "Engine.PlayerReplicationInfo:Ping" -> getByteAttribute
+    "Engine.PlayerReplicationInfo:PlayerName" -> getStringAttribute
     "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.RBActor_TA:ReplicatedRBState" -> getRigidBodyStateAttribute
     _ -> fail ("don't know how to get attribute value " ++ show name)
@@ -93,6 +94,11 @@ getRigidBodyStateAttribute = do
        linearVelocity
        angularVelocity)
 
+getStringAttribute :: BinaryBit.BitGet AttributeValue
+getStringAttribute = do
+  text <- getTextBits
+  pure (StringAttribute text)
+
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
   case value of
@@ -111,4 +117,5 @@ putAttributeValue value =
       case maybeAngularVelocity of
         Nothing -> pure ()
         Just angularVelocity -> putLocation angularVelocity
+    StringAttribute text -> putTextBits text
     _ -> fail ("don't know how to put attribute value " ++ show value)
