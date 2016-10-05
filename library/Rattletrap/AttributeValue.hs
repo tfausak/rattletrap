@@ -1,5 +1,6 @@
 module Rattletrap.AttributeValue where
 
+import Rattletrap.Int32
 import Rattletrap.Location
 import Rattletrap.Spin
 import Rattletrap.Text
@@ -14,7 +15,8 @@ data AttributeValue
   | DemolishAttribute
   | EnumAttribute
   | ExplosionAttribute
-  | FlaggedIntAttribute
+  | FlaggedIntAttribute Bool
+                        Int32
   | FloatAttribute
   | GameModeAttribute
   | IntAttribute
@@ -44,6 +46,7 @@ getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
   case textToString name of
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
+    "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.RBActor_TA:ReplicatedRBState" -> getRigidBodyStateAttribute
     _ -> fail ("don't know how to get attribute value " ++ show name)
 
@@ -51,6 +54,12 @@ getBooleanAttribute :: BinaryBit.BitGet AttributeValue
 getBooleanAttribute = do
   x <- BinaryBit.getBool
   pure (BooleanAttribute x)
+
+getFlaggedIntAttribute :: BinaryBit.BitGet AttributeValue
+getFlaggedIntAttribute = do
+  flag <- BinaryBit.getBool
+  int <- getInt32Bits
+  pure (FlaggedIntAttribute flag int)
 
 getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
 getRigidBodyStateAttribute = do
@@ -81,6 +90,9 @@ putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
   case value of
     BooleanAttribute x -> BinaryBit.putBool x
+    FlaggedIntAttribute flag int -> do
+      BinaryBit.putBool flag
+      putInt32Bits int
     RigidBodyStateAttribute isSleeping location spin maybeLinearVelocity maybeAngularVelocity -> do
       BinaryBit.putBool isSleeping
       putLocation location
