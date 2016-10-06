@@ -13,6 +13,7 @@ import Rattletrap.Word8
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Word as Word
 
 data AttributeValue
   = BooleanAttribute Bool
@@ -24,7 +25,7 @@ data AttributeValue
                          Float32
                          Float32
   | DemolishAttribute
-  | EnumAttribute
+  | EnumAttribute Word.Word16
   | ExplosionAttribute
   | FlaggedIntAttribute Bool
                         Int32
@@ -81,6 +82,7 @@ getAttributeValue name =
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
     "Engine.Actor:bCollideActors" -> getBooleanAttribute
     "Engine.Actor:DrawScale" -> getFloatAttribute
+    "Engine.Actor:Role" -> getEnumAttribute
     "Engine.GameReplicationInfo:GameClass" -> getFlaggedIntAttribute
     "Engine.GameReplicationInfo:ServerName" -> getStringAttribute
     "Engine.Pawn:PlayerReplicationInfo" -> getFlaggedIntAttribute
@@ -149,6 +151,11 @@ getCamSettingsAttribute = do
   stiffness <- getFloat32Bits
   swivelSpeed <- getFloat32Bits
   pure (CamSettingsAttribute fov height angle distance stiffness swivelSpeed)
+
+getEnumAttribute :: BinaryBit.BitGet AttributeValue
+getEnumAttribute = do
+  x <- BinaryBit.getWord16be 11
+  pure (EnumAttribute x)
 
 getFlaggedIntAttribute :: BinaryBit.BitGet AttributeValue
 getFlaggedIntAttribute = do
@@ -277,6 +284,7 @@ putAttributeValue value =
       putFloat32Bits distance
       putFloat32Bits stiffness
       putFloat32Bits swivelSpeed
+    EnumAttribute x -> BinaryBit.putWord16be 11 x
     FlaggedIntAttribute flag int -> do
       BinaryBit.putBool flag
       putInt32Bits int
