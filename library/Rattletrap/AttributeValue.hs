@@ -78,7 +78,6 @@ getAttributeValue name =
   case textToString name of
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
     "Engine.Actor:bCollideActors" -> getBooleanAttribute
-    "Engine.Actor:bProjTarget" -> getBooleanAttribute
     "Engine.Actor:DrawScale" -> getFloatAttribute
     "Engine.GameReplicationInfo:GameClass" -> getFlaggedIntAttribute
     "Engine.GameReplicationInfo:ServerName" -> getStringAttribute
