@@ -45,7 +45,9 @@ data AttributeValue
   | LoadoutsOnlineAttribute
   | LocationAttribute
   | MusicStingerAttribute
-  | PickupAttribute
+  | PickupAttribute Bool
+                    (Maybe Word32)
+                    Bool
   | PrivateMatchSettingsAttribute
   | QWordAttribute Word64
   | RelativeRotationAttribute
@@ -94,6 +96,7 @@ getAttributeValue name =
     "ProjectX.GRI_X:ReplicatedGamePlaylist" -> getIntAttribute
     "ProjectX.GRI_X:Reservations" -> getReservationAttribute
     "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
+    "TAGame.Ball_TA:HitTeamNum" -> getByteAttribute
     "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera" -> getBooleanAttribute
     "TAGame.CameraSettingsActor_TA:PRI" -> getFlaggedIntAttribute
     "TAGame.CameraSettingsActor_TA:ProfileSettings" -> getCamSettingsAttribute
@@ -101,8 +104,11 @@ getAttributeValue name =
     "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount" -> getByteAttribute
     "TAGame.CarComponent_TA:ReplicatedActive" -> getByteAttribute
     "TAGame.CarComponent_TA:Vehicle" -> getFlaggedIntAttribute
+    "TAGame.CrowdActor_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.CrowdActor_TA:ModifiedNoise" -> getFloatAttribute
     "TAGame.CrowdActor_TA:ReplicatedOneShotSound" -> getFlaggedIntAttribute
+    "TAGame.CrowdManager_TA:GameEvent" -> getFlaggedIntAttribute
+    "TAGame.GameEvent_Soccar_TA:bBallHasBeenHit" -> getBooleanAttribute
     "TAGame.GameEvent_Soccar_TA:RoundNum" -> getIntAttribute
     "TAGame.GameEvent_Soccar_TA:SecondsRemaining" -> getIntAttribute
     "TAGame.GameEvent_TA:BotSkill" -> getIntAttribute
@@ -111,6 +117,8 @@ getAttributeValue name =
     "TAGame.GameEvent_Team_TA:MaxTeamSize" -> getIntAttribute
     "TAGame.PRI_TA:bOnlineLoadoutSet" -> getBooleanAttribute
     "TAGame.PRI_TA:ClientLoadout" -> getLoadoutAttribute
+    "TAGame.PRI_TA:MatchScore" -> getIntAttribute
+    "TAGame.PRI_TA:MatchShots" -> getIntAttribute
     "TAGame.PRI_TA:PersistentCamera" -> getFlaggedIntAttribute
     "TAGame.PRI_TA:ReplicatedGameEvent" -> getFlaggedIntAttribute
     "TAGame.PRI_TA:Title" -> getIntAttribute
@@ -119,6 +127,7 @@ getAttributeValue name =
     "TAGame.Team_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.Vehicle_TA:bDriving" -> getBooleanAttribute
     "TAGame.Vehicle_TA:ReplicatedThrottle" -> getByteAttribute
+    "TAGame.VehiclePickup_TA:ReplicatedPickupData" -> getPickupAttribute
     _ -> fail ("don't know how to get attribute value " ++ show name)
 
 getBooleanAttribute :: BinaryBit.BitGet AttributeValue
@@ -175,6 +184,18 @@ getLoadoutAttribute = do
       else pure Nothing
   pure
     (LoadoutAttribute version body decal wheels rocketTrail antenna topper g h)
+
+getPickupAttribute :: BinaryBit.BitGet AttributeValue
+getPickupAttribute = do
+  instigator <- BinaryBit.getBool
+  maybeInstigatorId <-
+    if instigator
+      then do
+        instigatorId <- getWord32Bits
+        pure (Just instigatorId)
+      else pure Nothing
+  pickedUp <- BinaryBit.getBool
+  pure (PickupAttribute instigator maybeInstigatorId pickedUp)
 
 getQWordAttribute :: BinaryBit.BitGet AttributeValue
 getQWordAttribute = do
@@ -273,6 +294,12 @@ putAttributeValue value =
       case h of
         Nothing -> pure ()
         Just x -> putWord32Bits x
+    PickupAttribute instigator maybeInstigatorId pickedUp -> do
+      BinaryBit.putBool instigator
+      case maybeInstigatorId of
+        Nothing -> pure ()
+        Just instigatorId -> putWord32Bits instigatorId
+      BinaryBit.putBool pickedUp
     QWordAttribute word64 -> putWord64Bits word64
     ReservationAttribute number systemId remoteId localId maybeName a b -> do
       putCompressedWord number
