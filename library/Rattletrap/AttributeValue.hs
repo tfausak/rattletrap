@@ -11,6 +11,7 @@ import Rattletrap.Word32
 import Rattletrap.Word64
 import Rattletrap.Word8
 
+import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Word as Word
@@ -41,7 +42,7 @@ data AttributeValue
                      Word32
                      Word32
                      (Maybe Word32)
-  | LoadoutOnlineAttribute
+  | LoadoutOnlineAttribute [[(Word32, CompressedWord)]]
   | LoadoutsAttribute
   | LoadoutsOnlineAttribute
   | LocationAttribute
@@ -103,6 +104,7 @@ getAttributeValue name =
     "TAGame.CameraSettingsActor_TA:PRI" -> getFlaggedIntAttribute
     "TAGame.CameraSettingsActor_TA:ProfileSettings" -> getCamSettingsAttribute
     "TAGame.Car_TA:TeamPaint" -> getTeamPaintAttribute
+    "TAGame.CarComponent_Boost_TA:bUnlimitedBoost" -> getBooleanAttribute
     "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount" -> getByteAttribute
     "TAGame.CarComponent_TA:ReplicatedActive" -> getByteAttribute
     "TAGame.CarComponent_TA:Vehicle" -> getFlaggedIntAttribute
@@ -119,6 +121,7 @@ getAttributeValue name =
     "TAGame.GameEvent_Team_TA:MaxTeamSize" -> getIntAttribute
     "TAGame.PRI_TA:bOnlineLoadoutSet" -> getBooleanAttribute
     "TAGame.PRI_TA:ClientLoadout" -> getLoadoutAttribute
+    "TAGame.PRI_TA:ClientLoadoutOnline" -> getLoadoutOnlineAttribute
     "TAGame.PRI_TA:MatchScore" -> getIntAttribute
     "TAGame.PRI_TA:MatchShots" -> getIntAttribute
     "TAGame.PRI_TA:PersistentCamera" -> getFlaggedIntAttribute
@@ -191,6 +194,20 @@ getLoadoutAttribute = do
       else pure Nothing
   pure
     (LoadoutAttribute version body decal wheels rocketTrail antenna topper g h)
+
+getLoadoutOnlineAttribute :: BinaryBit.BitGet AttributeValue
+getLoadoutOnlineAttribute = do
+  size <- getWord8Bits
+  values <-
+    Monad.replicateM
+      (fromIntegral (word8Value size))
+      (do innerSize <- getWord8Bits
+          Monad.replicateM
+            (fromIntegral (word8Value innerSize))
+            (do x <- getWord32Bits
+                y <- getCompressedWord 27
+                pure (x, y)))
+  pure (LoadoutOnlineAttribute values)
 
 getPickupAttribute :: BinaryBit.BitGet AttributeValue
 getPickupAttribute = do
@@ -302,6 +319,17 @@ putAttributeValue value =
       case h of
         Nothing -> pure ()
         Just x -> putWord32Bits x
+    LoadoutOnlineAttribute values -> do
+      putWord8Bits (Word8 (fromIntegral (length values)))
+      mapM_
+        (\xs -> do
+           putWord8Bits (Word8 (fromIntegral (length xs)))
+           mapM_
+             (\(x, y) -> do
+                putWord32Bits x
+                putCompressedWord y)
+             xs)
+        values
     PickupAttribute instigator maybeInstigatorId pickedUp -> do
       BinaryBit.putBool instigator
       case maybeInstigatorId of
