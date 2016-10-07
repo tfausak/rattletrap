@@ -19,10 +19,14 @@ data Text = Text
 
 getText :: Binary.Get Text
 getText = do
-  size <- getInt32
+  rawSize <- getInt32
+  let size =
+        if rawSize == Int32 0x05000000
+          then Int32 8
+          else rawSize
   bytes <- Binary.getLazyByteString (fromIntegral (int32Value size))
   let text = Encoding.decodeUtf8 (ByteString.toStrict bytes)
-  pure (Text size text)
+  pure (Text rawSize text)
 
 putText :: Text -> Binary.Put
 putText text = do
