@@ -45,7 +45,7 @@ data AttributeValue
   | LoadoutOnlineAttribute [[(Word32, CompressedWord)]]
   | LoadoutsAttribute
   | LoadoutsOnlineAttribute
-  | LocationAttribute
+  | LocationAttribute Location
   | MusicStingerAttribute
   | PickupAttribute Bool
                     (Maybe Word32)
@@ -106,6 +106,7 @@ getAttributeValue name =
     "TAGame.Car_TA:TeamPaint" -> getTeamPaintAttribute
     "TAGame.CarComponent_Boost_TA:bUnlimitedBoost" -> getBooleanAttribute
     "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount" -> getByteAttribute
+    "TAGame.CarComponent_Dodge_TA:DodgeTorque" -> getLocationAttribute
     "TAGame.CarComponent_TA:ReplicatedActive" -> getByteAttribute
     "TAGame.CarComponent_TA:Vehicle" -> getFlaggedIntAttribute
     "TAGame.CrowdActor_TA:GameEvent" -> getFlaggedIntAttribute
@@ -208,6 +209,11 @@ getLoadoutOnlineAttribute = do
                 y <- getCompressedWord 27
                 pure (x, y)))
   pure (LoadoutOnlineAttribute values)
+
+getLocationAttribute :: BinaryBit.BitGet AttributeValue
+getLocationAttribute = do
+  location <- getLocation
+  pure (LocationAttribute location)
 
 getPickupAttribute :: BinaryBit.BitGet AttributeValue
 getPickupAttribute = do
@@ -326,6 +332,7 @@ putAttributeValue value =
                 putCompressedWord y)
              xs)
         values
+    LocationAttribute location -> putLocation location
     PickupAttribute instigator maybeInstigatorId pickedUp -> do
       BinaryBit.putBool instigator
       case maybeInstigatorId of
