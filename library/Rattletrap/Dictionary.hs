@@ -5,28 +5,29 @@ import Rattletrap.Text
 import qualified Data.Binary as Binary
 
 newtype Dictionary a = Dictionary
-  { dictionaryValue :: [(Text, a)]
+  { dictionaryValue :: [(Text, Maybe a)]
   } deriving (Eq, Ord, Show)
 
 getDictionary :: Binary.Get a -> Binary.Get (Dictionary a)
 getDictionary getValue = do
   key <- getText
-  if key == noneKey
-    then pure (Dictionary [])
+  if isNoneKey key
+    then pure (Dictionary [(key, Nothing)])
     else do
       value <- getValue
-      let element = (key, value)
+      let element = (key, Just value)
       Dictionary elements <- getDictionary getValue
       pure (Dictionary (element : elements))
 
 putDictionary :: (a -> Binary.Put) -> Dictionary a -> Binary.Put
-putDictionary putValue (Dictionary elements) = do
+putDictionary putValue (Dictionary elements) =
   mapM_
-    (\(key, value) -> do
+    (\(key, maybeValue) -> do
        putText key
-       putValue value)
+       case maybeValue of
+         Nothing -> pure ()
+         Just value -> putValue value)
     elements
-  putText noneKey
 
-noneKey :: Text
-noneKey = stringToText "None"
+isNoneKey :: Text -> Bool
+isNoneKey text = filter (/= '\x00') (textToString text) == "None"
