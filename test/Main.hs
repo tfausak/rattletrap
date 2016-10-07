@@ -45,4 +45,5 @@ replays :: [(String, String)]
 replays =
   [ ("F811C1D24888015E23B598AD8628C742", "with no frames")
   , ("29F582C34A65EB34D358A784CBE3C189", "with frames")
+  , ("6688EEE34BFEB3EC3A9E3283098CC712", "with a weird byte property")
   ]

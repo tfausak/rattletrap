@@ -36,8 +36,11 @@ getPropertyValue getProperty kind _ =
       pure (BoolProperty word8)
     "ByteProperty" -> do
       k <- getText
-      v <- getText
-      pure (ByteProperty k v)
+      if textToString k == "OnlinePlatform_Steam"
+        then pure (ByteProperty (stringToText "OnlinePlatform") k)
+        else do
+          v <- getText
+          pure (ByteProperty k v)
     "FloatProperty" -> do
       float32 <- getFloat32
       pure (FloatProperty float32)
