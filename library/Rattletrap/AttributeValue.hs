@@ -229,9 +229,7 @@ getQWordAttribute = do
 getReservationAttribute :: BinaryBit.BitGet AttributeValue
 getReservationAttribute = do
   number <- getCompressedWord 7
-  systemId <- getWord8Bits
-  remoteId <- getRemoteId systemId
-  localId <- getWord8Bits
+  (systemId, remoteId, localId) <- getUniqueId
   name <-
     if systemId == Word8 0
       then pure Nothing
@@ -284,9 +282,7 @@ getTeamPaintAttribute = do
 
 getUniqueIdAttribute :: BinaryBit.BitGet AttributeValue
 getUniqueIdAttribute = do
-  systemId <- getWord8Bits
-  remoteId <- getRemoteId systemId
-  localId <- getWord8Bits
+  (systemId, remoteId, localId) <- getUniqueId
   pure (UniqueIdAttribute systemId remoteId localId)
 
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
@@ -339,9 +335,7 @@ putAttributeValue value =
     QWordAttribute word64 -> putWord64Bits word64
     ReservationAttribute number systemId remoteId localId maybeName a b -> do
       putCompressedWord number
-      putWord8Bits systemId
-      putRemoteId remoteId
-      putWord8Bits localId
+      putUniqueId systemId remoteId localId
       case maybeName of
         Nothing -> pure ()
         Just name -> putTextBits name
@@ -364,8 +358,19 @@ putAttributeValue value =
       putWord8Bits accentColor
       putWord32Bits primaryFinish
       putWord32Bits accentFinish
-    UniqueIdAttribute systemId remoteId localId -> do
-      putWord8Bits systemId
-      putRemoteId remoteId
-      putWord8Bits localId
+    UniqueIdAttribute systemId remoteId localId ->
+      putUniqueId systemId remoteId localId
     _ -> fail ("don't know how to put attribute value " ++ show value)
+
+getUniqueId :: BinaryBit.BitGet (Word8, RemoteId, Word8)
+getUniqueId = do
+  systemId <- getWord8Bits
+  remoteId <- getRemoteId systemId
+  localId <- getWord8Bits
+  pure (systemId, remoteId, localId)
+
+putUniqueId :: Word8 -> RemoteId -> Word8 -> BinaryBit.BitPut ()
+putUniqueId systemId remoteId localId = do
+  putWord8Bits systemId
+  putRemoteId remoteId
+  putWord8Bits localId
