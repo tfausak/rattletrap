@@ -14,7 +14,7 @@ data PropertyValue a
   = ArrayProperty (List (Dictionary a))
   | BoolProperty Word8
   | ByteProperty Text
-                 Text
+                 (Maybe Text)
   | FloatProperty Float32
   | IntProperty Int32
   | NameProperty Text
@@ -36,11 +36,13 @@ getPropertyValue getProperty kind _ =
       pure (BoolProperty word8)
     "ByteProperty" -> do
       k <- getText
-      if textToString k == "OnlinePlatform_Steam"
-        then pure (ByteProperty (stringToText "OnlinePlatform") k)
-        else do
-          v <- getText
-          pure (ByteProperty k v)
+      v <-
+        if textToString k == "OnlinePlatform_Steam"
+          then pure Nothing
+          else do
+            v <- getText
+            pure (Just v)
+      pure (ByteProperty k v)
     "FloatProperty" -> do
       float32 <- getFloat32
       pure (FloatProperty float32)
@@ -63,9 +65,11 @@ putPropertyValue putProperty value =
   case value of
     ArrayProperty list -> putList (putDictionary putProperty) list
     BoolProperty word8 -> putWord8 word8
-    ByteProperty k v -> do
+    ByteProperty k mv -> do
       putText k
-      putText v
+      case mv of
+        Nothing -> pure ()
+        Just v -> putText v
     FloatProperty float32 -> putFloat32 float32
     IntProperty int32 -> putInt32 int32
     NameProperty text -> putText text
