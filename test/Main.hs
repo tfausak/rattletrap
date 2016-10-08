@@ -54,4 +54,5 @@ replays =
   , ("B9F9B87D4A9D0A3D25D4EC91C0401DE2", "with a party leader")
   , ("C14F7E0E4D9B5E6BE9AD5D8ED56B174C", "with some mutators")
   , ("4126861E477F4A03DE2A4080374D7908", "with a game mode after Neo Tokyo")
+  , ("372DBFCA4BDB340E4357B6BD43032802", "with a camera yaw attribute")
   ]

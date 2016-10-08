@@ -109,6 +109,7 @@ getAttributeValue name =
     "TAGame.Ball_TA:HitTeamNum" -> getByteAttribute
     "TAGame.CameraSettingsActor_TA:bUsingBehindView" -> getBooleanAttribute
     "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera" -> getBooleanAttribute
+    "TAGame.CameraSettingsActor_TA:CameraYaw" -> getByteAttribute
     "TAGame.CameraSettingsActor_TA:PRI" -> getFlaggedIntAttribute
     "TAGame.CameraSettingsActor_TA:ProfileSettings" -> getCamSettingsAttribute
     "TAGame.Car_TA:TeamPaint" -> getTeamPaintAttribute
