@@ -51,6 +51,8 @@ data AttributeValue
                             Bool
   | LocationAttribute Location
   | MusicStingerAttribute
+  | PartyLeaderAttribute Word8
+                         (Maybe (RemoteId, Word8))
   | PickupAttribute Bool
                     (Maybe Word32)
                     Bool
@@ -91,6 +93,7 @@ getAttributeValue name =
     "Engine.GameReplicationInfo:GameClass" -> getFlaggedIntAttribute
     "Engine.GameReplicationInfo:ServerName" -> getStringAttribute
     "Engine.Pawn:PlayerReplicationInfo" -> getFlaggedIntAttribute
+    "Engine.PlayerReplicationInfo:bIsSpectator" -> getBooleanAttribute
     "Engine.PlayerReplicationInfo:bReadyToPlay" -> getBooleanAttribute
     "Engine.PlayerReplicationInfo:Ping" -> getByteAttribute
     "Engine.PlayerReplicationInfo:PlayerID" -> getIntAttribute
@@ -110,6 +113,8 @@ getAttributeValue name =
     "TAGame.CameraSettingsActor_TA:ProfileSettings" -> getCamSettingsAttribute
     "TAGame.Car_TA:TeamPaint" -> getTeamPaintAttribute
     "TAGame.CarComponent_Boost_TA:bUnlimitedBoost" -> getBooleanAttribute
+    "TAGame.CarComponent_Boost_TA:RechargeDelay" -> getFloatAttribute
+    "TAGame.CarComponent_Boost_TA:RechargeRate" -> getFloatAttribute
     "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount" -> getByteAttribute
     "TAGame.CarComponent_Boost_TA:UnlimitedBoostRefCount" -> getIntAttribute
     "TAGame.CarComponent_Dodge_TA:DodgeTorque" -> getLocationAttribute
@@ -135,6 +140,7 @@ getAttributeValue name =
     "TAGame.PRI_TA:ClientLoadoutsOnline" -> getLoadoutsOnlineAttribute
     "TAGame.PRI_TA:MatchScore" -> getIntAttribute
     "TAGame.PRI_TA:MatchShots" -> getIntAttribute
+    "TAGame.PRI_TA:PartyLeader" -> getPartyLeaderAttribute
     "TAGame.PRI_TA:PersistentCamera" -> getFlaggedIntAttribute
     "TAGame.PRI_TA:ReplicatedGameEvent" -> getFlaggedIntAttribute
     "TAGame.PRI_TA:Title" -> getIntAttribute
@@ -142,6 +148,7 @@ getAttributeValue name =
     "TAGame.RBActor_TA:ReplicatedRBState" -> getRigidBodyStateAttribute
     "TAGame.Team_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.Vehicle_TA:bDriving" -> getBooleanAttribute
+    "TAGame.Vehicle_TA:bReplicatedHandbrake" -> getBooleanAttribute
     "TAGame.Vehicle_TA:ReplicatedSteer" -> getByteAttribute
     "TAGame.Vehicle_TA:ReplicatedThrottle" -> getByteAttribute
     "TAGame.VehiclePickup_TA:ReplicatedPickupData" -> getPickupAttribute
@@ -239,6 +246,18 @@ getLocationAttribute :: BinaryBit.BitGet AttributeValue
 getLocationAttribute = do
   location <- getLocation
   pure (LocationAttribute location)
+
+getPartyLeaderAttribute :: BinaryBit.BitGet AttributeValue
+getPartyLeaderAttribute = do
+  systemId <- getWord8Bits
+  maybeRemoteAndLocalId <-
+    if systemId == Word8 0
+      then pure Nothing
+      else do
+        remoteId <- getRemoteId systemId
+        localId <- getWord8Bits
+        pure (Just (remoteId, localId))
+  pure (PartyLeaderAttribute systemId maybeRemoteAndLocalId)
 
 getPickupAttribute :: BinaryBit.BitGet AttributeValue
 getPickupAttribute = do
@@ -345,6 +364,13 @@ putAttributeValue value =
       BinaryBit.putBool unknown1
       BinaryBit.putBool unknown2
     LocationAttribute location -> putLocation location
+    PartyLeaderAttribute systemId maybeRemoteAndLocalId -> do
+      putWord8Bits systemId
+      case maybeRemoteAndLocalId of
+        Nothing -> pure ()
+        Just (remoteId, localId) -> do
+          putRemoteId remoteId
+          putWord8Bits localId
     PickupAttribute instigator maybeInstigatorId pickedUp -> do
       BinaryBit.putBool instigator
       case maybeInstigatorId of

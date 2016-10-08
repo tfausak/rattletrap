@@ -50,4 +50,7 @@ replays =
   , ("F299F176491554B11E34AB91CA76B2CE", "with a location attribute")
   , ("1BC2D01444ACE577D01E988EADD4DFD0", "with no padding after the frames")
   , ("7BF6073F4614CE0A438994B9A260DA6A", "with an online loadouts attribute")
+  , ("C8372B1345B1803DEF039F815DBD802D", "with a spectator")
+  , ("B9F9B87D4A9D0A3D25D4EC91C0401DE2", "with a party leader")
+  , ("C14F7E0E4D9B5E6BE9AD5D8ED56B174C", "with some mutators")
   ]
