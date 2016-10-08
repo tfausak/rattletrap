@@ -43,8 +43,12 @@ data AttributeValue
                      Word32
                      (Maybe Word32)
   | LoadoutOnlineAttribute [[(Word32, CompressedWord)]]
-  | LoadoutsAttribute
-  | LoadoutsOnlineAttribute
+  | LoadoutsAttribute AttributeValue
+                      AttributeValue
+  | LoadoutsOnlineAttribute AttributeValue
+                            AttributeValue
+                            Bool
+                            Bool
   | LocationAttribute Location
   | MusicStingerAttribute
   | PickupAttribute Bool
@@ -100,12 +104,14 @@ getAttributeValue name =
     "ProjectX.GRI_X:Reservations" -> getReservationAttribute
     "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.Ball_TA:HitTeamNum" -> getByteAttribute
+    "TAGame.CameraSettingsActor_TA:bUsingBehindView" -> getBooleanAttribute
     "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera" -> getBooleanAttribute
     "TAGame.CameraSettingsActor_TA:PRI" -> getFlaggedIntAttribute
     "TAGame.CameraSettingsActor_TA:ProfileSettings" -> getCamSettingsAttribute
     "TAGame.Car_TA:TeamPaint" -> getTeamPaintAttribute
     "TAGame.CarComponent_Boost_TA:bUnlimitedBoost" -> getBooleanAttribute
     "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount" -> getByteAttribute
+    "TAGame.CarComponent_Boost_TA:UnlimitedBoostRefCount" -> getIntAttribute
     "TAGame.CarComponent_Dodge_TA:DodgeTorque" -> getLocationAttribute
     "TAGame.CarComponent_TA:ReplicatedActive" -> getByteAttribute
     "TAGame.CarComponent_TA:Vehicle" -> getFlaggedIntAttribute
@@ -117,12 +123,16 @@ getAttributeValue name =
     "TAGame.GameEvent_Soccar_TA:RoundNum" -> getIntAttribute
     "TAGame.GameEvent_Soccar_TA:SecondsRemaining" -> getIntAttribute
     "TAGame.GameEvent_TA:BotSkill" -> getIntAttribute
+    "TAGame.GameEvent_TA:MatchTypeClass" -> getFlaggedIntAttribute
     "TAGame.GameEvent_TA:ReplicatedGameStateTimeRemaining" -> getIntAttribute
     "TAGame.GameEvent_TA:ReplicatedStateName" -> getIntAttribute
     "TAGame.GameEvent_Team_TA:MaxTeamSize" -> getIntAttribute
     "TAGame.PRI_TA:bOnlineLoadoutSet" -> getBooleanAttribute
+    "TAGame.PRI_TA:bOnlineLoadoutsSet" -> getBooleanAttribute
     "TAGame.PRI_TA:ClientLoadout" -> getLoadoutAttribute
     "TAGame.PRI_TA:ClientLoadoutOnline" -> getLoadoutOnlineAttribute
+    "TAGame.PRI_TA:ClientLoadouts" -> getLoadoutsAttribute
+    "TAGame.PRI_TA:ClientLoadoutsOnline" -> getLoadoutsOnlineAttribute
     "TAGame.PRI_TA:MatchScore" -> getIntAttribute
     "TAGame.PRI_TA:MatchShots" -> getIntAttribute
     "TAGame.PRI_TA:PersistentCamera" -> getFlaggedIntAttribute
@@ -132,6 +142,7 @@ getAttributeValue name =
     "TAGame.RBActor_TA:ReplicatedRBState" -> getRigidBodyStateAttribute
     "TAGame.Team_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.Vehicle_TA:bDriving" -> getBooleanAttribute
+    "TAGame.Vehicle_TA:ReplicatedSteer" -> getByteAttribute
     "TAGame.Vehicle_TA:ReplicatedThrottle" -> getByteAttribute
     "TAGame.VehiclePickup_TA:ReplicatedPickupData" -> getPickupAttribute
     _ -> fail ("don't know how to get attribute value " ++ show name)
@@ -209,6 +220,20 @@ getLoadoutOnlineAttribute = do
                 y <- getCompressedWord 27
                 pure (x, y)))
   pure (LoadoutOnlineAttribute values)
+
+getLoadoutsAttribute :: BinaryBit.BitGet AttributeValue
+getLoadoutsAttribute = do
+  blueLoadout <- getLoadoutAttribute
+  orangeLoadout <- getLoadoutAttribute
+  pure (LoadoutsAttribute blueLoadout orangeLoadout)
+
+getLoadoutsOnlineAttribute :: BinaryBit.BitGet AttributeValue
+getLoadoutsOnlineAttribute = do
+  blueLoadout <- getLoadoutOnlineAttribute
+  orangeLoadout <- getLoadoutOnlineAttribute
+  unknown1 <- BinaryBit.getBool
+  unknown2 <- BinaryBit.getBool
+  pure (LoadoutsOnlineAttribute blueLoadout orangeLoadout unknown1 unknown2)
 
 getLocationAttribute :: BinaryBit.BitGet AttributeValue
 getLocationAttribute = do
@@ -309,29 +334,16 @@ putAttributeValue value =
       putInt32Bits int
     FloatAttribute float -> putFloat32Bits float
     IntAttribute int -> putInt32Bits int
-    LoadoutAttribute version body decal wheels rocketTrail antenna topper g h -> do
-      putWord8Bits version
-      putWord32Bits body
-      putWord32Bits decal
-      putWord32Bits wheels
-      putWord32Bits rocketTrail
-      putWord32Bits antenna
-      putWord32Bits topper
-      putWord32Bits g
-      case h of
-        Nothing -> pure ()
-        Just x -> putWord32Bits x
-    LoadoutOnlineAttribute values -> do
-      putWord8Bits (Word8 (fromIntegral (length values)))
-      mapM_
-        (\xs -> do
-           putWord8Bits (Word8 (fromIntegral (length xs)))
-           mapM_
-             (\(x, y) -> do
-                putWord32Bits x
-                putCompressedWord y)
-             xs)
-        values
+    LoadoutAttribute _ _ _ _ _ _ _ _ _ -> putLoadoutAttribute value
+    LoadoutOnlineAttribute _ -> putLoadoutOnlineAttribute value
+    LoadoutsAttribute blueLoadout orangeLoadout -> do
+      putLoadoutAttribute blueLoadout
+      putLoadoutAttribute orangeLoadout
+    LoadoutsOnlineAttribute blueLoadout orangeLoadout unknown1 unknown2 -> do
+      putLoadoutOnlineAttribute blueLoadout
+      putLoadoutOnlineAttribute orangeLoadout
+      BinaryBit.putBool unknown1
+      BinaryBit.putBool unknown2
     LocationAttribute location -> putLocation location
     PickupAttribute instigator maybeInstigatorId pickedUp -> do
       BinaryBit.putBool instigator
@@ -381,3 +393,36 @@ putUniqueId systemId remoteId localId = do
   putWord8Bits systemId
   putRemoteId remoteId
   putWord8Bits localId
+
+putLoadoutAttribute :: AttributeValue -> BinaryBit.BitPut ()
+putLoadoutAttribute value =
+  case value of
+    LoadoutAttribute version body decal wheels rocketTrail antenna topper g h -> do
+      putWord8Bits version
+      putWord32Bits body
+      putWord32Bits decal
+      putWord32Bits wheels
+      putWord32Bits rocketTrail
+      putWord32Bits antenna
+      putWord32Bits topper
+      putWord32Bits g
+      case h of
+        Nothing -> pure ()
+        Just x -> putWord32Bits x
+    _ -> fail "putLoadoutAttribute"
+
+putLoadoutOnlineAttribute :: AttributeValue -> BinaryBit.BitPut ()
+putLoadoutOnlineAttribute value =
+  case value of
+    LoadoutOnlineAttribute values -> do
+      putWord8Bits (Word8 (fromIntegral (length values)))
+      mapM_
+        (\xs -> do
+           putWord8Bits (Word8 (fromIntegral (length xs)))
+           mapM_
+             (\(x, y) -> do
+                putWord32Bits x
+                putCompressedWord y)
+             xs)
+        values
+    _ -> fail "putLoadoutOnlineAttribute"
