@@ -14,15 +14,20 @@ data Frame = Frame
   , frameReplications :: [Replication]
   } deriving (Eq, Ord, Show)
 
-getFrames :: ClassAttributeMap
+getFrames :: Int
+          -> ClassAttributeMap
           -> ActorMap
           -> BinaryBit.BitGet ([Frame], ActorMap)
-getFrames classAttributeMap actorMap = do
-  maybeFrame <- getFrame classAttributeMap actorMap
+getFrames numFrames classAttributeMap actorMap = do
+  maybeFrame <-
+    if numFrames > 0
+      then getFrame classAttributeMap actorMap
+      else pure Nothing
   case maybeFrame of
     Nothing -> pure ([], actorMap)
     Just (frame, newActorMap) -> do
-      (frames, newerActorMap) <- getFrames classAttributeMap newActorMap
+      (frames, newerActorMap) <-
+        getFrames (numFrames - 1) classAttributeMap newActorMap
       pure (frame : frames, newerActorMap)
 
 putFrames :: [Frame] -> BinaryBit.BitPut ()
@@ -32,25 +37,20 @@ getFrame :: ClassAttributeMap
          -> ActorMap
          -> BinaryBit.BitGet (Maybe (Frame, ActorMap))
 getFrame classAttributeMap actorMap = do
-  isEmpty <- BinaryBit.isEmpty
-  if isEmpty
+  time <- getFloat32Bits
+  delta <- getFloat32Bits
+  if time == Float32 0 && delta == Float32 0
     then pure Nothing
     else do
-      time <- getFloat32Bits
-      delta <- getFloat32Bits
-      if time == Float32 0 && delta == Float32 0
-        then pure Nothing
-        else do
-          (replications, newActorMap) <-
-            getReplications classAttributeMap actorMap
-          pure
-            (Just
-               ( Frame
-                 { frameTime = time
-                 , frameDelta = delta
-                 , frameReplications = replications
-                 }
-               , newActorMap))
+      (replications, newActorMap) <- getReplications classAttributeMap actorMap
+      pure
+        (Just
+           ( Frame
+             { frameTime = time
+             , frameDelta = delta
+             , frameReplications = replications
+             }
+           , newActorMap))
 
 putFrame :: Frame -> BinaryBit.BitPut ()
 putFrame frame = do

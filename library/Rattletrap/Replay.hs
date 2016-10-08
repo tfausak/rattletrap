@@ -1,7 +1,12 @@
 module Rattletrap.Replay where
 
 import Rattletrap.Content
+import Rattletrap.Dictionary
 import Rattletrap.Header
+import Rattletrap.Int32
+import Rattletrap.Property
+import Rattletrap.PropertyValue
+import Rattletrap.Text
 import Rattletrap.Word32
 
 import qualified Data.Binary as Binary
@@ -22,7 +27,14 @@ getReplay = do
   header <- getHeader
   contentSize <- getWord32
   contentCrc <- getWord32
-  content <- getContent
+  let numFrames =
+        case lookup
+               (stringToText "NumFrames")
+               (dictionaryValue (headerProperties header)) of
+          Just (Just (Property _ _ (IntProperty int32))) ->
+            fromIntegral (int32Value int32)
+          _ -> 0
+  content <- getContent numFrames
   pure
     Replay
     { replayHeaderSize = headerSize

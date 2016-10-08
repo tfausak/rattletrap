@@ -48,4 +48,5 @@ replays =
   , ("6688EEE34BFEB3EC3A9E3283098CC712", "with a weird byte property")
   , ("18D6738D415B70B5BE4C299588D3C141", "with an online loadout")
   , ("F299F176491554B11E34AB91CA76B2CE", "with a dodge")
+  , ("1BC2D01444ACE577D01E988EADD4DFD0", "with no padding after the frames")
   ]

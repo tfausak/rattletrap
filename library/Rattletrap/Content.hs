@@ -33,8 +33,8 @@ data Content = Content
   , contentCaches :: List Cache
   } deriving (Eq, Ord, Show)
 
-getContent :: Binary.Get Content
-getContent = do
+getContent :: Int -> Binary.Get Content
+getContent numFrames = do
   levels <- getList getText
   keyFrames <- getList getKeyFrame
   streamSize <- getWord32
@@ -49,7 +49,8 @@ getContent = do
   let classAttributeMap = makeClassAttributeMap objects classMappings caches
   let (frames, _) =
         Binary.runGet
-          (BinaryBit.runBitGet (getFrames classAttributeMap makeActorMap))
+          (BinaryBit.runBitGet
+             (getFrames numFrames classAttributeMap makeActorMap))
           (reverseBytes stream)
   pure
     Content
