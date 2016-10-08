@@ -31,7 +31,7 @@ data AttributeValue
   | FlaggedIntAttribute Bool
                         Int32
   | FloatAttribute Float32
-  | GameModeAttribute
+  | GameModeAttribute Word.Word8
   | IntAttribute Int32
   | LoadoutAttribute Word8
                      Word32
@@ -128,6 +128,7 @@ getAttributeValue name =
     "TAGame.GameEvent_Soccar_TA:RoundNum" -> getIntAttribute
     "TAGame.GameEvent_Soccar_TA:SecondsRemaining" -> getIntAttribute
     "TAGame.GameEvent_TA:BotSkill" -> getIntAttribute
+    "TAGame.GameEvent_TA:GameMode" -> getGameModeAttribute
     "TAGame.GameEvent_TA:MatchTypeClass" -> getFlaggedIntAttribute
     "TAGame.GameEvent_TA:ReplicatedGameStateTimeRemaining" -> getIntAttribute
     "TAGame.GameEvent_TA:ReplicatedStateName" -> getIntAttribute
@@ -189,6 +190,11 @@ getFloatAttribute :: BinaryBit.BitGet AttributeValue
 getFloatAttribute = do
   float <- getFloat32Bits
   pure (FloatAttribute float)
+
+getGameModeAttribute :: BinaryBit.BitGet AttributeValue
+getGameModeAttribute = do
+  word8 <- BinaryBit.getWord8 8
+  pure (GameModeAttribute word8)
 
 getIntAttribute :: BinaryBit.BitGet AttributeValue
 getIntAttribute = do
@@ -352,6 +358,7 @@ putAttributeValue value =
       BinaryBit.putBool flag
       putInt32Bits int
     FloatAttribute float -> putFloat32Bits float
+    GameModeAttribute word8 -> BinaryBit.putWord8 8 word8
     IntAttribute int -> putInt32Bits int
     LoadoutAttribute _ _ _ _ _ _ _ _ _ -> putLoadoutAttribute value
     LoadoutOnlineAttribute _ -> putLoadoutOnlineAttribute value
