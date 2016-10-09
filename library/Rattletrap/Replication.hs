@@ -13,16 +13,18 @@ data Replication = Replication
   , replicationValue :: ReplicationValue
   } deriving (Eq, Ord, Show)
 
-getReplications :: ClassAttributeMap
-                -> ActorMap
-                -> BinaryBit.BitGet ([Replication], ActorMap)
-getReplications classAttributeMap actorMap = do
-  maybeReplication <- getReplication classAttributeMap actorMap
+getReplications
+  :: (Int, Int)
+  -> ClassAttributeMap
+  -> ActorMap
+  -> BinaryBit.BitGet ([Replication], ActorMap)
+getReplications version classAttributeMap actorMap = do
+  maybeReplication <- getReplication version classAttributeMap actorMap
   case maybeReplication of
     Nothing -> pure ([], actorMap)
     Just (replication, newActorMap) -> do
       (replications, newerActorMap) <-
-        getReplications classAttributeMap newActorMap
+        getReplications version classAttributeMap newActorMap
       pure (replication : replications, newerActorMap)
 
 putReplications :: [Replication] -> BinaryBit.BitPut ()
@@ -31,17 +33,18 @@ putReplications replications = do
   BinaryBit.putBool False
 
 getReplication
-  :: ClassAttributeMap
+  :: (Int, Int)
+  -> ClassAttributeMap
   -> ActorMap
   -> BinaryBit.BitGet (Maybe (Replication, ActorMap))
-getReplication classAttributeMap actorMap = do
+getReplication version classAttributeMap actorMap = do
   hasReplication <- BinaryBit.getBool
   if not hasReplication
     then pure Nothing
     else do
       actorId <- getCompressedWord maxActorId
       (value, newActorMap) <-
-        getReplicationValue classAttributeMap actorMap actorId
+        getReplicationValue version classAttributeMap actorMap actorId
       pure
         (Just
            ( Replication

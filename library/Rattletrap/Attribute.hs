@@ -13,17 +13,19 @@ data Attribute = Attribute
   , attributeValue :: AttributeValue
   } deriving (Eq, Ord, Show)
 
-getAttributes :: ClassAttributeMap
-              -> ActorMap
-              -> CompressedWord
-              -> BinaryBit.BitGet [Attribute]
-getAttributes classAttributeMap actorMap actorId = do
+getAttributes
+  :: (Int, Int)
+  -> ClassAttributeMap
+  -> ActorMap
+  -> CompressedWord
+  -> BinaryBit.BitGet [Attribute]
+getAttributes version classAttributeMap actorMap actorId = do
   hasAttribute <- BinaryBit.getBool
   if not hasAttribute
     then pure []
     else do
-      attribute <- getAttribute classAttributeMap actorMap actorId
-      attributes <- getAttributes classAttributeMap actorMap actorId
+      attribute <- getAttribute version classAttributeMap actorMap actorId
+      attributes <- getAttributes version classAttributeMap actorMap actorId
       pure (attribute : attributes)
 
 putAttributes :: [Attribute] -> BinaryBit.BitPut ()
@@ -31,11 +33,13 @@ putAttributes attributes = do
   mapM_ putAttribute attributes
   BinaryBit.putBool False
 
-getAttribute :: ClassAttributeMap
-             -> ActorMap
-             -> CompressedWord
-             -> BinaryBit.BitGet Attribute
-getAttribute classAttributeMap actorMap actorId =
+getAttribute
+  :: (Int, Int)
+  -> ClassAttributeMap
+  -> ActorMap
+  -> CompressedWord
+  -> BinaryBit.BitGet Attribute
+getAttribute version classAttributeMap actorMap actorId =
   case getAttributeIdLimit classAttributeMap actorMap actorId of
     Nothing -> fail ("could not get attribute ID limit for " ++ show actorId)
     Just limit -> do
@@ -43,7 +47,7 @@ getAttribute classAttributeMap actorMap actorId =
       case getAttributeName classAttributeMap actorMap actorId id_ of
         Nothing -> fail ("could not get attribute name for " ++ show id_)
         Just name -> do
-          value <- getAttributeValue name
+          value <- getAttributeValue version name
           pure Attribute {attributeId = id_, attributeValue = value}
 
 putAttribute :: Attribute -> BinaryBit.BitPut ()

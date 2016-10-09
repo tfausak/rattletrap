@@ -19,11 +19,12 @@ data ReplicationValue
   deriving (Eq, Ord, Show)
 
 getReplicationValue
-  :: ClassAttributeMap
+  :: (Int, Int)
+  -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
   -> BinaryBit.BitGet (ReplicationValue, ActorMap)
-getReplicationValue classAttributeMap actorMap actorId = do
+getReplicationValue version classAttributeMap actorMap actorId = do
   isOpen <- BinaryBit.getBool
   if isOpen
     then do
@@ -49,7 +50,7 @@ getReplicationValue classAttributeMap actorMap actorId = do
                     ( SpawnedReplication unknown objectId initialization
                     , newActorMap)
         else do
-          attributes <- getAttributes classAttributeMap actorMap actorId
+          attributes <- getAttributes version classAttributeMap actorMap actorId
           pure (UpdatedReplication attributes, actorMap)
     else pure (DestroyedReplication, actorMap)
 

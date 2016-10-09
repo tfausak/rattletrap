@@ -27,6 +27,9 @@ getReplay = do
   header <- getHeader
   contentSize <- getWord32
   contentCrc <- getWord32
+  let majorVersion = fromIntegral (word32Value (headerEngineVersion header))
+  let minorVersion = fromIntegral (word32Value (headerLicenseeVersion header))
+  let version = (majorVersion, minorVersion)
   let numFrames =
         case lookup
                (stringToText "NumFrames")
@@ -34,7 +37,7 @@ getReplay = do
           Just (Just (Property _ _ (IntProperty int32))) ->
             fromIntegral (int32Value int32)
           _ -> 0
-  content <- getContent numFrames
+  content <- getContent version numFrames
   pure
     Replay
     { replayHeaderSize = headerSize

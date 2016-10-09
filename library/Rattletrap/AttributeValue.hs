@@ -32,7 +32,8 @@ data AttributeValue
   | FlaggedIntAttribute Bool
                         Int32
   | FloatAttribute Float32
-  | GameModeAttribute Word.Word8
+  | GameModeAttribute Int
+                      Word.Word8
   | IntAttribute Int32
   | LoadoutAttribute Word8
                      Word32
@@ -84,14 +85,9 @@ data AttributeValue
   | WeldedInfoAttribute
   deriving (Eq, Ord, Show)
 
-getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
-getAttributeValue name =
+getAttributeValue :: (Int, Int) -> Text -> BinaryBit.BitGet AttributeValue
+getAttributeValue version name =
   case textToString name of
-    "TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam" -> getByteAttribute
-    "Engine.TeamInfo:Score" -> getIntAttribute
-    "Engine.PlayerReplicationInfo:Score" -> getIntAttribute
-    "TAGame.PRI_TA:MatchGoals" -> getIntAttribute
-    "TAGame.Ball_TA:ReplicatedExplosionData" -> getExplosionAttribute
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
     "Engine.Actor:bCollideActors" -> getBooleanAttribute
     "Engine.Actor:DrawScale" -> getFloatAttribute
@@ -104,8 +100,10 @@ getAttributeValue name =
     "Engine.PlayerReplicationInfo:Ping" -> getByteAttribute
     "Engine.PlayerReplicationInfo:PlayerID" -> getIntAttribute
     "Engine.PlayerReplicationInfo:PlayerName" -> getStringAttribute
+    "Engine.PlayerReplicationInfo:Score" -> getIntAttribute
     "Engine.PlayerReplicationInfo:Team" -> getFlaggedIntAttribute
     "Engine.PlayerReplicationInfo:UniqueId" -> getUniqueIdAttribute
+    "Engine.TeamInfo:Score" -> getIntAttribute
     "ProjectX.GRI_X:bGameStarted" -> getBooleanAttribute
     "ProjectX.GRI_X:GameServerID" -> getQWordAttribute
     "ProjectX.GRI_X:ReplicatedGameMutatorIndex" -> getIntAttribute
@@ -113,6 +111,7 @@ getAttributeValue name =
     "ProjectX.GRI_X:Reservations" -> getReservationAttribute
     "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.Ball_TA:HitTeamNum" -> getByteAttribute
+    "TAGame.Ball_TA:ReplicatedExplosionData" -> getExplosionAttribute
     "TAGame.CameraSettingsActor_TA:bUsingBehindView" -> getBooleanAttribute
     "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera" -> getBooleanAttribute
     "TAGame.CameraSettingsActor_TA:CameraYaw" -> getByteAttribute
@@ -132,10 +131,11 @@ getAttributeValue name =
     "TAGame.CrowdActor_TA:ReplicatedOneShotSound" -> getFlaggedIntAttribute
     "TAGame.CrowdManager_TA:GameEvent" -> getFlaggedIntAttribute
     "TAGame.GameEvent_Soccar_TA:bBallHasBeenHit" -> getBooleanAttribute
+    "TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam" -> getByteAttribute
     "TAGame.GameEvent_Soccar_TA:RoundNum" -> getIntAttribute
     "TAGame.GameEvent_Soccar_TA:SecondsRemaining" -> getIntAttribute
     "TAGame.GameEvent_TA:BotSkill" -> getIntAttribute
-    "TAGame.GameEvent_TA:GameMode" -> getGameModeAttribute
+    "TAGame.GameEvent_TA:GameMode" -> getGameModeAttribute version
     "TAGame.GameEvent_TA:MatchTypeClass" -> getFlaggedIntAttribute
     "TAGame.GameEvent_TA:ReplicatedGameStateTimeRemaining" -> getIntAttribute
     "TAGame.GameEvent_TA:ReplicatedStateName" -> getIntAttribute
@@ -146,6 +146,7 @@ getAttributeValue name =
     "TAGame.PRI_TA:ClientLoadoutOnline" -> getLoadoutOnlineAttribute
     "TAGame.PRI_TA:ClientLoadouts" -> getLoadoutsAttribute
     "TAGame.PRI_TA:ClientLoadoutsOnline" -> getLoadoutsOnlineAttribute
+    "TAGame.PRI_TA:MatchGoals" -> getIntAttribute
     "TAGame.PRI_TA:MatchScore" -> getIntAttribute
     "TAGame.PRI_TA:MatchShots" -> getIntAttribute
     "TAGame.PRI_TA:PartyLeader" -> getPartyLeaderAttribute
@@ -210,10 +211,14 @@ getFloatAttribute = do
   float <- getFloat32Bits
   pure (FloatAttribute float)
 
-getGameModeAttribute :: BinaryBit.BitGet AttributeValue
-getGameModeAttribute = do
-  word8 <- BinaryBit.getWord8 8
-  pure (GameModeAttribute word8)
+getGameModeAttribute :: (Int, Int) -> BinaryBit.BitGet AttributeValue
+getGameModeAttribute version = do
+  let numBits =
+        if beforeNeoTokyo version
+          then 2
+          else 8
+  word8 <- BinaryBit.getWord8 numBits
+  pure (GameModeAttribute numBits word8)
 
 getIntAttribute :: BinaryBit.BitGet AttributeValue
 getIntAttribute = do
@@ -384,7 +389,7 @@ putAttributeValue value =
       BinaryBit.putBool flag
       putInt32Bits int
     FloatAttribute float -> putFloat32Bits float
-    GameModeAttribute word8 -> BinaryBit.putWord8 8 word8
+    GameModeAttribute numBits word8 -> BinaryBit.putWord8 numBits word8
     IntAttribute int -> putInt32Bits int
     LoadoutAttribute _ _ _ _ _ _ _ _ _ -> putLoadoutAttribute value
     LoadoutOnlineAttribute _ -> putLoadoutOnlineAttribute value
@@ -485,3 +490,6 @@ putLoadoutOnlineAttribute value =
              xs)
         values
     _ -> fail "putLoadoutOnlineAttribute"
+
+beforeNeoTokyo :: (Int, Int) -> Bool
+beforeNeoTokyo version = version < (868, 12)

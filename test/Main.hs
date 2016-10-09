@@ -56,4 +56,5 @@ replays =
   , ("4126861E477F4A03DE2A4080374D7908", "with a game mode after Neo Tokyo")
   , ("372DBFCA4BDB340E4357B6BD43032802", "with a camera yaw attribute")
   , ("D7FB197A451D69075A0C99A2F49A4053", "with an explosion attribute")
+  , ("07E925B1423653D44CB8B4B2524792C1", "with a game mode before Neo Tokyo")
   ]
