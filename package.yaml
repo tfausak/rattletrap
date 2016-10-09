@@ -27,6 +27,7 @@ library:
   - data-binary-ieee754
   - regex-compat
   - text
+  - vector
   source-dirs: library
 license: MIT
 license-file: LICENSE.markdown

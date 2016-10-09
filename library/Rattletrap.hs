@@ -11,6 +11,7 @@ import Rattletrap.ClassAttributeMap as Export
 import Rattletrap.ClassMapping as Export
 import Rattletrap.CompressedWord as Export
 import Rattletrap.Content as Export
+import Rattletrap.Crc as Export
 import Rattletrap.Data as Export
 import Rattletrap.Dictionary as Export
 import Rattletrap.Float32 as Export
