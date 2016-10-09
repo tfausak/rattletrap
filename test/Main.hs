@@ -24,7 +24,7 @@ spec =
 itCanGetAndPut :: String -> String -> Hspec.Spec
 itCanGetAndPut uuid description =
   Hspec.it
-    ("a replay " ++ description)
+    ("a replay with " ++ description)
     (do let file = pathToReplay uuid
         (input, _, output) <- getAndPut file
         Hspec.shouldBe output input)
@@ -43,18 +43,18 @@ getAndPut file = do
 
 replays :: [(String, String)]
 replays =
-  [ ("F811C1D24888015E23B598AD8628C742", "with no frames")
-  , ("29F582C34A65EB34D358A784CBE3C189", "with frames")
-  , ("6688EEE34BFEB3EC3A9E3283098CC712", "with a malformed byte property")
-  , ("18D6738D415B70B5BE4C299588D3C141", "with an online loadout attribute")
-  , ("F299F176491554B11E34AB91CA76B2CE", "with a location attribute")
-  , ("1BC2D01444ACE577D01E988EADD4DFD0", "with no padding after the frames")
-  , ("7BF6073F4614CE0A438994B9A260DA6A", "with an online loadouts attribute")
-  , ("C8372B1345B1803DEF039F815DBD802D", "with a spectator")
-  , ("B9F9B87D4A9D0A3D25D4EC91C0401DE2", "with a party leader")
-  , ("C14F7E0E4D9B5E6BE9AD5D8ED56B174C", "with some mutators")
-  , ("4126861E477F4A03DE2A4080374D7908", "with a game mode after Neo Tokyo")
-  , ("372DBFCA4BDB340E4357B6BD43032802", "with a camera yaw attribute")
-  , ("D7FB197A451D69075A0C99A2F49A4053", "with an explosion attribute")
-  , ("07E925B1423653D44CB8B4B2524792C1", "with a game mode before Neo Tokyo")
+  [ ("F811C1D24888015E23B598AD8628C742", "no frames")
+  , ("29F582C34A65EB34D358A784CBE3C189", "frames")
+  , ("6688EEE34BFEB3EC3A9E3283098CC712", "a malformed byte property")
+  , ("18D6738D415B70B5BE4C299588D3C141", "an online loadout attribute")
+  , ("F299F176491554B11E34AB91CA76B2CE", "a location attribute")
+  , ("1BC2D01444ACE577D01E988EADD4DFD0", "no padding after the frames")
+  , ("7BF6073F4614CE0A438994B9A260DA6A", "an online loadouts attribute")
+  , ("C8372B1345B1803DEF039F815DBD802D", "a spectator")
+  , ("B9F9B87D4A9D0A3D25D4EC91C0401DE2", "a party leader")
+  , ("C14F7E0E4D9B5E6BE9AD5D8ED56B174C", "some mutators")
+  , ("4126861E477F4A03DE2A4080374D7908", "a game mode after Neo Tokyo")
+  , ("372DBFCA4BDB340E4357B6BD43032802", "a camera yaw attribute")
+  , ("D7FB197A451D69075A0C99A2F49A4053", "an explosion attribute")
+  , ("07E925B1423653D44CB8B4B2524792C1", "a game mode before Neo Tokyo")
   ]
