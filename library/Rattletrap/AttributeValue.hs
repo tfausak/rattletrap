@@ -14,6 +14,7 @@ import Rattletrap.Word8
 import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Map as Map
 import qualified Data.Word as Word
 
 data AttributeValue
@@ -52,7 +53,9 @@ data AttributeValue
                             Bool
                             Bool
   | LocationAttribute Location
-  | MusicStingerAttribute
+  | MusicStingerAttribute Bool
+                          Word32
+                          Word8
   | PartyLeaderAttribute Word8
                          (Maybe (RemoteId, Word8))
   | PickupAttribute Bool
@@ -87,81 +90,107 @@ data AttributeValue
 
 getAttributeValue :: (Int, Int) -> Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue version name =
-  case textToString name of
-    "Engine.Actor:bBlockActors" -> getBooleanAttribute
-    "Engine.Actor:bCollideActors" -> getBooleanAttribute
-    "Engine.Actor:DrawScale" -> getFloatAttribute
-    "Engine.Actor:Role" -> getEnumAttribute
-    "Engine.GameReplicationInfo:GameClass" -> getFlaggedIntAttribute
-    "Engine.GameReplicationInfo:ServerName" -> getStringAttribute
-    "Engine.Pawn:PlayerReplicationInfo" -> getFlaggedIntAttribute
-    "Engine.PlayerReplicationInfo:bIsSpectator" -> getBooleanAttribute
-    "Engine.PlayerReplicationInfo:bReadyToPlay" -> getBooleanAttribute
-    "Engine.PlayerReplicationInfo:Ping" -> getByteAttribute
-    "Engine.PlayerReplicationInfo:PlayerID" -> getIntAttribute
-    "Engine.PlayerReplicationInfo:PlayerName" -> getStringAttribute
-    "Engine.PlayerReplicationInfo:Score" -> getIntAttribute
-    "Engine.PlayerReplicationInfo:Team" -> getFlaggedIntAttribute
-    "Engine.PlayerReplicationInfo:UniqueId" -> getUniqueIdAttribute
-    "Engine.TeamInfo:Score" -> getIntAttribute
-    "ProjectX.GRI_X:bGameStarted" -> getBooleanAttribute
-    "ProjectX.GRI_X:GameServerID" -> getQWordAttribute
-    "ProjectX.GRI_X:ReplicatedGameMutatorIndex" -> getIntAttribute
-    "ProjectX.GRI_X:ReplicatedGamePlaylist" -> getIntAttribute
-    "ProjectX.GRI_X:Reservations" -> getReservationAttribute
-    "TAGame.Ball_TA:GameEvent" -> getFlaggedIntAttribute
-    "TAGame.Ball_TA:HitTeamNum" -> getByteAttribute
-    "TAGame.Ball_TA:ReplicatedExplosionData" -> getExplosionAttribute
-    "TAGame.CameraSettingsActor_TA:bUsingBehindView" -> getBooleanAttribute
-    "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera" -> getBooleanAttribute
-    "TAGame.CameraSettingsActor_TA:CameraYaw" -> getByteAttribute
-    "TAGame.CameraSettingsActor_TA:PRI" -> getFlaggedIntAttribute
-    "TAGame.CameraSettingsActor_TA:ProfileSettings" -> getCamSettingsAttribute
-    "TAGame.Car_TA:TeamPaint" -> getTeamPaintAttribute
-    "TAGame.CarComponent_Boost_TA:bUnlimitedBoost" -> getBooleanAttribute
-    "TAGame.CarComponent_Boost_TA:RechargeDelay" -> getFloatAttribute
-    "TAGame.CarComponent_Boost_TA:RechargeRate" -> getFloatAttribute
-    "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount" -> getByteAttribute
-    "TAGame.CarComponent_Boost_TA:UnlimitedBoostRefCount" -> getIntAttribute
-    "TAGame.CarComponent_Dodge_TA:DodgeTorque" -> getLocationAttribute
-    "TAGame.CarComponent_TA:ReplicatedActive" -> getByteAttribute
-    "TAGame.CarComponent_TA:Vehicle" -> getFlaggedIntAttribute
-    "TAGame.CrowdActor_TA:GameEvent" -> getFlaggedIntAttribute
-    "TAGame.CrowdActor_TA:ModifiedNoise" -> getFloatAttribute
-    "TAGame.CrowdActor_TA:ReplicatedOneShotSound" -> getFlaggedIntAttribute
-    "TAGame.CrowdManager_TA:GameEvent" -> getFlaggedIntAttribute
-    "TAGame.GameEvent_Soccar_TA:bBallHasBeenHit" -> getBooleanAttribute
-    "TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam" -> getByteAttribute
-    "TAGame.GameEvent_Soccar_TA:RoundNum" -> getIntAttribute
-    "TAGame.GameEvent_Soccar_TA:SecondsRemaining" -> getIntAttribute
-    "TAGame.GameEvent_TA:BotSkill" -> getIntAttribute
-    "TAGame.GameEvent_TA:GameMode" -> getGameModeAttribute version
-    "TAGame.GameEvent_TA:MatchTypeClass" -> getFlaggedIntAttribute
-    "TAGame.GameEvent_TA:ReplicatedGameStateTimeRemaining" -> getIntAttribute
-    "TAGame.GameEvent_TA:ReplicatedStateName" -> getIntAttribute
-    "TAGame.GameEvent_Team_TA:MaxTeamSize" -> getIntAttribute
-    "TAGame.PRI_TA:bOnlineLoadoutSet" -> getBooleanAttribute
-    "TAGame.PRI_TA:bOnlineLoadoutsSet" -> getBooleanAttribute
-    "TAGame.PRI_TA:ClientLoadout" -> getLoadoutAttribute
-    "TAGame.PRI_TA:ClientLoadoutOnline" -> getLoadoutOnlineAttribute
-    "TAGame.PRI_TA:ClientLoadouts" -> getLoadoutsAttribute
-    "TAGame.PRI_TA:ClientLoadoutsOnline" -> getLoadoutsOnlineAttribute
-    "TAGame.PRI_TA:MatchGoals" -> getIntAttribute
-    "TAGame.PRI_TA:MatchScore" -> getIntAttribute
-    "TAGame.PRI_TA:MatchShots" -> getIntAttribute
-    "TAGame.PRI_TA:PartyLeader" -> getPartyLeaderAttribute
-    "TAGame.PRI_TA:PersistentCamera" -> getFlaggedIntAttribute
-    "TAGame.PRI_TA:ReplicatedGameEvent" -> getFlaggedIntAttribute
-    "TAGame.PRI_TA:Title" -> getIntAttribute
-    "TAGame.PRI_TA:TotalXP" -> getIntAttribute
-    "TAGame.RBActor_TA:ReplicatedRBState" -> getRigidBodyStateAttribute
-    "TAGame.Team_TA:GameEvent" -> getFlaggedIntAttribute
-    "TAGame.Vehicle_TA:bDriving" -> getBooleanAttribute
-    "TAGame.Vehicle_TA:bReplicatedHandbrake" -> getBooleanAttribute
-    "TAGame.Vehicle_TA:ReplicatedSteer" -> getByteAttribute
-    "TAGame.Vehicle_TA:ReplicatedThrottle" -> getByteAttribute
-    "TAGame.VehiclePickup_TA:ReplicatedPickupData" -> getPickupAttribute
-    _ -> fail ("don't know how to get attribute value " ++ show name)
+  case Map.lookup name getters of
+    Nothing -> fail ("don't know how to get attribute value " ++ show name)
+    Just getter -> getter version
+
+getters :: Map.Map Text ((Int, Int) -> BinaryBit.BitGet AttributeValue)
+getters =
+  Map.mapKeys
+    stringToText
+    (Map.fromList
+       [ ("Engine.Actor:bBlockActors", const getBooleanAttribute)
+       , ("Engine.Actor:bCollideActors", const getBooleanAttribute)
+       , ("Engine.Actor:DrawScale", const getFloatAttribute)
+       , ("Engine.Actor:Role", const getEnumAttribute)
+       , ("Engine.GameReplicationInfo:GameClass", const getFlaggedIntAttribute)
+       , ("Engine.GameReplicationInfo:ServerName", const getStringAttribute)
+       , ("Engine.Pawn:PlayerReplicationInfo", const getFlaggedIntAttribute)
+       , ( "Engine.PlayerReplicationInfo:bIsSpectator"
+         , const getBooleanAttribute)
+       , ( "Engine.PlayerReplicationInfo:bReadyToPlay"
+         , const getBooleanAttribute)
+       , ("Engine.PlayerReplicationInfo:Ping", const getByteAttribute)
+       , ("Engine.PlayerReplicationInfo:PlayerID", const getIntAttribute)
+       , ("Engine.PlayerReplicationInfo:PlayerName", const getStringAttribute)
+       , ("Engine.PlayerReplicationInfo:Score", const getIntAttribute)
+       , ("Engine.PlayerReplicationInfo:Team", const getFlaggedIntAttribute)
+       , ("Engine.PlayerReplicationInfo:UniqueId", const getUniqueIdAttribute)
+       , ("Engine.TeamInfo:Score", const getIntAttribute)
+       , ("ProjectX.GRI_X:bGameStarted", const getBooleanAttribute)
+       , ("ProjectX.GRI_X:GameServerID", const getQWordAttribute)
+       , ("ProjectX.GRI_X:ReplicatedGameMutatorIndex", const getIntAttribute)
+       , ("ProjectX.GRI_X:ReplicatedGamePlaylist", const getIntAttribute)
+       , ("ProjectX.GRI_X:Reservations", const getReservationAttribute)
+       , ("TAGame.Ball_TA:GameEvent", const getFlaggedIntAttribute)
+       , ("TAGame.Ball_TA:HitTeamNum", const getByteAttribute)
+       , ("TAGame.Ball_TA:ReplicatedExplosionData", const getExplosionAttribute)
+       , ( "TAGame.CameraSettingsActor_TA:bUsingBehindView"
+         , const getBooleanAttribute)
+       , ( "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera"
+         , const getBooleanAttribute)
+       , ("TAGame.CameraSettingsActor_TA:CameraYaw", const getByteAttribute)
+       , ("TAGame.CameraSettingsActor_TA:PRI", const getFlaggedIntAttribute)
+       , ( "TAGame.CameraSettingsActor_TA:ProfileSettings"
+         , const getCamSettingsAttribute)
+       , ("TAGame.Car_TA:TeamPaint", const getTeamPaintAttribute)
+       , ( "TAGame.CarComponent_Boost_TA:bUnlimitedBoost"
+         , const getBooleanAttribute)
+       , ("TAGame.CarComponent_Boost_TA:RechargeDelay", const getFloatAttribute)
+       , ("TAGame.CarComponent_Boost_TA:RechargeRate", const getFloatAttribute)
+       , ( "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount"
+         , const getByteAttribute)
+       , ( "TAGame.CarComponent_Boost_TA:UnlimitedBoostRefCount"
+         , const getIntAttribute)
+       , ( "TAGame.CarComponent_Dodge_TA:DodgeTorque"
+         , const getLocationAttribute)
+       , ("TAGame.CarComponent_TA:ReplicatedActive", const getByteAttribute)
+       , ("TAGame.CarComponent_TA:Vehicle", const getFlaggedIntAttribute)
+       , ("TAGame.CrowdActor_TA:GameEvent", const getFlaggedIntAttribute)
+       , ("TAGame.CrowdActor_TA:ModifiedNoise", const getFloatAttribute)
+       , ( "TAGame.CrowdActor_TA:ReplicatedOneShotSound"
+         , const getFlaggedIntAttribute)
+       , ("TAGame.CrowdManager_TA:GameEvent", const getFlaggedIntAttribute)
+       , ( "TAGame.GameEvent_Soccar_TA:bBallHasBeenHit"
+         , const getBooleanAttribute)
+       , ( "TAGame.GameEvent_Soccar_TA:ReplicatedMusicStinger"
+         , const getMusicStingerAttribute)
+       , ( "TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam"
+         , const getByteAttribute)
+       , ("TAGame.GameEvent_Soccar_TA:RoundNum", const getIntAttribute)
+       , ("TAGame.GameEvent_Soccar_TA:SecondsRemaining", const getIntAttribute)
+       , ("TAGame.GameEvent_TA:BotSkill", const getIntAttribute)
+       , ("TAGame.GameEvent_TA:GameMode", getGameModeAttribute)
+       , ("TAGame.GameEvent_TA:MatchTypeClass", const getFlaggedIntAttribute)
+       , ( "TAGame.GameEvent_TA:ReplicatedGameStateTimeRemaining"
+         , const getIntAttribute)
+       , ("TAGame.GameEvent_TA:ReplicatedStateName", const getIntAttribute)
+       , ("TAGame.GameEvent_Team_TA:MaxTeamSize", const getIntAttribute)
+       , ("TAGame.PRI_TA:bOnlineLoadoutSet", const getBooleanAttribute)
+       , ("TAGame.PRI_TA:bOnlineLoadoutsSet", const getBooleanAttribute)
+       , ("TAGame.PRI_TA:ClientLoadout", const getLoadoutAttribute)
+       , ("TAGame.PRI_TA:ClientLoadoutOnline", const getLoadoutOnlineAttribute)
+       , ("TAGame.PRI_TA:ClientLoadouts", const getLoadoutsAttribute)
+       , ( "TAGame.PRI_TA:ClientLoadoutsOnline"
+         , const getLoadoutsOnlineAttribute)
+       , ("TAGame.PRI_TA:MatchGoals", const getIntAttribute)
+       , ("TAGame.PRI_TA:MatchScore", const getIntAttribute)
+       , ("TAGame.PRI_TA:MatchShots", const getIntAttribute)
+       , ("TAGame.PRI_TA:PartyLeader", const getPartyLeaderAttribute)
+       , ("TAGame.PRI_TA:PersistentCamera", const getFlaggedIntAttribute)
+       , ("TAGame.PRI_TA:ReplicatedGameEvent", const getFlaggedIntAttribute)
+       , ("TAGame.PRI_TA:Title", const getIntAttribute)
+       , ("TAGame.PRI_TA:TotalXP", const getIntAttribute)
+       , ( "TAGame.RBActor_TA:ReplicatedRBState"
+         , const getRigidBodyStateAttribute)
+       , ("TAGame.Team_TA:GameEvent", const getFlaggedIntAttribute)
+       , ("TAGame.Vehicle_TA:bDriving", const getBooleanAttribute)
+       , ("TAGame.Vehicle_TA:bReplicatedHandbrake", const getBooleanAttribute)
+       , ("TAGame.Vehicle_TA:ReplicatedSteer", const getByteAttribute)
+       , ("TAGame.Vehicle_TA:ReplicatedThrottle", const getByteAttribute)
+       , ( "TAGame.VehiclePickup_TA:ReplicatedPickupData"
+         , const getPickupAttribute)
+       ])
 
 getBooleanAttribute :: BinaryBit.BitGet AttributeValue
 getBooleanAttribute = do
@@ -276,6 +305,13 @@ getLocationAttribute :: BinaryBit.BitGet AttributeValue
 getLocationAttribute = do
   location <- getLocation
   pure (LocationAttribute location)
+
+getMusicStingerAttribute :: BinaryBit.BitGet AttributeValue
+getMusicStingerAttribute = do
+  flag <- BinaryBit.getBool
+  cue <- getWord32Bits
+  trigger <- getWord8Bits
+  pure (MusicStingerAttribute flag cue trigger)
 
 getPartyLeaderAttribute :: BinaryBit.BitGet AttributeValue
 getPartyLeaderAttribute = do
@@ -402,6 +438,10 @@ putAttributeValue value =
       BinaryBit.putBool unknown1
       BinaryBit.putBool unknown2
     LocationAttribute location -> putLocation location
+    MusicStingerAttribute flag cue trigger -> do
+      BinaryBit.putBool flag
+      putWord32Bits cue
+      putWord8Bits trigger
     PartyLeaderAttribute systemId maybeRemoteAndLocalId -> do
       putWord8Bits systemId
       case maybeRemoteAndLocalId of
