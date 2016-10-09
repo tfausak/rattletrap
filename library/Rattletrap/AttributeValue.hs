@@ -27,7 +27,8 @@ data AttributeValue
                          Float32
   | DemolishAttribute
   | EnumAttribute Word.Word16
-  | ExplosionAttribute
+  | ExplosionAttribute (Maybe Int32)
+                       Location
   | FlaggedIntAttribute Bool
                         Int32
   | FloatAttribute Float32
@@ -86,6 +87,11 @@ data AttributeValue
 getAttributeValue :: Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue name =
   case textToString name of
+    "TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam" -> getByteAttribute
+    "Engine.TeamInfo:Score" -> getIntAttribute
+    "Engine.PlayerReplicationInfo:Score" -> getIntAttribute
+    "TAGame.PRI_TA:MatchGoals" -> getIntAttribute
+    "TAGame.Ball_TA:ReplicatedExplosionData" -> getExplosionAttribute
     "Engine.Actor:bBlockActors" -> getBooleanAttribute
     "Engine.Actor:bCollideActors" -> getBooleanAttribute
     "Engine.Actor:DrawScale" -> getFloatAttribute
@@ -180,6 +186,18 @@ getEnumAttribute :: BinaryBit.BitGet AttributeValue
 getEnumAttribute = do
   x <- BinaryBit.getWord16be 11
   pure (EnumAttribute x)
+
+getExplosionAttribute :: BinaryBit.BitGet AttributeValue
+getExplosionAttribute = do
+  actorless <- BinaryBit.getBool
+  maybeActorId <-
+    if actorless
+      then pure Nothing
+      else do
+        actorId <- getInt32Bits
+        pure (Just actorId)
+  location <- getLocation
+  pure (ExplosionAttribute maybeActorId location)
 
 getFlaggedIntAttribute :: BinaryBit.BitGet AttributeValue
 getFlaggedIntAttribute = do
@@ -355,6 +373,13 @@ putAttributeValue value =
       putFloat32Bits stiffness
       putFloat32Bits swivelSpeed
     EnumAttribute x -> BinaryBit.putWord16be 11 x
+    ExplosionAttribute maybeActorId location -> do
+      case maybeActorId of
+        Nothing -> BinaryBit.putBool True
+        Just actorId -> do
+          BinaryBit.putBool False
+          putInt32Bits actorId
+      putLocation location
     FlaggedIntAttribute flag int -> do
       BinaryBit.putBool flag
       putInt32Bits int
