@@ -57,4 +57,5 @@ replays =
   , ("372DBFCA4BDB340E4357B6BD43032802", "a camera yaw attribute")
   , ("D7FB197A451D69075A0C99A2F49A4053", "an explosion attribute")
   , ("07E925B1423653D44CB8B4B2524792C1", "a game mode before Neo Tokyo")
+  , ("EAE311E84BA35B590A6FDBA6DD4F2FEB", "an actor/object ID collision")
   ]

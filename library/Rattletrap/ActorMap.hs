@@ -3,12 +3,12 @@ module Rattletrap.ActorMap where
 import Rattletrap.CompressedWord
 import Rattletrap.Word32
 
-import qualified Data.Bimap as Bimap
+import qualified Data.Map as Map
 
-type ActorMap = Bimap.Bimap CompressedWord Word32
+type ActorMap = Map.Map CompressedWord Word32
 
 makeActorMap :: ActorMap
-makeActorMap = Bimap.empty
+makeActorMap = Map.empty
 
 updateActorMap :: CompressedWord -> Word32 -> ActorMap -> ActorMap
-updateActorMap = Bimap.insert
+updateActorMap = Map.insert

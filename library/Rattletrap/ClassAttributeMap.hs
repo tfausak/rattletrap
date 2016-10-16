@@ -238,7 +238,7 @@ getAttributeMap
   -> CompressedWord
   -> Maybe (Bimap.Bimap Word32 Word32)
 getAttributeMap classAttributeMap actorMap actorId = do
-  objectId <- Bimap.lookup actorId actorMap
+  objectId <- Map.lookup actorId actorMap
   objectName <- getObjectName classAttributeMap objectId
   className <- getClassName objectName
   let classMap = classAttributeMapClassMap classAttributeMap
