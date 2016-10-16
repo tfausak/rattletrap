@@ -58,6 +58,7 @@ replays :: [(String, String)]
 replays =
   [ ("00080014003600090000036E0F65CCEB", "a flip time")
   , ("07E925B1423653D44CB8B4B2524792C1", "a game mode before Neo Tokyo")
+  , ("160CA83E41083BFD8E6315B4BFCA0561", "a dedicated server IP")
   , ("18D6738D415B70B5BE4C299588D3C141", "an online loadout attribute")
   , ("1A126AC24CAA0DB0E98835BD960B8AF8", "overtime")
   , ("1BC2D01444ACE577D01E988EADD4DFD0", "no padding after the frames")
@@ -68,6 +69,7 @@ replays =
   , ("372DBFCA4BDB340E4357B6BD43032802", "a camera yaw attribute")
   , ("4126861E477F4A03DE2A4080374D7908", "a game mode after Neo Tokyo")
   , ("42F0D8DA4FC89AE7B80FCAB7F637A8EA", "reservations after Neo Tokyo")
+  , ("52AA67F94090C19D33C5009E54D31FE4", "a match-ending attribute")
   , ("540DA764423C8FB24EB9D486D982F16F", "a demolish attribute")
   , ("6688EEE34BFEB3EC3A9E3283098CC712", "a malformed byte property")
   , ("6D1B06D844A5BB91B81FD4B5B28F08BA", "a flip right")
