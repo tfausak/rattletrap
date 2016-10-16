@@ -33,7 +33,18 @@ itCanGetAndPut uuid description =
 
 pathToReplay :: String -> FilePath
 pathToReplay uuid =
-  FilePath.joinPath ["test", "replays", FilePath.addExtension uuid ".replay"]
+  FilePath.joinPath
+    [ "test"
+    , "replays"
+    , firstCharacter uuid
+    , FilePath.addExtension uuid ".replay"
+    ]
+
+firstCharacter :: String -> String
+firstCharacter string =
+  case string of
+    character:_ -> [character]
+    _ -> "_"
 
 getAndPut :: FilePath
           -> IO (ByteString.ByteString, Rattletrap.Replay, ByteString.ByteString)
