@@ -168,11 +168,16 @@ getters =
        , ("TAGame.CarComponent_TA:Vehicle", const getFlaggedIntAttribute)
        , ("TAGame.CrowdActor_TA:GameEvent", const getFlaggedIntAttribute)
        , ("TAGame.CrowdActor_TA:ModifiedNoise", const getFloatAttribute)
+       , ( "TAGame.CrowdActor_TA:ReplicatedCountDownNumber"
+         , const getIntAttribute)
        , ( "TAGame.CrowdActor_TA:ReplicatedOneShotSound"
          , const getFlaggedIntAttribute)
        , ("TAGame.CrowdManager_TA:GameEvent", const getFlaggedIntAttribute)
+       , ( "TAGame.CrowdManager_TA:ReplicatedGlobalOneShotSound"
+         , const getFlaggedIntAttribute)
        , ( "TAGame.GameEvent_Soccar_TA:bBallHasBeenHit"
          , const getBooleanAttribute)
+       , ("TAGame.GameEvent_Soccar_TA:bOverTime", const getBooleanAttribute)
        , ( "TAGame.GameEvent_Soccar_TA:ReplicatedMusicStinger"
          , const getMusicStingerAttribute)
        , ( "TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam"
