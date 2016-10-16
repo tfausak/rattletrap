@@ -76,6 +76,7 @@ data AttributeValue
                          (Maybe Text)
                          Bool
                          Bool
+                         (Maybe Word.Word8)
   | RigidBodyStateAttribute Bool
                             Location
                             Spin
@@ -117,9 +118,13 @@ getters =
          , const getBooleanAttribute)
        , ( "Engine.PlayerReplicationInfo:bReadyToPlay"
          , const getBooleanAttribute)
+       , ( "Engine.PlayerReplicationInfo:bWaitingPlayer"
+         , const getBooleanAttribute)
        , ("Engine.PlayerReplicationInfo:Ping", const getByteAttribute)
        , ("Engine.PlayerReplicationInfo:PlayerID", const getIntAttribute)
        , ("Engine.PlayerReplicationInfo:PlayerName", const getStringAttribute)
+       , ( "Engine.PlayerReplicationInfo:RemoteUserData"
+         , const getStringAttribute)
        , ("Engine.PlayerReplicationInfo:Score", const getIntAttribute)
        , ("Engine.PlayerReplicationInfo:Team", const getFlaggedIntAttribute)
        , ("Engine.PlayerReplicationInfo:UniqueId", const getUniqueIdAttribute)
@@ -128,7 +133,7 @@ getters =
        , ("ProjectX.GRI_X:GameServerID", const getQWordAttribute)
        , ("ProjectX.GRI_X:ReplicatedGameMutatorIndex", const getIntAttribute)
        , ("ProjectX.GRI_X:ReplicatedGamePlaylist", const getIntAttribute)
-       , ("ProjectX.GRI_X:Reservations", const getReservationAttribute)
+       , ("ProjectX.GRI_X:Reservations", getReservationAttribute)
        , ("TAGame.Ball_TA:GameEvent", const getFlaggedIntAttribute)
        , ("TAGame.Ball_TA:HitTeamNum", const getByteAttribute)
        , ( "TAGame.Ball_TA:ReplicatedAddedCarBounceScale"
@@ -196,6 +201,7 @@ getters =
        , ("TAGame.GameEvent_Team_TA:MaxTeamSize", const getIntAttribute)
        , ("TAGame.PRI_TA:bOnlineLoadoutSet", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bOnlineLoadoutsSet", const getBooleanAttribute)
+       , ("TAGame.PRI_TA:bUsingBehindView", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bUsingSecondaryCamera", const getBooleanAttribute)
        , ("TAGame.PRI_TA:CameraPitch", const getByteAttribute)
        , ("TAGame.PRI_TA:CameraSettings", const getCamSettingsAttribute)
@@ -215,6 +221,7 @@ getters =
        , ("TAGame.PRI_TA:ReplicatedGameEvent", const getFlaggedIntAttribute)
        , ("TAGame.PRI_TA:Title", const getIntAttribute)
        , ("TAGame.PRI_TA:TotalXP", const getIntAttribute)
+       , ("TAGame.RBActor_TA:bReplayActor", const getBooleanAttribute)
        , ( "TAGame.RBActor_TA:ReplicatedRBState"
          , const getRigidBodyStateAttribute)
        , ("TAGame.Team_TA:GameEvent", const getFlaggedIntAttribute)
@@ -393,8 +400,8 @@ getQWordAttribute = do
   word64 <- getWord64Bits
   pure (QWordAttribute word64)
 
-getReservationAttribute :: BinaryBit.BitGet AttributeValue
-getReservationAttribute = do
+getReservationAttribute :: (Int, Int) -> BinaryBit.BitGet AttributeValue
+getReservationAttribute version = do
   number <- getCompressedWord 7
   (systemId, remoteId, localId) <- getUniqueId
   name <-
@@ -405,7 +412,13 @@ getReservationAttribute = do
         pure (Just name)
   a <- BinaryBit.getBool
   b <- BinaryBit.getBool
-  pure (ReservationAttribute number systemId remoteId localId name a b)
+  mc <-
+    if beforeNeoTokyo version
+      then pure Nothing
+      else do
+        c <- BinaryBit.getWord8 6
+        pure (Just c)
+  pure (ReservationAttribute number systemId remoteId localId name a b mc)
 
 getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
 getRigidBodyStateAttribute = do
@@ -514,7 +527,7 @@ putAttributeValue value =
         Just instigatorId -> putWord32Bits instigatorId
       BinaryBit.putBool pickedUp
     QWordAttribute word64 -> putWord64Bits word64
-    ReservationAttribute number systemId remoteId localId maybeName a b -> do
+    ReservationAttribute number systemId remoteId localId maybeName a b mc -> do
       putCompressedWord number
       putUniqueId systemId remoteId localId
       case maybeName of
@@ -522,6 +535,9 @@ putAttributeValue value =
         Just name -> putTextBits name
       BinaryBit.putBool a
       BinaryBit.putBool b
+      case mc of
+        Nothing -> pure ()
+        Just c -> BinaryBit.putWord8 6 c
     RigidBodyStateAttribute isSleeping location spin maybeLinearVelocity maybeAngularVelocity -> do
       BinaryBit.putBool isSleeping
       putLocation location

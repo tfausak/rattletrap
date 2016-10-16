@@ -68,4 +68,8 @@ replays =
   , ("6D1B06D844A5BB91B81FD4B5B28F08BA", "a flip right")
   , ("00080014003600090000036E0F65CCEB", "a flip time")
   , ("1A126AC24CAA0DB0E98835BD960B8AF8", "overtime")
+  , ("42F0D8DA4FC89AE7B80FCAB7F637A8EA", "reservations after Neo Tokyo")
+  , ("CB5B422A4424262B2877E9A121329EF2", "a player using behind view")
+  , ("89CBA30E46FA5385BDD35DA4285D4D2E", "remote user data")
+  , ("A6711CE74272B2E663DCC9A200A218E3", "a waiting player")
   ]
