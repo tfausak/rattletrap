@@ -199,6 +199,7 @@ getters =
        , ("TAGame.GameEvent_TA:ReplicatedStateIndex", const getByteAttribute)
        , ("TAGame.GameEvent_TA:ReplicatedStateName", const getIntAttribute)
        , ("TAGame.GameEvent_Team_TA:MaxTeamSize", const getIntAttribute)
+       , ("TAGame.PRI_TA:bIsInSplitScreen", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bOnlineLoadoutSet", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bOnlineLoadoutsSet", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bUsingBehindView", const getBooleanAttribute)

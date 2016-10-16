@@ -72,4 +72,6 @@ replays =
   , ("CB5B422A4424262B2877E9A121329EF2", "a player using behind view")
   , ("89CBA30E46FA5385BDD35DA4285D4D2E", "remote user data")
   , ("A6711CE74272B2E663DCC9A200A218E3", "a waiting player")
+  , ("C375E0EC4971B506C51678B465D35AE9", "some UTF-16 text")
+  , ("2F817C8C44859C762980AE85B1862A31", "splitscreen players")
   ]
