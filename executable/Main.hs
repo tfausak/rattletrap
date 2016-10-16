@@ -9,7 +9,6 @@ import Rattletrap
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Aeson
-import qualified Data.Aeson.Encode.Pretty as Aeson
 import qualified Data.Aeson.TH as Aeson
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
@@ -27,8 +26,7 @@ mainWithArgs args =
     ["replay2json", replayFile, jsonFile] -> do
       input <- ByteString.readFile replayFile
       let replay = Binary.runGet getReplay input
-      let config = Aeson.defConfig {Aeson.confCompare = compare}
-      let output = Aeson.encodePretty' config replay
+      let output = Aeson.encode replay
       ByteString.writeFile jsonFile output
     ["json2replay", jsonFile, replayfile] -> do
       input <- ByteString.readFile jsonFile
