@@ -106,6 +106,7 @@ getters =
        , ("Engine.GameReplicationInfo:GameClass", const getFlaggedIntAttribute)
        , ("Engine.GameReplicationInfo:ServerName", const getStringAttribute)
        , ("Engine.Pawn:PlayerReplicationInfo", const getFlaggedIntAttribute)
+       , ("Engine.PlayerReplicationInfo:bBot", const getBooleanAttribute)
        , ( "Engine.PlayerReplicationInfo:bIsSpectator"
          , const getBooleanAttribute)
        , ( "Engine.PlayerReplicationInfo:bReadyToPlay"
@@ -159,6 +160,8 @@ getters =
          , const getByteAttribute)
        , ("TAGame.GameEvent_Soccar_TA:RoundNum", const getIntAttribute)
        , ("TAGame.GameEvent_Soccar_TA:SecondsRemaining", const getIntAttribute)
+       , ( "TAGame.GameEvent_TA:bHasLeaveMatchPenalty"
+         , const getBooleanAttribute)
        , ("TAGame.GameEvent_TA:BotSkill", const getIntAttribute)
        , ("TAGame.GameEvent_TA:GameMode", getGameModeAttribute)
        , ("TAGame.GameEvent_TA:MatchTypeClass", const getFlaggedIntAttribute)

@@ -19,12 +19,14 @@ spec :: Hspec.Spec
 spec =
   Hspec.describe
     "Rattletrap"
-    (Hspec.context "get and put" (mapM_ (uncurry itCanGetAndPut) replays))
+    (Hspec.context
+       "can get and put a replay with"
+       (mapM_ (uncurry itCanGetAndPut) replays))
 
 itCanGetAndPut :: String -> String -> Hspec.Spec
 itCanGetAndPut uuid description =
   Hspec.it
-    ("a replay with " ++ description)
+    description
     (do let file = pathToReplay uuid
         (input, _, output) <- getAndPut file
         Hspec.shouldBe output input)
