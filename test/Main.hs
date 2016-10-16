@@ -26,7 +26,7 @@ spec =
 itCanGetAndPut :: String -> String -> Hspec.Spec
 itCanGetAndPut uuid description =
   Hspec.it
-    description
+    (description ++ " (" ++ uuid ++ ")")
     (do let file = pathToReplay uuid
         (input, _, output) <- getAndPut file
         Hspec.shouldBe output input)
