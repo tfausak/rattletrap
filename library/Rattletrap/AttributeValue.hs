@@ -202,6 +202,7 @@ getters =
        , ("TAGame.PRI_TA:bIsInSplitScreen", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bOnlineLoadoutSet", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bOnlineLoadoutsSet", const getBooleanAttribute)
+       , ("TAGame.PRI_TA:bReady", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bUsingBehindView", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bUsingSecondaryCamera", const getBooleanAttribute)
        , ("TAGame.PRI_TA:CameraPitch", const getByteAttribute)

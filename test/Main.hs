@@ -74,4 +74,5 @@ replays =
   , ("A6711CE74272B2E663DCC9A200A218E3", "a waiting player")
   , ("C375E0EC4971B506C51678B465D35AE9", "some UTF-16 text")
   , ("2F817C8C44859C762980AE85B1862A31", "splitscreen players")
+  , ("A7F001A1417A19BFA8C90990D8F7C2FF", "a ready attribute")
   ]
