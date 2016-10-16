@@ -26,7 +26,12 @@ data AttributeValue
                          Float32
                          Float32
                          Float32
-  | DemolishAttribute
+  | DemolishAttribute Bool
+                      Word32
+                      Bool
+                      Word32
+                      Location
+                      Location
   | EnumAttribute Word.Word16
   | ExplosionAttribute (Maybe Int32)
                        Location
@@ -101,6 +106,7 @@ getters =
     (Map.fromList
        [ ("Engine.Actor:bBlockActors", const getBooleanAttribute)
        , ("Engine.Actor:bCollideActors", const getBooleanAttribute)
+       , ("Engine.Actor:bHidden", const getBooleanAttribute)
        , ("Engine.Actor:DrawScale", const getFloatAttribute)
        , ("Engine.Actor:Role", const getEnumAttribute)
        , ("Engine.GameReplicationInfo:GameClass", const getFlaggedIntAttribute)
@@ -134,6 +140,7 @@ getters =
        , ("TAGame.CameraSettingsActor_TA:PRI", const getFlaggedIntAttribute)
        , ( "TAGame.CameraSettingsActor_TA:ProfileSettings"
          , const getCamSettingsAttribute)
+       , ("TAGame.Car_TA:ReplicatedDemolish", const getDemolishAttribute)
        , ("TAGame.Car_TA:TeamPaint", const getTeamPaintAttribute)
        , ( "TAGame.CarComponent_Boost_TA:bUnlimitedBoost"
          , const getBooleanAttribute)
@@ -167,15 +174,21 @@ getters =
        , ("TAGame.GameEvent_TA:MatchTypeClass", const getFlaggedIntAttribute)
        , ( "TAGame.GameEvent_TA:ReplicatedGameStateTimeRemaining"
          , const getIntAttribute)
+       , ("TAGame.GameEvent_TA:ReplicatedStateIndex", const getByteAttribute)
        , ("TAGame.GameEvent_TA:ReplicatedStateName", const getIntAttribute)
        , ("TAGame.GameEvent_Team_TA:MaxTeamSize", const getIntAttribute)
        , ("TAGame.PRI_TA:bOnlineLoadoutSet", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bOnlineLoadoutsSet", const getBooleanAttribute)
+       , ("TAGame.PRI_TA:bUsingSecondaryCamera", const getBooleanAttribute)
+       , ("TAGame.PRI_TA:CameraPitch", const getByteAttribute)
+       , ("TAGame.PRI_TA:CameraSettings", const getCamSettingsAttribute)
+       , ("TAGame.PRI_TA:CameraYaw", const getByteAttribute)
        , ("TAGame.PRI_TA:ClientLoadout", const getLoadoutAttribute)
        , ("TAGame.PRI_TA:ClientLoadoutOnline", const getLoadoutOnlineAttribute)
        , ("TAGame.PRI_TA:ClientLoadouts", const getLoadoutsAttribute)
        , ( "TAGame.PRI_TA:ClientLoadoutsOnline"
          , const getLoadoutsOnlineAttribute)
+       , ("TAGame.PRI_TA:MatchAssists", const getIntAttribute)
        , ("TAGame.PRI_TA:MatchGoals", const getIntAttribute)
        , ("TAGame.PRI_TA:MatchScore", const getIntAttribute)
        , ("TAGame.PRI_TA:MatchShots", const getIntAttribute)
@@ -214,6 +227,23 @@ getCamSettingsAttribute = do
   stiffness <- getFloat32Bits
   swivelSpeed <- getFloat32Bits
   pure (CamSettingsAttribute fov height angle distance stiffness swivelSpeed)
+
+getDemolishAttribute :: BinaryBit.BitGet AttributeValue
+getDemolishAttribute = do
+  attackerFlag <- BinaryBit.getBool
+  attackerActorId <- getWord32Bits
+  victimFlag <- BinaryBit.getBool
+  victimActorId <- getWord32Bits
+  attackerVelocity <- getLocation
+  victimVelocity <- getLocation
+  pure
+    (DemolishAttribute
+       attackerFlag
+       attackerActorId
+       victimFlag
+       victimActorId
+       attackerVelocity
+       victimVelocity)
 
 getEnumAttribute :: BinaryBit.BitGet AttributeValue
 getEnumAttribute = do
@@ -416,6 +446,13 @@ putAttributeValue value =
       putFloat32Bits distance
       putFloat32Bits stiffness
       putFloat32Bits swivelSpeed
+    DemolishAttribute attackerFlag attackerActorId victimFlag victimActorId attackerVelocity victimVelocity -> do
+      BinaryBit.putBool attackerFlag
+      putWord32Bits attackerActorId
+      BinaryBit.putBool victimFlag
+      putWord32Bits victimActorId
+      putLocation attackerVelocity
+      putLocation victimVelocity
     EnumAttribute x -> BinaryBit.putWord16be 11 x
     ExplosionAttribute maybeActorId location -> do
       case maybeActorId of
