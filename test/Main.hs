@@ -61,4 +61,10 @@ replays =
   , ("07E925B1423653D44CB8B4B2524792C1", "a game mode before Neo Tokyo")
   , ("EAE311E84BA35B590A6FDBA6DD4F2FEB", "an actor/object ID collision")
   , ("540DA764423C8FB24EB9D486D982F16F", "a demolish attribute")
+  , ("211466D04B983F5A33CC2FA1D5928672", "a match save")
+  , ("1D1DE97D4941C86E43FE0093563DB621", "a camera pitch")
+  , ("7109EB9846D303E54B7ACBA792036213", "a boost modifier")
+  , ("A52F804845573D8DA65E97BF59026A43", "some more mutators")
+  , ("6D1B06D844A5BB91B81FD4B5B28F08BA", "a flip right")
+  , ("00080014003600090000036E0F65CCEB", "a flip time")
   ]

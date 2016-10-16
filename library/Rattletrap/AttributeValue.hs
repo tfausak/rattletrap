@@ -131,11 +131,18 @@ getters =
        , ("ProjectX.GRI_X:Reservations", const getReservationAttribute)
        , ("TAGame.Ball_TA:GameEvent", const getFlaggedIntAttribute)
        , ("TAGame.Ball_TA:HitTeamNum", const getByteAttribute)
+       , ( "TAGame.Ball_TA:ReplicatedAddedCarBounceScale"
+         , const getFloatAttribute)
+       , ( "TAGame.Ball_TA:ReplicatedBallMaxLinearSpeedScale"
+         , const getFloatAttribute)
+       , ("TAGame.Ball_TA:ReplicatedBallScale", const getFloatAttribute)
        , ("TAGame.Ball_TA:ReplicatedExplosionData", const getExplosionAttribute)
+       , ("TAGame.Ball_TA:ReplicatedWorldBounceScale", const getFloatAttribute)
        , ( "TAGame.CameraSettingsActor_TA:bUsingBehindView"
          , const getBooleanAttribute)
        , ( "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera"
          , const getBooleanAttribute)
+       , ("TAGame.CameraSettingsActor_TA:CameraPitch", const getByteAttribute)
        , ("TAGame.CameraSettingsActor_TA:CameraYaw", const getByteAttribute)
        , ("TAGame.CameraSettingsActor_TA:PRI", const getFlaggedIntAttribute)
        , ( "TAGame.CameraSettingsActor_TA:ProfileSettings"
@@ -144,6 +151,8 @@ getters =
        , ("TAGame.Car_TA:TeamPaint", const getTeamPaintAttribute)
        , ( "TAGame.CarComponent_Boost_TA:bUnlimitedBoost"
          , const getBooleanAttribute)
+       , ("TAGame.CarComponent_Boost_TA:bNoBoost", const getBooleanAttribute)
+       , ("TAGame.CarComponent_Boost_TA:BoostModifier", const getFloatAttribute)
        , ("TAGame.CarComponent_Boost_TA:RechargeDelay", const getFloatAttribute)
        , ("TAGame.CarComponent_Boost_TA:RechargeRate", const getFloatAttribute)
        , ( "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount"
@@ -152,6 +161,9 @@ getters =
          , const getIntAttribute)
        , ( "TAGame.CarComponent_Dodge_TA:DodgeTorque"
          , const getLocationAttribute)
+       , ( "TAGame.CarComponent_FlipCar_TA:bFlipRight"
+         , const getBooleanAttribute)
+       , ("TAGame.CarComponent_FlipCar_TA:FlipCarTime", const getFloatAttribute)
        , ("TAGame.CarComponent_TA:ReplicatedActive", const getByteAttribute)
        , ("TAGame.CarComponent_TA:Vehicle", const getFlaggedIntAttribute)
        , ("TAGame.CrowdActor_TA:GameEvent", const getFlaggedIntAttribute)
@@ -190,6 +202,7 @@ getters =
          , const getLoadoutsOnlineAttribute)
        , ("TAGame.PRI_TA:MatchAssists", const getIntAttribute)
        , ("TAGame.PRI_TA:MatchGoals", const getIntAttribute)
+       , ("TAGame.PRI_TA:MatchSaves", const getIntAttribute)
        , ("TAGame.PRI_TA:MatchScore", const getIntAttribute)
        , ("TAGame.PRI_TA:MatchShots", const getIntAttribute)
        , ("TAGame.PRI_TA:PartyLeader", const getPartyLeaderAttribute)
