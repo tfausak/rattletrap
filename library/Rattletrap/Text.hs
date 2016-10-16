@@ -74,13 +74,14 @@ getTextDecoder (Int32 size) bytes =
   let decode =
         if size < 0
           then Encoding.decodeUtf16LE
-          else Encoding.decodeUtf8
+          else Encoding.decodeLatin1
   in decode (ByteString.toStrict bytes)
 
 getTextEncoder :: Int32 -> Text.Text -> ByteString.ByteString
 getTextEncoder (Int32 size) text =
-  let encode =
-        if size < 0
-          then Encoding.encodeUtf16LE
-          else Encoding.encodeUtf8
-  in ByteString.fromStrict (encode text)
+  if size < 0
+    then ByteString.fromStrict (Encoding.encodeUtf16LE text)
+    else encodeLatin1 text
+
+encodeLatin1 :: Text.Text -> ByteString.ByteString
+encodeLatin1 text = ByteString.pack (Text.unpack text)
