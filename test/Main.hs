@@ -16,28 +16,19 @@ main = do
   Tasty.defaultMain tests
 
 spec :: Hspec.Spec
-spec =
-  Hspec.describe
-    "Rattletrap"
-    (Hspec.context
-       "can get and put a replay with"
-       (mapM_ (uncurry itCanGetAndPut) replays))
+spec = Hspec.describe "Rattletrap" (mapM_ (uncurry itCanGetAndPut) replays)
 
 itCanGetAndPut :: String -> String -> Hspec.Spec
 itCanGetAndPut uuid description =
   Hspec.it
-    (description ++ " (" ++ uuid ++ ")")
+    (uuid ++ ": a replay with " ++ description)
     (do let file = pathToReplay uuid
         (input, _, output) <- getAndPut file
         Hspec.shouldBe output input)
 
 pathToReplay :: String -> FilePath
 pathToReplay uuid =
-  FilePath.joinPath
-    [ "test"
-    , "replays"
-    , FilePath.addExtension uuid ".replay"
-    ]
+  FilePath.joinPath ["test", "replays", FilePath.addExtension uuid ".replay"]
 
 getAndPut :: FilePath
           -> IO (ByteString.ByteString, Rattletrap.Replay, ByteString.ByteString)
