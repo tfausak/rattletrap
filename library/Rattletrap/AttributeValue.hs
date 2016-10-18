@@ -228,7 +228,9 @@ getters =
        , ("TAGame.RBActor_TA:bReplayActor", const getBooleanAttribute)
        , ( "TAGame.RBActor_TA:ReplicatedRBState"
          , const getRigidBodyStateAttribute)
+       , ("TAGame.Team_TA:CustomTeamName", const getStringAttribute)
        , ("TAGame.Team_TA:GameEvent", const getFlaggedIntAttribute)
+       , ("TAGame.Team_TA:LogoData", const getFlaggedIntAttribute)
        , ("TAGame.Vehicle_TA:bDriving", const getBooleanAttribute)
        , ("TAGame.Vehicle_TA:bReplicatedHandbrake", const getBooleanAttribute)
        , ("TAGame.Vehicle_TA:ReplicatedSteer", const getByteAttribute)
