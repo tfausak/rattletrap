@@ -66,7 +66,12 @@ data AttributeValue
   | PickupAttribute Bool
                     (Maybe Word32)
                     Bool
-  | PrivateMatchSettingsAttribute
+  | PrivateMatchSettingsAttribute Text
+                                  Word32
+                                  Word32
+                                  Text
+                                  Text
+                                  Bool
   | QWordAttribute Word64
   | RelativeRotationAttribute
   | ReservationAttribute CompressedWord
@@ -190,6 +195,8 @@ getters =
          , const getByteAttribute)
        , ("TAGame.GameEvent_Soccar_TA:RoundNum", const getIntAttribute)
        , ("TAGame.GameEvent_Soccar_TA:SecondsRemaining", const getIntAttribute)
+       , ( "TAGame.GameEvent_SoccarPrivate_TA:MatchSettings"
+         , const getPrivateMatchSettingsAttribute)
        , ( "TAGame.GameEvent_TA:bHasLeaveMatchPenalty"
          , const getBooleanAttribute)
        , ("TAGame.GameEvent_TA:BotSkill", const getIntAttribute)
@@ -403,6 +410,23 @@ getPickupAttribute = do
   pickedUp <- BinaryBit.getBool
   pure (PickupAttribute instigator maybeInstigatorId pickedUp)
 
+getPrivateMatchSettingsAttribute :: BinaryBit.BitGet AttributeValue
+getPrivateMatchSettingsAttribute = do
+  mutators <- getTextBits
+  joinableBy <- getWord32Bits
+  maxPlayers <- getWord32Bits
+  gameName <- getTextBits
+  password <- getTextBits
+  flag <- BinaryBit.getBool
+  pure
+    (PrivateMatchSettingsAttribute
+       mutators
+       joinableBy
+       maxPlayers
+       gameName
+       password
+       flag)
+
 getQWordAttribute :: BinaryBit.BitGet AttributeValue
 getQWordAttribute = do
   word64 <- getWord64Bits
@@ -534,6 +558,13 @@ putAttributeValue value =
         Nothing -> pure ()
         Just instigatorId -> putWord32Bits instigatorId
       BinaryBit.putBool pickedUp
+    PrivateMatchSettingsAttribute mutators joinableBy maxPlayers gameName password flag -> do
+      putTextBits mutators
+      putWord32Bits joinableBy
+      putWord32Bits maxPlayers
+      putTextBits gameName
+      putTextBits password
+      BinaryBit.putBool flag
     QWordAttribute word64 -> putWord64Bits word64
     ReservationAttribute number systemId remoteId localId maybeName a b mc -> do
       putCompressedWord number
