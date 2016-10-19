@@ -74,4 +74,5 @@ replays =
   , ("F299F176491554B11E34AB91CA76B2CE", "a location attribute")
   , ("F811C1D24888015E23B598AD8628C742", "no frames")
   , ("3EA147DD485B8DD24810689A7A989E44", "a custom team name")
+  , ("387F059C47C09E253C875CA990EFD9F2", "a frozen attribute")
   ]

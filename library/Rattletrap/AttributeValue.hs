@@ -225,9 +225,11 @@ getters =
        , ("TAGame.PRI_TA:ReplicatedGameEvent", const getFlaggedIntAttribute)
        , ("TAGame.PRI_TA:Title", const getIntAttribute)
        , ("TAGame.PRI_TA:TotalXP", const getIntAttribute)
+       , ("TAGame.RBActor_TA:bFrozen", const getBooleanAttribute)
        , ("TAGame.RBActor_TA:bReplayActor", const getBooleanAttribute)
        , ( "TAGame.RBActor_TA:ReplicatedRBState"
          , const getRigidBodyStateAttribute)
+       , ("TAGame.Team_Soccar_TA:GameScore", const getIntAttribute)
        , ("TAGame.Team_TA:CustomTeamName", const getStringAttribute)
        , ("TAGame.Team_TA:GameEvent", const getFlaggedIntAttribute)
        , ("TAGame.Team_TA:LogoData", const getFlaggedIntAttribute)
