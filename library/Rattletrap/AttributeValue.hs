@@ -209,6 +209,7 @@ getters =
        , ("TAGame.GameEvent_Team_TA:MaxTeamSize", const getIntAttribute)
        , ("TAGame.GRI_TA:NewDedicatedServerIP", const getStringAttribute)
        , ("TAGame.PRI_TA:bIsInSplitScreen", const getBooleanAttribute)
+       , ("TAGame.PRI_TA:bMatchMVP", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bOnlineLoadoutSet", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bOnlineLoadoutsSet", const getBooleanAttribute)
        , ("TAGame.PRI_TA:bReady", const getBooleanAttribute)
