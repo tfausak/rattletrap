@@ -51,6 +51,7 @@ $(Monad.foldM
     , ''CompressedWordVector
     , ''Content
     , ''Dictionary
+    , ''DestroyedReplicationValue
     , ''Float32
     , ''Frame
     , ''Header

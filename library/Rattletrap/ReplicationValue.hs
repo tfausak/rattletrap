@@ -1,10 +1,14 @@
-module Rattletrap.ReplicationValue where
+module Rattletrap.ReplicationValue
+  ( module Rattletrap.ReplicationValue
+  , module Rattletrap.ReplicationValue.DestroyedReplicationValue
+  ) where
 
 import Rattletrap.ActorMap
 import Rattletrap.Attribute
 import Rattletrap.ClassAttributeMap
 import Rattletrap.CompressedWord
 import Rattletrap.Initialization
+import Rattletrap.ReplicationValue.DestroyedReplicationValue
 import Rattletrap.Word32
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -15,7 +19,7 @@ data ReplicationValue
                        Word32
                        Initialization
   | UpdatedReplication [Attribute]
-  | DestroyedReplication
+  | DestroyedReplication DestroyedReplicationValue
   deriving (Eq, Ord, Show)
 
 getReplicationValue
@@ -52,7 +56,9 @@ getReplicationValue version classAttributeMap actorMap actorId = do
         else do
           attributes <- getAttributes version classAttributeMap actorMap actorId
           pure (UpdatedReplication attributes, actorMap)
-    else pure (DestroyedReplication, actorMap)
+    else do
+      x <- getDestroyedReplicationValue
+      pure (DestroyedReplication x, actorMap)
 
 putReplicationValue :: ReplicationValue -> BinaryBit.BitPut ()
 putReplicationValue value =
@@ -67,4 +73,6 @@ putReplicationValue value =
       BinaryBit.putBool True
       BinaryBit.putBool False
       putAttributes attributes
-    DestroyedReplication -> BinaryBit.putBool False
+    DestroyedReplication x -> do
+      BinaryBit.putBool False
+      putDestroyedReplicationValue x
