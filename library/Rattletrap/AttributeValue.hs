@@ -1,12 +1,12 @@
 module Rattletrap.AttributeValue where
 
 import Rattletrap.CompressedWord
+import Rattletrap.CompressedWordVector
 import Rattletrap.Float32
 import Rattletrap.Int32
 import Rattletrap.Int8Vector
 import Rattletrap.Location
 import Rattletrap.RemoteId
-import Rattletrap.Spin
 import Rattletrap.Text
 import Rattletrap.Word32
 import Rattletrap.Word64
@@ -85,7 +85,7 @@ data AttributeValue
                          (Maybe Word.Word8)
   | RigidBodyStateAttribute Bool
                             Location
-                            Spin
+                            CompressedWordVector
                             (Maybe Location)
                             (Maybe Location)
   | StringAttribute Text
@@ -483,7 +483,7 @@ getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
 getRigidBodyStateAttribute = do
   isSleeping <- BinaryBit.getBool
   location <- getLocation
-  spin <- getSpin
+  spin <- getCompressedWordVector
   linearVelocity <-
     if isSleeping
       then pure Nothing
@@ -616,7 +616,7 @@ putAttributeValue value =
     RigidBodyStateAttribute isSleeping location spin maybeLinearVelocity maybeAngularVelocity -> do
       BinaryBit.putBool isSleeping
       putLocation location
-      putSpin spin
+      putCompressedWordVector spin
       case maybeLinearVelocity of
         Nothing -> pure ()
         Just linearVelocity -> putLocation linearVelocity

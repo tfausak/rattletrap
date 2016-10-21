@@ -10,6 +10,7 @@ import Rattletrap.Cache as Export
 import Rattletrap.ClassAttributeMap as Export
 import Rattletrap.ClassMapping as Export
 import Rattletrap.CompressedWord as Export
+import Rattletrap.CompressedWordVector as Export
 import Rattletrap.Content as Export
 import Rattletrap.Crc as Export
 import Rattletrap.Data as Export
@@ -32,7 +33,6 @@ import Rattletrap.RemoteId as Export
 import Rattletrap.Replay as Export
 import Rattletrap.Replication as Export
 import Rattletrap.ReplicationValue as Export
-import Rattletrap.Spin as Export
 import Rattletrap.Text as Export
 import Rattletrap.Utility as Export
 import Rattletrap.Word32 as Export

@@ -48,6 +48,7 @@ $(Monad.foldM
     , ''Cache
     , ''ClassMapping
     , ''CompressedWord
+    , ''CompressedWordVector
     , ''Content
     , ''Dictionary
     , ''Float32
@@ -68,7 +69,6 @@ $(Monad.foldM
     , ''Replay
     , ''Replication
     , ''ReplicationValue
-    , ''Spin
     , ''Text
     , ''Word32
     , ''Word64
