@@ -1,14 +1,14 @@
 module Rattletrap.Initialization where
 
+import Rattletrap.Int8Vector
 import Rattletrap.Location
-import Rattletrap.Rotation
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 
 data Initialization = Initialization
   { initializationLocation :: Maybe Location
-  , initializationRotation :: Maybe Rotation
+  , initializationRotation :: Maybe Int8Vector
   } deriving (Eq, Ord, Show)
 
 getInitialization :: Bool -> Bool -> BinaryBit.BitGet Initialization
@@ -22,7 +22,7 @@ getInitialization hasLocation hasRotation = do
   rotation <-
     if hasRotation
       then do
-        rotation <- getRotation
+        rotation <- getInt8Vector
         pure (Just rotation)
       else pure Nothing
   pure
@@ -36,4 +36,4 @@ putInitialization initialization = do
     Just location -> putLocation location
   case initializationRotation initialization of
     Nothing -> pure ()
-    Just rotation -> putRotation rotation
+    Just rotation -> putInt8Vector rotation

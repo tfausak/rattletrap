@@ -56,6 +56,7 @@ $(Monad.foldM
     , ''Initialization
     , ''Int32
     , ''Int8
+    , ''Int8Vector
     , ''KeyFrame
     , ''List
     , ''Location
@@ -67,7 +68,6 @@ $(Monad.foldM
     , ''Replay
     , ''Replication
     , ''ReplicationValue
-    , ''Rotation
     , ''Spin
     , ''Text
     , ''Word32

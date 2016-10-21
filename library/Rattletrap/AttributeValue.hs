@@ -3,9 +3,9 @@ module Rattletrap.AttributeValue where
 import Rattletrap.CompressedWord
 import Rattletrap.Float32
 import Rattletrap.Int32
+import Rattletrap.Int8Vector
 import Rattletrap.Location
 import Rattletrap.RemoteId
-import Rattletrap.Rotation
 import Rattletrap.Spin
 import Rattletrap.Text
 import Rattletrap.Word32
@@ -101,7 +101,7 @@ data AttributeValue
                         Int32
                         Location
                         Float32
-                        Rotation
+                        Int8Vector
   deriving (Eq, Ord, Show)
 
 getAttributeValue :: (Int, Int) -> Text -> BinaryBit.BitGet AttributeValue
@@ -530,7 +530,7 @@ getWeldedInfoAttribute = do
   actorId <- getInt32Bits
   offset <- getLocation
   mass <- getFloat32Bits
-  rotation <- getRotation
+  rotation <- getInt8Vector
   pure (WeldedInfoAttribute active actorId offset mass rotation)
 
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
@@ -637,7 +637,7 @@ putAttributeValue value =
       putInt32Bits actorId
       putLocation offset
       putFloat32Bits mass
-      putRotation rotation
+      putInt8Vector rotation
     _ -> fail ("don't know how to put attribute value " ++ show value)
 
 getUniqueId :: BinaryBit.BitGet (Word8, RemoteId, Word8)
