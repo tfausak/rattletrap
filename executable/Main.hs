@@ -69,6 +69,7 @@ $(Monad.foldM
     , ''Replay
     , ''Replication
     , ''ReplicationValue
+    , ''SpawnedReplicationValue
     , ''Text
     , ''UpdatedReplicationValue
     , ''Vector
