@@ -70,6 +70,7 @@ $(Monad.foldM
     , ''Replication
     , ''ReplicationValue
     , ''Text
+    , ''UpdatedReplicationValue
     , ''Vector
     , ''Word32
     , ''Word64
