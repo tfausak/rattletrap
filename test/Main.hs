@@ -42,6 +42,7 @@ replays :: [(String, String)]
 replays =
   [ ("00080014003600090000036E0F65CCEB", "a flip time")
   , ("07E925B1423653D44CB8B4B2524792C1", "a game mode before Neo Tokyo")
+  , ("1205D96C4D819800927791820096CD49", "rumble mode")
   , ("160CA83E41083BFD8E6315B4BFCA0561", "a dedicated server IP")
   , ("18D6738D415B70B5BE4C299588D3C141", "an online loadout attribute")
   , ("1A126AC24CAA0DB0E98835BD960B8AF8", "overtime")

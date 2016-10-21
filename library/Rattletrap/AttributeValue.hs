@@ -5,6 +5,7 @@ import Rattletrap.Float32
 import Rattletrap.Int32
 import Rattletrap.Location
 import Rattletrap.RemoteId
+import Rattletrap.Rotation
 import Rattletrap.Spin
 import Rattletrap.Text
 import Rattletrap.Word32
@@ -96,7 +97,11 @@ data AttributeValue
   | UniqueIdAttribute Word8
                       RemoteId
                       Word8
-  | WeldedInfoAttribute
+  | WeldedInfoAttribute Bool
+                        Int32
+                        Location
+                        Float32
+                        Rotation
   deriving (Eq, Ord, Show)
 
 getAttributeValue :: (Int, Int) -> Text -> BinaryBit.BitGet AttributeValue
@@ -158,6 +163,9 @@ getters =
        , ("TAGame.CameraSettingsActor_TA:PRI", const getFlaggedIntAttribute)
        , ( "TAGame.CameraSettingsActor_TA:ProfileSettings"
          , const getCamSettingsAttribute)
+       , ("TAGame.Car_TA:AddedBallForceMultiplier", const getFloatAttribute)
+       , ("TAGame.Car_TA:AddedCarForceMultiplier", const getFloatAttribute)
+       , ("TAGame.Car_TA:AttachedPickup", const getFlaggedIntAttribute)
        , ("TAGame.Car_TA:ReplicatedDemolish", const getDemolishAttribute)
        , ("TAGame.Car_TA:TeamPaint", const getTeamPaintAttribute)
        , ( "TAGame.CarComponent_Boost_TA:bUnlimitedBoost"
@@ -176,6 +184,8 @@ getters =
          , const getBooleanAttribute)
        , ("TAGame.CarComponent_FlipCar_TA:FlipCarTime", const getFloatAttribute)
        , ("TAGame.CarComponent_TA:ReplicatedActive", const getByteAttribute)
+       , ( "TAGame.CarComponent_TA:ReplicatedActivityTime"
+         , const getFloatAttribute)
        , ("TAGame.CarComponent_TA:Vehicle", const getFlaggedIntAttribute)
        , ("TAGame.CrowdActor_TA:GameEvent", const getFlaggedIntAttribute)
        , ("TAGame.CrowdActor_TA:ModifiedNoise", const getFloatAttribute)
@@ -195,6 +205,8 @@ getters =
          , const getByteAttribute)
        , ("TAGame.GameEvent_Soccar_TA:RoundNum", const getIntAttribute)
        , ("TAGame.GameEvent_Soccar_TA:SecondsRemaining", const getIntAttribute)
+       , ( "TAGame.GameEvent_Soccar_TA:SubRulesArchetype"
+         , const getFlaggedIntAttribute)
        , ( "TAGame.GameEvent_SoccarPrivate_TA:MatchSettings"
          , const getPrivateMatchSettingsAttribute)
        , ( "TAGame.GameEvent_TA:bHasLeaveMatchPenalty"
@@ -234,9 +246,22 @@ getters =
        , ("TAGame.PRI_TA:Title", const getIntAttribute)
        , ("TAGame.PRI_TA:TotalXP", const getIntAttribute)
        , ("TAGame.RBActor_TA:bFrozen", const getBooleanAttribute)
+       , ("TAGame.RBActor_TA:bIgnoreSyncing", const getBooleanAttribute)
        , ("TAGame.RBActor_TA:bReplayActor", const getBooleanAttribute)
        , ( "TAGame.RBActor_TA:ReplicatedRBState"
          , const getRigidBodyStateAttribute)
+       , ("TAGame.RBActor_TA:WeldedInfo", const getWeldedInfoAttribute)
+       , ( "TAGame.SpecialPickup_BallFreeze_TA:RepOrigSpeed"
+         , const getFloatAttribute)
+       , ( "TAGame.SpecialPickup_BallVelcro_TA:AttachTime"
+         , const getFloatAttribute)
+       , ( "TAGame.SpecialPickup_BallVelcro_TA:bBroken"
+         , const getBooleanAttribute)
+       , ("TAGame.SpecialPickup_BallVelcro_TA:bHit", const getBooleanAttribute)
+       , ( "TAGame.SpecialPickup_BallVelcro_TA:BreakTime"
+         , const getFloatAttribute)
+       , ( "TAGame.SpecialPickup_Targeted_TA:Targeted"
+         , const getFlaggedIntAttribute)
        , ("TAGame.Team_Soccar_TA:GameScore", const getIntAttribute)
        , ("TAGame.Team_TA:CustomTeamName", const getStringAttribute)
        , ("TAGame.Team_TA:GameEvent", const getFlaggedIntAttribute)
@@ -498,6 +523,15 @@ getUniqueIdAttribute = do
   (systemId, remoteId, localId) <- getUniqueId
   pure (UniqueIdAttribute systemId remoteId localId)
 
+getWeldedInfoAttribute :: BinaryBit.BitGet AttributeValue
+getWeldedInfoAttribute = do
+  active <- BinaryBit.getBool
+  actorId <- getInt32Bits
+  offset <- getLocation
+  mass <- getFloat32Bits
+  rotation <- getRotation
+  pure (WeldedInfoAttribute active actorId offset mass rotation)
+
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
   case value of
@@ -597,6 +631,12 @@ putAttributeValue value =
       putWord32Bits accentFinish
     UniqueIdAttribute systemId remoteId localId ->
       putUniqueId systemId remoteId localId
+    WeldedInfoAttribute active actorId offset mass rotation -> do
+      BinaryBit.putBool active
+      putInt32Bits actorId
+      putLocation offset
+      putFloat32Bits mass
+      putRotation rotation
     _ -> fail ("don't know how to put attribute value " ++ show value)
 
 getUniqueId :: BinaryBit.BitGet (Word8, RemoteId, Word8)
