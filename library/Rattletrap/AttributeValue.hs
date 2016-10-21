@@ -241,6 +241,7 @@ getters =
        , ("TAGame.PRI_TA:MatchScore", const getIntAttribute)
        , ("TAGame.PRI_TA:MatchShots", const getIntAttribute)
        , ("TAGame.PRI_TA:PartyLeader", const getPartyLeaderAttribute)
+       , ("TAGame.PRI_TA:PawnType", const getByteAttribute)
        , ("TAGame.PRI_TA:PersistentCamera", const getFlaggedIntAttribute)
        , ("TAGame.PRI_TA:ReplicatedGameEvent", const getFlaggedIntAttribute)
        , ("TAGame.PRI_TA:Title", const getIntAttribute)
