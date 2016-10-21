@@ -5,9 +5,9 @@ import Rattletrap.CompressedWordVector
 import Rattletrap.Float32
 import Rattletrap.Int32
 import Rattletrap.Int8Vector
-import Rattletrap.Location
 import Rattletrap.RemoteId
 import Rattletrap.Text
+import Rattletrap.Vector
 import Rattletrap.Word32
 import Rattletrap.Word64
 import Rattletrap.Word8
@@ -31,11 +31,11 @@ data AttributeValue
                       Word32
                       Bool
                       Word32
-                      Location
-                      Location
+                      Vector
+                      Vector
   | EnumAttribute Word.Word16
   | ExplosionAttribute (Maybe Int32)
-                       Location
+                       Vector
   | FlaggedIntAttribute Bool
                         Int32
   | FloatAttribute Float32
@@ -58,7 +58,7 @@ data AttributeValue
                             AttributeValue
                             Bool
                             Bool
-  | LocationAttribute Location
+  | LocationAttribute Vector
   | MusicStingerAttribute Bool
                           Word32
                           Word8
@@ -84,10 +84,10 @@ data AttributeValue
                          Bool
                          (Maybe Word.Word8)
   | RigidBodyStateAttribute Bool
-                            Location
+                            Vector
                             CompressedWordVector
-                            (Maybe Location)
-                            (Maybe Location)
+                            (Maybe Vector)
+                            (Maybe Vector)
   | StringAttribute Text
   | TeamPaintAttribute Word8
                        Word8
@@ -99,7 +99,7 @@ data AttributeValue
                       Word8
   | WeldedInfoAttribute Bool
                         Int32
-                        Location
+                        Vector
                         Float32
                         Int8Vector
   deriving (Eq, Ord, Show)
@@ -301,8 +301,8 @@ getDemolishAttribute = do
   attackerActorId <- getWord32Bits
   victimFlag <- BinaryBit.getBool
   victimActorId <- getWord32Bits
-  attackerVelocity <- getLocation
-  victimVelocity <- getLocation
+  attackerVelocity <- getVector
+  victimVelocity <- getVector
   pure
     (DemolishAttribute
        attackerFlag
@@ -326,7 +326,7 @@ getExplosionAttribute = do
       else do
         actorId <- getInt32Bits
         pure (Just actorId)
-  location <- getLocation
+  location <- getVector
   pure (ExplosionAttribute maybeActorId location)
 
 getFlaggedIntAttribute :: BinaryBit.BitGet AttributeValue
@@ -403,7 +403,7 @@ getLoadoutsOnlineAttribute = do
 
 getLocationAttribute :: BinaryBit.BitGet AttributeValue
 getLocationAttribute = do
-  location <- getLocation
+  location <- getVector
   pure (LocationAttribute location)
 
 getMusicStingerAttribute :: BinaryBit.BitGet AttributeValue
@@ -482,19 +482,19 @@ getReservationAttribute version = do
 getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
 getRigidBodyStateAttribute = do
   isSleeping <- BinaryBit.getBool
-  location <- getLocation
+  location <- getVector
   spin <- getCompressedWordVector
   linearVelocity <-
     if isSleeping
       then pure Nothing
       else do
-        linearVelocity <- getLocation
+        linearVelocity <- getVector
         pure (Just linearVelocity)
   angularVelocity <-
     if isSleeping
       then pure Nothing
       else do
-        angularVelocity <- getLocation
+        angularVelocity <- getVector
         pure (Just angularVelocity)
   pure
     (RigidBodyStateAttribute
@@ -528,7 +528,7 @@ getWeldedInfoAttribute :: BinaryBit.BitGet AttributeValue
 getWeldedInfoAttribute = do
   active <- BinaryBit.getBool
   actorId <- getInt32Bits
-  offset <- getLocation
+  offset <- getVector
   mass <- getFloat32Bits
   rotation <- getInt8Vector
   pure (WeldedInfoAttribute active actorId offset mass rotation)
@@ -550,8 +550,8 @@ putAttributeValue value =
       putWord32Bits attackerActorId
       BinaryBit.putBool victimFlag
       putWord32Bits victimActorId
-      putLocation attackerVelocity
-      putLocation victimVelocity
+      putVector attackerVelocity
+      putVector victimVelocity
     EnumAttribute x -> BinaryBit.putWord16be 11 x
     ExplosionAttribute maybeActorId location -> do
       case maybeActorId of
@@ -559,7 +559,7 @@ putAttributeValue value =
         Just actorId -> do
           BinaryBit.putBool False
           putInt32Bits actorId
-      putLocation location
+      putVector location
     FlaggedIntAttribute flag int -> do
       BinaryBit.putBool flag
       putInt32Bits int
@@ -576,7 +576,7 @@ putAttributeValue value =
       putLoadoutOnlineAttribute orangeLoadout
       BinaryBit.putBool unknown1
       BinaryBit.putBool unknown2
-    LocationAttribute location -> putLocation location
+    LocationAttribute location -> putVector location
     MusicStingerAttribute flag cue trigger -> do
       BinaryBit.putBool flag
       putWord32Bits cue
@@ -615,14 +615,14 @@ putAttributeValue value =
         Just c -> BinaryBit.putWord8 6 c
     RigidBodyStateAttribute isSleeping location spin maybeLinearVelocity maybeAngularVelocity -> do
       BinaryBit.putBool isSleeping
-      putLocation location
+      putVector location
       putCompressedWordVector spin
       case maybeLinearVelocity of
         Nothing -> pure ()
-        Just linearVelocity -> putLocation linearVelocity
+        Just linearVelocity -> putVector linearVelocity
       case maybeAngularVelocity of
         Nothing -> pure ()
-        Just angularVelocity -> putLocation angularVelocity
+        Just angularVelocity -> putVector angularVelocity
     StringAttribute text -> putTextBits text
     TeamPaintAttribute team primaryColor accentColor primaryFinish accentFinish -> do
       putWord8Bits team
@@ -635,7 +635,7 @@ putAttributeValue value =
     WeldedInfoAttribute active actorId offset mass rotation -> do
       BinaryBit.putBool active
       putInt32Bits actorId
-      putLocation offset
+      putVector offset
       putFloat32Bits mass
       putInt8Vector rotation
     _ -> fail ("don't know how to put attribute value " ++ show value)

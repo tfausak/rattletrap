@@ -24,7 +24,6 @@ import Rattletrap.Int8 as Export
 import Rattletrap.Int8Vector as Export
 import Rattletrap.KeyFrame as Export
 import Rattletrap.List as Export
-import Rattletrap.Location as Export
 import Rattletrap.Mark as Export
 import Rattletrap.Message as Export
 import Rattletrap.Property as Export
@@ -35,6 +34,7 @@ import Rattletrap.Replication as Export
 import Rattletrap.ReplicationValue as Export
 import Rattletrap.Text as Export
 import Rattletrap.Utility as Export
+import Rattletrap.Vector as Export
 import Rattletrap.Word32 as Export
 import Rattletrap.Word64 as Export
 import Rattletrap.Word8 as Export

@@ -60,7 +60,6 @@ $(Monad.foldM
     , ''Int8Vector
     , ''KeyFrame
     , ''List
-    , ''Location
     , ''Mark
     , ''Message
     , ''Property
@@ -70,6 +69,7 @@ $(Monad.foldM
     , ''Replication
     , ''ReplicationValue
     , ''Text
+    , ''Vector
     , ''Word32
     , ''Word64
     , ''Word8
