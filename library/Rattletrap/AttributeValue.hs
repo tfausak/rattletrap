@@ -1,4 +1,9 @@
-module Rattletrap.AttributeValue where
+module Rattletrap.AttributeValue
+  ( module Rattletrap.AttributeValue
+  , module Export
+  ) where
+
+import Rattletrap.AttributeValue.BooleanAttributeValue as Export
 
 import Rattletrap.CompressedWord
 import Rattletrap.CompressedWordVector
@@ -19,7 +24,7 @@ import qualified Data.Map as Map
 import qualified Data.Word as Word
 
 data AttributeValue
-  = BooleanAttribute Bool
+  = BooleanAttribute BooleanAttributeValue
   | ByteAttribute Word8
   | CamSettingsAttribute Float32
                          Float32
@@ -277,7 +282,7 @@ getters =
 
 getBooleanAttribute :: BinaryBit.BitGet AttributeValue
 getBooleanAttribute = do
-  x <- BinaryBit.getBool
+  x <- getBooleanAttributeValue
   pure (BooleanAttribute x)
 
 getByteAttribute :: BinaryBit.BitGet AttributeValue
@@ -536,7 +541,7 @@ getWeldedInfoAttribute = do
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
   case value of
-    BooleanAttribute x -> BinaryBit.putBool x
+    BooleanAttribute x -> putBooleanAttributeValue x
     ByteAttribute byte -> putWord8Bits byte
     CamSettingsAttribute fov height angle distance stiffness swivelSpeed -> do
       putFloat32Bits fov

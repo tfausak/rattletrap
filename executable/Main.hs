@@ -45,6 +45,7 @@ $(Monad.foldM
     [ ''Attribute
     , ''AttributeMapping
     , ''AttributeValue
+    , ''BooleanAttributeValue
     , ''Cache
     , ''ClassMapping
     , ''CompressedWord
