@@ -77,6 +77,7 @@ $(Monad.foldM
     , ''Replication
     , ''ReplicationValue
     , ''SpawnedReplicationValue
+    , ''StringAttributeValue
     , ''Text
     , ''UpdatedReplicationValue
     , ''Vector

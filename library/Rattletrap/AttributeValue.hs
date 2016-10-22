@@ -10,6 +10,7 @@ import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
 import Rattletrap.AttributeValue.QWord as Export
+import Rattletrap.AttributeValue.String as Export
 
 import Rattletrap.CompressedWord
 import Rattletrap.CompressedWordVector
@@ -97,7 +98,7 @@ data AttributeValue
                             CompressedWordVector
                             (Maybe Vector)
                             (Maybe Vector)
-  | StringAttribute Text
+  | StringAttribute StringAttributeValue
   | TeamPaintAttribute Word8
                        Word8
                        Word8
@@ -518,8 +519,8 @@ getRigidBodyStateAttribute = do
 
 getStringAttribute :: BinaryBit.BitGet AttributeValue
 getStringAttribute = do
-  text <- getTextBits
-  pure (StringAttribute text)
+  x <- getStringAttributeValue
+  pure (StringAttribute x)
 
 getTeamPaintAttribute :: BinaryBit.BitGet AttributeValue
 getTeamPaintAttribute = do
@@ -635,7 +636,7 @@ putAttributeValue value =
       case maybeAngularVelocity of
         Nothing -> pure ()
         Just angularVelocity -> putVector angularVelocity
-    StringAttribute text -> putTextBits text
+    StringAttribute x -> putStringAttributeValue x
     TeamPaintAttribute team primaryColor accentColor primaryFinish accentFinish -> do
       putWord8Bits team
       putWord8Bits primaryColor
