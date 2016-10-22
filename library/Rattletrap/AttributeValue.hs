@@ -5,6 +5,7 @@ module Rattletrap.AttributeValue
 
 import Rattletrap.AttributeValue.Boolean as Export
 import Rattletrap.AttributeValue.Byte as Export
+import Rattletrap.AttributeValue.Enum as Export
 
 import Rattletrap.CompressedWord
 import Rattletrap.CompressedWordVector
@@ -39,7 +40,7 @@ data AttributeValue
                       Word32
                       Vector
                       Vector
-  | EnumAttribute Word.Word16
+  | EnumAttribute EnumAttributeValue
   | ExplosionAttribute (Maybe Int32)
                        Vector
   | FlaggedIntAttribute Bool
@@ -323,7 +324,7 @@ getDemolishAttribute = do
 
 getEnumAttribute :: BinaryBit.BitGet AttributeValue
 getEnumAttribute = do
-  x <- BinaryBit.getWord16be 11
+  x <- getEnumAttributeValue
   pure (EnumAttribute x)
 
 getExplosionAttribute :: BinaryBit.BitGet AttributeValue
@@ -561,7 +562,7 @@ putAttributeValue value =
       putWord32Bits victimActorId
       putVector attackerVelocity
       putVector victimVelocity
-    EnumAttribute x -> BinaryBit.putWord16be 11 x
+    EnumAttribute x -> putEnumAttributeValue x
     ExplosionAttribute maybeActorId location -> do
       case maybeActorId of
         Nothing -> BinaryBit.putBool True

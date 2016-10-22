@@ -52,8 +52,9 @@ $(Monad.foldM
     , ''CompressedWord
     , ''CompressedWordVector
     , ''Content
-    , ''Dictionary
     , ''DestroyedReplicationValue
+    , ''Dictionary
+    , ''EnumAttributeValue
     , ''Float32
     , ''Frame
     , ''Header
