@@ -81,7 +81,6 @@ data AttributeValue
                                   Text
                                   Bool
   | QWordAttribute Word64
-  | RelativeRotationAttribute
   | ReservationAttribute CompressedWord
                          Word8
                          RemoteId
@@ -648,7 +647,6 @@ putAttributeValue value =
       putVector offset
       putFloat32Bits mass
       putInt8Vector rotation
-    _ -> fail ("don't know how to put attribute value " ++ show value)
 
 getUniqueId :: BinaryBit.BitGet (Word8, RemoteId, Word8)
 getUniqueId = do
