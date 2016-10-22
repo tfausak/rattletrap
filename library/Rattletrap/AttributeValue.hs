@@ -7,6 +7,7 @@ import Rattletrap.AttributeValue.Boolean as Export
 import Rattletrap.AttributeValue.Byte as Export
 import Rattletrap.AttributeValue.Enum as Export
 import Rattletrap.AttributeValue.Float as Export
+import Rattletrap.AttributeValue.Int as Export
 
 import Rattletrap.CompressedWord
 import Rattletrap.CompressedWordVector
@@ -49,7 +50,7 @@ data AttributeValue
   | FloatAttribute FloatAttributeValue
   | GameModeAttribute Int
                       Word.Word8
-  | IntAttribute Int32
+  | IntAttribute IntAttributeValue
   | LoadoutAttribute Word8
                      Word32
                      Word32
@@ -361,8 +362,8 @@ getGameModeAttribute version = do
 
 getIntAttribute :: BinaryBit.BitGet AttributeValue
 getIntAttribute = do
-  int <- getInt32Bits
-  pure (IntAttribute int)
+  x <- getIntAttributeValue
+  pure (IntAttribute x)
 
 getLoadoutAttribute :: BinaryBit.BitGet AttributeValue
 getLoadoutAttribute = do
@@ -575,7 +576,7 @@ putAttributeValue value =
       putInt32Bits int
     FloatAttribute x -> putFloatAttributeValue x
     GameModeAttribute numBits word8 -> BinaryBit.putWord8 numBits word8
-    IntAttribute int -> putInt32Bits int
+    IntAttribute x -> putIntAttributeValue x
     LoadoutAttribute _ _ _ _ _ _ _ _ _ -> putLoadoutAttribute value
     LoadoutOnlineAttribute _ -> putLoadoutOnlineAttribute value
     LoadoutsAttribute blueLoadout orangeLoadout -> do

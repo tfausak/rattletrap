@@ -63,6 +63,7 @@ $(Monad.foldM
     , ''Int32
     , ''Int8
     , ''Int8Vector
+    , ''IntAttributeValue
     , ''KeyFrame
     , ''List
     , ''Mark
