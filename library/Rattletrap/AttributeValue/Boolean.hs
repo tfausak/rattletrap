@@ -3,15 +3,15 @@ module Rattletrap.AttributeValue.Boolean where
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 
-data BooleanAttributeValue = BooleanAttributeValue
-  { booleanAttributeValueFlag :: Bool
+newtype BooleanAttributeValue = BooleanAttributeValue
+  { booleanAttributeValueValue :: Bool
   } deriving (Eq, Ord, Show)
 
 getBooleanAttributeValue :: BinaryBit.BitGet BooleanAttributeValue
 getBooleanAttributeValue = do
-  flag <- BinaryBit.getBool
-  pure (BooleanAttributeValue flag)
+  value <- BinaryBit.getBool
+  pure (BooleanAttributeValue value)
 
 putBooleanAttributeValue :: BooleanAttributeValue -> BinaryBit.BitPut ()
 putBooleanAttributeValue booleanAttributeValue =
-  BinaryBit.putBool (booleanAttributeValueFlag booleanAttributeValue)
+  BinaryBit.putBool (booleanAttributeValueValue booleanAttributeValue)
