@@ -1,4 +1,4 @@
-module Rattletrap.AttributeValue.BooleanAttributeValue where
+module Rattletrap.AttributeValue.Boolean where
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
@@ -13,5 +13,5 @@ getBooleanAttributeValue = do
   pure (BooleanAttributeValue flag)
 
 putBooleanAttributeValue :: BooleanAttributeValue -> BinaryBit.BitPut ()
-putBooleanAttributeValue booleanAttributeValue = do
+putBooleanAttributeValue booleanAttributeValue =
   BinaryBit.putBool (booleanAttributeValueFlag booleanAttributeValue)

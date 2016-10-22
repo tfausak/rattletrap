@@ -1,4 +1,4 @@
-module Rattletrap.ReplicationValue.UpdatedReplicationValue where
+module Rattletrap.ReplicationValue.Updated where
 
 import Rattletrap.ActorMap
 import Rattletrap.Attribute

@@ -3,8 +3,8 @@ module Rattletrap.AttributeValue
   , module Export
   ) where
 
-import Rattletrap.AttributeValue.BooleanAttributeValue as Export
-import Rattletrap.AttributeValue.ByteAttributeValue as Export
+import Rattletrap.AttributeValue.Boolean as Export
+import Rattletrap.AttributeValue.Byte as Export
 
 import Rattletrap.CompressedWord
 import Rattletrap.CompressedWordVector

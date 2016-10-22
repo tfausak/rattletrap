@@ -1,4 +1,4 @@
-module Rattletrap.ReplicationValue.DestroyedReplicationValue where
+module Rattletrap.ReplicationValue.Destroyed where
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

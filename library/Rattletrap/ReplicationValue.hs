@@ -3,12 +3,9 @@ module Rattletrap.ReplicationValue
   , module Export
   ) where
 
-import Rattletrap.ReplicationValue.DestroyedReplicationValue
-       as Export
-import Rattletrap.ReplicationValue.SpawnedReplicationValue
-       as Export
-import Rattletrap.ReplicationValue.UpdatedReplicationValue
-       as Export
+import Rattletrap.ReplicationValue.Destroyed as Export
+import Rattletrap.ReplicationValue.Spawned as Export
+import Rattletrap.ReplicationValue.Updated as Export
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap

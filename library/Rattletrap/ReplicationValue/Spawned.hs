@@ -1,4 +1,4 @@
-module Rattletrap.ReplicationValue.SpawnedReplicationValue where
+module Rattletrap.ReplicationValue.Spawned where
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap

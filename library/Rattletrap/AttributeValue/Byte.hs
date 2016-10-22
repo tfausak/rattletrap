@@ -1,4 +1,4 @@
-module Rattletrap.AttributeValue.ByteAttributeValue where
+module Rattletrap.AttributeValue.Byte where
 
 import Rattletrap.Word8
 
@@ -15,5 +15,5 @@ getByteAttributeValue = do
   pure (ByteAttributeValue word)
 
 putByteAttributeValue :: ByteAttributeValue -> BinaryBit.BitPut ()
-putByteAttributeValue byteAttributeValue = do
+putByteAttributeValue byteAttributeValue =
   putWord8Bits (byteAttributeValueWord byteAttributeValue)
