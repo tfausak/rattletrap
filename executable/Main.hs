@@ -56,6 +56,7 @@ $(Monad.foldM
     , ''Dictionary
     , ''EnumAttributeValue
     , ''Float32
+    , ''FloatAttributeValue
     , ''Frame
     , ''Header
     , ''Initialization

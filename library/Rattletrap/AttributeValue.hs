@@ -6,6 +6,7 @@ module Rattletrap.AttributeValue
 import Rattletrap.AttributeValue.Boolean as Export
 import Rattletrap.AttributeValue.Byte as Export
 import Rattletrap.AttributeValue.Enum as Export
+import Rattletrap.AttributeValue.Float as Export
 
 import Rattletrap.CompressedWord
 import Rattletrap.CompressedWordVector
@@ -45,7 +46,7 @@ data AttributeValue
                        Vector
   | FlaggedIntAttribute Bool
                         Int32
-  | FloatAttribute Float32
+  | FloatAttribute FloatAttributeValue
   | GameModeAttribute Int
                       Word.Word8
   | IntAttribute Int32
@@ -346,8 +347,8 @@ getFlaggedIntAttribute = do
 
 getFloatAttribute :: BinaryBit.BitGet AttributeValue
 getFloatAttribute = do
-  float <- getFloat32Bits
-  pure (FloatAttribute float)
+  x <- getFloatAttributeValue
+  pure (FloatAttribute x)
 
 getGameModeAttribute :: (Int, Int) -> BinaryBit.BitGet AttributeValue
 getGameModeAttribute version = do
@@ -572,7 +573,7 @@ putAttributeValue value =
     FlaggedIntAttribute flag int -> do
       BinaryBit.putBool flag
       putInt32Bits int
-    FloatAttribute float -> putFloat32Bits float
+    FloatAttribute x -> putFloatAttributeValue x
     GameModeAttribute numBits word8 -> BinaryBit.putWord8 numBits word8
     IntAttribute int -> putInt32Bits int
     LoadoutAttribute _ _ _ _ _ _ _ _ _ -> putLoadoutAttribute value
