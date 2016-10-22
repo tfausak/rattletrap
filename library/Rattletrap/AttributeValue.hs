@@ -215,6 +215,7 @@ getters =
          , const getFlaggedIntAttribute)
        , ( "TAGame.GameEvent_SoccarPrivate_TA:MatchSettings"
          , const getPrivateMatchSettingsAttribute)
+       , ("TAGame.GameEvent_TA:bCanVoteToForfeit", const getBooleanAttribute)
        , ( "TAGame.GameEvent_TA:bHasLeaveMatchPenalty"
          , const getBooleanAttribute)
        , ("TAGame.GameEvent_TA:BotSkill", const getIntAttribute)

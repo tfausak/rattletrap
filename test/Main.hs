@@ -49,6 +49,7 @@ replays =
   , ("1BC2D01444ACE577D01E988EADD4DFD0", "no padding after the frames")
   , ("1D1DE97D4941C86E43FE0093563DB621", "a camera pitch")
   , ("211466D04B983F5A33CC2FA1D5928672", "a match save")
+  , ("22BACD794ABE7B92E50E9CBDBD9C59CE", "a vote to forfeit")
   , ("29F582C34A65EB34D358A784CBE3C189", "frames")
   , ("2F817C8C44859C762980AE85B1862A31", "splitscreen players")
   , ("372DBFCA4BDB340E4357B6BD43032802", "a camera yaw attribute")
