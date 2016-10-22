@@ -1,5 +1,5 @@
 category: Game
-description: Rattletrap parses Rocket League replays.
+description: Rattletrap parses and generates Rocket League replays.
 executables:
   rattletrap:
     dependencies:
@@ -32,7 +32,7 @@ license: MIT
 license-file: LICENSE.markdown
 maintainer: Taylor Fausak
 name: rattletrap
-synopsis: Parse Rocket League replays.
+synopsis: Parse and generate Rocket League replays.
 tests:
   rattletrap-test:
     dependencies:

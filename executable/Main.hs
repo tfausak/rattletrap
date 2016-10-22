@@ -23,12 +23,12 @@ main = do
 mainWithArgs :: [String] -> IO ()
 mainWithArgs args =
   case args of
-    ["replay2json", replayFile, jsonFile] -> do
+    ["parse", replayFile, jsonFile] -> do
       input <- ByteString.readFile replayFile
       let replay = Binary.runGet getReplay input
       let output = Aeson.encode replay
       ByteString.writeFile jsonFile output
-    ["json2replay", jsonFile, replayfile] -> do
+    ["generate", jsonFile, replayfile] -> do
       input <- ByteString.readFile jsonFile
       case Aeson.eitherDecode input of
         Left message -> fail ("could not parse JSON: " ++ message)
