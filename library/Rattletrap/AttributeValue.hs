@@ -8,6 +8,7 @@ import Rattletrap.AttributeValue.Byte as Export
 import Rattletrap.AttributeValue.Enum as Export
 import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.Int as Export
+import Rattletrap.AttributeValue.Location as Export
 
 import Rattletrap.CompressedWord
 import Rattletrap.CompressedWordVector
@@ -67,7 +68,7 @@ data AttributeValue
                             AttributeValue
                             Bool
                             Bool
-  | LocationAttribute Vector
+  | LocationAttribute LocationAttributeValue
   | MusicStingerAttribute Bool
                           Word32
                           Word8
@@ -414,8 +415,8 @@ getLoadoutsOnlineAttribute = do
 
 getLocationAttribute :: BinaryBit.BitGet AttributeValue
 getLocationAttribute = do
-  location <- getVector
-  pure (LocationAttribute location)
+  x <- getLocationAttributeValue
+  pure (LocationAttribute x)
 
 getMusicStingerAttribute :: BinaryBit.BitGet AttributeValue
 getMusicStingerAttribute = do
@@ -587,7 +588,7 @@ putAttributeValue value =
       putLoadoutOnlineAttribute orangeLoadout
       BinaryBit.putBool unknown1
       BinaryBit.putBool unknown2
-    LocationAttribute location -> putVector location
+    LocationAttribute x -> putLocationAttributeValue x
     MusicStingerAttribute flag cue trigger -> do
       BinaryBit.putBool flag
       putWord32Bits cue

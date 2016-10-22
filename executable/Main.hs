@@ -66,6 +66,7 @@ $(Monad.foldM
     , ''IntAttributeValue
     , ''KeyFrame
     , ''List
+    , ''LocationAttributeValue
     , ''Mark
     , ''Message
     , ''Property
