@@ -9,6 +9,7 @@ import Rattletrap.AttributeValue.Enum as Export
 import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
+import Rattletrap.AttributeValue.QWord as Export
 
 import Rattletrap.CompressedWord
 import Rattletrap.CompressedWordVector
@@ -19,7 +20,6 @@ import Rattletrap.RemoteId
 import Rattletrap.Text
 import Rattletrap.Vector
 import Rattletrap.Word32
-import Rattletrap.Word64
 import Rattletrap.Word8
 
 import qualified Control.Monad as Monad
@@ -83,7 +83,7 @@ data AttributeValue
                                   Text
                                   Text
                                   Bool
-  | QWordAttribute Word64
+  | QWordAttribute QWordAttributeValue
   | ReservationAttribute CompressedWord
                          Word8
                          RemoteId
@@ -468,8 +468,8 @@ getPrivateMatchSettingsAttribute = do
 
 getQWordAttribute :: BinaryBit.BitGet AttributeValue
 getQWordAttribute = do
-  word64 <- getWord64Bits
-  pure (QWordAttribute word64)
+  x <- getQWordAttributeValue
+  pure (QWordAttribute x)
 
 getReservationAttribute :: (Int, Int) -> BinaryBit.BitGet AttributeValue
 getReservationAttribute version = do
@@ -613,7 +613,7 @@ putAttributeValue value =
       putTextBits gameName
       putTextBits password
       BinaryBit.putBool flag
-    QWordAttribute word64 -> putWord64Bits word64
+    QWordAttribute x -> putQWordAttributeValue x
     ReservationAttribute number systemId remoteId localId maybeName a b mc -> do
       putCompressedWord number
       putUniqueId systemId remoteId localId

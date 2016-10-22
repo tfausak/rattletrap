@@ -71,6 +71,7 @@ $(Monad.foldM
     , ''Message
     , ''Property
     , ''PropertyValue
+    , ''QWordAttributeValue
     , ''RemoteId
     , ''Replay
     , ''Replication
