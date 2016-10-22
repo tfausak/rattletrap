@@ -199,6 +199,8 @@ getters =
          , const getIntAttribute)
        , ( "TAGame.CrowdActor_TA:ReplicatedOneShotSound"
          , const getFlaggedIntAttribute)
+       , ( "TAGame.CrowdActor_TA:ReplicatedRoundCountDownNumber"
+         , const getIntAttribute)
        , ("TAGame.CrowdManager_TA:GameEvent", const getFlaggedIntAttribute)
        , ( "TAGame.CrowdManager_TA:ReplicatedGlobalOneShotSound"
          , const getFlaggedIntAttribute)
