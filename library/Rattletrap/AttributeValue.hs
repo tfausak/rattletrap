@@ -9,6 +9,7 @@ import Rattletrap.AttributeValue.CamSettings as Export
 import Rattletrap.AttributeValue.Demolish as Export
 import Rattletrap.AttributeValue.Enum as Export
 import Rattletrap.AttributeValue.Explosion as Export
+import Rattletrap.AttributeValue.FlaggedInt as Export
 import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
@@ -39,8 +40,7 @@ data AttributeValue
   | DemolishAttribute DemolishAttributeValue
   | EnumAttribute EnumAttributeValue
   | ExplosionAttribute ExplosionAttributeValue
-  | FlaggedIntAttribute Bool
-                        Int32
+  | FlaggedIntAttribute FlaggedIntAttributeValue
   | FloatAttribute FloatAttributeValue
   | GameModeAttribute Int
                       Word.Word8
@@ -312,9 +312,8 @@ getExplosionAttribute = do
 
 getFlaggedIntAttribute :: BinaryBit.BitGet AttributeValue
 getFlaggedIntAttribute = do
-  flag <- BinaryBit.getBool
-  int <- getInt32Bits
-  pure (FlaggedIntAttribute flag int)
+  x <- getFlaggedIntAttributeValue
+  pure (FlaggedIntAttribute x)
 
 getFloatAttribute :: BinaryBit.BitGet AttributeValue
 getFloatAttribute = do
@@ -523,9 +522,7 @@ putAttributeValue value =
     DemolishAttribute x -> putDemolishAttributeValue x
     EnumAttribute x -> putEnumAttributeValue x
     ExplosionAttribute x -> putExplosionAttributeValue x
-    FlaggedIntAttribute flag int -> do
-      BinaryBit.putBool flag
-      putInt32Bits int
+    FlaggedIntAttribute x -> putFlaggedIntAttributeValue x
     FloatAttribute x -> putFloatAttributeValue x
     GameModeAttribute numBits word8 -> BinaryBit.putWord8 numBits word8
     IntAttribute x -> putIntAttributeValue x

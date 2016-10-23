@@ -58,6 +58,7 @@ $(Monad.foldM
     , ''Dictionary
     , ''EnumAttributeValue
     , ''ExplosionAttributeValue
+    , ''FlaggedIntAttributeValue
     , ''Float32
     , ''FloatAttributeValue
     , ''Frame
