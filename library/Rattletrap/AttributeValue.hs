@@ -6,6 +6,7 @@ module Rattletrap.AttributeValue
 import Rattletrap.AttributeValue.Boolean as Export
 import Rattletrap.AttributeValue.Byte as Export
 import Rattletrap.AttributeValue.CamSettings as Export
+import Rattletrap.AttributeValue.Demolish as Export
 import Rattletrap.AttributeValue.Enum as Export
 import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.Int as Export
@@ -34,12 +35,7 @@ data AttributeValue
   = BooleanAttribute BooleanAttributeValue
   | ByteAttribute ByteAttributeValue
   | CamSettingsAttribute CamSettingsAttributeValue
-  | DemolishAttribute Bool
-                      Word32
-                      Bool
-                      Word32
-                      Vector
-                      Vector
+  | DemolishAttribute DemolishAttributeValue
   | EnumAttribute EnumAttributeValue
   | ExplosionAttribute (Maybe Int32)
                        Vector
@@ -301,20 +297,8 @@ getCamSettingsAttribute = do
 
 getDemolishAttribute :: BinaryBit.BitGet AttributeValue
 getDemolishAttribute = do
-  attackerFlag <- BinaryBit.getBool
-  attackerActorId <- getWord32Bits
-  victimFlag <- BinaryBit.getBool
-  victimActorId <- getWord32Bits
-  attackerVelocity <- getVector
-  victimVelocity <- getVector
-  pure
-    (DemolishAttribute
-       attackerFlag
-       attackerActorId
-       victimFlag
-       victimActorId
-       attackerVelocity
-       victimVelocity)
+  x <- getDemolishAttributeValue
+  pure (DemolishAttribute x)
 
 getEnumAttribute :: BinaryBit.BitGet AttributeValue
 getEnumAttribute = do
@@ -543,13 +527,7 @@ putAttributeValue value =
     BooleanAttribute x -> putBooleanAttributeValue x
     ByteAttribute x -> putByteAttributeValue x
     CamSettingsAttribute x -> putCamSettingsAttributeValue x
-    DemolishAttribute attackerFlag attackerActorId victimFlag victimActorId attackerVelocity victimVelocity -> do
-      BinaryBit.putBool attackerFlag
-      putWord32Bits attackerActorId
-      BinaryBit.putBool victimFlag
-      putWord32Bits victimActorId
-      putVector attackerVelocity
-      putVector victimVelocity
+    DemolishAttribute x -> putDemolishAttributeValue x
     EnumAttribute x -> putEnumAttributeValue x
     ExplosionAttribute maybeActorId location -> do
       case maybeActorId of

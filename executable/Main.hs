@@ -53,6 +53,7 @@ $(Monad.foldM
     , ''CompressedWord
     , ''CompressedWordVector
     , ''Content
+    , ''DemolishAttributeValue
     , ''DestroyedReplicationValue
     , ''Dictionary
     , ''EnumAttributeValue
