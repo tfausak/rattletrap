@@ -62,6 +62,7 @@ $(Monad.foldM
     , ''Float32
     , ''FloatAttributeValue
     , ''Frame
+    , ''GameModeAttributeValue
     , ''Header
     , ''Initialization
     , ''Int32

@@ -11,6 +11,7 @@ import Rattletrap.AttributeValue.Enum as Export
 import Rattletrap.AttributeValue.Explosion as Export
 import Rattletrap.AttributeValue.FlaggedInt as Export
 import Rattletrap.AttributeValue.Float as Export
+import Rattletrap.AttributeValue.GameMode as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
 import Rattletrap.AttributeValue.QWord as Export
@@ -42,8 +43,7 @@ data AttributeValue
   | ExplosionAttribute ExplosionAttributeValue
   | FlaggedIntAttribute FlaggedIntAttributeValue
   | FloatAttribute FloatAttributeValue
-  | GameModeAttribute Int
-                      Word.Word8
+  | GameModeAttribute GameModeAttributeValue
   | IntAttribute IntAttributeValue
   | LoadoutAttribute Word8
                      Word32
@@ -322,12 +322,8 @@ getFloatAttribute = do
 
 getGameModeAttribute :: (Int, Int) -> BinaryBit.BitGet AttributeValue
 getGameModeAttribute version = do
-  let numBits =
-        if beforeNeoTokyo version
-          then 2
-          else 8
-  word8 <- BinaryBit.getWord8 numBits
-  pure (GameModeAttribute numBits word8)
+  x <- getGameModeAttributeValue version
+  pure (GameModeAttribute x)
 
 getIntAttribute :: BinaryBit.BitGet AttributeValue
 getIntAttribute = do
@@ -524,7 +520,7 @@ putAttributeValue value =
     ExplosionAttribute x -> putExplosionAttributeValue x
     FlaggedIntAttribute x -> putFlaggedIntAttributeValue x
     FloatAttribute x -> putFloatAttributeValue x
-    GameModeAttribute numBits word8 -> BinaryBit.putWord8 numBits word8
+    GameModeAttribute x -> putGameModeAttributeValue x
     IntAttribute x -> putIntAttributeValue x
     LoadoutAttribute _ _ _ _ _ _ _ _ _ -> putLoadoutAttribute value
     LoadoutOnlineAttribute _ -> putLoadoutOnlineAttribute value
