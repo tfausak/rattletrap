@@ -5,6 +5,7 @@ module Rattletrap.AttributeValue
 
 import Rattletrap.AttributeValue.Boolean as Export
 import Rattletrap.AttributeValue.Byte as Export
+import Rattletrap.AttributeValue.CamSettings as Export
 import Rattletrap.AttributeValue.Enum as Export
 import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.Int as Export
@@ -32,12 +33,7 @@ import qualified Data.Word as Word
 data AttributeValue
   = BooleanAttribute BooleanAttributeValue
   | ByteAttribute ByteAttributeValue
-  | CamSettingsAttribute Float32
-                         Float32
-                         Float32
-                         Float32
-                         Float32
-                         Float32
+  | CamSettingsAttribute CamSettingsAttributeValue
   | DemolishAttribute Bool
                       Word32
                       Bool
@@ -300,13 +296,8 @@ getByteAttribute = do
 
 getCamSettingsAttribute :: BinaryBit.BitGet AttributeValue
 getCamSettingsAttribute = do
-  fov <- getFloat32Bits
-  height <- getFloat32Bits
-  angle <- getFloat32Bits
-  distance <- getFloat32Bits
-  stiffness <- getFloat32Bits
-  swivelSpeed <- getFloat32Bits
-  pure (CamSettingsAttribute fov height angle distance stiffness swivelSpeed)
+  x <- getCamSettingsAttributeValue
+  pure (CamSettingsAttribute x)
 
 getDemolishAttribute :: BinaryBit.BitGet AttributeValue
 getDemolishAttribute = do
@@ -551,13 +542,7 @@ putAttributeValue value =
   case value of
     BooleanAttribute x -> putBooleanAttributeValue x
     ByteAttribute x -> putByteAttributeValue x
-    CamSettingsAttribute fov height angle distance stiffness swivelSpeed -> do
-      putFloat32Bits fov
-      putFloat32Bits height
-      putFloat32Bits angle
-      putFloat32Bits distance
-      putFloat32Bits stiffness
-      putFloat32Bits swivelSpeed
+    CamSettingsAttribute x -> putCamSettingsAttributeValue x
     DemolishAttribute attackerFlag attackerActorId victimFlag victimActorId attackerVelocity victimVelocity -> do
       BinaryBit.putBool attackerFlag
       putWord32Bits attackerActorId

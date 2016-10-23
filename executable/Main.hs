@@ -48,6 +48,7 @@ $(Monad.foldM
     , ''BooleanAttributeValue
     , ''ByteAttributeValue
     , ''Cache
+    , ''CamSettingsAttributeValue
     , ''ClassMapping
     , ''CompressedWord
     , ''CompressedWordVector
