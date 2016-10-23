@@ -8,6 +8,7 @@ import Rattletrap.AttributeValue.Byte as Export
 import Rattletrap.AttributeValue.CamSettings as Export
 import Rattletrap.AttributeValue.Demolish as Export
 import Rattletrap.AttributeValue.Enum as Export
+import Rattletrap.AttributeValue.Explosion as Export
 import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
@@ -37,8 +38,7 @@ data AttributeValue
   | CamSettingsAttribute CamSettingsAttributeValue
   | DemolishAttribute DemolishAttributeValue
   | EnumAttribute EnumAttributeValue
-  | ExplosionAttribute (Maybe Int32)
-                       Vector
+  | ExplosionAttribute ExplosionAttributeValue
   | FlaggedIntAttribute Bool
                         Int32
   | FloatAttribute FloatAttributeValue
@@ -307,15 +307,8 @@ getEnumAttribute = do
 
 getExplosionAttribute :: BinaryBit.BitGet AttributeValue
 getExplosionAttribute = do
-  actorless <- BinaryBit.getBool
-  maybeActorId <-
-    if actorless
-      then pure Nothing
-      else do
-        actorId <- getInt32Bits
-        pure (Just actorId)
-  location <- getVector
-  pure (ExplosionAttribute maybeActorId location)
+  x <- getExplosionAttributeValue
+  pure (ExplosionAttribute x)
 
 getFlaggedIntAttribute :: BinaryBit.BitGet AttributeValue
 getFlaggedIntAttribute = do
@@ -529,13 +522,7 @@ putAttributeValue value =
     CamSettingsAttribute x -> putCamSettingsAttributeValue x
     DemolishAttribute x -> putDemolishAttributeValue x
     EnumAttribute x -> putEnumAttributeValue x
-    ExplosionAttribute maybeActorId location -> do
-      case maybeActorId of
-        Nothing -> BinaryBit.putBool True
-        Just actorId -> do
-          BinaryBit.putBool False
-          putInt32Bits actorId
-      putVector location
+    ExplosionAttribute x -> putExplosionAttributeValue x
     FlaggedIntAttribute flag int -> do
       BinaryBit.putBool flag
       putInt32Bits int
