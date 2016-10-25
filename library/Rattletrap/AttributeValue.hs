@@ -15,6 +15,7 @@ import Rattletrap.AttributeValue.GameMode as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
 import Rattletrap.AttributeValue.MusicStinger as Export
+import Rattletrap.AttributeValue.PartyLeader as Export
 import Rattletrap.AttributeValue.Pickup as Export
 import Rattletrap.AttributeValue.PrivateMatchSettings as Export
 import Rattletrap.AttributeValue.QWord as Export
@@ -64,8 +65,7 @@ data AttributeValue
                             Bool
   | LocationAttribute LocationAttributeValue
   | MusicStingerAttribute MusicStingerAttributeValue
-  | PartyLeaderAttribute Word8
-                         (Maybe (RemoteId, Word8))
+  | PartyLeaderAttribute PartyLeaderAttributeValue
   | PickupAttribute PickupAttributeValue
   | PrivateMatchSettingsAttribute PrivateMatchSettingsAttributeValue
   | QWordAttribute QWordAttributeValue
@@ -369,15 +369,8 @@ getMusicStingerAttribute = do
 
 getPartyLeaderAttribute :: BinaryBit.BitGet AttributeValue
 getPartyLeaderAttribute = do
-  systemId <- getWord8Bits
-  maybeRemoteAndLocalId <-
-    if systemId == Word8 0
-      then pure Nothing
-      else do
-        remoteId <- getRemoteId systemId
-        localId <- getWord8Bits
-        pure (Just (remoteId, localId))
-  pure (PartyLeaderAttribute systemId maybeRemoteAndLocalId)
+  x <- getPartyLeaderAttributeValue
+  pure (PartyLeaderAttribute x)
 
 getPickupAttribute :: BinaryBit.BitGet AttributeValue
 getPickupAttribute = do
@@ -464,13 +457,7 @@ putAttributeValue value =
       BinaryBit.putBool unknown2
     LocationAttribute x -> putLocationAttributeValue x
     MusicStingerAttribute x -> putMusicStingerAttributeValue x
-    PartyLeaderAttribute systemId maybeRemoteAndLocalId -> do
-      putWord8Bits systemId
-      case maybeRemoteAndLocalId of
-        Nothing -> pure ()
-        Just (remoteId, localId) -> do
-          putRemoteId remoteId
-          putWord8Bits localId
+    PartyLeaderAttribute x -> putPartyLeaderAttributeValue x
     PickupAttribute x -> putPickupAttributeValue x
     PrivateMatchSettingsAttribute x -> putPrivateMatchSettingsAttributeValue x
     QWordAttribute x -> putQWordAttributeValue x
