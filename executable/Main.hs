@@ -94,6 +94,7 @@ $(Monad.foldM
     , ''StringAttributeValue
     , ''TeamPaintAttributeValue
     , ''Text
+    , ''UniqueIdAttributeValue
     , ''UpdatedReplicationValue
     , ''Vector
     , ''WeldedInfoAttributeValue

@@ -22,6 +22,7 @@ import Rattletrap.AttributeValue.QWord as Export
 import Rattletrap.AttributeValue.RigidBodyState as Export
 import Rattletrap.AttributeValue.String as Export
 import Rattletrap.AttributeValue.TeamPaint as Export
+import Rattletrap.AttributeValue.UniqueId as Export
 import Rattletrap.AttributeValue.WeldedInfo as Export
 
 import Rattletrap.CompressedWord
@@ -80,9 +81,7 @@ data AttributeValue
   | RigidBodyStateAttribute RigidBodyStateAttributeValue
   | StringAttribute StringAttributeValue
   | TeamPaintAttribute TeamPaintAttributeValue
-  | UniqueIdAttribute Word8
-                      RemoteId
-                      Word8
+  | UniqueIdAttribute UniqueIdAttributeValue
   | WeldedInfoAttribute WeldedInfoAttributeValue
   deriving (Eq, Ord, Show)
 
@@ -390,7 +389,10 @@ getQWordAttribute = do
 getReservationAttribute :: (Int, Int) -> BinaryBit.BitGet AttributeValue
 getReservationAttribute version = do
   number <- getCompressedWord 7
-  (systemId, remoteId, localId) <- getUniqueId
+  uniqueId <- getUniqueIdAttributeValue
+  let systemId = uniqueIdAttributeValueSystemId uniqueId
+  let remoteId = uniqueIdAttributeValueRemoteId uniqueId
+  let localId = uniqueIdAttributeValueLocalId uniqueId
   name <-
     if systemId == Word8 0
       then pure Nothing
@@ -424,8 +426,8 @@ getTeamPaintAttribute = do
 
 getUniqueIdAttribute :: BinaryBit.BitGet AttributeValue
 getUniqueIdAttribute = do
-  (systemId, remoteId, localId) <- getUniqueId
-  pure (UniqueIdAttribute systemId remoteId localId)
+  x <- getUniqueIdAttributeValue
+  pure (UniqueIdAttribute x)
 
 getWeldedInfoAttribute :: BinaryBit.BitGet AttributeValue
 getWeldedInfoAttribute = do
@@ -463,7 +465,8 @@ putAttributeValue value =
     QWordAttribute x -> putQWordAttributeValue x
     ReservationAttribute number systemId remoteId localId maybeName a b mc -> do
       putCompressedWord number
-      putUniqueId systemId remoteId localId
+      putUniqueIdAttributeValue
+        (UniqueIdAttributeValue systemId remoteId localId)
       case maybeName of
         Nothing -> pure ()
         Just name -> putTextBits name
@@ -475,22 +478,8 @@ putAttributeValue value =
     RigidBodyStateAttribute x -> putRigidBodyStateAttributeValue x
     StringAttribute x -> putStringAttributeValue x
     TeamPaintAttribute x -> putTeamPaintAttributeValue x
-    UniqueIdAttribute systemId remoteId localId ->
-      putUniqueId systemId remoteId localId
+    UniqueIdAttribute x -> putUniqueIdAttributeValue x
     WeldedInfoAttribute x -> putWeldedInfoAttributeValue x
-
-getUniqueId :: BinaryBit.BitGet (Word8, RemoteId, Word8)
-getUniqueId = do
-  systemId <- getWord8Bits
-  remoteId <- getRemoteId systemId
-  localId <- getWord8Bits
-  pure (systemId, remoteId, localId)
-
-putUniqueId :: Word8 -> RemoteId -> Word8 -> BinaryBit.BitPut ()
-putUniqueId systemId remoteId localId = do
-  putWord8Bits systemId
-  putRemoteId remoteId
-  putWord8Bits localId
 
 putLoadoutAttribute :: AttributeValue -> BinaryBit.BitPut ()
 putLoadoutAttribute value =
