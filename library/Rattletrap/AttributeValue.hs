@@ -15,6 +15,7 @@ import Rattletrap.AttributeValue.GameMode as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Loadout as Export
 import Rattletrap.AttributeValue.LoadoutOnline as Export
+import Rattletrap.AttributeValue.Loadouts as Export
 import Rattletrap.AttributeValue.LoadoutsOnline as Export
 import Rattletrap.AttributeValue.Location as Export
 import Rattletrap.AttributeValue.MusicStinger as Export
@@ -48,8 +49,7 @@ data AttributeValue
   | IntAttribute IntAttributeValue
   | LoadoutAttribute LoadoutAttributeValue
   | LoadoutOnlineAttribute LoadoutOnlineAttributeValue
-  | LoadoutsAttribute LoadoutAttributeValue
-                      LoadoutAttributeValue
+  | LoadoutsAttribute LoadoutsAttributeValue
   | LoadoutsOnlineAttribute LoadoutsOnlineAttributeValue
   | LocationAttribute LocationAttributeValue
   | MusicStingerAttribute MusicStingerAttributeValue
@@ -301,9 +301,8 @@ getLoadoutOnlineAttribute = do
 
 getLoadoutsAttribute :: BinaryBit.BitGet AttributeValue
 getLoadoutsAttribute = do
-  blueLoadout <- getLoadoutAttributeValue
-  orangeLoadout <- getLoadoutAttributeValue
-  pure (LoadoutsAttribute blueLoadout orangeLoadout)
+  x <- getLoadoutsAttributeValue
+  pure (LoadoutsAttribute x)
 
 getLoadoutsOnlineAttribute :: BinaryBit.BitGet AttributeValue
 getLoadoutsOnlineAttribute = do
@@ -385,9 +384,7 @@ putAttributeValue value =
     IntAttribute x -> putIntAttributeValue x
     LoadoutAttribute x -> putLoadoutAttributeValue x
     LoadoutOnlineAttribute x -> putLoadoutOnlineAttributeValue x
-    LoadoutsAttribute blueLoadout orangeLoadout -> do
-      putLoadoutAttributeValue blueLoadout
-      putLoadoutAttributeValue orangeLoadout
+    LoadoutsAttribute x -> putLoadoutsAttributeValue x
     LoadoutsOnlineAttribute x -> putLoadoutsOnlineAttributeValue x
     LocationAttribute x -> putLocationAttributeValue x
     MusicStingerAttribute x -> putMusicStingerAttributeValue x

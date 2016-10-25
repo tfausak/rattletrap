@@ -77,6 +77,7 @@ $(Monad.foldM
     , ''List
     , ''LoadoutAttributeValue
     , ''LoadoutOnlineAttributeValue
+    , ''LoadoutsAttributeValue
     , ''LoadoutsOnlineAttributeValue
     , ''LocationAttributeValue
     , ''Mark
