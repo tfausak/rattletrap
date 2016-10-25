@@ -86,6 +86,7 @@ $(Monad.foldM
     , ''Text
     , ''UpdatedReplicationValue
     , ''Vector
+    , ''WeldedInfoAttributeValue
     , ''Word32
     , ''Word64
     , ''Word8

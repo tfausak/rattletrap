@@ -16,12 +16,10 @@ import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
 import Rattletrap.AttributeValue.QWord as Export
 import Rattletrap.AttributeValue.String as Export
+import Rattletrap.AttributeValue.WeldedInfo as Export
 
 import Rattletrap.CompressedWord
 import Rattletrap.CompressedWordVector
-import Rattletrap.Float32
-import Rattletrap.Int32
-import Rattletrap.Int8Vector
 import Rattletrap.RemoteId
 import Rattletrap.Text
 import Rattletrap.Vector
@@ -99,11 +97,7 @@ data AttributeValue
   | UniqueIdAttribute Word8
                       RemoteId
                       Word8
-  | WeldedInfoAttribute Bool
-                        Int32
-                        Vector
-                        Float32
-                        Int8Vector
+  | WeldedInfoAttribute WeldedInfoAttributeValue
   deriving (Eq, Ord, Show)
 
 getAttributeValue :: (Int, Int) -> Text -> BinaryBit.BitGet AttributeValue
@@ -502,12 +496,8 @@ getUniqueIdAttribute = do
 
 getWeldedInfoAttribute :: BinaryBit.BitGet AttributeValue
 getWeldedInfoAttribute = do
-  active <- BinaryBit.getBool
-  actorId <- getInt32Bits
-  offset <- getVector
-  mass <- getFloat32Bits
-  rotation <- getInt8Vector
-  pure (WeldedInfoAttribute active actorId offset mass rotation)
+  x <- getWeldedInfoAttributeValue
+  pure (WeldedInfoAttribute x)
 
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
@@ -588,12 +578,7 @@ putAttributeValue value =
       putWord32Bits accentFinish
     UniqueIdAttribute systemId remoteId localId ->
       putUniqueId systemId remoteId localId
-    WeldedInfoAttribute active actorId offset mass rotation -> do
-      BinaryBit.putBool active
-      putInt32Bits actorId
-      putVector offset
-      putFloat32Bits mass
-      putInt8Vector rotation
+    WeldedInfoAttribute x -> putWeldedInfoAttributeValue x
 
 getUniqueId :: BinaryBit.BitGet (Word8, RemoteId, Word8)
 getUniqueId = do
