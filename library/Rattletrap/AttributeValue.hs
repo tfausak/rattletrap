@@ -71,32 +71,84 @@ getAttributeValue version name =
     Nothing -> fail ("don't know how to get attribute value " ++ show name)
     Just constructor ->
       case constructor of
-        BooleanAttribute _ -> getBooleanAttribute
-        ByteAttribute _ -> getByteAttribute
-        CamSettingsAttribute _ -> getCamSettingsAttribute
-        DemolishAttribute _ -> getDemolishAttribute
-        EnumAttribute _ -> getEnumAttribute
-        ExplosionAttribute _ -> getExplosionAttribute
-        FlaggedIntAttribute _ -> getFlaggedIntAttribute
-        FloatAttribute _ -> getFloatAttribute
-        GameModeAttribute _ -> getGameModeAttribute version
-        IntAttribute _ -> getIntAttribute
-        LoadoutAttribute _ -> getLoadoutAttribute
-        LoadoutOnlineAttribute _ -> getLoadoutOnlineAttribute
-        LoadoutsAttribute _ -> getLoadoutsAttribute
-        LoadoutsOnlineAttribute _ -> getLoadoutsOnlineAttribute
-        LocationAttribute _ -> getLocationAttribute
-        MusicStingerAttribute _ -> getMusicStingerAttribute
-        PartyLeaderAttribute _ -> getPartyLeaderAttribute
-        PickupAttribute _ -> getPickupAttribute
-        PrivateMatchSettingsAttribute _ -> getPrivateMatchSettingsAttribute
-        QWordAttribute _ -> getQWordAttribute
-        ReservationAttribute _ -> getReservationAttribute version
-        RigidBodyStateAttribute _ -> getRigidBodyStateAttribute
-        StringAttribute _ -> getStringAttribute
-        TeamPaintAttribute _ -> getTeamPaintAttribute
-        UniqueIdAttribute _ -> getUniqueIdAttribute
-        WeldedInfoAttribute _ -> getWeldedInfoAttribute
+        BooleanAttribute _ -> do
+          x <- getBooleanAttributeValue
+          pure (BooleanAttribute x)
+        ByteAttribute _ -> do
+          x <- getByteAttributeValue
+          pure (ByteAttribute x)
+        CamSettingsAttribute _ -> do
+          x <- getCamSettingsAttributeValue
+          pure (CamSettingsAttribute x)
+        DemolishAttribute _ -> do
+          x <- getDemolishAttributeValue
+          pure (DemolishAttribute x)
+        EnumAttribute _ -> do
+          x <- getEnumAttributeValue
+          pure (EnumAttribute x)
+        ExplosionAttribute _ -> do
+          x <- getExplosionAttributeValue
+          pure (ExplosionAttribute x)
+        FlaggedIntAttribute _ -> do
+          x <- getFlaggedIntAttributeValue
+          pure (FlaggedIntAttribute x)
+        FloatAttribute _ -> do
+          x <- getFloatAttributeValue
+          pure (FloatAttribute x)
+        GameModeAttribute _ -> do
+          x <- getGameModeAttributeValue version
+          pure (GameModeAttribute x)
+        IntAttribute _ -> do
+          x <- getIntAttributeValue
+          pure (IntAttribute x)
+        LoadoutAttribute _ -> do
+          x <- getLoadoutAttributeValue
+          pure (LoadoutAttribute x)
+        LoadoutOnlineAttribute _ -> do
+          x <- getLoadoutOnlineAttributeValue
+          pure (LoadoutOnlineAttribute x)
+        LoadoutsAttribute _ -> do
+          x <- getLoadoutsAttributeValue
+          pure (LoadoutsAttribute x)
+        LoadoutsOnlineAttribute _ -> do
+          x <- getLoadoutsOnlineAttributeValue
+          pure (LoadoutsOnlineAttribute x)
+        LocationAttribute _ -> do
+          x <- getLocationAttributeValue
+          pure (LocationAttribute x)
+        MusicStingerAttribute _ -> do
+          x <- getMusicStingerAttributeValue
+          pure (MusicStingerAttribute x)
+        PartyLeaderAttribute _ -> do
+          x <- getPartyLeaderAttributeValue
+          pure (PartyLeaderAttribute x)
+        PickupAttribute _ -> do
+          x <- getPickupAttributeValue
+          pure (PickupAttribute x)
+        PrivateMatchSettingsAttribute _ -> do
+          x <- getPrivateMatchSettingsAttributeValue
+          pure (PrivateMatchSettingsAttribute x)
+        QWordAttribute _ -> do
+          x <- getQWordAttributeValue
+          pure (QWordAttribute x)
+        ReservationAttribute _ -> do
+          x <- getReservationAttributeValue version
+          pure (ReservationAttribute x)
+        RigidBodyStateAttribute _ -> do
+          x <- getRigidBodyStateAttributeValue
+          pure (RigidBodyStateAttribute x)
+        StringAttribute _ -> do
+          x <- getStringAttributeValue
+          pure (StringAttribute x)
+        TeamPaintAttribute _ -> do
+          x <- getTeamPaintAttributeValue
+          pure (TeamPaintAttribute x)
+        UniqueIdAttribute _ -> do
+          x <- getUniqueIdAttributeValue
+          pure (UniqueIdAttribute x)
+        WeldedInfoAttribute _ -> do
+          x <- getWeldedInfoAttributeValue
+          pure (WeldedInfoAttribute x)
 
 attributeNamesToConstructors :: Map.Map Text AttributeValue
 attributeNamesToConstructors =
@@ -247,136 +299,6 @@ rawAttributeNamesToConstructors =
   , ("TAGame.Vehicle_TA:ReplicatedThrottle", ByteAttribute undefined)
   , ("TAGame.VehiclePickup_TA:ReplicatedPickupData", PickupAttribute undefined)
   ]
-
-getBooleanAttribute :: BinaryBit.BitGet AttributeValue
-getBooleanAttribute = do
-  x <- getBooleanAttributeValue
-  pure (BooleanAttribute x)
-
-getByteAttribute :: BinaryBit.BitGet AttributeValue
-getByteAttribute = do
-  x <- getByteAttributeValue
-  pure (ByteAttribute x)
-
-getCamSettingsAttribute :: BinaryBit.BitGet AttributeValue
-getCamSettingsAttribute = do
-  x <- getCamSettingsAttributeValue
-  pure (CamSettingsAttribute x)
-
-getDemolishAttribute :: BinaryBit.BitGet AttributeValue
-getDemolishAttribute = do
-  x <- getDemolishAttributeValue
-  pure (DemolishAttribute x)
-
-getEnumAttribute :: BinaryBit.BitGet AttributeValue
-getEnumAttribute = do
-  x <- getEnumAttributeValue
-  pure (EnumAttribute x)
-
-getExplosionAttribute :: BinaryBit.BitGet AttributeValue
-getExplosionAttribute = do
-  x <- getExplosionAttributeValue
-  pure (ExplosionAttribute x)
-
-getFlaggedIntAttribute :: BinaryBit.BitGet AttributeValue
-getFlaggedIntAttribute = do
-  x <- getFlaggedIntAttributeValue
-  pure (FlaggedIntAttribute x)
-
-getFloatAttribute :: BinaryBit.BitGet AttributeValue
-getFloatAttribute = do
-  x <- getFloatAttributeValue
-  pure (FloatAttribute x)
-
-getGameModeAttribute :: (Int, Int) -> BinaryBit.BitGet AttributeValue
-getGameModeAttribute version = do
-  x <- getGameModeAttributeValue version
-  pure (GameModeAttribute x)
-
-getIntAttribute :: BinaryBit.BitGet AttributeValue
-getIntAttribute = do
-  x <- getIntAttributeValue
-  pure (IntAttribute x)
-
-getLoadoutAttribute :: BinaryBit.BitGet AttributeValue
-getLoadoutAttribute = do
-  x <- getLoadoutAttributeValue
-  pure (LoadoutAttribute x)
-
-getLoadoutOnlineAttribute :: BinaryBit.BitGet AttributeValue
-getLoadoutOnlineAttribute = do
-  x <- getLoadoutOnlineAttributeValue
-  pure (LoadoutOnlineAttribute x)
-
-getLoadoutsAttribute :: BinaryBit.BitGet AttributeValue
-getLoadoutsAttribute = do
-  x <- getLoadoutsAttributeValue
-  pure (LoadoutsAttribute x)
-
-getLoadoutsOnlineAttribute :: BinaryBit.BitGet AttributeValue
-getLoadoutsOnlineAttribute = do
-  x <- getLoadoutsOnlineAttributeValue
-  pure (LoadoutsOnlineAttribute x)
-
-getLocationAttribute :: BinaryBit.BitGet AttributeValue
-getLocationAttribute = do
-  x <- getLocationAttributeValue
-  pure (LocationAttribute x)
-
-getMusicStingerAttribute :: BinaryBit.BitGet AttributeValue
-getMusicStingerAttribute = do
-  x <- getMusicStingerAttributeValue
-  pure (MusicStingerAttribute x)
-
-getPartyLeaderAttribute :: BinaryBit.BitGet AttributeValue
-getPartyLeaderAttribute = do
-  x <- getPartyLeaderAttributeValue
-  pure (PartyLeaderAttribute x)
-
-getPickupAttribute :: BinaryBit.BitGet AttributeValue
-getPickupAttribute = do
-  x <- getPickupAttributeValue
-  pure (PickupAttribute x)
-
-getPrivateMatchSettingsAttribute :: BinaryBit.BitGet AttributeValue
-getPrivateMatchSettingsAttribute = do
-  x <- getPrivateMatchSettingsAttributeValue
-  pure (PrivateMatchSettingsAttribute x)
-
-getQWordAttribute :: BinaryBit.BitGet AttributeValue
-getQWordAttribute = do
-  x <- getQWordAttributeValue
-  pure (QWordAttribute x)
-
-getReservationAttribute :: (Int, Int) -> BinaryBit.BitGet AttributeValue
-getReservationAttribute version = do
-  x <- getReservationAttributeValue version
-  pure (ReservationAttribute x)
-
-getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
-getRigidBodyStateAttribute = do
-  x <- getRigidBodyStateAttributeValue
-  pure (RigidBodyStateAttribute x)
-
-getStringAttribute :: BinaryBit.BitGet AttributeValue
-getStringAttribute = do
-  x <- getStringAttributeValue
-  pure (StringAttribute x)
-
-getTeamPaintAttribute :: BinaryBit.BitGet AttributeValue
-getTeamPaintAttribute = do
-  x <- getTeamPaintAttributeValue
-  pure (TeamPaintAttribute x)
-
-getUniqueIdAttribute :: BinaryBit.BitGet AttributeValue
-getUniqueIdAttribute = do
-  x <- getUniqueIdAttributeValue
-  pure (UniqueIdAttribute x)
-
-getWeldedInfoAttribute :: BinaryBit.BitGet AttributeValue
-getWeldedInfoAttribute = do
-  x <- getWeldedInfoAttributeValue
-  pure (WeldedInfoAttribute x)
 
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
