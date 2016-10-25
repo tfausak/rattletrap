@@ -75,6 +75,7 @@ $(Monad.foldM
     , ''IntAttributeValue
     , ''KeyFrame
     , ''List
+    , ''LoadoutAttributeValue
     , ''LoadoutOnlineAttributeValue
     , ''LoadoutsOnlineAttributeValue
     , ''LocationAttributeValue

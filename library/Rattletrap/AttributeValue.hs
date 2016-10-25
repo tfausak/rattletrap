@@ -13,6 +13,7 @@ import Rattletrap.AttributeValue.FlaggedInt as Export
 import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.GameMode as Export
 import Rattletrap.AttributeValue.Int as Export
+import Rattletrap.AttributeValue.Loadout as Export
 import Rattletrap.AttributeValue.LoadoutOnline as Export
 import Rattletrap.AttributeValue.LoadoutsOnline as Export
 import Rattletrap.AttributeValue.Location as Export
@@ -29,8 +30,6 @@ import Rattletrap.AttributeValue.UniqueId as Export
 import Rattletrap.AttributeValue.WeldedInfo as Export
 
 import Rattletrap.Text
-import Rattletrap.Word32
-import Rattletrap.Word8
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
@@ -47,18 +46,10 @@ data AttributeValue
   | FloatAttribute FloatAttributeValue
   | GameModeAttribute GameModeAttributeValue
   | IntAttribute IntAttributeValue
-  | LoadoutAttribute Word8
-                     Word32
-                     Word32
-                     Word32
-                     Word32
-                     Word32
-                     Word32
-                     Word32
-                     (Maybe Word32)
+  | LoadoutAttribute LoadoutAttributeValue
   | LoadoutOnlineAttribute LoadoutOnlineAttributeValue
-  | LoadoutsAttribute AttributeValue
-                      AttributeValue
+  | LoadoutsAttribute LoadoutAttributeValue
+                      LoadoutAttributeValue
   | LoadoutsOnlineAttribute LoadoutsOnlineAttributeValue
   | LocationAttribute LocationAttributeValue
   | MusicStingerAttribute MusicStingerAttributeValue
@@ -300,22 +291,8 @@ getIntAttribute = do
 
 getLoadoutAttribute :: BinaryBit.BitGet AttributeValue
 getLoadoutAttribute = do
-  version <- getWord8Bits
-  body <- getWord32Bits
-  decal <- getWord32Bits
-  wheels <- getWord32Bits
-  rocketTrail <- getWord32Bits
-  antenna <- getWord32Bits
-  topper <- getWord32Bits
-  g <- getWord32Bits
-  h <-
-    if version > Word8 10
-      then do
-        h <- getWord32Bits
-        pure (Just h)
-      else pure Nothing
-  pure
-    (LoadoutAttribute version body decal wheels rocketTrail antenna topper g h)
+  x <- getLoadoutAttributeValue
+  pure (LoadoutAttribute x)
 
 getLoadoutOnlineAttribute :: BinaryBit.BitGet AttributeValue
 getLoadoutOnlineAttribute = do
@@ -324,8 +301,8 @@ getLoadoutOnlineAttribute = do
 
 getLoadoutsAttribute :: BinaryBit.BitGet AttributeValue
 getLoadoutsAttribute = do
-  blueLoadout <- getLoadoutAttribute
-  orangeLoadout <- getLoadoutAttribute
+  blueLoadout <- getLoadoutAttributeValue
+  orangeLoadout <- getLoadoutAttributeValue
   pure (LoadoutsAttribute blueLoadout orangeLoadout)
 
 getLoadoutsOnlineAttribute :: BinaryBit.BitGet AttributeValue
@@ -406,11 +383,11 @@ putAttributeValue value =
     FloatAttribute x -> putFloatAttributeValue x
     GameModeAttribute x -> putGameModeAttributeValue x
     IntAttribute x -> putIntAttributeValue x
-    LoadoutAttribute _ _ _ _ _ _ _ _ _ -> putLoadoutAttribute value
+    LoadoutAttribute x -> putLoadoutAttributeValue x
     LoadoutOnlineAttribute x -> putLoadoutOnlineAttributeValue x
     LoadoutsAttribute blueLoadout orangeLoadout -> do
-      putLoadoutAttribute blueLoadout
-      putLoadoutAttribute orangeLoadout
+      putLoadoutAttributeValue blueLoadout
+      putLoadoutAttributeValue orangeLoadout
     LoadoutsOnlineAttribute x -> putLoadoutsOnlineAttributeValue x
     LocationAttribute x -> putLocationAttributeValue x
     MusicStingerAttribute x -> putMusicStingerAttributeValue x
@@ -424,20 +401,3 @@ putAttributeValue value =
     TeamPaintAttribute x -> putTeamPaintAttributeValue x
     UniqueIdAttribute x -> putUniqueIdAttributeValue x
     WeldedInfoAttribute x -> putWeldedInfoAttributeValue x
-
-putLoadoutAttribute :: AttributeValue -> BinaryBit.BitPut ()
-putLoadoutAttribute value =
-  case value of
-    LoadoutAttribute version body decal wheels rocketTrail antenna topper g h -> do
-      putWord8Bits version
-      putWord32Bits body
-      putWord32Bits decal
-      putWord32Bits wheels
-      putWord32Bits rocketTrail
-      putWord32Bits antenna
-      putWord32Bits topper
-      putWord32Bits g
-      case h of
-        Nothing -> pure ()
-        Just x -> putWord32Bits x
-    _ -> fail "putLoadoutAttribute"
