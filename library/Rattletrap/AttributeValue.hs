@@ -13,6 +13,7 @@ import Rattletrap.AttributeValue.FlaggedInt as Export
 import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.GameMode as Export
 import Rattletrap.AttributeValue.Int as Export
+import Rattletrap.AttributeValue.LoadoutOnline as Export
 import Rattletrap.AttributeValue.Location as Export
 import Rattletrap.AttributeValue.MusicStinger as Export
 import Rattletrap.AttributeValue.PartyLeader as Export
@@ -26,12 +27,10 @@ import Rattletrap.AttributeValue.TeamPaint as Export
 import Rattletrap.AttributeValue.UniqueId as Export
 import Rattletrap.AttributeValue.WeldedInfo as Export
 
-import Rattletrap.CompressedWord
 import Rattletrap.Text
 import Rattletrap.Word32
 import Rattletrap.Word8
 
-import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Map as Map
@@ -56,11 +55,11 @@ data AttributeValue
                      Word32
                      Word32
                      (Maybe Word32)
-  | LoadoutOnlineAttribute [[(Word32, CompressedWord)]]
+  | LoadoutOnlineAttribute LoadoutOnlineAttributeValue
   | LoadoutsAttribute AttributeValue
                       AttributeValue
-  | LoadoutsOnlineAttribute AttributeValue
-                            AttributeValue
+  | LoadoutsOnlineAttribute LoadoutOnlineAttributeValue
+                            LoadoutOnlineAttributeValue
                             Bool
                             Bool
   | LocationAttribute LocationAttributeValue
@@ -322,17 +321,8 @@ getLoadoutAttribute = do
 
 getLoadoutOnlineAttribute :: BinaryBit.BitGet AttributeValue
 getLoadoutOnlineAttribute = do
-  size <- getWord8Bits
-  values <-
-    Monad.replicateM
-      (fromIntegral (word8Value size))
-      (do innerSize <- getWord8Bits
-          Monad.replicateM
-            (fromIntegral (word8Value innerSize))
-            (do x <- getWord32Bits
-                y <- getCompressedWord 27
-                pure (x, y)))
-  pure (LoadoutOnlineAttribute values)
+  x <- getLoadoutOnlineAttributeValue
+  pure (LoadoutOnlineAttribute x)
 
 getLoadoutsAttribute :: BinaryBit.BitGet AttributeValue
 getLoadoutsAttribute = do
@@ -342,8 +332,8 @@ getLoadoutsAttribute = do
 
 getLoadoutsOnlineAttribute :: BinaryBit.BitGet AttributeValue
 getLoadoutsOnlineAttribute = do
-  blueLoadout <- getLoadoutOnlineAttribute
-  orangeLoadout <- getLoadoutOnlineAttribute
+  blueLoadout <- getLoadoutOnlineAttributeValue
+  orangeLoadout <- getLoadoutOnlineAttributeValue
   unknown1 <- BinaryBit.getBool
   unknown2 <- BinaryBit.getBool
   pure (LoadoutsOnlineAttribute blueLoadout orangeLoadout unknown1 unknown2)
@@ -422,13 +412,13 @@ putAttributeValue value =
     GameModeAttribute x -> putGameModeAttributeValue x
     IntAttribute x -> putIntAttributeValue x
     LoadoutAttribute _ _ _ _ _ _ _ _ _ -> putLoadoutAttribute value
-    LoadoutOnlineAttribute _ -> putLoadoutOnlineAttribute value
+    LoadoutOnlineAttribute x -> putLoadoutOnlineAttributeValue x
     LoadoutsAttribute blueLoadout orangeLoadout -> do
       putLoadoutAttribute blueLoadout
       putLoadoutAttribute orangeLoadout
     LoadoutsOnlineAttribute blueLoadout orangeLoadout unknown1 unknown2 -> do
-      putLoadoutOnlineAttribute blueLoadout
-      putLoadoutOnlineAttribute orangeLoadout
+      putLoadoutOnlineAttributeValue blueLoadout
+      putLoadoutOnlineAttributeValue orangeLoadout
       BinaryBit.putBool unknown1
       BinaryBit.putBool unknown2
     LocationAttribute x -> putLocationAttributeValue x
@@ -460,19 +450,3 @@ putLoadoutAttribute value =
         Nothing -> pure ()
         Just x -> putWord32Bits x
     _ -> fail "putLoadoutAttribute"
-
-putLoadoutOnlineAttribute :: AttributeValue -> BinaryBit.BitPut ()
-putLoadoutOnlineAttribute value =
-  case value of
-    LoadoutOnlineAttribute values -> do
-      putWord8Bits (Word8 (fromIntegral (length values)))
-      mapM_
-        (\xs -> do
-           putWord8Bits (Word8 (fromIntegral (length xs)))
-           mapM_
-             (\(x, y) -> do
-                putWord32Bits x
-                putCompressedWord y)
-             xs)
-        values
-    _ -> fail "putLoadoutOnlineAttribute"
