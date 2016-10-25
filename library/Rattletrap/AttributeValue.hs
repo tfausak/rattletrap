@@ -67,177 +67,186 @@ data AttributeValue
 
 getAttributeValue :: (Int, Int) -> Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue version name =
-  case Map.lookup name getters of
+  case Map.lookup name attributeNamesToConstructors of
     Nothing -> fail ("don't know how to get attribute value " ++ show name)
-    Just getter -> getter version
+    Just constructor ->
+      case constructor of
+        BooleanAttribute _ -> getBooleanAttribute
+        ByteAttribute _ -> getByteAttribute
+        CamSettingsAttribute _ -> getCamSettingsAttribute
+        DemolishAttribute _ -> getDemolishAttribute
+        EnumAttribute _ -> getEnumAttribute
+        ExplosionAttribute _ -> getExplosionAttribute
+        FlaggedIntAttribute _ -> getFlaggedIntAttribute
+        FloatAttribute _ -> getFloatAttribute
+        GameModeAttribute _ -> getGameModeAttribute version
+        IntAttribute _ -> getIntAttribute
+        LoadoutAttribute _ -> getLoadoutAttribute
+        LoadoutOnlineAttribute _ -> getLoadoutOnlineAttribute
+        LoadoutsAttribute _ -> getLoadoutsAttribute
+        LoadoutsOnlineAttribute _ -> getLoadoutsOnlineAttribute
+        LocationAttribute _ -> getLocationAttribute
+        MusicStingerAttribute _ -> getMusicStingerAttribute
+        PartyLeaderAttribute _ -> getPartyLeaderAttribute
+        PickupAttribute _ -> getPickupAttribute
+        PrivateMatchSettingsAttribute _ -> getPrivateMatchSettingsAttribute
+        QWordAttribute _ -> getQWordAttribute
+        ReservationAttribute _ -> getReservationAttribute version
+        RigidBodyStateAttribute _ -> getRigidBodyStateAttribute
+        StringAttribute _ -> getStringAttribute
+        TeamPaintAttribute _ -> getTeamPaintAttribute
+        UniqueIdAttribute _ -> getUniqueIdAttribute
+        WeldedInfoAttribute _ -> getWeldedInfoAttribute
 
-getters :: Map.Map Text ((Int, Int) -> BinaryBit.BitGet AttributeValue)
-getters =
-  Map.mapKeys
-    stringToText
-    (Map.fromList
-       [ ("Engine.Actor:bBlockActors", const getBooleanAttribute)
-       , ("Engine.Actor:bCollideActors", const getBooleanAttribute)
-       , ("Engine.Actor:bHidden", const getBooleanAttribute)
-       , ("Engine.Actor:DrawScale", const getFloatAttribute)
-       , ("Engine.Actor:Role", const getEnumAttribute)
-       , ("Engine.GameReplicationInfo:bMatchIsOver", const getBooleanAttribute)
-       , ("Engine.GameReplicationInfo:GameClass", const getFlaggedIntAttribute)
-       , ("Engine.GameReplicationInfo:ServerName", const getStringAttribute)
-       , ("Engine.Pawn:PlayerReplicationInfo", const getFlaggedIntAttribute)
-       , ("Engine.PlayerReplicationInfo:bBot", const getBooleanAttribute)
-       , ( "Engine.PlayerReplicationInfo:bIsSpectator"
-         , const getBooleanAttribute)
-       , ( "Engine.PlayerReplicationInfo:bReadyToPlay"
-         , const getBooleanAttribute)
-       , ( "Engine.PlayerReplicationInfo:bWaitingPlayer"
-         , const getBooleanAttribute)
-       , ("Engine.PlayerReplicationInfo:Ping", const getByteAttribute)
-       , ("Engine.PlayerReplicationInfo:PlayerID", const getIntAttribute)
-       , ("Engine.PlayerReplicationInfo:PlayerName", const getStringAttribute)
-       , ( "Engine.PlayerReplicationInfo:RemoteUserData"
-         , const getStringAttribute)
-       , ("Engine.PlayerReplicationInfo:Score", const getIntAttribute)
-       , ("Engine.PlayerReplicationInfo:Team", const getFlaggedIntAttribute)
-       , ("Engine.PlayerReplicationInfo:UniqueId", const getUniqueIdAttribute)
-       , ("Engine.TeamInfo:Score", const getIntAttribute)
-       , ("ProjectX.GRI_X:bGameStarted", const getBooleanAttribute)
-       , ("ProjectX.GRI_X:GameServerID", const getQWordAttribute)
-       , ("ProjectX.GRI_X:ReplicatedGameMutatorIndex", const getIntAttribute)
-       , ("ProjectX.GRI_X:ReplicatedGamePlaylist", const getIntAttribute)
-       , ("ProjectX.GRI_X:Reservations", getReservationAttribute)
-       , ("TAGame.Ball_TA:GameEvent", const getFlaggedIntAttribute)
-       , ("TAGame.Ball_TA:HitTeamNum", const getByteAttribute)
-       , ( "TAGame.Ball_TA:ReplicatedAddedCarBounceScale"
-         , const getFloatAttribute)
-       , ( "TAGame.Ball_TA:ReplicatedBallMaxLinearSpeedScale"
-         , const getFloatAttribute)
-       , ("TAGame.Ball_TA:ReplicatedBallScale", const getFloatAttribute)
-       , ("TAGame.Ball_TA:ReplicatedExplosionData", const getExplosionAttribute)
-       , ("TAGame.Ball_TA:ReplicatedWorldBounceScale", const getFloatAttribute)
-       , ( "TAGame.CameraSettingsActor_TA:bUsingBehindView"
-         , const getBooleanAttribute)
-       , ( "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera"
-         , const getBooleanAttribute)
-       , ("TAGame.CameraSettingsActor_TA:CameraPitch", const getByteAttribute)
-       , ("TAGame.CameraSettingsActor_TA:CameraYaw", const getByteAttribute)
-       , ("TAGame.CameraSettingsActor_TA:PRI", const getFlaggedIntAttribute)
-       , ( "TAGame.CameraSettingsActor_TA:ProfileSettings"
-         , const getCamSettingsAttribute)
-       , ("TAGame.Car_TA:AddedBallForceMultiplier", const getFloatAttribute)
-       , ("TAGame.Car_TA:AddedCarForceMultiplier", const getFloatAttribute)
-       , ("TAGame.Car_TA:AttachedPickup", const getFlaggedIntAttribute)
-       , ("TAGame.Car_TA:ReplicatedDemolish", const getDemolishAttribute)
-       , ("TAGame.Car_TA:TeamPaint", const getTeamPaintAttribute)
-       , ( "TAGame.CarComponent_Boost_TA:bUnlimitedBoost"
-         , const getBooleanAttribute)
-       , ("TAGame.CarComponent_Boost_TA:bNoBoost", const getBooleanAttribute)
-       , ("TAGame.CarComponent_Boost_TA:BoostModifier", const getFloatAttribute)
-       , ("TAGame.CarComponent_Boost_TA:RechargeDelay", const getFloatAttribute)
-       , ("TAGame.CarComponent_Boost_TA:RechargeRate", const getFloatAttribute)
-       , ( "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount"
-         , const getByteAttribute)
-       , ( "TAGame.CarComponent_Boost_TA:UnlimitedBoostRefCount"
-         , const getIntAttribute)
-       , ( "TAGame.CarComponent_Dodge_TA:DodgeTorque"
-         , const getLocationAttribute)
-       , ( "TAGame.CarComponent_FlipCar_TA:bFlipRight"
-         , const getBooleanAttribute)
-       , ("TAGame.CarComponent_FlipCar_TA:FlipCarTime", const getFloatAttribute)
-       , ("TAGame.CarComponent_TA:ReplicatedActive", const getByteAttribute)
-       , ( "TAGame.CarComponent_TA:ReplicatedActivityTime"
-         , const getFloatAttribute)
-       , ("TAGame.CarComponent_TA:Vehicle", const getFlaggedIntAttribute)
-       , ("TAGame.CrowdActor_TA:GameEvent", const getFlaggedIntAttribute)
-       , ("TAGame.CrowdActor_TA:ModifiedNoise", const getFloatAttribute)
-       , ( "TAGame.CrowdActor_TA:ReplicatedCountDownNumber"
-         , const getIntAttribute)
-       , ( "TAGame.CrowdActor_TA:ReplicatedOneShotSound"
-         , const getFlaggedIntAttribute)
-       , ( "TAGame.CrowdActor_TA:ReplicatedRoundCountDownNumber"
-         , const getIntAttribute)
-       , ("TAGame.CrowdManager_TA:GameEvent", const getFlaggedIntAttribute)
-       , ( "TAGame.CrowdManager_TA:ReplicatedGlobalOneShotSound"
-         , const getFlaggedIntAttribute)
-       , ( "TAGame.GameEvent_Soccar_TA:bBallHasBeenHit"
-         , const getBooleanAttribute)
-       , ("TAGame.GameEvent_Soccar_TA:bOverTime", const getBooleanAttribute)
-       , ( "TAGame.GameEvent_Soccar_TA:ReplicatedMusicStinger"
-         , const getMusicStingerAttribute)
-       , ( "TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam"
-         , const getByteAttribute)
-       , ("TAGame.GameEvent_Soccar_TA:RoundNum", const getIntAttribute)
-       , ("TAGame.GameEvent_Soccar_TA:SecondsRemaining", const getIntAttribute)
-       , ( "TAGame.GameEvent_Soccar_TA:SubRulesArchetype"
-         , const getFlaggedIntAttribute)
-       , ( "TAGame.GameEvent_SoccarPrivate_TA:MatchSettings"
-         , const getPrivateMatchSettingsAttribute)
-       , ("TAGame.GameEvent_TA:bCanVoteToForfeit", const getBooleanAttribute)
-       , ( "TAGame.GameEvent_TA:bHasLeaveMatchPenalty"
-         , const getBooleanAttribute)
-       , ("TAGame.GameEvent_TA:BotSkill", const getIntAttribute)
-       , ("TAGame.GameEvent_TA:GameMode", getGameModeAttribute)
-       , ("TAGame.GameEvent_TA:MatchTypeClass", const getFlaggedIntAttribute)
-       , ( "TAGame.GameEvent_TA:ReplicatedGameStateTimeRemaining"
-         , const getIntAttribute)
-       , ("TAGame.GameEvent_TA:ReplicatedStateIndex", const getByteAttribute)
-       , ("TAGame.GameEvent_TA:ReplicatedStateName", const getIntAttribute)
-       , ("TAGame.GameEvent_Team_TA:MaxTeamSize", const getIntAttribute)
-       , ("TAGame.GRI_TA:NewDedicatedServerIP", const getStringAttribute)
-       , ("TAGame.PRI_TA:bIsInSplitScreen", const getBooleanAttribute)
-       , ("TAGame.PRI_TA:bMatchMVP", const getBooleanAttribute)
-       , ("TAGame.PRI_TA:bOnlineLoadoutSet", const getBooleanAttribute)
-       , ("TAGame.PRI_TA:bOnlineLoadoutsSet", const getBooleanAttribute)
-       , ("TAGame.PRI_TA:bReady", const getBooleanAttribute)
-       , ("TAGame.PRI_TA:bUsingBehindView", const getBooleanAttribute)
-       , ("TAGame.PRI_TA:bUsingSecondaryCamera", const getBooleanAttribute)
-       , ("TAGame.PRI_TA:CameraPitch", const getByteAttribute)
-       , ("TAGame.PRI_TA:CameraSettings", const getCamSettingsAttribute)
-       , ("TAGame.PRI_TA:CameraYaw", const getByteAttribute)
-       , ("TAGame.PRI_TA:ClientLoadout", const getLoadoutAttribute)
-       , ("TAGame.PRI_TA:ClientLoadoutOnline", const getLoadoutOnlineAttribute)
-       , ("TAGame.PRI_TA:ClientLoadouts", const getLoadoutsAttribute)
-       , ( "TAGame.PRI_TA:ClientLoadoutsOnline"
-         , const getLoadoutsOnlineAttribute)
-       , ("TAGame.PRI_TA:MatchAssists", const getIntAttribute)
-       , ("TAGame.PRI_TA:MatchGoals", const getIntAttribute)
-       , ("TAGame.PRI_TA:MatchSaves", const getIntAttribute)
-       , ("TAGame.PRI_TA:MatchScore", const getIntAttribute)
-       , ("TAGame.PRI_TA:MatchShots", const getIntAttribute)
-       , ("TAGame.PRI_TA:PartyLeader", const getPartyLeaderAttribute)
-       , ("TAGame.PRI_TA:PawnType", const getByteAttribute)
-       , ("TAGame.PRI_TA:PersistentCamera", const getFlaggedIntAttribute)
-       , ("TAGame.PRI_TA:ReplicatedGameEvent", const getFlaggedIntAttribute)
-       , ("TAGame.PRI_TA:Title", const getIntAttribute)
-       , ("TAGame.PRI_TA:TotalXP", const getIntAttribute)
-       , ("TAGame.RBActor_TA:bFrozen", const getBooleanAttribute)
-       , ("TAGame.RBActor_TA:bIgnoreSyncing", const getBooleanAttribute)
-       , ("TAGame.RBActor_TA:bReplayActor", const getBooleanAttribute)
-       , ( "TAGame.RBActor_TA:ReplicatedRBState"
-         , const getRigidBodyStateAttribute)
-       , ("TAGame.RBActor_TA:WeldedInfo", const getWeldedInfoAttribute)
-       , ( "TAGame.SpecialPickup_BallFreeze_TA:RepOrigSpeed"
-         , const getFloatAttribute)
-       , ( "TAGame.SpecialPickup_BallVelcro_TA:AttachTime"
-         , const getFloatAttribute)
-       , ( "TAGame.SpecialPickup_BallVelcro_TA:bBroken"
-         , const getBooleanAttribute)
-       , ("TAGame.SpecialPickup_BallVelcro_TA:bHit", const getBooleanAttribute)
-       , ( "TAGame.SpecialPickup_BallVelcro_TA:BreakTime"
-         , const getFloatAttribute)
-       , ( "TAGame.SpecialPickup_Targeted_TA:Targeted"
-         , const getFlaggedIntAttribute)
-       , ("TAGame.Team_Soccar_TA:GameScore", const getIntAttribute)
-       , ("TAGame.Team_TA:CustomTeamName", const getStringAttribute)
-       , ("TAGame.Team_TA:GameEvent", const getFlaggedIntAttribute)
-       , ("TAGame.Team_TA:LogoData", const getFlaggedIntAttribute)
-       , ("TAGame.Vehicle_TA:bDriving", const getBooleanAttribute)
-       , ("TAGame.Vehicle_TA:bReplicatedHandbrake", const getBooleanAttribute)
-       , ("TAGame.Vehicle_TA:ReplicatedSteer", const getByteAttribute)
-       , ("TAGame.Vehicle_TA:ReplicatedThrottle", const getByteAttribute)
-       , ( "TAGame.VehiclePickup_TA:ReplicatedPickupData"
-         , const getPickupAttribute)
-       ])
+attributeNamesToConstructors :: Map.Map Text AttributeValue
+attributeNamesToConstructors =
+  Map.mapKeys stringToText (Map.fromList rawAttributeNamesToConstructors)
+
+rawAttributeNamesToConstructors :: [(String, AttributeValue)]
+rawAttributeNamesToConstructors =
+  [ ("Engine.Actor:bBlockActors", BooleanAttribute undefined)
+  , ("Engine.Actor:bCollideActors", BooleanAttribute undefined)
+  , ("Engine.Actor:bHidden", BooleanAttribute undefined)
+  , ("Engine.Actor:DrawScale", FloatAttribute undefined)
+  , ("Engine.Actor:Role", EnumAttribute undefined)
+  , ("Engine.GameReplicationInfo:bMatchIsOver", BooleanAttribute undefined)
+  , ("Engine.GameReplicationInfo:GameClass", FlaggedIntAttribute undefined)
+  , ("Engine.GameReplicationInfo:ServerName", StringAttribute undefined)
+  , ("Engine.Pawn:PlayerReplicationInfo", FlaggedIntAttribute undefined)
+  , ("Engine.PlayerReplicationInfo:bBot", BooleanAttribute undefined)
+  , ("Engine.PlayerReplicationInfo:bIsSpectator", BooleanAttribute undefined)
+  , ("Engine.PlayerReplicationInfo:bReadyToPlay", BooleanAttribute undefined)
+  , ("Engine.PlayerReplicationInfo:bWaitingPlayer", BooleanAttribute undefined)
+  , ("Engine.PlayerReplicationInfo:Ping", ByteAttribute undefined)
+  , ("Engine.PlayerReplicationInfo:PlayerID", IntAttribute undefined)
+  , ("Engine.PlayerReplicationInfo:PlayerName", StringAttribute undefined)
+  , ("Engine.PlayerReplicationInfo:RemoteUserData", StringAttribute undefined)
+  , ("Engine.PlayerReplicationInfo:Score", IntAttribute undefined)
+  , ("Engine.PlayerReplicationInfo:Team", FlaggedIntAttribute undefined)
+  , ("Engine.PlayerReplicationInfo:UniqueId", UniqueIdAttribute undefined)
+  , ("Engine.TeamInfo:Score", IntAttribute undefined)
+  , ("ProjectX.GRI_X:bGameStarted", BooleanAttribute undefined)
+  , ("ProjectX.GRI_X:GameServerID", QWordAttribute undefined)
+  , ("ProjectX.GRI_X:ReplicatedGameMutatorIndex", IntAttribute undefined)
+  , ("ProjectX.GRI_X:ReplicatedGamePlaylist", IntAttribute undefined)
+  , ("ProjectX.GRI_X:Reservations", ReservationAttribute undefined)
+  , ("TAGame.Ball_TA:GameEvent", FlaggedIntAttribute undefined)
+  , ("TAGame.Ball_TA:HitTeamNum", ByteAttribute undefined)
+  , ("TAGame.Ball_TA:ReplicatedAddedCarBounceScale", FloatAttribute undefined)
+  , ( "TAGame.Ball_TA:ReplicatedBallMaxLinearSpeedScale"
+    , FloatAttribute undefined)
+  , ("TAGame.Ball_TA:ReplicatedBallScale", FloatAttribute undefined)
+  , ("TAGame.Ball_TA:ReplicatedExplosionData", ExplosionAttribute undefined)
+  , ("TAGame.Ball_TA:ReplicatedWorldBounceScale", FloatAttribute undefined)
+  , ( "TAGame.CameraSettingsActor_TA:bUsingBehindView"
+    , BooleanAttribute undefined)
+  , ( "TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera"
+    , BooleanAttribute undefined)
+  , ("TAGame.CameraSettingsActor_TA:CameraPitch", ByteAttribute undefined)
+  , ("TAGame.CameraSettingsActor_TA:CameraYaw", ByteAttribute undefined)
+  , ("TAGame.CameraSettingsActor_TA:PRI", FlaggedIntAttribute undefined)
+  , ( "TAGame.CameraSettingsActor_TA:ProfileSettings"
+    , CamSettingsAttribute undefined)
+  , ("TAGame.Car_TA:AddedBallForceMultiplier", FloatAttribute undefined)
+  , ("TAGame.Car_TA:AddedCarForceMultiplier", FloatAttribute undefined)
+  , ("TAGame.Car_TA:AttachedPickup", FlaggedIntAttribute undefined)
+  , ("TAGame.Car_TA:ReplicatedDemolish", DemolishAttribute undefined)
+  , ("TAGame.Car_TA:TeamPaint", TeamPaintAttribute undefined)
+  , ("TAGame.CarComponent_Boost_TA:bNoBoost", BooleanAttribute undefined)
+  , ("TAGame.CarComponent_Boost_TA:BoostModifier", FloatAttribute undefined)
+  , ("TAGame.CarComponent_Boost_TA:bUnlimitedBoost", BooleanAttribute undefined)
+  , ("TAGame.CarComponent_Boost_TA:RechargeDelay", FloatAttribute undefined)
+  , ("TAGame.CarComponent_Boost_TA:RechargeRate", FloatAttribute undefined)
+  , ( "TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount"
+    , ByteAttribute undefined)
+  , ( "TAGame.CarComponent_Boost_TA:UnlimitedBoostRefCount"
+    , IntAttribute undefined)
+  , ("TAGame.CarComponent_Dodge_TA:DodgeTorque", LocationAttribute undefined)
+  , ("TAGame.CarComponent_FlipCar_TA:bFlipRight", BooleanAttribute undefined)
+  , ("TAGame.CarComponent_FlipCar_TA:FlipCarTime", FloatAttribute undefined)
+  , ("TAGame.CarComponent_TA:ReplicatedActive", ByteAttribute undefined)
+  , ("TAGame.CarComponent_TA:ReplicatedActivityTime", FloatAttribute undefined)
+  , ("TAGame.CarComponent_TA:Vehicle", FlaggedIntAttribute undefined)
+  , ("TAGame.CrowdActor_TA:GameEvent", FlaggedIntAttribute undefined)
+  , ("TAGame.CrowdActor_TA:ModifiedNoise", FloatAttribute undefined)
+  , ("TAGame.CrowdActor_TA:ReplicatedCountDownNumber", IntAttribute undefined)
+  , ( "TAGame.CrowdActor_TA:ReplicatedOneShotSound"
+    , FlaggedIntAttribute undefined)
+  , ( "TAGame.CrowdActor_TA:ReplicatedRoundCountDownNumber"
+    , IntAttribute undefined)
+  , ("TAGame.CrowdManager_TA:GameEvent", FlaggedIntAttribute undefined)
+  , ( "TAGame.CrowdManager_TA:ReplicatedGlobalOneShotSound"
+    , FlaggedIntAttribute undefined)
+  , ("TAGame.GameEvent_Soccar_TA:bBallHasBeenHit", BooleanAttribute undefined)
+  , ("TAGame.GameEvent_Soccar_TA:bOverTime", BooleanAttribute undefined)
+  , ( "TAGame.GameEvent_Soccar_TA:ReplicatedMusicStinger"
+    , MusicStingerAttribute undefined)
+  , ( "TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam"
+    , ByteAttribute undefined)
+  , ("TAGame.GameEvent_Soccar_TA:RoundNum", IntAttribute undefined)
+  , ("TAGame.GameEvent_Soccar_TA:SecondsRemaining", IntAttribute undefined)
+  , ( "TAGame.GameEvent_Soccar_TA:SubRulesArchetype"
+    , FlaggedIntAttribute undefined)
+  , ( "TAGame.GameEvent_SoccarPrivate_TA:MatchSettings"
+    , PrivateMatchSettingsAttribute undefined)
+  , ("TAGame.GameEvent_TA:bCanVoteToForfeit", BooleanAttribute undefined)
+  , ("TAGame.GameEvent_TA:bHasLeaveMatchPenalty", BooleanAttribute undefined)
+  , ("TAGame.GameEvent_TA:BotSkill", IntAttribute undefined)
+  , ("TAGame.GameEvent_TA:GameMode", GameModeAttribute undefined)
+  , ("TAGame.GameEvent_TA:MatchTypeClass", FlaggedIntAttribute undefined)
+  , ( "TAGame.GameEvent_TA:ReplicatedGameStateTimeRemaining"
+    , IntAttribute undefined)
+  , ("TAGame.GameEvent_TA:ReplicatedStateIndex", ByteAttribute undefined)
+  , ("TAGame.GameEvent_TA:ReplicatedStateName", IntAttribute undefined)
+  , ("TAGame.GameEvent_Team_TA:MaxTeamSize", IntAttribute undefined)
+  , ("TAGame.GRI_TA:NewDedicatedServerIP", StringAttribute undefined)
+  , ("TAGame.PRI_TA:bIsInSplitScreen", BooleanAttribute undefined)
+  , ("TAGame.PRI_TA:bMatchMVP", BooleanAttribute undefined)
+  , ("TAGame.PRI_TA:bOnlineLoadoutSet", BooleanAttribute undefined)
+  , ("TAGame.PRI_TA:bOnlineLoadoutsSet", BooleanAttribute undefined)
+  , ("TAGame.PRI_TA:bReady", BooleanAttribute undefined)
+  , ("TAGame.PRI_TA:bUsingBehindView", BooleanAttribute undefined)
+  , ("TAGame.PRI_TA:bUsingSecondaryCamera", BooleanAttribute undefined)
+  , ("TAGame.PRI_TA:CameraPitch", ByteAttribute undefined)
+  , ("TAGame.PRI_TA:CameraSettings", CamSettingsAttribute undefined)
+  , ("TAGame.PRI_TA:CameraYaw", ByteAttribute undefined)
+  , ("TAGame.PRI_TA:ClientLoadout", LoadoutAttribute undefined)
+  , ("TAGame.PRI_TA:ClientLoadoutOnline", LoadoutOnlineAttribute undefined)
+  , ("TAGame.PRI_TA:ClientLoadouts", LoadoutsAttribute undefined)
+  , ("TAGame.PRI_TA:ClientLoadoutsOnline", LoadoutsOnlineAttribute undefined)
+  , ("TAGame.PRI_TA:MatchAssists", IntAttribute undefined)
+  , ("TAGame.PRI_TA:MatchGoals", IntAttribute undefined)
+  , ("TAGame.PRI_TA:MatchSaves", IntAttribute undefined)
+  , ("TAGame.PRI_TA:MatchScore", IntAttribute undefined)
+  , ("TAGame.PRI_TA:MatchShots", IntAttribute undefined)
+  , ("TAGame.PRI_TA:PartyLeader", PartyLeaderAttribute undefined)
+  , ("TAGame.PRI_TA:PawnType", ByteAttribute undefined)
+  , ("TAGame.PRI_TA:PersistentCamera", FlaggedIntAttribute undefined)
+  , ("TAGame.PRI_TA:ReplicatedGameEvent", FlaggedIntAttribute undefined)
+  , ("TAGame.PRI_TA:Title", IntAttribute undefined)
+  , ("TAGame.PRI_TA:TotalXP", IntAttribute undefined)
+  , ("TAGame.RBActor_TA:bFrozen", BooleanAttribute undefined)
+  , ("TAGame.RBActor_TA:bIgnoreSyncing", BooleanAttribute undefined)
+  , ("TAGame.RBActor_TA:bReplayActor", BooleanAttribute undefined)
+  , ("TAGame.RBActor_TA:ReplicatedRBState", RigidBodyStateAttribute undefined)
+  , ("TAGame.RBActor_TA:WeldedInfo", WeldedInfoAttribute undefined)
+  , ( "TAGame.SpecialPickup_BallFreeze_TA:RepOrigSpeed"
+    , FloatAttribute undefined)
+  , ("TAGame.SpecialPickup_BallVelcro_TA:AttachTime", FloatAttribute undefined)
+  , ("TAGame.SpecialPickup_BallVelcro_TA:bBroken", BooleanAttribute undefined)
+  , ("TAGame.SpecialPickup_BallVelcro_TA:bHit", BooleanAttribute undefined)
+  , ("TAGame.SpecialPickup_BallVelcro_TA:BreakTime", FloatAttribute undefined)
+  , ("TAGame.SpecialPickup_Targeted_TA:Targeted", FlaggedIntAttribute undefined)
+  , ("TAGame.Team_Soccar_TA:GameScore", IntAttribute undefined)
+  , ("TAGame.Team_TA:CustomTeamName", StringAttribute undefined)
+  , ("TAGame.Team_TA:GameEvent", FlaggedIntAttribute undefined)
+  , ("TAGame.Team_TA:LogoData", FlaggedIntAttribute undefined)
+  , ("TAGame.Vehicle_TA:bDriving", BooleanAttribute undefined)
+  , ("TAGame.Vehicle_TA:bReplicatedHandbrake", BooleanAttribute undefined)
+  , ("TAGame.Vehicle_TA:ReplicatedSteer", ByteAttribute undefined)
+  , ("TAGame.Vehicle_TA:ReplicatedThrottle", ByteAttribute undefined)
+  , ("TAGame.VehiclePickup_TA:ReplicatedPickupData", PickupAttribute undefined)
+  ]
 
 getBooleanAttribute :: BinaryBit.BitGet AttributeValue
 getBooleanAttribute = do
