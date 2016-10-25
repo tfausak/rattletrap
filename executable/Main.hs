@@ -78,6 +78,7 @@ $(Monad.foldM
     , ''LocationAttributeValue
     , ''Mark
     , ''Message
+    , ''PickupAttributeValue
     , ''PrivateMatchSettingsAttributeValue
     , ''Property
     , ''PropertyValue

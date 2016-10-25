@@ -14,6 +14,7 @@ import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.GameMode as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
+import Rattletrap.AttributeValue.Pickup as Export
 import Rattletrap.AttributeValue.PrivateMatchSettings as Export
 import Rattletrap.AttributeValue.QWord as Export
 import Rattletrap.AttributeValue.RigidBodyState as Export
@@ -66,9 +67,7 @@ data AttributeValue
                           Word8
   | PartyLeaderAttribute Word8
                          (Maybe (RemoteId, Word8))
-  | PickupAttribute Bool
-                    (Maybe Word32)
-                    Bool
+  | PickupAttribute PickupAttributeValue
   | PrivateMatchSettingsAttribute PrivateMatchSettingsAttributeValue
   | QWordAttribute QWordAttributeValue
   | ReservationAttribute CompressedWord
@@ -385,15 +384,8 @@ getPartyLeaderAttribute = do
 
 getPickupAttribute :: BinaryBit.BitGet AttributeValue
 getPickupAttribute = do
-  instigator <- BinaryBit.getBool
-  maybeInstigatorId <-
-    if instigator
-      then do
-        instigatorId <- getWord32Bits
-        pure (Just instigatorId)
-      else pure Nothing
-  pickedUp <- BinaryBit.getBool
-  pure (PickupAttribute instigator maybeInstigatorId pickedUp)
+  x <- getPickupAttributeValue
+  pure (PickupAttribute x)
 
 getPrivateMatchSettingsAttribute :: BinaryBit.BitGet AttributeValue
 getPrivateMatchSettingsAttribute = do
@@ -485,12 +477,7 @@ putAttributeValue value =
         Just (remoteId, localId) -> do
           putRemoteId remoteId
           putWord8Bits localId
-    PickupAttribute instigator maybeInstigatorId pickedUp -> do
-      BinaryBit.putBool instigator
-      case maybeInstigatorId of
-        Nothing -> pure ()
-        Just instigatorId -> putWord32Bits instigatorId
-      BinaryBit.putBool pickedUp
+    PickupAttribute x -> putPickupAttributeValue x
     PrivateMatchSettingsAttribute x -> putPrivateMatchSettingsAttributeValue x
     QWordAttribute x -> putQWordAttributeValue x
     ReservationAttribute number systemId remoteId localId maybeName a b mc -> do
