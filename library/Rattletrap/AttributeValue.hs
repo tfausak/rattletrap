@@ -14,6 +14,7 @@ import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.GameMode as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
+import Rattletrap.AttributeValue.MusicStinger as Export
 import Rattletrap.AttributeValue.Pickup as Export
 import Rattletrap.AttributeValue.PrivateMatchSettings as Export
 import Rattletrap.AttributeValue.QWord as Export
@@ -62,9 +63,7 @@ data AttributeValue
                             Bool
                             Bool
   | LocationAttribute LocationAttributeValue
-  | MusicStingerAttribute Bool
-                          Word32
-                          Word8
+  | MusicStingerAttribute MusicStingerAttributeValue
   | PartyLeaderAttribute Word8
                          (Maybe (RemoteId, Word8))
   | PickupAttribute PickupAttributeValue
@@ -365,10 +364,8 @@ getLocationAttribute = do
 
 getMusicStingerAttribute :: BinaryBit.BitGet AttributeValue
 getMusicStingerAttribute = do
-  flag <- BinaryBit.getBool
-  cue <- getWord32Bits
-  trigger <- getWord8Bits
-  pure (MusicStingerAttribute flag cue trigger)
+  x <- getMusicStingerAttributeValue
+  pure (MusicStingerAttribute x)
 
 getPartyLeaderAttribute :: BinaryBit.BitGet AttributeValue
 getPartyLeaderAttribute = do
@@ -466,10 +463,7 @@ putAttributeValue value =
       BinaryBit.putBool unknown1
       BinaryBit.putBool unknown2
     LocationAttribute x -> putLocationAttributeValue x
-    MusicStingerAttribute flag cue trigger -> do
-      BinaryBit.putBool flag
-      putWord32Bits cue
-      putWord8Bits trigger
+    MusicStingerAttribute x -> putMusicStingerAttributeValue x
     PartyLeaderAttribute systemId maybeRemoteAndLocalId -> do
       putWord8Bits systemId
       case maybeRemoteAndLocalId of

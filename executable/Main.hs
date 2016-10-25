@@ -78,6 +78,7 @@ $(Monad.foldM
     , ''LocationAttributeValue
     , ''Mark
     , ''Message
+    , ''MusicStingerAttributeValue
     , ''PickupAttributeValue
     , ''PrivateMatchSettingsAttributeValue
     , ''Property
