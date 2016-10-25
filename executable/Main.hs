@@ -9,10 +9,12 @@ import Rattletrap
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Aeson
+import qualified Data.Aeson.Casing as Casing
 import qualified Data.Aeson.TH as Aeson
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
+import qualified Language.Haskell.TH as TH
 import qualified System.Environment as Environment
 
 main :: IO ()
@@ -39,7 +41,9 @@ mainWithArgs args =
 
 $(Monad.foldM
     (\declarations name -> do
-       newDeclarations <- Aeson.deriveJSON Aeson.defaultOptions name
+       let options =
+             Casing.aesonDrop (length (TH.nameBase name)) Casing.snakeCase
+       newDeclarations <- Aeson.deriveJSON options name
        pure (newDeclarations ++ declarations))
     []
     [ ''Attribute

@@ -4,10 +4,12 @@ executables:
   rattletrap:
     dependencies:
     - aeson
+    - aeson-casing
     - base
     - binary
     - bytestring
     - rattletrap
+    - template-haskell
     ghc-options:
     - -rtsopts
     - -threaded
