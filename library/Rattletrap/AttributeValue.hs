@@ -14,6 +14,7 @@ import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.GameMode as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
+import Rattletrap.AttributeValue.PrivateMatchSettings as Export
 import Rattletrap.AttributeValue.QWord as Export
 import Rattletrap.AttributeValue.RigidBodyState as Export
 import Rattletrap.AttributeValue.String as Export
@@ -68,12 +69,7 @@ data AttributeValue
   | PickupAttribute Bool
                     (Maybe Word32)
                     Bool
-  | PrivateMatchSettingsAttribute Text
-                                  Word32
-                                  Word32
-                                  Text
-                                  Text
-                                  Bool
+  | PrivateMatchSettingsAttribute PrivateMatchSettingsAttributeValue
   | QWordAttribute QWordAttributeValue
   | ReservationAttribute CompressedWord
                          Word8
@@ -401,20 +397,8 @@ getPickupAttribute = do
 
 getPrivateMatchSettingsAttribute :: BinaryBit.BitGet AttributeValue
 getPrivateMatchSettingsAttribute = do
-  mutators <- getTextBits
-  joinableBy <- getWord32Bits
-  maxPlayers <- getWord32Bits
-  gameName <- getTextBits
-  password <- getTextBits
-  flag <- BinaryBit.getBool
-  pure
-    (PrivateMatchSettingsAttribute
-       mutators
-       joinableBy
-       maxPlayers
-       gameName
-       password
-       flag)
+  x <- getPrivateMatchSettingsAttributeValue
+  pure (PrivateMatchSettingsAttribute x)
 
 getQWordAttribute :: BinaryBit.BitGet AttributeValue
 getQWordAttribute = do
@@ -507,13 +491,7 @@ putAttributeValue value =
         Nothing -> pure ()
         Just instigatorId -> putWord32Bits instigatorId
       BinaryBit.putBool pickedUp
-    PrivateMatchSettingsAttribute mutators joinableBy maxPlayers gameName password flag -> do
-      putTextBits mutators
-      putWord32Bits joinableBy
-      putWord32Bits maxPlayers
-      putTextBits gameName
-      putTextBits password
-      BinaryBit.putBool flag
+    PrivateMatchSettingsAttribute x -> putPrivateMatchSettingsAttributeValue x
     QWordAttribute x -> putQWordAttributeValue x
     ReservationAttribute number systemId remoteId localId maybeName a b mc -> do
       putCompressedWord number

@@ -78,6 +78,7 @@ $(Monad.foldM
     , ''LocationAttributeValue
     , ''Mark
     , ''Message
+    , ''PrivateMatchSettingsAttributeValue
     , ''Property
     , ''PropertyValue
     , ''QWordAttributeValue
