@@ -89,6 +89,7 @@ $(Monad.foldM
     , ''Replay
     , ''Replication
     , ''ReplicationValue
+    , ''ReservationAttributeValue
     , ''RigidBodyStateAttributeValue
     , ''SpawnedReplicationValue
     , ''StringAttributeValue

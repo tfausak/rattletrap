@@ -19,6 +19,7 @@ import Rattletrap.AttributeValue.PartyLeader as Export
 import Rattletrap.AttributeValue.Pickup as Export
 import Rattletrap.AttributeValue.PrivateMatchSettings as Export
 import Rattletrap.AttributeValue.QWord as Export
+import Rattletrap.AttributeValue.Reservation as Export
 import Rattletrap.AttributeValue.RigidBodyState as Export
 import Rattletrap.AttributeValue.String as Export
 import Rattletrap.AttributeValue.TeamPaint as Export
@@ -26,7 +27,6 @@ import Rattletrap.AttributeValue.UniqueId as Export
 import Rattletrap.AttributeValue.WeldedInfo as Export
 
 import Rattletrap.CompressedWord
-import Rattletrap.RemoteId
 import Rattletrap.Text
 import Rattletrap.Word32
 import Rattletrap.Word8
@@ -35,7 +35,6 @@ import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Map as Map
-import qualified Data.Word as Word
 
 data AttributeValue
   = BooleanAttribute BooleanAttributeValue
@@ -70,14 +69,7 @@ data AttributeValue
   | PickupAttribute PickupAttributeValue
   | PrivateMatchSettingsAttribute PrivateMatchSettingsAttributeValue
   | QWordAttribute QWordAttributeValue
-  | ReservationAttribute CompressedWord
-                         Word8
-                         RemoteId
-                         Word8
-                         (Maybe Text)
-                         Bool
-                         Bool
-                         (Maybe Word.Word8)
+  | ReservationAttribute ReservationAttributeValue
   | RigidBodyStateAttribute RigidBodyStateAttributeValue
   | StringAttribute StringAttributeValue
   | TeamPaintAttribute TeamPaintAttributeValue
@@ -388,26 +380,8 @@ getQWordAttribute = do
 
 getReservationAttribute :: (Int, Int) -> BinaryBit.BitGet AttributeValue
 getReservationAttribute version = do
-  number <- getCompressedWord 7
-  uniqueId <- getUniqueIdAttributeValue
-  let systemId = uniqueIdAttributeValueSystemId uniqueId
-  let remoteId = uniqueIdAttributeValueRemoteId uniqueId
-  let localId = uniqueIdAttributeValueLocalId uniqueId
-  name <-
-    if systemId == Word8 0
-      then pure Nothing
-      else do
-        name <- getTextBits
-        pure (Just name)
-  a <- BinaryBit.getBool
-  b <- BinaryBit.getBool
-  mc <-
-    if beforeNeoTokyo version
-      then pure Nothing
-      else do
-        c <- BinaryBit.getWord8 6
-        pure (Just c)
-  pure (ReservationAttribute number systemId remoteId localId name a b mc)
+  x <- getReservationAttributeValue version
+  pure (ReservationAttribute x)
 
 getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
 getRigidBodyStateAttribute = do
@@ -463,18 +437,7 @@ putAttributeValue value =
     PickupAttribute x -> putPickupAttributeValue x
     PrivateMatchSettingsAttribute x -> putPrivateMatchSettingsAttributeValue x
     QWordAttribute x -> putQWordAttributeValue x
-    ReservationAttribute number systemId remoteId localId maybeName a b mc -> do
-      putCompressedWord number
-      putUniqueIdAttributeValue
-        (UniqueIdAttributeValue systemId remoteId localId)
-      case maybeName of
-        Nothing -> pure ()
-        Just name -> putTextBits name
-      BinaryBit.putBool a
-      BinaryBit.putBool b
-      case mc of
-        Nothing -> pure ()
-        Just c -> BinaryBit.putWord8 6 c
+    ReservationAttribute x -> putReservationAttributeValue x
     RigidBodyStateAttribute x -> putRigidBodyStateAttributeValue x
     StringAttribute x -> putStringAttributeValue x
     TeamPaintAttribute x -> putTeamPaintAttributeValue x
@@ -513,6 +476,3 @@ putLoadoutOnlineAttribute value =
              xs)
         values
     _ -> fail "putLoadoutOnlineAttribute"
-
-beforeNeoTokyo :: (Int, Int) -> Bool
-beforeNeoTokyo version = version < (868, 12)
