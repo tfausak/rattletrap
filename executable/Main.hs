@@ -85,6 +85,7 @@ $(Monad.foldM
     , ''Replay
     , ''Replication
     , ''ReplicationValue
+    , ''RigidBodyStateAttributeValue
     , ''SpawnedReplicationValue
     , ''StringAttributeValue
     , ''TeamPaintAttributeValue

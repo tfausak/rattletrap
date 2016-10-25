@@ -15,15 +15,14 @@ import Rattletrap.AttributeValue.GameMode as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
 import Rattletrap.AttributeValue.QWord as Export
+import Rattletrap.AttributeValue.RigidBodyState as Export
 import Rattletrap.AttributeValue.String as Export
 import Rattletrap.AttributeValue.TeamPaint as Export
 import Rattletrap.AttributeValue.WeldedInfo as Export
 
 import Rattletrap.CompressedWord
-import Rattletrap.CompressedWordVector
 import Rattletrap.RemoteId
 import Rattletrap.Text
-import Rattletrap.Vector
 import Rattletrap.Word32
 import Rattletrap.Word8
 
@@ -84,11 +83,7 @@ data AttributeValue
                          Bool
                          Bool
                          (Maybe Word.Word8)
-  | RigidBodyStateAttribute Bool
-                            Vector
-                            CompressedWordVector
-                            (Maybe Vector)
-                            (Maybe Vector)
+  | RigidBodyStateAttribute RigidBodyStateAttributeValue
   | StringAttribute StringAttributeValue
   | TeamPaintAttribute TeamPaintAttributeValue
   | UniqueIdAttribute Word8
@@ -448,28 +443,8 @@ getReservationAttribute version = do
 
 getRigidBodyStateAttribute :: BinaryBit.BitGet AttributeValue
 getRigidBodyStateAttribute = do
-  isSleeping <- BinaryBit.getBool
-  location <- getVector
-  spin <- getCompressedWordVector
-  linearVelocity <-
-    if isSleeping
-      then pure Nothing
-      else do
-        linearVelocity <- getVector
-        pure (Just linearVelocity)
-  angularVelocity <-
-    if isSleeping
-      then pure Nothing
-      else do
-        angularVelocity <- getVector
-        pure (Just angularVelocity)
-  pure
-    (RigidBodyStateAttribute
-       isSleeping
-       location
-       spin
-       linearVelocity
-       angularVelocity)
+  x <- getRigidBodyStateAttributeValue
+  pure (RigidBodyStateAttribute x)
 
 getStringAttribute :: BinaryBit.BitGet AttributeValue
 getStringAttribute = do
@@ -551,16 +526,7 @@ putAttributeValue value =
       case mc of
         Nothing -> pure ()
         Just c -> BinaryBit.putWord8 6 c
-    RigidBodyStateAttribute isSleeping location spin maybeLinearVelocity maybeAngularVelocity -> do
-      BinaryBit.putBool isSleeping
-      putVector location
-      putCompressedWordVector spin
-      case maybeLinearVelocity of
-        Nothing -> pure ()
-        Just linearVelocity -> putVector linearVelocity
-      case maybeAngularVelocity of
-        Nothing -> pure ()
-        Just angularVelocity -> putVector angularVelocity
+    RigidBodyStateAttribute x -> putRigidBodyStateAttributeValue x
     StringAttribute x -> putStringAttributeValue x
     TeamPaintAttribute x -> putTeamPaintAttributeValue x
     UniqueIdAttribute systemId remoteId localId ->
