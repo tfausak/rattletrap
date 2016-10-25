@@ -16,6 +16,7 @@ import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.Location as Export
 import Rattletrap.AttributeValue.QWord as Export
 import Rattletrap.AttributeValue.String as Export
+import Rattletrap.AttributeValue.TeamPaint as Export
 import Rattletrap.AttributeValue.WeldedInfo as Export
 
 import Rattletrap.CompressedWord
@@ -89,11 +90,7 @@ data AttributeValue
                             (Maybe Vector)
                             (Maybe Vector)
   | StringAttribute StringAttributeValue
-  | TeamPaintAttribute Word8
-                       Word8
-                       Word8
-                       Word32
-                       Word32
+  | TeamPaintAttribute TeamPaintAttributeValue
   | UniqueIdAttribute Word8
                       RemoteId
                       Word8
@@ -481,13 +478,8 @@ getStringAttribute = do
 
 getTeamPaintAttribute :: BinaryBit.BitGet AttributeValue
 getTeamPaintAttribute = do
-  team <- getWord8Bits
-  primaryColor <- getWord8Bits
-  accentColor <- getWord8Bits
-  primaryFinish <- getWord32Bits
-  accentFinish <- getWord32Bits
-  pure
-    (TeamPaintAttribute team primaryColor accentColor primaryFinish accentFinish)
+  x <- getTeamPaintAttributeValue
+  pure (TeamPaintAttribute x)
 
 getUniqueIdAttribute :: BinaryBit.BitGet AttributeValue
 getUniqueIdAttribute = do
@@ -570,12 +562,7 @@ putAttributeValue value =
         Nothing -> pure ()
         Just angularVelocity -> putVector angularVelocity
     StringAttribute x -> putStringAttributeValue x
-    TeamPaintAttribute team primaryColor accentColor primaryFinish accentFinish -> do
-      putWord8Bits team
-      putWord8Bits primaryColor
-      putWord8Bits accentColor
-      putWord32Bits primaryFinish
-      putWord32Bits accentFinish
+    TeamPaintAttribute x -> putTeamPaintAttributeValue x
     UniqueIdAttribute systemId remoteId localId ->
       putUniqueId systemId remoteId localId
     WeldedInfoAttribute x -> putWeldedInfoAttributeValue x

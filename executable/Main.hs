@@ -83,6 +83,7 @@ $(Monad.foldM
     , ''ReplicationValue
     , ''SpawnedReplicationValue
     , ''StringAttributeValue
+    , ''TeamPaintAttributeValue
     , ''Text
     , ''UpdatedReplicationValue
     , ''Vector
