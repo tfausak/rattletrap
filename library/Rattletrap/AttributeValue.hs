@@ -14,6 +14,7 @@ import Rattletrap.AttributeValue.Float as Export
 import Rattletrap.AttributeValue.GameMode as Export
 import Rattletrap.AttributeValue.Int as Export
 import Rattletrap.AttributeValue.LoadoutOnline as Export
+import Rattletrap.AttributeValue.LoadoutsOnline as Export
 import Rattletrap.AttributeValue.Location as Export
 import Rattletrap.AttributeValue.MusicStinger as Export
 import Rattletrap.AttributeValue.PartyLeader as Export
@@ -58,10 +59,7 @@ data AttributeValue
   | LoadoutOnlineAttribute LoadoutOnlineAttributeValue
   | LoadoutsAttribute AttributeValue
                       AttributeValue
-  | LoadoutsOnlineAttribute LoadoutOnlineAttributeValue
-                            LoadoutOnlineAttributeValue
-                            Bool
-                            Bool
+  | LoadoutsOnlineAttribute LoadoutsOnlineAttributeValue
   | LocationAttribute LocationAttributeValue
   | MusicStingerAttribute MusicStingerAttributeValue
   | PartyLeaderAttribute PartyLeaderAttributeValue
@@ -332,11 +330,8 @@ getLoadoutsAttribute = do
 
 getLoadoutsOnlineAttribute :: BinaryBit.BitGet AttributeValue
 getLoadoutsOnlineAttribute = do
-  blueLoadout <- getLoadoutOnlineAttributeValue
-  orangeLoadout <- getLoadoutOnlineAttributeValue
-  unknown1 <- BinaryBit.getBool
-  unknown2 <- BinaryBit.getBool
-  pure (LoadoutsOnlineAttribute blueLoadout orangeLoadout unknown1 unknown2)
+  x <- getLoadoutsOnlineAttributeValue
+  pure (LoadoutsOnlineAttribute x)
 
 getLocationAttribute :: BinaryBit.BitGet AttributeValue
 getLocationAttribute = do
@@ -416,11 +411,7 @@ putAttributeValue value =
     LoadoutsAttribute blueLoadout orangeLoadout -> do
       putLoadoutAttribute blueLoadout
       putLoadoutAttribute orangeLoadout
-    LoadoutsOnlineAttribute blueLoadout orangeLoadout unknown1 unknown2 -> do
-      putLoadoutOnlineAttributeValue blueLoadout
-      putLoadoutOnlineAttributeValue orangeLoadout
-      BinaryBit.putBool unknown1
-      BinaryBit.putBool unknown2
+    LoadoutsOnlineAttribute x -> putLoadoutsOnlineAttributeValue x
     LocationAttribute x -> putLocationAttributeValue x
     MusicStingerAttribute x -> putMusicStingerAttributeValue x
     PartyLeaderAttribute x -> putPartyLeaderAttributeValue x
