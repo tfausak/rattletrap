@@ -18,9 +18,7 @@ executables:
     source-dirs: executable
 extra-source-files:
 - HLint.hs
-- package.yaml
 - README.markdown
-- stack.yaml
 ghc-options: -Wall
 library:
   dependencies:

@@ -1,5 +1,7 @@
 # [Rattletrap][]
 
+[![Build badge][]][build]
+
 Rattletrap parses and generates [Rocket League][] replays.
 
 ## Install
@@ -55,5 +57,7 @@ used to modify replays.
 ```
 
 [Rattletrap]: https://github.com/tfausak/rattletrap
-[Rocket League]: http://www.rocketleaguegame.com/
+[Build badge]: https://travis-ci.org/tfausak/rattletrap.svg?branch=main
+[build]: https://travis-ci.org/tfausak/rattletrap
+[Rocket League]: https://www.rocketleaguegame.com
 [Stack]: https://docs.haskellstack.org/en/stable/README/
