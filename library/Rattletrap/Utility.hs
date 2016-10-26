@@ -5,11 +5,6 @@ import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Word as Word
 import qualified Text.Regex as Regex
 
-logBase2
-  :: (Integral a, Integral b)
-  => a -> b
-logBase2 x = floor (logBase (2 :: Float) (fromIntegral x))
-
 padBytes
   :: Integral a
   => a -> ByteString.ByteString -> ByteString.ByteString

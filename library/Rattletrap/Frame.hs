@@ -43,19 +43,16 @@ getFrame
 getFrame version classAttributeMap actorMap = do
   time <- getFloat32Bits
   delta <- getFloat32Bits
-  if time == Float32 0 && delta == Float32 0
-    then pure Nothing
-    else do
-      (replications, newActorMap) <-
-        getReplications version classAttributeMap actorMap
-      pure
-        (Just
-           ( Frame
-             { frameTime = time
-             , frameDelta = delta
-             , frameReplications = replications
-             }
-           , newActorMap))
+  (replications, newActorMap) <-
+    getReplications version classAttributeMap actorMap
+  pure
+    (Just
+       ( Frame
+         { frameTime = time
+         , frameDelta = delta
+         , frameReplications = replications
+         }
+       , newActorMap))
 
 putFrame :: Frame -> BinaryBit.BitPut ()
 putFrame frame = do
