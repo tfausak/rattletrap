@@ -15,7 +15,7 @@ on_success:
 - powershell -File tools/attach-binary.ps1
 platform: x64
 test_script:
-- ps: stack setup | out-null
+- stack setup > nul
 - stack build --ghc-options -O2 --only-dependencies --test
 - stack build --ghc-options -O2 --pedantic --test
 - stack sdist --pvp-bounds both
