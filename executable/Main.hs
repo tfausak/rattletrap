@@ -25,19 +25,31 @@ main = do
 mainWithArgs :: [String] -> IO ()
 mainWithArgs args =
   case args of
-    ["decode", replayFile, jsonFile] -> do
-      input <- ByteString.readFile replayFile
+    "decode":files -> do
+      (getInput, putOutput) <- getIO files
+      input <- getInput
       let replay = Binary.runGet getReplay input
       let output = Aeson.encode replay
-      ByteString.writeFile jsonFile output
-    ["encode", jsonFile, replayFile] -> do
-      input <- ByteString.readFile jsonFile
+      putOutput output
+    "encode":files -> do
+      (getInput, putOutput) <- getIO files
+      input <- getInput
       case Aeson.eitherDecode input of
         Left message -> fail ("could not parse JSON: " ++ message)
         Right replay -> do
           let output = Binary.runPut (putReplay replay)
-          ByteString.writeFile replayFile output
+          putOutput output
     _ -> fail ("unexpected arguments " ++ show args)
+
+getIO
+  :: Monad m
+  => [FilePath] -> m (IO ByteString.ByteString, ByteString.ByteString -> IO ())
+getIO files =
+  case files of
+    [] -> pure (ByteString.getContents, ByteString.putStr)
+    [i] -> pure (ByteString.readFile i, ByteString.putStr)
+    [i, o] -> pure (ByteString.readFile i, ByteString.writeFile o)
+    _ -> fail ("unexpected arguments " ++ show files)
 
 $(Monad.foldM
     (\declarations name -> do
