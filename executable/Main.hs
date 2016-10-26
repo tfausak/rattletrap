@@ -30,13 +30,13 @@ mainWithArgs args =
       let replay = Binary.runGet getReplay input
       let output = Aeson.encode replay
       ByteString.writeFile jsonFile output
-    ["encode", jsonFile, replayfile] -> do
+    ["encode", jsonFile, replayFile] -> do
       input <- ByteString.readFile jsonFile
       case Aeson.eitherDecode input of
         Left message -> fail ("could not parse JSON: " ++ message)
         Right replay -> do
           let output = Binary.runPut (putReplay replay)
-          ByteString.writeFile replayfile output
+          ByteString.writeFile replayFile output
     _ -> fail ("unexpected arguments " ++ show args)
 
 $(Monad.foldM
