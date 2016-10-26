@@ -16,6 +16,11 @@ executables:
     - -with-rtsopts=-N
     main: Main.hs
     source-dirs: executable
+extra-source-files:
+- HLint.hs
+- package.yaml
+- README.markdown
+- stack.yaml
 ghc-options: -Wall
 library:
   dependencies:
@@ -36,7 +41,17 @@ maintainer: Taylor Fausak
 name: rattletrap
 synopsis: Parse and generate Rocket League replays.
 tests:
-  rattletrap-test:
+  lint:
+    dependencies:
+    - base
+    - hlint
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
+    main: Lint.hs
+    source-dirs: test
+  test:
     dependencies:
     - base
     - binary
@@ -49,6 +64,6 @@ tests:
     - -rtsopts
     - -threaded
     - -with-rtsopts=-N
-    main: Main.hs
+    main: Test.hs
     source-dirs: test
 version: '0.0.0'
