@@ -22,11 +22,8 @@ data PropertyValue a
   | StrProperty Text
   deriving (Eq, Ord, Show)
 
-getPropertyValue :: Binary.Get a
-                 -> Text
-                 -> Word64
-                 -> Binary.Get (PropertyValue a)
-getPropertyValue getProperty kind _ =
+getPropertyValue :: Binary.Get a -> Text -> Binary.Get (PropertyValue a)
+getPropertyValue getProperty kind =
   case textToString kind of
     "ArrayProperty" -> do
       list <- getList (getDictionary getProperty)
