@@ -24,5 +24,5 @@ os:
 script:
 - stack setup
 - stack build --ghc-options -O2 --only-dependencies --test
-- travis_wait stack build --ghc-options -O2 --pedantic --test --test-arguments '--num-threads 1'
+- stack build --ghc-options -O2 --pedantic --test --test-arguments '--num-threads 1'
 - stack sdist --pvp-bounds both
