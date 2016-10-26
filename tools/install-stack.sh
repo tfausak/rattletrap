@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-set -o errxit -o xtrace
+set -o errexit -o xtrace
 
 if test ! -f "$HOME/.local/bin/stack"
 then
