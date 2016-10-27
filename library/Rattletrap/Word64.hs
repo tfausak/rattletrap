@@ -20,7 +20,7 @@ getWord64 = do
   pure (Word64 word64)
 
 putWord64 :: Word64 -> Binary.Put
-putWord64 (Word64 word64) = Binary.putWord64le word64
+putWord64 word64 = Binary.putWord64le (word64Value word64)
 
 getWord64Bits :: BinaryBit.BitGet Word64
 getWord64Bits = do

@@ -19,7 +19,7 @@ getInt8 = do
   pure (Int8 int8)
 
 putInt8 :: Int8 -> Binary.Put
-putInt8 (Int8 int8) = Binary.putInt8 int8
+putInt8 int8 = Binary.putInt8 (int8Value int8)
 
 getInt8Bits :: BinaryBit.BitGet Int8
 getInt8Bits = do

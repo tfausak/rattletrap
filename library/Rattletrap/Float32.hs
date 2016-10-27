@@ -20,7 +20,7 @@ getFloat32 = do
   pure (Float32 float32)
 
 putFloat32 :: Float32 -> Binary.Put
-putFloat32 (Float32 float32) = IEEE754.putFloat32le float32
+putFloat32 float32 = IEEE754.putFloat32le (float32Value float32)
 
 getFloat32Bits :: BinaryBit.BitGet Float32
 getFloat32Bits = do
