@@ -18,9 +18,6 @@ putCompressedWord :: CompressedWord -> BinaryBit.BitPut ()
 putCompressedWord compressedWord = do
   let limit = compressedWordLimit compressedWord
   let value = compressedWordValue compressedWord
-  if value > limit
-    then fail ("value " ++ show value ++ " > limit " ++ show limit)
-    else pure ()
   let maxBits = getMaxBits limit
   let go position soFar =
         if position < maxBits
