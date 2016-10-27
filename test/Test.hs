@@ -24,7 +24,7 @@ itCanGetAndPut uuid description =
     (uuid ++ ": a replay with " ++ description)
     (do let file = pathToReplay uuid
         (input, _, output) <- getAndPut file
-        Hspec.shouldBe output input)
+        Hspec.shouldBe (output == input) True)
 
 pathToReplay :: String -> FilePath
 pathToReplay uuid =
