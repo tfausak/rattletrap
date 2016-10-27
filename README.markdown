@@ -1,5 +1,6 @@
 # [Rattletrap][]
 
+[![Version badge][]][version]
 [![Windows build badge][]][windows build]
 [![Build badge][]][build]
 
@@ -58,6 +59,8 @@ used to modify replays.
 ```
 
 [Rattletrap]: https://github.com/tfausak/rattletrap
+[Version badge]: https://img.shields.io/hackage/v/rattletrap.svg
+[version]: https://hackage.haskell.org/package/rattletrap
 [Windows build badge]: https://ci.appveyor.com/api/projects/status/github/tfausak/rattletrap?branch=master&svg=true
 [windows build]: https://ci.appveyor.com/project/TaylorFausak/rattletrap
 [Build badge]: https://travis-ci.org/tfausak/rattletrap.svg?branch=master
