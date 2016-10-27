@@ -20,6 +20,7 @@ extra-source-files:
 - HLint.hs
 - README.markdown
 ghc-options: -Wall
+github: tfausak/rattletrap
 library:
   dependencies:
   - base
