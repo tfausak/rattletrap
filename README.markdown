@@ -60,7 +60,7 @@ used to modify replays.
 [Rattletrap]: https://github.com/tfausak/rattletrap
 [Windows build badge]: https://ci.appveyor.com/api/projects/status/github/tfausak/rattletrap?branch=master&svg=true
 [windows build]: https://ci.appveyor.com/project/TaylorFausak/rattletrap
-[Build badge]: https://travis-ci.org/tfausak/rattletrap.svg?branch=main
+[Build badge]: https://travis-ci.org/tfausak/rattletrap.svg?branch=master
 [build]: https://travis-ci.org/tfausak/rattletrap
 [Rocket League]: https://www.rocketleaguegame.com
 [Stack]: https://docs.haskellstack.org/en/stable/README/
