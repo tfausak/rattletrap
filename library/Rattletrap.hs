@@ -6,6 +6,7 @@ import Rattletrap.ActorMap as Export
 import Rattletrap.Attribute as Export
 import Rattletrap.AttributeMapping as Export
 import Rattletrap.AttributeValue as Export
+import Rattletrap.AttributeValueType as Export
 import Rattletrap.Cache as Export
 import Rattletrap.ClassAttributeMap as Export
 import Rattletrap.ClassMapping as Export
