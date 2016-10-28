@@ -24,5 +24,5 @@ os:
 script:
 - stack setup
 - stack build --ghc-options -O2 --only-dependencies --test
-- stack build --ghc-options '-O2 +RTS -N1 -RTS' --pedantic --test --test-arguments '--num-threads 1'
+- stack build --ghc-options '-O2 +RTS -N1 -RTS' --pedantic --test --test-arguments '--num-threads 1 --pattern 29F582C34A65EB34D358A784CBE3C189'
 - stack sdist --pvp-bounds both
