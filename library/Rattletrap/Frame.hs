@@ -20,14 +20,11 @@ getFrames
   -> ClassAttributeMap
   -> ActorMap
   -> BinaryBit.BitGet ([Frame], ActorMap)
-getFrames version numFrames classAttributeMap actorMap = do
-  maybeFrame <-
-    if numFrames > 0
-      then getFrame version classAttributeMap actorMap
-      else pure Nothing
-  case maybeFrame of
-    Nothing -> pure ([], actorMap)
-    Just (frame, newActorMap) -> do
+getFrames version numFrames classAttributeMap actorMap =
+  if numFrames <= 0
+    then pure ([], actorMap)
+    else do
+      (frame, newActorMap) <- getFrame version classAttributeMap actorMap
       (frames, newerActorMap) <-
         getFrames version (numFrames - 1) classAttributeMap newActorMap
       pure (frame : frames, newerActorMap)
@@ -39,20 +36,16 @@ getFrame
   :: (Int, Int)
   -> ClassAttributeMap
   -> ActorMap
-  -> BinaryBit.BitGet (Maybe (Frame, ActorMap))
+  -> BinaryBit.BitGet (Frame, ActorMap)
 getFrame version classAttributeMap actorMap = do
   time <- getFloat32Bits
   delta <- getFloat32Bits
   (replications, newActorMap) <-
     getReplications version classAttributeMap actorMap
   pure
-    (Just
-       ( Frame
-         { frameTime = time
-         , frameDelta = delta
-         , frameReplications = replications
-         }
-       , newActorMap))
+    ( Frame
+      {frameTime = time, frameDelta = delta, frameReplications = replications}
+    , newActorMap)
 
 putFrame :: Frame -> BinaryBit.BitPut ()
 putFrame frame = do
