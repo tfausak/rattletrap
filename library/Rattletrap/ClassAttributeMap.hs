@@ -189,7 +189,10 @@ normalizeObjectName objectName =
     (replace
        "_[0-9]+$"
        ""
-       (replace "^[A-Z_a-z]+[.]TheWorld:" "TheWorld:" (textToString objectName)))
+       (replace
+          "^[A-Z_a-z0-9]+[.]TheWorld:"
+          "TheWorld:"
+          (textToString objectName)))
 
 objectClasses :: Map.Map Text Text
 objectClasses =
