@@ -1,13 +1,13 @@
 build: off
 cache:
-- c:\\bin
-- c:\\stack -> stack.yaml
-clone_folder: c:\\rattletrap
+- c:/bin
+- c:/stack -> stack.yaml
+clone_folder: c:/rattletrap
 environment:
   GITHUB_TOKEN:
     secure: CTD2sGkh3EQaLuMJybGza6XNaI+Ews42mdNy9p3U+eShkrjIwYrbUVKnpzra8kIZ
-  PATH: c:\\bin;%PATH%
-  STACK_ROOT: c:\\stack
+  PATH: c:/bin;%PATH%
+  STACK_ROOT: c:/stack
 install:
 - powershell -File tools/install-stack.ps1
 - powershell -File tools/install-github-release.ps1
