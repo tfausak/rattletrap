@@ -33,6 +33,7 @@ library:
   - regex-compat
   - text
   - vector
+  other-modules: Paths_rattletrap
   source-dirs: library
 license: MIT
 license-file: LICENSE.markdown

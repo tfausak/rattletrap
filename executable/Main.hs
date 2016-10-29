@@ -14,6 +14,7 @@ import qualified Data.Aeson.TH as Aeson
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
+import qualified Data.Version as Version
 import qualified Language.Haskell.TH as TH
 import qualified System.Environment as Environment
 
@@ -25,6 +26,7 @@ main = do
 mainWithArgs :: [String] -> IO ()
 mainWithArgs args =
   case args of
+    ["version"] -> putStrLn (Version.showVersion version)
     "decode":files -> do
       (getInput, putOutput) <- getIO files
       input <- getInput
