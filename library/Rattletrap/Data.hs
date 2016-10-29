@@ -139,7 +139,6 @@ rawObjectClasses =
   , ("GameInfo_Items.GameInfo.GameInfo_Items:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Season.GameInfo.GameInfo_Season:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Soccar.GameInfo.GameInfo_Soccar:GameReplicationInfoArchetype", "TAGame.GRI_TA")
-  -- , ("TAGame.CameraSettingsActor_TA:PRI", "TAGame.CameraSettingsActor_TA")
   , ("TAGame.Default__CameraSettingsActor_TA", "TAGame.CameraSettingsActor_TA")
   , ("TAGame.Default__PRI_TA", "TAGame.PRI_TA")
   , ("TAGame.Default__VoteActor_TA", "TAGame.VoteActor_TA")
