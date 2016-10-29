@@ -1,7 +1,4 @@
 build: off
-cache:
-- c:/bin
-- c:/stack -> stack.yaml
 clone_folder: c:/rattletrap
 environment:
   GITHUB_TOKEN:
