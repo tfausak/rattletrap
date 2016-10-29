@@ -8,9 +8,19 @@ Rattletrap parses and generates [Rocket League][] replays.
 
 ## Install
 
-Rattletrap does not yet offer compiled binaries for download. To install it,
-first install [Stack][]. Then download or clone this repository and run
-`stack --install-ghc install`.
+Get Rattletrap by downloading and unpacking [the latest release][] for your
+platform.
+
+To build Rattletrap from source, install [Stack][]. Then download this
+repository and run `stack --install-ghc install`.
+
+## Replays
+
+Rocket League saves your replays in a folder that depends on your operating system.
+
+- Windows: `%UserProfile%\Documents\My Games\Rocket League\TAGame\Demos`
+- macOS: `$HOME/Library/Application Support/Rocket League/TAGame/Demos`
+- Linux: `$HOME/.local/share/Rocket League/TAGame/Demos`
 
 ## Parse
 
@@ -24,13 +34,8 @@ Rattletrap can parse (decode) Rocket League replays and output them as JSON.
 > rattletrap.decode < input.replay > output.json
 ```
 
-The resulting JSON is minified, but extremely large. A 4.3 MB replay file turns
-into a 123 MB JSON file. To easily view the file, use a JSON pretty printer and
-a pager. For example:
-
-``` sh
-> cat output.json | python -m json.tool | less
-```
+The resulting JSON is minified, but extremely large. The output can be up to 50
+times larger than the input.
 
 ## Generate
 
@@ -66,4 +71,5 @@ used to modify replays.
 [Build badge]: https://travis-ci.org/tfausak/rattletrap.svg?branch=master
 [build]: https://travis-ci.org/tfausak/rattletrap
 [Rocket League]: https://www.rocketleaguegame.com
+[the latest release]: https://github.com/tfausak/rattletrap/releases/latest
 [Stack]: https://docs.haskellstack.org/en/stable/README/
