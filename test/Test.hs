@@ -56,6 +56,7 @@ replays =
   , ("372DBFCA4BDB340E4357B6BD43032802", "a camera yaw attribute")
   , ("387F059C47C09E253C875CA990EFD9F2", "a frozen attribute")
   , ("3EA147DD485B8DD24810689A7A989E44", "a custom team name")
+  , ("40D831074157F4C843EA6CBFE0A88140", "a batarang")
   , ("4126861E477F4A03DE2A4080374D7908", "a game mode after Neo Tokyo")
   , ("42F0D8DA4FC89AE7B80FCAB7F637A8EA", "reservations after Neo Tokyo")
   , ("504ED825482186E771FAA9B642CE5CE4", "some messages")
