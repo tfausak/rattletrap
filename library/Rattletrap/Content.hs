@@ -24,6 +24,7 @@ data Content = Content
   , contentKeyFrames :: List KeyFrame
   , contentStreamSize :: Word32
   , contentFrames :: [Frame]
+  , contentTrailingBits :: [Bool]
   , contentMessages :: List Message
   , contentMarks :: List Mark
   , contentPackages :: List Text
@@ -47,17 +48,22 @@ getContent version numFrames = do
   classMappings <- getList getClassMapping
   caches <- getList getCache
   let classAttributeMap = makeClassAttributeMap objects classMappings caches
-  let (frames, _) =
+  let (frames, remainingBits) =
         Binary.runGet
           (BinaryBit.runBitGet
-             (getFrames version numFrames classAttributeMap makeActorMap))
+             (do (theFrames, _) <-
+                   getFrames version numFrames classAttributeMap makeActorMap
+                 theRemainingBits <- getRemainingBits
+                 pure (theFrames, theRemainingBits)))
           (reverseBytes stream)
+  let trailingBits = reverse (dropWhile not (reverse remainingBits))
   pure
     Content
     { contentLevels = levels
     , contentKeyFrames = keyFrames
     , contentStreamSize = streamSize
     , contentFrames = frames
+    , contentTrailingBits = trailingBits
     , contentMessages = messages
     , contentMarks = marks
     , contentPackages = packages
@@ -74,7 +80,10 @@ putContent content = do
   let streamSize = contentStreamSize content
   putWord32 streamSize
   let stream =
-        Binary.runPut (BinaryBit.runBitPut (putFrames (contentFrames content)))
+        Binary.runPut
+          (BinaryBit.runBitPut
+             (do putFrames (contentFrames content)
+                 mapM_ BinaryBit.putBool (contentTrailingBits content)))
   Binary.putLazyByteString
     (reverseBytes (padBytes (word32Value streamSize) stream))
   putList putMessage (contentMessages content)
