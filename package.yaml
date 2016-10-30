@@ -1,4 +1,6 @@
 category: Game
+default-extensions:
+- Strict
 description: Rattletrap parses and generates Rocket League replays.
 executables:
   rattletrap:
