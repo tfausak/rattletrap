@@ -15,4 +15,4 @@ fi
 
 mkdir -p "$HOME/.stack/upload"
 echo "{ \"username\": \"$HACKAGE_USERNAME\", \"password\": \"$HACKAGE_PASSWORD\" }" > "$HOME/.stack/upload/credentials.json"
-stack upload --pvp-bounds both .
+stack upload .

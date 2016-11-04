@@ -25,4 +25,4 @@ script:
 - stack setup
 - stack build --ghc-options -O2 --only-dependencies --test
 - stack build --ghc-options -O2 --pedantic --test --test-arguments '--pattern 29F5'
-- stack sdist --pvp-bounds both
+- stack sdist

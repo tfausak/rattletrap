@@ -15,5 +15,5 @@ test_script:
 - stack setup > nul
 - stack build --ghc-options -O2 --only-dependencies --test
 - stack build --ghc-options -O2 --pedantic --test
-- stack sdist --pvp-bounds both
+- stack sdist
 version: '{build}'
