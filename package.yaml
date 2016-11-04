@@ -21,6 +21,7 @@ executables:
 extra-source-files:
 - HLint.hs
 - README.markdown
+- test/replays/*.replay
 ghc-options: -Wall
 github: tfausak/rattletrap
 library:
