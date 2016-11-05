@@ -42,6 +42,7 @@ replays :: [(String, String)]
 replays =
   [ ("00080014003600090000036E0F65CCEB", "a flip time")
   , ("07E925B1423653D44CB8B4B2524792C1", "a game mode before Neo Tokyo")
+  , ("0AD21FEE4A512906BEB6C98136AAF49A", "some Latin-1 text")
   , ("1205D96C4D819800927791820096CD49", "rumble mode")
   , ("160CA83E41083BFD8E6315B4BFCA0561", "a dedicated server IP")
   , ("18D6738D415B70B5BE4C299588D3C141", "an online loadout attribute")
@@ -76,7 +77,6 @@ replays =
   , ("B9F9B87D4A9D0A3D25D4EC91C0401DE2", "a party leader")
   , ("C14F7E0E4D9B5E6BE9AD5D8ED56B174C", "some mutators")
   , ("C375E0EC4971B506C51678B465D35AE9", "some UTF-16 text")
-  , ("C80A9959479CFE51673B3A889D717554", "some Latin-1 text")
   , ("C8372B1345B1803DEF039F815DBD802D", "a spectator")
   , ("CB5B422A4424262B2877E9A121329EF2", "a player using behind view")
   , ("D7FB197A451D69075A0C99A2F49A4053", "an explosion attribute")
