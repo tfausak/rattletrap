@@ -4,6 +4,7 @@ import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.CompressedWord
 import Rattletrap.Initialization
+import Rattletrap.Text
 import Rattletrap.Word32
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -12,6 +13,8 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 data SpawnedReplicationValue = SpawnedReplicationValue
   { spawnedReplicationValueFlag :: Bool
   , spawnedReplicationValueObjectId :: Word32
+  , spawnedReplicationValue_objectName :: String
+  , spawnedReplicationValue_className :: String
   , spawnedReplicationValueInitialization :: Initialization
   } deriving (Eq, Ord, Show)
 
@@ -35,7 +38,13 @@ getSpawnedReplicationValue classAttributeMap actorMap actorId = do
           let hasRotation = classHasRotation className
           initialization <- getInitialization hasLocation hasRotation
           pure
-            (SpawnedReplicationValue flag objectId initialization, newActorMap)
+            ( SpawnedReplicationValue
+                flag
+                objectId
+                (textToString objectName)
+                (textToString className)
+                initialization
+            , newActorMap)
 
 putSpawnedReplicationValue :: SpawnedReplicationValue -> BinaryBit.BitPut ()
 putSpawnedReplicationValue spawnedReplicationValue = do
