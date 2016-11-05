@@ -3,7 +3,7 @@ addons:
     packages:
     - libgmp-dev
 after_success:
-- sh tools/upload-package.sh
+- stack tools/upload-package.hs
 - sh tools/attach-binary.sh
 before_install:
 - sh tools/install-stack.sh
