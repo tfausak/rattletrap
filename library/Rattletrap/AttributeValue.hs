@@ -6,6 +6,7 @@ module Rattletrap.AttributeValue
 import Rattletrap.AttributeValue.Boolean as Export
 import Rattletrap.AttributeValue.Byte as Export
 import Rattletrap.AttributeValue.CamSettings as Export
+import Rattletrap.AttributeValue.ClubColors as Export
 import Rattletrap.AttributeValue.Demolish as Export
 import Rattletrap.AttributeValue.Enum as Export
 import Rattletrap.AttributeValue.Explosion as Export
@@ -42,6 +43,7 @@ data AttributeValue
   = BooleanAttribute BooleanAttributeValue
   | ByteAttribute ByteAttributeValue
   | CamSettingsAttribute CamSettingsAttributeValue
+  | ClubColorsAttribute ClubColorsAttributeValue
   | DemolishAttribute DemolishAttributeValue
   | EnumAttribute EnumAttributeValue
   | ExplosionAttribute ExplosionAttributeValue
@@ -81,6 +83,9 @@ getAttributeValue version name =
         AVCamSettings -> do
           x <- getCamSettingsAttributeValue
           pure (CamSettingsAttribute x)
+        AVClubColors -> do
+          x <- getClubColorsAttributeValue
+          pure (ClubColorsAttribute x)
         AVDemolish -> do
           x <- getDemolishAttributeValue
           pure (DemolishAttribute x)
@@ -162,6 +167,7 @@ putAttributeValue value =
     BooleanAttribute x -> putBooleanAttributeValue x
     ByteAttribute x -> putByteAttributeValue x
     CamSettingsAttribute x -> putCamSettingsAttributeValue x
+    ClubColorsAttribute x -> putClubColorsAttributeValue x
     DemolishAttribute x -> putDemolishAttributeValue x
     EnumAttribute x -> putEnumAttributeValue x
     ExplosionAttribute x -> putExplosionAttributeValue x

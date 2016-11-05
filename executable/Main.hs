@@ -68,6 +68,7 @@ $(Monad.foldM
     , ''Cache
     , ''CamSettingsAttributeValue
     , ''ClassMapping
+    , ''ClubColorsAttributeValue
     , ''CompressedWord
     , ''CompressedWordVector
     , ''Content
