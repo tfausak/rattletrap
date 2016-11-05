@@ -79,12 +79,12 @@ replays =
   , ("C80A9959479CFE51673B3A889D717554", "some Latin-1 text")
   , ("C8372B1345B1803DEF039F815DBD802D", "a spectator")
   , ("CB5B422A4424262B2877E9A121329EF2", "a player using behind view")
-  , ("D428F81646A98C25902CE988AE5C14C8", "a private hockey match")
   , ("D7FB197A451D69075A0C99A2F49A4053", "an explosion attribute")
   , ("DCB3A6B94A9DBE46FDE5EAA9B012F6C8", "a pawn type attribute")
   , ("EAE311E84BA35B590A6FDBA6DD4F2FEB", "an actor/object ID collision")
   , ("EAE8DADA4BB2DC5422792C9B4A67392D", "private match settings")
   , ("F299F176491554B11E34AB91CA76B2CE", "a location attribute")
+  , ("F7B9E14545C7467B89A00895980FCD73", "a private hockey match")
   , ("F811C1D24888015E23B598AD8628C742", "no frames")
   , ("FDC79DA84DD463D4BCCE6B892829AC88", "an MVP")
   ]
