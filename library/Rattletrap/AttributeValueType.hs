@@ -4,6 +4,7 @@ data AttributeValueType
   = AVBoolean
   | AVByte
   | AVCamSettings
+  | AVClubColors
   | AVDemolish
   | AVEnum
   | AVExplosion
