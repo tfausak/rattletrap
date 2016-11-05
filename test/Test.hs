@@ -12,7 +12,7 @@ import qualified Test.Tasty.Hspec as Hspec
 
 main :: IO ()
 main = do
-  tests <- Hspec.testSpec "rattletrap" (Hspec.parallel spec)
+  tests <- Hspec.testSpec "rattletrap" spec
   Tasty.defaultMain tests
 
 spec :: Hspec.Spec
