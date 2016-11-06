@@ -11,8 +11,8 @@ Rattletrap parses and generates [Rocket League][] replays.
 Get Rattletrap by downloading and unpacking [the latest release][] for your
 platform.
 
-To build Rattletrap from source, install [Stack][]. Then download this
-repository and run `stack --install-ghc install`.
+To build Rattletrap from source, install [Stack][]. Then run
+`stack --resolver nightly install rattletrap`.
 
 ## Replays
 
