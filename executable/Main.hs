@@ -53,78 +53,76 @@ getIO files =
     [i, o] -> pure (ByteString.readFile i, ByteString.writeFile o)
     _ -> fail ("unexpected arguments " ++ show files)
 
-$(Monad.foldM
-    (\declarations name -> do
-       let prefixSize = length (TH.nameBase name)
-       let caseOptions = Casing.aesonDrop prefixSize Casing.snakeCase
-       let options =
-             caseOptions
-             { Aeson.omitNothingFields = True
-             , Aeson.sumEncoding = Aeson.ObjectWithSingleField
-             , Aeson.unwrapUnaryRecords = True
-             }
-       newDeclarations <- Aeson.deriveJSON options name
-       pure (newDeclarations ++ declarations))
-    []
-    [ ''Attribute
-    , ''AttributeMapping
-    , ''AttributeValue
-    , ''BooleanAttributeValue
-    , ''ByteAttributeValue
-    , ''Cache
-    , ''CamSettingsAttributeValue
-    , ''ClassMapping
-    , ''ClubColorsAttributeValue
-    , ''CompressedWord
-    , ''CompressedWordVector
-    , ''Content
-    , ''DemolishAttributeValue
-    , ''DestroyedReplicationValue
-    , ''Dictionary
-    , ''EnumAttributeValue
-    , ''ExplosionAttributeValue
-    , ''FlaggedIntAttributeValue
-    , ''Float32
-    , ''FloatAttributeValue
-    , ''Frame
-    , ''GameModeAttributeValue
-    , ''Header
-    , ''Initialization
-    , ''Int32
-    , ''Int8
-    , ''Int8Vector
-    , ''IntAttributeValue
-    , ''KeyFrame
-    , ''List
-    , ''LoadoutAttributeValue
-    , ''LoadoutOnlineAttributeValue
-    , ''LoadoutsAttributeValue
-    , ''LoadoutsOnlineAttributeValue
-    , ''LocationAttributeValue
-    , ''Mark
-    , ''Message
-    , ''MusicStingerAttributeValue
-    , ''PartyLeaderAttributeValue
-    , ''PickupAttributeValue
-    , ''PrivateMatchSettingsAttributeValue
-    , ''Property
-    , ''PropertyValue
-    , ''QWordAttributeValue
-    , ''RemoteId
-    , ''Replay
-    , ''Replication
-    , ''ReplicationValue
-    , ''ReservationAttributeValue
-    , ''RigidBodyStateAttributeValue
-    , ''SpawnedReplicationValue
-    , ''StringAttributeValue
-    , ''TeamPaintAttributeValue
-    , ''Text
-    , ''UniqueIdAttributeValue
-    , ''UpdatedReplicationValue
-    , ''Vector
-    , ''WeldedInfoAttributeValue
-    , ''Word32
-    , ''Word64
-    , ''Word8
-    ])
+$(let optionsFor name =
+        (Casing.aesonDrop (length (TH.nameBase name)) Casing.snakeCase)
+        { Aeson.omitNothingFields = True
+        , Aeson.sumEncoding = Aeson.ObjectWithSingleField
+        , Aeson.unwrapUnaryRecords = True
+        }
+      deriveJSON declarations name = do
+        newDeclarations <- Aeson.deriveJSON (optionsFor name) name
+        pure (newDeclarations ++ declarations)
+      names =
+        [ ''Attribute
+        , ''AttributeMapping
+        , ''AttributeValue
+        , ''BooleanAttributeValue
+        , ''ByteAttributeValue
+        , ''Cache
+        , ''CamSettingsAttributeValue
+        , ''ClassMapping
+        , ''ClubColorsAttributeValue
+        , ''CompressedWord
+        , ''CompressedWordVector
+        , ''Content
+        , ''DemolishAttributeValue
+        , ''DestroyedReplicationValue
+        , ''Dictionary
+        , ''EnumAttributeValue
+        , ''ExplosionAttributeValue
+        , ''FlaggedIntAttributeValue
+        , ''Float32
+        , ''FloatAttributeValue
+        , ''Frame
+        , ''GameModeAttributeValue
+        , ''Header
+        , ''Initialization
+        , ''Int32
+        , ''Int8
+        , ''Int8Vector
+        , ''IntAttributeValue
+        , ''KeyFrame
+        , ''List
+        , ''LoadoutAttributeValue
+        , ''LoadoutOnlineAttributeValue
+        , ''LoadoutsAttributeValue
+        , ''LoadoutsOnlineAttributeValue
+        , ''LocationAttributeValue
+        , ''Mark
+        , ''Message
+        , ''MusicStingerAttributeValue
+        , ''PartyLeaderAttributeValue
+        , ''PickupAttributeValue
+        , ''PrivateMatchSettingsAttributeValue
+        , ''Property
+        , ''PropertyValue
+        , ''QWordAttributeValue
+        , ''RemoteId
+        , ''Replay
+        , ''Replication
+        , ''ReplicationValue
+        , ''ReservationAttributeValue
+        , ''RigidBodyStateAttributeValue
+        , ''SpawnedReplicationValue
+        , ''StringAttributeValue
+        , ''TeamPaintAttributeValue
+        , ''Text
+        , ''UniqueIdAttributeValue
+        , ''UpdatedReplicationValue
+        , ''Vector
+        , ''WeldedInfoAttributeValue
+        , ''Word32
+        , ''Word64
+        , ''Word8
+        ]
+  in Monad.foldM deriveJSON [] names)
