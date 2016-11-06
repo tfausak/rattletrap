@@ -55,7 +55,8 @@ getIO files =
 
 $(let optionsFor name =
         (Casing.aesonDrop (length (TH.nameBase name)) Casing.snakeCase)
-        { Aeson.omitNothingFields = True
+        { Aeson.constructorTagModifier = Casing.snakeCase
+        , Aeson.omitNothingFields = True
         , Aeson.sumEncoding = Aeson.ObjectWithSingleField
         , Aeson.unwrapUnaryRecords = True
         }
