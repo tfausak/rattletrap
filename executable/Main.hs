@@ -55,8 +55,12 @@ getIO files =
 
 $(Monad.foldM
     (\declarations name -> do
+       let prefixSize = length (TH.nameBase name)
+       let caseOptions = Casing.aesonDrop prefixSize Casing.snakeCase
        let options =
-             Casing.aesonDrop (length (TH.nameBase name)) Casing.snakeCase
+             caseOptions
+             { Aeson.unwrapUnaryRecords = True
+             }
        newDeclarations <- Aeson.deriveJSON options name
        pure (newDeclarations ++ declarations))
     []
