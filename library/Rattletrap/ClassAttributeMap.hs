@@ -20,7 +20,7 @@ import qualified Data.Set as Set
 data ClassAttributeMap = ClassAttributeMap
   { classAttributeMapObjectMap :: Map.Map Word32 Text
   , classAttributeMapClassMap :: Bimap.Bimap Word32 Text
-  , classAttributeMapValue :: Map.Map Word32 (Bimap.Bimap Word32 Word32)
+  , classAttributeMapValue :: Map.Map Word32 (Map.Map Word32 Word32)
   } deriving (Eq, Show)
 
 makeClassAttributeMap :: List Text -> List ClassMapping -> List Cache -> ClassAttributeMap
@@ -36,7 +36,7 @@ makeClassAttributeMap objects classMappings caches =
              (\classId ->
                  let ownAttributes =
                        Maybe.fromMaybe
-                         Bimap.empty
+                         Map.empty
                          (Map.lookup classId attributeMap)
                      parentsAttributes =
                        case Map.lookup classId parentMap of
@@ -45,11 +45,11 @@ makeClassAttributeMap objects classMappings caches =
                            map
                              (\parentClassId ->
                                  Maybe.fromMaybe
-                                   Bimap.empty
+                                   Map.empty
                                    (Map.lookup parentClassId attributeMap))
                              parentClassIds
                      attributes = ownAttributes : parentsAttributes
-                 in (classId, Bimap.fromList (concatMap Bimap.toList attributes)))
+                 in (classId, Map.fromList (concatMap Map.toList attributes)))
              classIds)
   in ClassAttributeMap
      { classAttributeMapObjectMap = objectMap
@@ -79,13 +79,13 @@ makeClassMap classMappings =
            (classMappingStreamId classMapping, classMappingName classMapping))
        (listValue classMappings))
 
-makeAttributeMap :: List Cache -> Map.Map Word32 (Bimap.Bimap Word32 Word32)
+makeAttributeMap :: List Cache -> Map.Map Word32 (Map.Map Word32 Word32)
 makeAttributeMap caches =
   Map.fromList
     (map
        (\cache ->
            ( cacheClassId cache
-           , Bimap.fromList
+           , Map.fromList
                (map
                   (\attributeMapping ->
                       ( attributeMappingStreamId attributeMapping
@@ -209,7 +209,7 @@ getAttributeIdLimit :: ClassAttributeMap
                     -> Maybe Word
 getAttributeIdLimit classAttributeMap actorMap actorId = do
   attributeMap <- getAttributeMap classAttributeMap actorMap actorId
-  let streamIds = Bimap.keys attributeMap
+  let streamIds = Map.keys attributeMap
   let maxStreamId = maximum (Word32 0 : streamIds)
   let limit = fromIntegral (word32Value maxStreamId)
   pure limit
@@ -222,15 +222,14 @@ getAttributeName :: ClassAttributeMap
 getAttributeName classAttributeMap actorMap actorId streamId = do
   attributeMap <- getAttributeMap classAttributeMap actorMap actorId
   let key = Word32 (fromIntegral (compressedWordValue streamId))
-  attributeId <- Bimap.lookup key attributeMap
+  attributeId <- Map.lookup key attributeMap
   let objectMap = classAttributeMapObjectMap classAttributeMap
   Map.lookup attributeId objectMap
 
-getAttributeMap
-  :: ClassAttributeMap
-  -> ActorMap
-  -> CompressedWord
-  -> Maybe (Bimap.Bimap Word32 Word32)
+getAttributeMap :: ClassAttributeMap
+                -> ActorMap
+                -> CompressedWord
+                -> Maybe (Map.Map Word32 Word32)
 getAttributeMap classAttributeMap actorMap actorId = do
   objectId <- Map.lookup actorId actorMap
   objectName <- getObjectName classAttributeMap objectId
