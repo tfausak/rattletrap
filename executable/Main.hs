@@ -59,7 +59,8 @@ $(Monad.foldM
        let caseOptions = Casing.aesonDrop prefixSize Casing.snakeCase
        let options =
              caseOptions
-             { Aeson.sumEncoding = Aeson.ObjectWithSingleField
+             { Aeson.omitNothingFields = True
+             , Aeson.sumEncoding = Aeson.ObjectWithSingleField
              , Aeson.unwrapUnaryRecords = True
              }
        newDeclarations <- Aeson.deriveJSON options name
