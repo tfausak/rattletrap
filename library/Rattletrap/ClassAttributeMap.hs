@@ -6,9 +6,9 @@ import Rattletrap.Cache
 import Rattletrap.ClassMapping
 import Rattletrap.CompressedWord
 import Rattletrap.Data
+import Rattletrap.Int32
 import Rattletrap.List
 import Rattletrap.Text
-import Rattletrap.Utility
 import Rattletrap.Word32
 
 import qualified Data.Bimap as Bimap
@@ -16,6 +16,7 @@ import qualified Data.List as List
 import qualified Data.Map as Map
 import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
+import qualified Data.Text as Text
 
 data ClassAttributeMap = ClassAttributeMap
   { classAttributeMapObjectMap :: Map.Map Word32 Text
@@ -176,14 +177,24 @@ getClassName rawObjectName = Map.lookup (normalizeObjectName rawObjectName) obje
 
 normalizeObjectName :: Text -> Text
 normalizeObjectName objectName =
-  stringToText
-    (replace
-       "_[0-9]+$"
-       ""
-       (replace
-          "^[A-Z_a-z0-9]+[.]TheWorld:"
-          "TheWorld:"
-          (textToString objectName)))
+  let name = textValue objectName
+      crowdActor = Text.pack "TheWorld:PersistentLevel.CrowdActor_TA"
+      crowdManager = Text.pack "TheWorld:PersistentLevel.CrowdManager_TA"
+      boostPickup = Text.pack "TheWorld:PersistentLevel.VehiclePickup_Boost_TA"
+      mapScoreboard = Text.pack "TheWorld:PersistentLevel.InMapScoreboard_TA"
+      toText text =
+        Text
+          (Int32 (fromIntegral (Text.length text + 1)))
+          (Text.snoc text '\x00')
+  in if Text.isInfixOf crowdActor name
+       then toText crowdActor
+       else if Text.isInfixOf crowdManager name
+              then toText crowdManager
+              else if Text.isInfixOf boostPickup name
+                     then toText boostPickup
+                     else if Text.isInfixOf mapScoreboard name
+                            then toText mapScoreboard
+                            else objectName
 
 objectClasses :: Map.Map Text Text
 objectClasses =
