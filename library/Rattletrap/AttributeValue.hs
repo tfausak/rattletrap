@@ -1,36 +1,61 @@
 module Rattletrap.AttributeValue
   ( module Rattletrap.AttributeValue
-  , module Export
+  , module Rattletrap.AttributeValue.Boolean
+  , module Rattletrap.AttributeValue.Byte
+  , module Rattletrap.AttributeValue.CamSettings
+  , module Rattletrap.AttributeValue.ClubColors
+  , module Rattletrap.AttributeValue.Demolish
+  , module Rattletrap.AttributeValue.Enum
+  , module Rattletrap.AttributeValue.Explosion
+  , module Rattletrap.AttributeValue.FlaggedInt
+  , module Rattletrap.AttributeValue.Float
+  , module Rattletrap.AttributeValue.GameMode
+  , module Rattletrap.AttributeValue.Int
+  , module Rattletrap.AttributeValue.Loadout
+  , module Rattletrap.AttributeValue.LoadoutOnline
+  , module Rattletrap.AttributeValue.Loadouts
+  , module Rattletrap.AttributeValue.LoadoutsOnline
+  , module Rattletrap.AttributeValue.Location
+  , module Rattletrap.AttributeValue.MusicStinger
+  , module Rattletrap.AttributeValue.PartyLeader
+  , module Rattletrap.AttributeValue.Pickup
+  , module Rattletrap.AttributeValue.PrivateMatchSettings
+  , module Rattletrap.AttributeValue.QWord
+  , module Rattletrap.AttributeValue.Reservation
+  , module Rattletrap.AttributeValue.RigidBodyState
+  , module Rattletrap.AttributeValue.String
+  , module Rattletrap.AttributeValue.TeamPaint
+  , module Rattletrap.AttributeValue.UniqueId
+  , module Rattletrap.AttributeValue.WeldedInfo
   ) where
 
-import Rattletrap.AttributeValue.Boolean as Export
-import Rattletrap.AttributeValue.Byte as Export
-import Rattletrap.AttributeValue.CamSettings as Export
-import Rattletrap.AttributeValue.ClubColors as Export
-import Rattletrap.AttributeValue.Demolish as Export
-import Rattletrap.AttributeValue.Enum as Export
-import Rattletrap.AttributeValue.Explosion as Export
-import Rattletrap.AttributeValue.FlaggedInt as Export
-import Rattletrap.AttributeValue.Float as Export
-import Rattletrap.AttributeValue.GameMode as Export
-import Rattletrap.AttributeValue.Int as Export
-import Rattletrap.AttributeValue.Loadout as Export
-import Rattletrap.AttributeValue.LoadoutOnline as Export
-import Rattletrap.AttributeValue.Loadouts as Export
-import Rattletrap.AttributeValue.LoadoutsOnline as Export
-import Rattletrap.AttributeValue.Location as Export
-import Rattletrap.AttributeValue.MusicStinger as Export
-import Rattletrap.AttributeValue.PartyLeader as Export
-import Rattletrap.AttributeValue.Pickup as Export
-import Rattletrap.AttributeValue.PrivateMatchSettings as Export
-import Rattletrap.AttributeValue.QWord as Export
-import Rattletrap.AttributeValue.Reservation as Export
-import Rattletrap.AttributeValue.RigidBodyState as Export
-import Rattletrap.AttributeValue.String as Export
-import Rattletrap.AttributeValue.TeamPaint as Export
-import Rattletrap.AttributeValue.UniqueId as Export
-import Rattletrap.AttributeValue.WeldedInfo as Export
-
+import Rattletrap.AttributeValue.Boolean
+import Rattletrap.AttributeValue.Byte
+import Rattletrap.AttributeValue.CamSettings
+import Rattletrap.AttributeValue.ClubColors
+import Rattletrap.AttributeValue.Demolish
+import Rattletrap.AttributeValue.Enum
+import Rattletrap.AttributeValue.Explosion
+import Rattletrap.AttributeValue.FlaggedInt
+import Rattletrap.AttributeValue.Float
+import Rattletrap.AttributeValue.GameMode
+import Rattletrap.AttributeValue.Int
+import Rattletrap.AttributeValue.Loadout
+import Rattletrap.AttributeValue.LoadoutOnline
+import Rattletrap.AttributeValue.Loadouts
+import Rattletrap.AttributeValue.LoadoutsOnline
+import Rattletrap.AttributeValue.Location
+import Rattletrap.AttributeValue.MusicStinger
+import Rattletrap.AttributeValue.PartyLeader
+import Rattletrap.AttributeValue.Pickup
+import Rattletrap.AttributeValue.PrivateMatchSettings
+import Rattletrap.AttributeValue.QWord
+import Rattletrap.AttributeValue.Reservation
+import Rattletrap.AttributeValue.RigidBodyState
+import Rattletrap.AttributeValue.String
+import Rattletrap.AttributeValue.TeamPaint
+import Rattletrap.AttributeValue.UniqueId
+import Rattletrap.AttributeValue.WeldedInfo
 import Rattletrap.AttributeValueType
 import Rattletrap.Data
 import Rattletrap.Text

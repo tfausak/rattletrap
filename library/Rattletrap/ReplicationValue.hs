@@ -1,15 +1,16 @@
 module Rattletrap.ReplicationValue
   ( module Rattletrap.ReplicationValue
-  , module Export
+  , module Rattletrap.ReplicationValue.Destroyed
+  , module Rattletrap.ReplicationValue.Spawned
+  , module Rattletrap.ReplicationValue.Updated
   ) where
-
-import Rattletrap.ReplicationValue.Destroyed as Export
-import Rattletrap.ReplicationValue.Spawned as Export
-import Rattletrap.ReplicationValue.Updated as Export
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.CompressedWord
+import Rattletrap.ReplicationValue.Destroyed
+import Rattletrap.ReplicationValue.Spawned
+import Rattletrap.ReplicationValue.Updated
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
@@ -37,12 +38,7 @@ getReplicationValue version classAttributeMap actorMap actorId = do
             getSpawnedReplicationValue classAttributeMap actorMap actorId
           pure (SpawnedReplication x, newActorMap)
         else do
-          x <-
-            getUpdatedReplicationValue
-              version
-              classAttributeMap
-              actorMap
-              actorId
+          x <- getUpdatedReplicationValue version classAttributeMap actorMap actorId
           pure (UpdatedReplication x, actorMap)
     else do
       x <- getDestroyedReplicationValue
