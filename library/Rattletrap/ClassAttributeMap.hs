@@ -18,7 +18,7 @@ import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
 
 data ClassAttributeMap = ClassAttributeMap
-  { classAttributeMapObjectMap :: Bimap.Bimap Word32 Text
+  { classAttributeMapObjectMap :: Map.Map Word32 Text
   , classAttributeMapClassMap :: Bimap.Bimap Word32 Text
   , classAttributeMapValue :: Map.Map Word32 (Bimap.Bimap Word32 Word32)
   } deriving (Eq, Show)
@@ -163,13 +163,13 @@ parentClasses =
     stringToText
     (Map.mapKeys stringToText (Map.fromList rawParentClasses))
 
-makeObjectMap :: List Text -> Bimap.Bimap Word32 Text
+makeObjectMap :: List Text -> Map.Map Word32 Text
 makeObjectMap objects =
-  Bimap.fromList (zip (map Word32 [0 ..]) (listValue objects))
+  Map.fromAscList (zip (map Word32 [0 ..]) (listValue objects))
 
 getObjectName :: ClassAttributeMap -> Word32 -> Maybe Text
 getObjectName classAttributeMap objectId =
-  Bimap.lookup objectId (classAttributeMapObjectMap classAttributeMap)
+  Map.lookup objectId (classAttributeMapObjectMap classAttributeMap)
 
 getClassName :: Text -> Maybe Text
 getClassName rawObjectName = Map.lookup (normalizeObjectName rawObjectName) objectClasses
@@ -224,7 +224,7 @@ getAttributeName classAttributeMap actorMap actorId streamId = do
   let key = Word32 (fromIntegral (compressedWordValue streamId))
   attributeId <- Bimap.lookup key attributeMap
   let objectMap = classAttributeMapObjectMap classAttributeMap
-  Bimap.lookup attributeId objectMap
+  Map.lookup attributeId objectMap
 
 getAttributeMap
   :: ClassAttributeMap
