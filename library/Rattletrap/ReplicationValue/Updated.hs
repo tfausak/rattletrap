@@ -8,7 +8,7 @@ import Rattletrap.CompressedWord
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 
-data UpdatedReplicationValue = UpdatedReplicationValue
+newtype UpdatedReplicationValue = UpdatedReplicationValue
   { updatedReplicationValueAttributes :: [Attribute]
   } deriving (Eq, Ord, Show)
 
