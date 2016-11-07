@@ -12,27 +12,27 @@ rawParentClasses =
   , ("Engine.ReplicationInfo", "Engine.Info")
   , ("Engine.TeamInfo", "Engine.ReplicationInfo")
   , ("ProjectX.GRI_X", "Engine.GameReplicationInfo")
-  , ("ProjectX.Pawn_X", "Engine.Pawn")
   , ("ProjectX.PRI_X", "Engine.PlayerReplicationInfo")
+  , ("ProjectX.Pawn_X", "Engine.Pawn")
   , ("TAGame.Ball_TA", "TAGame.RBActor_TA")
   , ("TAGame.CameraSettingsActor_TA", "Engine.ReplicationInfo")
-  , ("TAGame.Car_Season_TA", "TAGame.PRI_TA")
-  , ("TAGame.Car_TA", "TAGame.Vehicle_TA")
   , ("TAGame.CarComponent_Boost_TA", "TAGame.CarComponent_TA")
   , ("TAGame.CarComponent_Dodge_TA", "TAGame.CarComponent_TA")
   , ("TAGame.CarComponent_DoubleJump_TA", "TAGame.CarComponent_TA")
   , ("TAGame.CarComponent_FlipCar_TA", "TAGame.CarComponent_TA")
   , ("TAGame.CarComponent_Jump_TA", "TAGame.CarComponent_TA")
   , ("TAGame.CarComponent_TA", "Engine.ReplicationInfo")
+  , ("TAGame.Car_Season_TA", "TAGame.PRI_TA")
+  , ("TAGame.Car_TA", "TAGame.Vehicle_TA")
   , ("TAGame.CrowdActor_TA", "Engine.ReplicationInfo")
   , ("TAGame.CrowdManager_TA", "Engine.ReplicationInfo")
+  , ("TAGame.GRI_TA", "ProjectX.GRI_X")
   , ("TAGame.GameEvent_Season_TA", "TAGame.GameEvent_Soccar_TA")
-  , ("TAGame.GameEvent_Soccar_TA", "TAGame.GameEvent_Team_TA")
   , ("TAGame.GameEvent_SoccarPrivate_TA", "TAGame.GameEvent_Soccar_TA")
   , ("TAGame.GameEvent_SoccarSplitscreen_TA", "TAGame.GameEvent_SoccarPrivate_TA")
+  , ("TAGame.GameEvent_Soccar_TA", "TAGame.GameEvent_Team_TA")
   , ("TAGame.GameEvent_TA", "Engine.ReplicationInfo")
   , ("TAGame.GameEvent_Team_TA", "TAGame.GameEvent_TA")
-  , ("TAGame.GRI_TA", "ProjectX.GRI_X")
   , ("TAGame.InMapScoreboard_TA", "Engine.Actor")
   , ("TAGame.PRI_TA", "ProjectX.PRI_X")
   , ("TAGame.RBActor_TA", "ProjectX.Pawn_X")
@@ -52,9 +52,9 @@ rawParentClasses =
   , ("TAGame.SpecialPickup_Tornado_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.Team_Soccar_TA", "TAGame.Team_TA")
   , ("TAGame.Team_TA", "Engine.TeamInfo")
-  , ("TAGame.Vehicle_TA", "TAGame.RBActor_TA")
   , ("TAGame.VehiclePickup_Boost_TA", "TAGame.VehiclePickup_TA")
   , ("TAGame.VehiclePickup_TA", "Engine.ReplicationInfo")
+  , ("TAGame.Vehicle_TA", "TAGame.RBActor_TA")
   , ("TAGame.VoteActor_TA", "Engine.Actor")
   ]
 
@@ -62,18 +62,18 @@ rawClassesWithLocation :: [String]
 rawClassesWithLocation =
   [ "TAGame.Ball_TA"
   , "TAGame.CameraSettingsActor_TA"
-  , "TAGame.Car_Season_TA"
-  , "TAGame.Car_TA"
   , "TAGame.CarComponent_Boost_TA"
   , "TAGame.CarComponent_Dodge_TA"
   , "TAGame.CarComponent_DoubleJump_TA"
   , "TAGame.CarComponent_FlipCar_TA"
   , "TAGame.CarComponent_Jump_TA"
+  , "TAGame.Car_Season_TA"
+  , "TAGame.Car_TA"
+  , "TAGame.GRI_TA"
   , "TAGame.GameEvent_Season_TA"
-  , "TAGame.GameEvent_Soccar_TA"
   , "TAGame.GameEvent_SoccarPrivate_TA"
   , "TAGame.GameEvent_SoccarSplitscreen_TA"
-  , "TAGame.GRI_TA"
+  , "TAGame.GameEvent_Soccar_TA"
   , "TAGame.PRI_TA"
   , "TAGame.SpecialPickup_BallCarSpring_TA"
   , "TAGame.SpecialPickup_BallFreeze_TA"
@@ -116,8 +116,8 @@ rawObjectClasses =
   , ("Archetypes.GameEvent.GameEvent_HockeyPrivate", "TAGame.GameEvent_SoccarPrivate_TA")
   , ("Archetypes.GameEvent.GameEvent_HockeySplitscreen", "TAGame.GameEvent_SoccarSplitscreen_TA")
   , ("Archetypes.GameEvent.GameEvent_Items", "TAGame.GameEvent_Soccar_TA")
-  , ("Archetypes.GameEvent.GameEvent_Season:CarArchetype", "TAGame.Car_TA")
   , ("Archetypes.GameEvent.GameEvent_Season", "TAGame.GameEvent_Season_TA")
+  , ("Archetypes.GameEvent.GameEvent_Season:CarArchetype", "TAGame.Car_TA")
   , ("Archetypes.GameEvent.GameEvent_Soccar", "TAGame.GameEvent_Soccar_TA")
   , ("Archetypes.GameEvent.GameEvent_SoccarPrivate", "TAGame.GameEvent_SoccarPrivate_TA")
   , ("Archetypes.GameEvent.GameEvent_SoccarSplitscreen", "TAGame.GameEvent_SoccarSplitscreen_TA")
@@ -136,10 +136,10 @@ rawObjectClasses =
   , ("Archetypes.Teams.Team0", "TAGame.Team_Soccar_TA")
   , ("Archetypes.Teams.Team1", "TAGame.Team_Soccar_TA")
   , ("GameInfo_Basketball.GameInfo.GameInfo_Basketball:GameReplicationInfoArchetype", "TAGame.GRI_TA")
-  , ("Gameinfo_Hockey.GameInfo.Gameinfo_Hockey:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Items.GameInfo.GameInfo_Items:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Season.GameInfo.GameInfo_Season:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Soccar.GameInfo.GameInfo_Soccar:GameReplicationInfoArchetype", "TAGame.GRI_TA")
+  , ("Gameinfo_Hockey.GameInfo.Gameinfo_Hockey:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("TAGame.Default__CameraSettingsActor_TA", "TAGame.CameraSettingsActor_TA")
   , ("TAGame.Default__PRI_TA", "TAGame.PRI_TA")
   , ("TAGame.Default__VoteActor_TA", "TAGame.VoteActor_TA")
@@ -151,9 +151,9 @@ rawObjectClasses =
 
 rawAttributeValueTypes :: [(String, AttributeValueType)]
 rawAttributeValueTypes =
-  [ ("Engine.Actor:bBlockActors", AVBoolean)
-  , ("Engine.Actor:DrawScale", AVFloat)
+  [ ("Engine.Actor:DrawScale", AVFloat)
   , ("Engine.Actor:Role", AVEnum)
+  , ("Engine.Actor:bBlockActors", AVBoolean)
   , ("Engine.Actor:bCollideActors", AVBoolean)
   , ("Engine.Actor:bHidden", AVBoolean)
   , ("Engine.GameReplicationInfo:GameClass", AVFlaggedInt)

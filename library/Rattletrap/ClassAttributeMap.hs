@@ -24,7 +24,10 @@ data ClassAttributeMap = ClassAttributeMap
   , classAttributeMapValue :: Map.Map Word32 (Map.Map Word32 Word32)
   } deriving (Eq, Show)
 
-makeClassAttributeMap :: List Text -> List ClassMapping -> List Cache -> ClassAttributeMap
+makeClassAttributeMap :: List Text
+                      -> List ClassMapping
+                      -> List Cache
+                      -> ClassAttributeMap
 makeClassAttributeMap objects classMappings caches =
   let objectMap = makeObjectMap objects
       classCache = makeClassCache classMappings caches
@@ -35,22 +38,22 @@ makeClassAttributeMap objects classMappings caches =
         Map.fromList
           (map
              (\classId ->
-                 let ownAttributes =
-                       Maybe.fromMaybe
-                         Map.empty
-                         (Map.lookup classId attributeMap)
-                     parentsAttributes =
-                       case Map.lookup classId parentMap of
-                         Nothing -> []
-                         Just parentClassIds ->
-                           map
-                             (\parentClassId ->
-                                 Maybe.fromMaybe
-                                   Map.empty
-                                   (Map.lookup parentClassId attributeMap))
-                             parentClassIds
-                     attributes = ownAttributes : parentsAttributes
-                 in (classId, Map.fromList (concatMap Map.toList attributes)))
+                let ownAttributes =
+                      Maybe.fromMaybe
+                        Map.empty
+                        (Map.lookup classId attributeMap)
+                    parentsAttributes =
+                      case Map.lookup classId parentMap of
+                        Nothing -> []
+                        Just parentClassIds ->
+                          map
+                            (\parentClassId ->
+                               Maybe.fromMaybe
+                                 Map.empty
+                                 (Map.lookup parentClassId attributeMap))
+                            parentClassIds
+                    attributes = ownAttributes : parentsAttributes
+                in (classId, Map.fromList (concatMap Map.toList attributes)))
              classIds)
   in ClassAttributeMap
      { classAttributeMapObjectMap = objectMap
@@ -65,11 +68,11 @@ makeClassCache classMappings caches =
   let classMap = makeClassMap classMappings
   in map
        (\cache ->
-           let classId = cacheClassId cache
-           in ( Bimap.lookup classId classMap
-              , classId
-              , cacheCacheId cache
-              , cacheParentCacheId cache))
+          let classId = cacheClassId cache
+          in ( Bimap.lookup classId classMap
+             , classId
+             , cacheCacheId cache
+             , cacheParentCacheId cache))
        (listValue caches)
 
 makeClassMap :: List ClassMapping -> Bimap.Bimap Word32 Text
@@ -77,7 +80,7 @@ makeClassMap classMappings =
   Bimap.fromList
     (map
        (\classMapping ->
-           (classMappingStreamId classMapping, classMappingName classMapping))
+          (classMappingStreamId classMapping, classMappingName classMapping))
        (listValue classMappings))
 
 makeAttributeMap :: List Cache -> Map.Map Word32 (Map.Map Word32 Word32)
@@ -85,13 +88,13 @@ makeAttributeMap caches =
   Map.fromList
     (map
        (\cache ->
-           ( cacheClassId cache
-           , Map.fromList
-               (map
-                  (\attributeMapping ->
-                      ( attributeMappingStreamId attributeMapping
-                      , attributeMappingObjectId attributeMapping))
-                  (listValue (cacheAttributeMappings cache)))))
+          ( cacheClassId cache
+          , Map.fromList
+              (map
+                 (\attributeMapping ->
+                    ( attributeMappingStreamId attributeMapping
+                    , attributeMappingObjectId attributeMapping))
+                 (listValue (cacheAttributeMappings cache)))))
        (listValue caches))
 
 makeShallowParentMap :: List ClassMapping -> List Cache -> Map.Map Word32 Word32
@@ -100,23 +103,27 @@ makeShallowParentMap classMappings caches =
   in Map.fromList
        (Maybe.mapMaybe
           (\xs ->
-              case xs of
-                [] -> Nothing
-                (maybeClassName, classId, _, parentCacheId):rest -> do
-                  parentClassId <- getParentClass maybeClassName parentCacheId rest
-                  pure (classId, parentClassId))
+             case xs of
+               [] -> Nothing
+               (maybeClassName, classId, _, parentCacheId):rest -> do
+                 parentClassId <-
+                   getParentClass maybeClassName parentCacheId rest
+                 pure (classId, parentClassId))
           (List.tails (reverse classCache)))
 
 makeParentMap :: List ClassMapping -> List Cache -> Map.Map Word32 [Word32]
 makeParentMap classMappings caches =
   let shallowParentMap = makeShallowParentMap classMappings caches
-  in Map.mapWithKey (\classId _ -> getParentClasses shallowParentMap classId) shallowParentMap
+  in Map.mapWithKey
+       (\classId _ -> getParentClasses shallowParentMap classId)
+       shallowParentMap
 
 getParentClasses :: Map.Map Word32 Word32 -> Word32 -> [Word32]
 getParentClasses shallowParentMap classId =
   case Map.lookup classId shallowParentMap of
     Nothing -> []
-    Just parentClassId -> parentClassId : getParentClasses shallowParentMap parentClassId
+    Just parentClassId ->
+      parentClassId : getParentClasses shallowParentMap parentClassId
 
 getParentClass :: Maybe Text
                -> Word32
@@ -155,7 +162,8 @@ getParentClassByName className parentCacheId xs =
               (filter
                  (\(_, _, cacheId, _) -> cacheId == parentCacheId)
                  (filter
-                    (\(maybeClassName, _, _, _) -> maybeClassName == Just parentClassName)
+                    (\(maybeClassName, _, _, _) ->
+                       maybeClassName == Just parentClassName)
                     xs))))
 
 parentClasses :: Map.Map Text Text
@@ -173,7 +181,8 @@ getObjectName classAttributeMap objectId =
   Map.lookup objectId (classAttributeMapObjectMap classAttributeMap)
 
 getClassName :: Text -> Maybe Text
-getClassName rawObjectName = Map.lookup (normalizeObjectName rawObjectName) objectClasses
+getClassName rawObjectName =
+  Map.lookup (normalizeObjectName rawObjectName) objectClasses
 
 normalizeObjectName :: Text -> Text
 normalizeObjectName objectName =
