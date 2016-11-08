@@ -22,13 +22,7 @@ getHeader = do
   licenseeVersion <- getWord32
   label <- getText
   properties <- getDictionary getProperty
-  pure
-    Header
-    { headerEngineVersion = engineVersion
-    , headerLicenseeVersion = licenseeVersion
-    , headerLabel = label
-    , headerProperties = properties
-    }
+  pure (Header engineVersion licenseeVersion label properties)
 
 putHeader :: Header -> Binary.Put
 putHeader header = do

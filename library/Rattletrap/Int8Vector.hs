@@ -16,7 +16,7 @@ getInt8Vector = do
   x <- getInt8VectorField
   y <- getInt8VectorField
   z <- getInt8VectorField
-  pure Int8Vector {int8VectorX = x, int8VectorY = y, int8VectorZ = z}
+  pure (Int8Vector x y z)
 
 putInt8Vector :: Int8Vector -> BinaryBit.BitPut ()
 putInt8Vector int8Vector = do

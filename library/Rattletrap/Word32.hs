@@ -20,7 +20,7 @@ getWord32 = do
   pure (Word32 word32)
 
 putWord32 :: Word32 -> Binary.Put
-putWord32 (Word32 word32) = Binary.putWord32le word32
+putWord32 word32 = Binary.putWord32le (word32Value word32)
 
 getWord32Bits :: BinaryBit.BitGet Word32
 getWord32Bits = do

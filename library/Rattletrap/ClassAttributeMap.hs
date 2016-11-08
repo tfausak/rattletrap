@@ -34,6 +34,7 @@ makeClassAttributeMap objects classMappings caches =
       attributeMap = makeAttributeMap caches
       classIds = map (\(_, classId, _, _) -> classId) classCache
       parentMap = makeParentMap classMappings caches
+      classMap = makeClassMap classMappings
       value =
         Map.fromList
           (map
@@ -55,11 +56,7 @@ makeClassAttributeMap objects classMappings caches =
                     attributes = ownAttributes : parentsAttributes
                 in (classId, Map.fromList (concatMap Map.toList attributes)))
              classIds)
-  in ClassAttributeMap
-     { classAttributeMapObjectMap = objectMap
-     , classAttributeMapClassMap = makeClassMap classMappings
-     , classAttributeMapValue = value
-     }
+  in ClassAttributeMap objectMap classMap value
 
 makeClassCache :: List ClassMapping
                -> List Cache

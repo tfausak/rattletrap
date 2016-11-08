@@ -16,6 +16,7 @@ getList getElement = do
   pure (List elements)
 
 putList :: (a -> Binary.Put) -> List a -> Binary.Put
-putList putElement (List elements) = do
+putList putElement list = do
+  let elements = listValue list
   putWord32 (Word32 (fromIntegral (length elements)))
   mapM_ putElement elements

@@ -20,7 +20,7 @@ getInt32 = do
   pure (Int32 int32)
 
 putInt32 :: Int32 -> Binary.Put
-putInt32 (Int32 int32) = Binary.putInt32le int32
+putInt32 int32 = Binary.putInt32le (int32Value int32)
 
 getInt32Bits :: BinaryBit.BitGet Int32
 getInt32Bits = do

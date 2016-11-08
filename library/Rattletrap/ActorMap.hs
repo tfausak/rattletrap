@@ -11,4 +11,4 @@ makeActorMap :: ActorMap
 makeActorMap = Map.empty
 
 updateActorMap :: CompressedWord -> Word32 -> ActorMap -> ActorMap
-updateActorMap = Map.insert
+updateActorMap actorId objectId actorMap = Map.insert actorId objectId actorMap

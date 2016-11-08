@@ -19,13 +19,7 @@ getCache = do
   parentCacheId <- getWord32
   cacheId <- getWord32
   attributeMappings <- getList getAttributeMapping
-  pure
-    Cache
-    { cacheClassId = classId
-    , cacheParentCacheId = parentCacheId
-    , cacheCacheId = cacheId
-    , cacheAttributeMappings = attributeMappings
-    }
+  pure (Cache classId parentCacheId cacheId attributeMappings)
 
 putCache :: Cache -> Binary.Put
 putCache cache = do

@@ -20,14 +20,14 @@ getDictionary getValue = do
       pure (Dictionary (element : elements))
 
 putDictionary :: (a -> Binary.Put) -> Dictionary a -> Binary.Put
-putDictionary putValue (Dictionary elements) =
+putDictionary putValue dictionary =
   mapM_
     (\(key, maybeValue) -> do
        putText key
        case maybeValue of
          Nothing -> pure ()
          Just value -> putValue value)
-    elements
+    (dictionaryValue dictionary)
 
 isNoneKey :: Text -> Bool
 isNoneKey text = filter (/= '\x00') (textToString text) == "None"

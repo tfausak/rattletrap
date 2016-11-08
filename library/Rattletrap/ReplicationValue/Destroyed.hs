@@ -8,7 +8,7 @@ data DestroyedReplicationValue = DestroyedReplicationValue
   } deriving (Eq, Ord, Show)
 
 getDestroyedReplicationValue :: BinaryBit.BitGet DestroyedReplicationValue
-getDestroyedReplicationValue = pure DestroyedReplicationValue {}
+getDestroyedReplicationValue = pure DestroyedReplicationValue
 
 putDestroyedReplicationValue :: DestroyedReplicationValue -> BinaryBit.BitPut ()
 putDestroyedReplicationValue _ = pure ()

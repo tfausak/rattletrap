@@ -16,9 +16,7 @@ getKeyFrame = do
   time <- getFloat32
   frame <- getWord32
   position <- getWord32
-  pure
-    KeyFrame
-    {keyFrameTime = time, keyFrameFrame = frame, keyFramePosition = position}
+  pure (KeyFrame time frame position)
 
 putKeyFrame :: KeyFrame -> Binary.Put
 putKeyFrame keyFrame = do

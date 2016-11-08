@@ -17,12 +17,7 @@ getCompressedWordVector = do
   x <- getCompressedWord limit
   y <- getCompressedWord limit
   z <- getCompressedWord limit
-  pure
-    CompressedWordVector
-    { compressedWordVectorX = x
-    , compressedWordVectorY = y
-    , compressedWordVectorZ = z
-    }
+  pure (CompressedWordVector x y z)
 
 putCompressedWordVector :: CompressedWordVector -> BinaryBit.BitPut ()
 putCompressedWordVector compressedWordVector = do

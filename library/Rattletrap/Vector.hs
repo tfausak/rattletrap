@@ -19,9 +19,7 @@ getVector = do
   dx <- getCompressedWord limit
   dy <- getCompressedWord limit
   dz <- getCompressedWord limit
-  pure
-    Vector
-    {vectorBitSize = bitSize, vectorDx = dx, vectorDy = dy, vectorDz = dz}
+  pure (Vector bitSize dx dy dz)
 
 putVector :: Vector -> BinaryBit.BitPut ()
 putVector vector = do

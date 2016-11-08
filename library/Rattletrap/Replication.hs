@@ -45,11 +45,7 @@ getReplication version classAttributeMap actorMap = do
       actorId <- getCompressedWord maxActorId
       (value, newActorMap) <-
         getReplicationValue version classAttributeMap actorMap actorId
-      pure
-        (Just
-           ( Replication
-             {replicationActorId = actorId, replicationValue = value}
-           , newActorMap))
+      pure (Just (Replication actorId value, newActorMap))
 
 putReplication :: Replication -> BinaryBit.BitPut ()
 putReplication replication = do

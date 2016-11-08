@@ -48,7 +48,7 @@ getAttribute version classAttributeMap actorMap actorId =
         Nothing -> fail ("could not get attribute name for " ++ show id_)
         Just name -> do
           value <- getAttributeValue version name
-          pure Attribute {attributeId = id_, attributeValue = value}
+          pure (Attribute id_ value)
 
 putAttribute :: Attribute -> BinaryBit.BitPut ()
 putAttribute attribute = do

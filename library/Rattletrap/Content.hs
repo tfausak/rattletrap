@@ -58,20 +58,19 @@ getContent version numFrames = do
           (reverseBytes stream)
   let trailingBits = reverse (dropWhile not (reverse remainingBits))
   pure
-    Content
-    { contentLevels = levels
-    , contentKeyFrames = keyFrames
-    , contentStreamSize = streamSize
-    , contentFrames = frames
-    , contentTrailingBits = trailingBits
-    , contentMessages = messages
-    , contentMarks = marks
-    , contentPackages = packages
-    , contentObjects = objects
-    , contentNames = names
-    , contentClassMappings = classMappings
-    , contentCaches = caches
-    }
+    (Content
+       levels
+       keyFrames
+       streamSize
+       frames
+       trailingBits
+       messages
+       marks
+       packages
+       objects
+       names
+       classMappings
+       caches)
 
 putContent :: Content -> Binary.Put
 putContent content = do

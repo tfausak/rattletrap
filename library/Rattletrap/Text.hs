@@ -62,24 +62,25 @@ textToString text = Text.unpack (Text.dropWhileEnd (== '\x00') (textValue text))
 getTextSize
   :: Integral a
   => Int32 -> a
-getTextSize (Int32 size) =
-  if size == 0x05000000
-    then 8
-    else if size < 0
-           then (-2 * fromIntegral size)
-           else fromIntegral size
+getTextSize size =
+  case int32Value size of
+    0x05000000 -> 8
+    x ->
+      if x < 0
+        then (-2 * fromIntegral x)
+        else fromIntegral x
 
 getTextDecoder :: Int32 -> ByteString.ByteString -> Text.Text
-getTextDecoder (Int32 size) bytes =
+getTextDecoder size bytes =
   let decode =
-        if size < 0
+        if size < Int32 0
           then Encoding.decodeUtf16LE
           else Encoding.decodeLatin1
   in decode (ByteString.toStrict bytes)
 
 getTextEncoder :: Int32 -> Text.Text -> ByteString.ByteString
-getTextEncoder (Int32 size) text =
-  if size < 0
+getTextEncoder size text =
+  if size < Int32 0
     then ByteString.fromStrict (Encoding.encodeUtf16LE text)
     else encodeLatin1 text
 

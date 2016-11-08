@@ -13,9 +13,7 @@ getAttributeMapping :: Binary.Get AttributeMapping
 getAttributeMapping = do
   objectId <- getWord32
   streamId <- getWord32
-  pure
-    AttributeMapping
-    {attributeMappingObjectId = objectId, attributeMappingStreamId = streamId}
+  pure (AttributeMapping objectId streamId)
 
 putAttributeMapping :: AttributeMapping -> Binary.Put
 putAttributeMapping attributeMapping = do

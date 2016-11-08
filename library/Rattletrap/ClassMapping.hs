@@ -14,7 +14,7 @@ getClassMapping :: Binary.Get ClassMapping
 getClassMapping = do
   name <- getText
   streamId <- getWord32
-  pure ClassMapping {classMappingName = name, classMappingStreamId = streamId}
+  pure (ClassMapping name streamId)
 
 putClassMapping :: ClassMapping -> Binary.Put
 putClassMapping classMapping = do

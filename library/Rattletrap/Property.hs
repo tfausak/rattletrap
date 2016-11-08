@@ -17,8 +17,7 @@ getProperty = do
   kind <- getText
   size <- getWord64
   value <- getPropertyValue getProperty kind
-  pure
-    Property {propertyKind = kind, propertySize = size, propertyValue = value}
+  pure (Property kind size value)
 
 putProperty :: Property -> Binary.Put
 putProperty property = do

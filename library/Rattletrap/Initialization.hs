@@ -25,9 +25,7 @@ getInitialization hasLocation hasRotation = do
         rotation <- getInt8Vector
         pure (Just rotation)
       else pure Nothing
-  pure
-    Initialization
-    {initializationLocation = location, initializationRotation = rotation}
+  pure (Initialization location rotation)
 
 putInitialization :: Initialization -> BinaryBit.BitPut ()
 putInitialization initialization = do

@@ -14,7 +14,7 @@ getMark :: Binary.Get Mark
 getMark = do
   value <- getText
   frame <- getWord32
-  pure Mark {markValue = value, markFrame = frame}
+  pure (Mark value frame)
 
 putMark :: Mark -> Binary.Put
 putMark mark = do

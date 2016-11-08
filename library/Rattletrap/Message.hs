@@ -16,7 +16,7 @@ getMessage = do
   frame <- getWord32
   name <- getText
   value <- getText
-  pure Message {messageFrame = frame, messageName = name, messageValue = value}
+  pure (Message frame name value)
 
 putMessage :: Message -> Binary.Put
 putMessage message = do

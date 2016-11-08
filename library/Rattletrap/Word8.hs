@@ -20,7 +20,7 @@ getWord8 = do
   pure (Word8 word8)
 
 putWord8 :: Word8 -> Binary.Put
-putWord8 (Word8 word8) = Binary.putWord8 word8
+putWord8 word8 = Binary.putWord8 (word8Value word8)
 
 getWord8Bits :: BinaryBit.BitGet Word8
 getWord8Bits = do

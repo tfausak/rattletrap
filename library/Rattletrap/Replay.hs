@@ -24,7 +24,7 @@ getReplay = do
   let version = getVersion header
   let numFrames = getNumFrames header
   content <- getContent version numFrames
-  pure Replay {replayHeader = header, replayContent = content}
+  pure (Replay header content)
 
 putReplay :: Replay -> Binary.Put
 putReplay replay = do
