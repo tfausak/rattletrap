@@ -114,6 +114,7 @@ $(let optionsFor name =
         , ''ReplicationValue
         , ''ReservationAttributeValue
         , ''RigidBodyStateAttributeValue
+        , ''Section
         , ''SpawnedReplicationValue
         , ''StringAttributeValue
         , ''TeamPaintAttributeValue
