@@ -1,10 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module Main
-  ( main
-  ) where
-
 import Rattletrap
 
 import qualified Control.Monad as Monad

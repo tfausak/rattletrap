@@ -1,7 +1,3 @@
-module Main
-  ( main
-  ) where
-
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
