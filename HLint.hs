@@ -8,3 +8,5 @@ ignore "Eta reduce"
 ignore "Use &&&"
 
 ignore "Use <|>"
+
+ignore "Use uncurry"

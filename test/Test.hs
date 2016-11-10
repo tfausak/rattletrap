@@ -1,8 +1,8 @@
-import qualified Data.Binary.Get as Binary
-import qualified Data.Binary.Put as Binary
+import qualified Control.Monad as Monad
 import qualified Data.ByteString.Lazy as ByteString
 import qualified Rattletrap
 import qualified System.FilePath as FilePath
+import qualified System.IO.Temp as Temp
 import qualified Test.Tasty as Tasty
 import qualified Test.Tasty.Hspec as Hspec
 
@@ -12,27 +12,37 @@ main = do
   Tasty.defaultMain tests
 
 spec :: Hspec.Spec
-spec = Hspec.describe "Rattletrap" (mapM_ (uncurry itCanGetAndPut) replays)
+spec =
+  Hspec.describe
+    "Rattletrap"
+    (mapM_ (\(uuid, description) -> itCanRoundTrip uuid description) replays)
 
-itCanGetAndPut :: String -> String -> Hspec.Spec
-itCanGetAndPut uuid description =
-  Hspec.it
-    (unwords [take 4 uuid, description])
-    (do let file = pathToReplay uuid
-        (input, _, output) <- getAndPut file
-        Hspec.shouldBe (output == input) True)
+itCanRoundTrip :: String -> String -> Hspec.Spec
+itCanRoundTrip uuid description =
+  Hspec.it (specName uuid description) (specBody uuid)
+
+specName :: String -> String -> String
+specName uuid description = unwords [take 4 uuid, description]
+
+specBody :: String -> IO ()
+specBody uuid = do
+  let inputFile = pathToReplay uuid
+  input <- ByteString.readFile inputFile
+  Temp.withSystemTempDirectory
+    "replay-"
+    (\directory -> do
+       let jsonFile = FilePath.combine directory "replay.json"
+       Rattletrap.mainWithArgs ["decode", inputFile, jsonFile]
+       let outputFile = FilePath.combine directory "output.replay"
+       Rattletrap.mainWithArgs ["encode", jsonFile, outputFile]
+       output <- ByteString.readFile outputFile
+       Monad.unless
+         (output == input)
+         (Hspec.expectationFailure "output does not match input"))
 
 pathToReplay :: String -> FilePath
 pathToReplay uuid =
   FilePath.joinPath ["test", "replays", FilePath.addExtension uuid ".replay"]
-
-getAndPut :: FilePath
-          -> IO (ByteString.ByteString, Rattletrap.Replay, ByteString.ByteString)
-getAndPut file = do
-  input <- ByteString.readFile file
-  let replay = Binary.runGet Rattletrap.getReplay input
-  let output = Binary.runPut (Rattletrap.putReplay replay)
-  pure (input, replay, output)
 
 replays :: [(String, String)]
 replays =
