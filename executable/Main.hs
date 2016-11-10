@@ -1,17 +1,10 @@
-{-# LANGUAGE TemplateHaskell #-}
-{-# OPTIONS_GHC -fno-warn-orphans #-}
-
 import Rattletrap
 
-import qualified Control.Monad as Monad
 import qualified Data.Aeson as Aeson
-import qualified Data.Aeson.Casing as Casing
-import qualified Data.Aeson.TH as Aeson
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Version as Version
-import qualified Language.Haskell.TH as TH
 import qualified System.Environment as Environment
 
 main :: IO ()
@@ -48,79 +41,3 @@ getIO files =
     [i] -> pure (ByteString.readFile i, ByteString.putStr)
     [i, o] -> pure (ByteString.readFile i, ByteString.writeFile o)
     _ -> fail ("unexpected arguments " ++ show files)
-
-$(let optionsFor name =
-        (Casing.aesonDrop (length (TH.nameBase name)) Casing.snakeCase)
-        { Aeson.constructorTagModifier = Casing.snakeCase
-        , Aeson.omitNothingFields = True
-        , Aeson.sumEncoding = Aeson.ObjectWithSingleField
-        , Aeson.unwrapUnaryRecords = True
-        }
-      deriveJSON declarations name = do
-        newDeclarations <- Aeson.deriveJSON (optionsFor name) name
-        pure (newDeclarations ++ declarations)
-      names =
-        [ ''Attribute
-        , ''AttributeMapping
-        , ''AttributeValue
-        , ''BooleanAttributeValue
-        , ''ByteAttributeValue
-        , ''Cache
-        , ''CamSettingsAttributeValue
-        , ''ClassMapping
-        , ''ClubColorsAttributeValue
-        , ''CompressedWord
-        , ''CompressedWordVector
-        , ''Content
-        , ''DemolishAttributeValue
-        , ''DestroyedReplicationValue
-        , ''Dictionary
-        , ''EnumAttributeValue
-        , ''ExplosionAttributeValue
-        , ''FlaggedIntAttributeValue
-        , ''Float32
-        , ''FloatAttributeValue
-        , ''Frame
-        , ''GameModeAttributeValue
-        , ''Header
-        , ''Initialization
-        , ''Int32
-        , ''Int8
-        , ''Int8Vector
-        , ''IntAttributeValue
-        , ''KeyFrame
-        , ''List
-        , ''LoadoutAttributeValue
-        , ''LoadoutOnlineAttributeValue
-        , ''LoadoutsAttributeValue
-        , ''LoadoutsOnlineAttributeValue
-        , ''LocationAttributeValue
-        , ''Mark
-        , ''Message
-        , ''MusicStingerAttributeValue
-        , ''PartyLeaderAttributeValue
-        , ''PickupAttributeValue
-        , ''PrivateMatchSettingsAttributeValue
-        , ''Property
-        , ''PropertyValue
-        , ''QWordAttributeValue
-        , ''RemoteId
-        , ''Replay
-        , ''Replication
-        , ''ReplicationValue
-        , ''ReservationAttributeValue
-        , ''RigidBodyStateAttributeValue
-        , ''Section
-        , ''SpawnedReplicationValue
-        , ''StringAttributeValue
-        , ''TeamPaintAttributeValue
-        , ''Text
-        , ''UniqueIdAttributeValue
-        , ''UpdatedReplicationValue
-        , ''Vector
-        , ''WeldedInfoAttributeValue
-        , ''Word32
-        , ''Word64
-        , ''Word8
-        ]
-  in Monad.foldM deriveJSON [] names)

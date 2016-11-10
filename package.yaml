@@ -5,13 +5,11 @@ description: Rattletrap parses and generates Rocket League replays.
 executables:
   rattletrap:
     dependencies:
-    - aeson >=0.11 && <1.1
-    - aeson-casing >=0.1 && <0.2
+    - aeson
     - base
     - binary
     - bytestring
     - rattletrap
-    - template-haskell >=2.11 && <2.12
     ghc-options:
     - -rtsopts
     - -threaded
@@ -26,6 +24,8 @@ ghc-options: -Wall
 github: tfausak/rattletrap
 library:
   dependencies:
+  - aeson >=0.11 && <1.1
+  - aeson-casing >=0.1 && <0.2
   - base >=4.9 && <4.10
   - bimap >=0.3 && <0.4
   - binary >=0.8 && <0.9
@@ -33,6 +33,7 @@ library:
   - bytestring >=0.10 && <0.11
   - containers >=0.5 && <0.6
   - data-binary-ieee754 >=0.4 && <0.5
+  - template-haskell >=2.11 && <2.12
   - text >=1.2 && <1.3
   - vector >=0.11 && <0.12
   other-modules: Paths_rattletrap

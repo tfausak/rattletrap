@@ -61,6 +61,7 @@ import Rattletrap.Initialization
 import Rattletrap.Int32
 import Rattletrap.Int8
 import Rattletrap.Int8Vector
+import Rattletrap.Json ()
 import Rattletrap.KeyFrame
 import Rattletrap.List
 import Rattletrap.Mark
