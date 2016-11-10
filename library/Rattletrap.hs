@@ -22,6 +22,7 @@ module Rattletrap
   , module Rattletrap.Int8Vector
   , module Rattletrap.KeyFrame
   , module Rattletrap.List
+  , module Rattletrap.Main
   , module Rattletrap.Mark
   , module Rattletrap.Message
   , module Rattletrap.Property
@@ -64,6 +65,7 @@ import Rattletrap.Int8Vector
 import Rattletrap.Json ()
 import Rattletrap.KeyFrame
 import Rattletrap.List
+import Rattletrap.Main
 import Rattletrap.Mark
 import Rattletrap.Message
 import Rattletrap.Property
