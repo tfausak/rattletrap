@@ -5,7 +5,7 @@ import Rattletrap.Primitive.Float32
 import Rattletrap.Primitive.Int32
 import Rattletrap.Primitive.List
 import Rattletrap.Primitive.Text
-import Rattletrap.Word64
+import Rattletrap.Primitive.Word64
 import Rattletrap.Primitive.Word8
 
 import qualified Data.Binary as Binary

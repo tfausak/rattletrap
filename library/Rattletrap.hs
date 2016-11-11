@@ -37,7 +37,7 @@ module Rattletrap
   , module Rattletrap.Primitive.Vector
   , module Rattletrap.Version
   , module Rattletrap.Primitive.Word32
-  , module Rattletrap.Word64
+  , module Rattletrap.Primitive.Word64
   , module Rattletrap.Primitive.Word8
   ) where
 
@@ -80,5 +80,5 @@ import Rattletrap.Utility
 import Rattletrap.Primitive.Vector
 import Rattletrap.Version
 import Rattletrap.Primitive.Word32
-import Rattletrap.Word64
+import Rattletrap.Primitive.Word64
 import Rattletrap.Primitive.Word8

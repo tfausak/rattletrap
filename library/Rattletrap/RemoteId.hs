@@ -1,6 +1,6 @@
 module Rattletrap.RemoteId where
 
-import Rattletrap.Word64
+import Rattletrap.Primitive.Word64
 import Rattletrap.Primitive.Word8
 
 import qualified Data.Binary.Bits.Get as BinaryBit
