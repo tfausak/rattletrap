@@ -53,7 +53,7 @@ $(let optionsFor name =
         , ''CompressedWordVector
         , ''Content
         , ''DemolishAttributeValue
-        , ''DestroyedReplicationValue
+        , ''DestroyedReplication
         , ''Dictionary
         , ''EnumAttributeValue
         , ''ExplosionAttributeValue
@@ -91,12 +91,12 @@ $(let optionsFor name =
         , ''ReservationAttributeValue
         , ''RigidBodyStateAttributeValue
         , ''Section
-        , ''SpawnedReplicationValue
+        , ''SpawnedReplication
         , ''StringAttributeValue
         , ''TeamPaintAttributeValue
         , ''Text
         , ''UniqueIdAttributeValue
-        , ''UpdatedReplicationValue
+        , ''UpdatedReplication
         , ''Vector
         , ''WeldedInfoAttributeValue
         , ''Word32

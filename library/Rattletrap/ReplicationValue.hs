@@ -1,24 +1,24 @@
 module Rattletrap.ReplicationValue
   ( module Rattletrap.ReplicationValue
-  , module Rattletrap.ReplicationValue.Destroyed
-  , module Rattletrap.ReplicationValue.Spawned
-  , module Rattletrap.ReplicationValue.Updated
+  , module Rattletrap.Replication.Destroyed
+  , module Rattletrap.Replication.Spawned
+  , module Rattletrap.Replication.Updated
   ) where
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.Primitive
-import Rattletrap.ReplicationValue.Destroyed
-import Rattletrap.ReplicationValue.Spawned
-import Rattletrap.ReplicationValue.Updated
+import Rattletrap.Replication.Destroyed
+import Rattletrap.Replication.Spawned
+import Rattletrap.Replication.Updated
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 
 data ReplicationValue
-  = SpawnedReplication SpawnedReplicationValue
-  | UpdatedReplication UpdatedReplicationValue
-  | DestroyedReplication DestroyedReplicationValue
+  = SpawnedReplicationValue SpawnedReplication
+  | UpdatedReplicationValue UpdatedReplication
+  | DestroyedReplicationValue DestroyedReplication
   deriving (Eq, Ord, Show)
 
 getReplicationValue
@@ -35,31 +35,26 @@ getReplicationValue version classAttributeMap actorMap actorId = do
       if isNew
         then do
           (x, newActorMap) <-
-            getSpawnedReplicationValue classAttributeMap actorMap actorId
-          pure (SpawnedReplication x, newActorMap)
+            getSpawnedReplication classAttributeMap actorMap actorId
+          pure (SpawnedReplicationValue x, newActorMap)
         else do
-          x <-
-            getUpdatedReplicationValue
-              version
-              classAttributeMap
-              actorMap
-              actorId
-          pure (UpdatedReplication x, actorMap)
+          x <- getUpdatedReplication version classAttributeMap actorMap actorId
+          pure (UpdatedReplicationValue x, actorMap)
     else do
-      x <- getDestroyedReplicationValue
-      pure (DestroyedReplication x, actorMap)
+      x <- getDestroyedReplication
+      pure (DestroyedReplicationValue x, actorMap)
 
 putReplicationValue :: ReplicationValue -> BinaryBit.BitPut ()
 putReplicationValue value =
   case value of
-    SpawnedReplication x -> do
+    SpawnedReplicationValue x -> do
       BinaryBit.putBool True
       BinaryBit.putBool True
-      putSpawnedReplicationValue x
-    UpdatedReplication x -> do
+      putSpawnedReplication x
+    UpdatedReplicationValue x -> do
       BinaryBit.putBool True
       BinaryBit.putBool False
-      putUpdatedReplicationValue x
-    DestroyedReplication x -> do
+      putUpdatedReplication x
+    DestroyedReplicationValue x -> do
       BinaryBit.putBool False
-      putDestroyedReplicationValue x
+      putDestroyedReplication x

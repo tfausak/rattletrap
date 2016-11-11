@@ -1,4 +1,4 @@
-module Rattletrap.ReplicationValue.Spawned where
+module Rattletrap.Replication.Spawned where
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
@@ -8,20 +8,20 @@ import Rattletrap.Primitive
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 
-data SpawnedReplicationValue = SpawnedReplicationValue
-  { spawnedReplicationValueFlag :: Bool
-  , spawnedReplicationValueObjectId :: Word32
-  , spawnedReplicationValue_objectName :: Text
-  , spawnedReplicationValue_className :: Text
-  , spawnedReplicationValueInitialization :: Initialization
+data SpawnedReplication = SpawnedReplication
+  { spawnedReplicationFlag :: Bool
+  , spawnedReplicationObjectId :: Word32
+  , spawnedReplication_objectName :: Text
+  , spawnedReplication_className :: Text
+  , spawnedReplicationInitialization :: Initialization
   } deriving (Eq, Ord, Show)
 
-getSpawnedReplicationValue
+getSpawnedReplication
   :: ClassAttributeMap
   -> ActorMap
   -> CompressedWord
-  -> BinaryBit.BitGet (SpawnedReplicationValue, ActorMap)
-getSpawnedReplicationValue classAttributeMap actorMap actorId = do
+  -> BinaryBit.BitGet (SpawnedReplication, ActorMap)
+getSpawnedReplication classAttributeMap actorMap actorId = do
   flag <- BinaryBit.getBool
   objectId <- getWord32Bits
   let newActorMap = updateActorMap actorId objectId actorMap
@@ -31,15 +31,14 @@ getSpawnedReplicationValue classAttributeMap actorMap actorId = do
   let hasRotation = classHasRotation className
   initialization <- getInitialization hasLocation hasRotation
   pure
-    ( SpawnedReplicationValue flag objectId objectName className initialization
+    ( SpawnedReplication flag objectId objectName className initialization
     , newActorMap)
 
-putSpawnedReplicationValue :: SpawnedReplicationValue -> BinaryBit.BitPut ()
-putSpawnedReplicationValue spawnedReplicationValue = do
-  BinaryBit.putBool (spawnedReplicationValueFlag spawnedReplicationValue)
-  putWord32Bits (spawnedReplicationValueObjectId spawnedReplicationValue)
-  putInitialization
-    (spawnedReplicationValueInitialization spawnedReplicationValue)
+putSpawnedReplication :: SpawnedReplication -> BinaryBit.BitPut ()
+putSpawnedReplication spawnedReplication = do
+  BinaryBit.putBool (spawnedReplicationFlag spawnedReplication)
+  putWord32Bits (spawnedReplicationObjectId spawnedReplication)
+  putInitialization (spawnedReplicationInitialization spawnedReplication)
 
 lookupObjectName
   :: Monad m
