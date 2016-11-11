@@ -13,7 +13,7 @@ module Rattletrap
   , module Rattletrap.Crc
   , module Rattletrap.Data
   , module Rattletrap.Primitive.Dictionary
-  , module Rattletrap.Float32
+  , module Rattletrap.Primitive.Float32
   , module Rattletrap.Frame
   , module Rattletrap.Header
   , module Rattletrap.Initialization
@@ -55,7 +55,7 @@ import Rattletrap.Content
 import Rattletrap.Crc
 import Rattletrap.Data
 import Rattletrap.Primitive.Dictionary
-import Rattletrap.Float32
+import Rattletrap.Primitive.Float32
 import Rattletrap.Frame
 import Rattletrap.Header
 import Rattletrap.Initialization

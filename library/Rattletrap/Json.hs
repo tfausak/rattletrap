@@ -12,7 +12,7 @@ import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Primitive.CompressedWordVector
 import Rattletrap.Content
 import Rattletrap.Primitive.Dictionary
-import Rattletrap.Float32
+import Rattletrap.Primitive.Float32
 import Rattletrap.Frame
 import Rattletrap.Header
 import Rattletrap.Initialization

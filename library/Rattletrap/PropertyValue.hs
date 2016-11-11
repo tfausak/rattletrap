@@ -1,7 +1,7 @@
 module Rattletrap.PropertyValue where
 
 import Rattletrap.Primitive.Dictionary
-import Rattletrap.Float32
+import Rattletrap.Primitive.Float32
 import Rattletrap.Int32
 import Rattletrap.List
 import Rattletrap.Text

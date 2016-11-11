@@ -1,4 +1,4 @@
-module Rattletrap.Float32 where
+module Rattletrap.Primitive.Float32 where
 
 import Rattletrap.Utility
 

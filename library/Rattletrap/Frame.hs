@@ -2,7 +2,7 @@ module Rattletrap.Frame where
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
-import Rattletrap.Float32
+import Rattletrap.Primitive.Float32
 import Rattletrap.Replication
 
 import qualified Data.Binary.Bits.Get as BinaryBit
