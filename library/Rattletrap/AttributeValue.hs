@@ -58,7 +58,7 @@ import Rattletrap.AttributeValue.UniqueId
 import Rattletrap.AttributeValue.WeldedInfo
 import Rattletrap.AttributeValueType
 import Rattletrap.Data
-import Rattletrap.Text
+import Rattletrap.Primitive.Text
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

@@ -4,7 +4,7 @@ import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Initialization
-import Rattletrap.Text
+import Rattletrap.Primitive.Text
 import Rattletrap.Word32
 
 import qualified Data.Binary.Bits.Get as BinaryBit

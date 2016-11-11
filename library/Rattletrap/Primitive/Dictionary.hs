@@ -1,6 +1,6 @@
 module Rattletrap.Primitive.Dictionary where
 
-import Rattletrap.Text
+import Rattletrap.Primitive.Text
 
 import qualified Data.Binary as Binary
 

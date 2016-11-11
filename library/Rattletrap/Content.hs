@@ -9,7 +9,7 @@ import Rattletrap.KeyFrame
 import Rattletrap.Primitive.List
 import Rattletrap.Mark
 import Rattletrap.Message
-import Rattletrap.Text
+import Rattletrap.Primitive.Text
 import Rattletrap.Utility
 import Rattletrap.Word32
 

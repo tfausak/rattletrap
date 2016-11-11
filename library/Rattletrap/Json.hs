@@ -30,7 +30,7 @@ import Rattletrap.Replay
 import Rattletrap.Replication
 import Rattletrap.ReplicationValue
 import Rattletrap.Section
-import Rattletrap.Text
+import Rattletrap.Primitive.Text
 import Rattletrap.Vector
 import Rattletrap.Word32
 import Rattletrap.Word64

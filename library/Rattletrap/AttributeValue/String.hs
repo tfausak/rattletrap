@@ -1,6 +1,6 @@
 module Rattletrap.AttributeValue.String where
 
-import Rattletrap.Text
+import Rattletrap.Primitive.Text
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

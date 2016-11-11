@@ -4,7 +4,7 @@ import Rattletrap.Primitive.Dictionary
 import Rattletrap.Primitive.Float32
 import Rattletrap.Primitive.Int32
 import Rattletrap.Primitive.List
-import Rattletrap.Text
+import Rattletrap.Primitive.Text
 import Rattletrap.Word64
 import Rattletrap.Word8
 

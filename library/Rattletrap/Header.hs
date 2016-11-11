@@ -4,7 +4,7 @@ import Rattletrap.Primitive.Dictionary
 import Rattletrap.Primitive.Int32
 import Rattletrap.Property
 import Rattletrap.PropertyValue
-import Rattletrap.Text
+import Rattletrap.Primitive.Text
 import Rattletrap.Word32
 
 import qualified Data.Binary as Binary

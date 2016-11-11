@@ -8,7 +8,7 @@ import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Data
 import Rattletrap.Primitive.Int32
 import Rattletrap.Primitive.List
-import Rattletrap.Text
+import Rattletrap.Primitive.Text
 import Rattletrap.Word32
 
 import qualified Data.Bimap as Bimap
