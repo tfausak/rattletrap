@@ -7,6 +7,7 @@ module Rattletrap.Primitive
   , module Rattletrap.Primitive.Int8Vector
   , module Rattletrap.Primitive.Int32
   , module Rattletrap.Primitive.List
+  , module Rattletrap.Primitive.Section
   , module Rattletrap.Primitive.Text
   , module Rattletrap.Primitive.Vector
   , module Rattletrap.Primitive.Word8
@@ -22,6 +23,7 @@ import Rattletrap.Primitive.Int8
 import Rattletrap.Primitive.Int8Vector
 import Rattletrap.Primitive.Int32
 import Rattletrap.Primitive.List
+import Rattletrap.Primitive.Section
 import Rattletrap.Primitive.Text
 import Rattletrap.Primitive.Vector
 import Rattletrap.Primitive.Word8

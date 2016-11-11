@@ -24,7 +24,6 @@ module Rattletrap
   , module Rattletrap.Replay
   , module Rattletrap.Replication
   , module Rattletrap.ReplicationValue
-  , module Rattletrap.Section
   , module Rattletrap.Utility
   , module Rattletrap.Version
   ) where
@@ -55,6 +54,5 @@ import Rattletrap.RemoteId
 import Rattletrap.Replay
 import Rattletrap.Replication
 import Rattletrap.ReplicationValue
-import Rattletrap.Section
 import Rattletrap.Utility
 import Rattletrap.Version

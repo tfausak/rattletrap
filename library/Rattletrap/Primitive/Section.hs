@@ -1,7 +1,7 @@
-module Rattletrap.Section where
+module Rattletrap.Primitive.Section where
 
 import Rattletrap.Crc
-import Rattletrap.Primitive
+import Rattletrap.Primitive.Word32
 
 import qualified Control.Monad as Monad
 import qualified Data.Binary as Binary

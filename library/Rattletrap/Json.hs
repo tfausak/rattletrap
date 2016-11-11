@@ -22,7 +22,6 @@ import Rattletrap.RemoteId
 import Rattletrap.Replay
 import Rattletrap.Replication
 import Rattletrap.ReplicationValue
-import Rattletrap.Section
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson.Casing as Casing
