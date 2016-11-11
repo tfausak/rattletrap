@@ -1,6 +1,6 @@
 module Rattletrap.AttributeValue.Explosion where
 
-import Rattletrap.Int32
+import Rattletrap.Primitive.Int32
 import Rattletrap.Vector
 
 import qualified Data.Binary.Bits.Get as BinaryBit

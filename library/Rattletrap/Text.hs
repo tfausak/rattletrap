@@ -1,6 +1,6 @@
 module Rattletrap.Text where
 
-import Rattletrap.Int32
+import Rattletrap.Primitive.Int32
 import Rattletrap.Utility
 
 import qualified Data.Binary as Binary

@@ -1,4 +1,4 @@
-module Rattletrap.Int32 where
+module Rattletrap.Primitive.Int32 where
 
 import Rattletrap.Utility
 

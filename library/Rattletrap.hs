@@ -17,7 +17,7 @@ module Rattletrap
   , module Rattletrap.Frame
   , module Rattletrap.Header
   , module Rattletrap.Initialization
-  , module Rattletrap.Int32
+  , module Rattletrap.Primitive.Int32
   , module Rattletrap.Primitive.Int8
   , module Rattletrap.Primitive.Int8Vector
   , module Rattletrap.KeyFrame
@@ -59,7 +59,7 @@ import Rattletrap.Primitive.Float32
 import Rattletrap.Frame
 import Rattletrap.Header
 import Rattletrap.Initialization
-import Rattletrap.Int32
+import Rattletrap.Primitive.Int32
 import Rattletrap.Primitive.Int8
 import Rattletrap.Primitive.Int8Vector
 import Rattletrap.Json ()
