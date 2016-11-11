@@ -17,7 +17,7 @@ import Rattletrap.Frame
 import Rattletrap.Header
 import Rattletrap.Initialization
 import Rattletrap.Int32
-import Rattletrap.Int8
+import Rattletrap.Primitive.Int8
 import Rattletrap.Int8Vector
 import Rattletrap.KeyFrame
 import Rattletrap.List
