@@ -11,7 +11,7 @@ import Rattletrap.ClassMapping
 import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Primitive.CompressedWordVector
 import Rattletrap.Content
-import Rattletrap.Dictionary
+import Rattletrap.Primitive.Dictionary
 import Rattletrap.Float32
 import Rattletrap.Frame
 import Rattletrap.Header

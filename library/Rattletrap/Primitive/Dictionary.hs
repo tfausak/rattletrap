@@ -1,4 +1,4 @@
-module Rattletrap.Dictionary where
+module Rattletrap.Primitive.Dictionary where
 
 import Rattletrap.Text
 

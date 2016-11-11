@@ -12,7 +12,7 @@ module Rattletrap
   , module Rattletrap.Content
   , module Rattletrap.Crc
   , module Rattletrap.Data
-  , module Rattletrap.Dictionary
+  , module Rattletrap.Primitive.Dictionary
   , module Rattletrap.Float32
   , module Rattletrap.Frame
   , module Rattletrap.Header
@@ -54,7 +54,7 @@ import Rattletrap.Primitive.CompressedWordVector
 import Rattletrap.Content
 import Rattletrap.Crc
 import Rattletrap.Data
-import Rattletrap.Dictionary
+import Rattletrap.Primitive.Dictionary
 import Rattletrap.Float32
 import Rattletrap.Frame
 import Rattletrap.Header

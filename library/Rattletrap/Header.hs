@@ -1,6 +1,6 @@
 module Rattletrap.Header where
 
-import Rattletrap.Dictionary
+import Rattletrap.Primitive.Dictionary
 import Rattletrap.Int32
 import Rattletrap.Property
 import Rattletrap.PropertyValue
