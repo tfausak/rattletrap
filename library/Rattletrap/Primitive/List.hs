@@ -1,4 +1,4 @@
-module Rattletrap.List where
+module Rattletrap.Primitive.List where
 
 import Rattletrap.Word32
 

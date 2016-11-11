@@ -7,7 +7,7 @@ import Rattletrap.ClassMapping
 import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Data
 import Rattletrap.Primitive.Int32
-import Rattletrap.List
+import Rattletrap.Primitive.List
 import Rattletrap.Text
 import Rattletrap.Word32
 

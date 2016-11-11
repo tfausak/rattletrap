@@ -20,7 +20,7 @@ import Rattletrap.Primitive.Int32
 import Rattletrap.Primitive.Int8
 import Rattletrap.Primitive.Int8Vector
 import Rattletrap.KeyFrame
-import Rattletrap.List
+import Rattletrap.Primitive.List
 import Rattletrap.Mark
 import Rattletrap.Message
 import Rattletrap.Property

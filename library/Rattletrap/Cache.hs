@@ -1,7 +1,7 @@
 module Rattletrap.Cache where
 
 import Rattletrap.AttributeMapping
-import Rattletrap.List
+import Rattletrap.Primitive.List
 import Rattletrap.Word32
 
 import qualified Data.Binary as Binary

@@ -6,7 +6,7 @@ import Rattletrap.ClassAttributeMap
 import Rattletrap.ClassMapping
 import Rattletrap.Frame
 import Rattletrap.KeyFrame
-import Rattletrap.List
+import Rattletrap.Primitive.List
 import Rattletrap.Mark
 import Rattletrap.Message
 import Rattletrap.Text
