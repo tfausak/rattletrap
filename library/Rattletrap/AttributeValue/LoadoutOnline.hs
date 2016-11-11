@@ -2,7 +2,7 @@ module Rattletrap.AttributeValue.LoadoutOnline where
 
 import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Word32
-import Rattletrap.Word8
+import Rattletrap.Primitive.Word8
 
 import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit

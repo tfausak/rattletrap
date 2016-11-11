@@ -1,4 +1,4 @@
-module Rattletrap.Word8 where
+module Rattletrap.Primitive.Word8 where
 
 import Rattletrap.Utility
 

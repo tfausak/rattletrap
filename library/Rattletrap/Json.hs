@@ -34,7 +34,7 @@ import Rattletrap.Primitive.Text
 import Rattletrap.Primitive.Vector
 import Rattletrap.Word32
 import Rattletrap.Word64
-import Rattletrap.Word8
+import Rattletrap.Primitive.Word8
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson.Casing as Casing
