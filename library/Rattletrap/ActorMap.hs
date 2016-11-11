@@ -1,7 +1,7 @@
 module Rattletrap.ActorMap where
 
 import Rattletrap.Primitive.CompressedWord
-import Rattletrap.Word32
+import Rattletrap.Primitive.Word32
 
 import qualified Data.Map as Map
 

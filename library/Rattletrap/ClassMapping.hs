@@ -1,7 +1,7 @@
 module Rattletrap.ClassMapping where
 
 import Rattletrap.Primitive.Text
-import Rattletrap.Word32
+import Rattletrap.Primitive.Word32
 
 import qualified Data.Binary as Binary
 

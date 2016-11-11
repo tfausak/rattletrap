@@ -1,6 +1,6 @@
 module Rattletrap.AttributeValue.Loadout where
 
-import Rattletrap.Word32
+import Rattletrap.Primitive.Word32
 import Rattletrap.Primitive.Word8
 
 import qualified Data.Binary.Bits.Get as BinaryBit

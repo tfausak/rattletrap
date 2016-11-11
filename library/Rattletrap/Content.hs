@@ -11,7 +11,7 @@ import Rattletrap.Mark
 import Rattletrap.Message
 import Rattletrap.Primitive.Text
 import Rattletrap.Utility
-import Rattletrap.Word32
+import Rattletrap.Primitive.Word32
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBit

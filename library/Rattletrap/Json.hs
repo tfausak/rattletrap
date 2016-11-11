@@ -32,7 +32,7 @@ import Rattletrap.ReplicationValue
 import Rattletrap.Section
 import Rattletrap.Primitive.Text
 import Rattletrap.Primitive.Vector
-import Rattletrap.Word32
+import Rattletrap.Primitive.Word32
 import Rattletrap.Word64
 import Rattletrap.Primitive.Word8
 

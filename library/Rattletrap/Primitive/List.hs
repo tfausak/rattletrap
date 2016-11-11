@@ -1,6 +1,6 @@
 module Rattletrap.Primitive.List where
 
-import Rattletrap.Word32
+import Rattletrap.Primitive.Word32
 
 import qualified Control.Monad as Monad
 import qualified Data.Binary as Binary

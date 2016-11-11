@@ -9,7 +9,7 @@ import Rattletrap.Data
 import Rattletrap.Primitive.Int32
 import Rattletrap.Primitive.List
 import Rattletrap.Primitive.Text
-import Rattletrap.Word32
+import Rattletrap.Primitive.Word32
 
 import qualified Data.Bimap as Bimap
 import qualified Data.List as List

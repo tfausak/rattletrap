@@ -5,7 +5,7 @@ import Rattletrap.Primitive.Int32
 import Rattletrap.Property
 import Rattletrap.PropertyValue
 import Rattletrap.Primitive.Text
-import Rattletrap.Word32
+import Rattletrap.Primitive.Word32
 
 import qualified Data.Binary as Binary
 
