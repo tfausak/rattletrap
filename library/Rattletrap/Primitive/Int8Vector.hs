@@ -1,4 +1,4 @@
-module Rattletrap.Int8Vector where
+module Rattletrap.Primitive.Int8Vector where
 
 import Rattletrap.Primitive.Int8
 

@@ -1,6 +1,6 @@
 module Rattletrap.Initialization where
 
-import Rattletrap.Int8Vector
+import Rattletrap.Primitive.Int8Vector
 import Rattletrap.Vector
 
 import qualified Data.Binary.Bits.Get as BinaryBit
