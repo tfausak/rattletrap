@@ -2,8 +2,8 @@ module Rattletrap
   ( module Rattletrap.ActorMap
   , module Rattletrap.Attribute
   , module Rattletrap.AttributeMapping
+  , module Rattletrap.AttributeType
   , module Rattletrap.AttributeValue
-  , module Rattletrap.AttributeValueType
   , module Rattletrap.Cache
   , module Rattletrap.ClassAttributeMap
   , module Rattletrap.ClassMapping
@@ -32,8 +32,8 @@ module Rattletrap
 import Rattletrap.ActorMap
 import Rattletrap.Attribute
 import Rattletrap.AttributeMapping
+import Rattletrap.AttributeType
 import Rattletrap.AttributeValue
-import Rattletrap.AttributeValueType
 import Rattletrap.Cache
 import Rattletrap.ClassAttributeMap
 import Rattletrap.ClassMapping

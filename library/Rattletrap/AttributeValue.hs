@@ -56,7 +56,7 @@ import Rattletrap.Attribute.String
 import Rattletrap.Attribute.TeamPaint
 import Rattletrap.Attribute.UniqueId
 import Rattletrap.Attribute.WeldedInfo
-import Rattletrap.AttributeValueType
+import Rattletrap.AttributeType
 import Rattletrap.Data
 import Rattletrap.Primitive
 
@@ -96,95 +96,94 @@ data AttributeValue
 
 getAttributeValue :: (Int, Int) -> Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue version name =
-  case Map.lookup name attributeValueTypes of
+  case Map.lookup name attributeTypes of
     Just constructor ->
       case constructor of
-        AVBoolean -> do
+        BooleanAttributeType -> do
           x <- getBooleanAttribute
           pure (BooleanAttributeValue x)
-        AVByte -> do
+        ByteAttributeType -> do
           x <- getByteAttribute
           pure (ByteAttributeValue x)
-        AVCamSettings -> do
+        CamSettingsAttributeType -> do
           x <- getCamSettingsAttribute
           pure (CamSettingsAttributeValue x)
-        AVClubColors -> do
+        ClubColorsAttributeType -> do
           x <- getClubColorsAttribute
           pure (ClubColorsAttributeValue x)
-        AVDemolish -> do
+        DemolishAttributeType -> do
           x <- getDemolishAttribute
           pure (DemolishAttributeValue x)
-        AVEnum -> do
+        EnumAttributeType -> do
           x <- getEnumAttribute
           pure (EnumAttributeValue x)
-        AVExplosion -> do
+        ExplosionAttributeType -> do
           x <- getExplosionAttribute
           pure (ExplosionAttributeValue x)
-        AVFlaggedInt -> do
+        FlaggedIntAttributeType -> do
           x <- getFlaggedIntAttribute
           pure (FlaggedIntAttributeValue x)
-        AVFloat -> do
+        FloatAttributeType -> do
           x <- getFloatAttribute
           pure (FloatAttributeValue x)
-        AVGameMode -> do
+        GameModeAttributeType -> do
           x <- getGameModeAttribute version
           pure (GameModeAttributeValue x)
-        AVInt -> do
+        IntAttributeType -> do
           x <- getIntAttribute
           pure (IntAttributeValue x)
-        AVLoadout -> do
+        LoadoutAttributeType -> do
           x <- getLoadoutAttribute
           pure (LoadoutAttributeValue x)
-        AVLoadoutOnline -> do
+        LoadoutOnlineAttributeType -> do
           x <- getLoadoutOnlineAttribute
           pure (LoadoutOnlineAttributeValue x)
-        AVLoadouts -> do
+        LoadoutsAttributeType -> do
           x <- getLoadoutsAttribute
           pure (LoadoutsAttributeValue x)
-        AVLoadoutsOnline -> do
+        LoadoutsOnlineAttributeType -> do
           x <- getLoadoutsOnlineAttribute
           pure (LoadoutsOnlineAttributeValue x)
-        AVLocation -> do
+        LocationAttributeType -> do
           x <- getLocationAttribute
           pure (LocationAttributeValue x)
-        AVMusicStinger -> do
+        MusicStingerAttributeType -> do
           x <- getMusicStingerAttribute
           pure (MusicStingerAttributeValue x)
-        AVPartyLeader -> do
+        PartyLeaderAttributeType -> do
           x <- getPartyLeaderAttribute
           pure (PartyLeaderAttributeValue x)
-        AVPickup -> do
+        PickupAttributeType -> do
           x <- getPickupAttribute
           pure (PickupAttributeValue x)
-        AVPrivateMatchSettings -> do
+        PrivateMatchSettingsAttributeType -> do
           x <- getPrivateMatchSettingsAttribute
           pure (PrivateMatchSettingsAttributeValue x)
-        AVQWord -> do
+        QWordAttributeType -> do
           x <- getQWordAttribute
           pure (QWordAttributeValue x)
-        AVReservation -> do
+        ReservationAttributeType -> do
           x <- getReservationAttribute version
           pure (ReservationAttributeValue x)
-        AVRigidBodyState -> do
+        RigidBodyStateAttributeType -> do
           x <- getRigidBodyStateAttribute
           pure (RigidBodyStateAttributeValue x)
-        AVString -> do
+        StringAttributeType -> do
           x <- getStringAttribute
           pure (StringAttributeValue x)
-        AVTeamPaint -> do
+        TeamPaintAttributeType -> do
           x <- getTeamPaintAttribute
           pure (TeamPaintAttributeValue x)
-        AVUniqueId -> do
+        UniqueIdAttributeType -> do
           x <- getUniqueIdAttribute
           pure (UniqueIdAttributeValue x)
-        AVWeldedInfo -> do
+        WeldedInfoAttributeType -> do
           x <- getWeldedInfoAttribute
           pure (WeldedInfoAttributeValue x)
     Nothing -> fail ("don't know how to get attribute value " ++ show name)
 
-attributeValueTypes :: Map.Map Text AttributeValueType
-attributeValueTypes =
-  Map.mapKeys stringToText (Map.fromList rawAttributeValueTypes)
+attributeTypes :: Map.Map Text AttributeType
+attributeTypes = Map.mapKeys stringToText (Map.fromList rawAttributeTypes)
 
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
