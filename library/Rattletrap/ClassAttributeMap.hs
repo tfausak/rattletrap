@@ -17,6 +17,7 @@ import qualified Data.Text as Text
 data ClassAttributeMap = ClassAttributeMap
   { classAttributeMapObjectMap :: Map.Map Word32 Text
   , classAttributeMapClassMap :: Bimap.Bimap Word32 Text
+  , classAttributeMapObjectClassMap :: Map.Map Word32 Word32
   , classAttributeMapValue :: Map.Map Word32 (Map.Map Word32 Word32)
   } deriving (Eq, Show)
 
@@ -27,6 +28,7 @@ makeClassAttributeMap :: List Text
 makeClassAttributeMap objects classMappings caches =
   let objectMap = makeObjectMap objects
       classMap = makeClassMap classMappings
+      objectClassMap = makeObjectClassMap objectMap classMap
       classCache = makeClassCache classMap caches
       attributeMap = makeAttributeMap caches
       classIds = map (\(_, classId, _, _) -> classId) classCache
@@ -52,7 +54,32 @@ makeClassAttributeMap objects classMappings caches =
                     attributes = ownAttributes : parentsAttributes
                 in (classId, Map.fromList (concatMap Map.toList attributes)))
              classIds)
-  in ClassAttributeMap objectMap classMap value
+  in ClassAttributeMap objectMap classMap objectClassMap value
+
+makeObjectClassMap :: Map.Map Word32 Text
+                   -> Bimap.Bimap Word32 Text
+                   -> Map.Map Word32 Word32
+makeObjectClassMap objectMap classMap = do
+  let objectIds = Map.keys objectMap
+  let classIds = map (getClassId objectMap classMap) objectIds
+  let rawPairs = zip objectIds classIds
+  let pairs =
+        Maybe.mapMaybe
+          (\(objectId, maybeClassId) ->
+             case maybeClassId of
+               Nothing -> Nothing
+               Just classId -> Just (objectId, classId))
+          rawPairs
+  Map.fromList pairs
+
+getClassId :: Map.Map Word32 Text
+           -> Bimap.Bimap Word32 Text
+           -> Word32
+           -> Maybe Word32
+getClassId objectMap classMap objectId = do
+  objectName <- getObjectName objectMap objectId
+  className <- getClassName objectName
+  Bimap.lookupR className classMap
 
 makeClassCache :: Bimap.Bimap Word32 Text
                -> List Cache
@@ -236,10 +263,7 @@ getAttributeMap :: ClassAttributeMap
                 -> Maybe (Map.Map Word32 Word32)
 getAttributeMap classAttributeMap actorMap actorId = do
   objectId <- Map.lookup actorId actorMap
-  objectName <-
-    getObjectName (classAttributeMapObjectMap classAttributeMap) objectId
-  className <- getClassName objectName
-  let classMap = classAttributeMapClassMap classAttributeMap
-  classId <- Bimap.lookupR className classMap
+  let objectClassMap = classAttributeMapObjectClassMap classAttributeMap
+  classId <- Map.lookup objectId objectClassMap
   let value = classAttributeMapValue classAttributeMap
   Map.lookup classId value
