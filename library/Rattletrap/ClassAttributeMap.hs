@@ -217,9 +217,8 @@ classesWithRotation = Set.fromList (map stringToText rawClassesWithRotation)
 
 getAttributeIdLimit :: Map.Map Word32 Word32 -> Maybe Word
 getAttributeIdLimit attributeMap = do
-  let streamIds = Map.keys attributeMap
-  let maxStreamId = maximum (Word32 0 : streamIds)
-  let limit = fromIntegral (word32Value maxStreamId)
+  ((streamId, _), _) <- Map.maxViewWithKey attributeMap
+  let limit = fromIntegral (word32Value streamId)
   pure limit
 
 getAttributeName :: ClassAttributeMap
