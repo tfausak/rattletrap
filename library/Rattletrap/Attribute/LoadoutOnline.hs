@@ -1,4 +1,4 @@
-module Rattletrap.AttributeValue.LoadoutOnline where
+module Rattletrap.Attribute.LoadoutOnline where
 
 import Rattletrap.Primitive
 
@@ -6,12 +6,12 @@ import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 
-newtype LoadoutOnlineAttributeValue = LoadoutOnlineAttributeValue
-  { loadoutAttributeValueValue :: [[(Word32, CompressedWord)]]
+newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
+  { loadoutAttributeValue :: [[(Word32, CompressedWord)]]
   } deriving (Eq, Ord, Show)
 
-getLoadoutOnlineAttributeValue :: BinaryBit.BitGet LoadoutOnlineAttributeValue
-getLoadoutOnlineAttributeValue = do
+getLoadoutOnlineAttribute :: BinaryBit.BitGet LoadoutOnlineAttribute
+getLoadoutOnlineAttribute = do
   size <- getWord8Bits
   values <-
     Monad.replicateM
@@ -22,12 +22,11 @@ getLoadoutOnlineAttributeValue = do
             (do x <- getWord32Bits
                 y <- getCompressedWord 27
                 pure (x, y)))
-  pure (LoadoutOnlineAttributeValue values)
+  pure (LoadoutOnlineAttribute values)
 
-putLoadoutOnlineAttributeValue :: LoadoutOnlineAttributeValue
-                               -> BinaryBit.BitPut ()
-putLoadoutOnlineAttributeValue loadoutAttributeValue = do
-  let values = loadoutAttributeValueValue loadoutAttributeValue
+putLoadoutOnlineAttribute :: LoadoutOnlineAttribute -> BinaryBit.BitPut ()
+putLoadoutOnlineAttribute loadoutAttribute = do
+  let values = loadoutAttributeValue loadoutAttribute
   putWord8Bits (Word8 (fromIntegral (length values)))
   mapM_
     (\xs -> do

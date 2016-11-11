@@ -1,61 +1,61 @@
 module Rattletrap.AttributeValue
   ( module Rattletrap.AttributeValue
-  , module Rattletrap.AttributeValue.Boolean
-  , module Rattletrap.AttributeValue.Byte
-  , module Rattletrap.AttributeValue.CamSettings
-  , module Rattletrap.AttributeValue.ClubColors
-  , module Rattletrap.AttributeValue.Demolish
-  , module Rattletrap.AttributeValue.Enum
-  , module Rattletrap.AttributeValue.Explosion
-  , module Rattletrap.AttributeValue.FlaggedInt
-  , module Rattletrap.AttributeValue.Float
-  , module Rattletrap.AttributeValue.GameMode
-  , module Rattletrap.AttributeValue.Int
-  , module Rattletrap.AttributeValue.Loadout
-  , module Rattletrap.AttributeValue.LoadoutOnline
-  , module Rattletrap.AttributeValue.Loadouts
-  , module Rattletrap.AttributeValue.LoadoutsOnline
-  , module Rattletrap.AttributeValue.Location
-  , module Rattletrap.AttributeValue.MusicStinger
-  , module Rattletrap.AttributeValue.PartyLeader
-  , module Rattletrap.AttributeValue.Pickup
-  , module Rattletrap.AttributeValue.PrivateMatchSettings
-  , module Rattletrap.AttributeValue.QWord
-  , module Rattletrap.AttributeValue.Reservation
-  , module Rattletrap.AttributeValue.RigidBodyState
-  , module Rattletrap.AttributeValue.String
-  , module Rattletrap.AttributeValue.TeamPaint
-  , module Rattletrap.AttributeValue.UniqueId
-  , module Rattletrap.AttributeValue.WeldedInfo
+  , module Rattletrap.Attribute.Boolean
+  , module Rattletrap.Attribute.Byte
+  , module Rattletrap.Attribute.CamSettings
+  , module Rattletrap.Attribute.ClubColors
+  , module Rattletrap.Attribute.Demolish
+  , module Rattletrap.Attribute.Enum
+  , module Rattletrap.Attribute.Explosion
+  , module Rattletrap.Attribute.FlaggedInt
+  , module Rattletrap.Attribute.Float
+  , module Rattletrap.Attribute.GameMode
+  , module Rattletrap.Attribute.Int
+  , module Rattletrap.Attribute.Loadout
+  , module Rattletrap.Attribute.LoadoutOnline
+  , module Rattletrap.Attribute.Loadouts
+  , module Rattletrap.Attribute.LoadoutsOnline
+  , module Rattletrap.Attribute.Location
+  , module Rattletrap.Attribute.MusicStinger
+  , module Rattletrap.Attribute.PartyLeader
+  , module Rattletrap.Attribute.Pickup
+  , module Rattletrap.Attribute.PrivateMatchSettings
+  , module Rattletrap.Attribute.QWord
+  , module Rattletrap.Attribute.Reservation
+  , module Rattletrap.Attribute.RigidBodyState
+  , module Rattletrap.Attribute.String
+  , module Rattletrap.Attribute.TeamPaint
+  , module Rattletrap.Attribute.UniqueId
+  , module Rattletrap.Attribute.WeldedInfo
   ) where
 
-import Rattletrap.AttributeValue.Boolean
-import Rattletrap.AttributeValue.Byte
-import Rattletrap.AttributeValue.CamSettings
-import Rattletrap.AttributeValue.ClubColors
-import Rattletrap.AttributeValue.Demolish
-import Rattletrap.AttributeValue.Enum
-import Rattletrap.AttributeValue.Explosion
-import Rattletrap.AttributeValue.FlaggedInt
-import Rattletrap.AttributeValue.Float
-import Rattletrap.AttributeValue.GameMode
-import Rattletrap.AttributeValue.Int
-import Rattletrap.AttributeValue.Loadout
-import Rattletrap.AttributeValue.LoadoutOnline
-import Rattletrap.AttributeValue.Loadouts
-import Rattletrap.AttributeValue.LoadoutsOnline
-import Rattletrap.AttributeValue.Location
-import Rattletrap.AttributeValue.MusicStinger
-import Rattletrap.AttributeValue.PartyLeader
-import Rattletrap.AttributeValue.Pickup
-import Rattletrap.AttributeValue.PrivateMatchSettings
-import Rattletrap.AttributeValue.QWord
-import Rattletrap.AttributeValue.Reservation
-import Rattletrap.AttributeValue.RigidBodyState
-import Rattletrap.AttributeValue.String
-import Rattletrap.AttributeValue.TeamPaint
-import Rattletrap.AttributeValue.UniqueId
-import Rattletrap.AttributeValue.WeldedInfo
+import Rattletrap.Attribute.Boolean
+import Rattletrap.Attribute.Byte
+import Rattletrap.Attribute.CamSettings
+import Rattletrap.Attribute.ClubColors
+import Rattletrap.Attribute.Demolish
+import Rattletrap.Attribute.Enum
+import Rattletrap.Attribute.Explosion
+import Rattletrap.Attribute.FlaggedInt
+import Rattletrap.Attribute.Float
+import Rattletrap.Attribute.GameMode
+import Rattletrap.Attribute.Int
+import Rattletrap.Attribute.Loadout
+import Rattletrap.Attribute.LoadoutOnline
+import Rattletrap.Attribute.Loadouts
+import Rattletrap.Attribute.LoadoutsOnline
+import Rattletrap.Attribute.Location
+import Rattletrap.Attribute.MusicStinger
+import Rattletrap.Attribute.PartyLeader
+import Rattletrap.Attribute.Pickup
+import Rattletrap.Attribute.PrivateMatchSettings
+import Rattletrap.Attribute.QWord
+import Rattletrap.Attribute.Reservation
+import Rattletrap.Attribute.RigidBodyState
+import Rattletrap.Attribute.String
+import Rattletrap.Attribute.TeamPaint
+import Rattletrap.Attribute.UniqueId
+import Rattletrap.Attribute.WeldedInfo
 import Rattletrap.AttributeValueType
 import Rattletrap.Data
 import Rattletrap.Primitive
@@ -65,33 +65,33 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Map as Map
 
 data AttributeValue
-  = BooleanAttribute BooleanAttributeValue
-  | ByteAttribute ByteAttributeValue
-  | CamSettingsAttribute CamSettingsAttributeValue
-  | ClubColorsAttribute ClubColorsAttributeValue
-  | DemolishAttribute DemolishAttributeValue
-  | EnumAttribute EnumAttributeValue
-  | ExplosionAttribute ExplosionAttributeValue
-  | FlaggedIntAttribute FlaggedIntAttributeValue
-  | FloatAttribute FloatAttributeValue
-  | GameModeAttribute GameModeAttributeValue
-  | IntAttribute IntAttributeValue
-  | LoadoutAttribute LoadoutAttributeValue
-  | LoadoutOnlineAttribute LoadoutOnlineAttributeValue
-  | LoadoutsAttribute LoadoutsAttributeValue
-  | LoadoutsOnlineAttribute LoadoutsOnlineAttributeValue
-  | LocationAttribute LocationAttributeValue
-  | MusicStingerAttribute MusicStingerAttributeValue
-  | PartyLeaderAttribute PartyLeaderAttributeValue
-  | PickupAttribute PickupAttributeValue
-  | PrivateMatchSettingsAttribute PrivateMatchSettingsAttributeValue
-  | QWordAttribute QWordAttributeValue
-  | ReservationAttribute ReservationAttributeValue
-  | RigidBodyStateAttribute RigidBodyStateAttributeValue
-  | StringAttribute StringAttributeValue
-  | TeamPaintAttribute TeamPaintAttributeValue
-  | UniqueIdAttribute UniqueIdAttributeValue
-  | WeldedInfoAttribute WeldedInfoAttributeValue
+  = BooleanAttributeValue BooleanAttribute
+  | ByteAttributeValue ByteAttribute
+  | CamSettingsAttributeValue CamSettingsAttribute
+  | ClubColorsAttributeValue ClubColorsAttribute
+  | DemolishAttributeValue DemolishAttribute
+  | EnumAttributeValue EnumAttribute
+  | ExplosionAttributeValue ExplosionAttribute
+  | FlaggedIntAttributeValue FlaggedIntAttribute
+  | FloatAttributeValue FloatAttribute
+  | GameModeAttributeValue GameModeAttribute
+  | IntAttributeValue IntAttribute
+  | LoadoutAttributeValue LoadoutAttribute
+  | LoadoutOnlineAttributeValue LoadoutOnlineAttribute
+  | LoadoutsAttributeValue LoadoutsAttribute
+  | LoadoutsOnlineAttributeValue LoadoutsOnlineAttribute
+  | LocationAttributeValue LocationAttribute
+  | MusicStingerAttributeValue MusicStingerAttribute
+  | PartyLeaderAttributeValue PartyLeaderAttribute
+  | PickupAttributeValue PickupAttribute
+  | PrivateMatchSettingsAttributeValue PrivateMatchSettingsAttribute
+  | QWordAttributeValue QWordAttribute
+  | ReservationAttributeValue ReservationAttribute
+  | RigidBodyStateAttributeValue RigidBodyStateAttribute
+  | StringAttributeValue StringAttribute
+  | TeamPaintAttributeValue TeamPaintAttribute
+  | UniqueIdAttributeValue UniqueIdAttribute
+  | WeldedInfoAttributeValue WeldedInfoAttribute
   deriving (Eq, Ord, Show)
 
 getAttributeValue :: (Int, Int) -> Text -> BinaryBit.BitGet AttributeValue
@@ -100,86 +100,86 @@ getAttributeValue version name =
     Just constructor ->
       case constructor of
         AVBoolean -> do
-          x <- getBooleanAttributeValue
-          pure (BooleanAttribute x)
+          x <- getBooleanAttribute
+          pure (BooleanAttributeValue x)
         AVByte -> do
-          x <- getByteAttributeValue
-          pure (ByteAttribute x)
+          x <- getByteAttribute
+          pure (ByteAttributeValue x)
         AVCamSettings -> do
-          x <- getCamSettingsAttributeValue
-          pure (CamSettingsAttribute x)
+          x <- getCamSettingsAttribute
+          pure (CamSettingsAttributeValue x)
         AVClubColors -> do
-          x <- getClubColorsAttributeValue
-          pure (ClubColorsAttribute x)
+          x <- getClubColorsAttribute
+          pure (ClubColorsAttributeValue x)
         AVDemolish -> do
-          x <- getDemolishAttributeValue
-          pure (DemolishAttribute x)
+          x <- getDemolishAttribute
+          pure (DemolishAttributeValue x)
         AVEnum -> do
-          x <- getEnumAttributeValue
-          pure (EnumAttribute x)
+          x <- getEnumAttribute
+          pure (EnumAttributeValue x)
         AVExplosion -> do
-          x <- getExplosionAttributeValue
-          pure (ExplosionAttribute x)
+          x <- getExplosionAttribute
+          pure (ExplosionAttributeValue x)
         AVFlaggedInt -> do
-          x <- getFlaggedIntAttributeValue
-          pure (FlaggedIntAttribute x)
+          x <- getFlaggedIntAttribute
+          pure (FlaggedIntAttributeValue x)
         AVFloat -> do
-          x <- getFloatAttributeValue
-          pure (FloatAttribute x)
+          x <- getFloatAttribute
+          pure (FloatAttributeValue x)
         AVGameMode -> do
-          x <- getGameModeAttributeValue version
-          pure (GameModeAttribute x)
+          x <- getGameModeAttribute version
+          pure (GameModeAttributeValue x)
         AVInt -> do
-          x <- getIntAttributeValue
-          pure (IntAttribute x)
+          x <- getIntAttribute
+          pure (IntAttributeValue x)
         AVLoadout -> do
-          x <- getLoadoutAttributeValue
-          pure (LoadoutAttribute x)
+          x <- getLoadoutAttribute
+          pure (LoadoutAttributeValue x)
         AVLoadoutOnline -> do
-          x <- getLoadoutOnlineAttributeValue
-          pure (LoadoutOnlineAttribute x)
+          x <- getLoadoutOnlineAttribute
+          pure (LoadoutOnlineAttributeValue x)
         AVLoadouts -> do
-          x <- getLoadoutsAttributeValue
-          pure (LoadoutsAttribute x)
+          x <- getLoadoutsAttribute
+          pure (LoadoutsAttributeValue x)
         AVLoadoutsOnline -> do
-          x <- getLoadoutsOnlineAttributeValue
-          pure (LoadoutsOnlineAttribute x)
+          x <- getLoadoutsOnlineAttribute
+          pure (LoadoutsOnlineAttributeValue x)
         AVLocation -> do
-          x <- getLocationAttributeValue
-          pure (LocationAttribute x)
+          x <- getLocationAttribute
+          pure (LocationAttributeValue x)
         AVMusicStinger -> do
-          x <- getMusicStingerAttributeValue
-          pure (MusicStingerAttribute x)
+          x <- getMusicStingerAttribute
+          pure (MusicStingerAttributeValue x)
         AVPartyLeader -> do
-          x <- getPartyLeaderAttributeValue
-          pure (PartyLeaderAttribute x)
+          x <- getPartyLeaderAttribute
+          pure (PartyLeaderAttributeValue x)
         AVPickup -> do
-          x <- getPickupAttributeValue
-          pure (PickupAttribute x)
+          x <- getPickupAttribute
+          pure (PickupAttributeValue x)
         AVPrivateMatchSettings -> do
-          x <- getPrivateMatchSettingsAttributeValue
-          pure (PrivateMatchSettingsAttribute x)
+          x <- getPrivateMatchSettingsAttribute
+          pure (PrivateMatchSettingsAttributeValue x)
         AVQWord -> do
-          x <- getQWordAttributeValue
-          pure (QWordAttribute x)
+          x <- getQWordAttribute
+          pure (QWordAttributeValue x)
         AVReservation -> do
-          x <- getReservationAttributeValue version
-          pure (ReservationAttribute x)
+          x <- getReservationAttribute version
+          pure (ReservationAttributeValue x)
         AVRigidBodyState -> do
-          x <- getRigidBodyStateAttributeValue
-          pure (RigidBodyStateAttribute x)
+          x <- getRigidBodyStateAttribute
+          pure (RigidBodyStateAttributeValue x)
         AVString -> do
-          x <- getStringAttributeValue
-          pure (StringAttribute x)
+          x <- getStringAttribute
+          pure (StringAttributeValue x)
         AVTeamPaint -> do
-          x <- getTeamPaintAttributeValue
-          pure (TeamPaintAttribute x)
+          x <- getTeamPaintAttribute
+          pure (TeamPaintAttributeValue x)
         AVUniqueId -> do
-          x <- getUniqueIdAttributeValue
-          pure (UniqueIdAttribute x)
+          x <- getUniqueIdAttribute
+          pure (UniqueIdAttributeValue x)
         AVWeldedInfo -> do
-          x <- getWeldedInfoAttributeValue
-          pure (WeldedInfoAttribute x)
+          x <- getWeldedInfoAttribute
+          pure (WeldedInfoAttributeValue x)
     Nothing -> fail ("don't know how to get attribute value " ++ show name)
 
 attributeValueTypes :: Map.Map Text AttributeValueType
@@ -189,30 +189,30 @@ attributeValueTypes =
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
   case value of
-    BooleanAttribute x -> putBooleanAttributeValue x
-    ByteAttribute x -> putByteAttributeValue x
-    CamSettingsAttribute x -> putCamSettingsAttributeValue x
-    ClubColorsAttribute x -> putClubColorsAttributeValue x
-    DemolishAttribute x -> putDemolishAttributeValue x
-    EnumAttribute x -> putEnumAttributeValue x
-    ExplosionAttribute x -> putExplosionAttributeValue x
-    FlaggedIntAttribute x -> putFlaggedIntAttributeValue x
-    FloatAttribute x -> putFloatAttributeValue x
-    GameModeAttribute x -> putGameModeAttributeValue x
-    IntAttribute x -> putIntAttributeValue x
-    LoadoutAttribute x -> putLoadoutAttributeValue x
-    LoadoutOnlineAttribute x -> putLoadoutOnlineAttributeValue x
-    LoadoutsAttribute x -> putLoadoutsAttributeValue x
-    LoadoutsOnlineAttribute x -> putLoadoutsOnlineAttributeValue x
-    LocationAttribute x -> putLocationAttributeValue x
-    MusicStingerAttribute x -> putMusicStingerAttributeValue x
-    PartyLeaderAttribute x -> putPartyLeaderAttributeValue x
-    PickupAttribute x -> putPickupAttributeValue x
-    PrivateMatchSettingsAttribute x -> putPrivateMatchSettingsAttributeValue x
-    QWordAttribute x -> putQWordAttributeValue x
-    ReservationAttribute x -> putReservationAttributeValue x
-    RigidBodyStateAttribute x -> putRigidBodyStateAttributeValue x
-    StringAttribute x -> putStringAttributeValue x
-    TeamPaintAttribute x -> putTeamPaintAttributeValue x
-    UniqueIdAttribute x -> putUniqueIdAttributeValue x
-    WeldedInfoAttribute x -> putWeldedInfoAttributeValue x
+    BooleanAttributeValue x -> putBooleanAttribute x
+    ByteAttributeValue x -> putByteAttribute x
+    CamSettingsAttributeValue x -> putCamSettingsAttribute x
+    ClubColorsAttributeValue x -> putClubColorsAttribute x
+    DemolishAttributeValue x -> putDemolishAttribute x
+    EnumAttributeValue x -> putEnumAttribute x
+    ExplosionAttributeValue x -> putExplosionAttribute x
+    FlaggedIntAttributeValue x -> putFlaggedIntAttribute x
+    FloatAttributeValue x -> putFloatAttribute x
+    GameModeAttributeValue x -> putGameModeAttribute x
+    IntAttributeValue x -> putIntAttribute x
+    LoadoutAttributeValue x -> putLoadoutAttribute x
+    LoadoutOnlineAttributeValue x -> putLoadoutOnlineAttribute x
+    LoadoutsAttributeValue x -> putLoadoutsAttribute x
+    LoadoutsOnlineAttributeValue x -> putLoadoutsOnlineAttribute x
+    LocationAttributeValue x -> putLocationAttribute x
+    MusicStingerAttributeValue x -> putMusicStingerAttribute x
+    PartyLeaderAttributeValue x -> putPartyLeaderAttribute x
+    PickupAttributeValue x -> putPickupAttribute x
+    PrivateMatchSettingsAttributeValue x -> putPrivateMatchSettingsAttribute x
+    QWordAttributeValue x -> putQWordAttribute x
+    ReservationAttributeValue x -> putReservationAttribute x
+    RigidBodyStateAttributeValue x -> putRigidBodyStateAttribute x
+    StringAttributeValue x -> putStringAttribute x
+    TeamPaintAttributeValue x -> putTeamPaintAttribute x
+    UniqueIdAttributeValue x -> putUniqueIdAttribute x
+    WeldedInfoAttributeValue x -> putWeldedInfoAttribute x

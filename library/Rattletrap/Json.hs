@@ -43,62 +43,62 @@ $(let optionsFor name =
         [ ''Attribute
         , ''AttributeMapping
         , ''AttributeValue
-        , ''BooleanAttributeValue
-        , ''ByteAttributeValue
+        , ''BooleanAttribute
+        , ''ByteAttribute
         , ''Cache
-        , ''CamSettingsAttributeValue
+        , ''CamSettingsAttribute
         , ''ClassMapping
-        , ''ClubColorsAttributeValue
+        , ''ClubColorsAttribute
         , ''CompressedWord
         , ''CompressedWordVector
         , ''Content
-        , ''DemolishAttributeValue
+        , ''DemolishAttribute
         , ''DestroyedReplication
         , ''Dictionary
-        , ''EnumAttributeValue
-        , ''ExplosionAttributeValue
-        , ''FlaggedIntAttributeValue
+        , ''EnumAttribute
+        , ''ExplosionAttribute
+        , ''FlaggedIntAttribute
         , ''Float32
-        , ''FloatAttributeValue
+        , ''FloatAttribute
         , ''Frame
-        , ''GameModeAttributeValue
+        , ''GameModeAttribute
         , ''Header
         , ''Initialization
         , ''Int32
         , ''Int8
         , ''Int8Vector
-        , ''IntAttributeValue
+        , ''IntAttribute
         , ''KeyFrame
         , ''List
-        , ''LoadoutAttributeValue
-        , ''LoadoutOnlineAttributeValue
-        , ''LoadoutsAttributeValue
-        , ''LoadoutsOnlineAttributeValue
-        , ''LocationAttributeValue
+        , ''LoadoutAttribute
+        , ''LoadoutOnlineAttribute
+        , ''LoadoutsAttribute
+        , ''LoadoutsOnlineAttribute
+        , ''LocationAttribute
         , ''Mark
         , ''Message
-        , ''MusicStingerAttributeValue
-        , ''PartyLeaderAttributeValue
-        , ''PickupAttributeValue
-        , ''PrivateMatchSettingsAttributeValue
+        , ''MusicStingerAttribute
+        , ''PartyLeaderAttribute
+        , ''PickupAttribute
+        , ''PrivateMatchSettingsAttribute
         , ''Property
         , ''PropertyValue
-        , ''QWordAttributeValue
+        , ''QWordAttribute
         , ''RemoteId
         , ''Replay
         , ''Replication
         , ''ReplicationValue
-        , ''ReservationAttributeValue
-        , ''RigidBodyStateAttributeValue
+        , ''ReservationAttribute
+        , ''RigidBodyStateAttribute
         , ''Section
         , ''SpawnedReplication
-        , ''StringAttributeValue
-        , ''TeamPaintAttributeValue
+        , ''StringAttribute
+        , ''TeamPaintAttribute
         , ''Text
-        , ''UniqueIdAttributeValue
+        , ''UniqueIdAttribute
         , ''UpdatedReplication
         , ''Vector
-        , ''WeldedInfoAttributeValue
+        , ''WeldedInfoAttribute
         , ''Word32
         , ''Word64
         , ''Word8
