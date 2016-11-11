@@ -40,15 +40,19 @@ getAttribute
   -> CompressedWord
   -> BinaryBit.BitGet Attribute
 getAttribute version classAttributeMap actorMap actorId =
-  case getAttributeIdLimit classAttributeMap actorMap actorId of
-    Nothing -> fail ("could not get attribute ID limit for " ++ show actorId)
-    Just limit -> do
-      id_ <- getCompressedWord limit
-      case getAttributeName classAttributeMap actorMap actorId id_ of
-        Nothing -> fail ("could not get attribute name for " ++ show id_)
-        Just name -> do
-          value <- getAttributeValue version name
-          pure (Attribute id_ value)
+  case getAttributeMap classAttributeMap actorMap actorId of
+    Nothing -> fail ("could not get attribute map for " ++ show actorId)
+    Just attributeMap ->
+      case getAttributeIdLimit attributeMap of
+        Nothing ->
+          fail ("could not get attribute ID limit for " ++ show actorId)
+        Just limit -> do
+          id_ <- getCompressedWord limit
+          case getAttributeName classAttributeMap attributeMap id_ of
+            Nothing -> fail ("could not get attribute name for " ++ show id_)
+            Just name -> do
+              value <- getAttributeValue version name
+              pure (Attribute id_ value)
 
 putAttribute :: Attribute -> BinaryBit.BitPut ()
 putAttribute attribute = do

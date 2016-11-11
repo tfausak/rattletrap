@@ -215,24 +215,18 @@ classHasRotation className = Set.member className classesWithRotation
 classesWithRotation :: Set.Set Text
 classesWithRotation = Set.fromList (map stringToText rawClassesWithRotation)
 
-getAttributeIdLimit :: ClassAttributeMap
-                    -> ActorMap
-                    -> CompressedWord
-                    -> Maybe Word
-getAttributeIdLimit classAttributeMap actorMap actorId = do
-  attributeMap <- getAttributeMap classAttributeMap actorMap actorId
+getAttributeIdLimit :: Map.Map Word32 Word32 -> Maybe Word
+getAttributeIdLimit attributeMap = do
   let streamIds = Map.keys attributeMap
   let maxStreamId = maximum (Word32 0 : streamIds)
   let limit = fromIntegral (word32Value maxStreamId)
   pure limit
 
 getAttributeName :: ClassAttributeMap
-                 -> ActorMap
-                 -> CompressedWord
+                 -> Map.Map Word32 Word32
                  -> CompressedWord
                  -> Maybe Text
-getAttributeName classAttributeMap actorMap actorId streamId = do
-  attributeMap <- getAttributeMap classAttributeMap actorMap actorId
+getAttributeName classAttributeMap attributeMap streamId = do
   let key = Word32 (fromIntegral (compressedWordValue streamId))
   attributeId <- Map.lookup key attributeMap
   let objectMap = classAttributeMapObjectMap classAttributeMap
