@@ -1,12 +1,6 @@
 module Rattletrap.PropertyValue where
 
-import Rattletrap.Primitive.Dictionary
-import Rattletrap.Primitive.Float32
-import Rattletrap.Primitive.Int32
-import Rattletrap.Primitive.List
-import Rattletrap.Primitive.Text
-import Rattletrap.Primitive.Word64
-import Rattletrap.Primitive.Word8
+import Rattletrap.Primitive
 
 import qualified Data.Binary as Binary
 

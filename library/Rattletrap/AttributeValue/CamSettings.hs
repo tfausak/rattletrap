@@ -1,6 +1,6 @@
 module Rattletrap.AttributeValue.CamSettings where
 
-import Rattletrap.Primitive.Float32
+import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

@@ -7,24 +7,17 @@ module Rattletrap
   , module Rattletrap.Cache
   , module Rattletrap.ClassAttributeMap
   , module Rattletrap.ClassMapping
-  , module Rattletrap.Primitive.CompressedWord
-  , module Rattletrap.Primitive.CompressedWordVector
   , module Rattletrap.Content
   , module Rattletrap.Crc
   , module Rattletrap.Data
-  , module Rattletrap.Primitive.Dictionary
-  , module Rattletrap.Primitive.Float32
   , module Rattletrap.Frame
   , module Rattletrap.Header
   , module Rattletrap.Initialization
-  , module Rattletrap.Primitive.Int32
-  , module Rattletrap.Primitive.Int8
-  , module Rattletrap.Primitive.Int8Vector
   , module Rattletrap.KeyFrame
-  , module Rattletrap.Primitive.List
   , module Rattletrap.Main
   , module Rattletrap.Mark
   , module Rattletrap.Message
+  , module Rattletrap.Primitive
   , module Rattletrap.Property
   , module Rattletrap.PropertyValue
   , module Rattletrap.RemoteId
@@ -32,13 +25,8 @@ module Rattletrap
   , module Rattletrap.Replication
   , module Rattletrap.ReplicationValue
   , module Rattletrap.Section
-  , module Rattletrap.Primitive.Text
   , module Rattletrap.Utility
-  , module Rattletrap.Primitive.Vector
   , module Rattletrap.Version
-  , module Rattletrap.Primitive.Word32
-  , module Rattletrap.Primitive.Word64
-  , module Rattletrap.Primitive.Word8
   ) where
 
 import Rattletrap.ActorMap
@@ -49,25 +37,18 @@ import Rattletrap.AttributeValueType
 import Rattletrap.Cache
 import Rattletrap.ClassAttributeMap
 import Rattletrap.ClassMapping
-import Rattletrap.Primitive.CompressedWord
-import Rattletrap.Primitive.CompressedWordVector
 import Rattletrap.Content
 import Rattletrap.Crc
 import Rattletrap.Data
-import Rattletrap.Primitive.Dictionary
-import Rattletrap.Primitive.Float32
 import Rattletrap.Frame
 import Rattletrap.Header
 import Rattletrap.Initialization
-import Rattletrap.Primitive.Int32
-import Rattletrap.Primitive.Int8
-import Rattletrap.Primitive.Int8Vector
 import Rattletrap.Json ()
 import Rattletrap.KeyFrame
-import Rattletrap.Primitive.List
 import Rattletrap.Main
 import Rattletrap.Mark
 import Rattletrap.Message
+import Rattletrap.Primitive
 import Rattletrap.Property
 import Rattletrap.PropertyValue
 import Rattletrap.RemoteId
@@ -75,10 +56,5 @@ import Rattletrap.Replay
 import Rattletrap.Replication
 import Rattletrap.ReplicationValue
 import Rattletrap.Section
-import Rattletrap.Primitive.Text
 import Rattletrap.Utility
-import Rattletrap.Primitive.Vector
 import Rattletrap.Version
-import Rattletrap.Primitive.Word32
-import Rattletrap.Primitive.Word64
-import Rattletrap.Primitive.Word8

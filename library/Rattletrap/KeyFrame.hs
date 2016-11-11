@@ -1,7 +1,6 @@
 module Rattletrap.KeyFrame where
 
-import Rattletrap.Primitive.Float32
-import Rattletrap.Primitive.Word32
+import Rattletrap.Primitive
 
 import qualified Data.Binary as Binary
 

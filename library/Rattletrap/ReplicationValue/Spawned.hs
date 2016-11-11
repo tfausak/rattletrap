@@ -2,10 +2,8 @@ module Rattletrap.ReplicationValue.Spawned where
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
-import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Initialization
-import Rattletrap.Primitive.Text
-import Rattletrap.Primitive.Word32
+import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

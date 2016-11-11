@@ -8,21 +8,14 @@ import Rattletrap.AttributeMapping
 import Rattletrap.AttributeValue
 import Rattletrap.Cache
 import Rattletrap.ClassMapping
-import Rattletrap.Primitive.CompressedWord
-import Rattletrap.Primitive.CompressedWordVector
 import Rattletrap.Content
-import Rattletrap.Primitive.Dictionary
-import Rattletrap.Primitive.Float32
 import Rattletrap.Frame
 import Rattletrap.Header
 import Rattletrap.Initialization
-import Rattletrap.Primitive.Int32
-import Rattletrap.Primitive.Int8
-import Rattletrap.Primitive.Int8Vector
 import Rattletrap.KeyFrame
-import Rattletrap.Primitive.List
 import Rattletrap.Mark
 import Rattletrap.Message
+import Rattletrap.Primitive
 import Rattletrap.Property
 import Rattletrap.PropertyValue
 import Rattletrap.RemoteId
@@ -30,11 +23,6 @@ import Rattletrap.Replay
 import Rattletrap.Replication
 import Rattletrap.ReplicationValue
 import Rattletrap.Section
-import Rattletrap.Primitive.Text
-import Rattletrap.Primitive.Vector
-import Rattletrap.Primitive.Word32
-import Rattletrap.Primitive.Word64
-import Rattletrap.Primitive.Word8
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson.Casing as Casing

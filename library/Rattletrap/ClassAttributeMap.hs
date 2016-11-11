@@ -4,12 +4,8 @@ import Rattletrap.ActorMap
 import Rattletrap.AttributeMapping
 import Rattletrap.Cache
 import Rattletrap.ClassMapping
-import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Data
-import Rattletrap.Primitive.Int32
-import Rattletrap.Primitive.List
-import Rattletrap.Primitive.Text
-import Rattletrap.Primitive.Word32
+import Rattletrap.Primitive
 
 import qualified Data.Bimap as Bimap
 import qualified Data.List as List

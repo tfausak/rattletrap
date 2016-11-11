@@ -3,7 +3,7 @@ module Rattletrap.Attribute where
 import Rattletrap.ActorMap
 import Rattletrap.AttributeValue
 import Rattletrap.ClassAttributeMap
-import Rattletrap.Primitive.CompressedWord
+import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

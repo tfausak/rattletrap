@@ -1,7 +1,6 @@
 module Rattletrap.Mark where
 
-import Rattletrap.Primitive.Text
-import Rattletrap.Primitive.Word32
+import Rattletrap.Primitive
 
 import qualified Data.Binary as Binary
 

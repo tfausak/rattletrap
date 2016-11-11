@@ -1,7 +1,6 @@
 module Rattletrap.AttributeValue.PrivateMatchSettings where
 
-import Rattletrap.Primitive.Text
-import Rattletrap.Primitive.Word32
+import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

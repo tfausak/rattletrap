@@ -1,8 +1,7 @@
 module Rattletrap.Property where
 
+import Rattletrap.Primitive
 import Rattletrap.PropertyValue
-import Rattletrap.Primitive.Text
-import Rattletrap.Primitive.Word64
 
 import qualified Data.Binary as Binary
 

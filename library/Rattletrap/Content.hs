@@ -6,12 +6,10 @@ import Rattletrap.ClassAttributeMap
 import Rattletrap.ClassMapping
 import Rattletrap.Frame
 import Rattletrap.KeyFrame
-import Rattletrap.Primitive.List
 import Rattletrap.Mark
 import Rattletrap.Message
-import Rattletrap.Primitive.Text
+import Rattletrap.Primitive
 import Rattletrap.Utility
-import Rattletrap.Primitive.Word32
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBit
