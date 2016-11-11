@@ -26,11 +26,11 @@ makeClassAttributeMap :: List Text
                       -> ClassAttributeMap
 makeClassAttributeMap objects classMappings caches =
   let objectMap = makeObjectMap objects
-      classCache = makeClassCache classMappings caches
+      classMap = makeClassMap classMappings
+      classCache = makeClassCache classMap caches
       attributeMap = makeAttributeMap caches
       classIds = map (\(_, classId, _, _) -> classId) classCache
-      parentMap = makeParentMap classMappings caches
-      classMap = makeClassMap classMappings
+      parentMap = makeParentMap classCache
       value =
         Map.fromList
           (map
@@ -54,19 +54,18 @@ makeClassAttributeMap objects classMappings caches =
              classIds)
   in ClassAttributeMap objectMap classMap value
 
-makeClassCache :: List ClassMapping
+makeClassCache :: Bimap.Bimap Word32 Text
                -> List Cache
                -> [(Maybe Text, Word32, Word32, Word32)]
-makeClassCache classMappings caches =
-  let classMap = makeClassMap classMappings
-  in map
-       (\cache ->
-          let classId = cacheClassId cache
-          in ( Bimap.lookup classId classMap
-             , classId
-             , cacheCacheId cache
-             , cacheParentCacheId cache))
-       (listValue caches)
+makeClassCache classMap caches =
+  map
+    (\cache ->
+       let classId = cacheClassId cache
+       in ( Bimap.lookup classId classMap
+          , classId
+          , cacheCacheId cache
+          , cacheParentCacheId cache))
+    (listValue caches)
 
 makeClassMap :: List ClassMapping -> Bimap.Bimap Word32 Text
 makeClassMap classMappings =
@@ -90,23 +89,23 @@ makeAttributeMap caches =
                  (listValue (cacheAttributeMappings cache)))))
        (listValue caches))
 
-makeShallowParentMap :: List ClassMapping -> List Cache -> Map.Map Word32 Word32
-makeShallowParentMap classMappings caches =
-  let classCache = makeClassCache classMappings caches
-  in Map.fromList
-       (Maybe.mapMaybe
-          (\xs ->
-             case xs of
-               [] -> Nothing
-               (maybeClassName, classId, _, parentCacheId):rest -> do
-                 parentClassId <-
-                   getParentClass maybeClassName parentCacheId rest
-                 pure (classId, parentClassId))
-          (List.tails (reverse classCache)))
+makeShallowParentMap :: [(Maybe Text, Word32, Word32, Word32)]
+                     -> Map.Map Word32 Word32
+makeShallowParentMap classCache =
+  Map.fromList
+    (Maybe.mapMaybe
+       (\xs ->
+          case xs of
+            [] -> Nothing
+            (maybeClassName, classId, _, parentCacheId):rest -> do
+              parentClassId <- getParentClass maybeClassName parentCacheId rest
+              pure (classId, parentClassId))
+       (List.tails (reverse classCache)))
 
-makeParentMap :: List ClassMapping -> List Cache -> Map.Map Word32 [Word32]
-makeParentMap classMappings caches =
-  let shallowParentMap = makeShallowParentMap classMappings caches
+makeParentMap :: [(Maybe Text, Word32, Word32, Word32)]
+              -> Map.Map Word32 [Word32]
+makeParentMap classCache =
+  let shallowParentMap = makeShallowParentMap classCache
   in Map.mapWithKey
        (\classId _ -> getParentClasses shallowParentMap classId)
        shallowParentMap
