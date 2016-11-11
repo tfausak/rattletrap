@@ -31,7 +31,7 @@ import Rattletrap.Replication
 import Rattletrap.ReplicationValue
 import Rattletrap.Section
 import Rattletrap.Primitive.Text
-import Rattletrap.Vector
+import Rattletrap.Primitive.Vector
 import Rattletrap.Word32
 import Rattletrap.Word64
 import Rattletrap.Word8

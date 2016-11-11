@@ -1,6 +1,6 @@
 module Rattletrap.AttributeValue.Demolish where
 
-import Rattletrap.Vector
+import Rattletrap.Primitive.Vector
 import Rattletrap.Word32
 
 import qualified Data.Binary.Bits.Get as BinaryBit

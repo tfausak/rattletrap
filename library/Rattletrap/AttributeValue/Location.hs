@@ -1,6 +1,6 @@
 module Rattletrap.AttributeValue.Location where
 
-import Rattletrap.Vector
+import Rattletrap.Primitive.Vector
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

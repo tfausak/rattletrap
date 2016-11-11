@@ -34,7 +34,7 @@ module Rattletrap
   , module Rattletrap.Section
   , module Rattletrap.Primitive.Text
   , module Rattletrap.Utility
-  , module Rattletrap.Vector
+  , module Rattletrap.Primitive.Vector
   , module Rattletrap.Version
   , module Rattletrap.Word32
   , module Rattletrap.Word64
@@ -77,7 +77,7 @@ import Rattletrap.ReplicationValue
 import Rattletrap.Section
 import Rattletrap.Primitive.Text
 import Rattletrap.Utility
-import Rattletrap.Vector
+import Rattletrap.Primitive.Vector
 import Rattletrap.Version
 import Rattletrap.Word32
 import Rattletrap.Word64

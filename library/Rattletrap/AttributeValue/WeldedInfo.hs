@@ -3,7 +3,7 @@ module Rattletrap.AttributeValue.WeldedInfo where
 import Rattletrap.Primitive.Float32
 import Rattletrap.Primitive.Int32
 import Rattletrap.Primitive.Int8Vector
-import Rattletrap.Vector
+import Rattletrap.Primitive.Vector
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
