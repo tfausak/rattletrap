@@ -1,7 +1,7 @@
 module Rattletrap.AttributeValue.Reservation where
 
 import Rattletrap.AttributeValue.UniqueId
-import Rattletrap.CompressedWord
+import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Text
 import Rattletrap.Word8
 

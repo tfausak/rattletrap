@@ -1,6 +1,6 @@
 module Rattletrap.Vector where
 
-import Rattletrap.CompressedWord
+import Rattletrap.Primitive.CompressedWord
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

@@ -4,7 +4,7 @@ import Rattletrap.ActorMap
 import Rattletrap.AttributeMapping
 import Rattletrap.Cache
 import Rattletrap.ClassMapping
-import Rattletrap.CompressedWord
+import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Data
 import Rattletrap.Int32
 import Rattletrap.List

@@ -8,7 +8,7 @@ import Rattletrap.AttributeMapping
 import Rattletrap.AttributeValue
 import Rattletrap.Cache
 import Rattletrap.ClassMapping
-import Rattletrap.CompressedWord
+import Rattletrap.Primitive.CompressedWord
 import Rattletrap.CompressedWordVector
 import Rattletrap.Content
 import Rattletrap.Dictionary

@@ -1,6 +1,6 @@
 module Rattletrap.AttributeValue.LoadoutOnline where
 
-import Rattletrap.CompressedWord
+import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Word32
 import Rattletrap.Word8
 

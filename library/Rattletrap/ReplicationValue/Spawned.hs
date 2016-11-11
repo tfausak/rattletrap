@@ -2,7 +2,7 @@ module Rattletrap.ReplicationValue.Spawned where
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
-import Rattletrap.CompressedWord
+import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Initialization
 import Rattletrap.Text
 import Rattletrap.Word32
