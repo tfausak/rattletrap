@@ -8,7 +8,7 @@ module Rattletrap
   , module Rattletrap.ClassAttributeMap
   , module Rattletrap.ClassMapping
   , module Rattletrap.Primitive.CompressedWord
-  , module Rattletrap.CompressedWordVector
+  , module Rattletrap.Primitive.CompressedWordVector
   , module Rattletrap.Content
   , module Rattletrap.Crc
   , module Rattletrap.Data
@@ -50,7 +50,7 @@ import Rattletrap.Cache
 import Rattletrap.ClassAttributeMap
 import Rattletrap.ClassMapping
 import Rattletrap.Primitive.CompressedWord
-import Rattletrap.CompressedWordVector
+import Rattletrap.Primitive.CompressedWordVector
 import Rattletrap.Content
 import Rattletrap.Crc
 import Rattletrap.Data

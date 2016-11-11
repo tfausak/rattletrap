@@ -1,4 +1,4 @@
-module Rattletrap.CompressedWordVector where
+module Rattletrap.Primitive.CompressedWordVector where
 
 import Rattletrap.Primitive.CompressedWord
 
