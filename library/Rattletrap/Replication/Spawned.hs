@@ -44,7 +44,7 @@ lookupObjectName
   :: Monad m
   => ClassAttributeMap -> Word32 -> m Text
 lookupObjectName classAttributeMap objectId =
-  case getObjectName classAttributeMap objectId of
+  case getObjectName (classAttributeMapObjectMap classAttributeMap) objectId of
     Nothing -> fail ("could not get object name for id " ++ show objectId)
     Just objectName -> pure objectName
 

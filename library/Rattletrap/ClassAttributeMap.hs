@@ -168,9 +168,8 @@ makeObjectMap :: List Text -> Map.Map Word32 Text
 makeObjectMap objects =
   Map.fromAscList (zip (map Word32 [0 ..]) (listValue objects))
 
-getObjectName :: ClassAttributeMap -> Word32 -> Maybe Text
-getObjectName classAttributeMap objectId =
-  Map.lookup objectId (classAttributeMapObjectMap classAttributeMap)
+getObjectName :: Map.Map Word32 Text -> Word32 -> Maybe Text
+getObjectName objectMap objectId = Map.lookup objectId objectMap
 
 getClassName :: Text -> Maybe Text
 getClassName rawObjectName =
@@ -237,7 +236,8 @@ getAttributeMap :: ClassAttributeMap
                 -> Maybe (Map.Map Word32 Word32)
 getAttributeMap classAttributeMap actorMap actorId = do
   objectId <- Map.lookup actorId actorMap
-  objectName <- getObjectName classAttributeMap objectId
+  objectName <-
+    getObjectName (classAttributeMapObjectMap classAttributeMap) objectId
   className <- getClassName objectName
   let classMap = classAttributeMapClassMap classAttributeMap
   classId <- Bimap.lookupR className classMap
