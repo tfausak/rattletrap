@@ -5,10 +5,7 @@ description: Rattletrap parses and generates Rocket League replays.
 executables:
   rattletrap:
     dependencies:
-    - aeson
     - base
-    - binary
-    - bytestring
     - rattletrap
     ghc-options:
     - -rtsopts
@@ -44,16 +41,6 @@ maintainer: Taylor Fausak
 name: rattletrap
 synopsis: Parse and generate Rocket League replays.
 tests:
-  lint:
-    dependencies:
-    - base
-    - hlint >=1.9 && <1.10
-    ghc-options:
-    - -rtsopts
-    - -threaded
-    - -with-rtsopts=-N
-    main: Lint.hs
-    source-dirs: test
   test:
     dependencies:
     - base
