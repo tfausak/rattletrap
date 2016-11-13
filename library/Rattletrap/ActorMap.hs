@@ -2,7 +2,7 @@ module Rattletrap.ActorMap where
 
 import Rattletrap.Primitive
 
-import qualified Data.Map as Map
+import qualified Data.Map.Strict as Map
 
 type ActorMap = Map.Map CompressedWord Word32
 

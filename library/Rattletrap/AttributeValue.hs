@@ -62,7 +62,7 @@ import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
-import qualified Data.Map as Map
+import qualified Data.Map.Strict as Map
 
 data AttributeValue
   = BooleanAttributeValue BooleanAttribute

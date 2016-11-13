@@ -9,7 +9,7 @@ import Rattletrap.Primitive
 
 import qualified Data.Bimap as Bimap
 import qualified Data.List as List
-import qualified Data.Map as Map
+import qualified Data.Map.Strict as Map
 import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
 import qualified Data.Text as Text
