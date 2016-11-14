@@ -16,7 +16,6 @@ import qualified Data.Text as Text
 
 data ClassAttributeMap = ClassAttributeMap
   { classAttributeMapObjectMap :: Map.Map Word32 Text
-  , classAttributeMapClassMap :: Bimap.Bimap Word32 Text
   , classAttributeMapObjectClassMap :: Map.Map Word32 Word32
   , classAttributeMapValue :: Map.Map Word32 (Map.Map Word32 Word32)
   } deriving (Eq, Show)
@@ -54,7 +53,7 @@ makeClassAttributeMap objects classMappings caches =
                     attributes = ownAttributes : parentsAttributes
                 in (classId, Map.fromList (concatMap Map.toList attributes)))
              classIds)
-  in ClassAttributeMap objectMap classMap objectClassMap value
+  in ClassAttributeMap objectMap objectClassMap value
 
 makeObjectClassMap :: Map.Map Word32 Text
                    -> Bimap.Bimap Word32 Text
