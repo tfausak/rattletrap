@@ -1,19 +1,8 @@
 module Rattletrap.Utility where
 
-import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Bits as Bits
 import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Word as Word
-
-getRemainingBits :: BinaryBit.BitGet [Bool]
-getRemainingBits = do
-  isEmpty <- BinaryBit.isEmpty
-  if isEmpty
-    then pure []
-    else do
-      bit <- BinaryBit.getBool
-      bits <- getRemainingBits
-      pure (bit : bits)
 
 padBytes
   :: Integral a

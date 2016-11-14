@@ -55,7 +55,6 @@ rawParentClasses =
   , ("TAGame.VehiclePickup_Boost_TA", "TAGame.VehiclePickup_TA")
   , ("TAGame.VehiclePickup_TA", "Engine.ReplicationInfo")
   , ("TAGame.Vehicle_TA", "TAGame.RBActor_TA")
-  , ("TAGame.VoteActor_TA", "Engine.Actor")
   ]
 
 rawClassesWithLocation :: [String]
@@ -142,7 +141,6 @@ rawObjectClasses =
   , ("Gameinfo_Hockey.GameInfo.Gameinfo_Hockey:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("TAGame.Default__CameraSettingsActor_TA", "TAGame.CameraSettingsActor_TA")
   , ("TAGame.Default__PRI_TA", "TAGame.PRI_TA")
-  , ("TAGame.Default__VoteActor_TA", "TAGame.VoteActor_TA")
   , ("TheWorld:PersistentLevel.CrowdActor_TA", "TAGame.CrowdActor_TA")
   , ("TheWorld:PersistentLevel.CrowdManager_TA", "TAGame.CrowdManager_TA")
   , ("TheWorld:PersistentLevel.InMapScoreboard_TA", "TAGame.InMapScoreboard_TA")
