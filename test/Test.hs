@@ -82,7 +82,6 @@ replays =
   , ("A52F804845573D8DA65E97BF59026A43", "some more mutators")
   , ("A6711CE74272B2E663DCC9A200A218E3", "a waiting player")
   , ("A7F001A1417A19BFA8C90990D8F7C2FF", "a ready attribute")
-  , ("B82DDB624C393A4A425E68AB40DC2450", "a vote actor and trailing bits")
   , ("B9F9B87D4A9D0A3D25D4EC91C0401DE2", "a party leader")
   , ("C14F7E0E4D9B5E6BE9AD5D8ED56B174C", "some mutators")
   , ("C8372B1345B1803DEF039F815DBD802D", "a spectator")
