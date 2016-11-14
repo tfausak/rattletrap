@@ -16,8 +16,7 @@ data ReservationAttribute = ReservationAttribute
   , reservationAttributeUnknown3 :: Maybe Word.Word8
   } deriving (Eq, Ord, Show)
 
-getReservationAttribute :: (Int, Int)
-                             -> BinaryBit.BitGet ReservationAttribute
+getReservationAttribute :: (Int, Int) -> BinaryBit.BitGet ReservationAttribute
 getReservationAttribute version = do
   number <- getCompressedWord 7
   uniqueId <- getUniqueIdAttribute
@@ -40,15 +39,12 @@ getReservationAttribute version = do
 putReservationAttribute :: ReservationAttribute -> BinaryBit.BitPut ()
 putReservationAttribute reservationAttribute = do
   putCompressedWord (reservationAttributeNumber reservationAttribute)
-  putUniqueIdAttribute
-    (reservationAttributeUniqueId reservationAttribute)
+  putUniqueIdAttribute (reservationAttributeUniqueId reservationAttribute)
   case reservationAttributeName reservationAttribute of
     Nothing -> pure ()
     Just name -> putTextBits name
-  BinaryBit.putBool
-    (reservationAttributeUnknown1 reservationAttribute)
-  BinaryBit.putBool
-    (reservationAttributeUnknown2 reservationAttribute)
+  BinaryBit.putBool (reservationAttributeUnknown1 reservationAttribute)
+  BinaryBit.putBool (reservationAttributeUnknown2 reservationAttribute)
   case reservationAttributeUnknown3 reservationAttribute of
     Nothing -> pure ()
     Just c -> BinaryBit.putWord8 6 c

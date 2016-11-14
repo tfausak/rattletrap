@@ -15,5 +15,4 @@ getIntAttribute = do
   pure (IntAttribute value)
 
 putIntAttribute :: IntAttribute -> BinaryBit.BitPut ()
-putIntAttribute intAttribute =
-  putInt32Bits (intAttributeValue intAttribute)
+putIntAttribute intAttribute = putInt32Bits (intAttributeValue intAttribute)

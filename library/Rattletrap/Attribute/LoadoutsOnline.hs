@@ -18,17 +18,13 @@ getLoadoutsOnlineAttribute = do
   orangeLoadout <- getLoadoutOnlineAttribute
   unknown1 <- BinaryBit.getBool
   unknown2 <- BinaryBit.getBool
-  pure
-    (LoadoutsOnlineAttribute blueLoadout orangeLoadout unknown1 unknown2)
+  pure (LoadoutsOnlineAttribute blueLoadout orangeLoadout unknown1 unknown2)
 
-putLoadoutsOnlineAttribute :: LoadoutsOnlineAttribute
-                                -> BinaryBit.BitPut ()
+putLoadoutsOnlineAttribute :: LoadoutsOnlineAttribute -> BinaryBit.BitPut ()
 putLoadoutsOnlineAttribute loadoutsOnlineAttribute = do
   putLoadoutOnlineAttribute
     (loadoutsOnlineAttributeBlue loadoutsOnlineAttribute)
   putLoadoutOnlineAttribute
     (loadoutsOnlineAttributeOrange loadoutsOnlineAttribute)
-  BinaryBit.putBool
-    (loadoutsOnlineAttributeUnknown1 loadoutsOnlineAttribute)
-  BinaryBit.putBool
-    (loadoutsOnlineAttributeUnknown2 loadoutsOnlineAttribute)
+  BinaryBit.putBool (loadoutsOnlineAttributeUnknown1 loadoutsOnlineAttribute)
+  BinaryBit.putBool (loadoutsOnlineAttributeUnknown2 loadoutsOnlineAttribute)

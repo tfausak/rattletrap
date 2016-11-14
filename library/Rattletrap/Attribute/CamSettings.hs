@@ -22,8 +22,7 @@ getCamSettingsAttribute = do
   distance <- getFloat32Bits
   stiffness <- getFloat32Bits
   swivelSpeed <- getFloat32Bits
-  pure
-    (CamSettingsAttribute fov height angle distance stiffness swivelSpeed)
+  pure (CamSettingsAttribute fov height angle distance stiffness swivelSpeed)
 
 putCamSettingsAttribute :: CamSettingsAttribute -> BinaryBit.BitPut ()
 putCamSettingsAttribute camSettingsAttribute = do
@@ -32,5 +31,4 @@ putCamSettingsAttribute camSettingsAttribute = do
   putFloat32Bits (camSettingsAttributeAngle camSettingsAttribute)
   putFloat32Bits (camSettingsAttributeDistance camSettingsAttribute)
   putFloat32Bits (camSettingsAttributeStiffness camSettingsAttribute)
-  putFloat32Bits
-    (camSettingsAttributeSwivelSpeed camSettingsAttribute)
+  putFloat32Bits (camSettingsAttributeSwivelSpeed camSettingsAttribute)

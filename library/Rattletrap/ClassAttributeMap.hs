@@ -256,10 +256,11 @@ getAttributeName classAttributeMap attributeMap streamId = do
   let objectMap = classAttributeMapObjectMap classAttributeMap
   Map.lookup attributeId objectMap
 
-getAttributeMap :: ClassAttributeMap
-                -> ActorMap
-                -> CompressedWord
-                -> Maybe (Map.Map Word32 Word32)
+getAttributeMap
+  :: ClassAttributeMap
+  -> ActorMap
+  -> CompressedWord
+  -> Maybe (Map.Map Word32 Word32)
 getAttributeMap classAttributeMap actorMap actorId = do
   objectId <- Map.lookup actorId actorMap
   let objectClassMap = classAttributeMapObjectClassMap classAttributeMap

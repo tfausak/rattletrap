@@ -39,7 +39,8 @@ getVersion header =
 getMajorVersion
   :: (Integral a)
   => Header -> a
-getMajorVersion header = fromIntegral (word32Value (headerEngineVersion header))
+getMajorVersion header =
+  fromIntegral (word32Value (headerEngineVersion header))
 
 getMinorVersion
   :: (Integral a)

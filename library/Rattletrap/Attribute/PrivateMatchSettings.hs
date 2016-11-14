@@ -32,22 +32,17 @@ getPrivateMatchSettingsAttribute = do
        flag)
 
 putPrivateMatchSettingsAttribute :: PrivateMatchSettingsAttribute
-                                      -> BinaryBit.BitPut ()
+                                 -> BinaryBit.BitPut ()
 putPrivateMatchSettingsAttribute privateMatchSettingsAttribute = do
   putTextBits
-    (privateMatchSettingsAttributeMutators
-       privateMatchSettingsAttribute)
+    (privateMatchSettingsAttributeMutators privateMatchSettingsAttribute)
   putWord32Bits
-    (privateMatchSettingsAttributeJoinableBy
-       privateMatchSettingsAttribute)
+    (privateMatchSettingsAttributeJoinableBy privateMatchSettingsAttribute)
   putWord32Bits
-    (privateMatchSettingsAttributeMaxPlayers
-       privateMatchSettingsAttribute)
+    (privateMatchSettingsAttributeMaxPlayers privateMatchSettingsAttribute)
   putTextBits
-    (privateMatchSettingsAttributeGameName
-       privateMatchSettingsAttribute)
+    (privateMatchSettingsAttributeGameName privateMatchSettingsAttribute)
   putTextBits
-    (privateMatchSettingsAttributePassword
-       privateMatchSettingsAttribute)
+    (privateMatchSettingsAttributePassword privateMatchSettingsAttribute)
   BinaryBit.putBool
     (privateMatchSettingsAttributeFlag privateMatchSettingsAttribute)

@@ -9,8 +9,7 @@ data GameModeAttribute = GameModeAttribute
   , gameModeAttributeWord :: Word.Word8
   } deriving (Eq, Ord, Show)
 
-getGameModeAttribute :: (Int, Int)
-                          -> BinaryBit.BitGet GameModeAttribute
+getGameModeAttribute :: (Int, Int) -> BinaryBit.BitGet GameModeAttribute
 getGameModeAttribute version = do
   let numBits =
         if version < (868, 12)

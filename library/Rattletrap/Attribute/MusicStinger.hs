@@ -18,8 +18,7 @@ getMusicStingerAttribute = do
   trigger <- getWord8Bits
   pure (MusicStingerAttribute flag cue trigger)
 
-putMusicStingerAttribute :: MusicStingerAttribute
-                              -> BinaryBit.BitPut ()
+putMusicStingerAttribute :: MusicStingerAttribute -> BinaryBit.BitPut ()
 putMusicStingerAttribute musicStingerAttribute = do
   BinaryBit.putBool (musicStingerAttributeFlag musicStingerAttribute)
   putWord32Bits (musicStingerAttributeCue musicStingerAttribute)

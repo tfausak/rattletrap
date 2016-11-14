@@ -38,11 +38,9 @@ getRigidBodyStateAttribute = do
        linearVelocity
        angularVelocity)
 
-putRigidBodyStateAttribute :: RigidBodyStateAttribute
-                                -> BinaryBit.BitPut ()
+putRigidBodyStateAttribute :: RigidBodyStateAttribute -> BinaryBit.BitPut ()
 putRigidBodyStateAttribute rigidBodyStateAttribute = do
-  BinaryBit.putBool
-    (rigidBodyStateAttributeSleeping rigidBodyStateAttribute)
+  BinaryBit.putBool (rigidBodyStateAttributeSleeping rigidBodyStateAttribute)
   putVector (rigidBodyStateAttributeLocation rigidBodyStateAttribute)
   putCompressedWordVector
     (rigidBodyStateAttributeRotation rigidBodyStateAttribute)

@@ -34,16 +34,7 @@ getLoadoutAttribute = do
         pure (Just h)
       else pure Nothing
   pure
-    (LoadoutAttribute
-       version
-       body
-       decal
-       wheels
-       rocketTrail
-       antenna
-       topper
-       g
-       h)
+    (LoadoutAttribute version body decal wheels rocketTrail antenna topper g h)
 
 putLoadoutAttribute :: LoadoutAttribute -> BinaryBit.BitPut ()
 putLoadoutAttribute loadoutAttribute = do

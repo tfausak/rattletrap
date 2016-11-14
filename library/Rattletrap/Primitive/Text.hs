@@ -57,7 +57,8 @@ stringToText string =
   in Text size value
 
 textToString :: Text -> String
-textToString text = Text.unpack (Text.dropWhileEnd (== '\x00') (textValue text))
+textToString text =
+  Text.unpack (Text.dropWhileEnd (== '\x00') (textValue text))
 
 getTextSize
   :: Integral a

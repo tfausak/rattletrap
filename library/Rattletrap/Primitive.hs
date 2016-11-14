@@ -19,13 +19,13 @@ import Rattletrap.Primitive.CompressedWord
 import Rattletrap.Primitive.CompressedWordVector
 import Rattletrap.Primitive.Dictionary
 import Rattletrap.Primitive.Float32
+import Rattletrap.Primitive.Int32
 import Rattletrap.Primitive.Int8
 import Rattletrap.Primitive.Int8Vector
-import Rattletrap.Primitive.Int32
 import Rattletrap.Primitive.List
 import Rattletrap.Primitive.Section
 import Rattletrap.Primitive.Text
 import Rattletrap.Primitive.Vector
-import Rattletrap.Primitive.Word8
 import Rattletrap.Primitive.Word32
 import Rattletrap.Primitive.Word64
+import Rattletrap.Primitive.Word8
