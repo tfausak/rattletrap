@@ -208,10 +208,7 @@ normalizeObjectName objectName =
       crowdManager = Text.pack "TheWorld:PersistentLevel.CrowdManager_TA"
       boostPickup = Text.pack "TheWorld:PersistentLevel.VehiclePickup_Boost_TA"
       mapScoreboard = Text.pack "TheWorld:PersistentLevel.InMapScoreboard_TA"
-      toText text =
-        Text
-          (Int32 (fromIntegral (Text.length text + 1)))
-          (Text.snoc text '\x00')
+      toText text = Text (Text.snoc text '\x00')
   in if Text.isInfixOf crowdActor name
        then toText crowdActor
        else if Text.isInfixOf crowdManager name
