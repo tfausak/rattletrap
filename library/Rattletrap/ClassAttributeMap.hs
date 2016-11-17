@@ -208,15 +208,14 @@ normalizeObjectName objectName =
       crowdManager = Text.pack "TheWorld:PersistentLevel.CrowdManager_TA"
       boostPickup = Text.pack "TheWorld:PersistentLevel.VehiclePickup_Boost_TA"
       mapScoreboard = Text.pack "TheWorld:PersistentLevel.InMapScoreboard_TA"
-      toText text = Text (Text.snoc text '\x00')
   in if Text.isInfixOf crowdActor name
-       then toText crowdActor
+       then Text crowdActor
        else if Text.isInfixOf crowdManager name
-              then toText crowdManager
+              then Text crowdManager
               else if Text.isInfixOf boostPickup name
-                     then toText boostPickup
+                     then Text boostPickup
                      else if Text.isInfixOf mapScoreboard name
-                            then toText mapScoreboard
+                            then Text mapScoreboard
                             else objectName
 
 objectClasses :: Map.Map Text Text

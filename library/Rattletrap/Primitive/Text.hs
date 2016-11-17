@@ -23,7 +23,7 @@ getText = do
   let decode = getTextDecoder rawSize
   let size = normalizeTextSize rawSize
   bytes <- Binary.getLazyByteString size
-  let text = decode bytes
+  let text = dropNull (decode bytes)
   pure (Text text)
 
 putText :: Text -> Binary.Put
@@ -31,7 +31,7 @@ putText text = do
   let size = getTextSize text
   let encode = getTextEncoder size
   putInt32 size
-  Binary.putLazyByteString (encode (textValue text))
+  Binary.putLazyByteString (encode (addNull (textValue text)))
 
 getTextBits :: BinaryBit.BitGet Text
 getTextBits = do
@@ -39,7 +39,7 @@ getTextBits = do
   let decode = getTextDecoder rawSize
   let size = normalizeTextSize rawSize
   bytes <- BinaryBit.getLazyByteString size
-  let text = decode (reverseBytes bytes)
+  let text = dropNull (decode (reverseBytes bytes))
   pure (Text text)
 
 putTextBits :: Text -> BinaryBit.BitPut ()
@@ -48,16 +48,13 @@ putTextBits text = do
   let encode = getTextEncoder size
   putInt32Bits size
   BinaryBit.putByteString
-    (ByteString.toStrict (reverseBytes (encode (textValue text))))
+    (ByteString.toStrict (reverseBytes (encode (addNull (textValue text)))))
 
 stringToText :: String -> Text
-stringToText string =
-  let value = Text.snoc (Text.pack string) '\x00'
-  in Text value
+stringToText string = Text (Text.pack string)
 
 textToString :: Text -> String
-textToString text =
-  Text.unpack (Text.dropWhileEnd (== '\x00') (textValue text))
+textToString text = Text.unpack (textValue text)
 
 getTextSize :: Text -> Int32
 getTextSize text =
@@ -66,9 +63,12 @@ getTextSize text =
         if Text.all Char.isLatin1 value
           then 1
           else -1
-      rawSize = fromIntegral (Text.length value)
+      rawSize =
+        if Text.null value
+          then 0
+          else fromIntegral (Text.length value) + 1
       size =
-        if value == Text.pack "\x00\x00\x00None\x00"
+        if value == Text.pack "\x00\x00\x00None"
           then 0x05000000
           else scale * rawSize
   in Int32 size
@@ -100,3 +100,12 @@ getTextEncoder size text =
 
 encodeLatin1 :: Text.Text -> ByteString.ByteString
 encodeLatin1 text = ByteString.pack (Text.unpack text)
+
+dropNull :: Text.Text -> Text.Text
+dropNull text = Text.dropWhileEnd (== '\x00') text
+
+addNull :: Text.Text -> Text.Text
+addNull text =
+  if Text.null text
+    then text
+    else Text.snoc text '\x00'
