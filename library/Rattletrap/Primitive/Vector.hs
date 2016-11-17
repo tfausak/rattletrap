@@ -6,8 +6,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 
 data Vector = Vector
-  { vectorBitSize :: CompressedWord
-  , vectorDx :: CompressedWord
+  { vectorDx :: CompressedWord
   , vectorDy :: CompressedWord
   , vectorDz :: CompressedWord
   } deriving (Eq, Ord, Show)
@@ -19,11 +18,17 @@ getVector = do
   dx <- getCompressedWord limit
   dy <- getCompressedWord limit
   dz <- getCompressedWord limit
-  pure (Vector bitSize dx dy dz)
+  pure (Vector dx dy dz)
 
 putVector :: Vector -> BinaryBit.BitPut ()
 putVector vector = do
-  putCompressedWord (vectorBitSize vector)
+  putCompressedWord (getBitSize vector)
   putCompressedWord (vectorDx vector)
   putCompressedWord (vectorDy vector)
   putCompressedWord (vectorDz vector)
+
+getBitSize :: Vector -> CompressedWord
+getBitSize vector =
+  let base = 2 :: Float
+      limit = fromIntegral (compressedWordLimit (vectorDx vector))
+  in CompressedWord 19 (round (logBase base limit) - 2)
