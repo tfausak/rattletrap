@@ -5,6 +5,7 @@ import Rattletrap.Property
 import Rattletrap.PropertyValue
 
 import qualified Data.Binary as Binary
+import qualified Data.Map as Map
 
 data Header = Header
   { headerEngineVersion :: Word32
@@ -52,9 +53,9 @@ getNumFrames
   :: (Integral a)
   => Header -> a
 getNumFrames header =
-  let key = stringToText "NumFrames"
+  let key = textValue (stringToText "NumFrames")
       properties = dictionaryValue (headerProperties header)
-  in case lookup key properties of
-       Just (Just (Property _ _ (IntProperty numFrames))) ->
+  in case Map.lookup key properties of
+       Just (Property _ _ (IntProperty numFrames)) ->
          fromIntegral (int32Value numFrames)
        _ -> 0
