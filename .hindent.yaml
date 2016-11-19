@@ -1,0 +1,4 @@
+force-trailing-newline: true
+indent-size: 2
+line-length: 79
+sort-imports: true
