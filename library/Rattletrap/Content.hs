@@ -42,7 +42,7 @@ data Content = Content
   -- 'Rattletrap.ClassAttributeMap.ClassAttributeMap'.
   , contentNames :: List Text
   -- ^ It's not clear what these are used for. This list is usually not empty,
-  -- but appears unused otherwise. 
+  -- but appears unused otherwise.
   , contentClassMappings :: List ClassMapping
   -- ^ A mapping between classes and their ID in the stream. Used for the
   -- 'Rattletrap.ClassAttributeMap.ClassAttributeMap'.
@@ -54,7 +54,7 @@ data Content = Content
 getContent
   :: (Int, Int)
   -- ^ Major and minor version numbers, usually from
-  -- 'Rattletrap.Header.getVersion'. 
+  -- 'Rattletrap.Header.getVersion'.
   -> Int
   -- ^ The number of frames in the stream, usually from
   -- 'Rattletrap.Header.getNumFrames'.
