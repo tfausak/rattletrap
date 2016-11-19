@@ -7,6 +7,12 @@ import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Vector.Unboxed as Vector
 import qualified Data.Word as Word
 
+-- | Computes the CRC32 of some bytes. This is done to ensure that the bytes
+-- are valid before trying to parse them.
+--
+-- @
+-- getCrc32 ('Data.ByteString.Lazy.pack' [0x00])
+-- @
 getCrc32 :: ByteString.ByteString -> Word.Word32
 getCrc32 bytes = do
   let update = crc32Update crc32Table
