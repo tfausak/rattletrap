@@ -48,9 +48,8 @@ mainWithArgs args =
           putOutput output
     _ -> fail ("unexpected arguments " ++ show args)
 
-getIO
-  :: Monad m
-  => [FilePath] -> m (IO ByteString.ByteString, ByteString.ByteString -> IO ())
+getIO :: [FilePath]
+      -> IO (IO ByteString.ByteString, ByteString.ByteString -> IO ())
 getIO files =
   case files of
     [] -> pure (ByteString.getContents, ByteString.putStr)
