@@ -1,3 +1,34 @@
+-- | Rattletrap is a tool for parsing and generating Rocket League replays. It
+-- is typically used as an executable; see "Rattletrap.Main" for details about
+-- that interface. Using Rattletrap from Haskell is as easy as importing this
+-- module. Together with "Data.ByteString.Lazy" and "Data.Binary", you can
+-- decode a 'Replay' value. Then you can transform it into JSON with
+-- "Data.Aeson". For example:
+--
+-- > import qualified Data.Aeson as Aeson
+-- > import qualified Data.Binary as Binary
+-- > import qualified Data.ByteString.Lazy as ByteString
+-- > import qualified Rattletrap
+-- >
+-- > main = do
+-- >   let file = "path-to/some.replay"
+-- >   bytes <- ByteString.readFile file
+-- >   let replay = Binary.runGet Rattletrap.getReplay bytes
+-- >   let json = Aeson.encode replay
+-- >   ByteString.putStr json
+--
+-- There are a few unusual aspects of Rattletrap to be aware of:
+--
+-- - In order to improve memory usage, everything Rattletrap does is strict.
+--   Don't expect any lazy values or evaluation.
+-- - Some names, like 'Text', collide with commonly-used modules. Use
+--   qualified imports to avoid collisions.
+-- - No instances of 'Data.Binary.Binary' are provided. Use functions like
+--   'getReplay' instead. This was done to improve type inference and make
+--   profiling easier. Also some types require information that could not be
+--   provided by the 'Data.Binary.Binary' interface.
+-- - Importing one specific module is not recommended because all JSON
+--   instances are defined as orphans in "Rattletrap.Json".
 module Rattletrap
   ( module Rattletrap.ActorMap
   , module Rattletrap.Attribute
