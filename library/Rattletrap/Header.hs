@@ -67,29 +67,21 @@ putHeader header = do
   putText (headerLabel header)
   putDictionary putProperty (headerProperties header)
 
-getVersion
-  :: (Integral a, Integral b)
-  => Header -> (a, b)
+getVersion :: Header -> (Int, Int)
 getVersion header =
   let major = getMajorVersion header
       minor = getMinorVersion header
   in (major, minor)
 
-getMajorVersion
-  :: (Integral a)
-  => Header -> a
+getMajorVersion :: Header -> Int
 getMajorVersion header =
   fromIntegral (word32Value (headerEngineVersion header))
 
-getMinorVersion
-  :: (Integral a)
-  => Header -> a
+getMinorVersion :: Header -> Int
 getMinorVersion header =
   fromIntegral (word32Value (headerLicenseeVersion header))
 
-getNumFrames
-  :: (Integral a)
-  => Header -> a
+getNumFrames :: Header -> Int
 getNumFrames header =
   let key = textValue (stringToText "NumFrames")
       properties = dictionaryValue (headerProperties header)
