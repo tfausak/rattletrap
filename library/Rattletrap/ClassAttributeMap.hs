@@ -14,16 +14,31 @@ import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
 import qualified Data.Text as Text
 
+-- | This data structure holds all the information about classes, objects, and
+-- attributes in the replay. The class hierarchy is not fixed; it is encoded
+-- in the 'Rattletrap.Content.Content'. Similarly, the attributes that belong
+-- to each class are not fixed either. Converting the raw data into a usable
+-- structure is tedious; see 'makeClassAttributeMap'.
 data ClassAttributeMap = ClassAttributeMap
   { classAttributeMapObjectMap :: Map.Map Word32 Text
+  -- ^ A map from object IDs to their names.
   , classAttributeMapObjectClassMap :: Map.Map Word32 Word32
+  -- ^ A map from object IDs to their class IDs.
   , classAttributeMapValue :: Map.Map Word32 (Map.Map Word32 Word32)
+  -- ^ A map from class IDs to a map from attribute stream IDs to attribute
+  -- IDs. 
   } deriving (Eq, Show)
 
-makeClassAttributeMap :: List Text
-                      -> List ClassMapping
-                      -> List Cache
-                      -> ClassAttributeMap
+-- | Makes a 'ClassAttributeMap' given the necessary fields from the
+-- 'Rattletrap.Content.Content'.
+makeClassAttributeMap
+  :: List Text
+  -- ^ From 'Rattletrap.Content.contentObjects'.
+  -> List ClassMapping
+  -- ^ From 'Rattletrap.Content.contentClassMappings'.
+  -> List Cache
+  -- ^ From 'Rattletrap.Content.contentCaches'.
+  -> ClassAttributeMap
 makeClassAttributeMap objects classMappings caches =
   let objectMap = makeObjectMap objects
       classMap = makeClassMap classMappings
