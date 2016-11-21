@@ -13,6 +13,9 @@ import qualified Data.Word as Word
 -- @
 -- getCrc32 ('Data.ByteString.Lazy.pack' [0x00])
 -- @
+--
+-- This CRC uses an initial value of @0xefcbf201@ and a polynomial of
+-- @0x04c11db7@.
 getCrc32 :: ByteString.ByteString -> Word.Word32
 getCrc32 bytes = do
   let update = crc32Update crc32Table

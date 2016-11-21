@@ -10,9 +10,14 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 data SpawnedReplication = SpawnedReplication
   { spawnedReplicationFlag :: Bool
+  -- ^ Unclear what this is.
   , spawnedReplicationObjectId :: Word32
   , spawnedReplication_objectName :: Text
+  -- ^ Read-only! Changing a replication's object requires editing the class
+  -- attribute map.
   , spawnedReplication_className :: Text
+  -- ^ Read-only! Changing a replication's class requires editing the class
+  -- attribute map.
   , spawnedReplicationInitialization :: Initialization
   } deriving (Eq, Ord, Show)
 
