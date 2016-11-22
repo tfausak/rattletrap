@@ -6,8 +6,11 @@ import qualified Data.Binary as Binary
 
 data KeyFrame = KeyFrame
   { keyFrameTime :: Float32
+  -- ^ When this key frame occurs, in seconds.
   , keyFrameFrame :: Word32
+  -- ^ The frame number of this key frame, starting from 0.
   , keyFramePosition :: Word32
+  -- ^ The bit position of this key frame in the stream.
   } deriving (Eq, Ord, Show)
 
 getKeyFrame :: Binary.Get KeyFrame

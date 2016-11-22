@@ -17,8 +17,11 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 data ReplicationValue
   = SpawnedReplicationValue SpawnedReplication
+  -- ^ Creates a new actor.
   | UpdatedReplicationValue UpdatedReplication
+  -- ^ Updates an existing actor.
   | DestroyedReplicationValue DestroyedReplication
+  -- ^ Destroys an existing actor.
   deriving (Eq, Ord, Show)
 
 getReplicationValue

@@ -7,7 +7,11 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 data Initialization = Initialization
   { initializationLocation :: Maybe Vector
+  -- ^ Not every class has an initial location. See
+  -- 'Rattletrap.Data.rawClassesWithLocation'.
   , initializationRotation :: Maybe Int8Vector
+  -- ^ Only classes with location can have rotation, but not every one does.
+  -- See 'Rattletrap.Data.rawClassesWithRotation'.
   } deriving (Eq, Ord, Show)
 
 getInitialization :: Bool -> Bool -> BinaryBit.BitGet Initialization
