@@ -6,9 +6,10 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 
 data Vector = Vector
-  { vectorDx :: CompressedWord
-  , vectorDy :: CompressedWord
-  , vectorDz :: CompressedWord
+  { vectorBias :: Word
+  , vectorX :: Int
+  , vectorY :: Int
+  , vectorZ :: Int
   } deriving (Eq, Ord, Show)
 
 getVector :: BinaryBit.BitGet Vector
@@ -18,17 +19,22 @@ getVector = do
   dx <- getCompressedWord limit
   dy <- getCompressedWord limit
   dz <- getCompressedWord limit
-  pure (Vector dx dy dz)
+  let fromCompressedWord x = fromIntegral (compressedWordValue x)
+  let bias = 2 ^ (fromCompressedWord bitSize + 1 :: Word)
+  let x = fromCompressedWord dx - fromIntegral bias
+  let y = fromCompressedWord dy - fromIntegral bias
+  let z = fromCompressedWord dz - fromIntegral bias
+  pure (Vector bias x y z)
 
 putVector :: Vector -> BinaryBit.BitPut ()
 putVector vector = do
-  putCompressedWord (getBitSize vector)
-  putCompressedWord (vectorDx vector)
-  putCompressedWord (vectorDy vector)
-  putCompressedWord (vectorDz vector)
-
-getBitSize :: Vector -> CompressedWord
-getBitSize vector =
-  let base = 2 :: Float
-      limit = fromIntegral (compressedWordLimit (vectorDx vector))
-  in CompressedWord 19 (round (logBase base limit) - 2)
+  let bitSize =
+        round (logBase (2 :: Float) (fromIntegral (vectorBias vector))) - 1
+  putCompressedWord (CompressedWord 19 bitSize)
+  let dx = fromIntegral (vectorX vector + fromIntegral (vectorBias vector))
+  let dy = fromIntegral (vectorY vector + fromIntegral (vectorBias vector))
+  let dz = fromIntegral (vectorZ vector + fromIntegral (vectorBias vector))
+  let limit = 2 ^ (bitSize + 2)
+  putCompressedWord (CompressedWord limit dx)
+  putCompressedWord (CompressedWord limit dy)
+  putCompressedWord (CompressedWord limit dz)
