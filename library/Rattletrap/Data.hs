@@ -216,6 +216,7 @@ rawAttributeTypes =
   , ("TAGame.CrowdManager_TA:ReplicatedGlobalOneShotSound", FlaggedIntAttributeType)
   , ("TAGame.GRI_TA:NewDedicatedServerIP", StringAttributeType)
   , ("TAGame.GameEvent_SoccarPrivate_TA:MatchSettings", PrivateMatchSettingsAttributeType)
+  , ("TAGame.GameEvent_Soccar_TA:GameTime", IntAttributeType)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedMusicStinger", MusicStingerAttributeType)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam", ByteAttributeType)
   , ("TAGame.GameEvent_Soccar_TA:RoundNum", IntAttributeType)
