@@ -2,7 +2,12 @@ module Rattletrap.Utility where
 
 import qualified Data.Bits as Bits
 import qualified Data.ByteString.Lazy as ByteString
+import qualified Data.ByteString.Lazy.Char8 as ByteString8
+import qualified Data.Text as Text
 import qualified Data.Word as Word
+
+encodeLatin1 :: Text.Text -> ByteString.ByteString
+encodeLatin1 text = ByteString8.pack (Text.unpack text)
 
 padBytes
   :: Integral a

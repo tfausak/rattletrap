@@ -98,9 +98,6 @@ getTextEncoder size text =
     then ByteString.fromStrict (Encoding.encodeUtf16LE text)
     else encodeLatin1 text
 
-encodeLatin1 :: Text.Text -> ByteString.ByteString
-encodeLatin1 text = ByteString.pack (Text.unpack text)
-
 dropNull :: Text.Text -> Text.Text
 dropNull text = Text.dropWhileEnd (== '\x00') text
 
