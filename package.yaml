@@ -12,10 +12,10 @@ executables:
     - -threaded
     - -with-rtsopts=-N
     main: Main.hs
-    source-dirs: executable
+    source-dirs: source/executables
 extra-source-files:
 - README.markdown
-- test/replays/*.replay
+- replays/*.replay
 ghc-options: -Wall
 github: tfausak/rattletrap
 library:
@@ -33,7 +33,7 @@ library:
   - text >=1.2 && <1.3
   - vector >=0.11 && <0.12
   other-modules: Paths_rattletrap
-  source-dirs: library
+  source-dirs: source/library
 license: MIT
 license-file: LICENSE.markdown
 maintainer: Taylor Fausak
@@ -53,6 +53,6 @@ tests:
     - -rtsopts
     - -threaded
     - -with-rtsopts=-N
-    main: Test.hs
-    source-dirs: test
+    main: Main.hs
+    source-dirs: source/tests
 version: '1.0.0'
