@@ -74,7 +74,8 @@ getContent version numFrames maxChannels = do
   names <- getList getText
   classMappings <- getList getClassMapping
   caches <- getList getCache
-  let classAttributeMap = makeClassAttributeMap objects classMappings caches
+  let classAttributeMap =
+        makeClassAttributeMap objects classMappings caches names
   let frames =
         Binary.runGet
           (BinaryBit.runBitGet

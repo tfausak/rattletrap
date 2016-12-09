@@ -12,6 +12,9 @@ data SpawnedReplication = SpawnedReplication
   { spawnedReplicationFlag :: Bool
   -- ^ Unclear what this is.
   , spawnedReplicationNameIndex :: Maybe Word32
+  , spawnedReplicationName :: Maybe Text
+  -- ^ Read-only! Changing a replication's name requires editing the
+  -- 'spawnedReplicationNameIndex' and maybe the class attribute map.
   , spawnedReplicationObjectId :: Word32
   , spawnedReplication_objectName :: Text
   -- ^ Read-only! Changing a replication's object requires editing the class
@@ -36,6 +39,7 @@ getSpawnedReplication version classAttributeMap actorMap actorId = do
       else do
         nameIndex <- getWord32Bits
         pure (Just nameIndex)
+  name <- lookupName classAttributeMap nameIndex
   objectId <- getWord32Bits
   let newActorMap = updateActorMap actorId objectId actorMap
   objectName <- lookupObjectName classAttributeMap objectId
@@ -47,6 +51,7 @@ getSpawnedReplication version classAttributeMap actorMap actorId = do
     ( SpawnedReplication
         flag
         nameIndex
+        name
         objectId
         objectName
         className
@@ -61,6 +66,17 @@ putSpawnedReplication spawnedReplication = do
     Just nameIndex -> putWord32Bits nameIndex
   putWord32Bits (spawnedReplicationObjectId spawnedReplication)
   putInitialization (spawnedReplicationInitialization spawnedReplication)
+
+lookupName
+  :: Monad m
+  => ClassAttributeMap -> Maybe Word32 -> m (Maybe Text)
+lookupName classAttributeMap maybeNameIndex =
+  case maybeNameIndex of
+    Nothing -> pure Nothing
+    Just nameIndex ->
+      case getName (classAttributeMapNameMap classAttributeMap) nameIndex of
+        Nothing -> fail ("could not get name for index " ++ show nameIndex)
+        Just name -> pure (Just name)
 
 lookupObjectName
   :: Monad m
