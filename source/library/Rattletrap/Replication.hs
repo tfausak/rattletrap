@@ -15,16 +15,18 @@ data Replication = Replication
 
 getReplications
   :: (Int, Int)
+  -> Word
   -> ClassAttributeMap
   -> ActorMap
   -> BinaryBit.BitGet ([Replication], ActorMap)
-getReplications version classAttributeMap actorMap = do
-  maybeReplication <- getReplication version classAttributeMap actorMap
+getReplications version maxChannels classAttributeMap actorMap = do
+  maybeReplication <-
+    getReplication version maxChannels classAttributeMap actorMap
   case maybeReplication of
     Nothing -> pure ([], actorMap)
     Just (replication, newActorMap) -> do
       (replications, newerActorMap) <-
-        getReplications version classAttributeMap newActorMap
+        getReplications version maxChannels classAttributeMap newActorMap
       pure (replication : replications, newerActorMap)
 
 putReplications :: [Replication] -> BinaryBit.BitPut ()
@@ -34,15 +36,16 @@ putReplications replications = do
 
 getReplication
   :: (Int, Int)
+  -> Word
   -> ClassAttributeMap
   -> ActorMap
   -> BinaryBit.BitGet (Maybe (Replication, ActorMap))
-getReplication version classAttributeMap actorMap = do
+getReplication version maxChannels classAttributeMap actorMap = do
   hasReplication <- BinaryBit.getBool
   if not hasReplication
     then pure Nothing
     else do
-      actorId <- getCompressedWord maxActorId
+      actorId <- getCompressedWord maxChannels
       (value, newActorMap) <-
         getReplicationValue version classAttributeMap actorMap actorId
       pure (Just (Replication actorId value, newActorMap))
@@ -52,6 +55,3 @@ putReplication replication = do
   BinaryBit.putBool True
   putCompressedWord (replicationActorId replication)
   putReplicationValue (replicationValue replication)
-
-maxActorId :: Word
-maxActorId = 1023

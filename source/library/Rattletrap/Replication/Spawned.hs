@@ -22,11 +22,12 @@ data SpawnedReplication = SpawnedReplication
   } deriving (Eq, Ord, Show)
 
 getSpawnedReplication
-  :: ClassAttributeMap
+  :: (Int, Int)
+  -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
   -> BinaryBit.BitGet (SpawnedReplication, ActorMap)
-getSpawnedReplication classAttributeMap actorMap actorId = do
+getSpawnedReplication _version classAttributeMap actorMap actorId = do
   flag <- BinaryBit.getBool
   objectId <- getWord32Bits
   let newActorMap = updateActorMap actorId objectId actorMap

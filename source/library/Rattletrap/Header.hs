@@ -89,3 +89,12 @@ getNumFrames header =
        Just (Property _ _ (IntProperty numFrames)) ->
          fromIntegral (int32Value numFrames)
        _ -> 0
+
+getMaxChannels :: Header -> Word
+getMaxChannels header =
+  let key = textValue (stringToText "MaxChannels")
+      properties = dictionaryValue (headerProperties header)
+  in case Map.lookup key properties of
+       Just (Property _ _ (IntProperty numFrames)) ->
+         fromIntegral (int32Value numFrames)
+       _ -> 1023
