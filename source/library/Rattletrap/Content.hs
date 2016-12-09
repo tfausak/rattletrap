@@ -58,8 +58,11 @@ getContent
   -> Int
   -- ^ The number of frames in the stream, usually from
   -- 'Rattletrap.Header.getNumFrames'.
+  -> Word
+  -- ^ The maximum number of channels in the stream, usually from
+  -- 'Rattletrap.Header.getMaxChannels'.
   -> Binary.Get Content
-getContent version numFrames = do
+getContent version numFrames maxChannels = do
   levels <- getList getText
   keyFrames <- getList getKeyFrame
   streamSize <- getWord32
@@ -71,12 +74,18 @@ getContent version numFrames = do
   names <- getList getText
   classMappings <- getList getClassMapping
   caches <- getList getCache
-  let classAttributeMap = makeClassAttributeMap objects classMappings caches
+  let classAttributeMap =
+        makeClassAttributeMap objects classMappings caches names
   let frames =
         Binary.runGet
           (BinaryBit.runBitGet
              (do (theFrames, _) <-
-                   getFrames version numFrames classAttributeMap makeActorMap
+                   getFrames
+                     version
+                     numFrames
+                     maxChannels
+                     classAttributeMap
+                     makeActorMap
                  pure theFrames))
           (reverseBytes stream)
   pure

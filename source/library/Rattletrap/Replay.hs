@@ -24,7 +24,8 @@ getReplay = do
   header <- getSection getHeader
   let version = getVersion (sectionBody header)
   let numFrames = getNumFrames (sectionBody header)
-  content <- getSection (getContent version numFrames)
+  let maxChannels = getMaxChannels (sectionBody header)
+  content <- getSection (getContent version numFrames maxChannels)
   pure (Replay header content)
 
 -- | Generates a raw replay. Use this with 'Data.Binary.Put.runPut'.

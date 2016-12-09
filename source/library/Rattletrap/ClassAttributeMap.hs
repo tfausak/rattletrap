@@ -8,6 +8,7 @@ import Rattletrap.Data
 import Rattletrap.Primitive
 
 import qualified Data.Bimap as Bimap
+import qualified Data.IntMap.Strict as IntMap
 import qualified Data.List as List
 import qualified Data.Map.Strict as Map
 import qualified Data.Maybe as Maybe
@@ -26,7 +27,8 @@ data ClassAttributeMap = ClassAttributeMap
   -- ^ A map from object IDs to their class IDs.
   , classAttributeMapValue :: Map.Map Word32 (Map.Map Word32 Word32)
   -- ^ A map from class IDs to a map from attribute stream IDs to attribute
-  -- IDs. 
+  -- IDs.
+  , classAttributeMapNameMap :: IntMap.IntMap Text
   } deriving (Eq, Show)
 
 -- | Makes a 'ClassAttributeMap' given the necessary fields from the
@@ -38,8 +40,10 @@ makeClassAttributeMap
   -- ^ From 'Rattletrap.Content.contentClassMappings'.
   -> List Cache
   -- ^ From 'Rattletrap.Content.contentCaches'.
+  -> List Text
+  -- ^ From 'Rattletrap.Content.contentNames'.
   -> ClassAttributeMap
-makeClassAttributeMap objects classMappings caches =
+makeClassAttributeMap objects classMappings caches names =
   let objectMap = makeObjectMap objects
       classMap = makeClassMap classMappings
       objectClassMap = makeObjectClassMap objectMap classMap
@@ -68,7 +72,15 @@ makeClassAttributeMap objects classMappings caches =
                     attributes = ownAttributes : parentsAttributes
                 in (classId, Map.fromList (concatMap Map.toList attributes)))
              classIds)
-  in ClassAttributeMap objectMap objectClassMap value
+      nameMap = makeNameMap names
+  in ClassAttributeMap objectMap objectClassMap value nameMap
+
+makeNameMap :: List Text -> IntMap.IntMap Text
+makeNameMap names = IntMap.fromDistinctAscList (zip [0 ..] (listValue names))
+
+getName :: IntMap.IntMap Text -> Word32 -> Maybe Text
+getName nameMap nameIndex =
+  IntMap.lookup (fromIntegral (word32Value nameIndex)) nameMap
 
 makeObjectClassMap :: Map.Map Word32 Text
                    -> Bimap.Bimap Word32 Text

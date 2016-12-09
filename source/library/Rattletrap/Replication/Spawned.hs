@@ -11,6 +11,10 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 data SpawnedReplication = SpawnedReplication
   { spawnedReplicationFlag :: Bool
   -- ^ Unclear what this is.
+  , spawnedReplicationNameIndex :: Maybe Word32
+  , spawnedReplicationName :: Maybe Text
+  -- ^ Read-only! Changing a replication's name requires editing the
+  -- 'spawnedReplicationNameIndex' and maybe the class attribute map.
   , spawnedReplicationObjectId :: Word32
   , spawnedReplication_objectName :: Text
   -- ^ Read-only! Changing a replication's object requires editing the class
@@ -22,12 +26,20 @@ data SpawnedReplication = SpawnedReplication
   } deriving (Eq, Ord, Show)
 
 getSpawnedReplication
-  :: ClassAttributeMap
+  :: (Int, Int)
+  -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
   -> BinaryBit.BitGet (SpawnedReplication, ActorMap)
-getSpawnedReplication classAttributeMap actorMap actorId = do
+getSpawnedReplication version classAttributeMap actorMap actorId = do
   flag <- BinaryBit.getBool
+  nameIndex <-
+    if version < (868, 14)
+      then pure Nothing
+      else do
+        nameIndex <- getWord32Bits
+        pure (Just nameIndex)
+  name <- lookupName classAttributeMap nameIndex
   objectId <- getWord32Bits
   let newActorMap = updateActorMap actorId objectId actorMap
   objectName <- lookupObjectName classAttributeMap objectId
@@ -36,14 +48,35 @@ getSpawnedReplication classAttributeMap actorMap actorId = do
   let hasRotation = classHasRotation className
   initialization <- getInitialization hasLocation hasRotation
   pure
-    ( SpawnedReplication flag objectId objectName className initialization
+    ( SpawnedReplication
+        flag
+        nameIndex
+        name
+        objectId
+        objectName
+        className
+        initialization
     , newActorMap)
 
 putSpawnedReplication :: SpawnedReplication -> BinaryBit.BitPut ()
 putSpawnedReplication spawnedReplication = do
   BinaryBit.putBool (spawnedReplicationFlag spawnedReplication)
+  case spawnedReplicationNameIndex spawnedReplication of
+    Nothing -> pure ()
+    Just nameIndex -> putWord32Bits nameIndex
   putWord32Bits (spawnedReplicationObjectId spawnedReplication)
   putInitialization (spawnedReplicationInitialization spawnedReplication)
+
+lookupName
+  :: Monad m
+  => ClassAttributeMap -> Maybe Word32 -> m (Maybe Text)
+lookupName classAttributeMap maybeNameIndex =
+  case maybeNameIndex of
+    Nothing -> pure Nothing
+    Just nameIndex ->
+      case getName (classAttributeMapNameMap classAttributeMap) nameIndex of
+        Nothing -> fail ("could not get name for index " ++ show nameIndex)
+        Just name -> pure (Just name)
 
 lookupObjectName
   :: Monad m

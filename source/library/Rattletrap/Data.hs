@@ -232,6 +232,7 @@ rawAttributeTypes =
   , ("TAGame.GameEvent_TA:ReplicatedStateName", IntAttributeType)
   , ("TAGame.GameEvent_TA:bCanVoteToForfeit", BooleanAttributeType)
   , ("TAGame.GameEvent_TA:bHasLeaveMatchPenalty", BooleanAttributeType)
+  , ("TAGame.GameEvent_Team_TA:bForfeit", BooleanAttributeType)
   , ("TAGame.GameEvent_Team_TA:MaxTeamSize", IntAttributeType)
   , ("TAGame.PRI_TA:CameraPitch", ByteAttributeType)
   , ("TAGame.PRI_TA:CameraSettings", CamSettingsAttributeType)
