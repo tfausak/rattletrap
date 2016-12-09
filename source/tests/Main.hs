@@ -71,6 +71,7 @@ replays =
   , ("52AA67F94090C19D33C5009E54D31FE4", "a match-ending attribute")
   , ("540DA764423C8FB24EB9D486D982F16F", "a demolish attribute")
   , ("551CA4D44FF2B86015DE44A6B5790D4C", "private match settings")
+  , ("6320E51C49066A7C210A2993C2201D5F", "a forfeit attribute")
   , ("6688EEE34BFEB3EC3A9E3283098CC712", "a malformed byte property")
   , ("6D1B06D844A5BB91B81FD4B5B28F08BA", "a flip right")
   , ("6F7CFCD24638F8A6567AB3A8B9958A90", "a map with numbers")
