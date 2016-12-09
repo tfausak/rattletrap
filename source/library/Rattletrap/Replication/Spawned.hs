@@ -16,10 +16,10 @@ data SpawnedReplication = SpawnedReplication
   -- ^ Read-only! Changing a replication's name requires editing the
   -- 'spawnedReplicationNameIndex' and maybe the class attribute map.
   , spawnedReplicationObjectId :: Word32
-  , spawnedReplication_objectName :: Text
+  , spawnedReplicationObjectName :: Text
   -- ^ Read-only! Changing a replication's object requires editing the class
   -- attribute map.
-  , spawnedReplication_className :: Text
+  , spawnedReplicationClassName :: Text
   -- ^ Read-only! Changing a replication's class requires editing the class
   -- attribute map.
   , spawnedReplicationInitialization :: Initialization

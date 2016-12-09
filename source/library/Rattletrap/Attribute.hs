@@ -10,7 +10,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 data Attribute = Attribute
   { attributeId :: CompressedWord
-  , attribute_name :: Text
+  , attributeName :: Text
   -- ^ Read-only! Changing an attribute's name requires editing the class
   -- attribute map.
   , attributeValue :: AttributeValue
