@@ -37,7 +37,7 @@ checkTravisTag = do
         Exit.exitSuccess)
 
 checkTravisOsName :: IO ()
-checkOs = do
+checkTravisOsName = do
   maybeOs <- Environment.lookupEnv "TRAVIS_OS_NAME"
   Monad.when
     (maybeOs /= Just "linux")
@@ -49,7 +49,7 @@ getStackUploadDirectory = do
   home <- Directory.getHomeDirectory
   pure (FilePath.joinPath [home, ".stack", "upload"])
 
-getHackageCredentials :: IO Aeson.Object
+getHackageCredentials :: IO Aeson.Value
 getHackageCredentials = do
   username <- Environment.getEnv "HACKAGE_USERNAME"
   password <- Environment.getEnv "HACKAGE_PASSWORD"
