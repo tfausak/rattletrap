@@ -11,6 +11,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 data SpawnedReplication = SpawnedReplication
   { spawnedReplicationFlag :: Bool
   -- ^ Unclear what this is.
+  , spawnedReplicationNameIndex :: Maybe Word32
   , spawnedReplicationObjectId :: Word32
   , spawnedReplication_objectName :: Text
   -- ^ Read-only! Changing a replication's object requires editing the class
@@ -27,8 +28,14 @@ getSpawnedReplication
   -> ActorMap
   -> CompressedWord
   -> BinaryBit.BitGet (SpawnedReplication, ActorMap)
-getSpawnedReplication _version classAttributeMap actorMap actorId = do
+getSpawnedReplication version classAttributeMap actorMap actorId = do
   flag <- BinaryBit.getBool
+  nameIndex <-
+    if version < (868, 14)
+      then pure Nothing
+      else do
+        nameIndex <- getWord32Bits
+        pure (Just nameIndex)
   objectId <- getWord32Bits
   let newActorMap = updateActorMap actorId objectId actorMap
   objectName <- lookupObjectName classAttributeMap objectId
@@ -37,12 +44,21 @@ getSpawnedReplication _version classAttributeMap actorMap actorId = do
   let hasRotation = classHasRotation className
   initialization <- getInitialization hasLocation hasRotation
   pure
-    ( SpawnedReplication flag objectId objectName className initialization
+    ( SpawnedReplication
+        flag
+        nameIndex
+        objectId
+        objectName
+        className
+        initialization
     , newActorMap)
 
 putSpawnedReplication :: SpawnedReplication -> BinaryBit.BitPut ()
 putSpawnedReplication spawnedReplication = do
   BinaryBit.putBool (spawnedReplicationFlag spawnedReplication)
+  case spawnedReplicationNameIndex spawnedReplication of
+    Nothing -> pure ()
+    Just nameIndex -> putWord32Bits nameIndex
   putWord32Bits (spawnedReplicationObjectId spawnedReplication)
   putInitialization (spawnedReplicationInitialization spawnedReplication)
 
