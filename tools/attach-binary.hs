@@ -28,7 +28,7 @@ main = do
   upload token owner repo tag file name
 
 getToken :: IO String
-getToken = Environment.getEnv "GITHUB_TOKEN"
+getToken = getEnv "GITHUB_TOKEN"
 
 getEnvironment :: IO Environment
 getEnvironment = do
@@ -50,7 +50,7 @@ getOwnerAndRepo environment = do
         case environment of
           AppVeyor -> "APPVEYOR_REPO_NAME"
           TravisCI -> "TRAVIS_REPO_SLUG"
-  slug <- Environment.getEnv name
+  slug <- getEnv name
   let (owner, rawRepo) = break (== '/') slug
   let repo = drop 1 rawRepo
   pure (owner, repo)
@@ -61,7 +61,7 @@ getTag environment = do
         case environment of
           AppVeyor -> "APPVEYOR_REPO_TAG_NAME"
           TravisCI -> "TRAVIS_TAG"
-  Environment.getEnv name
+  getEnv name
 
 getFile :: String -> IO String
 getFile executable = do
@@ -74,7 +74,7 @@ getName executable tag environment = do
   os <-
     case environment of
       AppVeyor -> pure "windows"
-      TravisCI -> Environment.getEnv "TRAVIS_OS_NAME"
+      TravisCI -> getEnv "TRAVIS_OS_NAME"
   pure (concat [executable, "-", tag, "-", os, ".gz"])
 
 upload :: String -> String -> String -> String -> FilePath -> String -> IO ()
@@ -87,3 +87,12 @@ upload token owner repo tag file name = do
        IO.hClose handle
        ByteString.writeFile archive output
        GitHubRelease.upload token owner repo tag file name)
+
+getEnv :: String -> IO String
+getEnv name = do
+  maybeValue <- Environment.lookupEnv name
+  case maybeValue of
+    Just value -> pure value
+    Nothing -> do
+      putStrLn (name ++ ": does not exist")
+      Exit.exitSuccess
