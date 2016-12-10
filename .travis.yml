@@ -4,10 +4,9 @@ addons:
     - libgmp-dev
 after_success:
 - stack tools/upload-package.hs
-- sh tools/attach-binary.sh
+- stack tools/attach-binary.hs
 before_install:
 - sh tools/install-stack.sh
-- sh tools/install-github-release.sh
 cache:
   directories:
   - $HOME/.local/bin

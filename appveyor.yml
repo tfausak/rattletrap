@@ -7,9 +7,8 @@ environment:
   STACK_ROOT: c:/stack
 install:
 - powershell -File tools/install-stack.ps1
-- powershell -File tools/install-github-release.ps1
 on_success:
-- powershell -File tools/attach-binary.ps1
+- stack tools/attach-binary.hs
 platform: x64
 test_script:
 - stack setup > nul
