@@ -8,6 +8,12 @@ import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
 
+encodeJson :: Replay -> ByteString.ByteString
+encodeJson replay = Aeson.encode replay
+
+encodeJsonFile :: Replay -> FilePath -> IO ()
+encodeJsonFile replay file = ByteString.writeFile file (encodeJson replay)
+
 encodeReplay :: Replay -> ByteString.ByteString
 encodeReplay replay = Binary.runPut (putReplay replay)
 
