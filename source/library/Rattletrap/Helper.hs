@@ -5,7 +5,14 @@ import Rattletrap.Replay
 
 import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Get as Binary
+import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
+
+encodeReplay :: Replay -> ByteString.ByteString
+encodeReplay replay = Binary.runPut (putReplay replay)
+
+encodeReplayFile :: Replay -> FilePath -> IO ()
+encodeReplayFile replay file = ByteString.writeFile file (encodeReplay replay)
 
 decodeJson :: ByteString.ByteString -> Either String Replay
 decodeJson contents = Aeson.eitherDecode contents
