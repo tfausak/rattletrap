@@ -1,9 +1,19 @@
 module Rattletrap.Helper where
 
+import Rattletrap.Json ()
 import Rattletrap.Replay
 
+import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Get as Binary
 import qualified Data.ByteString.Lazy as ByteString
+
+decodeJson :: ByteString.ByteString -> Either String Replay
+decodeJson contents = Aeson.eitherDecode contents
+
+decodeJsonFile :: FilePath -> IO (Either String Replay)
+decodeJsonFile file = do
+  contents <- ByteString.readFile file
+  pure (decodeJson contents)
 
 decodeReplay :: ByteString.ByteString -> Either String Replay
 decodeReplay contents =
