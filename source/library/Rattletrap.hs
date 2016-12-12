@@ -39,6 +39,7 @@ module Rattletrap
   , module Rattletrap.Data
   , module Rattletrap.Frame
   , module Rattletrap.Header
+  , module Rattletrap.Helper
   , module Rattletrap.Initialization
   , module Rattletrap.KeyFrame
   , module Rattletrap.Main
@@ -68,6 +69,7 @@ import Rattletrap.Crc
 import Rattletrap.Data
 import Rattletrap.Frame
 import Rattletrap.Header
+import Rattletrap.Helper
 import Rattletrap.Initialization
 import Rattletrap.Json ()
 import Rattletrap.KeyFrame
