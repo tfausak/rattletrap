@@ -42,7 +42,7 @@ specBody uuid = do
 
 pathToReplay :: String -> FilePath
 pathToReplay uuid =
-  FilePath.joinPath ["replays", FilePath.addExtension uuid ".replay"]
+  FilePath.joinPath ["data", "replays", FilePath.addExtension uuid ".replay"]
 
 replays :: [(String, String)]
 replays =

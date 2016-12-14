@@ -15,7 +15,7 @@ executables:
     source-dirs: source/executables
 extra-source-files:
 - README.markdown
-- replays/*.replay
+- data/replays/*.replay
 ghc-options: -Wall
 github: tfausak/rattletrap
 library:
