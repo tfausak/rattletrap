@@ -21,11 +21,11 @@ decodeReplay contents =
 
 -- | Encodes a replay as JSON.
 encodeJson :: Replay -> ByteString.ByteString
-encodeJson replay = Aeson.encode replay
+encodeJson = Aeson.encode
 
 -- | Parses a JSON replay.
 decodeJson :: ByteString.ByteString -> Either String Replay
-decodeJson contents = Aeson.eitherDecode contents
+decodeJson = Aeson.eitherDecode
 
 -- | Encodes a raw replay.
 encodeReplay :: Replay -> ByteString.ByteString

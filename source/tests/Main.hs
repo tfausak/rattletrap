@@ -12,10 +12,7 @@ main = do
   Tasty.defaultMain tests
 
 spec :: Hspec.Spec
-spec =
-  Hspec.describe
-    "Rattletrap"
-    (mapM_ (\(uuid, description) -> itCanRoundTrip uuid description) replays)
+spec = Hspec.describe "Rattletrap" (mapM_ (uncurry itCanRoundTrip) replays)
 
 itCanRoundTrip :: String -> String -> Hspec.Spec
 itCanRoundTrip uuid description =

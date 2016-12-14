@@ -30,4 +30,4 @@ reverseByte byte =
   Bits.shiftL (byte Bits..&. Bits.bit 0) 7
 
 reverseBytes :: ByteString.ByteString -> ByteString.ByteString
-reverseBytes bytes = ByteString.map reverseByte bytes
+reverseBytes = ByteString.map reverseByte

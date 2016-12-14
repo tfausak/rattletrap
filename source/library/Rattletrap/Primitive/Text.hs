@@ -99,7 +99,7 @@ getTextEncoder size text =
     else encodeLatin1 text
 
 dropNull :: Text.Text -> Text.Text
-dropNull text = Text.dropWhileEnd (== '\x00') text
+dropNull = Text.dropWhileEnd (== '\x00')
 
 addNull :: Text.Text -> Text.Text
 addNull text =
