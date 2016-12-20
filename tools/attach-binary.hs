@@ -8,7 +8,6 @@
 -}
 import qualified Codec.Compression.GZip as GZip
 import qualified Data.ByteString.Lazy as ByteString
-import qualified Data.Char as Char
 import qualified GitHubRelease
 import qualified System.Environment as Environment
 import qualified System.Exit as Exit
@@ -65,9 +64,8 @@ getTag environment = do
 
 getFile :: String -> IO String
 getFile executable = do
-  output <- Process.readProcess "stack" ["exec", "which", executable] ""
-  let chomp = reverse . dropWhile Char.isSpace . reverse
-  pure (chomp output)
+  Process.callProcess "stack" ["build", "--copy-bins", "--local-bin-path=."]
+  pure executable
 
 getName :: String -> String -> Environment -> IO String
 getName executable tag environment = do
