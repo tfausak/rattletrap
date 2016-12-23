@@ -1,1 +1,20 @@
+compiler: ghc-8.0.1.20161213
+compiler-check: match-exact
 resolver: nightly-2016-12-14
+setup-info:
+  ghc:
+    linux64:
+      8.0.1.20161213:
+        url: https://downloads.haskell.org/~ghc/8.0.2-rc2/ghc-8.0.1.20161213-x86_64-deb8-linux.tar.xz
+        content-length: 111894616
+        sha1: 8c7ebec9bf96c0a37b4b27ebcd5372844cb61755
+    macosx:
+      8.0.1.20161213:
+        url: https://downloads.haskell.org/~ghc/8.0.2-rc2/ghc-8.0.1.20161213-x86_64-apple-darwin.tar.xz
+        content-length: 113359104
+        sha1: d87048467786a7b9667aef0a78d7ffd8779425b2
+    windows64:
+      8.0.1.20161213:
+        url: https://downloads.haskell.org/~ghc/8.0.2-rc2/ghc-8.0.1.20161213-x86_64-unknown-mingw32.tar.xz
+        content-length: 155494112
+        sha1: a536228cb7265aef19b2842a2c81cfe9ca372e45
