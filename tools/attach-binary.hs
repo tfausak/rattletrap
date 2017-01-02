@@ -22,7 +22,7 @@ main = do
   (owner, repo) <- getOwnerAndRepo environment
   tag <- getTag environment
   let executable = repo
-  file <- getFile executable
+  file <- getFile executable environment
   name <- getName executable tag environment
   upload token owner repo tag file name
 
@@ -62,10 +62,12 @@ getTag environment = do
           TravisCI -> "TRAVIS_TAG"
   getEnv name
 
-getFile :: String -> IO String
-getFile executable = do
+getFile :: String -> Environment -> IO String
+getFile executable environment = do
   Process.callProcess "stack" ["build", "--copy-bins", "--local-bin-path=."]
-  pure executable
+  case environment of
+    AppVeyor -> pure (executable ++ ".exe")
+    TravisCI -> pure executable
 
 getName :: String -> String -> Environment -> IO String
 getName executable tag environment = do
