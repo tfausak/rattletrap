@@ -23,7 +23,7 @@ library:
   default-extensions:
   - Strict
   dependencies:
-  - aeson >=0.11 && <1.1
+  - aeson >=0.11 && <1.2
   - aeson-casing >=0.1 && <0.2
   - base >=4.9 && <4.10
   - bimap >=0.3 && <0.4
