@@ -58,4 +58,4 @@ tests:
     - -with-rtsopts=-N
     main: Main.hs
     source-dirs: source/tests
-version: '2.1.2'
+version: '2.1.3'
