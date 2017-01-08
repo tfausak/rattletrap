@@ -34,7 +34,7 @@ library:
   - data-binary-ieee754 >=0.4 && <0.5
   - template-haskell >=2.11 && <2.12
   - text >=1.2 && <1.3
-  - vector >=0.11 && <0.12
+  - vector >=0.11 && <0.13
   other-modules: Paths_rattletrap
   source-dirs: source/library
 license: MIT
