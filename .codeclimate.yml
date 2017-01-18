@@ -1,0 +1,10 @@
+engines:
+ fixme:
+  enabled: true
+ hlint:
+  enabled: true
+ratings:
+ paths:
+  - source/**
+exclude_paths:
+ - data/**
