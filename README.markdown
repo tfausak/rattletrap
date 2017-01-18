@@ -3,6 +3,7 @@
 [![Version badge][]][version]
 [![Windows build badge][]][windows build]
 [![Build badge][]][build]
+[![Code Climate badge][]][code climate]
 
 Rattletrap parses and generates [Rocket League][] replays.
 
@@ -72,6 +73,8 @@ used to modify replays.
 [Windows build badge]: https://ci.appveyor.com/api/projects/status/github/tfausak/rattletrap?branch=master&svg=true
 [windows build]: https://ci.appveyor.com/project/TaylorFausak/rattletrap
 [Build badge]: https://travis-ci.org/tfausak/rattletrap.svg?branch=master
+[Code Climate badge]: https://codeclimate.com/github/tfausak/rattletrap/badges/gpa.svg
+[code climate]: https://codeclimate.com/github/tfausak/rattletrap
 [build]: https://travis-ci.org/tfausak/rattletrap
 [Rocket League]: https://www.rocketleaguegame.com
 [Octane]: https://github.com/tfausak/octane
