@@ -1,10 +1,10 @@
 engines:
- fixme:
-  enabled: true
- hlint:
-  enabled: true
-ratings:
- paths:
-  - source/**
+  fixme:
+    enabled: true
+  hlint:
+    enabled: true
 exclude_paths:
- - data/**
+- data/**
+ratings:
+  paths:
+  - source/**
