@@ -2,6 +2,8 @@ addons:
   apt:
     packages:
     - libgmp-dev
+  code_climate:
+    repo_token: f3ec70e01eb3f7fae0d1b61099d4ea64573c23e5a66bd34b9d6c2a1870ea5b63
 after_success:
 - stack tools/upload-package.hs
 - stack tools/attach-binary.hs
