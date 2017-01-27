@@ -1,2 +1,1 @@
-compiler: ghc-8.0.2
-resolver: nightly-2016-12-31
+resolver: nightly-2017-01-25
