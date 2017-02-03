@@ -28,23 +28,22 @@ mainWithArgs :: [String] -> IO ()
 mainWithArgs args =
   case args of
     ["version"] -> putStrLn (Version.showVersion version)
-    "decode":files -> do
+    action:files -> do
       (getInput, putOutput) <- getIO files
       input <- getInput
-      case decodeReplay input of
-        Left message -> fail message
-        Right replay -> do
-          let output = encodeJson replay
-          putOutput output
-    "encode":files -> do
-      (getInput, putOutput) <- getIO files
-      input <- getInput
-      case decodeJson input of
-        Left message -> fail ("could not parse JSON: " ++ message)
-        Right replay -> do
-          let output = encodeReplay replay
-          putOutput output
-    _ -> fail ("unexpected arguments " ++ show args)
+      output <-
+        case action of
+          "decode" ->
+            case decodeReplay input of
+              Left message -> fail message
+              Right replay -> pure (encodeJson replay)
+          "encode" ->
+            case decodeJson input of
+              Left message -> fail message
+              Right replay -> pure (encodeReplay replay)
+          _ -> fail ("unknown action: " ++ show action)
+      putOutput output
+    _ -> fail ("unknown arguments: " ++ show args)
 
 getIO :: [FilePath]
       -> IO (IO ByteString.ByteString, ByteString.ByteString -> IO ())
@@ -53,4 +52,4 @@ getIO files =
     [] -> pure (ByteString.getContents, ByteString.putStr)
     [i] -> pure (ByteString.readFile i, ByteString.putStr)
     [i, o] -> pure (ByteString.readFile i, ByteString.writeFile o)
-    _ -> fail ("unexpected arguments " ++ show files)
+    _ -> fail ("unknown files: " ++ show files)
