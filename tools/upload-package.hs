@@ -4,13 +4,13 @@
   --package directory
   --package filepath
   --package process
+  --package text
 -}
-{-# LANGUAGE OverloadedStrings #-}
-
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Maybe as Maybe
+import qualified Data.Text as Text
 import qualified System.Directory as Directory
 import qualified System.Environment as Environment
 import qualified System.Exit as Exit
@@ -54,4 +54,7 @@ getHackageCredentials = do
   username <- Environment.getEnv "HACKAGE_USERNAME"
   password <- Environment.getEnv "HACKAGE_PASSWORD"
   pure
-    (Aeson.object ["username" Aeson..= username, "password" Aeson..= password])
+    (Aeson.object
+       [ Text.pack "username" Aeson..= username
+       , Text.pack "password" Aeson..= password
+       ])
