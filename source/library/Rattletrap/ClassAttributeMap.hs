@@ -29,7 +29,7 @@ data ClassAttributeMap = ClassAttributeMap
   -- ^ A map from class IDs to a map from attribute stream IDs to attribute
   -- IDs.
   , classAttributeMapNameMap :: IntMap.IntMap Text
-  } deriving (Eq, Show)
+  } deriving (Eq, Ord, Show)
 
 -- | Makes a 'ClassAttributeMap' given the necessary fields from the
 -- 'Rattletrap.Content.Content'.
