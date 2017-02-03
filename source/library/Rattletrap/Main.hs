@@ -1,12 +1,8 @@
 module Rattletrap.Main where
 
-import Rattletrap.Json ()
-import Rattletrap.Replay
+import Rattletrap.Helper
 import Rattletrap.Version
 
-import qualified Data.Aeson as Aeson
-import qualified Data.Binary.Get as Binary
-import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Version as Version
 import qualified System.Environment as Environment
@@ -35,16 +31,18 @@ mainWithArgs args =
     "decode":files -> do
       (getInput, putOutput) <- getIO files
       input <- getInput
-      let replay = Binary.runGet getReplay input
-      let output = Aeson.encode replay
-      putOutput output
+      case decodeReplay input of
+        Left message -> fail message
+        Right replay -> do
+          let output = encodeJson replay
+          putOutput output
     "encode":files -> do
       (getInput, putOutput) <- getIO files
       input <- getInput
-      case Aeson.eitherDecode input of
+      case decodeJson input of
         Left message -> fail ("could not parse JSON: " ++ message)
         Right replay -> do
-          let output = Binary.runPut (putReplay replay)
+          let output = encodeReplay replay
           putOutput output
     _ -> fail ("unexpected arguments " ++ show args)
 
