@@ -20,8 +20,6 @@ extra-source-files:
 ghc-options: -Wall
 github: tfausak/rattletrap
 library:
-  default-extensions:
-  - Strict
   dependencies:
   - aeson >=0.11 && <1.2
   - aeson-casing >=0.1 && <0.2
