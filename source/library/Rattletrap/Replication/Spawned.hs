@@ -7,6 +7,7 @@ import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Map as Map
 
 data SpawnedReplication = SpawnedReplication
   { spawnedReplicationFlag :: Bool
@@ -41,7 +42,7 @@ getSpawnedReplication version classAttributeMap actorMap actorId = do
         pure (Just nameIndex)
   name <- lookupName classAttributeMap nameIndex
   objectId <- getWord32Bits
-  let newActorMap = updateActorMap actorId objectId actorMap
+  let newActorMap = Map.insert actorId objectId actorMap
   objectName <- lookupObjectName classAttributeMap objectId
   className <- lookupClassName objectName
   let hasLocation = classHasLocation className
