@@ -1,5 +1,6 @@
 module Rattletrap.Content where
 
+import Rattletrap.ActorMap
 import Rattletrap.Cache
 import Rattletrap.ClassAttributeMap
 import Rattletrap.ClassMapping
@@ -15,7 +16,6 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
-import qualified Data.Map as Map
 
 -- | Contains low-level game data about a 'Rattletrap.Replay.Replay'.
 data Content = Content
@@ -85,7 +85,7 @@ getContent version numFrames maxChannels = do
                      numFrames
                      maxChannels
                      classAttributeMap
-                     Map.empty
+                     actorMapEmpty
                  pure theFrames))
           (reverseBytes stream)
   pure

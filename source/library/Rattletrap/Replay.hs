@@ -12,7 +12,7 @@ data Replay = Replay
   -- ^ This has most of the high-level metadata.
   , replayContent :: Section Content
   -- ^ This has most of the low-level game data.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 -- | Parses a raw replay. Use this with 'Data.Binary.Get.runGet'.
 --

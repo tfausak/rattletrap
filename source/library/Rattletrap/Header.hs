@@ -5,7 +5,7 @@ import Rattletrap.Property
 import Rattletrap.PropertyValue
 
 import qualified Data.Binary as Binary
-import qualified Data.Map as Map
+import qualified Data.HashMap.Strict as HashMap
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
@@ -50,7 +50,7 @@ data Header = Header
   --   players per team. This value is not validated, so you can put absurd
   --   values like 99. To get an "unfair" team size like 1v4, you must set the
   --   bUnfairBots 'Rattletrap.PropertyValue.BoolProperty' to @True@.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getHeader :: Binary.Get Header
 getHeader = do
@@ -85,7 +85,7 @@ getNumFrames :: Header -> Int
 getNumFrames header =
   let key = textValue (stringToText "NumFrames")
       properties = dictionaryValue (headerProperties header)
-  in case Map.lookup key properties of
+  in case HashMap.lookup key properties of
        Just (Property _ _ (IntProperty numFrames)) ->
          fromIntegral (int32Value numFrames)
        _ -> 0
@@ -94,7 +94,7 @@ getMaxChannels :: Header -> Word
 getMaxChannels header =
   let key = textValue (stringToText "MaxChannels")
       properties = dictionaryValue (headerProperties header)
-  in case Map.lookup key properties of
+  in case HashMap.lookup key properties of
        Just (Property _ _ (IntProperty numFrames)) ->
          fromIntegral (int32Value numFrames)
        _ -> 1023

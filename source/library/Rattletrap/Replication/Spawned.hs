@@ -3,11 +3,13 @@ module Rattletrap.Replication.Spawned where
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.Initialization
+import Rattletrap.NameMap
+import Rattletrap.ObjectClassMap
+import Rattletrap.ObjectMap
 import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
-import qualified Data.Map as Map
 
 data SpawnedReplication = SpawnedReplication
   { spawnedReplicationFlag :: Bool
@@ -42,7 +44,7 @@ getSpawnedReplication version classAttributeMap actorMap actorId = do
         pure (Just nameIndex)
   name <- lookupName classAttributeMap nameIndex
   objectId <- getWord32Bits
-  let newActorMap = Map.insert actorId objectId actorMap
+  let newActorMap = actorMapInsert actorId objectId actorMap
   objectName <- lookupObjectName classAttributeMap objectId
   className <- lookupClassName objectName
   let hasLocation = classHasLocation className
@@ -75,7 +77,7 @@ lookupName classAttributeMap maybeNameIndex =
   case maybeNameIndex of
     Nothing -> pure Nothing
     Just nameIndex ->
-      case getName (classAttributeMapNameMap classAttributeMap) nameIndex of
+      case nameMapLookup nameIndex (classAttributeMapNameMap classAttributeMap) of
         Nothing -> fail ("could not get name for index " ++ show nameIndex)
         Just name -> pure (Just name)
 
@@ -83,7 +85,7 @@ lookupObjectName
   :: Monad m
   => ClassAttributeMap -> Word32 -> m Text
 lookupObjectName classAttributeMap objectId =
-  case getObjectName (classAttributeMapObjectMap classAttributeMap) objectId of
+  case objectMapLookup objectId (classAttributeMapObjectMap classAttributeMap) of
     Nothing -> fail ("could not get object name for id " ++ show objectId)
     Just objectName -> pure objectName
 

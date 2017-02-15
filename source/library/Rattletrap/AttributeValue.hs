@@ -62,7 +62,8 @@ import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
-import qualified Data.Map.Strict as Map
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 data AttributeValue
   = BooleanAttributeValue BooleanAttribute
@@ -96,7 +97,7 @@ data AttributeValue
 
 getAttributeValue :: (Int, Int) -> Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue version name =
-  case Map.lookup name attributeTypes of
+  case HashMap.lookup (textValue name) attributeTypes of
     Just constructor ->
       case constructor of
         BooleanAttributeType -> do
@@ -182,8 +183,9 @@ getAttributeValue version name =
           pure (WeldedInfoAttributeValue x)
     Nothing -> fail ("don't know how to get attribute value " ++ show name)
 
-attributeTypes :: Map.Map Text AttributeType
-attributeTypes = Map.mapKeys stringToText (Map.fromList rawAttributeTypes)
+attributeTypes :: HashMap.HashMap Text.Text AttributeType
+attributeTypes =
+  HashMap.fromList (map (\(k, v) -> (Text.pack k, v)) rawAttributeTypes)
 
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =

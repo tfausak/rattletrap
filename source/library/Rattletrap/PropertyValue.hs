@@ -18,7 +18,7 @@ data PropertyValue a
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.
   | QWordProperty Word64
   | StrProperty Text
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 getPropertyValue :: Binary.Get a -> Text -> Binary.Get (PropertyValue a)
 getPropertyValue getProperty kind =

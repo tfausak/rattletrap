@@ -3,7 +3,7 @@ module Rattletrap.Primitive.Dictionary where
 import Rattletrap.Primitive.Text
 
 import qualified Data.Binary as Binary
-import qualified Data.Map as Map
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 
 data Dictionary a = Dictionary
@@ -12,16 +12,17 @@ data Dictionary a = Dictionary
   -- separately.
   , dictionaryLastKey :: Text
   -- ^ The last key is usually @None@ but sometimes contains extra null bytes.
-  , dictionaryValue :: Map.Map Text.Text a
+  , dictionaryValue :: HashMap.HashMap Text.Text a
   -- ^ Be sure to update 'dictionaryKeys' if you add, change, or remove a key
   -- in this map.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getDictionary :: Binary.Get a -> Binary.Get (Dictionary a)
 getDictionary getValue = do
   (elements, lastKey) <- getElements getValue
   let keys = map fst elements
-  let value = Map.mapKeys textValue (Map.fromList elements)
+  -- let value = HashMap.mapKeys textValue (HashMap.fromList elements)
+  let value = HashMap.fromList (map (\(k, v) -> (textValue k, v)) elements)
   pure (Dictionary keys lastKey value)
 
 getElements :: Binary.Get a -> Binary.Get ([(Text, a)], Text)
@@ -52,7 +53,7 @@ putDictionary putValue dictionary = do
   mapM_
     (\key -> do
        putText key
-       case Map.lookup (textValue key) elements of
+       case HashMap.lookup (textValue key) elements of
          Nothing -> fail ("could not find key " ++ textToString key)
          Just value -> putValue value)
     (dictionaryKeys dictionary)

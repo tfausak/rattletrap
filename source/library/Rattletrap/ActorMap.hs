@@ -2,12 +2,17 @@ module Rattletrap.ActorMap where
 
 import Rattletrap.Primitive
 
-import qualified Data.Map.Strict as Map
+import qualified Data.HashMap.Strict as HashMap
 
-type ActorMap = Map.Map CompressedWord Word32
+type ActorMap = HashMap.HashMap Word Word32
 
-makeActorMap :: ActorMap
-makeActorMap = Map.empty
+actorMapEmpty :: ActorMap
+actorMapEmpty = HashMap.empty
 
-updateActorMap :: CompressedWord -> Word32 -> ActorMap -> ActorMap
-updateActorMap = Map.insert
+actorMapInsert :: CompressedWord -> Word32 -> ActorMap -> ActorMap
+actorMapInsert compressedWord =
+  HashMap.insert (compressedWordValue compressedWord)
+
+actorMapLookup :: CompressedWord -> ActorMap -> Maybe Word32
+actorMapLookup compressedWord =
+  HashMap.lookup (compressedWordValue compressedWord)
