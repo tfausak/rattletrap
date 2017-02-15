@@ -12,10 +12,12 @@ import Rattletrap.Primitive
 import Rattletrap.StreamMap
 
 import qualified Data.Bimap as Bimap
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.List as List
 import qualified Data.Map.Strict as Map
 import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
+import qualified Data.Word as Word
 
 -- | This data structure holds all the information about classes, objects, and
 -- attributes in the replay. The class hierarchy is not fixed; it is encoded
@@ -78,47 +80,51 @@ makeClassMap classMappings =
           (classMappingStreamId classMapping, classMappingName classMapping))
        (listValue classMappings))
 
-makeAttributeMap :: List Cache -> Map.Map Word32 (Map.Map Word32 Word32)
+makeAttributeMap :: List Cache
+                 -> HashMap.HashMap Word.Word32 (HashMap.HashMap Word.Word32 Word32)
 makeAttributeMap caches =
-  Map.fromList
+  HashMap.fromList
     (map
        (\cache ->
-          ( cacheClassId cache
-          , Map.fromList
+          ( word32Value (cacheClassId cache)
+          , HashMap.fromList
               (map
                  (\attributeMapping ->
-                    ( attributeMappingStreamId attributeMapping
+                    ( word32Value (attributeMappingStreamId attributeMapping)
                     , attributeMappingObjectId attributeMapping))
                  (listValue (cacheAttributeMappings cache)))))
        (listValue caches))
 
 makeShallowParentMap :: [(Maybe Text, Word32, Word32, Word32)]
-                     -> Map.Map Word32 Word32
+                     -> HashMap.HashMap Word.Word32 Word32
 makeShallowParentMap classCache =
-  Map.fromList
+  HashMap.fromList
     (Maybe.mapMaybe
        (\xs ->
           case xs of
             [] -> Nothing
             (maybeClassName, classId, _, parentCacheId):rest -> do
               parentClassId <- getParentClass maybeClassName parentCacheId rest
-              pure (classId, parentClassId))
+              pure (word32Value classId, parentClassId))
        (List.tails (reverse classCache)))
 
 makeParentMap :: [(Maybe Text, Word32, Word32, Word32)]
-              -> Map.Map Word32 [Word32]
+              -> HashMap.HashMap Word.Word32 [Word32]
 makeParentMap classCache =
   let shallowParentMap = makeShallowParentMap classCache
-  in Map.mapWithKey
+  in HashMap.mapWithKey
        (\classId _ -> getParentClasses shallowParentMap classId)
        shallowParentMap
 
-getParentClasses :: Map.Map Word32 Word32 -> Word32 -> [Word32]
+getParentClasses :: HashMap.HashMap Word.Word32 Word32
+                 -> Word.Word32
+                 -> [Word32]
 getParentClasses shallowParentMap classId =
-  case Map.lookup classId shallowParentMap of
+  case HashMap.lookup classId shallowParentMap of
     Nothing -> []
     Just parentClassId ->
-      parentClassId : getParentClasses shallowParentMap parentClassId
+      parentClassId :
+      getParentClasses shallowParentMap (word32Value parentClassId)
 
 getParentClass :: Maybe Text
                -> Word32
@@ -179,27 +185,19 @@ classHasRotation className = Set.member className classesWithRotation
 classesWithRotation :: Set.Set Text
 classesWithRotation = Set.fromList (map stringToText rawClassesWithRotation)
 
-getAttributeIdLimit :: Map.Map Word32 Word32 -> Maybe Word
-getAttributeIdLimit attributeMap = do
-  ((streamId, _), _) <- Map.maxViewWithKey attributeMap
-  let limit = fromIntegral (word32Value streamId)
-  pure limit
-
 getAttributeName :: ClassAttributeMap
-                 -> Map.Map Word32 Word32
+                 -> AttributeMap
                  -> CompressedWord
                  -> Maybe Text
 getAttributeName classAttributeMap attributeMap streamId = do
-  let key = Word32 (fromIntegral (compressedWordValue streamId))
-  attributeId <- Map.lookup key attributeMap
+  attributeId <- attributeMapLookup streamId attributeMap
   let objectMap = classAttributeMapObjectMap classAttributeMap
   objectMapLookup attributeId objectMap
 
-getAttributeMap
-  :: ClassAttributeMap
-  -> ActorMap
-  -> CompressedWord
-  -> Maybe (Map.Map Word32 Word32)
+getAttributeMap :: ClassAttributeMap
+                -> ActorMap
+                -> CompressedWord
+                -> Maybe AttributeMap
 getAttributeMap classAttributeMap actorMap actorId = do
   objectId <- actorMapLookup actorId actorMap
   let objectClassMap = classAttributeMapObjectClassMap classAttributeMap
