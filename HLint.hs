@@ -5,6 +5,8 @@ module HLint
 import "hint" HLint.Dollar
 import "hint" HLint.HLint
 
+ignore "Avoid lambda"
+
 ignore "Use ***"
 
 ignore "Use &&&"

@@ -14,9 +14,9 @@ import Rattletrap.StreamMap
 import qualified Data.Bimap as Bimap
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.List as List
-import qualified Data.Map.Strict as Map
 import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
+import qualified Data.Text as Text
 import qualified Data.Word as Word
 
 -- | This data structure holds all the information about classes, objects, and
@@ -151,7 +151,7 @@ getParentClassByName :: Text
                      -> [(Maybe Text, Word32, Word32, Word32)]
                      -> Maybe Word32
 getParentClassByName className parentCacheId xs =
-  case Map.lookup className parentClasses of
+  case HashMap.lookup (textValue className) parentClasses of
     Nothing -> getParentClassById parentCacheId xs
     Just parentClassName ->
       Maybe.maybe
@@ -167,11 +167,10 @@ getParentClassByName className parentCacheId xs =
                        maybeClassName == Just parentClassName)
                     xs))))
 
-parentClasses :: Map.Map Text Text
+parentClasses :: HashMap.HashMap Text.Text Text
 parentClasses =
-  Map.map
-    stringToText
-    (Map.mapKeys stringToText (Map.fromList rawParentClasses))
+  HashMap.fromList
+    (map (\(k, v) -> (Text.pack k, stringToText v)) rawParentClasses)
 
 classHasLocation :: Text -> Bool
 classHasLocation className = Set.member className classesWithLocation
