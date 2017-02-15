@@ -5,6 +5,7 @@ import Rattletrap.Cache
 import Rattletrap.ClassMapping
 import Rattletrap.Data
 import Rattletrap.Map.Actor
+import Rattletrap.Map.Attribute
 import Rattletrap.Map.Class
 import Rattletrap.Map.Name
 import Rattletrap.Map.Object

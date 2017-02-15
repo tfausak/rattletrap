@@ -1,13 +1,18 @@
-module Rattletrap.Map.Object where
+module Rattletrap.Map.Object
+  ( ObjectMap
+  , makeObjectMap
+  , objectMapLookup
+  , objectMapKeys
+  ) where
 
 import Rattletrap.Primitive
 
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Word as Word
 
-newtype ObjectMap = ObjectMap
-  { objectMapValue :: HashMap.HashMap Word.Word32 Text
-  } deriving (Eq, Show)
+newtype ObjectMap =
+  ObjectMap (HashMap.HashMap Word.Word32 Text)
+  deriving (Eq, Show)
 
 makeObjectMap :: List Text -> ObjectMap
 makeObjectMap objects =

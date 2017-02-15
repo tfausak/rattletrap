@@ -1,4 +1,10 @@
-module Rattletrap.Map.ObjectClass where
+module Rattletrap.Map.ObjectClass
+  ( ObjectClassMap
+  , makeObjectClassMap
+  , getClassId
+  , getClassName
+  , objectClassMapLookup
+  ) where
 
 import Rattletrap.Data
 import Rattletrap.Map.Class
@@ -10,9 +16,9 @@ import qualified Data.Maybe as Maybe
 import qualified Data.Text as Text
 import qualified Data.Word as Word
 
-newtype ObjectClassMap = ObjectClassMap
-  { objectClassMapValue :: HashMap.HashMap Word.Word32 Word32
-  } deriving (Eq, Show)
+newtype ObjectClassMap =
+  ObjectClassMap (HashMap.HashMap Word.Word32 Word32)
+  deriving (Eq, Show)
 
 makeObjectClassMap :: ObjectMap -> ClassMap -> ObjectClassMap
 makeObjectClassMap objectMap classMap = do

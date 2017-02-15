@@ -1,12 +1,17 @@
-module Rattletrap.Map.Actor where
+module Rattletrap.Map.Actor
+  ( ActorMap
+  , actorMapEmpty
+  , actorMapInsert
+  , actorMapLookup
+  ) where
 
 import Rattletrap.Primitive
 
 import qualified Data.HashMap.Strict as HashMap
 
-newtype ActorMap = ActorMap
-  { actorMapValue :: HashMap.HashMap Word Word32
-  } deriving (Eq, Show)
+newtype ActorMap =
+  ActorMap (HashMap.HashMap Word Word32)
+  deriving (Eq, Show)
 
 actorMapEmpty :: ActorMap
 actorMapEmpty = ActorMap HashMap.empty

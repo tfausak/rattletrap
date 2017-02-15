@@ -1,4 +1,9 @@
-module Rattletrap.Map.Class where
+module Rattletrap.Map.Class
+  ( ClassMap
+  , makeClassMap
+  , classMapLookup
+  , classMapLookupR
+  ) where
 
 import Rattletrap.ClassMapping
 import Rattletrap.Primitive

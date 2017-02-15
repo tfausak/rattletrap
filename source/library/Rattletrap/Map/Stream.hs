@@ -1,20 +1,18 @@
-module Rattletrap.Map.Stream where
+module Rattletrap.Map.Stream
+  ( StreamMap
+  , makeStreamMap
+  , streamMapLookup
+  ) where
 
+import Rattletrap.Map.Attribute
 import Rattletrap.Primitive
 
 import qualified Data.HashMap.Strict as HashMap
-import qualified Data.List as List
-import qualified Data.Maybe as Maybe
-import qualified Data.Ord as Ord
 import qualified Data.Word as Word
 
-newtype StreamMap = StreamMap
-  { streamMapValue :: HashMap.HashMap Word.Word32 AttributeMap
-  } deriving (Eq, Show)
-
-newtype AttributeMap = AttributeMap
-  { attributeMapValue :: HashMap.HashMap Word.Word32 Word32
-  } deriving (Eq, Show)
+newtype StreamMap =
+  StreamMap (HashMap.HashMap Word.Word32 AttributeMap)
+  deriving (Eq, Show)
 
 makeStreamMap
   :: HashMap.HashMap Word.Word32 (HashMap.HashMap Word.Word32 Word32)
@@ -39,15 +37,3 @@ makeStreamMap attributeMap parentMap classIds =
 streamMapLookup :: Word32 -> StreamMap -> Maybe AttributeMap
 streamMapLookup classId (StreamMap streamMap) =
   HashMap.lookup (word32Value classId) streamMap
-
-getAttributeIdLimit :: AttributeMap -> Maybe Word
-getAttributeIdLimit (AttributeMap attributeMap) = do
-  let unsortedKeys = HashMap.keys attributeMap
-  let sortedKeys = List.sortOn Ord.Down unsortedKeys
-  maxStreamId <- Maybe.listToMaybe sortedKeys
-  let limit = fromIntegral maxStreamId
-  pure limit
-
-attributeMapLookup :: CompressedWord -> AttributeMap -> Maybe Word32
-attributeMapLookup streamId (AttributeMap attributeMap) =
-  HashMap.lookup (fromIntegral (compressedWordValue streamId)) attributeMap

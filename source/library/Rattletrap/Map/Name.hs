@@ -1,12 +1,16 @@
-module Rattletrap.Map.Name where
+module Rattletrap.Map.Name
+  ( NameMap
+  , makeNameMap
+  , nameMapLookup
+  ) where
 
 import Rattletrap.Primitive
 
 import qualified Data.HashMap.Strict as HashMap
 
-newtype NameMap = NameMap
-  { nameMapValue :: HashMap.HashMap Int Text
-  } deriving (Eq, Show)
+newtype NameMap =
+  NameMap (HashMap.HashMap Int Text)
+  deriving (Eq, Show)
 
 makeNameMap :: List Text -> NameMap
 makeNameMap names = NameMap (HashMap.fromList (zip [0 ..] (listValue names)))
