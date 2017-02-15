@@ -9,7 +9,7 @@ data Mark = Mark
   -- ^ Which type of mark this is, like @Team0Goal@.
   , markFrame :: Word32
   -- ^ Which frame this mark belongs to, starting from 0.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getMark :: Binary.Get Mark
 getMark = do

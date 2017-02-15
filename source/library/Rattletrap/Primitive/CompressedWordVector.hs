@@ -9,7 +9,7 @@ data CompressedWordVector = CompressedWordVector
   { compressedWordVectorX :: CompressedWord
   , compressedWordVectorY :: CompressedWord
   , compressedWordVectorZ :: CompressedWord
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getCompressedWordVector :: BinaryBit.BitGet CompressedWordVector
 getCompressedWordVector = do

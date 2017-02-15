@@ -7,7 +7,7 @@ import qualified Data.Bits as Bits
 data CompressedWord = CompressedWord
   { compressedWordLimit :: Word
   , compressedWordValue :: Word
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getCompressedWord :: Word -> BinaryBit.BitGet CompressedWord
 getCompressedWord limit = do

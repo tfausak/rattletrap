@@ -16,7 +16,7 @@ data RemoteId
   | SplitscreenId Word.Word32
   | SteamId Word64
   | XboxId Word64
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 getRemoteId :: Word8 -> BinaryBit.BitGet RemoteId
 getRemoteId systemId =

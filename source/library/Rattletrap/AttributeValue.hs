@@ -93,7 +93,7 @@ data AttributeValue
   | TeamPaintAttributeValue TeamPaintAttribute
   | UniqueIdAttributeValue UniqueIdAttribute
   | WeldedInfoAttributeValue WeldedInfoAttribute
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 getAttributeValue :: (Int, Int) -> Text -> BinaryBit.BitGet AttributeValue
 getAttributeValue version name =

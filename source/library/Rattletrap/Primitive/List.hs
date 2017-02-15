@@ -7,7 +7,7 @@ import qualified Data.Binary as Binary
 
 newtype List a = List
   { listValue :: [a]
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getList :: Binary.Get a -> Binary.Get (List a)
 getList getElement = do

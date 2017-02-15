@@ -9,7 +9,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 data PartyLeaderAttribute = PartyLeaderAttribute
   { partyLeaderAttributeSystemId :: Word8
   , partyLeaderAttributeId :: Maybe (RemoteId, Word8)
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getPartyLeaderAttribute :: BinaryBit.BitGet PartyLeaderAttribute
 getPartyLeaderAttribute = do

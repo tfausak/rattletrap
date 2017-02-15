@@ -49,7 +49,7 @@ data Content = Content
   , contentCaches :: List Cache
   -- ^ A list of classes along with their parent classes and attributes. Used
   -- for the 'Rattletrap.ClassAttributeMap.ClassAttributeMap'.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getContent
   :: (Int, Int)

@@ -9,7 +9,7 @@ data MusicStingerAttribute = MusicStingerAttribute
   { musicStingerAttributeFlag :: Bool
   , musicStingerAttributeCue :: Word32
   , musicStingerAttributeTrigger :: Word8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getMusicStingerAttribute :: BinaryBit.BitGet MusicStingerAttribute
 getMusicStingerAttribute = do

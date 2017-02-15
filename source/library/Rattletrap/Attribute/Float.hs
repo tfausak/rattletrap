@@ -7,7 +7,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 newtype FloatAttribute = FloatAttribute
   { floatAttributeValue :: Float32
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getFloatAttribute :: BinaryBit.BitGet FloatAttribute
 getFloatAttribute = do

@@ -10,7 +10,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 newtype UpdatedReplication = UpdatedReplication
   { updatedReplicationAttributes :: [Attribute]
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getUpdatedReplication
   :: (Int, Int)

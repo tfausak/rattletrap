@@ -7,7 +7,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 newtype ByteAttribute = ByteAttribute
   { byteAttributeValue :: Word8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getByteAttribute :: BinaryBit.BitGet ByteAttribute
 getByteAttribute = do

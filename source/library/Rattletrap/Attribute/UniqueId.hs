@@ -10,7 +10,7 @@ data UniqueIdAttribute = UniqueIdAttribute
   { uniqueIdAttributeSystemId :: Word8
   , uniqueIdAttributeRemoteId :: RemoteId
   , uniqueIdAttributeLocalId :: Word8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getUniqueIdAttribute :: BinaryBit.BitGet UniqueIdAttribute
 getUniqueIdAttribute = do

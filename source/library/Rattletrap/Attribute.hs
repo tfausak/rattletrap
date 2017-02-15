@@ -15,7 +15,7 @@ data Attribute = Attribute
   -- ^ Read-only! Changing an attribute's name requires editing the class
   -- attribute map.
   , attributeValue :: AttributeValue
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getAttributes
   :: (Int, Int)

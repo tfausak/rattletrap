@@ -12,7 +12,7 @@ import qualified Data.Word as Word
 
 newtype Word32 = Word32
   { word32Value :: Word.Word32
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getWord32 :: Binary.Get Word32
 getWord32 = do

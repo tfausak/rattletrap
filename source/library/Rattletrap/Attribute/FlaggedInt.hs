@@ -8,7 +8,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 data FlaggedIntAttribute = FlaggedIntAttribute
   { flaggedIntAttributeFlag :: Bool
   , flaggedIntAttributeInt :: Int32
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getFlaggedIntAttribute :: BinaryBit.BitGet FlaggedIntAttribute
 getFlaggedIntAttribute = do

@@ -10,7 +10,7 @@ data Vector = Vector
   , vectorX :: Int
   , vectorY :: Int
   , vectorZ :: Int
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getVector :: BinaryBit.BitGet Vector
 getVector = do

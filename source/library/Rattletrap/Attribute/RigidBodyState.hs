@@ -11,7 +11,7 @@ data RigidBodyStateAttribute = RigidBodyStateAttribute
   , rigidBodyStateAttributeRotation :: CompressedWordVector
   , rigidBodyStateAttributeLinearVelocity :: Maybe Vector
   , rigidBodyStateAttributeAngularVelocity :: Maybe Vector
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getRigidBodyStateAttribute :: BinaryBit.BitGet RigidBodyStateAttribute
 getRigidBodyStateAttribute = do

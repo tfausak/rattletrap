@@ -12,7 +12,7 @@ import qualified Data.Word as Word
 
 newtype Word8 = Word8
   { word8Value :: Word.Word8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getWord8 :: Binary.Get Word8
 getWord8 = do

@@ -15,7 +15,7 @@ import qualified Data.Text.Encoding as Encoding
 
 newtype Text = Text
   { textValue :: Text.Text
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getText :: Binary.Get Text
 getText = do
@@ -87,14 +87,14 @@ normalizeTextSize size =
 getTextDecoder :: Int32 -> ByteString.ByteString -> Text.Text
 getTextDecoder size bytes =
   let decode =
-        if size < Int32 0
+        if int32Value size < 0
           then Encoding.decodeUtf16LE
           else Encoding.decodeLatin1
   in decode (ByteString.toStrict bytes)
 
 getTextEncoder :: Int32 -> Text.Text -> ByteString.ByteString
 getTextEncoder size text =
-  if size < Int32 0
+  if int32Value size < 0
     then ByteString.fromStrict (Encoding.encodeUtf16LE text)
     else encodeLatin1 text
 

@@ -8,7 +8,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 -- 'Rattletrap.Replication.Replication'.
 data DestroyedReplication = DestroyedReplication
   {
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getDestroyedReplication :: BinaryBit.BitGet DestroyedReplication
 getDestroyedReplication = pure DestroyedReplication

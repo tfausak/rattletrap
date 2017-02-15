@@ -10,7 +10,7 @@ data ClubColorsAttribute = ClubColorsAttribute
   , clubColorsAttributeBlueColor :: Word8
   , clubColorsAttributeOrangeFlag :: Bool
   , clubColorsAttributeOrangeColor :: Word8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getClubColorsAttribute :: BinaryBit.BitGet ClubColorsAttribute
 getClubColorsAttribute = do

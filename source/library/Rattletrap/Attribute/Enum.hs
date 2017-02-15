@@ -6,7 +6,7 @@ import qualified Data.Word as Word
 
 newtype EnumAttribute = EnumAttribute
   { enumAttributeValue :: Word.Word16
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getEnumAttribute :: BinaryBit.BitGet EnumAttribute
 getEnumAttribute = do

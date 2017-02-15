@@ -26,7 +26,7 @@ data SpawnedReplication = SpawnedReplication
   -- ^ Read-only! Changing a replication's class requires editing the class
   -- attribute map.
   , spawnedReplicationInitialization :: Initialization
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getSpawnedReplication
   :: (Int, Int)

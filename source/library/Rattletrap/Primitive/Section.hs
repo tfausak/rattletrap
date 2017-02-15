@@ -16,7 +16,7 @@ import qualified Data.ByteString.Lazy as ByteString
 newtype Section a = Section
   { sectionBody :: a
   -- ^ The actual content in the section.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 -- | Given a way to get the 'sectionBody', gets a section. This will fail if
 -- the section's CRC does not match.

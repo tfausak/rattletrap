@@ -41,7 +41,7 @@ getEnvironment = do
 data Environment
   = AppVeyor
   | TravisCI
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 getOwnerAndRepo :: Environment -> IO (String, String)
 getOwnerAndRepo environment = do

@@ -10,7 +10,7 @@ data Cache = Cache
   , cacheParentCacheId :: Word32
   , cacheCacheId :: Word32
   , cacheAttributeMappings :: List AttributeMapping
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getCache :: Binary.Get Cache
 getCache = do

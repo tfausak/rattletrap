@@ -8,7 +8,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 data ExplosionAttribute = ExplosionAttribute
   { explosionAttributeActorId :: Int32
   , explosionAttributeLocation :: Vector
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getExplosionAttribute :: BinaryBit.BitGet ExplosionAttribute
 getExplosionAttribute = do

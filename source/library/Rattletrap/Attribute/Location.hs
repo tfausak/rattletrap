@@ -7,7 +7,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 newtype LocationAttribute = LocationAttribute
   { locationAttributeValue :: Vector
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getLocationAttribute :: BinaryBit.BitGet LocationAttribute
 getLocationAttribute = do

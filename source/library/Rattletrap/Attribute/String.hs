@@ -7,7 +7,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 newtype StringAttribute = StringAttribute
   { stringAttributeValue :: Text
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getStringAttribute :: BinaryBit.BitGet StringAttribute
 getStringAttribute = do

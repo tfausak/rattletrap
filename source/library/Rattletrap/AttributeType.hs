@@ -28,4 +28,4 @@ data AttributeType
   | TeamPaintAttributeType
   | UniqueIdAttributeType
   | WeldedInfoAttributeType
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)

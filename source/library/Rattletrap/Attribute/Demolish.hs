@@ -12,7 +12,7 @@ data DemolishAttribute = DemolishAttribute
   , demolishAttributeVictimActorId :: Word32
   , demolishAttributeAttackerVelocity :: Vector
   , demolishAttributeVictimVelocity :: Vector
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getDemolishAttribute :: BinaryBit.BitGet DemolishAttribute
 getDemolishAttribute = do

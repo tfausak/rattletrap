@@ -12,7 +12,7 @@ data CamSettingsAttribute = CamSettingsAttribute
   , camSettingsAttributeDistance :: Float32
   , camSettingsAttributeStiffness :: Float32
   , camSettingsAttributeSwivelSpeed :: Float32
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getCamSettingsAttribute :: BinaryBit.BitGet CamSettingsAttribute
 getCamSettingsAttribute = do

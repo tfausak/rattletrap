@@ -11,7 +11,7 @@ data Message = Message
   -- ^ The primary player's name.
   , messageValue :: Text
   -- ^ The content of the message.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getMessage :: Binary.Get Message
 getMessage = do

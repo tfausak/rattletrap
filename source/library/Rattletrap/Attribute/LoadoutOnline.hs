@@ -8,7 +8,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
   { loadoutAttributeValue :: [[(Word32, CompressedWord)]]
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getLoadoutOnlineAttribute :: BinaryBit.BitGet LoadoutOnlineAttribute
 getLoadoutOnlineAttribute = do

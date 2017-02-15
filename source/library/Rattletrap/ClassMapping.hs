@@ -7,7 +7,7 @@ import qualified Data.Binary as Binary
 data ClassMapping = ClassMapping
   { classMappingName :: Text
   , classMappingStreamId :: Word32
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getClassMapping :: Binary.Get ClassMapping
 getClassMapping = do

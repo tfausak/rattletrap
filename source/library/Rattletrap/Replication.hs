@@ -11,7 +11,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 data Replication = Replication
   { replicationActorId :: CompressedWord
   , replicationValue :: ReplicationValue
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getReplications
   :: (Int, Int)

@@ -15,7 +15,7 @@ data LoadoutAttribute = LoadoutAttribute
   , loadoutAttributeTopper :: Word32
   , loadoutAttributeUnknown1 :: Word32
   , loadoutAttributeUnknown2 :: Maybe Word32
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getLoadoutAttribute :: BinaryBit.BitGet LoadoutAttribute
 getLoadoutAttribute = do
@@ -28,7 +28,7 @@ getLoadoutAttribute = do
   topper <- getWord32Bits
   g <- getWord32Bits
   h <-
-    if version > Word8 10
+    if word8Value version > 10
       then do
         h <- getWord32Bits
         pure (Just h)
