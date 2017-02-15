@@ -3,6 +3,7 @@ module Rattletrap.ClassAttributeMap where
 import Rattletrap.ActorMap
 import Rattletrap.AttributeMapping
 import Rattletrap.Cache
+import Rattletrap.ClassMap
 import Rattletrap.ClassMapping
 import Rattletrap.Data
 import Rattletrap.NameMap
@@ -11,7 +12,6 @@ import Rattletrap.ObjectMap
 import Rattletrap.Primitive
 import Rattletrap.StreamMap
 
-import qualified Data.Bimap as Bimap
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
 import qualified Data.List as List
@@ -59,26 +59,18 @@ makeClassAttributeMap objects classMappings caches names =
       nameMap = makeNameMap names
   in ClassAttributeMap objectMap objectClassMap streamMap nameMap
 
-makeClassCache :: Bimap.Bimap Word32 Text
+makeClassCache :: ClassMap
                -> List Cache
                -> [(Maybe Text, Word32, Word32, Word32)]
 makeClassCache classMap caches =
   map
     (\cache ->
        let classId = cacheClassId cache
-       in ( Bimap.lookup classId classMap
+       in ( classMapLookup classId classMap
           , classId
           , cacheCacheId cache
           , cacheParentCacheId cache))
     (listValue caches)
-
-makeClassMap :: List ClassMapping -> Bimap.Bimap Word32 Text
-makeClassMap classMappings =
-  Bimap.fromList
-    (map
-       (\classMapping ->
-          (classMappingStreamId classMapping, classMappingName classMapping))
-       (listValue classMappings))
 
 makeAttributeMap :: List Cache
                  -> HashMap.HashMap Word.Word32 (HashMap.HashMap Word.Word32 Word32)

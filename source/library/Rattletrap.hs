@@ -34,6 +34,7 @@ module Rattletrap
   , module Rattletrap.Cache
   , module Rattletrap.ClassAttributeMap
   , module Rattletrap.ClassMapping
+  , module Rattletrap.ClassMap
   , module Rattletrap.Content
   , module Rattletrap.Crc
   , module Rattletrap.Data
@@ -67,6 +68,7 @@ import Rattletrap.AttributeType
 import Rattletrap.AttributeValue
 import Rattletrap.Cache
 import Rattletrap.ClassAttributeMap
+import Rattletrap.ClassMap
 import Rattletrap.ClassMapping
 import Rattletrap.Content
 import Rattletrap.Crc

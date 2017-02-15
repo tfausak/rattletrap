@@ -24,7 +24,6 @@ library:
   - aeson >=0.11 && <1.2
   - aeson-casing >=0.1 && <0.2
   - base >=4.9 && <4.10
-  - bimap >=0.3 && <0.4
   - binary >=0.8 && <0.9
   - binary-bits >=0.5 && <0.6
   - bytestring >=0.10 && <0.11

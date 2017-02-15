@@ -1,10 +1,10 @@
 module Rattletrap.ObjectClassMap where
 
+import Rattletrap.ClassMap
 import Rattletrap.Data
 import Rattletrap.ObjectMap
 import Rattletrap.Primitive
 
-import qualified Data.Bimap as Bimap
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Maybe as Maybe
 import qualified Data.Text as Text
@@ -14,7 +14,7 @@ newtype ObjectClassMap = ObjectClassMap
   { objectClassMapValue :: HashMap.HashMap Word.Word32 Word32
   } deriving (Eq, Show)
 
-makeObjectClassMap :: ObjectMap -> Bimap.Bimap Word32 Text -> ObjectClassMap
+makeObjectClassMap :: ObjectMap -> ClassMap -> ObjectClassMap
 makeObjectClassMap objectMap classMap = do
   let objectIds = objectMapKeys objectMap
   let classIds = map (getClassId objectMap classMap) objectIds
@@ -28,11 +28,11 @@ makeObjectClassMap objectMap classMap = do
           rawPairs
   ObjectClassMap (HashMap.fromList pairs)
 
-getClassId :: ObjectMap -> Bimap.Bimap Word32 Text -> Word32 -> Maybe Word32
+getClassId :: ObjectMap -> ClassMap -> Word32 -> Maybe Word32
 getClassId objectMap classMap objectId = do
   objectName <- objectMapLookup objectId objectMap
   className <- getClassName objectName
-  Bimap.lookupR className classMap
+  classMapLookupR className classMap
 
 getClassName :: Text -> Maybe Text
 getClassName rawObjectName =
