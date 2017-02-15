@@ -13,9 +13,9 @@ import Rattletrap.StreamMap
 
 import qualified Data.Bimap as Bimap
 import qualified Data.HashMap.Strict as HashMap
+import qualified Data.HashSet as HashSet
 import qualified Data.List as List
 import qualified Data.Maybe as Maybe
-import qualified Data.Set as Set
 import qualified Data.Text as Text
 import qualified Data.Word as Word
 
@@ -173,16 +173,18 @@ parentClasses =
     (map (\(k, v) -> (Text.pack k, stringToText v)) rawParentClasses)
 
 classHasLocation :: Text -> Bool
-classHasLocation className = Set.member className classesWithLocation
+classHasLocation className =
+  HashSet.member (textValue className) classesWithLocation
 
-classesWithLocation :: Set.Set Text
-classesWithLocation = Set.fromList (map stringToText rawClassesWithLocation)
+classesWithLocation :: HashSet.HashSet Text.Text
+classesWithLocation = HashSet.fromList (map Text.pack rawClassesWithLocation)
 
 classHasRotation :: Text -> Bool
-classHasRotation className = Set.member className classesWithRotation
+classHasRotation className =
+  HashSet.member (textValue className) classesWithRotation
 
-classesWithRotation :: Set.Set Text
-classesWithRotation = Set.fromList (map stringToText rawClassesWithRotation)
+classesWithRotation :: HashSet.HashSet Text.Text
+classesWithRotation = HashSet.fromList (map Text.pack rawClassesWithRotation)
 
 getAttributeName :: ClassAttributeMap
                  -> AttributeMap
