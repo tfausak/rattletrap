@@ -1,8 +1,8 @@
 module Rattletrap.Replication.Updated where
 
-import Rattletrap.ActorMap
 import Rattletrap.Attribute
 import Rattletrap.ClassAttributeMap
+import Rattletrap.Map
 import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit

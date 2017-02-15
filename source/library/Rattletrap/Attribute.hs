@@ -1,8 +1,8 @@
 module Rattletrap.Attribute where
 
-import Rattletrap.ActorMap
 import Rattletrap.AttributeValue
 import Rattletrap.ClassAttributeMap
+import Rattletrap.Map
 import Rattletrap.Primitive
 import Rattletrap.StreamMap
 

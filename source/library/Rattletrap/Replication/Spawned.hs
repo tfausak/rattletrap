@@ -1,8 +1,8 @@
 module Rattletrap.Replication.Spawned where
 
-import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.Initialization
+import Rattletrap.Map
 import Rattletrap.NameMap
 import Rattletrap.ObjectClassMap
 import Rattletrap.ObjectMap

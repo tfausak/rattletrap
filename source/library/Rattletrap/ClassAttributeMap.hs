@@ -1,11 +1,11 @@
 module Rattletrap.ClassAttributeMap where
 
-import Rattletrap.ActorMap
 import Rattletrap.AttributeMapping
 import Rattletrap.Cache
 import Rattletrap.ClassMap
 import Rattletrap.ClassMapping
 import Rattletrap.Data
+import Rattletrap.Map
 import Rattletrap.NameMap
 import Rattletrap.ObjectClassMap
 import Rattletrap.ObjectMap

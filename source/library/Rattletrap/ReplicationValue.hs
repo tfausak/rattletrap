@@ -5,8 +5,8 @@ module Rattletrap.ReplicationValue
   , module Rattletrap.Replication.Updated
   ) where
 
-import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
+import Rattletrap.Map
 import Rattletrap.Primitive
 import Rattletrap.Replication.Destroyed
 import Rattletrap.Replication.Spawned

@@ -1,11 +1,11 @@
 module Rattletrap.Content where
 
-import Rattletrap.ActorMap
 import Rattletrap.Cache
 import Rattletrap.ClassAttributeMap
 import Rattletrap.ClassMapping
 import Rattletrap.Frame
 import Rattletrap.KeyFrame
+import Rattletrap.Map
 import Rattletrap.Mark
 import Rattletrap.Message
 import Rattletrap.Primitive
