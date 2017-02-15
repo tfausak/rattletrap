@@ -1,16 +1,16 @@
-module Rattletrap.ClassAttributeMap where
+module Rattletrap.Map.ClassAttribute where
 
 import Rattletrap.AttributeMapping
 import Rattletrap.Cache
-import Rattletrap.ClassMap
 import Rattletrap.ClassMapping
 import Rattletrap.Data
-import Rattletrap.Map
-import Rattletrap.NameMap
-import Rattletrap.ObjectClassMap
-import Rattletrap.ObjectMap
+import Rattletrap.Map.Actor
+import Rattletrap.Map.Class
+import Rattletrap.Map.Name
+import Rattletrap.Map.Object
+import Rattletrap.Map.ObjectClass
+import Rattletrap.Map.Stream
 import Rattletrap.Primitive
-import Rattletrap.StreamMap
 
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet

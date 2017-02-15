@@ -1,11 +1,7 @@
 module Rattletrap.Replication.Spawned where
 
-import Rattletrap.ClassAttributeMap
 import Rattletrap.Initialization
 import Rattletrap.Map
-import Rattletrap.NameMap
-import Rattletrap.ObjectClassMap
-import Rattletrap.ObjectMap
 import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit

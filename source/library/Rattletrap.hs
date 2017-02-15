@@ -31,9 +31,7 @@ module Rattletrap
   , module Rattletrap.AttributeType
   , module Rattletrap.AttributeValue
   , module Rattletrap.Cache
-  , module Rattletrap.ClassAttributeMap
   , module Rattletrap.ClassMapping
-  , module Rattletrap.ClassMap
   , module Rattletrap.Content
   , module Rattletrap.Crc
   , module Rattletrap.Data
@@ -53,10 +51,6 @@ module Rattletrap
   , module Rattletrap.Replay
   , module Rattletrap.Replication
   , module Rattletrap.ReplicationValue
-  , module Rattletrap.NameMap
-  , module Rattletrap.ObjectMap
-  , module Rattletrap.ObjectClassMap
-  , module Rattletrap.StreamMap
   , module Rattletrap.Utility
   , module Rattletrap.Version
   ) where
@@ -66,8 +60,6 @@ import Rattletrap.AttributeMapping
 import Rattletrap.AttributeType
 import Rattletrap.AttributeValue
 import Rattletrap.Cache
-import Rattletrap.ClassAttributeMap
-import Rattletrap.ClassMap
 import Rattletrap.ClassMapping
 import Rattletrap.Content
 import Rattletrap.Crc
@@ -82,9 +74,6 @@ import Rattletrap.Main
 import Rattletrap.Map
 import Rattletrap.Mark
 import Rattletrap.Message
-import Rattletrap.NameMap
-import Rattletrap.ObjectClassMap
-import Rattletrap.ObjectMap
 import Rattletrap.Primitive
 import Rattletrap.Property
 import Rattletrap.PropertyValue
@@ -92,6 +81,5 @@ import Rattletrap.RemoteId
 import Rattletrap.Replay
 import Rattletrap.Replication
 import Rattletrap.ReplicationValue
-import Rattletrap.StreamMap
 import Rattletrap.Utility
 import Rattletrap.Version

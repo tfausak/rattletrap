@@ -1,4 +1,4 @@
-module Rattletrap.ObjectMap where
+module Rattletrap.Map.Object where
 
 import Rattletrap.Primitive
 

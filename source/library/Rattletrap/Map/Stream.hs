@@ -1,4 +1,4 @@
-module Rattletrap.StreamMap where
+module Rattletrap.Map.Stream where
 
 import Rattletrap.Primitive
 

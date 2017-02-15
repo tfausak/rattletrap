@@ -1,4 +1,4 @@
-module Rattletrap.ClassMap where
+module Rattletrap.Map.Class where
 
 import Rattletrap.ClassMapping
 import Rattletrap.Primitive

@@ -1,6 +1,5 @@
 module Rattletrap.Replication where
 
-import Rattletrap.ClassAttributeMap
 import Rattletrap.Map
 import Rattletrap.Primitive
 import Rattletrap.ReplicationValue

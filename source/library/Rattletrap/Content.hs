@@ -1,7 +1,6 @@
 module Rattletrap.Content where
 
 import Rattletrap.Cache
-import Rattletrap.ClassAttributeMap
 import Rattletrap.ClassMapping
 import Rattletrap.Frame
 import Rattletrap.KeyFrame

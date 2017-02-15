@@ -1,4 +1,4 @@
-module Rattletrap.NameMap where
+module Rattletrap.Map.Name where
 
 import Rattletrap.Primitive
 

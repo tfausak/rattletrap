@@ -1,8 +1,8 @@
-module Rattletrap.ObjectClassMap where
+module Rattletrap.Map.ObjectClass where
 
-import Rattletrap.ClassMap
 import Rattletrap.Data
-import Rattletrap.ObjectMap
+import Rattletrap.Map.Class
+import Rattletrap.Map.Object
 import Rattletrap.Primitive
 
 import qualified Data.HashMap.Strict as HashMap
