@@ -21,16 +21,20 @@ data Dictionary a = Dictionary
 getDictionary :: Binary.Get a -> Binary.Get (Dictionary a)
 getDictionary getValue = do
   (elements, lastKey) <- getElements getValue
-  let keys = Vector.fromList (map fst elements)
-  let value = HashMap.fromList (map (\(k, v) -> (textValue k, v)) elements)
+  let keys = Vector.map fst elements
+  let value =
+        Vector.foldr
+          (\(k, v) -> HashMap.insert (textValue k) v)
+          HashMap.empty
+          elements
   pure (Dictionary keys lastKey value)
 
-getElements :: Binary.Get a -> Binary.Get ([(Text, a)], Text)
+getElements :: Binary.Get a -> Binary.Get (Vector.Vector (Text, a), Text)
 getElements getValue = do
   let go elements = do
         (key, maybeValue) <- getElement getValue
         case maybeValue of
-          Nothing -> pure (reverse elements, key)
+          Nothing -> pure (Vector.fromList (reverse elements), key)
           Just value -> do
             let element = (key, value)
             go (element : elements)
