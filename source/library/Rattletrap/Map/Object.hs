@@ -8,6 +8,7 @@ module Rattletrap.Map.Object
 import Rattletrap.Primitive
 
 import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Vector as Vector
 import qualified Data.Word as Word
 
 newtype ObjectMap =
@@ -16,7 +17,11 @@ newtype ObjectMap =
 
 makeObjectMap :: List Text -> ObjectMap
 makeObjectMap objects =
-  ObjectMap (HashMap.fromList (zip [0 ..] (listValue objects)))
+  ObjectMap
+    (Vector.ifoldr
+       (\i -> HashMap.insert (fromIntegral i))
+       HashMap.empty
+       (listVector objects))
 
 objectMapLookup :: Word32 -> ObjectMap -> Maybe Text
 objectMapLookup objectId (ObjectMap objectMap) =

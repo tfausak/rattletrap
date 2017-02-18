@@ -18,6 +18,7 @@ import qualified Data.HashSet as HashSet
 import qualified Data.List as List
 import qualified Data.Maybe as Maybe
 import qualified Data.Text as Text
+import qualified Data.Vector as Vector
 import qualified Data.Word as Word
 
 -- | This data structure holds all the information about classes, objects, and
@@ -71,22 +72,23 @@ makeClassCache classMap caches =
           , classId
           , cacheCacheId cache
           , cacheParentCacheId cache))
-    (listValue caches)
+    (Vector.toList (listVector caches))
 
 makeAttributeMap :: List Cache
                  -> HashMap.HashMap Word.Word32 (HashMap.HashMap Word.Word32 Word32)
 makeAttributeMap caches =
-  HashMap.fromList
-    (map
-       (\cache ->
-          ( word32Value (cacheClassId cache)
-          , HashMap.fromList
-              (map
-                 (\attributeMapping ->
-                    ( word32Value (attributeMappingStreamId attributeMapping)
-                    , attributeMappingObjectId attributeMapping))
-                 (listValue (cacheAttributeMappings cache)))))
-       (listValue caches))
+  let getInnerKey x = word32Value (attributeMappingStreamId x)
+      getInnerValue = attributeMappingObjectId
+      getOuterKey x = word32Value (cacheClassId x)
+      getOuterValue x =
+        Vector.foldr
+          (\y -> HashMap.insert (getInnerKey y) (getInnerValue y))
+          HashMap.empty
+          (listVector (cacheAttributeMappings x))
+  in Vector.foldr
+       (\x -> HashMap.insert (getOuterKey x) (getOuterValue x))
+       HashMap.empty
+       (listVector caches)
 
 makeShallowParentMap :: [(Maybe Text, Word32, Word32, Word32)]
                      -> HashMap.HashMap Word.Word32 Word32

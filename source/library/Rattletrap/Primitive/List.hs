@@ -9,9 +9,6 @@ newtype List a = List
   { listVector :: Vector.Vector a
   } deriving (Eq, Show)
 
-listValue :: List a -> [a]
-listValue list = Vector.toList (listVector list)
-
 getList :: Binary.Get a -> Binary.Get (List a)
 getList getElement = do
   size <- getWord32
@@ -20,6 +17,6 @@ getList getElement = do
 
 putList :: (a -> Binary.Put) -> List a -> Binary.Put
 putList putElement list = do
-  let elements = listValue list
+  let elements = listVector list
   putWord32 (Word32 (fromIntegral (length elements)))
   mapM_ putElement elements

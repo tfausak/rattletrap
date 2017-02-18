@@ -10,7 +10,7 @@ import Rattletrap.Primitive
 
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
-import qualified Data.Tuple as Tuple
+import qualified Data.Vector as Vector
 import qualified Data.Word as Word
 
 data ClassMap = ClassMap
@@ -20,13 +20,20 @@ data ClassMap = ClassMap
 
 makeClassMap :: List ClassMapping -> ClassMap
 makeClassMap classMappings =
-  let toElement classMapping =
-        ( word32Value (classMappingStreamId classMapping)
-        , textValue (classMappingName classMapping))
-      elements = map toElement (listValue classMappings)
+  let getId x = word32Value (classMappingStreamId x)
+      getName x = textValue (classMappingName x)
+      elements = listVector classMappings
   in ClassMap
-     { classMapNames = HashMap.fromList elements
-     , classMapIds = HashMap.fromList (map Tuple.swap elements)
+     { classMapNames =
+         Vector.foldr
+           (\x -> HashMap.insert (getId x) (getName x))
+           HashMap.empty
+           elements
+     , classMapIds =
+         Vector.foldr
+           (\x -> HashMap.insert (getName x) (getId x))
+           HashMap.empty
+           elements
      }
 
 classMapLookup :: Word32 -> ClassMap -> Maybe Text
