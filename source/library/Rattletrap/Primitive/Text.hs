@@ -24,7 +24,7 @@ getText = do
   let size = normalizeTextSize rawSize
   bytes <- Binary.getLazyByteString size
   let text = dropNull (decode bytes)
-  pure (Text text)
+  text `seq` pure (Text text)
 
 putText :: Text -> Binary.Put
 putText text = do
