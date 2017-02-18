@@ -14,7 +14,7 @@ data Frame = Frame
   , frameDelta :: Float32
   -- ^ Time in seconds since the last frame. Usually about 0.03 since there
   -- are 30 frames per second.
-  , frameReplications :: [Replication]
+  , frameReplications :: Vector.Vector Replication
   } deriving (Eq, Show)
 
 getFrames
