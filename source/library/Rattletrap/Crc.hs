@@ -20,7 +20,7 @@ getCrc32 :: ByteString.ByteString -> Word.Word32
 getCrc32 bytes = do
   let update = crc32Update crc32Table
   let initial = Bits.complement crc32Initial
-  let crc = ByteString.foldl update initial bytes
+  let crc = ByteString.foldl' update initial bytes
   Bits.complement crc
 
 crc32Update :: Vector.Vector Word.Word32
@@ -28,12 +28,8 @@ crc32Update :: Vector.Vector Word.Word32
             -> Word.Word8
             -> Word.Word32
 crc32Update table crc byte = do
-  let toWord8 =
-        fromIntegral :: (Integral a) =>
-                          a -> Word.Word8
-  let toInt =
-        fromIntegral :: (Integral a) =>
-                          a -> Int
+  let toWord8 = fromIntegral :: Word.Word32 -> Word.Word8
+  let toInt = fromIntegral :: Word.Word8 -> Int
   let index = toInt (Bits.xor byte (toWord8 (Bits.shiftR crc 24)))
   let left = Vector.unsafeIndex table index
   let right = Bits.shiftL crc 8
