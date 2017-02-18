@@ -21,7 +21,7 @@ makeObjectMap objects =
     (Vector.ifoldr
        (\i -> HashMap.insert (fromIntegral i))
        HashMap.empty
-       (listVector objects))
+       (listValue objects))
 
 objectMapLookup :: Word32 -> ObjectMap -> Maybe Text
 objectMapLookup objectId (ObjectMap objectMap) =

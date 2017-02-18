@@ -22,7 +22,7 @@ makeClassMap :: List ClassMapping -> ClassMap
 makeClassMap classMappings =
   let getId x = word32Value (classMappingStreamId x)
       getName x = textValue (classMappingName x)
-      elements = listVector classMappings
+      elements = listValue classMappings
   in ClassMap
      { classMapNames =
          Vector.foldr

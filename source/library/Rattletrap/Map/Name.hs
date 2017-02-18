@@ -15,7 +15,7 @@ newtype NameMap =
 
 makeNameMap :: List Text -> NameMap
 makeNameMap names =
-  NameMap (Vector.ifoldr HashMap.insert HashMap.empty (listVector names))
+  NameMap (Vector.ifoldr HashMap.insert HashMap.empty (listValue names))
 
 nameMapLookup :: Word32 -> NameMap -> Maybe Text
 nameMapLookup nameIndex (NameMap nameMap) =

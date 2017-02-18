@@ -72,7 +72,7 @@ makeClassCache classMap caches =
           , classId
           , cacheCacheId cache
           , cacheParentCacheId cache))
-    (Vector.toList (listVector caches))
+    (Vector.toList (listValue caches))
 
 makeAttributeMap :: List Cache
                  -> HashMap.HashMap Word.Word32 (HashMap.HashMap Word.Word32 Word32)
@@ -84,11 +84,11 @@ makeAttributeMap caches =
         Vector.foldr
           (\y -> HashMap.insert (getInnerKey y) (getInnerValue y))
           HashMap.empty
-          (listVector (cacheAttributeMappings x))
+          (listValue (cacheAttributeMappings x))
   in Vector.foldr
        (\x -> HashMap.insert (getOuterKey x) (getOuterValue x))
        HashMap.empty
-       (listVector caches)
+       (listValue caches)
 
 makeShallowParentMap :: [(Maybe Text, Word32, Word32, Word32)]
                      -> HashMap.HashMap Word.Word32 Word32
