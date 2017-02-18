@@ -15,6 +15,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
+import qualified Data.Vector as Vector
 
 -- | Contains low-level game data about a 'Rattletrap.Replay.Replay'.
 data Content = Content
@@ -27,7 +28,7 @@ data Content = Content
   , contentStreamSize :: Word32
   -- ^ The size of the stream in bytes. This is only really necessary because
   -- the stream has some arbitrary amount of padding at the end.
-  , contentFrames :: [Frame]
+  , contentFrames :: Vector.Vector Frame
   -- ^ The actual game data. This is where all the interesting information is.
   , contentMessages :: List Message
   -- ^ Debugging messages. In newer replays, this is always empty.

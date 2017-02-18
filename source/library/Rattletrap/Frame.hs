@@ -6,6 +6,7 @@ import Rattletrap.Replication
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Vector as Vector
 
 data Frame = Frame
   { frameTime :: Float32
@@ -22,23 +23,18 @@ getFrames
   -> Word
   -> ClassAttributeMap
   -> ActorMap
-  -> BinaryBit.BitGet ([Frame], ActorMap)
+  -> BinaryBit.BitGet (Vector.Vector Frame, ActorMap)
 getFrames version numFrames maxChannels classAttributeMap actorMap =
-  if numFrames <= 0
-    then pure ([], actorMap)
-    else do
-      (frame, newActorMap) <-
-        getFrame version maxChannels classAttributeMap actorMap
-      (frames, newerActorMap) <-
-        getFrames
-          version
-          (numFrames - 1)
-          maxChannels
-          classAttributeMap
-          newActorMap
-      pure (frame : frames, newerActorMap)
+  let go n frames actors =
+        if n <= 0
+          then pure (Vector.fromList (reverse frames), actors)
+          else do
+            (frame, newActors) <-
+              getFrame version maxChannels classAttributeMap actors
+            go (n - 1) (frame : frames) newActors
+  in go numFrames [] actorMap
 
-putFrames :: [Frame] -> BinaryBit.BitPut ()
+putFrames :: Vector.Vector Frame -> BinaryBit.BitPut ()
 putFrames = mapM_ putFrame
 
 getFrame
