@@ -5,9 +5,10 @@ import Rattletrap.Primitive.Text
 import qualified Data.Binary as Binary
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
+import qualified Data.Vector as Vector
 
 data Dictionary a = Dictionary
-  { dictionaryKeys :: [Text]
+  { dictionaryKeys :: Vector.Vector Text
   -- ^ Objects in JSON aren't ordered, so the order of the keys must be stored
   -- separately.
   , dictionaryLastKey :: Text
@@ -20,20 +21,20 @@ data Dictionary a = Dictionary
 getDictionary :: Binary.Get a -> Binary.Get (Dictionary a)
 getDictionary getValue = do
   (elements, lastKey) <- getElements getValue
-  let keys = map fst elements
-  -- let value = HashMap.mapKeys textValue (HashMap.fromList elements)
+  let keys = Vector.fromList (map fst elements)
   let value = HashMap.fromList (map (\(k, v) -> (textValue k, v)) elements)
   pure (Dictionary keys lastKey value)
 
 getElements :: Binary.Get a -> Binary.Get ([(Text, a)], Text)
 getElements getValue = do
-  (key, maybeValue) <- getElement getValue
-  case maybeValue of
-    Nothing -> pure ([], key)
-    Just value -> do
-      let element = (key, value)
-      (elements, lastKey) <- getElements getValue
-      pure (element : elements, lastKey)
+  let go elements = do
+        (key, maybeValue) <- getElement getValue
+        case maybeValue of
+          Nothing -> pure (reverse elements, key)
+          Just value -> do
+            let element = (key, value)
+            go (element : elements)
+  go []
 
 getElement :: Binary.Get a -> Binary.Get (Text, Maybe a)
 getElement getValue = do
