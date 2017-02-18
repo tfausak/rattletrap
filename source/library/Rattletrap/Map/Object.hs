@@ -18,7 +18,7 @@ newtype ObjectMap =
 makeObjectMap :: List Text -> ObjectMap
 makeObjectMap objects =
   ObjectMap
-    (Vector.ifoldr
+    (Vector.ifoldr'
        (\i -> HashMap.insert (fromIntegral i))
        HashMap.empty
        (listValue objects))
