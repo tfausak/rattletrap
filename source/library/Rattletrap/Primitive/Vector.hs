@@ -1,3 +1,5 @@
+{-# LANGUAGE Strict #-}
+
 module Rattletrap.Primitive.Vector where
 
 import Rattletrap.Primitive.CompressedWord

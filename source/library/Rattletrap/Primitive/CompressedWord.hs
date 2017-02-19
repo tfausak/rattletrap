@@ -1,3 +1,5 @@
+{-# LANGUAGE Strict #-}
+
 module Rattletrap.Primitive.CompressedWord where
 
 import qualified Data.Binary.Bits.Get as BinaryBit
