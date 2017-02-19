@@ -26,13 +26,11 @@
 -- - Importing one specific module is not recommended because all JSON
 --   instances are defined as orphans in "Rattletrap.Json".
 module Rattletrap
-  ( module Rattletrap.ActorMap
-  , module Rattletrap.Attribute
+  ( module Rattletrap.Attribute
   , module Rattletrap.AttributeMapping
   , module Rattletrap.AttributeType
   , module Rattletrap.AttributeValue
   , module Rattletrap.Cache
-  , module Rattletrap.ClassAttributeMap
   , module Rattletrap.ClassMapping
   , module Rattletrap.Content
   , module Rattletrap.Crc
@@ -43,6 +41,7 @@ module Rattletrap
   , module Rattletrap.Initialization
   , module Rattletrap.KeyFrame
   , module Rattletrap.Main
+  , module Rattletrap.Map
   , module Rattletrap.Mark
   , module Rattletrap.Message
   , module Rattletrap.Primitive
@@ -56,13 +55,11 @@ module Rattletrap
   , module Rattletrap.Version
   ) where
 
-import Rattletrap.ActorMap
 import Rattletrap.Attribute
 import Rattletrap.AttributeMapping
 import Rattletrap.AttributeType
 import Rattletrap.AttributeValue
 import Rattletrap.Cache
-import Rattletrap.ClassAttributeMap
 import Rattletrap.ClassMapping
 import Rattletrap.Content
 import Rattletrap.Crc
@@ -74,6 +71,7 @@ import Rattletrap.Initialization
 import Rattletrap.Json ()
 import Rattletrap.KeyFrame
 import Rattletrap.Main
+import Rattletrap.Map
 import Rattletrap.Mark
 import Rattletrap.Message
 import Rattletrap.Primitive

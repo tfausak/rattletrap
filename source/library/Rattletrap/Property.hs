@@ -10,7 +10,7 @@ data Property = Property
   , propertySize :: Word64
   -- ^ Not used.
   , propertyValue :: PropertyValue Property
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getProperty :: Binary.Get Property
 getProperty = do

@@ -11,7 +11,7 @@ import qualified Data.Int as Int
 
 newtype Int8 = Int8
   { int8Value :: Int.Int8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getInt8 :: Binary.Get Int8
 getInt8 = do

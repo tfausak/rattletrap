@@ -12,7 +12,7 @@ import qualified Data.ByteString.Lazy as ByteString
 
 newtype Float32 = Float32
   { float32Value :: Float
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getFloat32 :: Binary.Get Float32
 getFloat32 = do

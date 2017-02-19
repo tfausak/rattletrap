@@ -1,3 +1,5 @@
+{-# LANGUAGE Strict #-}
+
 module Rattletrap.Primitive.CompressedWord where
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -7,7 +9,7 @@ import qualified Data.Bits as Bits
 data CompressedWord = CompressedWord
   { compressedWordLimit :: Word
   , compressedWordValue :: Word
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getCompressedWord :: Word -> BinaryBit.BitGet CompressedWord
 getCompressedWord limit = do

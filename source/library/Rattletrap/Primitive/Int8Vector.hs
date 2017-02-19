@@ -9,7 +9,7 @@ data Int8Vector = Int8Vector
   { int8VectorX :: Maybe Int8
   , int8VectorY :: Maybe Int8
   , int8VectorZ :: Maybe Int8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getInt8Vector :: BinaryBit.BitGet Int8Vector
 getInt8Vector = do

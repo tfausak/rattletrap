@@ -3,36 +3,42 @@ module Rattletrap.Primitive.Dictionary where
 import Rattletrap.Primitive.Text
 
 import qualified Data.Binary as Binary
-import qualified Data.Map as Map
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
+import qualified Data.Vector as Vector
 
 data Dictionary a = Dictionary
-  { dictionaryKeys :: [Text]
+  { dictionaryKeys :: Vector.Vector Text
   -- ^ Objects in JSON aren't ordered, so the order of the keys must be stored
   -- separately.
   , dictionaryLastKey :: Text
   -- ^ The last key is usually @None@ but sometimes contains extra null bytes.
-  , dictionaryValue :: Map.Map Text.Text a
+  , dictionaryValue :: HashMap.HashMap Text.Text a
   -- ^ Be sure to update 'dictionaryKeys' if you add, change, or remove a key
   -- in this map.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getDictionary :: Binary.Get a -> Binary.Get (Dictionary a)
 getDictionary getValue = do
   (elements, lastKey) <- getElements getValue
-  let keys = map fst elements
-  let value = Map.mapKeys textValue (Map.fromList elements)
+  let keys = Vector.map fst elements
+  let value =
+        Vector.foldr
+          (\(k, v) -> HashMap.insert (textValue k) v)
+          HashMap.empty
+          elements
   pure (Dictionary keys lastKey value)
 
-getElements :: Binary.Get a -> Binary.Get ([(Text, a)], Text)
+getElements :: Binary.Get a -> Binary.Get (Vector.Vector (Text, a), Text)
 getElements getValue = do
-  (key, maybeValue) <- getElement getValue
-  case maybeValue of
-    Nothing -> pure ([], key)
-    Just value -> do
-      let element = (key, value)
-      (elements, lastKey) <- getElements getValue
-      pure (element : elements, lastKey)
+  let go elements = do
+        (key, maybeValue) <- getElement getValue
+        case maybeValue of
+          Nothing -> pure (Vector.fromList (reverse elements), key)
+          Just value -> do
+            let element = (key, value)
+            go (element : elements)
+  go []
 
 getElement :: Binary.Get a -> Binary.Get (Text, Maybe a)
 getElement getValue = do
@@ -52,7 +58,7 @@ putDictionary putValue dictionary = do
   mapM_
     (\key -> do
        putText key
-       case Map.lookup (textValue key) elements of
+       case HashMap.lookup (textValue key) elements of
          Nothing -> fail ("could not find key " ++ textToString key)
          Just value -> putValue value)
     (dictionaryKeys dictionary)

@@ -12,7 +12,7 @@ import qualified Data.Word as Word
 
 newtype Word64 = Word64
   { word64Value :: Word.Word64
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getWord64 :: Binary.Get Word64
 getWord64 = do

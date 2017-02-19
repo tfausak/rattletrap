@@ -11,7 +11,7 @@ data TeamPaintAttribute = TeamPaintAttribute
   , teamPaintAttributeAccentColor :: Word8
   , teamPaintAttributePrimaryFinish :: Word32
   , teamPaintAttributeAccentFinish :: Word32
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getTeamPaintAttribute :: BinaryBit.BitGet TeamPaintAttribute
 getTeamPaintAttribute = do

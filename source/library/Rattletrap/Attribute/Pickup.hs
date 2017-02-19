@@ -8,7 +8,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 data PickupAttribute = PickupAttribute
   { pickupAttributeInstigatorId :: Maybe Word32
   , pickupAttributePickedUp :: Bool
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getPickupAttribute :: BinaryBit.BitGet PickupAttribute
 getPickupAttribute = do

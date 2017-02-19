@@ -8,7 +8,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 data LoadoutsAttribute = LoadoutsAttribute
   { loadoutsAttributeBlue :: LoadoutAttribute
   , loadoutsAttributeOrange :: LoadoutAttribute
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getLoadoutsAttribute :: BinaryBit.BitGet LoadoutsAttribute
 getLoadoutsAttribute = do

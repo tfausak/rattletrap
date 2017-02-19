@@ -7,7 +7,7 @@ import qualified Data.Word as Word
 data GameModeAttribute = GameModeAttribute
   { gameModeAttributeNumBits :: Int
   , gameModeAttributeWord :: Word.Word8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getGameModeAttribute :: (Int, Int) -> BinaryBit.BitGet GameModeAttribute
 getGameModeAttribute version = do

@@ -1,12 +1,12 @@
 module Rattletrap.Attribute where
 
-import Rattletrap.ActorMap
 import Rattletrap.AttributeValue
-import Rattletrap.ClassAttributeMap
+import Rattletrap.Map
 import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Vector as Vector
 
 data Attribute = Attribute
   { attributeId :: CompressedWord
@@ -14,24 +14,26 @@ data Attribute = Attribute
   -- ^ Read-only! Changing an attribute's name requires editing the class
   -- attribute map.
   , attributeValue :: AttributeValue
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getAttributes
   :: (Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
-  -> BinaryBit.BitGet [Attribute]
-getAttributes version classAttributeMap actorMap actorId = do
-  hasAttribute <- BinaryBit.getBool
-  if not hasAttribute
-    then pure []
-    else do
-      attribute <- getAttribute version classAttributeMap actorMap actorId
-      attributes <- getAttributes version classAttributeMap actorMap actorId
-      pure (attribute : attributes)
+  -> BinaryBit.BitGet (Vector.Vector Attribute)
+getAttributes version classAttributeMap actorMap actorId =
+  let go attributes = do
+        hasAttribute <- BinaryBit.getBool
+        if hasAttribute
+          then do
+            attribute <-
+              getAttribute version classAttributeMap actorMap actorId
+            go (attribute : attributes)
+          else pure (Vector.fromList (reverse attributes))
+  in go []
 
-putAttributes :: [Attribute] -> BinaryBit.BitPut ()
+putAttributes :: Vector.Vector Attribute -> BinaryBit.BitPut ()
 putAttributes attributes = do
   mapM_ putAttribute attributes
   BinaryBit.putBool False

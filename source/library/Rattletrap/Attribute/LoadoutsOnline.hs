@@ -10,7 +10,7 @@ data LoadoutsOnlineAttribute = LoadoutsOnlineAttribute
   , loadoutsOnlineAttributeOrange :: LoadoutOnlineAttribute
   , loadoutsOnlineAttributeUnknown1 :: Bool
   , loadoutsOnlineAttributeUnknown2 :: Bool
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getLoadoutsOnlineAttribute :: BinaryBit.BitGet LoadoutsOnlineAttribute
 getLoadoutsOnlineAttribute = do

@@ -12,7 +12,7 @@ data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
   , privateMatchSettingsAttributeGameName :: Text
   , privateMatchSettingsAttributePassword :: Text
   , privateMatchSettingsAttributeFlag :: Bool
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getPrivateMatchSettingsAttribute :: BinaryBit.BitGet PrivateMatchSettingsAttribute
 getPrivateMatchSettingsAttribute = do

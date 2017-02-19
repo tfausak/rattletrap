@@ -5,8 +5,7 @@ module Rattletrap.ReplicationValue
   , module Rattletrap.Replication.Updated
   ) where
 
-import Rattletrap.ActorMap
-import Rattletrap.ClassAttributeMap
+import Rattletrap.Map
 import Rattletrap.Primitive
 import Rattletrap.Replication.Destroyed
 import Rattletrap.Replication.Spawned
@@ -22,7 +21,7 @@ data ReplicationValue
   -- ^ Updates an existing actor.
   | DestroyedReplicationValue DestroyedReplication
   -- ^ Destroys an existing actor.
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 getReplicationValue
   :: (Int, Int)

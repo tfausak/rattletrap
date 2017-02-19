@@ -7,7 +7,7 @@ import qualified Data.Binary as Binary
 data AttributeMapping = AttributeMapping
   { attributeMappingObjectId :: Word32
   , attributeMappingStreamId :: Word32
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getAttributeMapping :: Binary.Get AttributeMapping
 getAttributeMapping = do

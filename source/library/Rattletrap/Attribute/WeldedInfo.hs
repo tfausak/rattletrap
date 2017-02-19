@@ -11,7 +11,7 @@ data WeldedInfoAttribute = WeldedInfoAttribute
   , weldedInfoAttributeOffset :: Vector
   , weldedInfoAttributeMass :: Float32
   , weldedInfoAttributeRotation :: Int8Vector
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getWeldedInfoAttribute :: BinaryBit.BitGet WeldedInfoAttribute
 getWeldedInfoAttribute = do

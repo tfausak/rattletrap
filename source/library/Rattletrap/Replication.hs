@@ -1,35 +1,35 @@
 module Rattletrap.Replication where
 
-import Rattletrap.ActorMap
-import Rattletrap.ClassAttributeMap
+import Rattletrap.Map
 import Rattletrap.Primitive
 import Rattletrap.ReplicationValue
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Vector as Vector
 
 data Replication = Replication
   { replicationActorId :: CompressedWord
   , replicationValue :: ReplicationValue
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getReplications
   :: (Int, Int)
   -> Word
   -> ClassAttributeMap
   -> ActorMap
-  -> BinaryBit.BitGet ([Replication], ActorMap)
-getReplications version maxChannels classAttributeMap actorMap = do
-  maybeReplication <-
-    getReplication version maxChannels classAttributeMap actorMap
-  case maybeReplication of
-    Nothing -> pure ([], actorMap)
-    Just (replication, newActorMap) -> do
-      (replications, newerActorMap) <-
-        getReplications version maxChannels classAttributeMap newActorMap
-      pure (replication : replications, newerActorMap)
+  -> BinaryBit.BitGet (Vector.Vector Replication, ActorMap)
+getReplications version maxChannels classAttributeMap actorMap =
+  let go replications actors = do
+        maybeReplication <-
+          getReplication version maxChannels classAttributeMap actors
+        case maybeReplication of
+          Nothing -> pure (Vector.fromList (reverse replications), actors)
+          Just (replication, newActors) ->
+            go (replication : replications) newActors
+  in go [] actorMap
 
-putReplications :: [Replication] -> BinaryBit.BitPut ()
+putReplications :: Vector.Vector Replication -> BinaryBit.BitPut ()
 putReplications replications = do
   mapM_ putReplication replications
   BinaryBit.putBool False

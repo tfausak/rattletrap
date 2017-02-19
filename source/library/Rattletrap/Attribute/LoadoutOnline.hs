@@ -2,22 +2,22 @@ module Rattletrap.Attribute.LoadoutOnline where
 
 import Rattletrap.Primitive
 
-import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Vector as Vector
 
 newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
-  { loadoutAttributeValue :: [[(Word32, CompressedWord)]]
-  } deriving (Eq, Ord, Show)
+  { loadoutAttributeValue :: Vector.Vector (Vector.Vector (Word32, CompressedWord))
+  } deriving (Eq, Show)
 
 getLoadoutOnlineAttribute :: BinaryBit.BitGet LoadoutOnlineAttribute
 getLoadoutOnlineAttribute = do
   size <- getWord8Bits
   values <-
-    Monad.replicateM
+    Vector.replicateM
       (fromIntegral (word8Value size))
       (do innerSize <- getWord8Bits
-          Monad.replicateM
+          Vector.replicateM
             (fromIntegral (word8Value innerSize))
             (do x <- getWord32Bits
                 y <- getCompressedWord 27

@@ -5,7 +5,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 newtype BooleanAttribute = BooleanAttribute
   { booleanAttributeValue :: Bool
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getBooleanAttribute :: BinaryBit.BitGet BooleanAttribute
 getBooleanAttribute = do

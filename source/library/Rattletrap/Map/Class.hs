@@ -1,0 +1,47 @@
+module Rattletrap.Map.Class
+  ( ClassMap
+  , makeClassMap
+  , classMapLookup
+  , classMapLookupR
+  ) where
+
+import Rattletrap.ClassMapping
+import Rattletrap.Primitive
+
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
+import qualified Data.Vector as Vector
+import qualified Data.Word as Word
+
+data ClassMap = ClassMap
+  { classMapNames :: HashMap.HashMap Word.Word32 Text.Text
+  , classMapIds :: HashMap.HashMap Text.Text Word.Word32
+  } deriving (Eq, Show)
+
+makeClassMap :: List ClassMapping -> ClassMap
+makeClassMap classMappings =
+  let getId x = word32Value (classMappingStreamId x)
+      getName x = textValue (classMappingName x)
+      elements = listValue classMappings
+  in ClassMap
+     { classMapNames =
+         Vector.foldr
+           (\x -> HashMap.insert (getId x) (getName x))
+           HashMap.empty
+           elements
+     , classMapIds =
+         Vector.foldr
+           (\x -> HashMap.insert (getName x) (getId x))
+           HashMap.empty
+           elements
+     }
+
+classMapLookup :: Word32 -> ClassMap -> Maybe Text
+classMapLookup classId classMap = do
+  className <- HashMap.lookup (word32Value classId) (classMapNames classMap)
+  pure (Text className)
+
+classMapLookupR :: Text -> ClassMap -> Maybe Word32
+classMapLookupR className classMap = do
+  classId <- HashMap.lookup (textValue className) (classMapIds classMap)
+  pure (Word32 classId)

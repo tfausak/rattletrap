@@ -12,7 +12,7 @@ data Initialization = Initialization
   , initializationRotation :: Maybe Int8Vector
   -- ^ Only classes with location can have rotation, but not every one does.
   -- See 'Rattletrap.Data.rawClassesWithRotation'.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getInitialization :: Bool -> Bool -> BinaryBit.BitGet Initialization
 getInitialization hasLocation hasRotation = do

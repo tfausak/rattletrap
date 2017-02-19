@@ -14,7 +14,7 @@ data ReservationAttribute = ReservationAttribute
   , reservationAttributeUnknown1 :: Bool
   , reservationAttributeUnknown2 :: Bool
   , reservationAttributeUnknown3 :: Maybe Word.Word8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getReservationAttribute :: (Int, Int) -> BinaryBit.BitGet ReservationAttribute
 getReservationAttribute version = do

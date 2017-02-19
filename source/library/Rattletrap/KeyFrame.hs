@@ -11,7 +11,7 @@ data KeyFrame = KeyFrame
   -- ^ The frame number of this key frame, starting from 0.
   , keyFramePosition :: Word32
   -- ^ The bit position of this key frame in the stream.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getKeyFrame :: Binary.Get KeyFrame
 getKeyFrame = do

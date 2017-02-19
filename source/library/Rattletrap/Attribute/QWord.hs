@@ -7,7 +7,7 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 newtype QWordAttribute = QWordAttribute
   { qWordAttributeValue :: Word64
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 getQWordAttribute :: BinaryBit.BitGet QWordAttribute
 getQWordAttribute = do
