@@ -8,7 +8,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy.Char8 as ByteString
+import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Char as Char
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Encoding
