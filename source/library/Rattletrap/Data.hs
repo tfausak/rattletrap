@@ -98,7 +98,8 @@ rawClassesWithRotation =
 
 rawObjectClasses :: [(String, String)]
 rawObjectClasses =
-  [ ("Archetypes.Ball.Ball_Basketball", "TAGame.Ball_TA")
+  [ ("Archetypes.Ball.Ball_BasketBall_Mutator", "TAGame.Ball_TA")
+  , ("Archetypes.Ball.Ball_Basketball", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Default", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Puck", "TAGame.Ball_TA")
   , ("Archetypes.Ball.CubeBall", "TAGame.Ball_TA")
