@@ -149,10 +149,10 @@ rawObjectClasses =
 
 rawAttributeTypes :: [(String, AttributeType)]
 rawAttributeTypes =
-  [ ("Engine.Actor:DrawScale", FloatAttributeType)
-  , ("Engine.Actor:bBlockActors", BooleanAttributeType)
+  [ ("Engine.Actor:bBlockActors", BooleanAttributeType)
   , ("Engine.Actor:bCollideActors", BooleanAttributeType)
   , ("Engine.Actor:bHidden", BooleanAttributeType)
+  , ("Engine.Actor:DrawScale", FloatAttributeType)
   , ("Engine.Actor:Role", EnumAttributeType)
   , ("Engine.GameReplicationInfo:bMatchIsOver", BooleanAttributeType)
   , ("Engine.GameReplicationInfo:GameClass", FlaggedIntAttributeType)
