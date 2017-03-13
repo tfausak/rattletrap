@@ -85,6 +85,7 @@ replays =
   , ("C14F7E0E4D9B5E6BE9AD5D8ED56B174C", "some mutators")
   , ("C8372B1345B1803DEF039F815DBD802D", "a spectator")
   , ("CC4CA70D4F7A67EBAD0ED9B9923106F7", "after Starbase ARC")
+  , ("D0449F5F4AA775B86FFA7DA2B5A3204E", "hoops mutators")
   , ("D428F81646A98C25902CE988AE5C14C8", "a private hockey match")
   , ("D7FB197A451D69075A0C99A2F49A4053", "an explosion attribute")
   , ("DCB3A6B94A9DBE46FDE5EAA9B012F6C8", "a pawn type attribute")
