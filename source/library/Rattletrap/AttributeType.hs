@@ -1,10 +1,12 @@
 module Rattletrap.AttributeType where
 
 data AttributeType
-  = BooleanAttributeType
+  = AppliedDamageAttributeType
+  | BooleanAttributeType
   | ByteAttributeType
   | CamSettingsAttributeType
   | ClubColorsAttributeType
+  | DamageStateAttributeType
   | DemolishAttributeType
   | EnumAttributeType
   | ExplosionAttributeType

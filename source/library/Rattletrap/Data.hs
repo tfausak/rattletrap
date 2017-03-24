@@ -59,7 +59,8 @@ rawParentClasses =
 
 rawClassesWithLocation :: [String]
 rawClassesWithLocation =
-  [ "TAGame.Ball_TA"
+  [ "TAGame.Ball_Breakout_TA"
+  , "TAGame.Ball_TA"
   , "TAGame.CameraSettingsActor_TA"
   , "TAGame.Car_Season_TA"
   , "TAGame.Car_TA"
@@ -91,7 +92,8 @@ rawClassesWithLocation =
 
 rawClassesWithRotation :: [String]
 rawClassesWithRotation =
-  [ "TAGame.Ball_TA"
+  [ "TAGame.Ball_Breakout_TA"
+  , "TAGame.Ball_TA"
   , "TAGame.Car_Season_TA"
   , "TAGame.Car_TA"
   ]
@@ -100,6 +102,7 @@ rawObjectClasses :: [(String, String)]
 rawObjectClasses =
   [ ("Archetypes.Ball.Ball_BasketBall_Mutator", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Basketball", "TAGame.Ball_TA")
+  , ("Archetypes.Ball.Ball_Breakout", "TAGame.Ball_Breakout_TA")
   , ("Archetypes.Ball.Ball_Default", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Puck", "TAGame.Ball_TA")
   , ("Archetypes.Ball.CubeBall", "TAGame.Ball_TA")
@@ -112,6 +115,7 @@ rawObjectClasses =
   , ("Archetypes.GameEvent.GameEvent_Basketball", "TAGame.GameEvent_Soccar_TA")
   , ("Archetypes.GameEvent.GameEvent_BasketballPrivate", "TAGame.GameEvent_SoccarPrivate_TA")
   , ("Archetypes.GameEvent.GameEvent_BasketballSplitscreen", "TAGame.GameEvent_SoccarSplitscreen_TA")
+  , ("Archetypes.GameEvent.GameEvent_Breakout", "TAGame.GameEvent_Soccar_TA")
   , ("Archetypes.GameEvent.GameEvent_Hockey", "TAGame.GameEvent_Soccar_TA")
   , ("Archetypes.GameEvent.GameEvent_HockeyPrivate", "TAGame.GameEvent_SoccarPrivate_TA")
   , ("Archetypes.GameEvent.GameEvent_HockeySplitscreen", "TAGame.GameEvent_SoccarSplitscreen_TA")
@@ -136,12 +140,14 @@ rawObjectClasses =
   , ("Archetypes.Teams.Team0", "TAGame.Team_Soccar_TA")
   , ("Archetypes.Teams.Team1", "TAGame.Team_Soccar_TA")
   , ("GameInfo_Basketball.GameInfo.GameInfo_Basketball:GameReplicationInfoArchetype", "TAGame.GRI_TA")
+  , ("GameInfo_Breakout.GameInfo.GameInfo_Breakout:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("Gameinfo_Hockey.GameInfo.Gameinfo_Hockey:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Items.GameInfo.GameInfo_Items:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Season.GameInfo.GameInfo_Season:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Soccar.GameInfo.GameInfo_Soccar:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("TAGame.Default__CameraSettingsActor_TA", "TAGame.CameraSettingsActor_TA")
   , ("TAGame.Default__PRI_TA", "TAGame.PRI_TA")
+  , ("TheWorld:PersistentLevel.BreakOutActor_Platform_TA", "TAGame.BreakOutActor_Platform_TA")
   , ("TheWorld:PersistentLevel.CrowdActor_TA", "TAGame.CrowdActor_TA")
   , ("TheWorld:PersistentLevel.CrowdManager_TA", "TAGame.CrowdManager_TA")
   , ("TheWorld:PersistentLevel.InMapScoreboard_TA", "TAGame.InMapScoreboard_TA")
@@ -176,6 +182,9 @@ rawAttributeTypes =
   , ("ProjectX.GRI_X:ReplicatedGameMutatorIndex", IntAttributeType)
   , ("ProjectX.GRI_X:ReplicatedGamePlaylist", IntAttributeType)
   , ("ProjectX.GRI_X:Reservations", ReservationAttributeType)
+  , ("TAGame.Ball_Breakout_TA:AppliedDamage", AppliedDamageAttributeType)
+  , ("TAGame.Ball_Breakout_TA:DamageIndex", IntAttributeType)
+  , ("TAGame.Ball_Breakout_TA:LastTeamTouch", ByteAttributeType)
   , ("TAGame.Ball_TA:GameEvent", FlaggedIntAttributeType)
   , ("TAGame.Ball_TA:HitTeamNum", ByteAttributeType)
   , ("TAGame.Ball_TA:ReplicatedAddedCarBounceScale", FloatAttributeType)
@@ -183,6 +192,7 @@ rawAttributeTypes =
   , ("TAGame.Ball_TA:ReplicatedBallScale", FloatAttributeType)
   , ("TAGame.Ball_TA:ReplicatedExplosionData", ExplosionAttributeType)
   , ("TAGame.Ball_TA:ReplicatedWorldBounceScale", FloatAttributeType)
+  , ("TAGame.BreakOutActor_Platform_TA:DamageState", DamageStateAttributeType)
   , ("TAGame.CameraSettingsActor_TA:bUsingBehindView", BooleanAttributeType)
   , ("TAGame.CameraSettingsActor_TA:bUsingSecondaryCamera", BooleanAttributeType)
   , ("TAGame.CameraSettingsActor_TA:CameraPitch", ByteAttributeType)
@@ -250,6 +260,7 @@ rawAttributeTypes =
   , ("TAGame.PRI_TA:ClientLoadouts", LoadoutsAttributeType)
   , ("TAGame.PRI_TA:ClientLoadoutsOnline", LoadoutsOnlineAttributeType)
   , ("TAGame.PRI_TA:MatchAssists", IntAttributeType)
+  , ("TAGame.PRI_TA:MatchBreakoutDamage", IntAttributeType)
   , ("TAGame.PRI_TA:MatchGoals", IntAttributeType)
   , ("TAGame.PRI_TA:MatchSaves", IntAttributeType)
   , ("TAGame.PRI_TA:MatchScore", IntAttributeType)
