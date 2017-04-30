@@ -66,6 +66,7 @@ replays =
   , ("4126861E477F4A03DE2A4080374D7908", "a game mode after Neo Tokyo")
   , ("42F0D8DA4FC89AE7B80FCAB7F637A8EA", "reservations after Neo Tokyo")
   , ("504ED825482186E771FAA9B642CE5CE4", "some messages")
+  , ("520E1BFF468CF6C3C48D1EA85D9C7909", "no pickup attribute")
   , ("52AA67F94090C19D33C5009E54D31FE4", "a match-ending attribute")
   , ("540DA764423C8FB24EB9D486D982F16F", "a demolish attribute")
   , ("551CA4D44FF2B86015DE44A6B5790D4C", "private match settings")
