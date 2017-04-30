@@ -9,7 +9,7 @@ executables:
     - -rtsopts
     - -threaded
     - -with-rtsopts=-N
-    main: rattletrap.hs
+    main: Main.hs
     source-dirs: executables
 extra-source-files:
 - CHANGELOG.markdown
