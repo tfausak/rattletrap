@@ -48,9 +48,8 @@ tests:
     - base
     - bytestring
     - filepath >=1.4 && <1.5
+    - hspec >=2.4 && <2.5
     - rattletrap
-    - tasty >=0.11 && <0.12
-    - tasty-hspec >=1.1 && <1.2
     - temporary >=1.2 && <1.3
     ghc-options:
     - -rtsopts

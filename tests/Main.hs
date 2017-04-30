@@ -3,13 +3,10 @@ import qualified Data.ByteString.Lazy as ByteString
 import qualified Rattletrap
 import qualified System.FilePath as FilePath
 import qualified System.IO.Temp as Temp
-import qualified Test.Tasty as Tasty
-import qualified Test.Tasty.Hspec as Hspec
+import qualified Test.Hspec as Hspec
 
 main :: IO ()
-main = do
-  tests <- Hspec.testSpec "rattletrap" spec
-  Tasty.defaultMain tests
+main = Hspec.hspec spec
 
 spec :: Hspec.Spec
 spec = Hspec.describe "Rattletrap" (mapM_ (uncurry itCanRoundTrip) replays)
