@@ -251,6 +251,7 @@ rawAttributeTypes =
   , ("TAGame.PRI_TA:bOnlineLoadoutsSet", BooleanAttributeType)
   , ("TAGame.PRI_TA:bReady", BooleanAttributeType)
   , ("TAGame.PRI_TA:bUsingBehindView", BooleanAttributeType)
+  , ("TAGame.PRI_TA:bUsingItems", BooleanAttributeType)
   , ("TAGame.PRI_TA:bUsingSecondaryCamera", BooleanAttributeType)
   , ("TAGame.PRI_TA:CameraPitch", ByteAttributeType)
   , ("TAGame.PRI_TA:CameraSettings", CamSettingsAttributeType)
@@ -265,10 +266,12 @@ rawAttributeTypes =
   , ("TAGame.PRI_TA:MatchSaves", IntAttributeType)
   , ("TAGame.PRI_TA:MatchScore", IntAttributeType)
   , ("TAGame.PRI_TA:MatchShots", IntAttributeType)
+  , ("TAGame.PRI_TA:MaxTimeTillItem", IntAttributeType)
   , ("TAGame.PRI_TA:PartyLeader", PartyLeaderAttributeType)
   , ("TAGame.PRI_TA:PawnType", ByteAttributeType)
   , ("TAGame.PRI_TA:PersistentCamera", FlaggedIntAttributeType)
   , ("TAGame.PRI_TA:ReplicatedGameEvent", FlaggedIntAttributeType)
+  , ("TAGame.PRI_TA:TimeTillItem", IntAttributeType)
   , ("TAGame.PRI_TA:Title", IntAttributeType)
   , ("TAGame.PRI_TA:TotalXP", IntAttributeType)
   , ("TAGame.RBActor_TA:bFrozen", BooleanAttributeType)
@@ -291,6 +294,7 @@ rawAttributeTypes =
   , ("TAGame.Vehicle_TA:bReplicatedHandbrake", BooleanAttributeType)
   , ("TAGame.Vehicle_TA:ReplicatedSteer", ByteAttributeType)
   , ("TAGame.Vehicle_TA:ReplicatedThrottle", ByteAttributeType)
+  , ("TAGame.VehiclePickup_TA:bNoPickup", BooleanAttributeType)
   , ("TAGame.VehiclePickup_TA:ReplicatedPickupData", PickupAttributeType)
   ]
 
