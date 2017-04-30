@@ -215,8 +215,12 @@ rawAttributeTypes =
   , ("TAGame.CrowdManager_TA:GameEvent", FlaggedIntAttributeType)
   , ("TAGame.CrowdManager_TA:ReplicatedGlobalOneShotSound", FlaggedIntAttributeType)
   , ("TAGame.GameEvent_Soccar_TA:bBallHasBeenHit", BooleanAttributeType)
+  , ("TAGame.GameEvent_Soccar_TA:bMatchEnded", BooleanAttributeType)
   , ("TAGame.GameEvent_Soccar_TA:bOverTime", BooleanAttributeType)
   , ("TAGame.GameEvent_Soccar_TA:GameTime", IntAttributeType)
+  , ("TAGame.GameEvent_Soccar_TA:GameWinner", FlaggedIntAttributeType)
+  , ("TAGame.GameEvent_Soccar_TA:MatchWinner", FlaggedIntAttributeType)
+  , ("TAGame.GameEvent_Soccar_TA:MVP", FlaggedIntAttributeType)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedMusicStinger", MusicStingerAttributeType)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam", ByteAttributeType)
   , ("TAGame.GameEvent_Soccar_TA:RoundNum", IntAttributeType)
@@ -257,6 +261,7 @@ rawAttributeTypes =
   , ("TAGame.PRI_TA:PawnType", ByteAttributeType)
   , ("TAGame.PRI_TA:PersistentCamera", FlaggedIntAttributeType)
   , ("TAGame.PRI_TA:ReplicatedGameEvent", FlaggedIntAttributeType)
+  , ("TAGame.PRI_TA:RepStatTitles", TitlesAttributeType)
   , ("TAGame.PRI_TA:Title", IntAttributeType)
   , ("TAGame.PRI_TA:TotalXP", IntAttributeType)
   , ("TAGame.RBActor_TA:bFrozen", BooleanAttributeType)
@@ -280,6 +285,13 @@ rawAttributeTypes =
   , ("TAGame.Vehicle_TA:ReplicatedSteer", ByteAttributeType)
   , ("TAGame.Vehicle_TA:ReplicatedThrottle", ByteAttributeType)
   , ("TAGame.VehiclePickup_TA:ReplicatedPickupData", PickupAttributeType)
+
+  -- TODO: These attributes might not actually be present in the stream, but
+  -- the types are known and they shouldn't fail a parse when messing with
+  -- NUM_BITS.
+  , ("TAGame.PRI_TA:bBusy", BooleanAttributeType)
+  , ("TAGame.PRI_TA:bVoteToForfeitDisabled", BooleanAttributeType)
+  , ("TAGame.PRI_TA:MaxTimeTillItem", IntAttributeType)
   ]
 
 rawCrc32Table :: Integral a => [a]

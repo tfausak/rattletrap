@@ -51,6 +51,12 @@ getFrame
 getFrame version maxChannels classAttributeMap actorMap = do
   time <- getFloat32Bits
   delta <- getFloat32Bits
+  -- TODO: These checks shouldn't stay in, but they're nice for quickly
+  -- invalidating parses when changing NUM_BITS.
+  if time < Float32 1 then fail ("time too small " ++ show time) else pure ()
+  if time > Float32 360 then fail ("time too big " ++ show time) else pure ()
+  if delta < Float32 0.01 then fail ("delta too small " ++ show delta) else pure ()
+  if delta > Float32 0.1 then fail ("delta too big " ++ show delta) else pure ()
   (replications, newActorMap) <-
     getReplications version maxChannels classAttributeMap actorMap
   pure (Frame time delta replications, newActorMap)

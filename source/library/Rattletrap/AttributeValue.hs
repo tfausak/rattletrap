@@ -25,6 +25,7 @@ module Rattletrap.AttributeValue
   , module Rattletrap.Attribute.RigidBodyState
   , module Rattletrap.Attribute.String
   , module Rattletrap.Attribute.TeamPaint
+  , module Rattletrap.Attribute.Titles
   , module Rattletrap.Attribute.UniqueId
   , module Rattletrap.Attribute.WeldedInfo
   ) where
@@ -54,6 +55,7 @@ import Rattletrap.Attribute.Reservation
 import Rattletrap.Attribute.RigidBodyState
 import Rattletrap.Attribute.String
 import Rattletrap.Attribute.TeamPaint
+import Rattletrap.Attribute.Titles
 import Rattletrap.Attribute.UniqueId
 import Rattletrap.Attribute.WeldedInfo
 import Rattletrap.AttributeType
@@ -90,6 +92,7 @@ data AttributeValue
   | RigidBodyStateAttributeValue RigidBodyStateAttribute
   | StringAttributeValue StringAttribute
   | TeamPaintAttributeValue TeamPaintAttribute
+  | TitlesAttributeValue TitlesAttribute
   | UniqueIdAttributeValue UniqueIdAttribute
   | WeldedInfoAttributeValue WeldedInfoAttribute
   deriving (Eq, Ord, Show)
@@ -174,6 +177,9 @@ getAttributeValue version name =
         TeamPaintAttributeType -> do
           x <- getTeamPaintAttribute
           pure (TeamPaintAttributeValue x)
+        TitlesAttributeType -> do
+          x <- getTitlesAttribute
+          pure (TitlesAttributeValue x)
         UniqueIdAttributeType -> do
           x <- getUniqueIdAttribute
           pure (UniqueIdAttributeValue x)
@@ -213,5 +219,6 @@ putAttributeValue value =
     RigidBodyStateAttributeValue x -> putRigidBodyStateAttribute x
     StringAttributeValue x -> putStringAttribute x
     TeamPaintAttributeValue x -> putTeamPaintAttribute x
+    TitlesAttributeValue x -> putTitlesAttribute x
     UniqueIdAttributeValue x -> putUniqueIdAttribute x
     WeldedInfoAttributeValue x -> putWeldedInfoAttribute x

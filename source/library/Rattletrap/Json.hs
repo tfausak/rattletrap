@@ -93,6 +93,7 @@ $(let optionsFor name =
         , ''SpawnedReplication
         , ''StringAttribute
         , ''TeamPaintAttribute
+        , ''TitlesAttribute
         , ''Text
         , ''UniqueIdAttribute
         , ''UpdatedReplication
