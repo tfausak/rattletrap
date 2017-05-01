@@ -1,9 +1,11 @@
 module Rattletrap.AttributeValue
   ( module Rattletrap.AttributeValue
+  , module Rattletrap.Attribute.AppliedDamage
   , module Rattletrap.Attribute.Boolean
   , module Rattletrap.Attribute.Byte
   , module Rattletrap.Attribute.CamSettings
   , module Rattletrap.Attribute.ClubColors
+  , module Rattletrap.Attribute.DamageState
   , module Rattletrap.Attribute.Demolish
   , module Rattletrap.Attribute.Enum
   , module Rattletrap.Attribute.Explosion
@@ -30,10 +32,12 @@ module Rattletrap.AttributeValue
   , module Rattletrap.Attribute.WeldedInfo
   ) where
 
+import Rattletrap.Attribute.AppliedDamage
 import Rattletrap.Attribute.Boolean
 import Rattletrap.Attribute.Byte
 import Rattletrap.Attribute.CamSettings
 import Rattletrap.Attribute.ClubColors
+import Rattletrap.Attribute.DamageState
 import Rattletrap.Attribute.Demolish
 import Rattletrap.Attribute.Enum
 import Rattletrap.Attribute.Explosion
@@ -67,10 +71,12 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Map.Strict as Map
 
 data AttributeValue
-  = BooleanAttributeValue BooleanAttribute
+  = AppliedDamageAttributeValue AppliedDamageAttribute
+  | BooleanAttributeValue BooleanAttribute
   | ByteAttributeValue ByteAttribute
   | CamSettingsAttributeValue CamSettingsAttribute
   | ClubColorsAttributeValue ClubColorsAttribute
+  | DamageStateAttributeValue DamageStateAttribute
   | DemolishAttributeValue DemolishAttribute
   | EnumAttributeValue EnumAttribute
   | ExplosionAttributeValue ExplosionAttribute
@@ -102,6 +108,9 @@ getAttributeValue version name =
   case Map.lookup name attributeTypes of
     Just constructor ->
       case constructor of
+        AppliedDamageAttributeType -> do
+          x <- getAppliedDamageAttribute
+          pure (AppliedDamageAttributeValue x)
         BooleanAttributeType -> do
           x <- getBooleanAttribute
           pure (BooleanAttributeValue x)
@@ -114,6 +123,9 @@ getAttributeValue version name =
         ClubColorsAttributeType -> do
           x <- getClubColorsAttribute
           pure (ClubColorsAttributeValue x)
+        DamageStateAttributeType -> do
+          x <- getDamageStateAttribute
+          pure (DamageStateAttributeValue x)
         DemolishAttributeType -> do
           x <- getDemolishAttribute
           pure (DemolishAttributeValue x)
@@ -194,10 +206,12 @@ attributeTypes = Map.mapKeys stringToText (Map.fromList rawAttributeTypes)
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
 putAttributeValue value =
   case value of
+    AppliedDamageAttributeValue x -> putAppliedDamageAttribute x
     BooleanAttributeValue x -> putBooleanAttribute x
     ByteAttributeValue x -> putByteAttribute x
     CamSettingsAttributeValue x -> putCamSettingsAttribute x
     ClubColorsAttributeValue x -> putClubColorsAttribute x
+    DamageStateAttributeValue x -> putDamageStateAttribute x
     DemolishAttributeValue x -> putDemolishAttribute x
     EnumAttributeValue x -> putEnumAttribute x
     ExplosionAttributeValue x -> putExplosionAttribute x

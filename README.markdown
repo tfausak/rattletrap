@@ -6,9 +6,6 @@
 
 Rattletrap parses and generates [Rocket League][] replays.
 
-If you only want to parse replays, consider using [Octane][] instead.
-It uses Rattletrap behind the scenes but provides a nicer interface.
-
 ## Install
 
 Get Rattletrap by downloading and unpacking [the latest release][] for your
@@ -74,6 +71,5 @@ used to modify replays.
 [Build badge]: https://travis-ci.org/tfausak/rattletrap.svg?branch=master
 [build]: https://travis-ci.org/tfausak/rattletrap
 [Rocket League]: https://www.rocketleaguegame.com
-[Octane]: https://github.com/tfausak/octane
 [the latest release]: https://github.com/tfausak/rattletrap/releases/latest
 [Stack]: https://docs.haskellstack.org/en/stable/README/

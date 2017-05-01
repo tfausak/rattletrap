@@ -39,7 +39,8 @@ $(let optionsFor name =
         newDeclarations <- Aeson.deriveJSON (optionsFor name) name
         pure (newDeclarations ++ declarations)
       names =
-        [ ''Attribute
+        [ ''AppliedDamageAttribute
+        , ''Attribute
         , ''AttributeMapping
         , ''AttributeValue
         , ''BooleanAttribute
@@ -51,6 +52,7 @@ $(let optionsFor name =
         , ''CompressedWord
         , ''CompressedWordVector
         , ''Content
+        , ''DamageStateAttribute
         , ''DemolishAttribute
         , ''DestroyedReplication
         , ''Dictionary

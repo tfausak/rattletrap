@@ -3,13 +3,10 @@ import qualified Data.ByteString.Lazy as ByteString
 import qualified Rattletrap
 import qualified System.FilePath as FilePath
 import qualified System.IO.Temp as Temp
-import qualified Test.Tasty as Tasty
-import qualified Test.Tasty.Hspec as Hspec
+import qualified Test.Hspec as Hspec
 
 main :: IO ()
-main = do
-  tests <- Hspec.testSpec "rattletrap" spec
-  Tasty.defaultMain tests
+main = Hspec.hspec spec
 
 spec :: Hspec.Spec
 spec = Hspec.describe "Rattletrap" (mapM_ (uncurry itCanRoundTrip) replays)
@@ -39,7 +36,7 @@ specBody uuid = do
 
 pathToReplay :: String -> FilePath
 pathToReplay uuid =
-  FilePath.joinPath ["data", "replays", FilePath.addExtension uuid ".replay"]
+  FilePath.joinPath ["replays", FilePath.addExtension uuid ".replay"]
 
 replays :: [(String, String)]
 replays =
@@ -56,6 +53,7 @@ replays =
   , ("1EF90FCC4F719F606A5327B3CDD782A4", "a private hoops match")
   , ("1F3798E540B0C37A946561ABBB3037F9", "splitscreen players")
   , ("211466D04B983F5A33CC2FA1D5928672", "a match save")
+  , ("22660E3649FC7971E5653692473D4318", "dropshot")
   , ("22BACD794ABE7B92E50E9CBDBD9C59CE", "a vote to forfeit")
   , ("27B6A7B64553F0F685874584F96BAB1B", "some UTF-16 text")
   , ("29F582C34A65EB34D358A784CBE3C189", "frames")
@@ -65,6 +63,7 @@ replays =
   , ("4126861E477F4A03DE2A4080374D7908", "a game mode after Neo Tokyo")
   , ("42F0D8DA4FC89AE7B80FCAB7F637A8EA", "reservations after Neo Tokyo")
   , ("504ED825482186E771FAA9B642CE5CE4", "some messages")
+  , ("520E1BFF468CF6C3C48D1EA85D9C7909", "no pickup attribute")
   , ("52AA67F94090C19D33C5009E54D31FE4", "a match-ending attribute")
   , ("540DA764423C8FB24EB9D486D982F16F", "a demolish attribute")
   , ("551CA4D44FF2B86015DE44A6B5790D4C", "private match settings")
@@ -86,6 +85,7 @@ replays =
   , ("C14F7E0E4D9B5E6BE9AD5D8ED56B174C", "some mutators")
   , ("C8372B1345B1803DEF039F815DBD802D", "a spectator")
   , ("CC4CA70D4F7A67EBAD0ED9B9923106F7", "after Starbase ARC")
+  , ("D0449F5F4AA775B86FFA7DA2B5A3204E", "hoops mutators")
   , ("D428F81646A98C25902CE988AE5C14C8", "a private hockey match")
   , ("D7FB197A451D69075A0C99A2F49A4053", "an explosion attribute")
   , ("DCB3A6B94A9DBE46FDE5EAA9B012F6C8", "a pawn type attribute")
