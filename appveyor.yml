@@ -12,7 +12,7 @@ on_success:
 platform: x64
 test_script:
 - stack setup > nul
-- stack build --ghc-options -O2 --only-dependencies --test
-- stack build --ghc-options -O2 --pedantic --test
+- stack build --ghc-options --jobs 1 -O2 --only-dependencies --test
+- stack build --ghc-options --jobs 1 -O2 --pedantic --test
 - stack sdist
 version: '{build}'
