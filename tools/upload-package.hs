@@ -1,4 +1,4 @@
-{- stack runghc
+{- stack --resolver lts-8.0 script
   --package aeson
   --package bytestring
   --package directory

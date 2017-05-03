@@ -1,10 +1,9 @@
-{- stack runghc
+{- stack --resolver lts-8.0 script
   --package bytestring
   --package github-release
   --package process
   --package temporary
   --package zlib
-  -- -Wall
 -}
 import qualified Codec.Compression.GZip as GZip
 import qualified Data.ByteString.Lazy as ByteString
