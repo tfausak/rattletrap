@@ -11,13 +11,14 @@ data LoadoutAttribute = LoadoutAttribute
   , loadoutAttributeDecal :: Word32
   , loadoutAttributeWheels :: Word32
   , loadoutAttributeRocketTrail :: Word32
+  -- ^ Now known as "rocket boost".
   , loadoutAttributeAntenna :: Word32
   , loadoutAttributeTopper :: Word32
   , loadoutAttributeUnknown1 :: Word32
   , loadoutAttributeUnknown2 :: Maybe Word32
-  , loadoutAttributeUnknown3 :: Maybe Word32
-  , loadoutAttributeUnknown4 :: Maybe Word32
-  , loadoutAttributeUnknown5 :: Maybe Word32
+  , loadoutAttributeEngineAudio :: Maybe Word32
+  , loadoutAttributeTrail :: Maybe Word32
+  , loadoutAttributeGoalExplosion :: Maybe Word32
   } deriving (Eq, Ord, Show)
 
 getLoadoutAttribute :: BinaryBit.BitGet LoadoutAttribute
@@ -31,9 +32,9 @@ getLoadoutAttribute = do
   topper <- getWord32Bits
   unknown1 <- getWord32Bits
   unknown2 <- getOptional (version > Word8 10) getWord32Bits
-  unknown3 <- getOptional (version >= Word8 16) getWord32Bits
-  unknown4 <- getOptional (version >= Word8 16) getWord32Bits
-  unknown5 <- getOptional (version >= Word8 16) getWord32Bits
+  engineAudio <- getOptional (version >= Word8 16) getWord32Bits
+  trail <- getOptional (version >= Word8 16) getWord32Bits
+  goalExplosion <- getOptional (version >= Word8 16) getWord32Bits
   pure
     (LoadoutAttribute
        version
@@ -45,9 +46,9 @@ getLoadoutAttribute = do
        topper
        unknown1
        unknown2
-       unknown3
-       unknown4
-       unknown5)
+       engineAudio
+       trail
+       goalExplosion)
 
 getOptional :: Bool -> BinaryBit.BitGet a -> BinaryBit.BitGet (Maybe a)
 getOptional p f =
@@ -68,9 +69,9 @@ putLoadoutAttribute loadoutAttribute = do
   putWord32Bits (loadoutAttributeTopper loadoutAttribute)
   putWord32Bits (loadoutAttributeUnknown1 loadoutAttribute)
   putOptional (loadoutAttributeUnknown2 loadoutAttribute) putWord32Bits
-  putOptional (loadoutAttributeUnknown3 loadoutAttribute) putWord32Bits
-  putOptional (loadoutAttributeUnknown4 loadoutAttribute) putWord32Bits
-  putOptional (loadoutAttributeUnknown5 loadoutAttribute) putWord32Bits
+  putOptional (loadoutAttributeEngineAudio loadoutAttribute) putWord32Bits
+  putOptional (loadoutAttributeTrail loadoutAttribute) putWord32Bits
+  putOptional (loadoutAttributeGoalExplosion loadoutAttribute) putWord32Bits
 
 putOptional :: Maybe a -> (a -> BinaryBit.BitPut ()) -> BinaryBit.BitPut ()
 putOptional m f =
