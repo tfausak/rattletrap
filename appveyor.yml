@@ -2,7 +2,7 @@ build: off
 clone_folder: c:/rattletrap
 environment:
   GITHUB_TOKEN:
-    secure: CTD2sGkh3EQaLuMJybGza6XNaI+Ews42mdNy9p3U+eShkrjIwYrbUVKnpzra8kIZ
+    secure: TJVqbM1vZRfsmP7Tb98arfaAN+X/D9NpXUyVXJMog3iBKjC0q8gYshhk0b3dzCOy
   PATH: c:/bin;%PATH%
   STACK_ROOT: c:/stack
 install:
