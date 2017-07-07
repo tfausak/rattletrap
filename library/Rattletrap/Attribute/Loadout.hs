@@ -15,6 +15,9 @@ data LoadoutAttribute = LoadoutAttribute
   , loadoutAttributeTopper :: Word32
   , loadoutAttributeUnknown1 :: Word32
   , loadoutAttributeUnknown2 :: Maybe Word32
+  , loadoutAttributeUnknown3 :: Maybe Word32
+  , loadoutAttributeUnknown4 :: Maybe Word32
+  , loadoutAttributeUnknown5 :: Maybe Word32
   } deriving (Eq, Ord, Show)
 
 getLoadoutAttribute :: BinaryBit.BitGet LoadoutAttribute
@@ -26,15 +29,33 @@ getLoadoutAttribute = do
   rocketTrail <- getWord32Bits
   antenna <- getWord32Bits
   topper <- getWord32Bits
-  g <- getWord32Bits
-  h <-
-    if version > Word8 10
-      then do
-        h <- getWord32Bits
-        pure (Just h)
-      else pure Nothing
+  unknown1 <- getWord32Bits
+  unknown2 <- getOptional (version > Word8 10) getWord32Bits
+  unknown3 <- getOptional (version >= Word8 16) getWord32Bits
+  unknown4 <- getOptional (version >= Word8 16) getWord32Bits
+  unknown5 <- getOptional (version >= Word8 16) getWord32Bits
   pure
-    (LoadoutAttribute version body decal wheels rocketTrail antenna topper g h)
+    (LoadoutAttribute
+       version
+       body
+       decal
+       wheels
+       rocketTrail
+       antenna
+       topper
+       unknown1
+       unknown2
+       unknown3
+       unknown4
+       unknown5)
+
+getOptional :: Bool -> BinaryBit.BitGet a -> BinaryBit.BitGet (Maybe a)
+getOptional p f =
+  if p
+    then do
+      x <- f
+      pure (Just x)
+    else pure Nothing
 
 putLoadoutAttribute :: LoadoutAttribute -> BinaryBit.BitPut ()
 putLoadoutAttribute loadoutAttribute = do
@@ -46,6 +67,13 @@ putLoadoutAttribute loadoutAttribute = do
   putWord32Bits (loadoutAttributeAntenna loadoutAttribute)
   putWord32Bits (loadoutAttributeTopper loadoutAttribute)
   putWord32Bits (loadoutAttributeUnknown1 loadoutAttribute)
-  case loadoutAttributeUnknown2 loadoutAttribute of
+  putOptional (loadoutAttributeUnknown2 loadoutAttribute) putWord32Bits
+  putOptional (loadoutAttributeUnknown3 loadoutAttribute) putWord32Bits
+  putOptional (loadoutAttributeUnknown4 loadoutAttribute) putWord32Bits
+  putOptional (loadoutAttributeUnknown5 loadoutAttribute) putWord32Bits
+
+putOptional :: Maybe a -> (a -> BinaryBit.BitPut ()) -> BinaryBit.BitPut ()
+putOptional m f =
+  case m of
+    Just x -> f x
     Nothing -> pure ()
-    Just x -> putWord32Bits x
