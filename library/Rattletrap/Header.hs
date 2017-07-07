@@ -13,6 +13,8 @@ data Header = Header
   -- ^ The "major" version number.
   , headerLicenseeVersion :: Word32
   -- ^ The "minor" version number.
+  , headerPatchVersion :: Word32
+  -- ^ The "patch" version number.
   , headerLabel :: Text
   -- ^ Always @TAGame.Replay_Soccar_TA@.
   , headerProperties :: Dictionary Property
@@ -56,14 +58,16 @@ getHeader :: Binary.Get Header
 getHeader = do
   engineVersion <- getWord32
   licenseeVersion <- getWord32
+  patchVersion <- getWord32
   label <- getText
   properties <- getDictionary getProperty
-  pure (Header engineVersion licenseeVersion label properties)
+  pure (Header engineVersion licenseeVersion patchVersion label properties)
 
 putHeader :: Header -> Binary.Put
 putHeader header = do
   putWord32 (headerEngineVersion header)
   putWord32 (headerLicenseeVersion header)
+  putWord32 (headerPatchVersion header)
   putText (headerLabel header)
   putDictionary putProperty (headerProperties header)
 
