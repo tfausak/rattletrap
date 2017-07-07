@@ -26,7 +26,7 @@ main = do
   let file = FilePath.joinPath [directory, "credentials.json"]
   Directory.createDirectoryIfMissing True directory
   ByteString.writeFile file (Aeson.encode credentials)
-  Process.callProcess "stack" ["upload", "."]
+  Process.callProcess "stack" ["upload", "--no-signature", "."]
 
 checkTravisTag :: IO ()
 checkTravisTag = do
