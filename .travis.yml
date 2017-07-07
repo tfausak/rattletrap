@@ -5,6 +5,7 @@ addons:
   code_climate:
     repo_token: f3ec70e01eb3f7fae0d1b61099d4ea64573c23e5a66bd34b9d6c2a1870ea5b63
 after_success:
+- stack build aeson bytestring directory filepath github-release process temporary text zlib
 - stack tools/upload-package.hs
 - stack tools/attach-binary.hs
 before_install:

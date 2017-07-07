@@ -8,6 +8,7 @@ environment:
 install:
 - powershell -File tools/install-stack.ps1
 on_success:
+- stack --jobs 1 build bytestring github-release process temporary zlib
 - stack --jobs 1 tools/attach-binary.hs
 platform: x64
 test_script:
