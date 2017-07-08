@@ -148,13 +148,13 @@ getAttributeValue version name =
           x <- getLoadoutAttribute
           pure (LoadoutAttributeValue x)
         LoadoutOnlineAttributeType -> do
-          x <- getLoadoutOnlineAttribute
+          x <- getLoadoutOnlineAttribute version
           pure (LoadoutOnlineAttributeValue x)
         LoadoutsAttributeType -> do
           x <- getLoadoutsAttribute
           pure (LoadoutsAttributeValue x)
         LoadoutsOnlineAttributeType -> do
-          x <- getLoadoutsOnlineAttribute
+          x <- getLoadoutsOnlineAttribute version
           pure (LoadoutsOnlineAttributeValue x)
         LocationAttributeType -> do
           x <- getLocationAttribute

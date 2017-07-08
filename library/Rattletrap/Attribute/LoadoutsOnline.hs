@@ -12,10 +12,10 @@ data LoadoutsOnlineAttribute = LoadoutsOnlineAttribute
   , loadoutsOnlineAttributeUnknown2 :: Bool
   } deriving (Eq, Ord, Show)
 
-getLoadoutsOnlineAttribute :: BinaryBit.BitGet LoadoutsOnlineAttribute
-getLoadoutsOnlineAttribute = do
-  blueLoadout <- getLoadoutOnlineAttribute
-  orangeLoadout <- getLoadoutOnlineAttribute
+getLoadoutsOnlineAttribute :: (Int, Int) -> BinaryBit.BitGet LoadoutsOnlineAttribute
+getLoadoutsOnlineAttribute version = do
+  blueLoadout <- getLoadoutOnlineAttribute version
+  orangeLoadout <- getLoadoutOnlineAttribute version
   unknown1 <- BinaryBit.getBool
   unknown2 <- BinaryBit.getBool
   pure (LoadoutsOnlineAttribute blueLoadout orangeLoadout unknown1 unknown2)

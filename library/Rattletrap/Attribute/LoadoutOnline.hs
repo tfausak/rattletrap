@@ -10,30 +10,32 @@ newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
   { loadoutAttributeValue :: [[(Word32, CompressedWord)]]
   } deriving (Eq, Ord, Show)
 
-getLoadoutOnlineAttribute :: BinaryBit.BitGet LoadoutOnlineAttribute
-getLoadoutOnlineAttribute = do
+getLoadoutOnlineAttribute ::
+     (Int, Int) -> BinaryBit.BitGet LoadoutOnlineAttribute
+getLoadoutOnlineAttribute (major, minor) = do
+  let getOuter = do
+        innerSize <- getWord8Bits
+        Monad.replicateM (fromIntegral (word8Value innerSize)) getInner
+      getInner = do
+        x <- getWord32Bits
+        y <- getCompressedWord limit
+        pure (x, y)
+      limit =
+        if major >= 868 && minor >= 18
+          then 2 ^ (32 :: Int)
+          else 27
   size <- getWord8Bits
-  values <-
-    Monad.replicateM
-      (fromIntegral (word8Value size))
-      (do innerSize <- getWord8Bits
-          Monad.replicateM
-            (fromIntegral (word8Value innerSize))
-            (do x <- getWord32Bits
-                y <- getCompressedWord 27
-                pure (x, y)))
+  values <- Monad.replicateM (fromIntegral (word8Value size)) getOuter
   pure (LoadoutOnlineAttribute values)
 
 putLoadoutOnlineAttribute :: LoadoutOnlineAttribute -> BinaryBit.BitPut ()
 putLoadoutOnlineAttribute loadoutAttribute = do
-  let values = loadoutAttributeValue loadoutAttribute
-  putWord8Bits (Word8 (fromIntegral (length values)))
-  mapM_
-    (\xs -> do
-       putWord8Bits (Word8 (fromIntegral (length xs)))
-       mapM_
-         (\(x, y) -> do
-            putWord32Bits x
-            putCompressedWord y)
-         xs)
-    values
+  let putOuter xs = do
+        putWord8Bits (Word8 (fromIntegral (length xs)))
+        mapM_ putInner xs
+      putInner (x, y) = do
+        putWord32Bits x
+        putCompressedWord y
+      value = loadoutAttributeValue loadoutAttribute
+  putWord8Bits (Word8 (fromIntegral (length value)))
+  mapM_ putOuter value
