@@ -75,6 +75,7 @@ replays =
   , ("7109EB9846D303E54B7ACBA792036213", "a boost modifier")
   , ("7BF6073F4614CE0A438994B9A260DA6A", "an online loadouts attribute")
   , ("89CBA30E46FA5385BDD35DA4285D4D2E", "remote user data")
+  , ("8AE551FF406D7B82ED853B8C7BFF8CDA", "new painted items")
   , ("9704208245D7DD851F2FB2BC7DFD9AC3", "a batarang")
   , ("98E58A904D713F2DE202358E8573265D", "a player using behind view")
   , ("A128B3AB45D5A18E3EF9CF93C9576BCE", "a round count down")
