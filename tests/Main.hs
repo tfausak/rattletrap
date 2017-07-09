@@ -80,6 +80,7 @@ replays =
   , ("98E58A904D713F2DE202358E8573265D", "a player using behind view")
   , ("A128B3AB45D5A18E3EF9CF93C9576BCE", "a round count down")
   , ("A52F804845573D8DA65E97BF59026A43", "some more mutators")
+  , ("A558B1B44124D6E021640884E8EEC2A7", "extended explosion data")
   , ("A6711CE74272B2E663DCC9A200A218E3", "a waiting player")
   , ("A7F001A1417A19BFA8C90990D8F7C2FF", "a ready attribute")
   , ("B9F9B87D4A9D0A3D25D4EC91C0401DE2", "a party leader")

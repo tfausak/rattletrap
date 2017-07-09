@@ -191,6 +191,7 @@ rawAttributeTypes =
   , ("TAGame.Ball_TA:ReplicatedBallMaxLinearSpeedScale", FloatAttributeType)
   , ("TAGame.Ball_TA:ReplicatedBallScale", FloatAttributeType)
   , ("TAGame.Ball_TA:ReplicatedExplosionData", ExplosionAttributeType)
+  , ("TAGame.Ball_TA:ReplicatedExplosionDataExtended", ExtendedExplosionAttributeType)
   , ("TAGame.Ball_TA:ReplicatedWorldBounceScale", FloatAttributeType)
   , ("TAGame.BreakOutActor_Platform_TA:DamageState", DamageStateAttributeType)
   , ("TAGame.CameraSettingsActor_TA:bUsingBehindView", BooleanAttributeType)
