@@ -91,7 +91,12 @@ getEnv :: String -> IO String
 getEnv name = do
   maybeValue <- Environment.lookupEnv name
   case maybeValue of
-    Just value -> pure value
     Nothing -> do
       putStrLn (name ++ ": does not exist")
       Exit.exitSuccess
+    Just value ->
+      if null value
+        then do
+          putStrLn (name ++ ": is empty")
+          Exit.exitSuccess
+        else pure value
