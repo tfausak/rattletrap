@@ -10,6 +10,7 @@ data AttributeType
   | DemolishAttributeType
   | EnumAttributeType
   | ExplosionAttributeType
+  | ExtendedExplosionAttributeType
   | FlaggedIntAttributeType
   | FloatAttributeType
   | GameModeAttributeType

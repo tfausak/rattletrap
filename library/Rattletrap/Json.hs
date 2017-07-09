@@ -58,6 +58,7 @@ $(let optionsFor name =
         , ''Dictionary
         , ''EnumAttribute
         , ''ExplosionAttribute
+        , ''ExtendedExplosionAttribute
         , ''FlaggedIntAttribute
         , ''Float32
         , ''FloatAttribute
