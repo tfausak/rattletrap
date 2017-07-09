@@ -9,6 +9,7 @@ module Rattletrap.AttributeValue
   , module Rattletrap.Attribute.Demolish
   , module Rattletrap.Attribute.Enum
   , module Rattletrap.Attribute.Explosion
+  , module Rattletrap.Attribute.ExtendedExplosion
   , module Rattletrap.Attribute.FlaggedInt
   , module Rattletrap.Attribute.Float
   , module Rattletrap.Attribute.GameMode
@@ -40,6 +41,7 @@ import Rattletrap.Attribute.DamageState
 import Rattletrap.Attribute.Demolish
 import Rattletrap.Attribute.Enum
 import Rattletrap.Attribute.Explosion
+import Rattletrap.Attribute.ExtendedExplosion
 import Rattletrap.Attribute.FlaggedInt
 import Rattletrap.Attribute.Float
 import Rattletrap.Attribute.GameMode
@@ -78,6 +80,7 @@ data AttributeValue
   | DemolishAttributeValue DemolishAttribute
   | EnumAttributeValue EnumAttribute
   | ExplosionAttributeValue ExplosionAttribute
+  | ExtendedExplosionAttributeValue ExtendedExplosionAttribute
   | FlaggedIntAttributeValue FlaggedIntAttribute
   | FloatAttributeValue FloatAttribute
   | GameModeAttributeValue GameModeAttribute
@@ -132,6 +135,9 @@ getAttributeValue version name =
         ExplosionAttributeType -> do
           x <- getExplosionAttribute
           pure (ExplosionAttributeValue x)
+        ExtendedExplosionAttributeType -> do
+          x <- getExtendedExplosionAttribute
+          pure (ExtendedExplosionAttributeValue x)
         FlaggedIntAttributeType -> do
           x <- getFlaggedIntAttribute
           pure (FlaggedIntAttributeValue x)
@@ -209,6 +215,7 @@ putAttributeValue value =
     DemolishAttributeValue x -> putDemolishAttribute x
     EnumAttributeValue x -> putEnumAttribute x
     ExplosionAttributeValue x -> putExplosionAttribute x
+    ExtendedExplosionAttributeValue x -> putExtendedExplosionAttribute x
     FlaggedIntAttributeValue x -> putFlaggedIntAttribute x
     FloatAttributeValue x -> putFloatAttribute x
     GameModeAttributeValue x -> putGameModeAttribute x
