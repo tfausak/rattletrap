@@ -24,13 +24,16 @@ import Rattletrap.Replication
 import Rattletrap.ReplicationValue
 
 import qualified Control.Monad as Monad
-import qualified Data.Aeson.Casing as Casing
 import qualified Data.Aeson.TH as Aeson
+import qualified Data.Aeson.Types as Aeson
 import qualified Language.Haskell.TH as TH
 
-$(let optionsFor name =
-        (Casing.aesonDrop (length (TH.nameBase name)) Casing.snakeCase)
-        { Aeson.constructorTagModifier = Casing.snakeCase
+$(let toSnakeCase = Aeson.camelTo2 '_'
+      dropName name = drop (length (TH.nameBase name))
+      optionsFor name =
+        Aeson.defaultOptions
+        { Aeson.constructorTagModifier = toSnakeCase
+        , Aeson.fieldLabelModifier = toSnakeCase . dropName name
         , Aeson.omitNothingFields = True
         , Aeson.sumEncoding = Aeson.ObjectWithSingleField
         , Aeson.unwrapUnaryRecords = True
