@@ -1,15 +1,6 @@
-{- stack --resolver lts-8.0 script
-  --package aeson
-  --package bytestring
-  --package directory
-  --package filepath
-  --package process
-  --package text
--}
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Lazy as ByteString
-import qualified Data.Maybe as Maybe
 import qualified Data.Text as Text
 import qualified System.Directory as Directory
 import qualified System.Environment as Environment
