@@ -24,7 +24,7 @@ script:
   - stack --jobs 1 setup
   - stack build --jobs 1 --only-dependencies --test rattletrap
   - stack build --ghc-options -O2 --jobs 1 --pedantic --test --test-arguments '--match 29F5' rattletrap
-  - stack --jobs 1 sdist
+  - stack --jobs 1 sdist .
 after_success:
   - stack --jobs 1 build rattletrap-tools
   - stack exec upload-package

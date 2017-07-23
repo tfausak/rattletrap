@@ -14,7 +14,7 @@ test_script:
   - stack --jobs 1 setup > nul
   - stack build --jobs 1 --only-dependencies --test rattletrap
   - stack build --ghc-options -O2 --jobs 1 --pedantic --test rattletrap
-  - stack --jobs 1 sdist
+  - stack --jobs 1 sdist .
 on_success:
   - stack --jobs 1 build rattletrap-tools
   - stack attach-binary
