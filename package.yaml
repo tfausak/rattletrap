@@ -16,7 +16,7 @@ maintainer: Taylor Fausak
 synopsis: Parse and generate Rocket League replays.
 
 dependencies:
-  - aeson >= 1.2.1 && < 1.3
+  - aeson >= 1.1.2 && < 1.3
   - base >= 4.10.0 && < 4.11
   - bimap >= 0.3.3 && < 0.4
   - binary >= 0.8.5 && < 0.9
