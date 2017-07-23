@@ -1,8 +1,8 @@
-/.stack-work/
-/*.aux
-/*.cabal
-/*.exe
-/*.hp
-/*.prof
-/*.ps
-/*.tix
+.stack-work/
+*.aux
+*.cabal
+*.exe
+*.hp
+*.prof
+*.ps
+*.tix
