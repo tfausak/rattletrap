@@ -17,4 +17,4 @@ test_script:
   - stack --jobs 1 sdist .
 on_success:
   - stack --jobs 1 build rattletrap-tools
-  - stack attach-binary
+  - stack exec attach-binary
