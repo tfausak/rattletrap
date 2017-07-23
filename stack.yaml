@@ -70,7 +70,7 @@ extra-deps:
   - fingertree-0.1.1.0
   - foundation-0.0.13
   - free-4.12.4
-  - github-release-1.0.3
+  - github-release-1.0.4
   - hourglass-0.2.10
   - HTTP-4000.3.7
   - http-client-0.5.7.0
@@ -115,6 +115,3 @@ extra-deps:
 flags:
   time-locale-compat:
     old-locale: false
-
-# TODO: Use a version of github-release that supports base-4.10.0.0.
-allow-newer: true
