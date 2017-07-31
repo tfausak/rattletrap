@@ -99,6 +99,7 @@ $(let toSnakeCase = Aeson.camelTo2 '_'
         , ''SpawnedReplication
         , ''StringAttribute
         , ''TeamPaintAttribute
+        , ''TitlesAttribute
         , ''Text
         , ''UniqueIdAttribute
         , ''UpdatedReplication

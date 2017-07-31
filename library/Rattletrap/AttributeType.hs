@@ -29,6 +29,7 @@ data AttributeType
   | RigidBodyStateAttributeType
   | StringAttributeType
   | TeamPaintAttributeType
+  | TitlesAttributeType
   | UniqueIdAttributeType
   | WeldedInfoAttributeType
   deriving (Eq, Ord, Show)
