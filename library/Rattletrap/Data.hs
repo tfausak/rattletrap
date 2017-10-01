@@ -179,6 +179,7 @@ rawAttributeTypes =
   , ("Engine.TeamInfo:Score", IntAttributeType)
   , ("ProjectX.GRI_X:bGameStarted", BooleanAttributeType)
   , ("ProjectX.GRI_X:GameServerID", QWordAttributeType)
+  , ("ProjectX.GRI_X:MatchGUID", StringAttributeType)
   , ("ProjectX.GRI_X:ReplicatedGameMutatorIndex", IntAttributeType)
   , ("ProjectX.GRI_X:ReplicatedGamePlaylist", IntAttributeType)
   , ("ProjectX.GRI_X:Reservations", ReservationAttributeType)
