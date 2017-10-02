@@ -1,5 +1,7 @@
 module Rattletrap.Attribute where
 
+import Debug.Trace
+import Text.Printf
 import Rattletrap.ActorMap
 import Rattletrap.AttributeValue
 import Rattletrap.ClassAttributeMap
@@ -55,6 +57,7 @@ getAttribute version classAttributeMap actorMap actorId =
             Nothing -> fail ("could not get attribute name for " ++ show id_)
             Just name -> do
               value <- getAttributeValue version name
+              traceM (printf "          %s: %s" (textToString name) (show value))
               pure (Attribute id_ name value)
 
 putAttribute :: Attribute -> BinaryBit.BitPut ()

@@ -1,5 +1,7 @@
 module Rattletrap.Replication where
 
+import Debug.Trace
+import Text.Printf
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.Primitive
@@ -46,6 +48,7 @@ getReplication version maxChannels classAttributeMap actorMap = do
     then pure Nothing
     else do
       actorId <- getCompressedWord maxChannels
+      traceM (printf "    - Replication for actor %d:" (compressedWordValue actorId))
       (value, newActorMap) <-
         getReplicationValue version classAttributeMap actorMap actorId
       pure (Just (Replication actorId value, newActorMap))

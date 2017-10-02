@@ -1,5 +1,6 @@
 module Rattletrap.Replication.Updated where
 
+import Debug.Trace
 import Rattletrap.ActorMap
 import Rattletrap.Attribute
 import Rattletrap.ClassAttributeMap
@@ -19,6 +20,8 @@ getUpdatedReplication
   -> CompressedWord
   -> BinaryBit.BitGet UpdatedReplication
 getUpdatedReplication version classAttributeMap actorMap actorId = do
+  traceM "        Type: Updated"
+  traceM "        Attributes:"
   attributes <- getAttributes version classAttributeMap actorMap actorId
   pure (UpdatedReplication attributes)
 

@@ -1,5 +1,8 @@
 module Rattletrap.Replication.Spawned where
 
+import Debug.Trace
+import Text.Printf
+import Data.Function
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.Initialization
@@ -33,21 +36,31 @@ getSpawnedReplication
   -> CompressedWord
   -> BinaryBit.BitGet (SpawnedReplication, ActorMap)
 getSpawnedReplication version classAttributeMap actorMap actorId = do
+  traceM "        Type: Spawned"
   flag <- BinaryBit.getBool
+  traceM (printf "        Flag: %s" (show flag))
   nameIndex <-
     if version < (868, 14)
       then pure Nothing
       else do
         nameIndex <- getWord32Bits
         pure (Just nameIndex)
+  traceM (printf "        Name index: %d" (maybe (-1) word32Value nameIndex))
   name <- lookupName classAttributeMap nameIndex
+  traceM (printf "        Name: %s" (maybe "n/a" textToString name))
   objectId <- getWord32Bits
+  traceM (printf "        Object ID: %d" (word32Value objectId))
   let newActorMap = Map.insert actorId objectId actorMap
   objectName <- lookupObjectName classAttributeMap objectId
+  traceM (printf "        Object name: %s" (textToString objectName))
   className <- lookupClassName objectName
+  traceM (printf "        Class name: %s" (textToString className))
   let hasLocation = classHasLocation className
   let hasRotation = classHasRotation className
   initialization <- getInitialization hasLocation hasRotation
+  traceM "        Initialization:"
+  traceM (printf "          Location: %s" (initialization & initializationLocation & maybe "n/a" show))
+  traceM (printf "          Rotation: %s" (initialization & initializationRotation & maybe "n/a" show))
   pure
     ( SpawnedReplication
         flag
