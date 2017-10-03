@@ -9,9 +9,7 @@ import qualified Data.Word as Word
 encodeLatin1 :: Text.Text -> ByteString.ByteString
 encodeLatin1 text = ByteString8.pack (Text.unpack text)
 
-padBytes
-  :: Integral a
-  => a -> ByteString.ByteString -> ByteString.ByteString
+padBytes :: Integral a => a -> ByteString.ByteString -> ByteString.ByteString
 padBytes size bytes =
   ByteString.concat
     [ bytes

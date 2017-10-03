@@ -51,8 +51,8 @@ data Content = Content
   -- for the 'Rattletrap.ClassAttributeMap.ClassAttributeMap'.
   } deriving (Eq, Ord, Show)
 
-getContent
-  :: (Int, Int)
+getContent ::
+     (Int, Int)
   -- ^ Major and minor version numbers, usually from
   -- 'Rattletrap.Header.getVersion'.
   -> Int

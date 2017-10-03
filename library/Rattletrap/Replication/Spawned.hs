@@ -26,8 +26,8 @@ data SpawnedReplication = SpawnedReplication
   , spawnedReplicationInitialization :: Initialization
   } deriving (Eq, Ord, Show)
 
-getSpawnedReplication
-  :: (Int, Int)
+getSpawnedReplication ::
+     (Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
@@ -68,9 +68,7 @@ putSpawnedReplication spawnedReplication = do
   putWord32Bits (spawnedReplicationObjectId spawnedReplication)
   putInitialization (spawnedReplicationInitialization spawnedReplication)
 
-lookupName
-  :: Monad m
-  => ClassAttributeMap -> Maybe Word32 -> m (Maybe Text)
+lookupName :: Monad m => ClassAttributeMap -> Maybe Word32 -> m (Maybe Text)
 lookupName classAttributeMap maybeNameIndex =
   case maybeNameIndex of
     Nothing -> pure Nothing
@@ -79,17 +77,13 @@ lookupName classAttributeMap maybeNameIndex =
         Nothing -> fail ("could not get name for index " ++ show nameIndex)
         Just name -> pure (Just name)
 
-lookupObjectName
-  :: Monad m
-  => ClassAttributeMap -> Word32 -> m Text
+lookupObjectName :: Monad m => ClassAttributeMap -> Word32 -> m Text
 lookupObjectName classAttributeMap objectId =
   case getObjectName (classAttributeMapObjectMap classAttributeMap) objectId of
     Nothing -> fail ("could not get object name for id " ++ show objectId)
     Just objectName -> pure objectName
 
-lookupClassName
-  :: Monad m
-  => Text -> m Text
+lookupClassName :: Monad m => Text -> m Text
 lookupClassName objectName =
   case getClassName objectName of
     Nothing -> fail ("could not get class name for object " ++ show objectName)

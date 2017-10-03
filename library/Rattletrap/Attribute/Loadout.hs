@@ -19,6 +19,7 @@ data LoadoutAttribute = LoadoutAttribute
   , loadoutAttributeEngineAudio :: Maybe Word32
   , loadoutAttributeTrail :: Maybe Word32
   , loadoutAttributeGoalExplosion :: Maybe Word32
+  , loadoutAttributeBanner :: Maybe Word32
   } deriving (Eq, Ord, Show)
 
 getLoadoutAttribute :: BinaryBit.BitGet LoadoutAttribute
@@ -35,6 +36,7 @@ getLoadoutAttribute = do
   engineAudio <- getOptional (version >= Word8 16) getWord32Bits
   trail <- getOptional (version >= Word8 16) getWord32Bits
   goalExplosion <- getOptional (version >= Word8 16) getWord32Bits
+  banner <- getOptional (version >= Word8 17) getWord32Bits
   pure
     (LoadoutAttribute
        version
@@ -48,7 +50,8 @@ getLoadoutAttribute = do
        unknown2
        engineAudio
        trail
-       goalExplosion)
+       goalExplosion
+       banner)
 
 getOptional :: Bool -> BinaryBit.BitGet a -> BinaryBit.BitGet (Maybe a)
 getOptional p f =
@@ -72,6 +75,7 @@ putLoadoutAttribute loadoutAttribute = do
   putOptional (loadoutAttributeEngineAudio loadoutAttribute) putWord32Bits
   putOptional (loadoutAttributeTrail loadoutAttribute) putWord32Bits
   putOptional (loadoutAttributeGoalExplosion loadoutAttribute) putWord32Bits
+  putOptional (loadoutAttributeBanner loadoutAttribute) putWord32Bits
 
 putOptional :: Maybe a -> (a -> BinaryBit.BitPut ()) -> BinaryBit.BitPut ()
 putOptional m f =

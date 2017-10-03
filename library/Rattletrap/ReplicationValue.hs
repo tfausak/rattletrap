@@ -24,8 +24,8 @@ data ReplicationValue
   -- ^ Destroys an existing actor.
   deriving (Eq, Ord, Show)
 
-getReplicationValue
-  :: (Int, Int)
+getReplicationValue ::
+     (Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
