@@ -27,24 +27,22 @@ getLoadoutOnlineAttribute ::
 getLoadoutOnlineAttribute version objectMap = do
   size <- getWord8Bits
   values <-
-    mapM (getProductAttributes version objectMap) [1 .. word8Value size]
+    Monad.replicateM
+      (fromIntegral (word8Value size))
+      (getProductAttributes version objectMap)
   pure (LoadoutOnlineAttribute values)
 
 getProductAttributes ::
-     (Int, Int)
-  -> Map.Map Word32 Text
-  -> Word.Word8
-  -> BinaryBit.BitGet [ProductAttribute]
-getProductAttributes version objectMap i = do
+     (Int, Int) -> Map.Map Word32 Text -> BinaryBit.BitGet [ProductAttribute]
+getProductAttributes version objectMap = do
   size <- getWord8Bits
-  mapM (getProductAttribute version objectMap) [1 .. word8Value size]
+  Monad.replicateM
+    (fromIntegral (word8Value size))
+    (getProductAttribute version objectMap)
 
 getProductAttribute ::
-     (Int, Int)
-  -> Map.Map Word32 Text
-  -> Word.Word8
-  -> BinaryBit.BitGet ProductAttribute
-getProductAttribute version objectMap i = do
+     (Int, Int) -> Map.Map Word32 Text -> BinaryBit.BitGet ProductAttribute
+getProductAttribute version objectMap = do
   flag <- BinaryBit.getBool
   objectId <- getWord32Bits
   let objectName = Map.lookup objectId objectMap
