@@ -1,9 +1,11 @@
 module Rattletrap.Attribute.LoadoutsOnline where
 
 import Rattletrap.Attribute.LoadoutOnline
+import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Map as Map
 
 data LoadoutsOnlineAttribute = LoadoutsOnlineAttribute
   { loadoutsOnlineAttributeBlue :: LoadoutOnlineAttribute
@@ -12,10 +14,10 @@ data LoadoutsOnlineAttribute = LoadoutsOnlineAttribute
   , loadoutsOnlineAttributeUnknown2 :: Bool
   } deriving (Eq, Ord, Show)
 
-getLoadoutsOnlineAttribute :: (Int, Int) -> BinaryBit.BitGet LoadoutsOnlineAttribute
-getLoadoutsOnlineAttribute version = do
-  blueLoadout <- getLoadoutOnlineAttribute version
-  orangeLoadout <- getLoadoutOnlineAttribute version
+getLoadoutsOnlineAttribute :: (Int, Int) -> Map.Map Word32 Text -> BinaryBit.BitGet LoadoutsOnlineAttribute
+getLoadoutsOnlineAttribute version objectMap = do
+  blueLoadout <- getLoadoutOnlineAttribute version objectMap
+  orangeLoadout <- getLoadoutOnlineAttribute version objectMap
   unknown1 <- BinaryBit.getBool
   unknown2 <- BinaryBit.getBool
   pure (LoadoutsOnlineAttribute blueLoadout orangeLoadout unknown1 unknown2)

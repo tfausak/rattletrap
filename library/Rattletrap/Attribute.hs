@@ -58,7 +58,7 @@ getAttribute version classAttributeMap actorMap actorId =
           case getAttributeName classAttributeMap attributeMap id_ of
             Nothing -> fail ("could not get attribute name for " ++ show id_)
             Just name -> do
-              value <- getAttributeValue version name
+              value <- getAttributeValue version (classAttributeMapObjectMap classAttributeMap) name
               traceM (printf "          %d (%s): %s" (compressedWordValue id_) (textToString name) (show value))
               pure (Attribute id_ name value)
 

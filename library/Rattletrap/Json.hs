@@ -86,6 +86,7 @@ $(let toSnakeCase = Aeson.camelTo2 '_'
         , ''PartyLeaderAttribute
         , ''PickupAttribute
         , ''PrivateMatchSettingsAttribute
+        , ''ProductAttribute
         , ''Property
         , ''PropertyValue
         , ''QWordAttribute
