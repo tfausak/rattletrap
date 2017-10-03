@@ -1,5 +1,8 @@
 module Rattletrap.ClassAttributeMap where
 
+import Debug.Trace
+import Data.Function
+import Text.Printf
 import Rattletrap.ActorMap
 import Rattletrap.AttributeMapping
 import Rattletrap.Cache
@@ -57,16 +60,16 @@ makeClassAttributeMap objects classMappings caches names =
              (\classId ->
                 let ownAttributes =
                       Maybe.fromMaybe
-                        Map.empty
+                        (trace (printf "COULD NOT FIND attributes for class %s" (show classId)) Map.empty)
                         (Map.lookup classId attributeMap)
                     parentsAttributes =
                       case Map.lookup classId parentMap of
-                        Nothing -> []
+                        Nothing -> trace (printf "COULD NOT FIND parent for class %s" (show classId)) []
                         Just parentClassIds ->
                           map
                             (\parentClassId ->
                                Maybe.fromMaybe
-                                 Map.empty
+                                 (trace (printf "COULD NOT FIND attributes for parent class %s of %s" (show parentClassId) (show classId)) Map.empty)
                                  (Map.lookup parentClassId attributeMap))
                             parentClassIds
                     attributes = ownAttributes : parentsAttributes
@@ -144,7 +147,7 @@ makeAttributeMap caches =
 
 makeShallowParentMap :: [(Maybe Text, Word32, Word32, Word32)]
                      -> Map.Map Word32 Word32
-makeShallowParentMap classCache =
+makeShallowParentMap classCache = trace (classCache & map (\ (maybeClassName, classId, cacheId, parentCacheId) -> printf "- { class-name: %s, class-id: %d, cache-id: %d, parent-cache-id: %d }" (maybe "n/a" textToString maybeClassName) (word32Value classId) (word32Value cacheId) (word32Value parentCacheId)) & unlines) $
   Map.fromList
     (Maybe.mapMaybe
        (\xs ->
@@ -159,7 +162,7 @@ makeParentMap :: [(Maybe Text, Word32, Word32, Word32)]
               -> Map.Map Word32 [Word32]
 makeParentMap classCache =
   let shallowParentMap = makeShallowParentMap classCache
-  in Map.mapWithKey
+  in trace (shallowParentMap & Map.toAscList & map (\ (k, v) -> printf "- %d: %d" (word32Value k) (word32Value v)) & unlines) $ Map.mapWithKey
        (\classId _ -> getParentClasses shallowParentMap classId)
        shallowParentMap
 
@@ -174,7 +177,8 @@ getParentClass :: Maybe Text
                -> Word32
                -> [(Maybe Text, Word32, Word32, Word32)]
                -> Maybe Word32
-getParentClass maybeClassName parentCacheId xs =
+getParentClass maybeClassName parentCacheId xs = do
+  traceM (printf "getting parent class for %s with parent cache id %d" (maybe "n/a" textToString maybeClassName) (word32Value parentCacheId))
   case maybeClassName of
     Nothing -> getParentClassById parentCacheId xs
     Just className -> getParentClassByName className parentCacheId xs
@@ -182,13 +186,14 @@ getParentClass maybeClassName parentCacheId xs =
 getParentClassById :: Word32
                    -> [(Maybe Text, Word32, Word32, Word32)]
                    -> Maybe Word32
-getParentClassById parentCacheId xs =
+getParentClassById parentCacheId xs = do
+  traceM (printf "getting parent class by id for parent cache id %d" (word32Value parentCacheId))
   case dropWhile (\(_, _, cacheId, _) -> cacheId /= parentCacheId) xs of
     [] ->
       if parentCacheId == Word32 0
-        then Nothing
+        then trace ("hit 0 when getting parent class by id") Nothing
         else getParentClassById (Word32 (word32Value parentCacheId - 1)) xs
-    (_, parentClassId, _, _):_ -> Just parentClassId
+    (_, parentClassId, _, _):_ -> trace (printf "found parent class id %d for parent cache id %d" (word32Value parentClassId) (word32Value parentCacheId)) $ Just parentClassId
 
 getParentClassByName :: Text
                      -> Word32
@@ -196,10 +201,10 @@ getParentClassByName :: Text
                      -> Maybe Word32
 getParentClassByName className parentCacheId xs =
   case Map.lookup className parentClasses of
-    Nothing -> getParentClassById parentCacheId xs
+    Nothing -> trace (printf "could not get parent class name for parent cache id %d" (word32Value parentCacheId)) $ getParentClassById parentCacheId xs
     Just parentClassName ->
       Maybe.maybe
-        (getParentClassById parentCacheId xs)
+        (trace (printf "failed to find parent class id for name %s" (textToString parentClassName)) $ getParentClassById parentCacheId xs)
         Just
         (Maybe.listToMaybe
            (map
