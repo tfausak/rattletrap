@@ -45,8 +45,9 @@ mainWithArgs args =
       putOutput output
     _ -> fail ("unknown arguments: " ++ show args)
 
-getIO :: [FilePath]
-      -> IO (IO ByteString.ByteString, ByteString.ByteString -> IO ())
+getIO ::
+     [FilePath]
+  -> IO (IO ByteString.ByteString, ByteString.ByteString -> IO ())
 getIO files =
   case files of
     [] -> pure (ByteString.getContents, ByteString.putStr)

@@ -21,42 +21,59 @@ data ProductAttribute = ProductAttribute
   } deriving (Eq, Ord, Show)
 
 getLoadoutOnlineAttribute ::
-     (Int, Int) -> Map.Map Word32 Text -> BinaryBit.BitGet LoadoutOnlineAttribute
+     (Int, Int)
+  -> Map.Map Word32 Text
+  -> BinaryBit.BitGet LoadoutOnlineAttribute
 getLoadoutOnlineAttribute version objectMap = do
   size <- getWord8Bits
-  values <- mapM (getProductAttributes version objectMap) [1 .. word8Value size]
+  values <-
+    mapM (getProductAttributes version objectMap) [1 .. word8Value size]
   pure (LoadoutOnlineAttribute values)
 
-getProductAttributes :: (Int, Int) -> Map.Map Word32 Text -> Word.Word8 -> BinaryBit.BitGet [ProductAttribute]
+getProductAttributes ::
+     (Int, Int)
+  -> Map.Map Word32 Text
+  -> Word.Word8
+  -> BinaryBit.BitGet [ProductAttribute]
 getProductAttributes version objectMap i = do
   size <- getWord8Bits
   mapM (getProductAttribute version objectMap) [1 .. word8Value size]
 
-getProductAttribute :: (Int, Int) -> Map.Map Word32 Text -> Word.Word8 -> BinaryBit.BitGet ProductAttribute
+getProductAttribute ::
+     (Int, Int)
+  -> Map.Map Word32 Text
+  -> Word.Word8
+  -> BinaryBit.BitGet ProductAttribute
 getProductAttribute version objectMap i = do
   flag <- BinaryBit.getBool
   objectId <- getWord32Bits
   let objectName = Map.lookup objectId objectMap
-  value <- case objectName of
-    Just name -> case textToString name of
-      "TAGame.ProductAttribute_Painted_TA" ->
-        if version >= (868, 18)
-          then do
-            x <- BinaryBit.getWord32be 31
-            pure (Just (Right x))
-          else do
-            x <- getCompressedWord 14
-            pure (Just (Left x))
-      "TAGame.ProductAttribute_UserColor_TA" -> do
-        hasValue <- BinaryBit.getBool
-        value <- if hasValue
-          then do
-            x <- BinaryBit.getWord32be 31
-            pure (Just (Right x))
-          else pure Nothing
-        pure value
-      _ -> fail ("unknown object name " ++ show objectName ++ " for ID " ++ show objectId)
-    Nothing -> fail ("missing object name for ID " ++ show objectId)
+  value <-
+    case objectName of
+      Just name ->
+        case textToString name of
+          "TAGame.ProductAttribute_Painted_TA" ->
+            if version >= (868, 18)
+              then do
+                x <- BinaryBit.getWord32be 31
+                pure (Just (Right x))
+              else do
+                x <- getCompressedWord 14
+                pure (Just (Left x))
+          "TAGame.ProductAttribute_UserColor_TA" -> do
+            hasValue <- BinaryBit.getBool
+            value <-
+              if hasValue
+                then do
+                  x <- BinaryBit.getWord32be 31
+                  pure (Just (Right x))
+                else pure Nothing
+            pure value
+          _ ->
+            fail
+              ("unknown object name " ++
+               show objectName ++ " for ID " ++ show objectId)
+      Nothing -> fail ("missing object name for ID " ++ show objectId)
   pure (ProductAttribute flag objectId objectName value)
 
 putLoadoutOnlineAttribute :: LoadoutOnlineAttribute -> BinaryBit.BitPut ()
@@ -75,17 +92,22 @@ putProductAttribute attribute = do
   BinaryBit.putBool (productAttributeUnknown attribute)
   putWord32Bits (productAttributeObjectId attribute)
   case productAttributeObjectName attribute of
-    Just name -> case textToString name of
-      "TAGame.ProductAttribute_Painted_TA" -> case productAttributeValue attribute of
-        Nothing -> pure ()
-        Just (Left x) -> putCompressedWord x
-        Just (Right x) -> BinaryBit.putWord32be 31 x
-      "TAGame.ProductAttribute_UserColor_TA" -> case productAttributeValue attribute of
-        Nothing -> BinaryBit.putBool False
-        Just value -> do
-          BinaryBit.putBool True
-          case value of
-            Left x -> putCompressedWord x
-            Right x -> BinaryBit.putWord32be 31 x
-      _ -> fail ("unknown object name for product attribute " ++ show attribute)
-    Nothing -> fail ("missing object name for product attribute " ++ show attribute)
+    Just name ->
+      case textToString name of
+        "TAGame.ProductAttribute_Painted_TA" ->
+          case productAttributeValue attribute of
+            Nothing -> pure ()
+            Just (Left x) -> putCompressedWord x
+            Just (Right x) -> BinaryBit.putWord32be 31 x
+        "TAGame.ProductAttribute_UserColor_TA" ->
+          case productAttributeValue attribute of
+            Nothing -> BinaryBit.putBool False
+            Just value -> do
+              BinaryBit.putBool True
+              case value of
+                Left x -> putCompressedWord x
+                Right x -> BinaryBit.putWord32be 31 x
+        _ ->
+          fail ("unknown object name for product attribute " ++ show attribute)
+    Nothing ->
+      fail ("missing object name for product attribute " ++ show attribute)

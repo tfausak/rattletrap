@@ -14,7 +14,10 @@ data LoadoutsOnlineAttribute = LoadoutsOnlineAttribute
   , loadoutsOnlineAttributeUnknown2 :: Bool
   } deriving (Eq, Ord, Show)
 
-getLoadoutsOnlineAttribute :: (Int, Int) -> Map.Map Word32 Text -> BinaryBit.BitGet LoadoutsOnlineAttribute
+getLoadoutsOnlineAttribute ::
+     (Int, Int)
+  -> Map.Map Word32 Text
+  -> BinaryBit.BitGet LoadoutsOnlineAttribute
 getLoadoutsOnlineAttribute version objectMap = do
   blueLoadout <- getLoadoutOnlineAttribute version objectMap
   orangeLoadout <- getLoadoutOnlineAttribute version objectMap

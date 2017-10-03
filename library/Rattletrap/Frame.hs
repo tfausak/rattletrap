@@ -17,8 +17,8 @@ data Frame = Frame
   , frameReplications :: [Replication]
   } deriving (Eq, Ord, Show)
 
-getFrames
-  :: (Int, Int)
+getFrames ::
+     (Int, Int)
   -> Int
   -> Word
   -> ClassAttributeMap
@@ -42,8 +42,8 @@ getFrames version numFrames maxChannels classAttributeMap actorMap =
 putFrames :: [Frame] -> BinaryBit.BitPut ()
 putFrames = mapM_ putFrame
 
-getFrame
-  :: (Int, Int)
+getFrame ::
+     (Int, Int)
   -> Word
   -> ClassAttributeMap
   -> ActorMap

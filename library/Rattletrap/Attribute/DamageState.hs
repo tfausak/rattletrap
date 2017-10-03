@@ -23,13 +23,7 @@ getDamageStateAttribute = do
   unknown5 <- BinaryBit.getBool
   unknown6 <- BinaryBit.getBool
   pure
-    (DamageStateAttribute
-       unknown1
-       unknown2
-       unknown3
-       unknown4
-       unknown5
-       unknown6)
+    (DamageStateAttribute unknown1 unknown2 unknown3 unknown4 unknown5 unknown6)
 
 putDamageStateAttribute :: DamageStateAttribute -> BinaryBit.BitPut ()
 putDamageStateAttribute damageStateAttribute = do

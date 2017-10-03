@@ -23,10 +23,8 @@ getCrc32 bytes = do
   let crc = ByteString.foldl update initial bytes
   Bits.complement crc
 
-crc32Update :: Vector.Vector Word.Word32
-            -> Word.Word32
-            -> Word.Word8
-            -> Word.Word32
+crc32Update ::
+     Vector.Vector Word.Word32 -> Word.Word32 -> Word.Word8 -> Word.Word32
 crc32Update table crc byte = do
   let toWord8 =
         fromIntegral :: (Integral a) =>

@@ -73,9 +73,7 @@ getTextSize text =
           else scale * rawSize
   in Int32 size
 
-normalizeTextSize
-  :: Integral a
-  => Int32 -> a
+normalizeTextSize :: Integral a => Int32 -> a
 normalizeTextSize size =
   case int32Value size of
     0x05000000 -> 8

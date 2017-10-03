@@ -103,7 +103,11 @@ data AttributeValue
   | WeldedInfoAttributeValue WeldedInfoAttribute
   deriving (Eq, Ord, Show)
 
-getAttributeValue :: (Int, Int) -> Map.Map Word32 Text -> Text -> BinaryBit.BitGet AttributeValue
+getAttributeValue ::
+     (Int, Int)
+  -> Map.Map Word32 Text
+  -> Text
+  -> BinaryBit.BitGet AttributeValue
 getAttributeValue version objectMap name =
   case Map.lookup name attributeTypes of
     Just constructor ->

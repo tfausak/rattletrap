@@ -18,12 +18,7 @@ getAppliedDamageAttribute = do
   location <- getVector
   unknown3 <- getInt32Bits
   unknown4 <- getInt32Bits
-  pure
-    (AppliedDamageAttribute
-       unknown1
-       location
-       unknown3
-       unknown4)
+  pure (AppliedDamageAttribute unknown1 location unknown3 unknown4)
 
 putAppliedDamageAttribute :: AppliedDamageAttribute -> BinaryBit.BitPut ()
 putAppliedDamageAttribute appliedDamageAttribute = do

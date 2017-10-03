@@ -33,8 +33,8 @@ data ClassAttributeMap = ClassAttributeMap
 
 -- | Makes a 'ClassAttributeMap' given the necessary fields from the
 -- 'Rattletrap.Content.Content'.
-makeClassAttributeMap
-  :: List Text
+makeClassAttributeMap ::
+     List Text
   -- ^ From 'Rattletrap.Content.contentObjects'.
   -> List ClassMapping
   -- ^ From 'Rattletrap.Content.contentClassMappings'.
@@ -82,9 +82,8 @@ getName :: IntMap.IntMap Text -> Word32 -> Maybe Text
 getName nameMap nameIndex =
   IntMap.lookup (fromIntegral (word32Value nameIndex)) nameMap
 
-makeObjectClassMap :: Map.Map Word32 Text
-                   -> Bimap.Bimap Word32 Text
-                   -> Map.Map Word32 Word32
+makeObjectClassMap ::
+     Map.Map Word32 Text -> Bimap.Bimap Word32 Text -> Map.Map Word32 Word32
 makeObjectClassMap objectMap classMap = do
   let objectIds = Map.keys objectMap
   let classIds = map (getClassId objectMap classMap) objectIds
@@ -98,18 +97,17 @@ makeObjectClassMap objectMap classMap = do
           rawPairs
   Map.fromList pairs
 
-getClassId :: Map.Map Word32 Text
-           -> Bimap.Bimap Word32 Text
-           -> Word32
-           -> Maybe Word32
+getClassId ::
+     Map.Map Word32 Text -> Bimap.Bimap Word32 Text -> Word32 -> Maybe Word32
 getClassId objectMap classMap objectId = do
   objectName <- getObjectName objectMap objectId
   className <- getClassName objectName
   Bimap.lookupR className classMap
 
-makeClassCache :: Bimap.Bimap Word32 Text
-               -> List Cache
-               -> [(Maybe Text, Word32, Word32, Word32)]
+makeClassCache ::
+     Bimap.Bimap Word32 Text
+  -> List Cache
+  -> [(Maybe Text, Word32, Word32, Word32)]
 makeClassCache classMap caches =
   map
     (\cache ->
@@ -142,8 +140,8 @@ makeAttributeMap caches =
                  (listValue (cacheAttributeMappings cache)))))
        (listValue caches))
 
-makeShallowParentMap :: [(Maybe Text, Word32, Word32, Word32)]
-                     -> Map.Map Word32 Word32
+makeShallowParentMap ::
+     [(Maybe Text, Word32, Word32, Word32)] -> Map.Map Word32 Word32
 makeShallowParentMap classCache =
   Map.fromList
     (Maybe.mapMaybe
@@ -155,8 +153,8 @@ makeShallowParentMap classCache =
               pure (classId, parentClassId))
        (List.tails (reverse classCache)))
 
-makeParentMap :: [(Maybe Text, Word32, Word32, Word32)]
-              -> Map.Map Word32 [Word32]
+makeParentMap ::
+     [(Maybe Text, Word32, Word32, Word32)] -> Map.Map Word32 [Word32]
 makeParentMap classCache =
   let shallowParentMap = makeShallowParentMap classCache
   in Map.mapWithKey
@@ -170,18 +168,18 @@ getParentClasses shallowParentMap classId =
     Just parentClassId ->
       parentClassId : getParentClasses shallowParentMap parentClassId
 
-getParentClass :: Maybe Text
-               -> Word32
-               -> [(Maybe Text, Word32, Word32, Word32)]
-               -> Maybe Word32
+getParentClass ::
+     Maybe Text
+  -> Word32
+  -> [(Maybe Text, Word32, Word32, Word32)]
+  -> Maybe Word32
 getParentClass maybeClassName parentCacheId xs =
   case maybeClassName of
     Nothing -> getParentClassById parentCacheId xs
     Just className -> getParentClassByName className parentCacheId xs
 
-getParentClassById :: Word32
-                   -> [(Maybe Text, Word32, Word32, Word32)]
-                   -> Maybe Word32
+getParentClassById ::
+     Word32 -> [(Maybe Text, Word32, Word32, Word32)] -> Maybe Word32
 getParentClassById parentCacheId xs =
   case dropWhile (\(_, _, cacheId, _) -> cacheId /= parentCacheId) xs of
     [] ->
@@ -190,10 +188,8 @@ getParentClassById parentCacheId xs =
         else getParentClassById (Word32 (word32Value parentCacheId - 1)) xs
     (_, parentClassId, _, _):_ -> Just parentClassId
 
-getParentClassByName :: Text
-                     -> Word32
-                     -> [(Maybe Text, Word32, Word32, Word32)]
-                     -> Maybe Word32
+getParentClassByName ::
+     Text -> Word32 -> [(Maybe Text, Word32, Word32, Word32)] -> Maybe Word32
 getParentClassByName className parentCacheId xs =
   case Map.lookup className parentClasses of
     Nothing -> getParentClassById parentCacheId xs
@@ -245,8 +241,8 @@ normalizeObjectName objectName =
                      else if Text.isInfixOf mapScoreboard name
                             then Text mapScoreboard
                             else if Text.isInfixOf breakout name
-                              then Text breakout
-                              else objectName
+                                   then Text breakout
+                                   else objectName
 
 objectClasses :: Map.Map Text Text
 objectClasses =
@@ -272,18 +268,16 @@ getAttributeIdLimit attributeMap = do
   let limit = fromIntegral (word32Value streamId)
   pure limit
 
-getAttributeName :: ClassAttributeMap
-                 -> Map.Map Word32 Word32
-                 -> CompressedWord
-                 -> Maybe Text
+getAttributeName ::
+     ClassAttributeMap -> Map.Map Word32 Word32 -> CompressedWord -> Maybe Text
 getAttributeName classAttributeMap attributeMap streamId = do
   let key = Word32 (fromIntegral (compressedWordValue streamId))
   attributeId <- Map.lookup key attributeMap
   let objectMap = classAttributeMapObjectMap classAttributeMap
   Map.lookup attributeId objectMap
 
-getAttributeMap
-  :: ClassAttributeMap
+getAttributeMap ::
+     ClassAttributeMap
   -> ActorMap
   -> CompressedWord
   -> Maybe (Map.Map Word32 Word32)

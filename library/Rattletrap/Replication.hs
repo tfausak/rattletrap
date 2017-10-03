@@ -13,8 +13,8 @@ data Replication = Replication
   , replicationValue :: ReplicationValue
   } deriving (Eq, Ord, Show)
 
-getReplications
-  :: (Int, Int)
+getReplications ::
+     (Int, Int)
   -> Word
   -> ClassAttributeMap
   -> ActorMap
@@ -34,8 +34,8 @@ putReplications replications = do
   mapM_ putReplication replications
   BinaryBit.putBool False
 
-getReplication
-  :: (Int, Int)
+getReplication ::
+     (Int, Int)
   -> Word
   -> ClassAttributeMap
   -> ActorMap

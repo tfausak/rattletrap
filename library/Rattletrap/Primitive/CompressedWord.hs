@@ -36,9 +36,7 @@ putCompressedWord compressedWord = do
           else pure ()
   go 0 0
 
-getMaxBits
-  :: (Integral a, Integral b)
-  => a -> b
+getMaxBits :: (Integral a, Integral b) => a -> b
 getMaxBits x = do
   let n = max 1 (ceiling (logBase (2 :: Double) (fromIntegral (max 1 x))))
   if x < 1024 && x == 2 ^ n
