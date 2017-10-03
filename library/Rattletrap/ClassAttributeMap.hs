@@ -210,7 +210,7 @@ getParentClassByName className parentCacheId xs =
            (map
               (\(_, parentClassId, _, _) -> parentClassId)
               (filter
-                 (\(_, _, cacheId, _) -> cacheId == parentCacheId)
+                 (\(_, _, cacheId, _) -> cacheId <= parentCacheId)
                  (filter
                     (\(maybeClassName, _, _, _) ->
                        maybeClassName == Just parentClassName)
