@@ -23,6 +23,7 @@ module Rattletrap.AttributeValue
   , module Rattletrap.Attribute.PartyLeader
   , module Rattletrap.Attribute.Pickup
   , module Rattletrap.Attribute.PrivateMatchSettings
+  , module Rattletrap.Attribute.ProductAttribute
   , module Rattletrap.Attribute.QWord
   , module Rattletrap.Attribute.Reservation
   , module Rattletrap.Attribute.RigidBodyState
@@ -55,6 +56,7 @@ import Rattletrap.Attribute.MusicStinger
 import Rattletrap.Attribute.PartyLeader
 import Rattletrap.Attribute.Pickup
 import Rattletrap.Attribute.PrivateMatchSettings
+import Rattletrap.Attribute.ProductAttribute
 import Rattletrap.Attribute.QWord
 import Rattletrap.Attribute.Reservation
 import Rattletrap.Attribute.RigidBodyState
