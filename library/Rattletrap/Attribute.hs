@@ -2,7 +2,6 @@ module Rattletrap.Attribute where
 
 import Debug.Trace
 import Text.Printf
-import Data.Function
 import Rattletrap.ActorMap
 import Rattletrap.AttributeValue
 import Rattletrap.ClassAttributeMap
@@ -10,7 +9,6 @@ import Rattletrap.Primitive
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
-import qualified Data.Map as Map
 
 data Attribute = Attribute
   { attributeId :: CompressedWord
@@ -59,7 +57,6 @@ getAttribute version classAttributeMap actorMap actorId =
             Nothing -> fail ("could not get attribute name for " ++ show id_)
             Just name -> do
               value <- getAttributeValue version (classAttributeMapObjectMap classAttributeMap) name
-              traceM (printf "          %d (%s): %s" (compressedWordValue id_) (textToString name) (show value))
               pure (Attribute id_ name value)
 
 putAttribute :: Attribute -> BinaryBit.BitPut ()
