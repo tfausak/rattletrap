@@ -17,30 +17,42 @@ data ProductAttribute = ProductAttribute
   , productAttributeObjectId :: Word32
   , productAttributeObjectName :: Maybe Text
   -- ^ read-only
-  , productAttributeValue :: Maybe Word.Word32
+  , productAttributeValue :: Maybe (Either CompressedWord Word.Word32)
   } deriving (Eq, Ord, Show)
 
 getLoadoutOnlineAttribute ::
      (Int, Int) -> Map.Map Word32 Text -> BinaryBit.BitGet LoadoutOnlineAttribute
 getLoadoutOnlineAttribute version objectMap = do
   size <- getWord8Bits
-  values <- mapM (getProductAttributes objectMap) [1 .. word8Value size]
+  values <- mapM (getProductAttributes version objectMap) [1 .. word8Value size]
   pure (LoadoutOnlineAttribute values)
 
-getProductAttributes :: Map.Map Word32 Text -> Word.Word8 -> BinaryBit.BitGet [ProductAttribute]
-getProductAttributes objectMap i = do
+getProductAttributes :: (Int, Int) -> Map.Map Word32 Text -> Word.Word8 -> BinaryBit.BitGet [ProductAttribute]
+getProductAttributes version objectMap i = do
   size <- getWord8Bits
-  mapM (getProductAttribute objectMap) [1 .. word8Value size]
+  mapM (getProductAttribute version objectMap) [1 .. word8Value size]
 
-getProductAttribute :: Map.Map Word32 Text -> Word.Word8 -> BinaryBit.BitGet ProductAttribute
-getProductAttribute objectMap i = do
+getProductAttribute :: (Int, Int) -> Map.Map Word32 Text -> Word.Word8 -> BinaryBit.BitGet ProductAttribute
+getProductAttribute version objectMap i = do
   flag <- BinaryBit.getBool
   objectId <- getWord32Bits
   let objectName = Map.lookup objectId objectMap
   value <- case fmap textToString objectName of
+    Just "TAGame.ProductAttribute_Painted_TA" ->
+      if version >= (868, 18)
+        then do
+          x <- BinaryBit.getWord32be 31
+          pure (Just (Right x))
+        else do
+          x <- getCompressedWord 14
+          pure (Just (Left x))
     Just "TAGame.ProductAttribute_UserColor_TA" -> do
       hasValue <- BinaryBit.getBool
-      value <- if hasValue then fmap Just (BinaryBit.getWord32be 31) else pure Nothing
+      value <- if hasValue
+        then do
+          x <- BinaryBit.getWord32be 31
+          pure (Just (Right x))
+        else pure Nothing
       pure value
     _ -> fail ("unknown object name " ++ show objectName ++ " for ID " ++ show objectId)
   pure (ProductAttribute flag objectId objectName value)
@@ -61,9 +73,15 @@ putProductAttribute attribute = do
   BinaryBit.putBool (productAttributeUnknown attribute)
   putWord32Bits (productAttributeObjectId attribute)
   case fmap textToString (productAttributeObjectName attribute) of
+    Just "TAGame.ProductAttribute_Painted_TA" -> case productAttributeValue attribute of
+      Nothing -> pure ()
+      Just (Left x) -> putCompressedWord x
+      Just (Right x) -> BinaryBit.putWord32be 31 x
     Just "TAGame.ProductAttribute_UserColor_TA" -> case productAttributeValue attribute of
       Nothing -> BinaryBit.putBool False
       Just value -> do
         BinaryBit.putBool True
-        BinaryBit.putWord32be 31 value
+        case value of
+          Left x -> putCompressedWord x
+          Right x -> BinaryBit.putWord32be 31 x
     _ -> fail ("bad product attribute: " ++ show attribute)
