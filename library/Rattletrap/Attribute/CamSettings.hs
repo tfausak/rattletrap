@@ -12,17 +12,19 @@ data CamSettingsAttribute = CamSettingsAttribute
   , camSettingsAttributeDistance :: Float32
   , camSettingsAttributeStiffness :: Float32
   , camSettingsAttributeSwivelSpeed :: Float32
+  , camSettingsAttributeTransitionSpeed :: Maybe Float32
   } deriving (Eq, Ord, Show)
 
-getCamSettingsAttribute :: BinaryBit.BitGet CamSettingsAttribute
-getCamSettingsAttribute = do
+getCamSettingsAttribute :: (Int, Int) -> BinaryBit.BitGet CamSettingsAttribute
+getCamSettingsAttribute version = do
   fov <- getFloat32Bits
   height <- getFloat32Bits
   angle <- getFloat32Bits
   distance <- getFloat32Bits
   stiffness <- getFloat32Bits
   swivelSpeed <- getFloat32Bits
-  pure (CamSettingsAttribute fov height angle distance stiffness swivelSpeed)
+  transitionSpeed <- if version >= (868, 20) then fmap Just getFloat32Bits else pure Nothing
+  pure (CamSettingsAttribute fov height angle distance stiffness swivelSpeed transitionSpeed)
 
 putCamSettingsAttribute :: CamSettingsAttribute -> BinaryBit.BitPut ()
 putCamSettingsAttribute camSettingsAttribute = do
@@ -32,3 +34,6 @@ putCamSettingsAttribute camSettingsAttribute = do
   putFloat32Bits (camSettingsAttributeDistance camSettingsAttribute)
   putFloat32Bits (camSettingsAttributeStiffness camSettingsAttribute)
   putFloat32Bits (camSettingsAttributeSwivelSpeed camSettingsAttribute)
+  case camSettingsAttributeTransitionSpeed camSettingsAttribute of
+    Nothing -> pure ()
+    Just transitionSpeed -> putFloat32Bits transitionSpeed

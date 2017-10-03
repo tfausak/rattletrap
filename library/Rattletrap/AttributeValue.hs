@@ -118,7 +118,7 @@ getAttributeValue version objectMap name =
           x <- getByteAttribute
           pure (ByteAttributeValue x)
         CamSettingsAttributeType -> do
-          x <- getCamSettingsAttribute
+          x <- getCamSettingsAttribute version
           pure (CamSettingsAttributeValue x)
         ClubColorsAttributeType -> do
           x <- getClubColorsAttribute
