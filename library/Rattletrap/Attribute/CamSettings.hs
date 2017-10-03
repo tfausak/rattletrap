@@ -23,7 +23,11 @@ getCamSettingsAttribute version = do
   distance <- getFloat32Bits
   stiffness <- getFloat32Bits
   swivelSpeed <- getFloat32Bits
-  transitionSpeed <- if version >= (868, 20) then fmap Just getFloat32Bits else pure Nothing
+  transitionSpeed <- if version >= (868, 20)
+    then do
+      x <- getFloat32Bits
+      pure (Just x)
+    else pure Nothing
   pure (CamSettingsAttribute fov height angle distance stiffness swivelSpeed transitionSpeed)
 
 putCamSettingsAttribute :: CamSettingsAttribute -> BinaryBit.BitPut ()
