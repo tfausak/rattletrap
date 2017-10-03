@@ -1,9 +1,5 @@
 module Rattletrap.Content where
 
-import Debug.Trace
-import Data.Function
-import Text.Printf
-import Rattletrap.AttributeMapping
 import Rattletrap.Cache
 import Rattletrap.ClassAttributeMap
 import Rattletrap.ClassMapping
@@ -68,90 +64,16 @@ getContent
   -> Binary.Get Content
 getContent version numFrames maxChannels = do
   levels <- getList getText
-  levels
-    & listValue
-    & map (\ x -> printf "  - %s" (textToString x))
-    & ("Content levels:" :)
-    & unlines
-    & traceM
   keyFrames <- getList getKeyFrame
-  keyFrames
-    & listValue
-    & map (\ x -> printf "  - Time: %f\n    Frame: %d\n    Position: %d"
-      (x & keyFrameTime & float32Value)
-      (x & keyFrameFrame & word32Value)
-      (x & keyFramePosition & word32Value))
-    & ("Content key frames:" :)
-    & unlines
-    & traceM
   streamSize <- getWord32
-  traceM (printf "Content stream size: %d\n" (word32Value streamSize))
   stream <- Binary.getLazyByteString (fromIntegral (word32Value streamSize))
   messages <- getList getMessage
-  messages
-    & listValue
-    & map (\ x -> printf "  - %s" (show x))
-    & ("Content messages:" :)
-    & unlines
-    & traceM
   marks <- getList getMark
-  marks
-    & listValue
-    & map (\ x -> printf "  - Value: %s\n    Frame: %d"
-      (x & markValue & textToString)
-      (x & markFrame & word32Value))
-    & ("Content marks:" :)
-    & unlines
-    & traceM
   packages <- getList getText
-  packages
-    & listValue
-    & map (\ x -> printf "  - %s" (textToString x))
-    & ("Content packages:" :)
-    & unlines
-    & traceM
   objects <- getList getText
-  objects
-    & listValue
-    & zip [0 ..]
-    & map (\ (i, x) -> printf "  %d: %s" (i :: Int) (textToString x))
-    & ("Content objects:" :)
-    & unlines
-    & traceM
   names <- getList getText
-  names
-    & listValue
-    & zip [0 ..]
-    & map (\ (i, x) -> printf "  %d: %s" (i :: Int) (textToString x))
-    & ("Content names:" :)
-    & unlines
-    & traceM
   classMappings <- getList getClassMapping
-  classMappings
-    & listValue
-    & map (\ x -> printf "  %s: %d"
-      (x & classMappingName & textToString)
-      (x & classMappingStreamId & word32Value))
-    & ("Content class mappings:" :)
-    & unlines
-    & traceM
   caches <- getList getCache
-  caches
-    & listValue
-    & map (\ x -> printf "  - Class ID: %d\n    Parent cache ID: %d\n    Cache ID: %d\n    Attribute map:\n%s"
-      (x & cacheClassId & word32Value)
-      (x & cacheParentCacheId & word32Value)
-      (x & cacheCacheId & word32Value)
-      (x
-        & cacheAttributeMappings
-        & listValue
-        & map (\ y -> printf "      %d: %d"
-          (y & attributeMappingObjectId & word32Value)
-          (y & attributeMappingStreamId & word32Value))
-        & unlines))
-    & ("Content caches:" :)
-    & unlines
-    & traceM
   let classAttributeMap =
         makeClassAttributeMap objects classMappings caches names
   let frames =
@@ -160,7 +82,7 @@ getContent version numFrames maxChannels = do
              (do (theFrames, _) <-
                    getFrames
                      version
-                     (0, numFrames)
+                     numFrames
                      maxChannels
                      classAttributeMap
                      Map.empty

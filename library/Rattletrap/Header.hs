@@ -1,15 +1,11 @@
 module Rattletrap.Header where
 
-import Debug.Trace
-import Text.Printf
-import Data.Function
 import Rattletrap.Primitive
 import Rattletrap.Property
 import Rattletrap.PropertyValue
 
 import qualified Data.Binary as Binary
 import qualified Data.Map as Map
-import qualified Data.Text as Text
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
@@ -61,25 +57,10 @@ data Header = Header
 getHeader :: Binary.Get Header
 getHeader = do
   engineVersion <- getWord32
-  traceM (printf "Header engine version: %d" (word32Value engineVersion))
   licenseeVersion <- getWord32
-  traceM (printf "Header licensee version: %d" (word32Value licenseeVersion))
   patchVersion <- getPatchVersion engineVersion licenseeVersion
-  traceM (printf "Header net version: %d" (maybe (-1) word32Value patchVersion))
   label <- getText
-  traceM (printf "Header label: %s" (textToString label))
   properties <- getDictionary getProperty
-  properties
-    & dictionaryValue
-    & Map.toAscList
-    & map (\ (k, v) -> printf "  %s:\n    Kind: %s\n    Size: %d\n    Value: %s"
-      (Text.unpack k)
-      (v & propertyKind & textToString)
-      (v & propertySize & word64Value)
-      (v & propertyValue & show))
-    & ("Header properties:" :)
-    & unlines
-    & traceM
   pure (Header engineVersion licenseeVersion patchVersion label properties)
 
 getPatchVersion :: Word32 -> Word32 -> Binary.Get (Maybe Word32)

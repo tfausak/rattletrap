@@ -1,8 +1,5 @@
 module Rattletrap.Frame where
 
-import Debug.Trace
-import Text.Printf
-import Control.Monad
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.Primitive
@@ -22,13 +19,12 @@ data Frame = Frame
 
 getFrames
   :: (Int, Int)
-  -> (Int, Int)
+  -> Int
   -> Word
   -> ClassAttributeMap
   -> ActorMap
   -> BinaryBit.BitGet ([Frame], ActorMap)
-getFrames version (frameNum, numFrames) maxChannels classAttributeMap actorMap = do
-  traceM (printf "- Frame %d (%d remaining):" frameNum numFrames)
+getFrames version numFrames maxChannels classAttributeMap actorMap =
   if numFrames <= 0
     then pure ([], actorMap)
     else do
@@ -37,7 +33,7 @@ getFrames version (frameNum, numFrames) maxChannels classAttributeMap actorMap =
       (frames, newerActorMap) <-
         getFrames
           version
-          (frameNum + 1, numFrames - 1)
+          (numFrames - 1)
           maxChannels
           classAttributeMap
           newActorMap
@@ -54,13 +50,7 @@ getFrame
   -> BinaryBit.BitGet (Frame, ActorMap)
 getFrame version maxChannels classAttributeMap actorMap = do
   time <- getFloat32Bits
-  let t = float32Value time
-  traceM (printf "    Time: %f" t)
-  when (t < 0.01) (fail "time too small")
   delta <- getFloat32Bits
-  let d = float32Value delta
-  traceM (printf "    Delta: %f" d)
-  when (d /= 0 && d < 0.01) (fail "delta too small")
   (replications, newActorMap) <-
     getReplications version maxChannels classAttributeMap actorMap
   pure (Frame time delta replications, newActorMap)

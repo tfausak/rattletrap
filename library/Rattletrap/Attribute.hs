@@ -1,7 +1,5 @@
 module Rattletrap.Attribute where
 
-import Debug.Trace
-import Text.Printf
 import Rattletrap.ActorMap
 import Rattletrap.AttributeValue
 import Rattletrap.ClassAttributeMap
