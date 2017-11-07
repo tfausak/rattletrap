@@ -5,6 +5,8 @@ import Rattletrap.Version
 
 import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Version as Version
+import qualified Network.HTTP.Client as Client
+import qualified Network.HTTP.Client.TLS as Client
 import qualified System.Environment as Environment
 
 -- | Gets command-line arguments and passes them to 'mainWithArgs'.
@@ -51,6 +53,14 @@ getIO ::
 getIO files =
   case files of
     [] -> pure (ByteString.getContents, ByteString.putStr)
-    [i] -> pure (ByteString.readFile i, ByteString.putStr)
-    [i, o] -> pure (ByteString.readFile i, ByteString.writeFile o)
+    [i] -> pure (readUrlOrFile i, ByteString.putStr)
+    [i, o] -> pure (readUrlOrFile i, ByteString.writeFile o)
     _ -> fail ("unknown files: " ++ show files)
+
+readUrlOrFile :: FilePath -> IO ByteString.ByteString
+readUrlOrFile i = case Client.parseUrlThrow i of
+  Just request -> do
+    manager <- Client.newTlsManager
+    response <- Client.httpLbs request manager
+    pure (Client.responseBody response)
+  Nothing -> ByteString.readFile i
