@@ -21,12 +21,13 @@ getTeamPaintAttribute = do
   primaryFinish <- getWord32Bits
   accentFinish <- getWord32Bits
   pure
-    (TeamPaintAttribute
-       team
-       primaryColor
-       accentColor
-       primaryFinish
-       accentFinish)
+    ( TeamPaintAttribute
+      team
+      primaryColor
+      accentColor
+      primaryFinish
+      accentFinish
+    )
 
 putTeamPaintAttribute :: TeamPaintAttribute -> BinaryBit.BitPut ()
 putTeamPaintAttribute teamPaintAttribute = do

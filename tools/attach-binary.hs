@@ -37,10 +37,10 @@ data Environment
 
 getOwnerAndRepo :: Environment -> IO (String, String)
 getOwnerAndRepo environment = do
-  let name =
-        case environment of
-          AppVeyor -> "APPVEYOR_REPO_NAME"
-          TravisCI -> "TRAVIS_REPO_SLUG"
+  let
+    name = case environment of
+      AppVeyor -> "APPVEYOR_REPO_NAME"
+      TravisCI -> "TRAVIS_REPO_SLUG"
   slug <- getEnv name
   let (owner, rawRepo) = break (== '/') slug
   let repo = drop 1 rawRepo
@@ -48,10 +48,10 @@ getOwnerAndRepo environment = do
 
 getTag :: Environment -> IO String
 getTag environment = do
-  let name =
-        case environment of
-          AppVeyor -> "APPVEYOR_REPO_TAG_NAME"
-          TravisCI -> "TRAVIS_TAG"
+  let
+    name = case environment of
+      AppVeyor -> "APPVEYOR_REPO_TAG_NAME"
+      TravisCI -> "TRAVIS_TAG"
   getEnv name
 
 getFile :: String -> Environment -> IO String
@@ -63,10 +63,9 @@ getFile executable environment = do
 
 getName :: String -> String -> Environment -> IO String
 getName executable tag environment = do
-  os <-
-    case environment of
-      AppVeyor -> pure "windows"
-      TravisCI -> getEnv "TRAVIS_OS_NAME"
+  os <- case environment of
+    AppVeyor -> pure "windows"
+    TravisCI -> getEnv "TRAVIS_OS_NAME"
   pure (concat [executable, "-", tag, "-", os, ".gz"])
 
 upload :: String -> String -> String -> String -> FilePath -> String -> IO ()
@@ -75,10 +74,11 @@ upload token owner repo tag file name = do
   let output = GZip.compress input
   Temp.withSystemTempFile
     "archive.gz"
-    (\archive handle -> do
-       IO.hClose handle
-       ByteString.writeFile archive output
-       GitHubRelease.upload token owner repo tag archive name)
+    ( \archive handle -> do
+      IO.hClose handle
+      ByteString.writeFile archive output
+      GitHubRelease.upload token owner repo tag archive name
+    )
 
 getEnv :: String -> IO String
 getEnv name = do
@@ -87,9 +87,8 @@ getEnv name = do
     Nothing -> do
       putStrLn (name ++ ": does not exist")
       Exit.exitSuccess
-    Just value ->
-      if null value
-        then do
-          putStrLn (name ++ ": is empty")
-          Exit.exitSuccess
-        else pure value
+    Just value -> if null value
+      then do
+        putStrLn (name ++ ": is empty")
+        Exit.exitSuccess
+      else pure value

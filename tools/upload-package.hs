@@ -33,8 +33,10 @@ checkTravisOsName = do
   maybeOs <- Environment.lookupEnv "TRAVIS_OS_NAME"
   Monad.when
     (maybeOs /= Just "linux")
-    (do putStrLn "The $TRAVIS_OS_NAME variable is not 'linux'."
-        Exit.exitSuccess)
+    ( do
+      putStrLn "The $TRAVIS_OS_NAME variable is not 'linux'."
+      Exit.exitSuccess
+    )
 
 getStackUploadDirectory :: IO FilePath
 getStackUploadDirectory = do
@@ -46,7 +48,8 @@ getHackageCredentials = do
   username <- Environment.getEnv "HACKAGE_USERNAME"
   password <- Environment.getEnv "HACKAGE_PASSWORD"
   pure
-    (Aeson.object
-       [ Text.pack "username" Aeson..= username
-       , Text.pack "password" Aeson..= password
-       ])
+    ( Aeson.object
+      [ Text.pack "username" Aeson..= username
+      , Text.pack "password" Aeson..= password
+      ]
+    )

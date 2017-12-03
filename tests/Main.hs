@@ -24,15 +24,16 @@ specBody uuid = do
   input <- ByteString.readFile inputFile
   Temp.withSystemTempDirectory
     "replay-"
-    (\directory -> do
-       let jsonFile = FilePath.combine directory "replay.json"
-       Rattletrap.mainWithArgs ["decode", inputFile, jsonFile]
-       let outputFile = FilePath.combine directory "output.replay"
-       Rattletrap.mainWithArgs ["encode", jsonFile, outputFile]
-       output <- ByteString.readFile outputFile
-       Monad.unless
-         (output == input)
-         (Hspec.expectationFailure "output does not match input"))
+    ( \directory -> do
+      let jsonFile = FilePath.combine directory "replay.json"
+      Rattletrap.mainWithArgs ["decode", inputFile, jsonFile]
+      let outputFile = FilePath.combine directory "output.replay"
+      Rattletrap.mainWithArgs ["encode", jsonFile, outputFile]
+      output <- ByteString.readFile outputFile
+      Monad.unless
+        (output == input)
+        (Hspec.expectationFailure "output does not match input")
+    )
 
 pathToReplay :: String -> FilePath
 pathToReplay uuid =

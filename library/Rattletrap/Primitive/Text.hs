@@ -58,49 +58,37 @@ textToString text = Text.unpack (textValue text)
 
 getTextSize :: Text -> Int32
 getTextSize text =
-  let value = textValue text
-      scale =
-        if Text.all Char.isLatin1 value
-          then 1
-          else -1
-      rawSize =
-        if Text.null value
-          then 0
-          else fromIntegral (Text.length value) + 1
-      size =
-        if value == Text.pack "\x00\x00\x00None"
-          then 0x05000000
-          else scale * rawSize
-  in Int32 size
+  let
+    value = textValue text
+    scale = if Text.all Char.isLatin1 value then 1 else -1
+    rawSize =
+      if Text.null value then 0 else fromIntegral (Text.length value) + 1
+    size = if value == Text.pack "\x00\x00\x00None"
+      then 0x05000000
+      else scale * rawSize
+  in
+    Int32 size
 
 normalizeTextSize :: Integral a => Int32 -> a
-normalizeTextSize size =
-  case int32Value size of
-    0x05000000 -> 8
-    x ->
-      if x < 0
-        then (-2 * fromIntegral x)
-        else fromIntegral x
+normalizeTextSize size = case int32Value size of
+  0x05000000 -> 8
+  x -> if x < 0 then (-2 * fromIntegral x) else fromIntegral x
 
 getTextDecoder :: Int32 -> ByteString.ByteString -> Text.Text
 getTextDecoder size bytes =
-  let decode =
-        if size < Int32 0
-          then Encoding.decodeUtf16LE
-          else Encoding.decodeLatin1
-  in decode (ByteString.toStrict bytes)
+  let
+    decode =
+      if size < Int32 0 then Encoding.decodeUtf16LE else Encoding.decodeLatin1
+  in
+    decode (ByteString.toStrict bytes)
 
 getTextEncoder :: Int32 -> Text.Text -> ByteString.ByteString
-getTextEncoder size text =
-  if size < Int32 0
-    then ByteString.fromStrict (Encoding.encodeUtf16LE text)
-    else encodeLatin1 text
+getTextEncoder size text = if size < Int32 0
+  then ByteString.fromStrict (Encoding.encodeUtf16LE text)
+  else encodeLatin1 text
 
 dropNull :: Text.Text -> Text.Text
 dropNull = Text.dropWhileEnd (== '\x00')
 
 addNull :: Text.Text -> Text.Text
-addNull text =
-  if Text.null text
-    then text
-    else Text.snoc text '\x00'
+addNull text = if Text.null text then text else Text.snoc text '\x00'

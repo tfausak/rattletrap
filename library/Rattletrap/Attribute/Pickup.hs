@@ -13,12 +13,11 @@ data PickupAttribute = PickupAttribute
 getPickupAttribute :: BinaryBit.BitGet PickupAttribute
 getPickupAttribute = do
   instigator <- BinaryBit.getBool
-  maybeInstigatorId <-
-    if instigator
-      then do
-        instigatorId <- getWord32Bits
-        pure (Just instigatorId)
-      else pure Nothing
+  maybeInstigatorId <- if instigator
+    then do
+      instigatorId <- getWord32Bits
+      pure (Just instigatorId)
+    else pure Nothing
   pickedUp <- BinaryBit.getBool
   pure (PickupAttribute maybeInstigatorId pickedUp)
 

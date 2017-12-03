@@ -26,20 +26,19 @@ data SpawnedReplication = SpawnedReplication
   , spawnedReplicationInitialization :: Initialization
   } deriving (Eq, Ord, Show)
 
-getSpawnedReplication ::
-     (Int, Int)
+getSpawnedReplication
+  :: (Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
   -> BinaryBit.BitGet (SpawnedReplication, ActorMap)
 getSpawnedReplication version classAttributeMap actorMap actorId = do
   flag <- BinaryBit.getBool
-  nameIndex <-
-    if version < (868, 14)
-      then pure Nothing
-      else do
-        nameIndex <- getWord32Bits
-        pure (Just nameIndex)
+  nameIndex <- if version < (868, 14)
+    then pure Nothing
+    else do
+      nameIndex <- getWord32Bits
+      pure (Just nameIndex)
   name <- lookupName classAttributeMap nameIndex
   objectId <- getWord32Bits
   let newActorMap = Map.insert actorId objectId actorMap
@@ -50,14 +49,15 @@ getSpawnedReplication version classAttributeMap actorMap actorId = do
   initialization <- getInitialization hasLocation hasRotation
   pure
     ( SpawnedReplication
-        flag
-        nameIndex
-        name
-        objectId
-        objectName
-        className
-        initialization
-    , newActorMap)
+      flag
+      nameIndex
+      name
+      objectId
+      objectName
+      className
+      initialization
+    , newActorMap
+    )
 
 putSpawnedReplication :: SpawnedReplication -> BinaryBit.BitPut ()
 putSpawnedReplication spawnedReplication = do
@@ -69,13 +69,12 @@ putSpawnedReplication spawnedReplication = do
   putInitialization (spawnedReplicationInitialization spawnedReplication)
 
 lookupName :: Monad m => ClassAttributeMap -> Maybe Word32 -> m (Maybe Text)
-lookupName classAttributeMap maybeNameIndex =
-  case maybeNameIndex of
-    Nothing -> pure Nothing
-    Just nameIndex ->
-      case getName (classAttributeMapNameMap classAttributeMap) nameIndex of
-        Nothing -> fail ("could not get name for index " ++ show nameIndex)
-        Just name -> pure (Just name)
+lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
+  Nothing -> pure Nothing
+  Just nameIndex ->
+    case getName (classAttributeMapNameMap classAttributeMap) nameIndex of
+      Nothing -> fail ("could not get name for index " ++ show nameIndex)
+      Just name -> pure (Just name)
 
 lookupObjectName :: Monad m => ClassAttributeMap -> Word32 -> m Text
 lookupObjectName classAttributeMap objectId =
@@ -84,7 +83,6 @@ lookupObjectName classAttributeMap objectId =
     Just objectName -> pure objectName
 
 lookupClassName :: Monad m => Text -> m Text
-lookupClassName objectName =
-  case getClassName objectName of
-    Nothing -> fail ("could not get class name for object " ++ show objectName)
-    Just className -> pure className
+lookupClassName objectName = case getClassName objectName of
+  Nothing -> fail ("could not get class name for object " ++ show objectName)
+  Just className -> pure className

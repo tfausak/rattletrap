@@ -38,28 +38,28 @@ getLoadoutAttribute = do
   goalExplosion <- getOptional (version >= Word8 16) getWord32Bits
   banner <- getOptional (version >= Word8 17) getWord32Bits
   pure
-    (LoadoutAttribute
-       version
-       body
-       decal
-       wheels
-       rocketTrail
-       antenna
-       topper
-       unknown1
-       unknown2
-       engineAudio
-       trail
-       goalExplosion
-       banner)
+    ( LoadoutAttribute
+      version
+      body
+      decal
+      wheels
+      rocketTrail
+      antenna
+      topper
+      unknown1
+      unknown2
+      engineAudio
+      trail
+      goalExplosion
+      banner
+    )
 
 getOptional :: Bool -> BinaryBit.BitGet a -> BinaryBit.BitGet (Maybe a)
-getOptional p f =
-  if p
-    then do
-      x <- f
-      pure (Just x)
-    else pure Nothing
+getOptional p f = if p
+  then do
+    x <- f
+    pure (Just x)
+  else pure Nothing
 
 putLoadoutAttribute :: LoadoutAttribute -> BinaryBit.BitPut ()
 putLoadoutAttribute loadoutAttribute = do
@@ -78,7 +78,6 @@ putLoadoutAttribute loadoutAttribute = do
   putOptional (loadoutAttributeBanner loadoutAttribute) putWord32Bits
 
 putOptional :: Maybe a -> (a -> BinaryBit.BitPut ()) -> BinaryBit.BitPut ()
-putOptional m f =
-  case m of
-    Just x -> f x
-    Nothing -> pure ()
+putOptional m f = case m of
+  Just x -> f x
+  Nothing -> pure ()

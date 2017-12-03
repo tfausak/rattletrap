@@ -17,8 +17,8 @@ data Frame = Frame
   , frameReplications :: [Replication]
   } deriving (Eq, Ord, Show)
 
-getFrames ::
-     (Int, Int)
+getFrames
+  :: (Int, Int)
   -> Int
   -> Word
   -> ClassAttributeMap
@@ -28,22 +28,24 @@ getFrames version numFrames maxChannels classAttributeMap actorMap =
   if numFrames <= 0
     then pure ([], actorMap)
     else do
-      (frame, newActorMap) <-
-        getFrame version maxChannels classAttributeMap actorMap
-      (frames, newerActorMap) <-
-        getFrames
-          version
-          (numFrames - 1)
-          maxChannels
-          classAttributeMap
-          newActorMap
+      (frame, newActorMap) <- getFrame
+        version
+        maxChannels
+        classAttributeMap
+        actorMap
+      (frames, newerActorMap) <- getFrames
+        version
+        (numFrames - 1)
+        maxChannels
+        classAttributeMap
+        newActorMap
       pure (frame : frames, newerActorMap)
 
 putFrames :: [Frame] -> BinaryBit.BitPut ()
 putFrames = mapM_ putFrame
 
-getFrame ::
-     (Int, Int)
+getFrame
+  :: (Int, Int)
   -> Word
   -> ClassAttributeMap
   -> ActorMap
@@ -51,8 +53,11 @@ getFrame ::
 getFrame version maxChannels classAttributeMap actorMap = do
   time <- getFloat32Bits
   delta <- getFloat32Bits
-  (replications, newActorMap) <-
-    getReplications version maxChannels classAttributeMap actorMap
+  (replications, newActorMap) <- getReplications
+    version
+    maxChannels
+    classAttributeMap
+    actorMap
   pure (Frame time delta replications, newActorMap)
 
 putFrame :: Frame -> BinaryBit.BitPut ()

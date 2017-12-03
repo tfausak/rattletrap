@@ -14,13 +14,12 @@ data PartyLeaderAttribute = PartyLeaderAttribute
 getPartyLeaderAttribute :: BinaryBit.BitGet PartyLeaderAttribute
 getPartyLeaderAttribute = do
   systemId <- getWord8Bits
-  maybeRemoteAndLocalId <-
-    if systemId == Word8 0
-      then pure Nothing
-      else do
-        remoteId <- getRemoteId systemId
-        localId <- getWord8Bits
-        pure (Just (remoteId, localId))
+  maybeRemoteAndLocalId <- if systemId == Word8 0
+    then pure Nothing
+    else do
+      remoteId <- getRemoteId systemId
+      localId <- getWord8Bits
+      pure (Just (remoteId, localId))
   pure (PartyLeaderAttribute systemId maybeRemoteAndLocalId)
 
 putPartyLeaderAttribute :: PartyLeaderAttribute -> BinaryBit.BitPut ()

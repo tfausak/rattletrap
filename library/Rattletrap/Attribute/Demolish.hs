@@ -23,13 +23,14 @@ getDemolishAttribute = do
   attackerVelocity <- getVector
   victimVelocity <- getVector
   pure
-    (DemolishAttribute
-       attackerFlag
-       attackerActorId
-       victimFlag
-       victimActorId
-       attackerVelocity
-       victimVelocity)
+    ( DemolishAttribute
+      attackerFlag
+      attackerActorId
+      victimFlag
+      victimActorId
+      attackerVelocity
+      victimVelocity
+    )
 
 putDemolishAttribute :: DemolishAttribute -> BinaryBit.BitPut ()
 putDemolishAttribute demolishAttribute = do

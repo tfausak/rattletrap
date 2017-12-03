@@ -14,10 +14,9 @@ import qualified System.IO as IO
 -- * Lazy byte strings
 -- | Parses a raw replay.
 decodeReplay :: ByteString.ByteString -> Either String Replay
-decodeReplay contents =
-  case Binary.runGetOrFail getReplay contents of
-    Left (_, _, message) -> fail message
-    Right (_, _, replay) -> pure replay
+decodeReplay contents = case Binary.runGetOrFail getReplay contents of
+  Left (_, _, message) -> fail message
+  Right (_, _, replay) -> pure replay
 
 -- | Encodes a replay as JSON.
 encodeJson :: Replay -> ByteString.ByteString

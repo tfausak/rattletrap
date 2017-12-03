@@ -14,8 +14,8 @@ data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
   , privateMatchSettingsAttributeFlag :: Bool
   } deriving (Eq, Ord, Show)
 
-getPrivateMatchSettingsAttribute ::
-     BinaryBit.BitGet PrivateMatchSettingsAttribute
+getPrivateMatchSettingsAttribute
+  :: BinaryBit.BitGet PrivateMatchSettingsAttribute
 getPrivateMatchSettingsAttribute = do
   mutators <- getTextBits
   joinableBy <- getWord32Bits
@@ -24,16 +24,17 @@ getPrivateMatchSettingsAttribute = do
   password <- getTextBits
   flag <- BinaryBit.getBool
   pure
-    (PrivateMatchSettingsAttribute
-       mutators
-       joinableBy
-       maxPlayers
-       gameName
-       password
-       flag)
+    ( PrivateMatchSettingsAttribute
+      mutators
+      joinableBy
+      maxPlayers
+      gameName
+      password
+      flag
+    )
 
-putPrivateMatchSettingsAttribute ::
-     PrivateMatchSettingsAttribute -> BinaryBit.BitPut ()
+putPrivateMatchSettingsAttribute
+  :: PrivateMatchSettingsAttribute -> BinaryBit.BitPut ()
 putPrivateMatchSettingsAttribute privateMatchSettingsAttribute = do
   putTextBits
     (privateMatchSettingsAttributeMutators privateMatchSettingsAttribute)

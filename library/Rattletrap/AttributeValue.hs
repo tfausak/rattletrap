@@ -105,140 +105,138 @@ data AttributeValue
   | WeldedInfoAttributeValue WeldedInfoAttribute
   deriving (Eq, Ord, Show)
 
-getAttributeValue ::
-     (Int, Int)
+getAttributeValue
+  :: (Int, Int)
   -> Map.Map Word32 Text
   -> Text
   -> BinaryBit.BitGet AttributeValue
 getAttributeValue version objectMap name =
   case Map.lookup name attributeTypes of
-    Just constructor ->
-      case constructor of
-        AppliedDamageAttributeType -> do
-          x <- getAppliedDamageAttribute
-          pure (AppliedDamageAttributeValue x)
-        BooleanAttributeType -> do
-          x <- getBooleanAttribute
-          pure (BooleanAttributeValue x)
-        ByteAttributeType -> do
-          x <- getByteAttribute
-          pure (ByteAttributeValue x)
-        CamSettingsAttributeType -> do
-          x <- getCamSettingsAttribute version
-          pure (CamSettingsAttributeValue x)
-        ClubColorsAttributeType -> do
-          x <- getClubColorsAttribute
-          pure (ClubColorsAttributeValue x)
-        DamageStateAttributeType -> do
-          x <- getDamageStateAttribute
-          pure (DamageStateAttributeValue x)
-        DemolishAttributeType -> do
-          x <- getDemolishAttribute
-          pure (DemolishAttributeValue x)
-        EnumAttributeType -> do
-          x <- getEnumAttribute
-          pure (EnumAttributeValue x)
-        ExplosionAttributeType -> do
-          x <- getExplosionAttribute
-          pure (ExplosionAttributeValue x)
-        ExtendedExplosionAttributeType -> do
-          x <- getExtendedExplosionAttribute
-          pure (ExtendedExplosionAttributeValue x)
-        FlaggedIntAttributeType -> do
-          x <- getFlaggedIntAttribute
-          pure (FlaggedIntAttributeValue x)
-        FloatAttributeType -> do
-          x <- getFloatAttribute
-          pure (FloatAttributeValue x)
-        GameModeAttributeType -> do
-          x <- getGameModeAttribute version
-          pure (GameModeAttributeValue x)
-        IntAttributeType -> do
-          x <- getIntAttribute
-          pure (IntAttributeValue x)
-        LoadoutAttributeType -> do
-          x <- getLoadoutAttribute
-          pure (LoadoutAttributeValue x)
-        LoadoutOnlineAttributeType -> do
-          x <- getLoadoutOnlineAttribute version objectMap
-          pure (LoadoutOnlineAttributeValue x)
-        LoadoutsAttributeType -> do
-          x <- getLoadoutsAttribute
-          pure (LoadoutsAttributeValue x)
-        LoadoutsOnlineAttributeType -> do
-          x <- getLoadoutsOnlineAttribute version objectMap
-          pure (LoadoutsOnlineAttributeValue x)
-        LocationAttributeType -> do
-          x <- getLocationAttribute
-          pure (LocationAttributeValue x)
-        MusicStingerAttributeType -> do
-          x <- getMusicStingerAttribute
-          pure (MusicStingerAttributeValue x)
-        PartyLeaderAttributeType -> do
-          x <- getPartyLeaderAttribute
-          pure (PartyLeaderAttributeValue x)
-        PickupAttributeType -> do
-          x <- getPickupAttribute
-          pure (PickupAttributeValue x)
-        PrivateMatchSettingsAttributeType -> do
-          x <- getPrivateMatchSettingsAttribute
-          pure (PrivateMatchSettingsAttributeValue x)
-        QWordAttributeType -> do
-          x <- getQWordAttribute
-          pure (QWordAttributeValue x)
-        ReservationAttributeType -> do
-          x <- getReservationAttribute version
-          pure (ReservationAttributeValue x)
-        RigidBodyStateAttributeType -> do
-          x <- getRigidBodyStateAttribute
-          pure (RigidBodyStateAttributeValue x)
-        StringAttributeType -> do
-          x <- getStringAttribute
-          pure (StringAttributeValue x)
-        TeamPaintAttributeType -> do
-          x <- getTeamPaintAttribute
-          pure (TeamPaintAttributeValue x)
-        UniqueIdAttributeType -> do
-          x <- getUniqueIdAttribute
-          pure (UniqueIdAttributeValue x)
-        WeldedInfoAttributeType -> do
-          x <- getWeldedInfoAttribute
-          pure (WeldedInfoAttributeValue x)
+    Just constructor -> case constructor of
+      AppliedDamageAttributeType -> do
+        x <- getAppliedDamageAttribute
+        pure (AppliedDamageAttributeValue x)
+      BooleanAttributeType -> do
+        x <- getBooleanAttribute
+        pure (BooleanAttributeValue x)
+      ByteAttributeType -> do
+        x <- getByteAttribute
+        pure (ByteAttributeValue x)
+      CamSettingsAttributeType -> do
+        x <- getCamSettingsAttribute version
+        pure (CamSettingsAttributeValue x)
+      ClubColorsAttributeType -> do
+        x <- getClubColorsAttribute
+        pure (ClubColorsAttributeValue x)
+      DamageStateAttributeType -> do
+        x <- getDamageStateAttribute
+        pure (DamageStateAttributeValue x)
+      DemolishAttributeType -> do
+        x <- getDemolishAttribute
+        pure (DemolishAttributeValue x)
+      EnumAttributeType -> do
+        x <- getEnumAttribute
+        pure (EnumAttributeValue x)
+      ExplosionAttributeType -> do
+        x <- getExplosionAttribute
+        pure (ExplosionAttributeValue x)
+      ExtendedExplosionAttributeType -> do
+        x <- getExtendedExplosionAttribute
+        pure (ExtendedExplosionAttributeValue x)
+      FlaggedIntAttributeType -> do
+        x <- getFlaggedIntAttribute
+        pure (FlaggedIntAttributeValue x)
+      FloatAttributeType -> do
+        x <- getFloatAttribute
+        pure (FloatAttributeValue x)
+      GameModeAttributeType -> do
+        x <- getGameModeAttribute version
+        pure (GameModeAttributeValue x)
+      IntAttributeType -> do
+        x <- getIntAttribute
+        pure (IntAttributeValue x)
+      LoadoutAttributeType -> do
+        x <- getLoadoutAttribute
+        pure (LoadoutAttributeValue x)
+      LoadoutOnlineAttributeType -> do
+        x <- getLoadoutOnlineAttribute version objectMap
+        pure (LoadoutOnlineAttributeValue x)
+      LoadoutsAttributeType -> do
+        x <- getLoadoutsAttribute
+        pure (LoadoutsAttributeValue x)
+      LoadoutsOnlineAttributeType -> do
+        x <- getLoadoutsOnlineAttribute version objectMap
+        pure (LoadoutsOnlineAttributeValue x)
+      LocationAttributeType -> do
+        x <- getLocationAttribute
+        pure (LocationAttributeValue x)
+      MusicStingerAttributeType -> do
+        x <- getMusicStingerAttribute
+        pure (MusicStingerAttributeValue x)
+      PartyLeaderAttributeType -> do
+        x <- getPartyLeaderAttribute
+        pure (PartyLeaderAttributeValue x)
+      PickupAttributeType -> do
+        x <- getPickupAttribute
+        pure (PickupAttributeValue x)
+      PrivateMatchSettingsAttributeType -> do
+        x <- getPrivateMatchSettingsAttribute
+        pure (PrivateMatchSettingsAttributeValue x)
+      QWordAttributeType -> do
+        x <- getQWordAttribute
+        pure (QWordAttributeValue x)
+      ReservationAttributeType -> do
+        x <- getReservationAttribute version
+        pure (ReservationAttributeValue x)
+      RigidBodyStateAttributeType -> do
+        x <- getRigidBodyStateAttribute
+        pure (RigidBodyStateAttributeValue x)
+      StringAttributeType -> do
+        x <- getStringAttribute
+        pure (StringAttributeValue x)
+      TeamPaintAttributeType -> do
+        x <- getTeamPaintAttribute
+        pure (TeamPaintAttributeValue x)
+      UniqueIdAttributeType -> do
+        x <- getUniqueIdAttribute
+        pure (UniqueIdAttributeValue x)
+      WeldedInfoAttributeType -> do
+        x <- getWeldedInfoAttribute
+        pure (WeldedInfoAttributeValue x)
     Nothing -> fail ("don't know how to get attribute value " ++ show name)
 
 attributeTypes :: Map.Map Text AttributeType
 attributeTypes = Map.mapKeys stringToText (Map.fromList rawAttributeTypes)
 
 putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
-putAttributeValue value =
-  case value of
-    AppliedDamageAttributeValue x -> putAppliedDamageAttribute x
-    BooleanAttributeValue x -> putBooleanAttribute x
-    ByteAttributeValue x -> putByteAttribute x
-    CamSettingsAttributeValue x -> putCamSettingsAttribute x
-    ClubColorsAttributeValue x -> putClubColorsAttribute x
-    DamageStateAttributeValue x -> putDamageStateAttribute x
-    DemolishAttributeValue x -> putDemolishAttribute x
-    EnumAttributeValue x -> putEnumAttribute x
-    ExplosionAttributeValue x -> putExplosionAttribute x
-    ExtendedExplosionAttributeValue x -> putExtendedExplosionAttribute x
-    FlaggedIntAttributeValue x -> putFlaggedIntAttribute x
-    FloatAttributeValue x -> putFloatAttribute x
-    GameModeAttributeValue x -> putGameModeAttribute x
-    IntAttributeValue x -> putIntAttribute x
-    LoadoutAttributeValue x -> putLoadoutAttribute x
-    LoadoutOnlineAttributeValue x -> putLoadoutOnlineAttribute x
-    LoadoutsAttributeValue x -> putLoadoutsAttribute x
-    LoadoutsOnlineAttributeValue x -> putLoadoutsOnlineAttribute x
-    LocationAttributeValue x -> putLocationAttribute x
-    MusicStingerAttributeValue x -> putMusicStingerAttribute x
-    PartyLeaderAttributeValue x -> putPartyLeaderAttribute x
-    PickupAttributeValue x -> putPickupAttribute x
-    PrivateMatchSettingsAttributeValue x -> putPrivateMatchSettingsAttribute x
-    QWordAttributeValue x -> putQWordAttribute x
-    ReservationAttributeValue x -> putReservationAttribute x
-    RigidBodyStateAttributeValue x -> putRigidBodyStateAttribute x
-    StringAttributeValue x -> putStringAttribute x
-    TeamPaintAttributeValue x -> putTeamPaintAttribute x
-    UniqueIdAttributeValue x -> putUniqueIdAttribute x
-    WeldedInfoAttributeValue x -> putWeldedInfoAttribute x
+putAttributeValue value = case value of
+  AppliedDamageAttributeValue x -> putAppliedDamageAttribute x
+  BooleanAttributeValue x -> putBooleanAttribute x
+  ByteAttributeValue x -> putByteAttribute x
+  CamSettingsAttributeValue x -> putCamSettingsAttribute x
+  ClubColorsAttributeValue x -> putClubColorsAttribute x
+  DamageStateAttributeValue x -> putDamageStateAttribute x
+  DemolishAttributeValue x -> putDemolishAttribute x
+  EnumAttributeValue x -> putEnumAttribute x
+  ExplosionAttributeValue x -> putExplosionAttribute x
+  ExtendedExplosionAttributeValue x -> putExtendedExplosionAttribute x
+  FlaggedIntAttributeValue x -> putFlaggedIntAttribute x
+  FloatAttributeValue x -> putFloatAttribute x
+  GameModeAttributeValue x -> putGameModeAttribute x
+  IntAttributeValue x -> putIntAttribute x
+  LoadoutAttributeValue x -> putLoadoutAttribute x
+  LoadoutOnlineAttributeValue x -> putLoadoutOnlineAttribute x
+  LoadoutsAttributeValue x -> putLoadoutsAttribute x
+  LoadoutsOnlineAttributeValue x -> putLoadoutsOnlineAttribute x
+  LocationAttributeValue x -> putLocationAttribute x
+  MusicStingerAttributeValue x -> putMusicStingerAttribute x
+  PartyLeaderAttributeValue x -> putPartyLeaderAttribute x
+  PickupAttributeValue x -> putPickupAttribute x
+  PrivateMatchSettingsAttributeValue x -> putPrivateMatchSettingsAttribute x
+  QWordAttributeValue x -> putQWordAttribute x
+  ReservationAttributeValue x -> putReservationAttribute x
+  RigidBodyStateAttributeValue x -> putRigidBodyStateAttribute x
+  StringAttributeValue x -> putStringAttribute x
+  TeamPaintAttributeValue x -> putTeamPaintAttribute x
+  UniqueIdAttributeValue x -> putUniqueIdAttribute x
+  WeldedInfoAttributeValue x -> putWeldedInfoAttribute x

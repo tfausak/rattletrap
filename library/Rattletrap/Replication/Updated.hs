@@ -12,8 +12,8 @@ newtype UpdatedReplication = UpdatedReplication
   { updatedReplicationAttributes :: [Attribute]
   } deriving (Eq, Ord, Show)
 
-getUpdatedReplication ::
-     (Int, Int)
+getUpdatedReplication
+  :: (Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord

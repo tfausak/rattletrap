@@ -51,8 +51,8 @@ data Content = Content
   -- for the 'Rattletrap.ClassAttributeMap.ClassAttributeMap'.
   } deriving (Eq, Ord, Show)
 
-getContent ::
-     (Int, Int)
+getContent
+  :: (Int, Int)
   -- ^ Major and minor version numbers, usually from
   -- 'Rattletrap.Header.getVersion'.
   -> Int
@@ -74,33 +74,37 @@ getContent version numFrames maxChannels = do
   names <- getList getText
   classMappings <- getList getClassMapping
   caches <- getList getCache
-  let classAttributeMap =
-        makeClassAttributeMap objects classMappings caches names
-  let frames =
-        Binary.runGet
-          (BinaryBit.runBitGet
-             (do (theFrames, _) <-
-                   getFrames
-                     version
-                     numFrames
-                     maxChannels
-                     classAttributeMap
-                     Map.empty
-                 pure theFrames))
-          (reverseBytes stream)
+  let
+    classAttributeMap =
+      makeClassAttributeMap objects classMappings caches names
+  let
+    frames = Binary.runGet
+      ( BinaryBit.runBitGet
+        ( do
+          (theFrames, _) <- getFrames
+            version
+            numFrames
+            maxChannels
+            classAttributeMap
+            Map.empty
+          pure theFrames
+        )
+      )
+      (reverseBytes stream)
   pure
-    (Content
-       levels
-       keyFrames
-       streamSize
-       frames
-       messages
-       marks
-       packages
-       objects
-       names
-       classMappings
-       caches)
+    ( Content
+      levels
+      keyFrames
+      streamSize
+      frames
+      messages
+      marks
+      packages
+      objects
+      names
+      classMappings
+      caches
+    )
 
 putContent :: Content -> Binary.Put
 putContent content = do
@@ -108,8 +112,9 @@ putContent content = do
   putList putKeyFrame (contentKeyFrames content)
   let streamSize = contentStreamSize content
   putWord32 streamSize
-  let stream =
-        Binary.runPut (BinaryBit.runBitPut (putFrames (contentFrames content)))
+  let
+    stream =
+      Binary.runPut (BinaryBit.runBitPut (putFrames (contentFrames content)))
   Binary.putLazyByteString
     (reverseBytes (padBytes (word32Value streamSize) stream))
   putList putMessage (contentMessages content)

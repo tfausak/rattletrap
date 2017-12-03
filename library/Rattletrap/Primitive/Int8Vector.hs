@@ -34,9 +34,8 @@ getInt8VectorField = do
     else pure Nothing
 
 putInt8VectorField :: Maybe Int8 -> BinaryBit.BitPut ()
-putInt8VectorField maybeField =
-  case maybeField of
-    Nothing -> BinaryBit.putBool False
-    Just field -> do
-      BinaryBit.putBool True
-      putInt8Bits field
+putInt8VectorField maybeField = case maybeField of
+  Nothing -> BinaryBit.putBool False
+  Just field -> do
+    BinaryBit.putBool True
+    putInt8Bits field

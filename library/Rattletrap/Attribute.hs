@@ -16,8 +16,8 @@ data Attribute = Attribute
   , attributeValue :: AttributeValue
   } deriving (Eq, Ord, Show)
 
-getAttributes ::
-     (Int, Int)
+getAttributes
+  :: (Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
@@ -36,8 +36,8 @@ putAttributes attributes = do
   mapM_ putAttribute attributes
   BinaryBit.putBool False
 
-getAttribute ::
-     (Int, Int)
+getAttribute
+  :: (Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
@@ -45,21 +45,18 @@ getAttribute ::
 getAttribute version classAttributeMap actorMap actorId =
   case getAttributeMap classAttributeMap actorMap actorId of
     Nothing -> fail ("could not get attribute map for " ++ show actorId)
-    Just attributeMap ->
-      case getAttributeIdLimit attributeMap of
-        Nothing ->
-          fail ("could not get attribute ID limit for " ++ show actorId)
-        Just limit -> do
-          id_ <- getCompressedWord limit
-          case getAttributeName classAttributeMap attributeMap id_ of
-            Nothing -> fail ("could not get attribute name for " ++ show id_)
-            Just name -> do
-              value <-
-                getAttributeValue
-                  version
-                  (classAttributeMapObjectMap classAttributeMap)
-                  name
-              pure (Attribute id_ name value)
+    Just attributeMap -> case getAttributeIdLimit attributeMap of
+      Nothing -> fail ("could not get attribute ID limit for " ++ show actorId)
+      Just limit -> do
+        id_ <- getCompressedWord limit
+        case getAttributeName classAttributeMap attributeMap id_ of
+          Nothing -> fail ("could not get attribute name for " ++ show id_)
+          Just name -> do
+            value <- getAttributeValue
+              version
+              (classAttributeMapObjectMap classAttributeMap)
+              name
+            pure (Attribute id_ name value)
 
 putAttribute :: Attribute -> BinaryBit.BitPut ()
 putAttribute attribute = do

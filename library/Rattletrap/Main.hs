@@ -27,35 +27,29 @@ main = do
 -- 3. @mainWithArgs ["encode"]@: Generates a raw replay from JSON. The
 --    handling of input and output is the same as decoding.
 mainWithArgs :: [String] -> IO ()
-mainWithArgs args =
-  case args of
-    ["version"] -> putStrLn (Version.showVersion version)
-    action:files -> do
-      (getInput, putOutput) <- getIO files
-      input <- getInput
-      output <-
-        case action of
-          "decode" ->
-            case decodeReplay input of
-              Left message -> fail message
-              Right replay -> pure (encodeJson replay)
-          "encode" ->
-            case decodeJson input of
-              Left message -> fail message
-              Right replay -> pure (encodeReplay replay)
-          _ -> fail ("unknown action: " ++ show action)
-      putOutput output
-    _ -> fail ("unknown arguments: " ++ show args)
+mainWithArgs args = case args of
+  ["version"] -> putStrLn (Version.showVersion version)
+  action:files -> do
+    (getInput, putOutput) <- getIO files
+    input <- getInput
+    output <- case action of
+      "decode" -> case decodeReplay input of
+        Left message -> fail message
+        Right replay -> pure (encodeJson replay)
+      "encode" -> case decodeJson input of
+        Left message -> fail message
+        Right replay -> pure (encodeReplay replay)
+      _ -> fail ("unknown action: " ++ show action)
+    putOutput output
+  _ -> fail ("unknown arguments: " ++ show args)
 
-getIO ::
-     [FilePath]
-  -> IO (IO ByteString.ByteString, ByteString.ByteString -> IO ())
-getIO files =
-  case files of
-    [] -> pure (ByteString.getContents, ByteString.putStr)
-    [i] -> pure (readUrlOrFile i, ByteString.putStr)
-    [i, o] -> pure (readUrlOrFile i, ByteString.writeFile o)
-    _ -> fail ("unknown files: " ++ show files)
+getIO
+  :: [FilePath] -> IO (IO ByteString.ByteString, ByteString.ByteString -> IO ())
+getIO files = case files of
+  [] -> pure (ByteString.getContents, ByteString.putStr)
+  [i] -> pure (readUrlOrFile i, ByteString.putStr)
+  [i, o] -> pure (readUrlOrFile i, ByteString.writeFile o)
+  _ -> fail ("unknown files: " ++ show files)
 
 readUrlOrFile :: FilePath -> IO ByteString.ByteString
 readUrlOrFile i = case Client.parseUrlThrow i of

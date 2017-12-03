@@ -21,8 +21,8 @@ getExtendedExplosionAttribute = do
   unknown2 <- getInt32Bits
   pure (ExtendedExplosionAttribute actorId location unknown1 unknown2)
 
-putExtendedExplosionAttribute ::
-     ExtendedExplosionAttribute -> BinaryBit.BitPut ()
+putExtendedExplosionAttribute
+  :: ExtendedExplosionAttribute -> BinaryBit.BitPut ()
 putExtendedExplosionAttribute extendedExplosionAttribute = do
   BinaryBit.putBool False
   putInt32Bits (extendedExplosionAttributeActorId extendedExplosionAttribute)

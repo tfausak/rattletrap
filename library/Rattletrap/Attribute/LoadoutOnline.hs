@@ -12,16 +12,15 @@ newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
   { loadoutAttributeValue :: [[ProductAttribute]]
   } deriving (Eq, Ord, Show)
 
-getLoadoutOnlineAttribute ::
-     (Int, Int)
+getLoadoutOnlineAttribute
+  :: (Int, Int)
   -> Map.Map Word32 Text
   -> BinaryBit.BitGet LoadoutOnlineAttribute
 getLoadoutOnlineAttribute version objectMap = do
   size <- getWord8Bits
-  values <-
-    Monad.replicateM
-      (fromIntegral (word8Value size))
-      (getProductAttributes version objectMap)
+  values <- Monad.replicateM
+    (fromIntegral (word8Value size))
+    (getProductAttributes version objectMap)
   pure (LoadoutOnlineAttribute values)
 
 putLoadoutOnlineAttribute :: LoadoutOnlineAttribute -> BinaryBit.BitPut ()

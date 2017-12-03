@@ -16,18 +16,16 @@ data Initialization = Initialization
 
 getInitialization :: Bool -> Bool -> BinaryBit.BitGet Initialization
 getInitialization hasLocation hasRotation = do
-  location <-
-    if hasLocation
-      then do
-        location <- getVector
-        pure (Just location)
-      else pure Nothing
-  rotation <-
-    if hasRotation
-      then do
-        rotation <- getInt8Vector
-        pure (Just rotation)
-      else pure Nothing
+  location <- if hasLocation
+    then do
+      location <- getVector
+      pure (Just location)
+    else pure Nothing
+  rotation <- if hasRotation
+    then do
+      rotation <- getInt8Vector
+      pure (Just rotation)
+    else pure Nothing
   pure (Initialization location rotation)
 
 putInitialization :: Initialization -> BinaryBit.BitPut ()

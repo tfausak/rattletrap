@@ -11,10 +11,7 @@ data GameModeAttribute = GameModeAttribute
 
 getGameModeAttribute :: (Int, Int) -> BinaryBit.BitGet GameModeAttribute
 getGameModeAttribute version = do
-  let numBits =
-        if version < (868, 12)
-          then 2
-          else 8
+  let numBits = if version < (868, 12) then 2 else 8
   word <- BinaryBit.getWord8 numBits
   pure (GameModeAttribute numBits word)
 

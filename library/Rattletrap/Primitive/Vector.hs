@@ -28,8 +28,9 @@ getVector = do
 
 putVector :: Vector -> BinaryBit.BitPut ()
 putVector vector = do
-  let bitSize =
-        round (logBase (2 :: Float) (fromIntegral (vectorBias vector))) - 1
+  let
+    bitSize =
+      round (logBase (2 :: Float) (fromIntegral (vectorBias vector))) - 1
   putCompressedWord (CompressedWord 19 bitSize)
   let dx = fromIntegral (vectorX vector + fromIntegral (vectorBias vector))
   let dy = fromIntegral (vectorY vector + fromIntegral (vectorBias vector))

@@ -64,12 +64,11 @@ getHeader = do
   pure (Header engineVersion licenseeVersion patchVersion label properties)
 
 getPatchVersion :: Word32 -> Word32 -> Binary.Get (Maybe Word32)
-getPatchVersion major minor =
-  if hasPatchVersion major minor
-    then do
-      patchVersion <- getWord32
-      pure (Just patchVersion)
-    else pure Nothing
+getPatchVersion major minor = if hasPatchVersion major minor
+  then do
+    patchVersion <- getWord32
+    pure (Just patchVersion)
+  else pure Nothing
 
 hasPatchVersion :: Word32 -> Word32 -> Bool
 hasPatchVersion major minor = major >= Word32 868 && minor >= Word32 18
@@ -86,8 +85,9 @@ putHeader header = do
 
 getVersion :: Header -> (Int, Int)
 getVersion header =
-  let major = getMajorVersion header
-      minor = getMinorVersion header
+  let
+    major = getMajorVersion header
+    minor = getMinorVersion header
   in (major, minor)
 
 getMajorVersion :: Header -> Int
@@ -100,18 +100,20 @@ getMinorVersion header =
 
 getNumFrames :: Header -> Int
 getNumFrames header =
-  let key = textValue (stringToText "NumFrames")
-      properties = dictionaryValue (headerProperties header)
+  let
+    key = textValue (stringToText "NumFrames")
+    properties = dictionaryValue (headerProperties header)
   in case Map.lookup key properties of
-       Just (Property _ _ (IntProperty numFrames)) ->
-         fromIntegral (int32Value numFrames)
-       _ -> 0
+    Just (Property _ _ (IntProperty numFrames)) ->
+      fromIntegral (int32Value numFrames)
+    _ -> 0
 
 getMaxChannels :: Header -> Word
 getMaxChannels header =
-  let key = textValue (stringToText "MaxChannels")
-      properties = dictionaryValue (headerProperties header)
+  let
+    key = textValue (stringToText "MaxChannels")
+    properties = dictionaryValue (headerProperties header)
   in case Map.lookup key properties of
-       Just (Property _ _ (IntProperty numFrames)) ->
-         fromIntegral (int32Value numFrames)
-       _ -> 1023
+    Just (Property _ _ (IntProperty numFrames)) ->
+      fromIntegral (int32Value numFrames)
+    _ -> 1023

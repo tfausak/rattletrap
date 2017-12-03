@@ -50,10 +50,11 @@ putDictionary :: (a -> Binary.Put) -> Dictionary a -> Binary.Put
 putDictionary putValue dictionary = do
   let elements = dictionaryValue dictionary
   mapM_
-    (\key -> do
-       putText key
-       case Map.lookup (textValue key) elements of
-         Nothing -> fail ("could not find key " ++ textToString key)
-         Just value -> putValue value)
+    ( \key -> do
+      putText key
+      case Map.lookup (textValue key) elements of
+        Nothing -> fail ("could not find key " ++ textToString key)
+        Just value -> putValue value
+    )
     (dictionaryKeys dictionary)
   putText (dictionaryLastKey dictionary)

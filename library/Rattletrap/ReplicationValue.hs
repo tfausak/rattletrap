@@ -24,8 +24,8 @@ data ReplicationValue
   -- ^ Destroys an existing actor.
   deriving (Eq, Ord, Show)
 
-getReplicationValue ::
-     (Int, Int)
+getReplicationValue
+  :: (Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
@@ -37,8 +37,11 @@ getReplicationValue version classAttributeMap actorMap actorId = do
       isNew <- BinaryBit.getBool
       if isNew
         then do
-          (x, newActorMap) <-
-            getSpawnedReplication version classAttributeMap actorMap actorId
+          (x, newActorMap) <- getSpawnedReplication
+            version
+            classAttributeMap
+            actorMap
+            actorId
           pure (SpawnedReplicationValue x, newActorMap)
         else do
           x <- getUpdatedReplication version classAttributeMap actorMap actorId
@@ -48,16 +51,15 @@ getReplicationValue version classAttributeMap actorMap actorId = do
       pure (DestroyedReplicationValue x, actorMap)
 
 putReplicationValue :: ReplicationValue -> BinaryBit.BitPut ()
-putReplicationValue value =
-  case value of
-    SpawnedReplicationValue x -> do
-      BinaryBit.putBool True
-      BinaryBit.putBool True
-      putSpawnedReplication x
-    UpdatedReplicationValue x -> do
-      BinaryBit.putBool True
-      BinaryBit.putBool False
-      putUpdatedReplication x
-    DestroyedReplicationValue x -> do
-      BinaryBit.putBool False
-      putDestroyedReplication x
+putReplicationValue value = case value of
+  SpawnedReplicationValue x -> do
+    BinaryBit.putBool True
+    BinaryBit.putBool True
+    putSpawnedReplication x
+  UpdatedReplicationValue x -> do
+    BinaryBit.putBool True
+    BinaryBit.putBool False
+    putUpdatedReplication x
+  DestroyedReplicationValue x -> do
+    BinaryBit.putBool False
+    putDestroyedReplication x
