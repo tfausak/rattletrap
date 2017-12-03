@@ -1,4 +1,4 @@
-module Rattletrap.Attribute.ProductAttribute where
+module Rattletrap.Attribute.Product where
 
 import Rattletrap.Primitive
 

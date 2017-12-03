@@ -1,6 +1,6 @@
 module Rattletrap.Attribute.LoadoutOnline where
 
-import Rattletrap.Attribute.ProductAttribute
+import Rattletrap.Attribute.Product
 import Rattletrap.Primitive
 
 import qualified Control.Monad as Monad
