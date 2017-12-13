@@ -11,13 +11,13 @@ data PartyLeaderAttribute = PartyLeaderAttribute
   , partyLeaderAttributeId :: Maybe (RemoteId, Word8)
   } deriving (Eq, Ord, Show)
 
-getPartyLeaderAttribute :: BinaryBit.BitGet PartyLeaderAttribute
-getPartyLeaderAttribute = do
+getPartyLeaderAttribute :: (Int, Int, Int) -> BinaryBit.BitGet PartyLeaderAttribute
+getPartyLeaderAttribute version = do
   systemId <- getWord8Bits
   maybeRemoteAndLocalId <- if systemId == Word8 0
     then pure Nothing
     else do
-      remoteId <- getRemoteId systemId
+      remoteId <- getRemoteId version systemId
       localId <- getWord8Bits
       pure (Just (remoteId, localId))
   pure (PartyLeaderAttribute systemId maybeRemoteAndLocalId)

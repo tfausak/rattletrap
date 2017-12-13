@@ -19,7 +19,7 @@ data ReservationAttribute = ReservationAttribute
 getReservationAttribute :: (Int, Int, Int) -> BinaryBit.BitGet ReservationAttribute
 getReservationAttribute version = do
   number <- getCompressedWord 7
-  uniqueId <- getUniqueIdAttribute
+  uniqueId <- getUniqueIdAttribute version
   name <- if uniqueIdAttributeSystemId uniqueId == Word8 0
     then pure Nothing
     else do

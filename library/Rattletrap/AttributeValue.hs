@@ -174,7 +174,7 @@ getAttributeValue version objectMap name =
         x <- getMusicStingerAttribute
         pure (MusicStingerAttributeValue x)
       PartyLeaderAttributeType -> do
-        x <- getPartyLeaderAttribute
+        x <- getPartyLeaderAttribute version
         pure (PartyLeaderAttributeValue x)
       PickupAttributeType -> do
         x <- getPickupAttribute
@@ -198,7 +198,7 @@ getAttributeValue version objectMap name =
         x <- getTeamPaintAttribute
         pure (TeamPaintAttributeValue x)
       UniqueIdAttributeType -> do
-        x <- getUniqueIdAttribute
+        x <- getUniqueIdAttribute version
         pure (UniqueIdAttributeValue x)
       WeldedInfoAttributeType -> do
         x <- getWeldedInfoAttribute

@@ -12,10 +12,10 @@ data UniqueIdAttribute = UniqueIdAttribute
   , uniqueIdAttributeLocalId :: Word8
   } deriving (Eq, Ord, Show)
 
-getUniqueIdAttribute :: BinaryBit.BitGet UniqueIdAttribute
-getUniqueIdAttribute = do
+getUniqueIdAttribute :: (Int, Int, Int) -> BinaryBit.BitGet UniqueIdAttribute
+getUniqueIdAttribute version = do
   systemId <- getWord8Bits
-  remoteId <- getRemoteId systemId
+  remoteId <- getRemoteId version systemId
   localId <- getWord8Bits
   pure (UniqueIdAttribute systemId remoteId localId)
 
