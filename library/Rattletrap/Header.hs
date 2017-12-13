@@ -6,15 +6,16 @@ import Rattletrap.PropertyValue
 
 import qualified Data.Binary as Binary
 import qualified Data.Map as Map
+import qualified Data.Maybe as Maybe
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
   { headerEngineVersion :: Word32
-  -- ^ The "major" version number.
+  -- ^ The "major" ("engine") version number.
   , headerLicenseeVersion :: Word32
-  -- ^ The "minor" version number.
+  -- ^ The "minor" ("licensee") version number.
   , headerPatchVersion :: Maybe Word32
-  -- ^ The "patch" version number.
+  -- ^ The "patch" ("net") version number.
   , headerLabel :: Text
   -- ^ Always @TAGame.Replay_Soccar_TA@.
   , headerProperties :: Dictionary Property
@@ -83,20 +84,12 @@ putHeader header = do
   putText (headerLabel header)
   putDictionary putProperty (headerProperties header)
 
-getVersion :: Header -> (Int, Int)
+getVersion :: Header -> (Int, Int, Int)
 getVersion header =
-  let
-    major = getMajorVersion header
-    minor = getMinorVersion header
-  in (major, minor)
-
-getMajorVersion :: Header -> Int
-getMajorVersion header =
-  fromIntegral (word32Value (headerEngineVersion header))
-
-getMinorVersion :: Header -> Int
-getMinorVersion header =
-  fromIntegral (word32Value (headerLicenseeVersion header))
+  ( fromIntegral (word32Value (headerEngineVersion header))
+  , fromIntegral (word32Value (headerLicenseeVersion header))
+  , Maybe.fromMaybe 0 (fmap (\ v -> fromIntegral (word32Value v)) (headerPatchVersion header))
+  )
 
 getNumFrames :: Header -> Int
 getNumFrames header =

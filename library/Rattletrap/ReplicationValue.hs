@@ -25,7 +25,7 @@ data ReplicationValue
   deriving (Eq, Ord, Show)
 
 getReplicationValue
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord

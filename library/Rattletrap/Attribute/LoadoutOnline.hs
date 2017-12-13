@@ -13,7 +13,7 @@ newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
   } deriving (Eq, Ord, Show)
 
 getLoadoutOnlineAttribute
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> Map.Map Word32 Text
   -> BinaryBit.BitGet LoadoutOnlineAttribute
 getLoadoutOnlineAttribute version objectMap = do

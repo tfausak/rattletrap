@@ -18,7 +18,7 @@ data Frame = Frame
   } deriving (Eq, Ord, Show)
 
 getFrames
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> Int
   -> Word
   -> ClassAttributeMap
@@ -45,7 +45,7 @@ putFrames :: [Frame] -> BinaryBit.BitPut ()
 putFrames = mapM_ putFrame
 
 getFrame
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
   -> ActorMap

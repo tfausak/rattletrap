@@ -106,7 +106,7 @@ data AttributeValue
   deriving (Eq, Ord, Show)
 
 getAttributeValue
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> Map.Map Word32 Text
   -> Text
   -> BinaryBit.BitGet AttributeValue

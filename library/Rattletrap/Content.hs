@@ -52,9 +52,8 @@ data Content = Content
   } deriving (Eq, Ord, Show)
 
 getContent
-  :: (Int, Int)
-  -- ^ Major and minor version numbers, usually from
-  -- 'Rattletrap.Header.getVersion'.
+  :: (Int, Int, Int)
+  -- ^ Version numbers, usually from 'Rattletrap.Header.getVersion'.
   -> Int
   -- ^ The number of frames in the stream, usually from
   -- 'Rattletrap.Header.getNumFrames'.

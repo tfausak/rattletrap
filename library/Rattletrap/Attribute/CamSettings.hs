@@ -15,7 +15,7 @@ data CamSettingsAttribute = CamSettingsAttribute
   , camSettingsAttributeTransitionSpeed :: Maybe Float32
   } deriving (Eq, Ord, Show)
 
-getCamSettingsAttribute :: (Int, Int) -> BinaryBit.BitGet CamSettingsAttribute
+getCamSettingsAttribute :: (Int, Int, Int) -> BinaryBit.BitGet CamSettingsAttribute
 getCamSettingsAttribute version = do
   fov <- getFloat32Bits
   height <- getFloat32Bits
@@ -23,7 +23,7 @@ getCamSettingsAttribute version = do
   distance <- getFloat32Bits
   stiffness <- getFloat32Bits
   swivelSpeed <- getFloat32Bits
-  transitionSpeed <- if version >= (868, 20)
+  transitionSpeed <- if version >= (868, 20, 0)
     then do
       x <- getFloat32Bits
       pure (Just x)

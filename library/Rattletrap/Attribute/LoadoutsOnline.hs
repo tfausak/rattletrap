@@ -15,7 +15,7 @@ data LoadoutsOnlineAttribute = LoadoutsOnlineAttribute
   } deriving (Eq, Ord, Show)
 
 getLoadoutsOnlineAttribute
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> Map.Map Word32 Text
   -> BinaryBit.BitGet LoadoutsOnlineAttribute
 getLoadoutsOnlineAttribute version objectMap = do

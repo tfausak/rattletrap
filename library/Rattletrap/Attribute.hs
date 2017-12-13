@@ -17,7 +17,7 @@ data Attribute = Attribute
   } deriving (Eq, Ord, Show)
 
 getAttributes
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
@@ -37,7 +37,7 @@ putAttributes attributes = do
   BinaryBit.putBool False
 
 getAttribute
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord

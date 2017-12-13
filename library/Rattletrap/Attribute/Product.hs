@@ -17,7 +17,7 @@ data ProductAttribute = ProductAttribute
   } deriving (Eq, Ord, Show)
 
 getProductAttributes
-  :: (Int, Int) -> Map.Map Word32 Text -> BinaryBit.BitGet [ProductAttribute]
+  :: (Int, Int, Int) -> Map.Map Word32 Text -> BinaryBit.BitGet [ProductAttribute]
 getProductAttributes version objectMap = do
   size <- getWord8Bits
   Monad.replicateM
@@ -25,14 +25,14 @@ getProductAttributes version objectMap = do
     (getProductAttribute version objectMap)
 
 getProductAttribute
-  :: (Int, Int) -> Map.Map Word32 Text -> BinaryBit.BitGet ProductAttribute
+  :: (Int, Int, Int) -> Map.Map Word32 Text -> BinaryBit.BitGet ProductAttribute
 getProductAttribute version objectMap = do
   flag <- BinaryBit.getBool
   objectId <- getWord32Bits
   let objectName = Map.lookup objectId objectMap
   value <- case objectName of
     Just name -> case textToString name of
-      "TAGame.ProductAttribute_Painted_TA" -> if version >= (868, 18)
+      "TAGame.ProductAttribute_Painted_TA" -> if version >= (868, 18, 0)
         then do
           x <- BinaryBit.getWord32be 31
           pure (Just (Right x))

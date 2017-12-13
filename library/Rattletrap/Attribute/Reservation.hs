@@ -16,7 +16,7 @@ data ReservationAttribute = ReservationAttribute
   , reservationAttributeUnknown3 :: Maybe Word.Word8
   } deriving (Eq, Ord, Show)
 
-getReservationAttribute :: (Int, Int) -> BinaryBit.BitGet ReservationAttribute
+getReservationAttribute :: (Int, Int, Int) -> BinaryBit.BitGet ReservationAttribute
 getReservationAttribute version = do
   number <- getCompressedWord 7
   uniqueId <- getUniqueIdAttribute
@@ -27,7 +27,7 @@ getReservationAttribute version = do
       pure (Just name)
   a <- BinaryBit.getBool
   b <- BinaryBit.getBool
-  mc <- if version < (868, 12)
+  mc <- if version < (868, 12, 0)
     then pure Nothing
     else do
       c <- BinaryBit.getWord8 6

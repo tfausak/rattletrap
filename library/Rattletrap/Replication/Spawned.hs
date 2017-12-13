@@ -27,14 +27,14 @@ data SpawnedReplication = SpawnedReplication
   } deriving (Eq, Ord, Show)
 
 getSpawnedReplication
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord
   -> BinaryBit.BitGet (SpawnedReplication, ActorMap)
 getSpawnedReplication version classAttributeMap actorMap actorId = do
   flag <- BinaryBit.getBool
-  nameIndex <- if version < (868, 14)
+  nameIndex <- if version < (868, 14, 0)
     then pure Nothing
     else do
       nameIndex <- getWord32Bits

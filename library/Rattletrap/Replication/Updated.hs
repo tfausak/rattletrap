@@ -13,7 +13,7 @@ newtype UpdatedReplication = UpdatedReplication
   } deriving (Eq, Ord, Show)
 
 getUpdatedReplication
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> ClassAttributeMap
   -> ActorMap
   -> CompressedWord

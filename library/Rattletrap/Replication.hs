@@ -14,7 +14,7 @@ data Replication = Replication
   } deriving (Eq, Ord, Show)
 
 getReplications
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
   -> ActorMap
@@ -41,7 +41,7 @@ putReplications replications = do
   BinaryBit.putBool False
 
 getReplication
-  :: (Int, Int)
+  :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
   -> ActorMap
