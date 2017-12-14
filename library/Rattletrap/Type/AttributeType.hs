@@ -1,4 +1,6 @@
-module Rattletrap.AttributeType where
+module Rattletrap.Type.AttributeType
+  ( AttributeType(..)
+  ) where
 
 data AttributeType
   = AppliedDamageAttributeType

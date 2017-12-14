@@ -64,7 +64,7 @@ import Rattletrap.Attribute.String
 import Rattletrap.Attribute.TeamPaint
 import Rattletrap.Attribute.UniqueId
 import Rattletrap.Attribute.WeldedInfo
-import Rattletrap.AttributeType
+import Rattletrap.Type.AttributeType
 import Rattletrap.Data
 import Rattletrap.Type.Word32
 import Rattletrap.Type.Text

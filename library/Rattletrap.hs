@@ -29,7 +29,7 @@ module Rattletrap
   ( module Rattletrap.ActorMap
   , module Rattletrap.Attribute
   , module Rattletrap.AttributeMapping
-  , module Rattletrap.AttributeType
+  , module Rattletrap.Type.AttributeType
   , module Rattletrap.AttributeValue
   , module Rattletrap.Cache
   , module Rattletrap.ClassAttributeMap
@@ -92,7 +92,9 @@ module Rattletrap
   , module Rattletrap.RemoteId
   , module Rattletrap.Replay
   , module Rattletrap.Replication
-  , module Rattletrap.ReplicationValue
+  , module Rattletrap.Type.ReplicationValue
+  , module Rattletrap.Decode.ReplicationValue
+  , module Rattletrap.Encode.ReplicationValue
   , module Rattletrap.Utility
   , module Rattletrap.Version
   ) where
@@ -100,7 +102,7 @@ module Rattletrap
 import Rattletrap.ActorMap
 import Rattletrap.Attribute
 import Rattletrap.AttributeMapping
-import Rattletrap.AttributeType
+import Rattletrap.Type.AttributeType
 import Rattletrap.AttributeValue
 import Rattletrap.Cache
 import Rattletrap.ClassAttributeMap
@@ -164,6 +166,8 @@ import Rattletrap.PropertyValue
 import Rattletrap.RemoteId
 import Rattletrap.Replay
 import Rattletrap.Replication
-import Rattletrap.ReplicationValue
+import Rattletrap.Type.ReplicationValue
+import Rattletrap.Decode.ReplicationValue
+import Rattletrap.Encode.ReplicationValue
 import Rattletrap.Utility
 import Rattletrap.Version

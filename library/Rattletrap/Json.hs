@@ -37,7 +37,7 @@ import Rattletrap.PropertyValue
 import Rattletrap.RemoteId
 import Rattletrap.Replay
 import Rattletrap.Replication
-import Rattletrap.ReplicationValue
+import Rattletrap.Type.ReplicationValue
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson.TH as Aeson

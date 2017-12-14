@@ -5,7 +5,9 @@ import Rattletrap.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Encode.CompressedWord
-import Rattletrap.ReplicationValue
+import Rattletrap.Type.ReplicationValue
+import Rattletrap.Decode.ReplicationValue
+import Rattletrap.Encode.ReplicationValue
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

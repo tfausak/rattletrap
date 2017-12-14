@@ -1,6 +1,6 @@
 module Rattletrap.Data where
 
-import Rattletrap.AttributeType
+import Rattletrap.Type.AttributeType
 
 rawParentClasses :: [(String, String)]
 rawParentClasses =
