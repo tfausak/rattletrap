@@ -1,6 +1,11 @@
 module Rattletrap.Attribute.RigidBodyState where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Vector
+import Rattletrap.Decode.Vector
+import Rattletrap.Encode.Vector
+import Rattletrap.Type.CompressedWordVector
+import Rattletrap.Decode.CompressedWordVector
+import Rattletrap.Encode.CompressedWordVector
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

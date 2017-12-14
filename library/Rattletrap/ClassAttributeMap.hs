@@ -5,7 +5,10 @@ import Rattletrap.AttributeMapping
 import Rattletrap.Cache
 import Rattletrap.ClassMapping
 import Rattletrap.Data
-import Rattletrap.Primitive
+import Rattletrap.Type.Word32
+import Rattletrap.Type.Text
+import Rattletrap.Type.List
+import Rattletrap.Type.CompressedWord
 
 import qualified Data.Bimap as Bimap
 import qualified Data.IntMap.Strict as IntMap

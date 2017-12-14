@@ -1,6 +1,15 @@
 module Rattletrap.Attribute.Product where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Word32
+import Rattletrap.Decode.Word32
+import Rattletrap.Encode.Word32
+import Rattletrap.Type.Text
+import Rattletrap.Type.CompressedWord
+import Rattletrap.Decode.CompressedWord
+import Rattletrap.Encode.CompressedWord
+import Rattletrap.Type.Word8
+import Rattletrap.Decode.Word8
+import Rattletrap.Encode.Word8
 
 import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit

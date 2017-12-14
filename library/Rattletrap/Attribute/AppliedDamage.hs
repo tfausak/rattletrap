@@ -1,6 +1,14 @@
 module Rattletrap.Attribute.AppliedDamage where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Word8
+import Rattletrap.Decode.Word8
+import Rattletrap.Encode.Word8
+import Rattletrap.Type.Vector
+import Rattletrap.Decode.Vector
+import Rattletrap.Encode.Vector
+import Rattletrap.Type.Int32
+import Rattletrap.Decode.Int32
+import Rattletrap.Encode.Int32
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

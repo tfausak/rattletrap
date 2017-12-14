@@ -1,6 +1,26 @@
 module Rattletrap.PropertyValue where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.List
+import Rattletrap.Decode.List
+import Rattletrap.Encode.List
+import Rattletrap.Type.Dictionary
+import Rattletrap.Decode.Dictionary
+import Rattletrap.Encode.Dictionary
+import Rattletrap.Type.Word8
+import Rattletrap.Decode.Word8
+import Rattletrap.Encode.Word8
+import Rattletrap.Type.Text
+import Rattletrap.Decode.Text
+import Rattletrap.Encode.Text
+import Rattletrap.Type.Float32
+import Rattletrap.Decode.Float32
+import Rattletrap.Encode.Float32
+import Rattletrap.Type.Int32
+import Rattletrap.Decode.Int32
+import Rattletrap.Encode.Int32
+import Rattletrap.Type.Word64
+import Rattletrap.Decode.Word64
+import Rattletrap.Encode.Word64
 
 import qualified Data.Binary as Binary
 

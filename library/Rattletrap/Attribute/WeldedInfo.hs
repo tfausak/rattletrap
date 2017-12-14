@@ -1,6 +1,17 @@
 module Rattletrap.Attribute.WeldedInfo where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Int32
+import Rattletrap.Decode.Int32
+import Rattletrap.Encode.Int32
+import Rattletrap.Type.Vector
+import Rattletrap.Decode.Vector
+import Rattletrap.Encode.Vector
+import Rattletrap.Type.Float32
+import Rattletrap.Decode.Float32
+import Rattletrap.Encode.Float32
+import Rattletrap.Type.Int8Vector
+import Rattletrap.Decode.Int8Vector
+import Rattletrap.Encode.Int8Vector
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

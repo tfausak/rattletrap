@@ -1,6 +1,8 @@
 module Rattletrap.Attribute.FlaggedInt where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Int32
+import Rattletrap.Decode.Int32
+import Rattletrap.Encode.Int32
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

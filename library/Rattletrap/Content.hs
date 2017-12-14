@@ -7,7 +7,15 @@ import Rattletrap.Frame
 import Rattletrap.KeyFrame
 import Rattletrap.Mark
 import Rattletrap.Message
-import Rattletrap.Primitive
+import Rattletrap.Type.List
+import Rattletrap.Decode.List
+import Rattletrap.Encode.List
+import Rattletrap.Type.Text
+import Rattletrap.Decode.Text
+import Rattletrap.Encode.Text
+import Rattletrap.Type.Word32
+import Rattletrap.Decode.Word32
+import Rattletrap.Encode.Word32
 import Rattletrap.Utility
 
 import qualified Data.Binary as Binary

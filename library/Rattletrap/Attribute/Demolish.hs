@@ -1,6 +1,11 @@
 module Rattletrap.Attribute.Demolish where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Word32
+import Rattletrap.Decode.Word32
+import Rattletrap.Encode.Word32
+import Rattletrap.Type.Vector
+import Rattletrap.Decode.Vector
+import Rattletrap.Encode.Vector
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

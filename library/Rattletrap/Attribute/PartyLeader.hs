@@ -1,6 +1,8 @@
 module Rattletrap.Attribute.PartyLeader where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Word8
+import Rattletrap.Decode.Word8
+import Rattletrap.Encode.Word8
 import Rattletrap.RemoteId
 
 import qualified Data.Binary.Bits.Get as BinaryBit

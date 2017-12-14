@@ -1,7 +1,8 @@
 module Rattletrap.Attribute.LoadoutsOnline where
 
 import Rattletrap.Attribute.LoadoutOnline
-import Rattletrap.Primitive
+import Rattletrap.Type.Text
+import Rattletrap.Type.Word32
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

@@ -2,7 +2,9 @@ module Rattletrap.Replication where
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
-import Rattletrap.Primitive
+import Rattletrap.Type.CompressedWord
+import Rattletrap.Decode.CompressedWord
+import Rattletrap.Encode.CompressedWord
 import Rattletrap.ReplicationValue
 
 import qualified Data.Binary.Bits.Get as BinaryBit

@@ -1,6 +1,11 @@
 module Rattletrap.Attribute.TeamPaint where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Word8
+import Rattletrap.Decode.Word8
+import Rattletrap.Encode.Word8
+import Rattletrap.Type.Word32
+import Rattletrap.Decode.Word32
+import Rattletrap.Encode.Word32
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

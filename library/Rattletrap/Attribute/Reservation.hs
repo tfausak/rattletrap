@@ -1,7 +1,13 @@
 module Rattletrap.Attribute.Reservation where
 
 import Rattletrap.Attribute.UniqueId
-import Rattletrap.Primitive
+import Rattletrap.Type.Text
+import Rattletrap.Decode.Text
+import Rattletrap.Encode.Text
+import Rattletrap.Type.CompressedWord
+import Rattletrap.Decode.CompressedWord
+import Rattletrap.Encode.CompressedWord
+import Rattletrap.Type.Word8
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

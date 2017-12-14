@@ -1,6 +1,8 @@
 module Rattletrap.Attribute.Pickup where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Word32
+import Rattletrap.Decode.Word32
+import Rattletrap.Encode.Word32
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

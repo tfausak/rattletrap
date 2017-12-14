@@ -7,7 +7,7 @@ module Rattletrap.ReplicationValue
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
-import Rattletrap.Primitive
+import Rattletrap.Type.CompressedWord
 import Rattletrap.Replication.Destroyed
 import Rattletrap.Replication.Spawned
 import Rattletrap.Replication.Updated

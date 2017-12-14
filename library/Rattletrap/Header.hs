@@ -1,6 +1,15 @@
 module Rattletrap.Header where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Word32
+import Rattletrap.Decode.Word32
+import Rattletrap.Encode.Word32
+import Rattletrap.Type.Text
+import Rattletrap.Decode.Text
+import Rattletrap.Encode.Text
+import Rattletrap.Type.Int32
+import Rattletrap.Type.Dictionary
+import Rattletrap.Decode.Dictionary
+import Rattletrap.Encode.Dictionary
 import Rattletrap.Property
 import Rattletrap.PropertyValue
 

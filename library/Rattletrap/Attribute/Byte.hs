@@ -1,6 +1,8 @@
 module Rattletrap.Attribute.Byte where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Word8
+import Rattletrap.Decode.Word8
+import Rattletrap.Encode.Word8
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

@@ -1,6 +1,8 @@
 module Rattletrap.Attribute.Float where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Float32
+import Rattletrap.Decode.Float32
+import Rattletrap.Encode.Float32
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit

@@ -1,6 +1,8 @@
 module Rattletrap.AttributeMapping where
 
-import Rattletrap.Primitive
+import Rattletrap.Type.Word32
+import Rattletrap.Decode.Word32
+import Rattletrap.Encode.Word32
 
 import qualified Data.Binary as Binary
 

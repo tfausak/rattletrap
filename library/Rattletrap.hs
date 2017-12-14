@@ -45,7 +45,48 @@ module Rattletrap
   , module Rattletrap.Main
   , module Rattletrap.Mark
   , module Rattletrap.Message
-  , module Rattletrap.Primitive
+  , module Rattletrap.Type.CompressedWord
+  , module Rattletrap.Decode.CompressedWord
+  , module Rattletrap.Encode.CompressedWord
+  , module Rattletrap.Type.CompressedWordVector
+  , module Rattletrap.Decode.CompressedWordVector
+  , module Rattletrap.Encode.CompressedWordVector
+  , module Rattletrap.Type.Dictionary
+  , module Rattletrap.Decode.Dictionary
+  , module Rattletrap.Encode.Dictionary
+  , module Rattletrap.Type.Float32
+  , module Rattletrap.Decode.Float32
+  , module Rattletrap.Encode.Float32
+  , module Rattletrap.Type.Int32
+  , module Rattletrap.Decode.Int32
+  , module Rattletrap.Encode.Int32
+  , module Rattletrap.Type.Int8
+  , module Rattletrap.Decode.Int8
+  , module Rattletrap.Encode.Int8
+  , module Rattletrap.Type.Int8Vector
+  , module Rattletrap.Decode.Int8Vector
+  , module Rattletrap.Encode.Int8Vector
+  , module Rattletrap.Type.List
+  , module Rattletrap.Decode.List
+  , module Rattletrap.Encode.List
+  , module Rattletrap.Type.Section
+  , module Rattletrap.Decode.Section
+  , module Rattletrap.Encode.Section
+  , module Rattletrap.Type.Text
+  , module Rattletrap.Decode.Text
+  , module Rattletrap.Encode.Text
+  , module Rattletrap.Type.Vector
+  , module Rattletrap.Decode.Vector
+  , module Rattletrap.Encode.Vector
+  , module Rattletrap.Type.Word32
+  , module Rattletrap.Decode.Word32
+  , module Rattletrap.Encode.Word32
+  , module Rattletrap.Type.Word64
+  , module Rattletrap.Decode.Word64
+  , module Rattletrap.Encode.Word64
+  , module Rattletrap.Type.Word8
+  , module Rattletrap.Decode.Word8
+  , module Rattletrap.Encode.Word8
   , module Rattletrap.Property
   , module Rattletrap.PropertyValue
   , module Rattletrap.RemoteId
@@ -76,7 +117,48 @@ import Rattletrap.KeyFrame
 import Rattletrap.Main
 import Rattletrap.Mark
 import Rattletrap.Message
-import Rattletrap.Primitive
+import Rattletrap.Type.CompressedWord
+import Rattletrap.Decode.CompressedWord
+import Rattletrap.Encode.CompressedWord
+import Rattletrap.Type.CompressedWordVector
+import Rattletrap.Decode.CompressedWordVector
+import Rattletrap.Encode.CompressedWordVector
+import Rattletrap.Type.Dictionary
+import Rattletrap.Decode.Dictionary
+import Rattletrap.Encode.Dictionary
+import Rattletrap.Type.Float32
+import Rattletrap.Decode.Float32
+import Rattletrap.Encode.Float32
+import Rattletrap.Type.Int32
+import Rattletrap.Decode.Int32
+import Rattletrap.Encode.Int32
+import Rattletrap.Type.Int8
+import Rattletrap.Decode.Int8
+import Rattletrap.Encode.Int8
+import Rattletrap.Type.Int8Vector
+import Rattletrap.Decode.Int8Vector
+import Rattletrap.Encode.Int8Vector
+import Rattletrap.Type.List
+import Rattletrap.Decode.List
+import Rattletrap.Encode.List
+import Rattletrap.Type.Section
+import Rattletrap.Decode.Section
+import Rattletrap.Encode.Section
+import Rattletrap.Type.Text
+import Rattletrap.Decode.Text
+import Rattletrap.Encode.Text
+import Rattletrap.Type.Vector
+import Rattletrap.Decode.Vector
+import Rattletrap.Encode.Vector
+import Rattletrap.Type.Word32
+import Rattletrap.Decode.Word32
+import Rattletrap.Encode.Word32
+import Rattletrap.Type.Word64
+import Rattletrap.Decode.Word64
+import Rattletrap.Encode.Word64
+import Rattletrap.Type.Word8
+import Rattletrap.Decode.Word8
+import Rattletrap.Encode.Word8
 import Rattletrap.Property
 import Rattletrap.PropertyValue
 import Rattletrap.RemoteId
