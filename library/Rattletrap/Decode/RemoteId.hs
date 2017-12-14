@@ -5,7 +5,7 @@ module Rattletrap.Decode.RemoteId
 import Rattletrap.Type.RemoteId
 import Rattletrap.Decode.Word64
 import Rattletrap.Type.Word8
-import Rattletrap.Utility
+import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.ByteString.Lazy as ByteString

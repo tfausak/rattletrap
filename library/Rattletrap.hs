@@ -47,7 +47,7 @@ module Rattletrap
   , module Rattletrap.Type.Content
   , module Rattletrap.Decode.Content
   , module Rattletrap.Encode.Content
-  , module Rattletrap.Crc
+  , module Rattletrap.Utility.Crc
   , module Rattletrap.Data
   , module Rattletrap.Type.Frame
   , module Rattletrap.Decode.Frame
@@ -55,7 +55,7 @@ module Rattletrap
   , module Rattletrap.Type.Header
   , module Rattletrap.Decode.Header
   , module Rattletrap.Encode.Header
-  , module Rattletrap.Helper
+  , module Rattletrap.Utility.Helper
   , module Rattletrap.Type.Initialization
   , module Rattletrap.Decode.Initialization
   , module Rattletrap.Encode.Initialization
@@ -129,8 +129,8 @@ module Rattletrap
   , module Rattletrap.Type.ReplicationValue
   , module Rattletrap.Decode.ReplicationValue
   , module Rattletrap.Encode.ReplicationValue
-  , module Rattletrap.Utility
-  , module Rattletrap.Version
+  , module Rattletrap.Utility.Bytes
+  , module Rattletrap.Utility.Version
   ) where
 
 import Rattletrap.Type.ActorMap
@@ -154,7 +154,7 @@ import Rattletrap.Encode.ClassMapping
 import Rattletrap.Type.Content
 import Rattletrap.Decode.Content
 import Rattletrap.Encode.Content
-import Rattletrap.Crc
+import Rattletrap.Utility.Crc
 import Rattletrap.Data
 import Rattletrap.Type.Frame
 import Rattletrap.Decode.Frame
@@ -162,7 +162,7 @@ import Rattletrap.Encode.Frame
 import Rattletrap.Type.Header
 import Rattletrap.Decode.Header
 import Rattletrap.Encode.Header
-import Rattletrap.Helper
+import Rattletrap.Utility.Helper
 import Rattletrap.Type.Initialization
 import Rattletrap.Decode.Initialization
 import Rattletrap.Encode.Initialization
@@ -237,5 +237,5 @@ import Rattletrap.Encode.Replication
 import Rattletrap.Type.ReplicationValue
 import Rattletrap.Decode.ReplicationValue
 import Rattletrap.Encode.ReplicationValue
-import Rattletrap.Utility
-import Rattletrap.Version
+import Rattletrap.Utility.Bytes
+import Rattletrap.Utility.Version

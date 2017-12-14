@@ -1,7 +1,7 @@
 module Rattletrap.Main where
 
-import Rattletrap.Helper
-import Rattletrap.Version
+import Rattletrap.Utility.Helper
+import Rattletrap.Utility.Version
 
 import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Version as Version

@@ -2,7 +2,7 @@ module Rattletrap.Decode.Section
   ( getSection
   ) where
 
-import Rattletrap.Crc
+import Rattletrap.Utility.Crc
 import Rattletrap.Decode.Word32
 import Rattletrap.Type.Word32
 import Rattletrap.Type.Section

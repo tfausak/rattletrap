@@ -1,4 +1,6 @@
-module Rattletrap.Crc where
+module Rattletrap.Utility.Crc
+  ( getCrc32
+  ) where
 
 import Rattletrap.Data
 

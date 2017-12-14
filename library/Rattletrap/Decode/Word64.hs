@@ -4,7 +4,7 @@ module Rattletrap.Decode.Word64
   ) where
 
 import Rattletrap.Type.Word64
-import Rattletrap.Utility
+import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBit

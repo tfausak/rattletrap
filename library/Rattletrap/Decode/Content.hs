@@ -14,7 +14,7 @@ import Rattletrap.Decode.List
 import Rattletrap.Decode.Text
 import Rattletrap.Type.Word32
 import Rattletrap.Decode.Word32
-import Rattletrap.Utility
+import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBit

@@ -1,6 +1,19 @@
 -- | This module provides helper functions for converting replays to and from
 -- both their binary format and JSON.
-module Rattletrap.Helper where
+module Rattletrap.Utility.Helper
+  ( decodeReplay
+  , encodeJson
+  , decodeJson
+  , encodeReplay
+  , decodeReplayFile
+  , encodeJsonFile
+  , decodeJsonFile
+  , encodeReplayFile
+  , decodeReplayHandle
+  , encodeJsonHandle
+  , decodeJsonHandle
+  , encodeReplayHandle
+  ) where
 
 import Rattletrap.Json ()
 import Rattletrap.Type.Replay
@@ -34,72 +47,48 @@ encodeReplay replay = Binary.runPut (putReplay replay)
 
 -- * File paths
 -- | 'decodeReplay'
-{-# DEPRECATED
-decodeReplayFile "use Data.ByteString.Lazy.readFile"
- #-}
-
+{-# DEPRECATED decodeReplayFile "use Data.ByteString.Lazy.readFile"#-}
 decodeReplayFile :: FilePath -> IO (Either String Replay)
 decodeReplayFile file = IO.withBinaryFile file IO.ReadMode decodeReplayHandle
 
 -- | 'encodeJson'
-{-# DEPRECATED
-encodeJsonFile "use Data.ByteString.Lazy.writeFile"
- #-}
-
+{-# DEPRECATED encodeJsonFile "use Data.ByteString.Lazy.writeFile"#-}
 encodeJsonFile :: Replay -> FilePath -> IO ()
 encodeJsonFile replay file =
   IO.withBinaryFile file IO.WriteMode (encodeJsonHandle replay)
 
 -- | 'decodeJson'
-{-# DEPRECATED
-decodeJsonFile "use Data.ByteString.Lazy.readFile"
- #-}
-
+{-# DEPRECATED decodeJsonFile "use Data.ByteString.Lazy.readFile"#-}
 decodeJsonFile :: FilePath -> IO (Either String Replay)
 decodeJsonFile file = IO.withBinaryFile file IO.ReadMode decodeJsonHandle
 
 -- | 'encodeReplay'
-{-# DEPRECATED
-encodeReplayFile "use Data.ByteString.Lazy.writeFile"
- #-}
-
+{-# DEPRECATED encodeReplayFile "use Data.ByteString.Lazy.writeFile"#-}
 encodeReplayFile :: Replay -> FilePath -> IO ()
 encodeReplayFile replay file =
   IO.withBinaryFile file IO.WriteMode (encodeReplayHandle replay)
 
 -- * Handles
 -- | 'decodeReplay'
-{-# DEPRECATED
-decodeReplayHandle "use Data.ByteString.Lazy.hGetContents"
- #-}
-
+{-# DEPRECATED decodeReplayHandle "use Data.ByteString.Lazy.hGetContents"#-}
 decodeReplayHandle :: IO.Handle -> IO (Either String Replay)
 decodeReplayHandle handle = do
   contents <- ByteString.hGetContents handle
   pure (decodeReplay contents)
 
 -- | 'encodeJson'
-{-# DEPRECATED
-encodeJsonHandle "use Data.ByteString.Lazy.hPut"
- #-}
-
+{-# DEPRECATED encodeJsonHandle "use Data.ByteString.Lazy.hPut"#-}
 encodeJsonHandle :: Replay -> IO.Handle -> IO ()
 encodeJsonHandle replay handle = ByteString.hPut handle (encodeJson replay)
 
 -- | 'decodeJson'
-{-# DEPRECATED
-decodeJsonHandle "use Data.ByteString.Lazy.hGetContents"
- #-}
-
+{-# DEPRECATED decodeJsonHandle "use Data.ByteString.Lazy.hGetContents"#-}
 decodeJsonHandle :: IO.Handle -> IO (Either String Replay)
 decodeJsonHandle handle = do
   contents <- ByteString.hGetContents handle
   pure (decodeJson contents)
 
 -- | 'encodeReplay'
-{-# DEPRECATED
-encodeReplayHandle "use Data.ByteString.Lazy.hPut"
- #-}
-
+{-# DEPRECATED encodeReplayHandle "use Data.ByteString.Lazy.hPut"#-}
 encodeReplayHandle :: Replay -> IO.Handle -> IO ()
 encodeReplayHandle replay handle = ByteString.hPut handle (encodeReplay replay)

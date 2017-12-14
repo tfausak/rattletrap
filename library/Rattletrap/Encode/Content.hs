@@ -13,7 +13,7 @@ import Rattletrap.Encode.List
 import Rattletrap.Encode.Text
 import Rattletrap.Type.Word32
 import Rattletrap.Encode.Word32
-import Rattletrap.Utility
+import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBit

@@ -4,7 +4,7 @@ module Rattletrap.Encode.Float32
   ) where
 
 import Rattletrap.Type.Float32
-import Rattletrap.Utility
+import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBit

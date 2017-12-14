@@ -6,7 +6,7 @@ module Rattletrap.Decode.Text
 import Rattletrap.Decode.Int32
 import Rattletrap.Type.Int32
 import Rattletrap.Type.Text
-import Rattletrap.Utility
+import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBit

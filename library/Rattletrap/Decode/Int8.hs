@@ -4,7 +4,7 @@ module Rattletrap.Decode.Int8
   ) where
 
 import Rattletrap.Type.Int8
-import Rattletrap.Utility
+import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Get as Binary

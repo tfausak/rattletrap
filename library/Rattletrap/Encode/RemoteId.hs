@@ -4,7 +4,7 @@ module Rattletrap.Encode.RemoteId
 
 import Rattletrap.Type.RemoteId
 import Rattletrap.Encode.Word64
-import Rattletrap.Utility
+import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.ByteString.Lazy as ByteString
