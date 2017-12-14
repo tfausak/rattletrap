@@ -2,7 +2,8 @@ module Rattletrap.Encode.Dictionary
   ( putDictionary
   ) where
 
-import Rattletrap.Primitive.Text
+import Rattletrap.Encode.Text
+import Rattletrap.Type.Text
 import Rattletrap.Type.Dictionary
 
 import qualified Data.Binary as Binary

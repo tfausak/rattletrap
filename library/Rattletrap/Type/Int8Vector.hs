@@ -2,7 +2,7 @@ module Rattletrap.Type.Int8Vector
   ( Int8Vector(..)
   ) where
 
-import Rattletrap.Primitive.Int8
+import Rattletrap.Type.Int8
 
 data Int8Vector = Int8Vector
   { int8VectorX :: Maybe Int8

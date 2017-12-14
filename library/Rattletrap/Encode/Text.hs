@@ -3,7 +3,8 @@ module Rattletrap.Encode.Text
   , putTextBits
   ) where
 
-import Rattletrap.Primitive.Int32
+import Rattletrap.Encode.Int32
+import Rattletrap.Type.Int32
 import Rattletrap.Type.Text
 import Rattletrap.Utility
 

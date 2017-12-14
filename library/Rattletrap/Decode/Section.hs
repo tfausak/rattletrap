@@ -3,7 +3,8 @@ module Rattletrap.Decode.Section
   ) where
 
 import Rattletrap.Crc
-import Rattletrap.Primitive.Word32
+import Rattletrap.Decode.Word32
+import Rattletrap.Type.Word32
 import Rattletrap.Type.Section
 
 import qualified Control.Monad as Monad

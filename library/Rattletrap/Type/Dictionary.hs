@@ -2,7 +2,7 @@ module Rattletrap.Type.Dictionary
   ( Dictionary(..)
   ) where
 
-import Rattletrap.Primitive.Text
+import Rattletrap.Type.Text
 
 import qualified Data.Map as Map
 import qualified Data.Text as Text

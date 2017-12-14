@@ -2,7 +2,7 @@ module Rattletrap.Type.CompressedWordVector
   ( CompressedWordVector(..)
   ) where
 
-import Rattletrap.Primitive.CompressedWord
+import Rattletrap.Type.CompressedWord
 
 data CompressedWordVector = CompressedWordVector
   { compressedWordVectorX :: CompressedWord

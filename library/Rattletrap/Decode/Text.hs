@@ -3,7 +3,8 @@ module Rattletrap.Decode.Text
   , getTextBits
   ) where
 
-import Rattletrap.Primitive.Int32
+import Rattletrap.Decode.Int32
+import Rattletrap.Type.Int32
 import Rattletrap.Type.Text
 import Rattletrap.Utility
 

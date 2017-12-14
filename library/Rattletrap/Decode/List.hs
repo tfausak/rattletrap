@@ -2,7 +2,8 @@ module Rattletrap.Decode.List
   ( getList
   ) where
 
-import Rattletrap.Primitive.Word32
+import Rattletrap.Decode.Word32
+import Rattletrap.Type.Word32
 import Rattletrap.Type.List
 
 import qualified Control.Monad as Monad

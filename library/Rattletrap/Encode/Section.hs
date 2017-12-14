@@ -3,7 +3,8 @@ module Rattletrap.Encode.Section
   ) where
 
 import Rattletrap.Crc
-import Rattletrap.Primitive.Word32
+import Rattletrap.Encode.Word32
+import Rattletrap.Type.Word32
 import Rattletrap.Type.Section
 
 import qualified Data.Binary as Binary

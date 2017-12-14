@@ -2,7 +2,9 @@ module Rattletrap.Replay where
 
 import Rattletrap.Content
 import Rattletrap.Header
-import Rattletrap.Primitive.Section
+import Rattletrap.Type.Section
+import Rattletrap.Decode.Section
+import Rattletrap.Encode.Section
 
 import qualified Data.Binary as Binary
 

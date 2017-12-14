@@ -2,7 +2,7 @@ module Rattletrap.Decode.CompressedWordVector
   ( getCompressedWordVector
   ) where
 
-import Rattletrap.Primitive.CompressedWord
+import Rattletrap.Decode.CompressedWord
 import Rattletrap.Type.CompressedWordVector
 
 import qualified Data.Binary.Bits.Get as BinaryBit

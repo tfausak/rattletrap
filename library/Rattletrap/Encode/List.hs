@@ -2,7 +2,8 @@ module Rattletrap.Encode.List
   ( putList
   ) where
 
-import Rattletrap.Primitive.Word32
+import Rattletrap.Encode.Word32
+import Rattletrap.Type.Word32
 import Rattletrap.Type.List
 
 import qualified Data.Binary as Binary

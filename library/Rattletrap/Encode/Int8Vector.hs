@@ -2,7 +2,8 @@ module Rattletrap.Encode.Int8Vector
   ( putInt8Vector
   ) where
 
-import Rattletrap.Primitive.Int8
+import Rattletrap.Encode.Int8
+import Rattletrap.Type.Int8
 import Rattletrap.Type.Int8Vector
 
 import qualified Data.Binary.Bits.Put as BinaryBit
