@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.ExplosionAttribute
   ( ExplosionAttribute(..)
@@ -11,11 +11,6 @@ import Rattletrap.Type.Vector
 data ExplosionAttribute = ExplosionAttribute
   { explosionAttributeActorId :: Int32
   , explosionAttributeLocation :: Vector
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON ExplosionAttribute where
-  parseJSON = defaultParseJson "ExplosionAttribute"
-
-instance ToJSON ExplosionAttribute where
-  toEncoding = defaultToEncoding "ExplosionAttribute"
-  toJSON = defaultToJson "ExplosionAttribute"
+$(deriveJson ''ExplosionAttribute)

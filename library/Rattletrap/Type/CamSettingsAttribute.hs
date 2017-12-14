@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.CamSettingsAttribute
   ( CamSettingsAttribute(..)
@@ -15,11 +15,6 @@ data CamSettingsAttribute = CamSettingsAttribute
   , camSettingsAttributeStiffness :: Float32
   , camSettingsAttributeSwivelSpeed :: Float32
   , camSettingsAttributeTransitionSpeed :: Maybe Float32
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON CamSettingsAttribute where
-  parseJSON = defaultParseJson "CamSettingsAttribute"
-
-instance ToJSON CamSettingsAttribute where
-  toEncoding = defaultToEncoding "CamSettingsAttribute"
-  toJSON = defaultToJson "CamSettingsAttribute"
+$(deriveJson ''CamSettingsAttribute)

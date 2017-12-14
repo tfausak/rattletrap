@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.RemoteId
   ( RemoteId(..)
@@ -16,11 +16,6 @@ data RemoteId
   | SplitscreenId Word.Word32
   | SteamId Word64
   | XboxId Word64
-  deriving (Eq, Generic, Ord, Show)
+  deriving (Eq, Ord, Show)
 
-instance FromJSON RemoteId where
-  parseJSON = defaultParseJson "RemoteId"
-
-instance ToJSON RemoteId where
-  toEncoding = defaultToEncoding "RemoteId"
-  toJSON = defaultToJson "RemoteId"
+$(deriveJson ''RemoteId)

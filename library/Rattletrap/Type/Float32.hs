@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.Float32
   ( Float32(..)
@@ -8,11 +8,6 @@ import Rattletrap.Type.Common
 
 newtype Float32 = Float32
   { float32Value :: Float
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON Float32 where
-  parseJSON = defaultParseJson "Float32"
-
-instance ToJSON Float32 where
-  toEncoding = defaultToEncoding "Float32"
-  toJSON = defaultToJson "Float32"
+$(deriveJson ''Float32)

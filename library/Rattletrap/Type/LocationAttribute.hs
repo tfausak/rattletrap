@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.LocationAttribute
   ( LocationAttribute(..)
@@ -9,11 +9,6 @@ import Rattletrap.Type.Vector
 
 newtype LocationAttribute = LocationAttribute
   { locationAttributeValue :: Vector
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON LocationAttribute where
-  parseJSON = defaultParseJson "LocationAttribute"
-
-instance ToJSON LocationAttribute where
-  toEncoding = defaultToEncoding "LocationAttribute"
-  toJSON = defaultToJson "LocationAttribute"
+$(deriveJson ''LocationAttribute)

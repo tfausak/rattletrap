@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.TeamPaintAttribute
   ( TeamPaintAttribute(..)
@@ -14,11 +14,6 @@ data TeamPaintAttribute = TeamPaintAttribute
   , teamPaintAttributeAccentColor :: Word8
   , teamPaintAttributePrimaryFinish :: Word32
   , teamPaintAttributeAccentFinish :: Word32
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON TeamPaintAttribute where
-  parseJSON = defaultParseJson "TeamPaintAttribute"
-
-instance ToJSON TeamPaintAttribute where
-  toEncoding = defaultToEncoding "TeamPaintAttribute"
-  toJSON = defaultToJson "TeamPaintAttribute"
+$(deriveJson ''TeamPaintAttribute)

@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.FloatAttribute
   ( FloatAttribute(..)
@@ -9,11 +9,6 @@ import Rattletrap.Type.Float32
 
 newtype FloatAttribute = FloatAttribute
   { floatAttributeValue :: Float32
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON FloatAttribute where
-  parseJSON = defaultParseJson "FloatAttribute"
-
-instance ToJSON FloatAttribute where
-  toEncoding = defaultToEncoding "FloatAttribute"
-  toJSON = defaultToJson "FloatAttribute"
+$(deriveJson ''FloatAttribute)

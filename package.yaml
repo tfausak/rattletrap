@@ -26,6 +26,7 @@ dependencies:
   - data-binary-ieee754 >= 0.4.4 && < 0.5
   - http-client >= 0.5.7 && < 0.6
   - http-client-tls >= 0.3.5 && < 0.4
+  - template-haskell >= 2.12.0 && < 2.13
   - text >= 1.2.2 && < 1.3
   - vector >= 0.12.0 && < 0.13
 ghc-options: -Wall

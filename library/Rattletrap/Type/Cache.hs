@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.Cache
   ( Cache(..)
@@ -14,11 +14,6 @@ data Cache = Cache
   , cacheParentCacheId :: Word32
   , cacheCacheId :: Word32
   , cacheAttributeMappings :: List AttributeMapping
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON Cache where
-  parseJSON = defaultParseJson "Cache"
-
-instance ToJSON Cache where
-  toEncoding = defaultToEncoding "Cache"
-  toJSON = defaultToJson "Cache"
+$(deriveJson ''Cache)

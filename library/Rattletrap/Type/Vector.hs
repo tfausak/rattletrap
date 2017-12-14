@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.Vector
   ( Vector(..)
@@ -11,11 +11,6 @@ data Vector = Vector
   , vectorX :: Int
   , vectorY :: Int
   , vectorZ :: Int
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON Vector where
-  parseJSON = defaultParseJson "Vector"
-
-instance ToJSON Vector where
-  toEncoding = defaultToEncoding "Vector"
-  toJSON = defaultToJson "Vector"
+$(deriveJson ''Vector)

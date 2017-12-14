@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.Property
   ( Property(..)
@@ -14,11 +14,6 @@ data Property = Property
   , propertySize :: Word64
   -- ^ Not used.
   , propertyValue :: PropertyValue Property
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON Property where
-  parseJSON = defaultParseJson "Property"
-
-instance ToJSON Property where
-  toEncoding = defaultToEncoding "Property"
-  toJSON = defaultToJson "Property"
+$(deriveJson ''Property)

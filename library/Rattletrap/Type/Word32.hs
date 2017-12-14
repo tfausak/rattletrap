@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.Word32
   ( Word32(..)
@@ -10,11 +10,6 @@ import qualified Data.Word as Word
 
 newtype Word32 = Word32
   { word32Value :: Word.Word32
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON Word32 where
-  parseJSON = defaultParseJson "Word32"
-
-instance ToJSON Word32 where
-  toEncoding = defaultToEncoding "Word32"
-  toJSON = defaultToJson "Word32"
+$(deriveJson ''Word32)

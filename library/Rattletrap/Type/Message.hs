@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.Message
   ( Message(..)
@@ -15,11 +15,6 @@ data Message = Message
   -- ^ The primary player's name.
   , messageValue :: Text
   -- ^ The content of the message.
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON Message where
-  parseJSON = defaultParseJson "Message"
-
-instance ToJSON Message where
-  toEncoding = defaultToEncoding "Message"
-  toJSON = defaultToJson "Message"
+$(deriveJson ''Message)

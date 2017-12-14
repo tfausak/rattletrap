@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.Content
   ( Content(..)
@@ -47,11 +47,6 @@ data Content = Content
   , contentCaches :: List Cache
   -- ^ A list of classes along with their parent classes and attributes. Used
   -- for the 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON Content where
-  parseJSON = defaultParseJson "Content"
-
-instance ToJSON Content where
-  toEncoding = defaultToEncoding "Content"
-  toJSON = defaultToJson "Content"
+$(deriveJson ''Content)

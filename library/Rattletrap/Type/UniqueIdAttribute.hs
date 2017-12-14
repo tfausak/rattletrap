@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.UniqueIdAttribute
   ( UniqueIdAttribute(..)
@@ -12,11 +12,6 @@ data UniqueIdAttribute = UniqueIdAttribute
   { uniqueIdAttributeSystemId :: Word8
   , uniqueIdAttributeRemoteId :: RemoteId
   , uniqueIdAttributeLocalId :: Word8
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON UniqueIdAttribute where
-  parseJSON = defaultParseJson "UniqueIdAttribute"
-
-instance ToJSON UniqueIdAttribute where
-  toEncoding = defaultToEncoding "UniqueIdAttribute"
-  toJSON = defaultToJson "UniqueIdAttribute"
+$(deriveJson ''UniqueIdAttribute)

@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.LoadoutsOnlineAttribute
   ( LoadoutsOnlineAttribute(..)
@@ -12,11 +12,6 @@ data LoadoutsOnlineAttribute = LoadoutsOnlineAttribute
   , loadoutsOnlineAttributeOrange :: LoadoutOnlineAttribute
   , loadoutsOnlineAttributeUnknown1 :: Bool
   , loadoutsOnlineAttributeUnknown2 :: Bool
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON LoadoutsOnlineAttribute where
-  parseJSON = defaultParseJson "LoadoutsOnlineAttribute"
-
-instance ToJSON LoadoutsOnlineAttribute where
-  toEncoding = defaultToEncoding "LoadoutsOnlineAttribute"
-  toJSON = defaultToJson "LoadoutsOnlineAttribute"
+$(deriveJson ''LoadoutsOnlineAttribute)

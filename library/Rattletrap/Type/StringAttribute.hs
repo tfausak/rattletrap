@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.StringAttribute
   ( StringAttribute(..)
@@ -9,11 +9,6 @@ import Rattletrap.Type.Text
 
 newtype StringAttribute = StringAttribute
   { stringAttributeValue :: Text
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON StringAttribute where
-  parseJSON = defaultParseJson "StringAttribute"
-
-instance ToJSON StringAttribute where
-  toEncoding = defaultToEncoding "StringAttribute"
-  toJSON = defaultToJson "StringAttribute"
+$(deriveJson ''StringAttribute)
