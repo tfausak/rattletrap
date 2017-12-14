@@ -1,0 +1,3 @@
+- arguments: [ --cross, --threads ]
+- group: { name: dollar, enabled: true }
+- group: { name: generalise, enabled: true }

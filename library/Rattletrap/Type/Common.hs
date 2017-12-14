@@ -1,15 +1,15 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 module Rattletrap.Type.Common
-  ( Json.FromJSON
-  , Ghc.Generic
+  ( Ghc.Generic
   , Json.ToJSON
-  , Json.parseJSON
-  , Json.toEncoding
   , Json.toJSON
-  , defaultParseJson
-  , defaultToEncoding
   , defaultToJson
+  , Json.toEncoding
+  , defaultToEncoding
+  , Json.FromJSON
+  , Json.parseJSON
+  , defaultParseJson
   ) where
 
 import qualified Data.Aeson as Json
@@ -17,13 +17,25 @@ import qualified Data.Aeson.Types as Json
 import qualified Data.Maybe as Maybe
 import qualified GHC.Generics as Ghc
 
-defaultParseJson :: (Ghc.Generic a, Json.GFromJSON Json.Zero (Ghc.Rep a)) => String -> Json.Value -> Json.Parser a
+defaultParseJson
+  :: (Ghc.Generic a, Json.GFromJSON Json.Zero (Ghc.Rep a))
+  => String
+  -> Json.Value
+  -> Json.Parser a
 defaultParseJson = Json.genericParseJSON . jsonOptions
 
-defaultToEncoding :: (Ghc.Generic a, Json.GToEncoding Json.Zero (Ghc.Rep a)) => String -> a -> Json.Encoding
+defaultToEncoding
+  :: (Ghc.Generic a, Json.GToEncoding Json.Zero (Ghc.Rep a))
+  => String
+  -> a
+  -> Json.Encoding
 defaultToEncoding = Json.genericToEncoding . jsonOptions
 
-defaultToJson :: (Ghc.Generic a, Json.GToJSON Json.Zero (Ghc.Rep a)) => String -> a -> Json.Value
+defaultToJson
+  :: (Ghc.Generic a, Json.GToJSON Json.Zero (Ghc.Rep a))
+  => String
+  -> a
+  -> Json.Value
 defaultToJson = Json.genericToJSON . jsonOptions
 
 jsonOptions :: String -> Json.Options
@@ -39,15 +51,14 @@ toSnakeCase :: String -> String
 toSnakeCase = Json.camelTo2 '_'
 
 partialDropPrefix :: (Eq a, Show a) => [a] -> [a] -> [a]
-partialDropPrefix prefix list = Maybe.fromMaybe
-  (error $ unwords [show prefix, "is not a prefix of", show list])
-  $ dropPrefix prefix list
+partialDropPrefix prefix list =
+  Maybe.fromMaybe
+      (error $ unwords [show prefix, "is not a prefix of", show list])
+    $ dropPrefix prefix list
 
 dropPrefix :: Eq a => [a] -> [a] -> Maybe [a]
 dropPrefix prefix list = case prefix of
   [] -> Just list
-  ph : pt -> case list of
+  ph:pt -> case list of
     [] -> Nothing
-    lh : lt -> if ph == lh
-      then dropPrefix pt lt
-      else Nothing
+    lh:lt -> if ph == lh then dropPrefix pt lt else Nothing
