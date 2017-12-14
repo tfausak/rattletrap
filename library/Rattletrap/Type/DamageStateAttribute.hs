@@ -1,7 +1,10 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Type.DamageStateAttribute
   ( DamageStateAttribute(..)
   ) where
 
+import Rattletrap.Type.Common
 import Rattletrap.Type.Word8
 import Rattletrap.Type.Int32
 import Rattletrap.Type.Vector
@@ -13,4 +16,11 @@ data DamageStateAttribute = DamageStateAttribute
   , damageStateAttributeUnknown4 :: Vector
   , damageStateAttributeUnknown5 :: Bool
   , damageStateAttributeUnknown6 :: Bool
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
+
+instance FromJSON DamageStateAttribute where
+  parseJSON = defaultParseJson "DamageStateAttribute"
+
+instance ToJSON DamageStateAttribute where
+  toEncoding = defaultToEncoding "DamageStateAttribute"
+  toJSON = defaultToJson "DamageStateAttribute"

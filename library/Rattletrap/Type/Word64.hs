@@ -13,8 +13,8 @@ newtype Word64 = Word64
   } deriving (Eq, Generic, Ord, Show)
 
 instance FromJSON Word64 where
-  parseJSON = defaultParseJson "word64"
+  parseJSON = defaultParseJson "Word64"
 
 instance ToJSON Word64 where
-  toEncoding = defaultToEncoding "word64"
-  toJSON = defaultToJson "word64"
+  toEncoding = defaultToEncoding "Word64"
+  toJSON = defaultToJson "Word64"

@@ -14,6 +14,7 @@ module Rattletrap.Type.Common
 
 import qualified Data.Aeson as Json
 import qualified Data.Aeson.Types as Json
+import qualified Data.Char as Char
 import qualified Data.Maybe as Maybe
 import qualified GHC.Generics as Ghc
 
@@ -41,11 +42,16 @@ defaultToJson = Json.genericToJSON . jsonOptions
 jsonOptions :: String -> Json.Options
 jsonOptions prefix = Json.defaultOptions
   { Json.constructorTagModifier = toSnakeCase
-  , Json.fieldLabelModifier = toSnakeCase . partialDropPrefix prefix
+  , Json.fieldLabelModifier = toSnakeCase . partialDropPrefix (lowerFirst prefix)
   , Json.omitNothingFields = True
   , Json.sumEncoding = Json.ObjectWithSingleField
   , Json.unwrapUnaryRecords = True
   }
+
+lowerFirst :: String -> String
+lowerFirst string = case string of
+  "" -> string
+  first : rest -> Char.toLower first : rest
 
 toSnakeCase :: String -> String
 toSnakeCase = Json.camelTo2 '_'

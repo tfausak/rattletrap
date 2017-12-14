@@ -1,7 +1,10 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Type.PropertyValue
   ( PropertyValue(..)
   ) where
 
+import Rattletrap.Type.Common
 import Rattletrap.Type.List
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Word8
@@ -24,4 +27,11 @@ data PropertyValue a
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.
   | QWordProperty Word64
   | StrProperty Text
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Generic, Ord, Show)
+
+instance FromJSON a => FromJSON (PropertyValue a) where
+  parseJSON = defaultParseJson "PropertyValue"
+
+instance ToJSON a => ToJSON (PropertyValue a) where
+  toEncoding = defaultToEncoding "PropertyValue"
+  toJSON = defaultToJson "PropertyValue"

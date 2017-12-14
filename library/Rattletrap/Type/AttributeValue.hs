@@ -1,7 +1,10 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Type.AttributeValue
   ( AttributeValue(..)
   ) where
 
+import Rattletrap.Type.Common
 import Rattletrap.Type.AppliedDamageAttribute
 import Rattletrap.Type.BooleanAttribute
 import Rattletrap.Type.ByteAttribute
@@ -64,4 +67,11 @@ data AttributeValue
   | TeamPaintAttributeValue TeamPaintAttribute
   | UniqueIdAttributeValue UniqueIdAttribute
   | WeldedInfoAttributeValue WeldedInfoAttribute
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Generic, Ord, Show)
+
+instance FromJSON AttributeValue where
+  parseJSON = defaultParseJson "AttributeValue"
+
+instance ToJSON AttributeValue where
+  toEncoding = defaultToEncoding "AttributeValue"
+  toJSON = defaultToJson "AttributeValue"

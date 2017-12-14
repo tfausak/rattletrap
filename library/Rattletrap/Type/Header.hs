@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Type.Header
   ( Header(..)
   , getVersion
@@ -5,6 +7,7 @@ module Rattletrap.Type.Header
   , getMaxChannels
   ) where
 
+import Rattletrap.Type.Common
 import Rattletrap.Type.Word32
 import Rattletrap.Type.Text
 import Rattletrap.Type.Int32
@@ -60,7 +63,14 @@ data Header = Header
   --   players per team. This value is not validated, so you can put absurd
   --   values like 99. To get an "unfair" team size like 1v4, you must set the
   --   bUnfairBots 'Rattletrap.PropertyValue.BoolProperty' to @True@.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
+
+instance FromJSON Header where
+  parseJSON = defaultParseJson "Header"
+
+instance ToJSON Header where
+  toEncoding = defaultToEncoding "Header"
+  toJSON = defaultToJson "Header"
 
 getVersion :: Header -> (Int, Int, Int)
 getVersion header =

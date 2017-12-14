@@ -1,7 +1,10 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Type.Content
   ( Content(..)
   ) where
 
+import Rattletrap.Type.Common
 import Rattletrap.Type.Cache
 import Rattletrap.Type.ClassMapping
 import Rattletrap.Type.Frame
@@ -44,4 +47,11 @@ data Content = Content
   , contentCaches :: List Cache
   -- ^ A list of classes along with their parent classes and attributes. Used
   -- for the 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
+
+instance FromJSON Content where
+  parseJSON = defaultParseJson "Content"
+
+instance ToJSON Content where
+  toEncoding = defaultToEncoding "Content"
+  toJSON = defaultToJson "Content"

@@ -15,7 +15,6 @@ module Rattletrap.Utility.Helper
   , encodeReplayHandle
   ) where
 
-import Rattletrap.Json ()
 import Rattletrap.Type.Replay
 import Rattletrap.Decode.Replay
 import Rattletrap.Encode.Replay

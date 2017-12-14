@@ -1,7 +1,10 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Rattletrap.Type.LoadoutAttribute
   ( LoadoutAttribute(..)
   ) where
 
+import Rattletrap.Type.Common
 import Rattletrap.Type.Word32
 import Rattletrap.Type.Word8
 
@@ -20,4 +23,11 @@ data LoadoutAttribute = LoadoutAttribute
   , loadoutAttributeTrail :: Maybe Word32
   , loadoutAttributeGoalExplosion :: Maybe Word32
   , loadoutAttributeBanner :: Maybe Word32
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
+
+instance FromJSON LoadoutAttribute where
+  parseJSON = defaultParseJson "LoadoutAttribute"
+
+instance ToJSON LoadoutAttribute where
+  toEncoding = defaultToEncoding "LoadoutAttribute"
+  toJSON = defaultToJson "LoadoutAttribute"

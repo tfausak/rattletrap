@@ -13,8 +13,8 @@ newtype Word32 = Word32
   } deriving (Eq, Generic, Ord, Show)
 
 instance FromJSON Word32 where
-  parseJSON = defaultParseJson "word32"
+  parseJSON = defaultParseJson "Word32"
 
 instance ToJSON Word32 where
-  toEncoding = defaultToEncoding "word32"
-  toJSON = defaultToJson "word32"
+  toEncoding = defaultToEncoding "Word32"
+  toJSON = defaultToJson "Word32"

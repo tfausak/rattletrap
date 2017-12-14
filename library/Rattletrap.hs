@@ -23,8 +23,6 @@
 --   'getReplay' instead. This was done to improve type inference and make
 --   profiling easier. Also some types require information that could not be
 --   provided by the 'Data.Binary.Binary' interface.
--- - Importing one specific module is not recommended because all JSON
---   instances are defined as orphans in "Rattletrap.Json".
 module Rattletrap
   ( module Rattletrap.Type.ActorMap
   , module Rattletrap.Type.Attribute
@@ -166,7 +164,6 @@ import Rattletrap.Utility.Helper
 import Rattletrap.Type.Initialization
 import Rattletrap.Decode.Initialization
 import Rattletrap.Encode.Initialization
-import Rattletrap.Json ()
 import Rattletrap.Type.KeyFrame
 import Rattletrap.Decode.KeyFrame
 import Rattletrap.Encode.KeyFrame
