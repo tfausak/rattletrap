@@ -8,11 +8,8 @@ import Rattletrap.Utility
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBit
-import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.IEEE754 as IEEE754
-import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as ByteString
 
 getFloat32 :: Binary.Get Float32
 getFloat32 = do

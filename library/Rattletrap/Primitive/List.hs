@@ -1,22 +1,9 @@
-module Rattletrap.Primitive.List where
+module Rattletrap.Primitive.List
+  ( module Rattletrap.Decode.List
+  , module Rattletrap.Encode.List
+  , module Rattletrap.Type.List
+  ) where
 
-import Rattletrap.Primitive.Word32
-
-import qualified Control.Monad as Monad
-import qualified Data.Binary as Binary
-
-newtype List a = List
-  { listValue :: [a]
-  } deriving (Eq, Ord, Show)
-
-getList :: Binary.Get a -> Binary.Get (List a)
-getList getElement = do
-  size <- getWord32
-  elements <- Monad.replicateM (fromIntegral (word32Value size)) getElement
-  pure (List elements)
-
-putList :: (a -> Binary.Put) -> List a -> Binary.Put
-putList putElement list = do
-  let elements = listValue list
-  putWord32 (Word32 (fromIntegral (length elements)))
-  mapM_ putElement elements
+import Rattletrap.Decode.List
+import Rattletrap.Encode.List
+import Rattletrap.Type.List
