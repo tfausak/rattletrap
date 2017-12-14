@@ -1,69 +1,95 @@
-module Rattletrap.AttributeValue
-  ( module Rattletrap.AttributeValue
-  , module Rattletrap.Attribute.AppliedDamage
-  , module Rattletrap.Attribute.Boolean
-  , module Rattletrap.Attribute.Byte
-  , module Rattletrap.Attribute.CamSettings
-  , module Rattletrap.Attribute.ClubColors
-  , module Rattletrap.Attribute.DamageState
-  , module Rattletrap.Attribute.Demolish
-  , module Rattletrap.Attribute.Enum
-  , module Rattletrap.Attribute.Explosion
-  , module Rattletrap.Attribute.ExtendedExplosion
-  , module Rattletrap.Attribute.FlaggedInt
-  , module Rattletrap.Attribute.Float
-  , module Rattletrap.Attribute.GameMode
-  , module Rattletrap.Attribute.Int
-  , module Rattletrap.Attribute.Loadout
-  , module Rattletrap.Attribute.LoadoutOnline
-  , module Rattletrap.Attribute.Loadouts
-  , module Rattletrap.Attribute.LoadoutsOnline
-  , module Rattletrap.Attribute.Location
-  , module Rattletrap.Attribute.MusicStinger
-  , module Rattletrap.Attribute.PartyLeader
-  , module Rattletrap.Attribute.Pickup
-  , module Rattletrap.Attribute.PrivateMatchSettings
-  , module Rattletrap.Attribute.Product
-  , module Rattletrap.Attribute.QWord
-  , module Rattletrap.Attribute.Reservation
-  , module Rattletrap.Attribute.RigidBodyState
-  , module Rattletrap.Attribute.String
-  , module Rattletrap.Attribute.TeamPaint
-  , module Rattletrap.Attribute.UniqueId
-  , module Rattletrap.Attribute.WeldedInfo
-  ) where
+module Rattletrap.AttributeValue where
 
-import Rattletrap.Attribute.AppliedDamage
-import Rattletrap.Attribute.Boolean
-import Rattletrap.Attribute.Byte
-import Rattletrap.Attribute.CamSettings
-import Rattletrap.Attribute.ClubColors
-import Rattletrap.Attribute.DamageState
-import Rattletrap.Attribute.Demolish
-import Rattletrap.Attribute.Enum
-import Rattletrap.Attribute.Explosion
-import Rattletrap.Attribute.ExtendedExplosion
-import Rattletrap.Attribute.FlaggedInt
-import Rattletrap.Attribute.Float
-import Rattletrap.Attribute.GameMode
-import Rattletrap.Attribute.Int
-import Rattletrap.Attribute.Loadout
-import Rattletrap.Attribute.LoadoutOnline
-import Rattletrap.Attribute.Loadouts
-import Rattletrap.Attribute.LoadoutsOnline
-import Rattletrap.Attribute.Location
-import Rattletrap.Attribute.MusicStinger
-import Rattletrap.Attribute.PartyLeader
-import Rattletrap.Attribute.Pickup
-import Rattletrap.Attribute.PrivateMatchSettings
-import Rattletrap.Attribute.Product
-import Rattletrap.Attribute.QWord
-import Rattletrap.Attribute.Reservation
-import Rattletrap.Attribute.RigidBodyState
-import Rattletrap.Attribute.String
-import Rattletrap.Attribute.TeamPaint
-import Rattletrap.Attribute.UniqueId
-import Rattletrap.Attribute.WeldedInfo
+import Rattletrap.Type.AppliedDamageAttribute
+import Rattletrap.Decode.AppliedDamageAttribute
+import Rattletrap.Encode.AppliedDamageAttribute
+import Rattletrap.Type.BooleanAttribute
+import Rattletrap.Decode.BooleanAttribute
+import Rattletrap.Encode.BooleanAttribute
+import Rattletrap.Type.ByteAttribute
+import Rattletrap.Decode.ByteAttribute
+import Rattletrap.Encode.ByteAttribute
+import Rattletrap.Type.CamSettingsAttribute
+import Rattletrap.Decode.CamSettingsAttribute
+import Rattletrap.Encode.CamSettingsAttribute
+import Rattletrap.Type.ClubColorsAttribute
+import Rattletrap.Decode.ClubColorsAttribute
+import Rattletrap.Encode.ClubColorsAttribute
+import Rattletrap.Type.DamageStateAttribute
+import Rattletrap.Decode.DamageStateAttribute
+import Rattletrap.Encode.DamageStateAttribute
+import Rattletrap.Type.DemolishAttribute
+import Rattletrap.Decode.DemolishAttribute
+import Rattletrap.Encode.DemolishAttribute
+import Rattletrap.Type.EnumAttribute
+import Rattletrap.Decode.EnumAttribute
+import Rattletrap.Encode.EnumAttribute
+import Rattletrap.Type.ExplosionAttribute
+import Rattletrap.Decode.ExplosionAttribute
+import Rattletrap.Encode.ExplosionAttribute
+import Rattletrap.Type.ExtendedExplosionAttribute
+import Rattletrap.Decode.ExtendedExplosionAttribute
+import Rattletrap.Encode.ExtendedExplosionAttribute
+import Rattletrap.Type.FlaggedIntAttribute
+import Rattletrap.Decode.FlaggedIntAttribute
+import Rattletrap.Encode.FlaggedIntAttribute
+import Rattletrap.Type.FloatAttribute
+import Rattletrap.Decode.FloatAttribute
+import Rattletrap.Encode.FloatAttribute
+import Rattletrap.Type.GameModeAttribute
+import Rattletrap.Decode.GameModeAttribute
+import Rattletrap.Encode.GameModeAttribute
+import Rattletrap.Type.IntAttribute
+import Rattletrap.Decode.IntAttribute
+import Rattletrap.Encode.IntAttribute
+import Rattletrap.Type.LoadoutAttribute
+import Rattletrap.Decode.LoadoutAttribute
+import Rattletrap.Encode.LoadoutAttribute
+import Rattletrap.Type.LoadoutOnlineAttribute
+import Rattletrap.Decode.LoadoutOnlineAttribute
+import Rattletrap.Encode.LoadoutOnlineAttribute
+import Rattletrap.Type.LoadoutsAttribute
+import Rattletrap.Decode.LoadoutsAttribute
+import Rattletrap.Encode.LoadoutsAttribute
+import Rattletrap.Type.LoadoutsOnlineAttribute
+import Rattletrap.Decode.LoadoutsOnlineAttribute
+import Rattletrap.Encode.LoadoutsOnlineAttribute
+import Rattletrap.Type.LocationAttribute
+import Rattletrap.Decode.LocationAttribute
+import Rattletrap.Encode.LocationAttribute
+import Rattletrap.Type.MusicStingerAttribute
+import Rattletrap.Decode.MusicStingerAttribute
+import Rattletrap.Encode.MusicStingerAttribute
+import Rattletrap.Type.PartyLeaderAttribute
+import Rattletrap.Decode.PartyLeaderAttribute
+import Rattletrap.Encode.PartyLeaderAttribute
+import Rattletrap.Type.PickupAttribute
+import Rattletrap.Decode.PickupAttribute
+import Rattletrap.Encode.PickupAttribute
+import Rattletrap.Type.PrivateMatchSettingsAttribute
+import Rattletrap.Decode.PrivateMatchSettingsAttribute
+import Rattletrap.Encode.PrivateMatchSettingsAttribute
+import Rattletrap.Type.QWordAttribute
+import Rattletrap.Decode.QWordAttribute
+import Rattletrap.Encode.QWordAttribute
+import Rattletrap.Type.ReservationAttribute
+import Rattletrap.Decode.ReservationAttribute
+import Rattletrap.Encode.ReservationAttribute
+import Rattletrap.Type.RigidBodyStateAttribute
+import Rattletrap.Decode.RigidBodyStateAttribute
+import Rattletrap.Encode.RigidBodyStateAttribute
+import Rattletrap.Type.StringAttribute
+import Rattletrap.Decode.StringAttribute
+import Rattletrap.Encode.StringAttribute
+import Rattletrap.Type.TeamPaintAttribute
+import Rattletrap.Decode.TeamPaintAttribute
+import Rattletrap.Encode.TeamPaintAttribute
+import Rattletrap.Type.UniqueIdAttribute
+import Rattletrap.Decode.UniqueIdAttribute
+import Rattletrap.Encode.UniqueIdAttribute
+import Rattletrap.Type.WeldedInfoAttribute
+import Rattletrap.Decode.WeldedInfoAttribute
+import Rattletrap.Encode.WeldedInfoAttribute
 import Rattletrap.Type.AttributeType
 import Rattletrap.Data
 import Rattletrap.Type.Word32
