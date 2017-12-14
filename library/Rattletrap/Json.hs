@@ -29,6 +29,9 @@ import Rattletrap.Type.Int8Vector
 import Rattletrap.Type.Int8
 import Rattletrap.Type.Float32
 import Rattletrap.Type.Section
+import Rattletrap.Type.DestroyedReplication
+import Rattletrap.Type.SpawnedReplication
+import Rattletrap.Type.UpdatedReplication
 import Rattletrap.Property
 import Rattletrap.PropertyValue
 import Rattletrap.RemoteId

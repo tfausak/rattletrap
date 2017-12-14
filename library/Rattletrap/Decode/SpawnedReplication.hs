@@ -1,34 +1,18 @@
-module Rattletrap.Replication.Spawned where
+module Rattletrap.Decode.SpawnedReplication
+  ( getSpawnedReplication
+  ) where
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.Initialization
 import Rattletrap.Type.Word32
 import Rattletrap.Decode.Word32
-import Rattletrap.Encode.Word32
 import Rattletrap.Type.Text
 import Rattletrap.Type.CompressedWord
+import Rattletrap.Type.SpawnedReplication
 
 import qualified Data.Binary.Bits.Get as BinaryBit
-import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Map as Map
-
-data SpawnedReplication = SpawnedReplication
-  { spawnedReplicationFlag :: Bool
-  -- ^ Unclear what this is.
-  , spawnedReplicationNameIndex :: Maybe Word32
-  , spawnedReplicationName :: Maybe Text
-  -- ^ Read-only! Changing a replication's name requires editing the
-  -- 'spawnedReplicationNameIndex' and maybe the class attribute map.
-  , spawnedReplicationObjectId :: Word32
-  , spawnedReplicationObjectName :: Text
-  -- ^ Read-only! Changing a replication's object requires editing the class
-  -- attribute map.
-  , spawnedReplicationClassName :: Text
-  -- ^ Read-only! Changing a replication's class requires editing the class
-  -- attribute map.
-  , spawnedReplicationInitialization :: Initialization
-  } deriving (Eq, Ord, Show)
 
 getSpawnedReplication
   :: (Int, Int, Int)
@@ -62,15 +46,6 @@ getSpawnedReplication version classAttributeMap actorMap actorId = do
       initialization
     , newActorMap
     )
-
-putSpawnedReplication :: SpawnedReplication -> BinaryBit.BitPut ()
-putSpawnedReplication spawnedReplication = do
-  BinaryBit.putBool (spawnedReplicationFlag spawnedReplication)
-  case spawnedReplicationNameIndex spawnedReplication of
-    Nothing -> pure ()
-    Just nameIndex -> putWord32Bits nameIndex
-  putWord32Bits (spawnedReplicationObjectId spawnedReplication)
-  putInitialization (spawnedReplicationInitialization spawnedReplication)
 
 lookupName :: Monad m => ClassAttributeMap -> Maybe Word32 -> m (Maybe Text)
 lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of

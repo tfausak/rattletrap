@@ -1,16 +1,17 @@
-module Rattletrap.ReplicationValue
-  ( module Rattletrap.ReplicationValue
-  , module Rattletrap.Replication.Destroyed
-  , module Rattletrap.Replication.Spawned
-  , module Rattletrap.Replication.Updated
-  ) where
+module Rattletrap.ReplicationValue where
 
 import Rattletrap.ActorMap
 import Rattletrap.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
-import Rattletrap.Replication.Destroyed
-import Rattletrap.Replication.Spawned
-import Rattletrap.Replication.Updated
+import Rattletrap.Type.DestroyedReplication
+import Rattletrap.Decode.DestroyedReplication
+import Rattletrap.Encode.DestroyedReplication
+import Rattletrap.Type.SpawnedReplication
+import Rattletrap.Decode.SpawnedReplication
+import Rattletrap.Encode.SpawnedReplication
+import Rattletrap.Type.UpdatedReplication
+import Rattletrap.Decode.UpdatedReplication
+import Rattletrap.Encode.UpdatedReplication
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Bits.Put as BinaryBit
