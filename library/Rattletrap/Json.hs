@@ -50,7 +50,6 @@ import Rattletrap.Type.Dictionary
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.CompressedWordVector
 import Rattletrap.Type.Int32
-import Rattletrap.Type.Word8
 import Rattletrap.Type.Word64
 import Rattletrap.Type.Word32
 import Rattletrap.Type.Vector
@@ -154,6 +153,5 @@ $(let toSnakeCase = Aeson.camelTo2 '_'
         , ''WeldedInfoAttribute
         , ''Word32
         , ''Word64
-        , ''Word8
         ]
   in Monad.foldM deriveJSON [] names)
