@@ -2,7 +2,7 @@ module Rattletrap.Type.SpawnedReplication
   ( SpawnedReplication(..)
   ) where
 
-import Rattletrap.Initialization
+import Rattletrap.Type.Initialization
 import Rattletrap.Type.Word32
 import Rattletrap.Type.Text
 

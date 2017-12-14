@@ -2,9 +2,9 @@ module Rattletrap.Decode.UpdatedReplication
   ( getUpdatedReplication
   ) where
 
-import Rattletrap.ActorMap
-import Rattletrap.Attribute
-import Rattletrap.ClassAttributeMap
+import Rattletrap.Type.ActorMap
+import Rattletrap.Decode.Attribute
+import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.UpdatedReplication
 

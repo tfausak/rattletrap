@@ -2,7 +2,7 @@ module Rattletrap.Encode.UpdatedReplication
   ( putUpdatedReplication
   ) where
 
-import Rattletrap.Attribute
+import Rattletrap.Encode.Attribute
 import Rattletrap.Type.UpdatedReplication
 
 import qualified Data.Binary.Bits.Put as BinaryBit

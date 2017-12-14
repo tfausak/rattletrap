@@ -2,7 +2,7 @@ module Rattletrap.Type.UpdatedReplication
   ( UpdatedReplication(..)
   ) where
 
-import Rattletrap.Attribute
+import Rattletrap.Type.Attribute
 
 newtype UpdatedReplication = UpdatedReplication
   { updatedReplicationAttributes :: [Attribute]

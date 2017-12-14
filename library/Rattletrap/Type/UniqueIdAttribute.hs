@@ -3,7 +3,7 @@ module Rattletrap.Type.UniqueIdAttribute
   ) where
 
 import Rattletrap.Type.Word8
-import Rattletrap.RemoteId
+import Rattletrap.Type.RemoteId
 
 data UniqueIdAttribute = UniqueIdAttribute
   { uniqueIdAttributeSystemId :: Word8

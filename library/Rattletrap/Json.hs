@@ -3,7 +3,7 @@
 
 module Rattletrap.Json where
 
-import Rattletrap.Attribute
+import Rattletrap.Type.Attribute
 import Rattletrap.Type.AppliedDamageAttribute
 import Rattletrap.Type.BooleanAttribute
 import Rattletrap.Type.ByteAttribute
@@ -35,17 +35,17 @@ import Rattletrap.Type.StringAttribute
 import Rattletrap.Type.TeamPaintAttribute
 import Rattletrap.Type.UniqueIdAttribute
 import Rattletrap.Type.WeldedInfoAttribute
-import Rattletrap.AttributeMapping
-import Rattletrap.AttributeValue
-import Rattletrap.Cache
-import Rattletrap.ClassMapping
-import Rattletrap.Content
-import Rattletrap.Frame
-import Rattletrap.Header
-import Rattletrap.Initialization
-import Rattletrap.KeyFrame
-import Rattletrap.Mark
-import Rattletrap.Message
+import Rattletrap.Type.AttributeMapping
+import Rattletrap.Type.AttributeValue
+import Rattletrap.Type.Cache
+import Rattletrap.Type.ClassMapping
+import Rattletrap.Type.Content
+import Rattletrap.Type.Frame
+import Rattletrap.Type.Header
+import Rattletrap.Type.Initialization
+import Rattletrap.Type.KeyFrame
+import Rattletrap.Type.Mark
+import Rattletrap.Type.Message
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.CompressedWordVector
@@ -63,11 +63,11 @@ import Rattletrap.Type.Section
 import Rattletrap.Type.DestroyedReplication
 import Rattletrap.Type.SpawnedReplication
 import Rattletrap.Type.UpdatedReplication
-import Rattletrap.Property
-import Rattletrap.PropertyValue
-import Rattletrap.RemoteId
-import Rattletrap.Replay
-import Rattletrap.Replication
+import Rattletrap.Type.Property
+import Rattletrap.Type.PropertyValue
+import Rattletrap.Type.RemoteId
+import Rattletrap.Type.Replay
+import Rattletrap.Type.Replication
 import Rattletrap.Type.ReplicationValue
 
 import qualified Control.Monad as Monad

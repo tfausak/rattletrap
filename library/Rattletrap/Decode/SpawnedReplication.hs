@@ -2,9 +2,9 @@ module Rattletrap.Decode.SpawnedReplication
   ( getSpawnedReplication
   ) where
 
-import Rattletrap.ActorMap
-import Rattletrap.ClassAttributeMap
-import Rattletrap.Initialization
+import Rattletrap.Type.ActorMap
+import Rattletrap.Type.ClassAttributeMap
+import Rattletrap.Decode.Initialization
 import Rattletrap.Type.Word32
 import Rattletrap.Decode.Word32
 import Rattletrap.Type.Text

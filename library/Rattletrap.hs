@@ -26,25 +26,49 @@
 -- - Importing one specific module is not recommended because all JSON
 --   instances are defined as orphans in "Rattletrap.Json".
 module Rattletrap
-  ( module Rattletrap.ActorMap
-  , module Rattletrap.Attribute
-  , module Rattletrap.AttributeMapping
+  ( module Rattletrap.Type.ActorMap
+  , module Rattletrap.Type.Attribute
+  , module Rattletrap.Decode.Attribute
+  , module Rattletrap.Encode.Attribute
+  , module Rattletrap.Type.AttributeMapping
+  , module Rattletrap.Decode.AttributeMapping
+  , module Rattletrap.Encode.AttributeMapping
   , module Rattletrap.Type.AttributeType
-  , module Rattletrap.AttributeValue
-  , module Rattletrap.Cache
-  , module Rattletrap.ClassAttributeMap
-  , module Rattletrap.ClassMapping
-  , module Rattletrap.Content
+  , module Rattletrap.Type.AttributeValue
+  , module Rattletrap.Decode.AttributeValue
+  , module Rattletrap.Encode.AttributeValue
+  , module Rattletrap.Type.Cache
+  , module Rattletrap.Decode.Cache
+  , module Rattletrap.Encode.Cache
+  , module Rattletrap.Type.ClassAttributeMap
+  , module Rattletrap.Type.ClassMapping
+  , module Rattletrap.Decode.ClassMapping
+  , module Rattletrap.Encode.ClassMapping
+  , module Rattletrap.Type.Content
+  , module Rattletrap.Decode.Content
+  , module Rattletrap.Encode.Content
   , module Rattletrap.Crc
   , module Rattletrap.Data
-  , module Rattletrap.Frame
-  , module Rattletrap.Header
+  , module Rattletrap.Type.Frame
+  , module Rattletrap.Decode.Frame
+  , module Rattletrap.Encode.Frame
+  , module Rattletrap.Type.Header
+  , module Rattletrap.Decode.Header
+  , module Rattletrap.Encode.Header
   , module Rattletrap.Helper
-  , module Rattletrap.Initialization
-  , module Rattletrap.KeyFrame
+  , module Rattletrap.Type.Initialization
+  , module Rattletrap.Decode.Initialization
+  , module Rattletrap.Encode.Initialization
+  , module Rattletrap.Type.KeyFrame
+  , module Rattletrap.Decode.KeyFrame
+  , module Rattletrap.Encode.KeyFrame
   , module Rattletrap.Main
-  , module Rattletrap.Mark
-  , module Rattletrap.Message
+  , module Rattletrap.Type.Mark
+  , module Rattletrap.Decode.Mark
+  , module Rattletrap.Encode.Mark
+  , module Rattletrap.Type.Message
+  , module Rattletrap.Decode.Message
+  , module Rattletrap.Encode.Message
   , module Rattletrap.Type.CompressedWord
   , module Rattletrap.Decode.CompressedWord
   , module Rattletrap.Encode.CompressedWord
@@ -87,11 +111,21 @@ module Rattletrap
   , module Rattletrap.Type.Word8
   , module Rattletrap.Decode.Word8
   , module Rattletrap.Encode.Word8
-  , module Rattletrap.Property
-  , module Rattletrap.PropertyValue
-  , module Rattletrap.RemoteId
-  , module Rattletrap.Replay
-  , module Rattletrap.Replication
+  , module Rattletrap.Type.Property
+  , module Rattletrap.Decode.Property
+  , module Rattletrap.Encode.Property
+  , module Rattletrap.Type.PropertyValue
+  , module Rattletrap.Decode.PropertyValue
+  , module Rattletrap.Encode.PropertyValue
+  , module Rattletrap.Type.RemoteId
+  , module Rattletrap.Decode.RemoteId
+  , module Rattletrap.Encode.RemoteId
+  , module Rattletrap.Type.Replay
+  , module Rattletrap.Decode.Replay
+  , module Rattletrap.Encode.Replay
+  , module Rattletrap.Type.Replication
+  , module Rattletrap.Decode.Replication
+  , module Rattletrap.Encode.Replication
   , module Rattletrap.Type.ReplicationValue
   , module Rattletrap.Decode.ReplicationValue
   , module Rattletrap.Encode.ReplicationValue
@@ -99,26 +133,50 @@ module Rattletrap
   , module Rattletrap.Version
   ) where
 
-import Rattletrap.ActorMap
-import Rattletrap.Attribute
-import Rattletrap.AttributeMapping
+import Rattletrap.Type.ActorMap
+import Rattletrap.Type.Attribute
+import Rattletrap.Decode.Attribute
+import Rattletrap.Encode.Attribute
+import Rattletrap.Type.AttributeMapping
+import Rattletrap.Decode.AttributeMapping
+import Rattletrap.Encode.AttributeMapping
 import Rattletrap.Type.AttributeType
-import Rattletrap.AttributeValue
-import Rattletrap.Cache
-import Rattletrap.ClassAttributeMap
-import Rattletrap.ClassMapping
-import Rattletrap.Content
+import Rattletrap.Type.AttributeValue
+import Rattletrap.Decode.AttributeValue
+import Rattletrap.Encode.AttributeValue
+import Rattletrap.Type.Cache
+import Rattletrap.Decode.Cache
+import Rattletrap.Encode.Cache
+import Rattletrap.Type.ClassAttributeMap
+import Rattletrap.Type.ClassMapping
+import Rattletrap.Decode.ClassMapping
+import Rattletrap.Encode.ClassMapping
+import Rattletrap.Type.Content
+import Rattletrap.Decode.Content
+import Rattletrap.Encode.Content
 import Rattletrap.Crc
 import Rattletrap.Data
-import Rattletrap.Frame
-import Rattletrap.Header
+import Rattletrap.Type.Frame
+import Rattletrap.Decode.Frame
+import Rattletrap.Encode.Frame
+import Rattletrap.Type.Header
+import Rattletrap.Decode.Header
+import Rattletrap.Encode.Header
 import Rattletrap.Helper
-import Rattletrap.Initialization
+import Rattletrap.Type.Initialization
+import Rattletrap.Decode.Initialization
+import Rattletrap.Encode.Initialization
 import Rattletrap.Json ()
-import Rattletrap.KeyFrame
+import Rattletrap.Type.KeyFrame
+import Rattletrap.Decode.KeyFrame
+import Rattletrap.Encode.KeyFrame
 import Rattletrap.Main
-import Rattletrap.Mark
-import Rattletrap.Message
+import Rattletrap.Type.Mark
+import Rattletrap.Decode.Mark
+import Rattletrap.Encode.Mark
+import Rattletrap.Type.Message
+import Rattletrap.Decode.Message
+import Rattletrap.Encode.Message
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Encode.CompressedWord
@@ -161,11 +219,21 @@ import Rattletrap.Encode.Word64
 import Rattletrap.Type.Word8
 import Rattletrap.Decode.Word8
 import Rattletrap.Encode.Word8
-import Rattletrap.Property
-import Rattletrap.PropertyValue
-import Rattletrap.RemoteId
-import Rattletrap.Replay
-import Rattletrap.Replication
+import Rattletrap.Type.Property
+import Rattletrap.Decode.Property
+import Rattletrap.Encode.Property
+import Rattletrap.Type.PropertyValue
+import Rattletrap.Decode.PropertyValue
+import Rattletrap.Encode.PropertyValue
+import Rattletrap.Type.RemoteId
+import Rattletrap.Decode.RemoteId
+import Rattletrap.Encode.RemoteId
+import Rattletrap.Type.Replay
+import Rattletrap.Decode.Replay
+import Rattletrap.Encode.Replay
+import Rattletrap.Type.Replication
+import Rattletrap.Decode.Replication
+import Rattletrap.Encode.Replication
 import Rattletrap.Type.ReplicationValue
 import Rattletrap.Decode.ReplicationValue
 import Rattletrap.Encode.ReplicationValue

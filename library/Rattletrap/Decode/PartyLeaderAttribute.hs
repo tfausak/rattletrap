@@ -5,7 +5,7 @@ module Rattletrap.Decode.PartyLeaderAttribute
 import Rattletrap.Type.PartyLeaderAttribute
 import Rattletrap.Type.Word8
 import Rattletrap.Decode.Word8
-import Rattletrap.RemoteId
+import Rattletrap.Decode.RemoteId
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

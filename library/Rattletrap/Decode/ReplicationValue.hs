@@ -2,8 +2,8 @@ module Rattletrap.Decode.ReplicationValue
   ( getReplicationValue
   ) where
 
-import Rattletrap.ActorMap
-import Rattletrap.ClassAttributeMap
+import Rattletrap.Type.ActorMap
+import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Decode.DestroyedReplication
 import Rattletrap.Decode.SpawnedReplication
