@@ -2,9 +2,9 @@ module Rattletrap.Decode.TeamPaintAttribute
   ( getTeamPaintAttribute
   ) where
 
-import Rattletrap.Type.TeamPaintAttribute
-import Rattletrap.Decode.Word8le
 import Rattletrap.Decode.Word32le
+import Rattletrap.Decode.Word8le
+import Rattletrap.Type.TeamPaintAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

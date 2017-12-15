@@ -2,9 +2,9 @@ module Rattletrap.Encode.ClassMapping
   ( putClassMapping
   ) where
 
-import Rattletrap.Type.ClassMapping
-import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Str
+import Rattletrap.Encode.Word32le
+import Rattletrap.Type.ClassMapping
 
 import qualified Data.Binary as Binary
 

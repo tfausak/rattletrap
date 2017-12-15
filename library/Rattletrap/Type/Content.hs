@@ -4,14 +4,14 @@ module Rattletrap.Type.Content
   ( Content(..)
   ) where
 
-import Rattletrap.Type.Common
 import Rattletrap.Type.Cache
 import Rattletrap.Type.ClassMapping
+import Rattletrap.Type.Common
 import Rattletrap.Type.Frame
 import Rattletrap.Type.KeyFrame
+import Rattletrap.Type.List
 import Rattletrap.Type.Mark
 import Rattletrap.Type.Message
-import Rattletrap.Type.List
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 

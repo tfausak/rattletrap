@@ -2,8 +2,8 @@ module Rattletrap.Decode.PickupAttribute
   ( getPickupAttribute
   ) where
 
-import Rattletrap.Type.PickupAttribute
 import Rattletrap.Decode.Word32le
+import Rattletrap.Type.PickupAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

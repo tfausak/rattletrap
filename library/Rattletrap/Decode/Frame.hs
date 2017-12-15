@@ -3,12 +3,12 @@ module Rattletrap.Decode.Frame
   , getFrame
   ) where
 
-import Rattletrap.Type.ClassAttributeMap
-import Rattletrap.Type.Frame
-import Rattletrap.Type.Word32le
-import Rattletrap.Type.CompressedWord
 import Rattletrap.Decode.Float32le
 import Rattletrap.Decode.Replication
+import Rattletrap.Type.ClassAttributeMap
+import Rattletrap.Type.CompressedWord
+import Rattletrap.Type.Frame
+import Rattletrap.Type.Word32le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map

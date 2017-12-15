@@ -4,12 +4,12 @@ module Rattletrap.Type.AttributeValue
   ( AttributeValue(..)
   ) where
 
-import Rattletrap.Type.Common
 import Rattletrap.Type.AppliedDamageAttribute
 import Rattletrap.Type.BooleanAttribute
 import Rattletrap.Type.ByteAttribute
 import Rattletrap.Type.CamSettingsAttribute
 import Rattletrap.Type.ClubColorsAttribute
+import Rattletrap.Type.Common
 import Rattletrap.Type.DamageStateAttribute
 import Rattletrap.Type.DemolishAttribute
 import Rattletrap.Type.EnumAttribute

@@ -5,8 +5,8 @@ module Rattletrap.Type.DemolishAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32le
 import Rattletrap.Type.Vector
+import Rattletrap.Type.Word32le
 
 data DemolishAttribute = DemolishAttribute
   { demolishAttributeAttackerFlag :: Bool

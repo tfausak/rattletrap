@@ -2,8 +2,8 @@ module Rattletrap.Encode.LoadoutsAttribute
   ( putLoadoutsAttribute
   ) where
 
-import Rattletrap.Type.LoadoutsAttribute
 import Rattletrap.Encode.LoadoutAttribute
+import Rattletrap.Type.LoadoutsAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

@@ -5,8 +5,8 @@ module Rattletrap.Type.PartyLeaderAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word8le
 import Rattletrap.Type.RemoteId
+import Rattletrap.Type.Word8le
 
 data PartyLeaderAttribute = PartyLeaderAttribute
   { partyLeaderAttributeSystemId :: Word8le

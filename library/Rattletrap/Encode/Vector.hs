@@ -13,9 +13,12 @@ putVector vector = do
   let
     bitSize =
       round (logBase (2 :: Float) (fromIntegral (vectorBias vector))) - 1 :: Word
-    dx = fromIntegral (vectorX vector + fromIntegral (vectorBias vector)) :: Word
-    dy = fromIntegral (vectorY vector + fromIntegral (vectorBias vector)) :: Word
-    dz = fromIntegral (vectorZ vector + fromIntegral (vectorBias vector)) :: Word
+    dx =
+      fromIntegral (vectorX vector + fromIntegral (vectorBias vector)) :: Word
+    dy =
+      fromIntegral (vectorY vector + fromIntegral (vectorBias vector)) :: Word
+    dz =
+      fromIntegral (vectorZ vector + fromIntegral (vectorBias vector)) :: Word
     limit = 2 ^ (bitSize + 2) :: Word
   putCompressedWord (CompressedWord 19 bitSize)
   putCompressedWord (CompressedWord limit dx)

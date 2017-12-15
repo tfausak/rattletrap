@@ -2,8 +2,8 @@ module Rattletrap.Encode.LoadoutsOnlineAttribute
   ( putLoadoutsOnlineAttribute
   ) where
 
-import Rattletrap.Type.LoadoutsOnlineAttribute
 import Rattletrap.Encode.LoadoutOnlineAttribute
+import Rattletrap.Type.LoadoutsOnlineAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

@@ -2,8 +2,8 @@ module Rattletrap.Decode.IntAttribute
   ( getIntAttribute
   ) where
 
-import Rattletrap.Type.IntAttribute
 import Rattletrap.Decode.Int32le
+import Rattletrap.Type.IntAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

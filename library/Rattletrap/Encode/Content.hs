@@ -2,17 +2,17 @@ module Rattletrap.Encode.Content
   ( putContent
   ) where
 
-import Rattletrap.Type.Content
 import Rattletrap.Encode.Cache
 import Rattletrap.Encode.ClassMapping
 import Rattletrap.Encode.Frame
 import Rattletrap.Encode.KeyFrame
+import Rattletrap.Encode.List
 import Rattletrap.Encode.Mark
 import Rattletrap.Encode.Message
-import Rattletrap.Encode.List
 import Rattletrap.Encode.Str
-import Rattletrap.Type.Word32le
 import Rattletrap.Encode.Word32le
+import Rattletrap.Type.Content
+import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary

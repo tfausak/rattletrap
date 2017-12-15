@@ -3,8 +3,8 @@ module Rattletrap.Encode.Int8Vector
   ) where
 
 import Rattletrap.Encode.Int8le
-import Rattletrap.Type.Int8le
 import Rattletrap.Type.Int8Vector
+import Rattletrap.Type.Int8le
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

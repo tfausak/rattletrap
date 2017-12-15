@@ -2,8 +2,8 @@ module Rattletrap.Decode.CamSettingsAttribute
   ( getCamSettingsAttribute
   ) where
 
-import Rattletrap.Type.CamSettingsAttribute
 import Rattletrap.Decode.Float32le
+import Rattletrap.Type.CamSettingsAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

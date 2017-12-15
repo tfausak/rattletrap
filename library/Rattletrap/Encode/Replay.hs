@@ -2,10 +2,10 @@ module Rattletrap.Encode.Replay
   ( putReplay
   ) where
 
-import Rattletrap.Type.Replay
 import Rattletrap.Encode.Content
 import Rattletrap.Encode.Header
 import Rattletrap.Encode.Section
+import Rattletrap.Type.Replay
 
 import qualified Data.Binary as Binary
 

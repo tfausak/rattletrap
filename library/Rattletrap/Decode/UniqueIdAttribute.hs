@@ -2,9 +2,9 @@ module Rattletrap.Decode.UniqueIdAttribute
   ( getUniqueIdAttribute
   ) where
 
-import Rattletrap.Type.UniqueIdAttribute
-import Rattletrap.Decode.Word8le
 import Rattletrap.Decode.RemoteId
+import Rattletrap.Decode.Word8le
+import Rattletrap.Type.UniqueIdAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

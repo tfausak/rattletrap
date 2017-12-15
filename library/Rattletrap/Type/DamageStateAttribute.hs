@@ -5,9 +5,9 @@ module Rattletrap.Type.DamageStateAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word8le
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Vector
+import Rattletrap.Type.Word8le
 
 data DamageStateAttribute = DamageStateAttribute
   { damageStateAttributeUnknown1 :: Word8le

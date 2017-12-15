@@ -2,10 +2,10 @@ module Rattletrap.Decode.Section
   ( getSection
   ) where
 
-import Rattletrap.Utility.Crc
 import Rattletrap.Decode.Word32le
-import Rattletrap.Type.Word32le
 import Rattletrap.Type.Section
+import Rattletrap.Type.Word32le
+import Rattletrap.Utility.Crc
 
 import qualified Control.Monad as Monad
 import qualified Data.Binary as Binary

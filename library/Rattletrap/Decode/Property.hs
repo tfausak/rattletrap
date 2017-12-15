@@ -2,10 +2,10 @@ module Rattletrap.Decode.Property
   ( getProperty
   ) where
 
-import Rattletrap.Type.Property
+import Rattletrap.Decode.PropertyValue
 import Rattletrap.Decode.Str
 import Rattletrap.Decode.Word64le
-import Rattletrap.Decode.PropertyValue
+import Rattletrap.Type.Property
 
 import qualified Data.Binary as Binary
 

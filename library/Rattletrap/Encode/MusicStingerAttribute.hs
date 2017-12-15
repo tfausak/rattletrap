@@ -2,9 +2,9 @@ module Rattletrap.Encode.MusicStingerAttribute
   ( putMusicStingerAttribute
   ) where
 
-import Rattletrap.Type.MusicStingerAttribute
 import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Word8le
+import Rattletrap.Type.MusicStingerAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

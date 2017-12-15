@@ -2,9 +2,9 @@ module Rattletrap.Encode.Mark
   ( putMark
   ) where
 
-import Rattletrap.Type.Mark
 import Rattletrap.Encode.Str
 import Rattletrap.Encode.Word32le
+import Rattletrap.Type.Mark
 
 import qualified Data.Binary as Binary
 

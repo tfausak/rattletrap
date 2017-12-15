@@ -3,12 +3,12 @@ module Rattletrap.Decode.Replication
   , getReplication
   ) where
 
-import Rattletrap.Type.Replication
-import Rattletrap.Type.ClassAttributeMap
-import Rattletrap.Type.Word32le
-import Rattletrap.Type.CompressedWord
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Decode.ReplicationValue
+import Rattletrap.Type.ClassAttributeMap
+import Rattletrap.Type.CompressedWord
+import Rattletrap.Type.Replication
+import Rattletrap.Type.Word32le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map

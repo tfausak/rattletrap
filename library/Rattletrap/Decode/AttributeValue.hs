@@ -3,8 +3,7 @@ module Rattletrap.Decode.AttributeValue
   ) where
 
 import Data.Semigroup ((<>))
-import Rattletrap.Type.AttributeValue
-import Rattletrap.Type.AttributeType
+import Rattletrap.Data
 import Rattletrap.Decode.AppliedDamageAttribute
 import Rattletrap.Decode.BooleanAttribute
 import Rattletrap.Decode.ByteAttribute
@@ -35,9 +34,10 @@ import Rattletrap.Decode.StringAttribute
 import Rattletrap.Decode.TeamPaintAttribute
 import Rattletrap.Decode.UniqueIdAttribute
 import Rattletrap.Decode.WeldedInfoAttribute
-import Rattletrap.Data
-import Rattletrap.Type.Word32le
+import Rattletrap.Type.AttributeType
+import Rattletrap.Type.AttributeValue
 import Rattletrap.Type.Str
+import Rattletrap.Type.Word32le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map

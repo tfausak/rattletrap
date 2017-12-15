@@ -2,14 +2,14 @@ module Rattletrap.Encode.PropertyValue
   ( putPropertyValue
   ) where
 
-import Rattletrap.Type.PropertyValue
-import Rattletrap.Encode.List
 import Rattletrap.Encode.Dictionary
-import Rattletrap.Encode.Word8le
-import Rattletrap.Encode.Str
 import Rattletrap.Encode.Float32le
 import Rattletrap.Encode.Int32le
+import Rattletrap.Encode.List
+import Rattletrap.Encode.Str
 import Rattletrap.Encode.Word64le
+import Rattletrap.Encode.Word8le
+import Rattletrap.Type.PropertyValue
 
 import qualified Data.Binary as Binary
 

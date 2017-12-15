@@ -2,10 +2,10 @@ module Rattletrap.Encode.AppliedDamageAttribute
   ( putAppliedDamageAttribute
   ) where
 
-import Rattletrap.Type.AppliedDamageAttribute
-import Rattletrap.Encode.Word8le
-import Rattletrap.Encode.Vector
 import Rattletrap.Encode.Int32le
+import Rattletrap.Encode.Vector
+import Rattletrap.Encode.Word8le
+import Rattletrap.Type.AppliedDamageAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

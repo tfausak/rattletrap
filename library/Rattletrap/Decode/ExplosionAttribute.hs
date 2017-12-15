@@ -2,9 +2,9 @@ module Rattletrap.Decode.ExplosionAttribute
   ( getExplosionAttribute
   ) where
 
-import Rattletrap.Type.ExplosionAttribute
 import Rattletrap.Decode.Int32le
 import Rattletrap.Decode.Vector
+import Rattletrap.Type.ExplosionAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

@@ -3,9 +3,9 @@ module Rattletrap.Encode.Replication
   , putReplication
   ) where
 
-import Rattletrap.Type.Replication
 import Rattletrap.Encode.CompressedWord
 import Rattletrap.Encode.ReplicationValue
+import Rattletrap.Type.Replication
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

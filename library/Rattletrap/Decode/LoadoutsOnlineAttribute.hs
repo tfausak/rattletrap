@@ -2,8 +2,8 @@ module Rattletrap.Decode.LoadoutsOnlineAttribute
   ( getLoadoutsOnlineAttribute
   ) where
 
-import Rattletrap.Type.LoadoutsOnlineAttribute
 import Rattletrap.Decode.LoadoutOnlineAttribute
+import Rattletrap.Type.LoadoutsOnlineAttribute
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 

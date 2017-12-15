@@ -2,8 +2,8 @@ module Rattletrap.Encode.CamSettingsAttribute
   ( putCamSettingsAttribute
   ) where
 
-import Rattletrap.Type.CamSettingsAttribute
 import Rattletrap.Encode.Float32le
+import Rattletrap.Type.CamSettingsAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

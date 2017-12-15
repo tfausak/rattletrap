@@ -2,9 +2,9 @@ module Rattletrap.Decode.KeyFrame
   ( getKeyFrame
   ) where
 
-import Rattletrap.Type.KeyFrame
 import Rattletrap.Decode.Float32le
 import Rattletrap.Decode.Word32le
+import Rattletrap.Type.KeyFrame
 
 import qualified Data.Binary as Binary
 

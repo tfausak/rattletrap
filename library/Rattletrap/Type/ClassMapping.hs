@@ -5,8 +5,8 @@ module Rattletrap.Type.ClassMapping
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32le
 import Rattletrap.Type.Str
+import Rattletrap.Type.Word32le
 
 data ClassMapping = ClassMapping
   { classMappingName :: Str

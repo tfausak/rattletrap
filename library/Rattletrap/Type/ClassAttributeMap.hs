@@ -11,15 +11,15 @@ module Rattletrap.Type.ClassAttributeMap
   , makeClassAttributeMap
   ) where
 
+import Rattletrap.Data
 import Rattletrap.Type.AttributeMapping
 import Rattletrap.Type.Cache
 import Rattletrap.Type.ClassMapping
 import Rattletrap.Type.Common
-import Rattletrap.Data
-import Rattletrap.Type.Word32le
-import Rattletrap.Type.Str
-import Rattletrap.Type.List
 import Rattletrap.Type.CompressedWord
+import Rattletrap.Type.List
+import Rattletrap.Type.Str
+import Rattletrap.Type.Word32le
 
 import qualified Data.IntMap as IntMap
 import qualified Data.List as List

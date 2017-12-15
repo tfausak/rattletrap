@@ -6,8 +6,8 @@ import Rattletrap.Data
 
 import qualified Data.Bits as Bits
 import qualified Data.ByteString.Lazy as ByteString
-import qualified Data.Word as Word
 import qualified Data.IntMap as IntMap
+import qualified Data.Word as Word
 
 -- | Computes the CRC32 of some bytes. This is done to ensure that the bytes
 -- are valid before trying to parse them.

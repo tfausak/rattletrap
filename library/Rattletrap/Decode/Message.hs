@@ -2,9 +2,9 @@ module Rattletrap.Decode.Message
   ( getMessage
   ) where
 
-import Rattletrap.Type.Message
-import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.Str
+import Rattletrap.Decode.Word32le
+import Rattletrap.Type.Message
 
 import qualified Data.Binary as Binary
 

@@ -3,9 +3,9 @@ module Rattletrap.Encode.LoadoutOnlineAttribute
   ) where
 
 import Rattletrap.Encode.ProductAttribute
+import Rattletrap.Encode.Word8le
 import Rattletrap.Type.LoadoutOnlineAttribute
 import Rattletrap.Type.Word8le
-import Rattletrap.Encode.Word8le
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

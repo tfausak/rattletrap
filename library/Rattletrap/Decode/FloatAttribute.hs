@@ -2,8 +2,8 @@ module Rattletrap.Decode.FloatAttribute
   ( getFloatAttribute
   ) where
 
-import Rattletrap.Type.FloatAttribute
 import Rattletrap.Decode.Float32le
+import Rattletrap.Type.FloatAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

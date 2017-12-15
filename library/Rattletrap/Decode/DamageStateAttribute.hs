@@ -2,10 +2,10 @@ module Rattletrap.Decode.DamageStateAttribute
   ( getDamageStateAttribute
   ) where
 
-import Rattletrap.Type.DamageStateAttribute
-import Rattletrap.Decode.Word8le
 import Rattletrap.Decode.Int32le
 import Rattletrap.Decode.Vector
+import Rattletrap.Decode.Word8le
+import Rattletrap.Type.DamageStateAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

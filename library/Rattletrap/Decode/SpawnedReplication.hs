@@ -3,13 +3,13 @@ module Rattletrap.Decode.SpawnedReplication
   ) where
 
 import Data.Semigroup ((<>))
-import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Decode.Initialization
-import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Word32le
-import Rattletrap.Type.Str
+import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.SpawnedReplication
+import Rattletrap.Type.Str
+import Rattletrap.Type.Word32le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map

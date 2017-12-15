@@ -2,9 +2,9 @@ module Rattletrap.Encode.LoadoutAttribute
   ( putLoadoutAttribute
   ) where
 
-import Rattletrap.Type.LoadoutAttribute
 import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Word8le
+import Rattletrap.Type.LoadoutAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

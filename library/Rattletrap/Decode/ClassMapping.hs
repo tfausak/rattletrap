@@ -2,9 +2,9 @@ module Rattletrap.Decode.ClassMapping
   ( getClassMapping
   ) where
 
-import Rattletrap.Type.ClassMapping
-import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.Str
+import Rattletrap.Decode.Word32le
+import Rattletrap.Type.ClassMapping
 
 import qualified Data.Binary as Binary
 

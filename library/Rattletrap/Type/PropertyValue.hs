@@ -5,13 +5,13 @@ module Rattletrap.Type.PropertyValue
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.List
 import Rattletrap.Type.Dictionary
-import Rattletrap.Type.Word8le
-import Rattletrap.Type.Str
 import Rattletrap.Type.Float32le
 import Rattletrap.Type.Int32le
+import Rattletrap.Type.List
+import Rattletrap.Type.Str
 import Rattletrap.Type.Word64le
+import Rattletrap.Type.Word8le
 
 data PropertyValue a
   = PropertyValueArray (List (Dictionary a))

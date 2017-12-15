@@ -3,11 +3,11 @@ module Rattletrap.Decode.LoadoutOnlineAttribute
   ) where
 
 import Rattletrap.Decode.ProductAttribute
-import Rattletrap.Type.LoadoutOnlineAttribute
-import Rattletrap.Type.Word32le
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Word8le
+import Rattletrap.Type.LoadoutOnlineAttribute
+import Rattletrap.Type.Str
+import Rattletrap.Type.Word32le
+import Rattletrap.Type.Word8le
 
 import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit

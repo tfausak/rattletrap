@@ -2,11 +2,11 @@ module Rattletrap.Decode.ReservationAttribute
   ( getReservationAttribute
   ) where
 
-import Rattletrap.Type.UniqueIdAttribute
+import Rattletrap.Decode.CompressedWord
+import Rattletrap.Decode.Str
 import Rattletrap.Decode.UniqueIdAttribute
 import Rattletrap.Type.ReservationAttribute
-import Rattletrap.Decode.Str
-import Rattletrap.Decode.CompressedWord
+import Rattletrap.Type.UniqueIdAttribute
 import Rattletrap.Type.Word8le
 
 import qualified Data.Binary.Bits.Get as BinaryBit

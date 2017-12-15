@@ -2,8 +2,8 @@ module Rattletrap.Encode.RemoteId
   ( putRemoteId
   ) where
 
-import Rattletrap.Type.RemoteId
 import Rattletrap.Encode.Word64le
+import Rattletrap.Type.RemoteId
 import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary.Bits.Put as BinaryBit

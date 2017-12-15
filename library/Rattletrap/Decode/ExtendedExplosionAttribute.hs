@@ -2,10 +2,10 @@ module Rattletrap.Decode.ExtendedExplosionAttribute
   ( getExtendedExplosionAttribute
   ) where
 
-import Rattletrap.Type.ExtendedExplosionAttribute
-import Rattletrap.Type.ExplosionAttribute
 import Rattletrap.Decode.ExplosionAttribute
 import Rattletrap.Decode.Int32le
+import Rattletrap.Type.ExplosionAttribute
+import Rattletrap.Type.ExtendedExplosionAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

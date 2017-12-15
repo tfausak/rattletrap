@@ -4,8 +4,8 @@ module Rattletrap.Decode.Str
   ) where
 
 import Rattletrap.Decode.Int32le
-import Rattletrap.Type.Int32le
 import Rattletrap.Type.Common
+import Rattletrap.Type.Int32le
 import Rattletrap.Type.Str
 import Rattletrap.Utility.Bytes
 

@@ -2,8 +2,8 @@ module Rattletrap.Encode.FloatAttribute
   ( putFloatAttribute
   ) where
 
-import Rattletrap.Type.FloatAttribute
 import Rattletrap.Encode.Float32le
+import Rattletrap.Type.FloatAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

@@ -2,9 +2,9 @@ module Rattletrap.Encode.ExtendedExplosionAttribute
   ( putExtendedExplosionAttribute
   ) where
 
-import Rattletrap.Type.ExtendedExplosionAttribute
 import Rattletrap.Encode.Int32le
 import Rattletrap.Encode.Vector
+import Rattletrap.Type.ExtendedExplosionAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

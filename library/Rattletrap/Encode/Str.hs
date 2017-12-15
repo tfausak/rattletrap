@@ -4,8 +4,8 @@ module Rattletrap.Encode.Str
   ) where
 
 import Rattletrap.Encode.Int32le
-import Rattletrap.Type.Int32le
 import Rattletrap.Type.Common
+import Rattletrap.Type.Int32le
 import Rattletrap.Type.Str
 import Rattletrap.Utility.Bytes
 
@@ -37,8 +37,9 @@ getTextSize text =
   let
     value = strValue text
     scale = if Text.all Char.isLatin1 value then 1 else -1 :: Int32
-    rawSize =
-      if Text.null value then 0 else fromIntegral (Text.length value) + 1 :: Int32
+    rawSize = if Text.null value
+      then 0
+      else fromIntegral (Text.length value) + 1 :: Int32
     size = if value == Text.pack "\x00\x00\x00None"
       then 0x05000000
       else scale * rawSize :: Int32

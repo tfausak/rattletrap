@@ -2,11 +2,11 @@ module Rattletrap.Decode.WeldedInfoAttribute
   ( getWeldedInfoAttribute
   ) where
 
-import Rattletrap.Type.WeldedInfoAttribute
-import Rattletrap.Decode.Int32le
-import Rattletrap.Decode.Vector
 import Rattletrap.Decode.Float32le
+import Rattletrap.Decode.Int32le
 import Rattletrap.Decode.Int8Vector
+import Rattletrap.Decode.Vector
+import Rattletrap.Type.WeldedInfoAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

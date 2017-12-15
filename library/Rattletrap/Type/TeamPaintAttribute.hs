@@ -5,8 +5,8 @@ module Rattletrap.Type.TeamPaintAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word8le
 import Rattletrap.Type.Word32le
+import Rattletrap.Type.Word8le
 
 data TeamPaintAttribute = TeamPaintAttribute
   { teamPaintAttributeTeam :: Word8le

@@ -2,8 +2,8 @@ module Rattletrap.Decode.ClubColorsAttribute
   ( getClubColorsAttribute
   ) where
 
-import Rattletrap.Type.ClubColorsAttribute
 import Rattletrap.Decode.Word8le
+import Rattletrap.Type.ClubColorsAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

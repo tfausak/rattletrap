@@ -2,8 +2,8 @@ module Rattletrap.Decode.QWordAttribute
   ( getQWordAttribute
   ) where
 
-import Rattletrap.Type.QWordAttribute
 import Rattletrap.Decode.Word64le
+import Rattletrap.Type.QWordAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

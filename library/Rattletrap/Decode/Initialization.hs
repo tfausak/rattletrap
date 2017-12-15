@@ -2,9 +2,9 @@ module Rattletrap.Decode.Initialization
   ( getInitialization
   ) where
 
-import Rattletrap.Type.Initialization
-import Rattletrap.Decode.Vector
 import Rattletrap.Decode.Int8Vector
+import Rattletrap.Decode.Vector
+import Rattletrap.Type.Initialization
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

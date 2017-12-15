@@ -6,8 +6,8 @@ module Rattletrap.Type.SpawnedReplication
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Initialization
-import Rattletrap.Type.Word32le
 import Rattletrap.Type.Str
+import Rattletrap.Type.Word32le
 
 data SpawnedReplication = SpawnedReplication
   { spawnedReplicationFlag :: Bool

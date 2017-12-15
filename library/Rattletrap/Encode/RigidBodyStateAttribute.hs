@@ -2,9 +2,9 @@ module Rattletrap.Encode.RigidBodyStateAttribute
   ( putRigidBodyStateAttribute
   ) where
 
-import Rattletrap.Type.RigidBodyStateAttribute
-import Rattletrap.Encode.Vector
 import Rattletrap.Encode.CompressedWordVector
+import Rattletrap.Encode.Vector
+import Rattletrap.Type.RigidBodyStateAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

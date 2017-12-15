@@ -2,8 +2,8 @@ module Rattletrap.Encode.LocationAttribute
   ( putLocationAttribute
   ) where
 
-import Rattletrap.Type.LocationAttribute
 import Rattletrap.Encode.Vector
+import Rattletrap.Type.LocationAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

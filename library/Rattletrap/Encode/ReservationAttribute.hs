@@ -2,10 +2,10 @@ module Rattletrap.Encode.ReservationAttribute
   ( putReservationAttribute
   ) where
 
+import Rattletrap.Encode.CompressedWord
+import Rattletrap.Encode.Str
 import Rattletrap.Encode.UniqueIdAttribute
 import Rattletrap.Type.ReservationAttribute
-import Rattletrap.Encode.Str
-import Rattletrap.Encode.CompressedWord
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

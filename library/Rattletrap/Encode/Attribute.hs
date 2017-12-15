@@ -3,9 +3,9 @@ module Rattletrap.Encode.Attribute
   , putAttribute
   ) where
 
-import Rattletrap.Type.Attribute
 import Rattletrap.Encode.AttributeValue
 import Rattletrap.Encode.CompressedWord
+import Rattletrap.Type.Attribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

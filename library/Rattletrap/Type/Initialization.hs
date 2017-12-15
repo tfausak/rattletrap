@@ -5,8 +5,8 @@ module Rattletrap.Type.Initialization
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Vector
 import Rattletrap.Type.Int8Vector
+import Rattletrap.Type.Vector
 
 data Initialization = Initialization
   { initializationLocation :: Maybe Vector

@@ -3,8 +3,8 @@ module Rattletrap.Encode.List
   ) where
 
 import Rattletrap.Encode.Word32le
-import Rattletrap.Type.Word32le
 import Rattletrap.Type.List
+import Rattletrap.Type.Word32le
 
 import qualified Data.Binary as Binary
 

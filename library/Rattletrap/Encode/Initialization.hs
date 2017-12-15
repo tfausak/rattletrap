@@ -2,9 +2,9 @@ module Rattletrap.Encode.Initialization
   ( putInitialization
   ) where
 
-import Rattletrap.Type.Initialization
-import Rattletrap.Encode.Vector
 import Rattletrap.Encode.Int8Vector
+import Rattletrap.Encode.Vector
+import Rattletrap.Type.Initialization
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

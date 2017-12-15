@@ -3,9 +3,9 @@ module Rattletrap.Encode.Frame
   , putFrame
   ) where
 
-import Rattletrap.Type.Frame
 import Rattletrap.Encode.Float32le
 import Rattletrap.Encode.Replication
+import Rattletrap.Type.Frame
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

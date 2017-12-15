@@ -2,18 +2,18 @@ module Rattletrap.Decode.Content
   ( getContent
   ) where
 
-import Rattletrap.Type.Content
 import Rattletrap.Decode.Cache
-import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Decode.ClassMapping
 import Rattletrap.Decode.Frame
 import Rattletrap.Decode.KeyFrame
+import Rattletrap.Decode.List
 import Rattletrap.Decode.Mark
 import Rattletrap.Decode.Message
-import Rattletrap.Decode.List
 import Rattletrap.Decode.Str
-import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Word32le
+import Rattletrap.Type.ClassAttributeMap
+import Rattletrap.Type.Content
+import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary

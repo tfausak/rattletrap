@@ -2,7 +2,6 @@ module Rattletrap.Encode.AttributeValue
   ( putAttributeValue
   ) where
 
-import Rattletrap.Type.AttributeValue
 import Rattletrap.Encode.AppliedDamageAttribute
 import Rattletrap.Encode.BooleanAttribute
 import Rattletrap.Encode.ByteAttribute
@@ -33,6 +32,7 @@ import Rattletrap.Encode.StringAttribute
 import Rattletrap.Encode.TeamPaintAttribute
 import Rattletrap.Encode.UniqueIdAttribute
 import Rattletrap.Encode.WeldedInfoAttribute
+import Rattletrap.Type.AttributeValue
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

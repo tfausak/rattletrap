@@ -5,8 +5,8 @@ module Rattletrap.Type.PrivateMatchSettingsAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32le
 import Rattletrap.Type.Str
+import Rattletrap.Type.Word32le
 
 data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
   { privateMatchSettingsAttributeMutators :: Str

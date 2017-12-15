@@ -2,8 +2,8 @@ module Rattletrap.Encode.AttributeMapping
   ( putAttributeMapping
   ) where
 
-import Rattletrap.Type.AttributeMapping
 import Rattletrap.Encode.Word32le
+import Rattletrap.Type.AttributeMapping
 
 import qualified Data.Binary as Binary
 

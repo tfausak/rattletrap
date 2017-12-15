@@ -2,12 +2,12 @@ module Rattletrap.Decode.Header
   ( getHeader
   ) where
 
-import Rattletrap.Type.Header
-import Rattletrap.Type.Word32le
-import Rattletrap.Decode.Word32le
-import Rattletrap.Decode.Str
 import Rattletrap.Decode.Dictionary
 import Rattletrap.Decode.Property
+import Rattletrap.Decode.Str
+import Rattletrap.Decode.Word32le
+import Rattletrap.Type.Header
+import Rattletrap.Type.Word32le
 
 import qualified Data.Binary as Binary
 

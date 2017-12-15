@@ -2,9 +2,9 @@ module Rattletrap.Encode.TeamPaintAttribute
   ( putTeamPaintAttribute
   ) where
 
-import Rattletrap.Type.TeamPaintAttribute
-import Rattletrap.Encode.Word8le
 import Rattletrap.Encode.Word32le
+import Rattletrap.Encode.Word8le
+import Rattletrap.Type.TeamPaintAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

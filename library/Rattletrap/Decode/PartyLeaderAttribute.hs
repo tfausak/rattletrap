@@ -2,10 +2,10 @@ module Rattletrap.Decode.PartyLeaderAttribute
   ( getPartyLeaderAttribute
   ) where
 
+import Rattletrap.Decode.RemoteId
+import Rattletrap.Decode.Word8le
 import Rattletrap.Type.PartyLeaderAttribute
 import Rattletrap.Type.Word8le
-import Rattletrap.Decode.Word8le
-import Rattletrap.Decode.RemoteId
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

@@ -2,9 +2,9 @@ module Rattletrap.Encode.PrivateMatchSettingsAttribute
   ( putPrivateMatchSettingsAttribute
   ) where
 
-import Rattletrap.Type.PrivateMatchSettingsAttribute
-import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Str
+import Rattletrap.Encode.Word32le
+import Rattletrap.Type.PrivateMatchSettingsAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

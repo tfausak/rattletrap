@@ -2,9 +2,9 @@ module Rattletrap.Decode.RigidBodyStateAttribute
   ( getRigidBodyStateAttribute
   ) where
 
-import Rattletrap.Type.RigidBodyStateAttribute
-import Rattletrap.Decode.Vector
 import Rattletrap.Decode.CompressedWordVector
+import Rattletrap.Decode.Vector
+import Rattletrap.Type.RigidBodyStateAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

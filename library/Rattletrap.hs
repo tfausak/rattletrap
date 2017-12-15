@@ -241,8 +241,8 @@ import qualified Rattletrap.Decode.GameModeAttribute
 import qualified Rattletrap.Decode.Header
 import qualified Rattletrap.Decode.Initialization
 import qualified Rattletrap.Decode.Int32le
-import qualified Rattletrap.Decode.Int8le
 import qualified Rattletrap.Decode.Int8Vector
+import qualified Rattletrap.Decode.Int8le
 import qualified Rattletrap.Decode.IntAttribute
 import qualified Rattletrap.Decode.KeyFrame
 import qualified Rattletrap.Decode.List
@@ -269,9 +269,9 @@ import qualified Rattletrap.Decode.ReservationAttribute
 import qualified Rattletrap.Decode.RigidBodyStateAttribute
 import qualified Rattletrap.Decode.Section
 import qualified Rattletrap.Decode.SpawnedReplication
+import qualified Rattletrap.Decode.Str
 import qualified Rattletrap.Decode.StringAttribute
 import qualified Rattletrap.Decode.TeamPaintAttribute
-import qualified Rattletrap.Decode.Str
 import qualified Rattletrap.Decode.UniqueIdAttribute
 import qualified Rattletrap.Decode.UpdatedReplication
 import qualified Rattletrap.Decode.Vector
@@ -307,8 +307,8 @@ import qualified Rattletrap.Encode.GameModeAttribute
 import qualified Rattletrap.Encode.Header
 import qualified Rattletrap.Encode.Initialization
 import qualified Rattletrap.Encode.Int32le
-import qualified Rattletrap.Encode.Int8le
 import qualified Rattletrap.Encode.Int8Vector
+import qualified Rattletrap.Encode.Int8le
 import qualified Rattletrap.Encode.IntAttribute
 import qualified Rattletrap.Encode.KeyFrame
 import qualified Rattletrap.Encode.List
@@ -335,9 +335,9 @@ import qualified Rattletrap.Encode.ReservationAttribute
 import qualified Rattletrap.Encode.RigidBodyStateAttribute
 import qualified Rattletrap.Encode.Section
 import qualified Rattletrap.Encode.SpawnedReplication
+import qualified Rattletrap.Encode.Str
 import qualified Rattletrap.Encode.StringAttribute
 import qualified Rattletrap.Encode.TeamPaintAttribute
-import qualified Rattletrap.Encode.Str
 import qualified Rattletrap.Encode.UniqueIdAttribute
 import qualified Rattletrap.Encode.UpdatedReplication
 import qualified Rattletrap.Encode.Vector
@@ -373,8 +373,8 @@ import qualified Rattletrap.Type.GameModeAttribute
 import qualified Rattletrap.Type.Header
 import qualified Rattletrap.Type.Initialization
 import qualified Rattletrap.Type.Int32le
-import qualified Rattletrap.Type.Int8le
 import qualified Rattletrap.Type.Int8Vector
+import qualified Rattletrap.Type.Int8le
 import qualified Rattletrap.Type.IntAttribute
 import qualified Rattletrap.Type.KeyFrame
 import qualified Rattletrap.Type.List
@@ -401,9 +401,9 @@ import qualified Rattletrap.Type.ReservationAttribute
 import qualified Rattletrap.Type.RigidBodyStateAttribute
 import qualified Rattletrap.Type.Section
 import qualified Rattletrap.Type.SpawnedReplication
+import qualified Rattletrap.Type.Str
 import qualified Rattletrap.Type.StringAttribute
 import qualified Rattletrap.Type.TeamPaintAttribute
-import qualified Rattletrap.Type.Str
 import qualified Rattletrap.Type.UniqueIdAttribute
 import qualified Rattletrap.Type.UpdatedReplication
 import qualified Rattletrap.Type.Vector

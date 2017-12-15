@@ -4,8 +4,8 @@ module Rattletrap.Type.Attribute
   ( Attribute(..)
   ) where
 
-import Rattletrap.Type.Common
 import Rattletrap.Type.AttributeValue
+import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Str
 

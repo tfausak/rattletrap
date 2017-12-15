@@ -2,9 +2,9 @@ module Rattletrap.Encode.DemolishAttribute
   ( putDemolishAttribute
   ) where
 
-import Rattletrap.Type.DemolishAttribute
-import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Vector
+import Rattletrap.Encode.Word32le
+import Rattletrap.Type.DemolishAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

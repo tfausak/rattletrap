@@ -3,8 +3,8 @@ module Rattletrap.Decode.Dictionary
   ) where
 
 import Rattletrap.Decode.Str
-import Rattletrap.Type.Str
 import Rattletrap.Type.Dictionary
+import Rattletrap.Type.Str
 
 import qualified Data.Binary as Binary
 import qualified Data.Map as Map

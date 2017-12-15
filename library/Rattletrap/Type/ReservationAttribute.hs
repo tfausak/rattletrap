@@ -5,9 +5,9 @@ module Rattletrap.Type.ReservationAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.UniqueIdAttribute
-import Rattletrap.Type.Str
 import Rattletrap.Type.CompressedWord
+import Rattletrap.Type.Str
+import Rattletrap.Type.UniqueIdAttribute
 
 data ReservationAttribute = ReservationAttribute
   { reservationAttributeNumber :: CompressedWord

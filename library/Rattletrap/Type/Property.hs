@@ -5,9 +5,9 @@ module Rattletrap.Type.Property
   ) where
 
 import Rattletrap.Type.Common
+import Rattletrap.Type.PropertyValue
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word64le
-import Rattletrap.Type.PropertyValue
 
 data Property = Property
   { propertyKind :: Str

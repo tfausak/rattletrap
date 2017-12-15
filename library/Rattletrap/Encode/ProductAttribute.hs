@@ -4,12 +4,12 @@ module Rattletrap.Encode.ProductAttribute
   ) where
 
 import Data.Semigroup ((<>))
-import Rattletrap.Type.ProductAttribute
-import Rattletrap.Encode.Word32le
-import Rattletrap.Type.Str
 import Rattletrap.Encode.CompressedWord
-import Rattletrap.Type.Word8le
+import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Word8le
+import Rattletrap.Type.ProductAttribute
+import Rattletrap.Type.Str
+import Rattletrap.Type.Word8le
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

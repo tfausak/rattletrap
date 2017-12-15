@@ -2,10 +2,10 @@ module Rattletrap.Decode.Cache
   ( getCache
   ) where
 
-import Rattletrap.Type.Cache
 import Rattletrap.Decode.AttributeMapping
-import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.List
+import Rattletrap.Decode.Word32le
+import Rattletrap.Type.Cache
 
 import qualified Data.Binary as Binary
 

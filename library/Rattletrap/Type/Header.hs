@@ -8,12 +8,12 @@ module Rattletrap.Type.Header
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32le
-import Rattletrap.Type.Str
-import Rattletrap.Type.Int32le
 import Rattletrap.Type.Dictionary
+import Rattletrap.Type.Int32le
 import Rattletrap.Type.Property
 import Rattletrap.Type.PropertyValue
+import Rattletrap.Type.Str
+import Rattletrap.Type.Word32le
 
 import qualified Data.Map as Map
 

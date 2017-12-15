@@ -4,13 +4,13 @@ module Rattletrap.Decode.ProductAttribute
   ) where
 
 import Data.Semigroup ((<>))
-import Rattletrap.Type.ProductAttribute
-import Rattletrap.Type.Word32le
-import Rattletrap.Decode.Word32le
-import Rattletrap.Type.Str
 import Rattletrap.Decode.CompressedWord
-import Rattletrap.Type.Word8le
+import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.Word8le
+import Rattletrap.Type.ProductAttribute
+import Rattletrap.Type.Str
+import Rattletrap.Type.Word32le
+import Rattletrap.Type.Word8le
 
 import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit

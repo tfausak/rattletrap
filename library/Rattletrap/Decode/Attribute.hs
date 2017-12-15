@@ -4,12 +4,12 @@ module Rattletrap.Decode.Attribute
   ) where
 
 import Data.Semigroup ((<>))
-import Rattletrap.Type.Attribute
 import Rattletrap.Decode.AttributeValue
+import Rattletrap.Decode.CompressedWord
+import Rattletrap.Type.Attribute
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Word32le
-import Rattletrap.Decode.CompressedWord
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map

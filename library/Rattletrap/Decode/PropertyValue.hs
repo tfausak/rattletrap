@@ -3,15 +3,15 @@ module Rattletrap.Decode.PropertyValue
   ) where
 
 import Data.Semigroup ((<>))
-import Rattletrap.Type.PropertyValue
-import Rattletrap.Type.Str
-import Rattletrap.Decode.List
 import Rattletrap.Decode.Dictionary
-import Rattletrap.Decode.Word8le
-import Rattletrap.Decode.Str
 import Rattletrap.Decode.Float32le
 import Rattletrap.Decode.Int32le
+import Rattletrap.Decode.List
+import Rattletrap.Decode.Str
 import Rattletrap.Decode.Word64le
+import Rattletrap.Decode.Word8le
+import Rattletrap.Type.PropertyValue
+import Rattletrap.Type.Str
 
 import qualified Data.Binary as Binary
 

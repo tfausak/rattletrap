@@ -1,9 +1,9 @@
-import Data.Aeson (encode, object, (.=))
+import Data.Aeson ((.=), encode, object)
 import Data.ByteString.Lazy (writeFile)
 import Data.Text (pack)
 import Prelude hiding (writeFile)
-import System.Environment (getEnv)
 import System.Directory (createDirectoryIfMissing, getHomeDirectory)
+import System.Environment (getEnv)
 import System.FilePath (joinPath)
 import System.Process (callProcess)
 

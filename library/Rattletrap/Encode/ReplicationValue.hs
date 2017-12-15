@@ -4,8 +4,8 @@ module Rattletrap.Encode.ReplicationValue
 
 import Rattletrap.Encode.DestroyedReplication
 import Rattletrap.Encode.SpawnedReplication
-import Rattletrap.Type.ReplicationValue
 import Rattletrap.Encode.UpdatedReplication
+import Rattletrap.Type.ReplicationValue
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

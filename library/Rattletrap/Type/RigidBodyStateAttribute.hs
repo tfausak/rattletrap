@@ -5,8 +5,8 @@ module Rattletrap.Type.RigidBodyStateAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Vector
 import Rattletrap.Type.CompressedWordVector
+import Rattletrap.Type.Vector
 
 data RigidBodyStateAttribute = RigidBodyStateAttribute
   { rigidBodyStateAttributeSleeping :: Bool

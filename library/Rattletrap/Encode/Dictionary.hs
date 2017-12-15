@@ -4,8 +4,8 @@ module Rattletrap.Encode.Dictionary
 
 import Data.Semigroup ((<>))
 import Rattletrap.Encode.Str
-import Rattletrap.Type.Str
 import Rattletrap.Type.Dictionary
+import Rattletrap.Type.Str
 
 import qualified Data.Binary as Binary
 import qualified Data.Map as Map

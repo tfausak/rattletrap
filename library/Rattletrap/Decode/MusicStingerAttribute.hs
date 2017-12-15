@@ -2,9 +2,9 @@ module Rattletrap.Decode.MusicStingerAttribute
   ( getMusicStingerAttribute
   ) where
 
-import Rattletrap.Type.MusicStingerAttribute
 import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.Word8le
+import Rattletrap.Type.MusicStingerAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

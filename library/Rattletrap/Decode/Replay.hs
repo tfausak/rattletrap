@@ -2,12 +2,12 @@ module Rattletrap.Decode.Replay
   ( getReplay
   ) where
 
-import Rattletrap.Type.Replay
 import Rattletrap.Decode.Content
-import Rattletrap.Type.Header
 import Rattletrap.Decode.Header
-import Rattletrap.Type.Section
 import Rattletrap.Decode.Section
+import Rattletrap.Type.Header
+import Rattletrap.Type.Replay
+import Rattletrap.Type.Section
 
 import qualified Data.Binary as Binary
 

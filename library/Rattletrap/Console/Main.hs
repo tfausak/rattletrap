@@ -178,7 +178,7 @@ data Config = Config
   , configMode :: Maybe Mode
   , configOutput :: Maybe String
   , configVersion :: Bool
-  } deriving Show
+  } deriving (Show)
 
 defaultConfig :: Config
 defaultConfig = Config
@@ -206,7 +206,7 @@ getExtension = maybe "" Path.takeExtension
 data Mode
   = ModeDecode
   | ModeEncode
-  deriving Show
+  deriving (Show)
 
 parseMode :: String -> Either String Mode
 parseMode mode = case mode of

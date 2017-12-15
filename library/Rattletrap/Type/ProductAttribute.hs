@@ -5,9 +5,9 @@ module Rattletrap.Type.ProductAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32le
-import Rattletrap.Type.Str
 import Rattletrap.Type.CompressedWord
+import Rattletrap.Type.Str
+import Rattletrap.Type.Word32le
 
 data ProductAttribute = ProductAttribute
   { productAttributeUnknown :: Bool
