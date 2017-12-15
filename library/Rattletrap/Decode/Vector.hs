@@ -15,9 +15,11 @@ getVector = do
   dx <- getCompressedWord limit
   dy <- getCompressedWord limit
   dz <- getCompressedWord limit
-  let fromCompressedWord x = fromIntegral (compressedWordValue x)
-  let bias = 2 ^ (fromCompressedWord bitSize + 1 :: Word)
-  let x = fromCompressedWord dx - fromIntegral bias
-  let y = fromCompressedWord dy - fromIntegral bias
-  let z = fromCompressedWord dz - fromIntegral bias
+  let
+    fromCompressedWord :: Num a => CompressedWord -> a
+    fromCompressedWord = fromIntegral . compressedWordValue
+    bias = 2 ^ (fromCompressedWord bitSize + 1 :: Word)
+    x = fromCompressedWord dx - fromIntegral bias
+    y = fromCompressedWord dy - fromIntegral bias
+    z = fromCompressedWord dz - fromIntegral bias
   pure (Vector bias x y z)
