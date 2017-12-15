@@ -258,17 +258,18 @@ normalizeObjectName objectName =
     boostPickup = Text.pack "TheWorld:PersistentLevel.VehiclePickup_Boost_TA"
     mapScoreboard = Text.pack "TheWorld:PersistentLevel.InMapScoreboard_TA"
     breakout = Text.pack "TheWorld:PersistentLevel.BreakOutActor_Platform_TA"
-  in if Text.isInfixOf crowdActor name
-    then Text crowdActor
-    else if Text.isInfixOf crowdManager name
-      then Text crowdManager
-      else if Text.isInfixOf boostPickup name
-        then Text boostPickup
-        else if Text.isInfixOf mapScoreboard name
-          then Text mapScoreboard
-          else if Text.isInfixOf breakout name
-            then Text breakout
-            else objectName
+  in
+    if Text.isInfixOf crowdActor name
+      then Text crowdActor
+      else if Text.isInfixOf crowdManager name
+        then Text crowdManager
+        else if Text.isInfixOf boostPickup name
+          then Text boostPickup
+          else if Text.isInfixOf mapScoreboard name
+            then Text mapScoreboard
+            else if Text.isInfixOf breakout name
+              then Text breakout
+              else objectName
 
 objectClasses :: Map.Map Text Text
 objectClasses = Map.map

@@ -14,7 +14,8 @@ deriveJson name = Json.deriveJSON (jsonOptions $ TH.nameBase name) name
 jsonOptions :: String -> Json.Options
 jsonOptions prefix = Json.defaultOptions
   { Json.constructorTagModifier = toSnakeCase
-  , Json.fieldLabelModifier = toSnakeCase . partialDropPrefix (lowerFirst prefix)
+  , Json.fieldLabelModifier = toSnakeCase
+    . partialDropPrefix (lowerFirst prefix)
   , Json.omitNothingFields = True
   , Json.sumEncoding = Json.ObjectWithSingleField
   , Json.unwrapUnaryRecords = True
@@ -23,7 +24,7 @@ jsonOptions prefix = Json.defaultOptions
 lowerFirst :: String -> String
 lowerFirst string = case string of
   "" -> string
-  first : rest -> Char.toLower first : rest
+  first:rest -> Char.toLower first : rest
 
 toSnakeCase :: String -> String
 toSnakeCase = Json.camelTo2 '_'

@@ -10,7 +10,6 @@ import Rattletrap.Type.Common
 -- you need to know is the actor's ID, which is given by the
 -- 'Rattletrap.Replication.Replication'.
 data DestroyedReplication = DestroyedReplication
-  {
-  } deriving (Eq, Ord, Show)
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''DestroyedReplication)
