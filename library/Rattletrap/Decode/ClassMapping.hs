@@ -3,7 +3,7 @@ module Rattletrap.Decode.ClassMapping
   ) where
 
 import Rattletrap.Type.ClassMapping
-import Rattletrap.Decode.Word32
+import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.Text
 
 import qualified Data.Binary as Binary

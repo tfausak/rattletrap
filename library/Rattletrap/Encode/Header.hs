@@ -3,7 +3,7 @@ module Rattletrap.Encode.Header
   ) where
 
 import Rattletrap.Type.Header
-import Rattletrap.Encode.Word32
+import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Text
 import Rattletrap.Encode.Dictionary
 import Rattletrap.Encode.Property

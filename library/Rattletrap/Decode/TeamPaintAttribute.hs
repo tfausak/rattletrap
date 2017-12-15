@@ -4,7 +4,7 @@ module Rattletrap.Decode.TeamPaintAttribute
 
 import Rattletrap.Type.TeamPaintAttribute
 import Rattletrap.Decode.Word8le
-import Rattletrap.Decode.Word32
+import Rattletrap.Decode.Word32le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

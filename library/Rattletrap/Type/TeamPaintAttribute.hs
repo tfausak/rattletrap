@@ -6,14 +6,14 @@ module Rattletrap.Type.TeamPaintAttribute
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word8le
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 
 data TeamPaintAttribute = TeamPaintAttribute
   { teamPaintAttributeTeam :: Word8le
   , teamPaintAttributePrimaryColor :: Word8le
   , teamPaintAttributeAccentColor :: Word8le
-  , teamPaintAttributePrimaryFinish :: Word32
-  , teamPaintAttributeAccentFinish :: Word32
+  , teamPaintAttributePrimaryFinish :: Word32le
+  , teamPaintAttributeAccentFinish :: Word32le
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''TeamPaintAttribute)

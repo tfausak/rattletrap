@@ -12,8 +12,8 @@ import Rattletrap.Decode.Mark
 import Rattletrap.Decode.Message
 import Rattletrap.Decode.List
 import Rattletrap.Decode.Text
-import Rattletrap.Type.Word32
-import Rattletrap.Decode.Word32
+import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Word32le
 import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary
@@ -35,7 +35,7 @@ getContent version numFrames maxChannels = do
   levels <- getList getText
   keyFrames <- getList getKeyFrame
   streamSize <- getWord32
-  stream <- Binary.getLazyByteString (fromIntegral (word32Value streamSize))
+  stream <- Binary.getLazyByteString (fromIntegral (word32leValue streamSize))
   messages <- getList getMessage
   marks <- getList getMark
   packages <- getList getText

@@ -3,7 +3,7 @@ module Rattletrap.Encode.PrivateMatchSettingsAttribute
   ) where
 
 import Rattletrap.Type.PrivateMatchSettingsAttribute
-import Rattletrap.Encode.Word32
+import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Text
 
 import qualified Data.Binary.Bits.Put as BinaryBit

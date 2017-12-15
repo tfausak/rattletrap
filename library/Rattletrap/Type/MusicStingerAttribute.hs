@@ -5,12 +5,12 @@ module Rattletrap.Type.MusicStingerAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
 
 data MusicStingerAttribute = MusicStingerAttribute
   { musicStingerAttributeFlag :: Bool
-  , musicStingerAttributeCue :: Word32
+  , musicStingerAttributeCue :: Word32le
   , musicStingerAttributeTrigger :: Word8le
   } deriving (Eq, Ord, Show)
 

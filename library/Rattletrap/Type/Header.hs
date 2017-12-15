@@ -8,7 +8,7 @@ module Rattletrap.Type.Header
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.Text
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Dictionary
@@ -19,11 +19,11 @@ import qualified Data.Map as Map
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
-  { headerEngineVersion :: Word32
+  { headerEngineVersion :: Word32le
   -- ^ The "major" ("engine") version number.
-  , headerLicenseeVersion :: Word32
+  , headerLicenseeVersion :: Word32le
   -- ^ The "minor" ("licensee") version number.
-  , headerPatchVersion :: Maybe Word32
+  , headerPatchVersion :: Maybe Word32le
   -- ^ The "patch" ("net") version number.
   , headerLabel :: Text
   -- ^ Always @TAGame.Replay_Soccar_TA@.
@@ -68,9 +68,9 @@ $(deriveJson ''Header)
 
 getVersion :: Header -> (Int, Int, Int)
 getVersion header =
-  ( fromIntegral (word32Value (headerEngineVersion header))
-  , fromIntegral (word32Value (headerLicenseeVersion header))
-  , maybe 0 (fromIntegral . word32Value) $ headerPatchVersion header
+  ( fromIntegral (word32leValue (headerEngineVersion header))
+  , fromIntegral (word32leValue (headerLicenseeVersion header))
+  , maybe 0 (fromIntegral . word32leValue) $ headerPatchVersion header
   )
 
 getNumFrames :: Header -> Int

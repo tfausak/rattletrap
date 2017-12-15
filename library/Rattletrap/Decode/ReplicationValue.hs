@@ -4,7 +4,7 @@ module Rattletrap.Decode.ReplicationValue
 
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 import Rattletrap.Decode.DestroyedReplication
 import Rattletrap.Decode.SpawnedReplication
 import Rattletrap.Type.ReplicationValue
@@ -16,9 +16,9 @@ import qualified Data.Map as Map
 getReplicationValue
   :: (Int, Int, Int)
   -> ClassAttributeMap
-  -> Map.Map CompressedWord Word32
+  -> Map.Map CompressedWord Word32le
   -> CompressedWord
-  -> BinaryBit.BitGet (ReplicationValue, Map.Map CompressedWord Word32)
+  -> BinaryBit.BitGet (ReplicationValue, Map.Map CompressedWord Word32le)
 getReplicationValue version classAttributeMap actorMap actorId = do
   isOpen <- BinaryBit.getBool
   if isOpen

@@ -4,7 +4,7 @@ module Rattletrap.Encode.ProductAttribute
   ) where
 
 import Rattletrap.Type.ProductAttribute
-import Rattletrap.Encode.Word32
+import Rattletrap.Encode.Word32le
 import Rattletrap.Type.Text
 import Rattletrap.Encode.CompressedWord
 import Rattletrap.Type.Word8le

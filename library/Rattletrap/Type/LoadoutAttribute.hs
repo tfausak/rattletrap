@@ -5,24 +5,24 @@ module Rattletrap.Type.LoadoutAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
 
 data LoadoutAttribute = LoadoutAttribute
   { loadoutAttributeVersion :: Word8le
-  , loadoutAttributeBody :: Word32
-  , loadoutAttributeDecal :: Word32
-  , loadoutAttributeWheels :: Word32
-  , loadoutAttributeRocketTrail :: Word32
+  , loadoutAttributeBody :: Word32le
+  , loadoutAttributeDecal :: Word32le
+  , loadoutAttributeWheels :: Word32le
+  , loadoutAttributeRocketTrail :: Word32le
   -- ^ Now known as "rocket boost".
-  , loadoutAttributeAntenna :: Word32
-  , loadoutAttributeTopper :: Word32
-  , loadoutAttributeUnknown1 :: Word32
-  , loadoutAttributeUnknown2 :: Maybe Word32
-  , loadoutAttributeEngineAudio :: Maybe Word32
-  , loadoutAttributeTrail :: Maybe Word32
-  , loadoutAttributeGoalExplosion :: Maybe Word32
-  , loadoutAttributeBanner :: Maybe Word32
+  , loadoutAttributeAntenna :: Word32le
+  , loadoutAttributeTopper :: Word32le
+  , loadoutAttributeUnknown1 :: Word32le
+  , loadoutAttributeUnknown2 :: Maybe Word32le
+  , loadoutAttributeEngineAudio :: Maybe Word32le
+  , loadoutAttributeTrail :: Maybe Word32le
+  , loadoutAttributeGoalExplosion :: Maybe Word32le
+  , loadoutAttributeBanner :: Maybe Word32le
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''LoadoutAttribute)

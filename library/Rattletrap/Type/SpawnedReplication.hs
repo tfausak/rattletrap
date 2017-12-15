@@ -6,17 +6,17 @@ module Rattletrap.Type.SpawnedReplication
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Initialization
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.Text
 
 data SpawnedReplication = SpawnedReplication
   { spawnedReplicationFlag :: Bool
   -- ^ Unclear what this is.
-  , spawnedReplicationNameIndex :: Maybe Word32
+  , spawnedReplicationNameIndex :: Maybe Word32le
   , spawnedReplicationName :: Maybe Text
   -- ^ Read-only! Changing a replication's name requires editing the
   -- 'spawnedReplicationNameIndex' and maybe the class attribute map.
-  , spawnedReplicationObjectId :: Word32
+  , spawnedReplicationObjectId :: Word32le
   , spawnedReplicationObjectName :: Text
   -- ^ Read-only! Changing a replication's object requires editing the class
   -- attribute map.

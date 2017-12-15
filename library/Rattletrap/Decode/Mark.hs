@@ -4,7 +4,7 @@ module Rattletrap.Decode.Mark
 
 import Rattletrap.Type.Mark
 import Rattletrap.Decode.Text
-import Rattletrap.Decode.Word32
+import Rattletrap.Decode.Word32le
 
 import qualified Data.Binary as Binary
 

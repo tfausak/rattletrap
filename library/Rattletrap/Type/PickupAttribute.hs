@@ -5,10 +5,10 @@ module Rattletrap.Type.PickupAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 
 data PickupAttribute = PickupAttribute
-  { pickupAttributeInstigatorId :: Maybe Word32
+  { pickupAttributeInstigatorId :: Maybe Word32le
   , pickupAttributePickedUp :: Bool
   } deriving (Eq, Ord, Show)
 

@@ -13,7 +13,7 @@ import Rattletrap.Type.Mark
 import Rattletrap.Type.Message
 import Rattletrap.Type.List
 import Rattletrap.Type.Text
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 
 -- | Contains low-level game data about a 'Rattletrap.Replay.Replay'.
 data Content = Content
@@ -23,7 +23,7 @@ data Content = Content
   -- ^ A list of which frames are key frames. Although they aren't necessary
   -- for replay, key frames are frames that replicate every actor. They
   -- typically happen once every 10 seconds.
-  , contentStreamSize :: Word32
+  , contentStreamSize :: Word32le
   -- ^ The size of the stream in bytes. This is only really necessary because
   -- the stream has some arbitrary amount of padding at the end.
   , contentFrames :: [Frame]

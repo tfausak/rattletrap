@@ -3,7 +3,7 @@ module Rattletrap.Encode.SpawnedReplication
   ) where
 
 import Rattletrap.Encode.Initialization
-import Rattletrap.Encode.Word32
+import Rattletrap.Encode.Word32le
 import Rattletrap.Type.SpawnedReplication
 
 import qualified Data.Binary.Bits.Put as BinaryBit

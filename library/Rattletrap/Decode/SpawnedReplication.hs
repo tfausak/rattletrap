@@ -4,8 +4,8 @@ module Rattletrap.Decode.SpawnedReplication
 
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Decode.Initialization
-import Rattletrap.Type.Word32
-import Rattletrap.Decode.Word32
+import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Word32le
 import Rattletrap.Type.Text
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.SpawnedReplication
@@ -16,9 +16,9 @@ import qualified Data.Map as Map
 getSpawnedReplication
   :: (Int, Int, Int)
   -> ClassAttributeMap
-  -> Map.Map CompressedWord Word32
+  -> Map.Map CompressedWord Word32le
   -> CompressedWord
-  -> BinaryBit.BitGet (SpawnedReplication, Map.Map CompressedWord Word32)
+  -> BinaryBit.BitGet (SpawnedReplication, Map.Map CompressedWord Word32le)
 getSpawnedReplication version classAttributeMap actorMap actorId = do
   flag <- BinaryBit.getBool
   nameIndex <- if version < (868, 14, 0)
@@ -46,7 +46,7 @@ getSpawnedReplication version classAttributeMap actorMap actorId = do
     , newActorMap
     )
 
-lookupName :: Monad m => ClassAttributeMap -> Maybe Word32 -> m (Maybe Text)
+lookupName :: Monad m => ClassAttributeMap -> Maybe Word32le -> m (Maybe Text)
 lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
   Nothing -> pure Nothing
   Just nameIndex ->
@@ -54,7 +54,7 @@ lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
       Nothing -> fail ("could not get name for index " ++ show nameIndex)
       Just name -> pure (Just name)
 
-lookupObjectName :: Monad m => ClassAttributeMap -> Word32 -> m Text
+lookupObjectName :: Monad m => ClassAttributeMap -> Word32le -> m Text
 lookupObjectName classAttributeMap objectId =
   case getObjectName (classAttributeMapObjectMap classAttributeMap) objectId of
     Nothing -> fail ("could not get object name for id " ++ show objectId)

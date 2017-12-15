@@ -4,7 +4,7 @@ module Rattletrap.Encode.KeyFrame
 
 import Rattletrap.Type.KeyFrame
 import Rattletrap.Encode.Float32le
-import Rattletrap.Encode.Word32
+import Rattletrap.Encode.Word32le
 
 import qualified Data.Binary as Binary
 

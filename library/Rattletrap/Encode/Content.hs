@@ -11,8 +11,8 @@ import Rattletrap.Encode.Mark
 import Rattletrap.Encode.Message
 import Rattletrap.Encode.List
 import Rattletrap.Encode.Text
-import Rattletrap.Type.Word32
-import Rattletrap.Encode.Word32
+import Rattletrap.Type.Word32le
+import Rattletrap.Encode.Word32le
 import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary
@@ -29,7 +29,7 @@ putContent content = do
     stream =
       Binary.runPut (BinaryBit.runBitPut (putFrames (contentFrames content)))
   Binary.putLazyByteString
-    (reverseBytes (padBytes (word32Value streamSize) stream))
+    (reverseBytes (padBytes (word32leValue streamSize) stream))
   putList putMessage (contentMessages content)
   putList putMark (contentMarks content)
   putList putText (contentPackages content)

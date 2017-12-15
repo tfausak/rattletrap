@@ -5,7 +5,7 @@ module Rattletrap.Decode.Replication
 
 import Rattletrap.Type.Replication
 import Rattletrap.Type.ClassAttributeMap
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Decode.ReplicationValue
@@ -17,8 +17,8 @@ getReplications
   :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
-  -> Map.Map CompressedWord Word32
-  -> BinaryBit.BitGet ([Replication], Map.Map CompressedWord Word32)
+  -> Map.Map CompressedWord Word32le
+  -> BinaryBit.BitGet ([Replication], Map.Map CompressedWord Word32le)
 getReplications version maxChannels classAttributeMap actorMap = do
   maybeReplication <- getReplication
     version
@@ -39,8 +39,8 @@ getReplication
   :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
-  -> Map.Map CompressedWord Word32
-  -> BinaryBit.BitGet (Maybe (Replication, Map.Map CompressedWord Word32))
+  -> Map.Map CompressedWord Word32le
+  -> BinaryBit.BitGet (Maybe (Replication, Map.Map CompressedWord Word32le))
 getReplication version maxChannels classAttributeMap actorMap = do
   hasReplication <- BinaryBit.getBool
   if not hasReplication

@@ -4,7 +4,7 @@ module Rattletrap.Decode.Cache
 
 import Rattletrap.Type.Cache
 import Rattletrap.Decode.AttributeMapping
-import Rattletrap.Decode.Word32
+import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.List
 
 import qualified Data.Binary as Binary

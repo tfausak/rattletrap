@@ -5,11 +5,11 @@ module Rattletrap.Type.AttributeMapping
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 
 data AttributeMapping = AttributeMapping
-  { attributeMappingObjectId :: Word32
-  , attributeMappingStreamId :: Word32
+  { attributeMappingObjectId :: Word32le
+  , attributeMappingStreamId :: Word32le
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''AttributeMapping)

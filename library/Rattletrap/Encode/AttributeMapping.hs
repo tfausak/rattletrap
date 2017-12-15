@@ -3,7 +3,7 @@ module Rattletrap.Encode.AttributeMapping
   ) where
 
 import Rattletrap.Type.AttributeMapping
-import Rattletrap.Encode.Word32
+import Rattletrap.Encode.Word32le
 
 import qualified Data.Binary as Binary
 

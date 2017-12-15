@@ -3,7 +3,7 @@ module Rattletrap.Decode.LoadoutAttribute
   ) where
 
 import Rattletrap.Type.LoadoutAttribute
-import Rattletrap.Decode.Word32
+import Rattletrap.Decode.Word32le
 import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Word8le
 

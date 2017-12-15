@@ -4,7 +4,7 @@ module Rattletrap.Decode.LoadoutOnlineAttribute
 
 import Rattletrap.Decode.ProductAttribute
 import Rattletrap.Type.LoadoutOnlineAttribute
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.Text
 import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Word8le
@@ -15,7 +15,7 @@ import qualified Data.Map as Map
 
 getLoadoutOnlineAttribute
   :: (Int, Int, Int)
-  -> Map.Map Word32 Text
+  -> Map.Map Word32le Text
   -> BinaryBit.BitGet LoadoutOnlineAttribute
 getLoadoutOnlineAttribute version objectMap = do
   size <- getWord8Bits

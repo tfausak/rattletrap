@@ -3,8 +3,8 @@ module Rattletrap.Encode.Section
   ) where
 
 import Rattletrap.Utility.Crc
-import Rattletrap.Encode.Word32
-import Rattletrap.Type.Word32
+import Rattletrap.Encode.Word32le
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.Section
 
 import qualified Data.Binary as Binary
@@ -22,6 +22,6 @@ putSection putBody section = do
   let rawBody = Binary.runPut (putBody (sectionBody section))
   let size = ByteString.length rawBody
   let crc = getCrc32 rawBody
-  putWord32 (Word32 (fromIntegral size))
-  putWord32 (Word32 crc)
+  putWord32 (Word32le (fromIntegral size))
+  putWord32 (Word32le crc)
   Binary.putLazyByteString rawBody

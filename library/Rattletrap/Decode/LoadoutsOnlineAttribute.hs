@@ -5,14 +5,14 @@ module Rattletrap.Decode.LoadoutsOnlineAttribute
 import Rattletrap.Type.LoadoutsOnlineAttribute
 import Rattletrap.Decode.LoadoutOnlineAttribute
 import Rattletrap.Type.Text
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map
 
 getLoadoutsOnlineAttribute
   :: (Int, Int, Int)
-  -> Map.Map Word32 Text
+  -> Map.Map Word32le Text
   -> BinaryBit.BitGet LoadoutsOnlineAttribute
 getLoadoutsOnlineAttribute version objectMap = do
   blueLoadout <- getLoadoutOnlineAttribute version objectMap

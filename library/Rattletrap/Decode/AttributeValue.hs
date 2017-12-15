@@ -35,7 +35,7 @@ import Rattletrap.Decode.TeamPaintAttribute
 import Rattletrap.Decode.UniqueIdAttribute
 import Rattletrap.Decode.WeldedInfoAttribute
 import Rattletrap.Data
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.Text
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -43,7 +43,7 @@ import qualified Data.Map as Map
 
 getAttributeValue
   :: (Int, Int, Int)
-  -> Map.Map Word32 Text
+  -> Map.Map Word32le Text
   -> Text
   -> BinaryBit.BitGet AttributeValue
 getAttributeValue version objectMap name =

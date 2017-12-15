@@ -3,8 +3,8 @@ module Rattletrap.Decode.Header
   ) where
 
 import Rattletrap.Type.Header
-import Rattletrap.Type.Word32
-import Rattletrap.Decode.Word32
+import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.Text
 import Rattletrap.Decode.Dictionary
 import Rattletrap.Decode.Property
@@ -20,12 +20,12 @@ getHeader = do
   properties <- getDictionary getProperty
   pure (Header engineVersion licenseeVersion patchVersion label properties)
 
-getPatchVersion :: Word32 -> Word32 -> Binary.Get (Maybe Word32)
+getPatchVersion :: Word32le -> Word32le -> Binary.Get (Maybe Word32le)
 getPatchVersion major minor = if hasPatchVersion major minor
   then do
     patchVersion <- getWord32
     pure (Just patchVersion)
   else pure Nothing
 
-hasPatchVersion :: Word32 -> Word32 -> Bool
-hasPatchVersion major minor = major >= Word32 868 && minor >= Word32 18
+hasPatchVersion :: Word32le -> Word32le -> Bool
+hasPatchVersion major minor = major >= Word32le 868 && minor >= Word32le 18

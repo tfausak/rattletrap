@@ -6,13 +6,13 @@ module Rattletrap.Type.Cache
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.AttributeMapping
-import Rattletrap.Type.Word32
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.List
 
 data Cache = Cache
-  { cacheClassId :: Word32
-  , cacheParentCacheId :: Word32
-  , cacheCacheId :: Word32
+  { cacheClassId :: Word32le
+  , cacheParentCacheId :: Word32le
+  , cacheCacheId :: Word32le
   , cacheAttributeMappings :: List AttributeMapping
   } deriving (Eq, Ord, Show)
 

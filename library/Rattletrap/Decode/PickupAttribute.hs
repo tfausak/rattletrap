@@ -3,7 +3,7 @@ module Rattletrap.Decode.PickupAttribute
   ) where
 
 import Rattletrap.Type.PickupAttribute
-import Rattletrap.Decode.Word32
+import Rattletrap.Decode.Word32le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 
