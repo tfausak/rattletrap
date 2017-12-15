@@ -12,7 +12,9 @@ main = do
     executable = case break (== '/') repo of
       (_, '/':x) -> x
       (x, _) -> x
-  tag <- getEnv (if windows then "APPVEYOR_REPO_TAG_NAME" else "TRAVIS_TAG")
+  maybeTag <- lookupEnv
+    (if windows then "APPVEYOR_REPO_TAG_NAME" else "TRAVIS_TAG")
+  tag <- maybe exitSuccess pure maybeTag
   os <- if windows then pure "windows" else getEnv "TRAVIS_OS_NAME"
   callProcess "stack" ["build", "--copy-bins", "--local-bin-path", "."]
   callProcess
