@@ -15,7 +15,6 @@ import qualified Data.Aeson as Aeson
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
-import qualified System.IO as IO
 
 -- | Parses a raw replay.
 decodeReplay :: ByteString.ByteString -> Either String Replay

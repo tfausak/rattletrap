@@ -16,7 +16,6 @@ import Rattletrap.Type.Property
 import Rattletrap.Type.PropertyValue
 
 import qualified Data.Map as Map
-import qualified Data.Maybe as Maybe
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
@@ -80,7 +79,7 @@ getNumFrames header =
     key = textValue (stringToText "NumFrames")
     properties = dictionaryValue (headerProperties header)
   in case Map.lookup key properties of
-    Just (Property _ _ (IntProperty numFrames)) ->
+    Just (Property _ _ (PropertyValueInt numFrames)) ->
       fromIntegral (int32Value numFrames)
     _ -> 0
 
@@ -90,6 +89,6 @@ getMaxChannels header =
     key = textValue (stringToText "MaxChannels")
     properties = dictionaryValue (headerProperties header)
   in case Map.lookup key properties of
-    Just (Property _ _ (IntProperty numFrames)) ->
+    Just (Property _ _ (PropertyValueInt numFrames)) ->
       fromIntegral (int32Value numFrames)
     _ -> 1023

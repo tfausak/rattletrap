@@ -16,10 +16,10 @@ getRemoteId :: (Int, Int, Int) -> Word8 -> BinaryBit.BitGet RemoteId
 getRemoteId (_, _, patchVersion) systemId = case word8Value systemId of
   0 -> do
     word24 <- BinaryBit.getWord32be 24
-    pure (SplitscreenId word24)
+    pure (RemoteIdSplitscreen word24)
   1 -> do
     word64 <- getWord64Bits
-    pure (SteamId word64)
+    pure (RemoteIdSteam word64)
   2 -> do
     rawName <- BinaryBit.getLazyByteString 16
     let
@@ -28,8 +28,8 @@ getRemoteId (_, _, patchVersion) systemId = case word8Value systemId of
         (Encoding.decodeLatin1 (ByteString.toStrict (reverseBytes rawName)))
       numBytes = if patchVersion >= 1 then 24 else 16
     bytes <- BinaryBit.getLazyByteString numBytes
-    pure (PlayStationId name (ByteString.unpack bytes))
+    pure (RemoteIdPlayStation name (ByteString.unpack bytes))
   4 -> do
     word64 <- getWord64Bits
-    pure (XboxId word64)
+    pure (RemoteIdXbox word64)
   _ -> fail ("unknown system id " ++ show systemId)

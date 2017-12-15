@@ -10,11 +10,11 @@ import Rattletrap.Type.SpawnedReplication
 import Rattletrap.Type.UpdatedReplication
 
 data ReplicationValue
-  = SpawnedReplicationValue SpawnedReplication
+  = ReplicationValueSpawned SpawnedReplication
   -- ^ Creates a new actor.
-  | UpdatedReplicationValue UpdatedReplication
+  | ReplicationValueUpdated UpdatedReplication
   -- ^ Updates an existing actor.
-  | DestroyedReplicationValue DestroyedReplication
+  | ReplicationValueDestroyed DestroyedReplication
   -- ^ Destroys an existing actor.
   deriving (Eq, Ord, Show)
 

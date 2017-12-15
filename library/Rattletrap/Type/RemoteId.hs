@@ -11,10 +11,10 @@ import qualified Data.Text as Text
 import qualified Data.Word as Word
 
 data RemoteId
-  = PlayStationId Text.Text [Word.Word8]
-  | SplitscreenId Word.Word32
-  | SteamId Word64
-  | XboxId Word64
+  = RemoteIdPlayStation Text.Text [Word.Word8]
+  | RemoteIdSplitscreen Word.Word32
+  | RemoteIdSteam Word64
+  | RemoteIdXbox Word64
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''RemoteId)

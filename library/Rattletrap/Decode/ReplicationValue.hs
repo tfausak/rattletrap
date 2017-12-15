@@ -30,10 +30,10 @@ getReplicationValue version classAttributeMap actorMap actorId = do
             classAttributeMap
             actorMap
             actorId
-          pure (SpawnedReplicationValue x, newActorMap)
+          pure (ReplicationValueSpawned x, newActorMap)
         else do
           x <- getUpdatedReplication version classAttributeMap actorMap actorId
-          pure (UpdatedReplicationValue x, actorMap)
+          pure (ReplicationValueUpdated x, actorMap)
     else do
       x <- getDestroyedReplication
-      pure (DestroyedReplicationValue x, actorMap)
+      pure (ReplicationValueDestroyed x, actorMap)

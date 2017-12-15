@@ -15,15 +15,15 @@ import qualified Data.Binary as Binary
 
 putPropertyValue :: (a -> Binary.Put) -> PropertyValue a -> Binary.Put
 putPropertyValue putProperty value = case value of
-  ArrayProperty list -> putList (putDictionary putProperty) list
-  BoolProperty word8 -> putWord8 word8
-  ByteProperty k mv -> do
+  PropertyValueArray list -> putList (putDictionary putProperty) list
+  PropertyValueBool word8 -> putWord8 word8
+  PropertyValueByte k mv -> do
     putText k
     case mv of
       Nothing -> pure ()
       Just v -> putText v
-  FloatProperty float32 -> putFloat32 float32
-  IntProperty int32 -> putInt32 int32
-  NameProperty text -> putText text
-  QWordProperty word64 -> putWord64 word64
-  StrProperty text -> putText text
+  PropertyValueFloat float32 -> putFloat32 float32
+  PropertyValueInt int32 -> putInt32 int32
+  PropertyValueName text -> putText text
+  PropertyValueQWord word64 -> putWord64 word64
+  PropertyValueStr text -> putText text

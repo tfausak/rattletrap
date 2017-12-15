@@ -49,96 +49,96 @@ getAttributeValue
 getAttributeValue version objectMap name =
   case Map.lookup name attributeTypes of
     Just constructor -> case constructor of
-      AppliedDamageAttributeType -> do
+      AttributeTypeAppliedDamage -> do
         x <- getAppliedDamageAttribute
-        pure (AppliedDamageAttributeValue x)
-      BooleanAttributeType -> do
+        pure (AttributeValueAppliedDamage x)
+      AttributeTypeBoolean -> do
         x <- getBooleanAttribute
-        pure (BooleanAttributeValue x)
-      ByteAttributeType -> do
+        pure (AttributeValueBoolean x)
+      AttributeTypeByte -> do
         x <- getByteAttribute
-        pure (ByteAttributeValue x)
-      CamSettingsAttributeType -> do
+        pure (AttributeValueByte x)
+      AttributeTypeCamSettings -> do
         x <- getCamSettingsAttribute version
-        pure (CamSettingsAttributeValue x)
-      ClubColorsAttributeType -> do
+        pure (AttributeValueCamSettings x)
+      AttributeTypeClubColors -> do
         x <- getClubColorsAttribute
-        pure (ClubColorsAttributeValue x)
-      DamageStateAttributeType -> do
+        pure (AttributeValueClubColors x)
+      AttributeTypeDamageState -> do
         x <- getDamageStateAttribute
-        pure (DamageStateAttributeValue x)
-      DemolishAttributeType -> do
+        pure (AttributeValueDamageState x)
+      AttributeTypeDemolish -> do
         x <- getDemolishAttribute
-        pure (DemolishAttributeValue x)
-      EnumAttributeType -> do
+        pure (AttributeValueDemolish x)
+      AttributeTypeEnum -> do
         x <- getEnumAttribute
-        pure (EnumAttributeValue x)
-      ExplosionAttributeType -> do
+        pure (AttributeValueEnum x)
+      AttributeTypeExplosion -> do
         x <- getExplosionAttribute
-        pure (ExplosionAttributeValue x)
-      ExtendedExplosionAttributeType -> do
+        pure (AttributeValueExplosion x)
+      AttributeTypeExtendedExplosion -> do
         x <- getExtendedExplosionAttribute
-        pure (ExtendedExplosionAttributeValue x)
-      FlaggedIntAttributeType -> do
+        pure (AttributeValueExtendedExplosion x)
+      AttributeTypeFlaggedInt -> do
         x <- getFlaggedIntAttribute
-        pure (FlaggedIntAttributeValue x)
-      FloatAttributeType -> do
+        pure (AttributeValueFlaggedInt x)
+      AttributeTypeFloat -> do
         x <- getFloatAttribute
-        pure (FloatAttributeValue x)
-      GameModeAttributeType -> do
+        pure (AttributeValueFloat x)
+      AttributeTypeGameMode -> do
         x <- getGameModeAttribute version
-        pure (GameModeAttributeValue x)
-      IntAttributeType -> do
+        pure (AttributeValueGameMode x)
+      AttributeTypeInt -> do
         x <- getIntAttribute
-        pure (IntAttributeValue x)
-      LoadoutAttributeType -> do
+        pure (AttributeValueInt x)
+      AttributeTypeLoadout -> do
         x <- getLoadoutAttribute
-        pure (LoadoutAttributeValue x)
-      LoadoutOnlineAttributeType -> do
+        pure (AttributeValueLoadout x)
+      AttributeTypeLoadoutOnline -> do
         x <- getLoadoutOnlineAttribute version objectMap
-        pure (LoadoutOnlineAttributeValue x)
-      LoadoutsAttributeType -> do
+        pure (AttributeValueLoadoutOnline x)
+      AttributeTypeLoadouts -> do
         x <- getLoadoutsAttribute
-        pure (LoadoutsAttributeValue x)
-      LoadoutsOnlineAttributeType -> do
+        pure (AttributeValueLoadouts x)
+      AttributeTypeLoadoutsOnline -> do
         x <- getLoadoutsOnlineAttribute version objectMap
-        pure (LoadoutsOnlineAttributeValue x)
-      LocationAttributeType -> do
+        pure (AttributeValueLoadoutsOnline x)
+      AttributeTypeLocation -> do
         x <- getLocationAttribute
-        pure (LocationAttributeValue x)
-      MusicStingerAttributeType -> do
+        pure (AttributeValueLocation x)
+      AttributeTypeMusicStinger -> do
         x <- getMusicStingerAttribute
-        pure (MusicStingerAttributeValue x)
-      PartyLeaderAttributeType -> do
+        pure (AttributeValueMusicStinger x)
+      AttributeTypePartyLeader -> do
         x <- getPartyLeaderAttribute version
-        pure (PartyLeaderAttributeValue x)
-      PickupAttributeType -> do
+        pure (AttributeValuePartyLeader x)
+      AttributeTypePickup -> do
         x <- getPickupAttribute
-        pure (PickupAttributeValue x)
-      PrivateMatchSettingsAttributeType -> do
+        pure (AttributeValuePickup x)
+      AttributeTypePrivateMatchSettings -> do
         x <- getPrivateMatchSettingsAttribute
-        pure (PrivateMatchSettingsAttributeValue x)
-      QWordAttributeType -> do
+        pure (AttributeValuePrivateMatchSettings x)
+      AttributeTypeQWord -> do
         x <- getQWordAttribute
-        pure (QWordAttributeValue x)
-      ReservationAttributeType -> do
+        pure (AttributeValueQWord x)
+      AttributeTypeReservation -> do
         x <- getReservationAttribute version
-        pure (ReservationAttributeValue x)
-      RigidBodyStateAttributeType -> do
+        pure (AttributeValueReservation x)
+      AttributeTypeRigidBodyState -> do
         x <- getRigidBodyStateAttribute
-        pure (RigidBodyStateAttributeValue x)
-      StringAttributeType -> do
+        pure (AttributeValueRigidBodyState x)
+      AttributeTypeString -> do
         x <- getStringAttribute
-        pure (StringAttributeValue x)
-      TeamPaintAttributeType -> do
+        pure (AttributeValueString x)
+      AttributeTypeTeamPaint -> do
         x <- getTeamPaintAttribute
-        pure (TeamPaintAttributeValue x)
-      UniqueIdAttributeType -> do
+        pure (AttributeValueTeamPaint x)
+      AttributeTypeUniqueId -> do
         x <- getUniqueIdAttribute version
-        pure (UniqueIdAttributeValue x)
-      WeldedInfoAttributeType -> do
+        pure (AttributeValueUniqueId x)
+      AttributeTypeWeldedInfo -> do
         x <- getWeldedInfoAttribute
-        pure (WeldedInfoAttributeValue x)
+        pure (AttributeValueWeldedInfo x)
     Nothing -> fail ("don't know how to get attribute value " ++ show name)
 
 attributeTypes :: Map.Map Text AttributeType

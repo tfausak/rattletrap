@@ -202,6 +202,7 @@ module Rattletrap
   , Rattletrap.Encode.CompressedWordVector.putCompressedWordVector
   , Rattletrap.Encode.StringAttribute.putStringAttribute
   , Rattletrap.Encode.TeamPaintAttribute.putTeamPaintAttribute
+  , Rattletrap.Encode.WeldedInfoAttribute.putWeldedInfoAttribute
   , Rattletrap.Encode.DestroyedReplication.putDestroyedReplication
   , Rattletrap.Encode.Message.putMessage
   , Rattletrap.Encode.Mark.putMark

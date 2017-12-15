@@ -14,18 +14,18 @@ import Rattletrap.Type.Int32
 import Rattletrap.Type.Word64
 
 data PropertyValue a
-  = ArrayProperty (List (Dictionary a))
+  = PropertyValueArray (List (Dictionary a))
   -- ^ Yes, a list of dictionaries. No, it doesn't make sense. These usually
   -- only have one element.
-  | BoolProperty Word8
-  | ByteProperty Text (Maybe Text)
+  | PropertyValueBool Word8
+  | PropertyValueByte Text (Maybe Text)
   -- ^ This is a strange name for essentially a key-value pair.
-  | FloatProperty Float32
-  | IntProperty Int32
-  | NameProperty Text
+  | PropertyValueFloat Float32
+  | PropertyValueInt Int32
+  | PropertyValueName Text
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.
-  | QWordProperty Word64
-  | StrProperty Text
+  | PropertyValueQWord Word64
+  | PropertyValueStr Text
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''PropertyValue)

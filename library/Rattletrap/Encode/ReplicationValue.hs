@@ -11,14 +11,14 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 
 putReplicationValue :: ReplicationValue -> BinaryBit.BitPut ()
 putReplicationValue value = case value of
-  SpawnedReplicationValue x -> do
+  ReplicationValueSpawned x -> do
     BinaryBit.putBool True
     BinaryBit.putBool True
     putSpawnedReplication x
-  UpdatedReplicationValue x -> do
+  ReplicationValueUpdated x -> do
     BinaryBit.putBool True
     BinaryBit.putBool False
     putUpdatedReplication x
-  DestroyedReplicationValue x -> do
+  ReplicationValueDestroyed x -> do
     BinaryBit.putBool False
     putDestroyedReplication x

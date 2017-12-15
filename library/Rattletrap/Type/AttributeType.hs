@@ -7,36 +7,36 @@ module Rattletrap.Type.AttributeType
 import Rattletrap.Type.Common
 
 data AttributeType
-  = AppliedDamageAttributeType
-  | BooleanAttributeType
-  | ByteAttributeType
-  | CamSettingsAttributeType
-  | ClubColorsAttributeType
-  | DamageStateAttributeType
-  | DemolishAttributeType
-  | EnumAttributeType
-  | ExplosionAttributeType
-  | ExtendedExplosionAttributeType
-  | FlaggedIntAttributeType
-  | FloatAttributeType
-  | GameModeAttributeType
-  | IntAttributeType
-  | LoadoutAttributeType
-  | LoadoutOnlineAttributeType
-  | LoadoutsAttributeType
-  | LoadoutsOnlineAttributeType
-  | LocationAttributeType
-  | MusicStingerAttributeType
-  | PartyLeaderAttributeType
-  | PickupAttributeType
-  | PrivateMatchSettingsAttributeType
-  | QWordAttributeType
-  | ReservationAttributeType
-  | RigidBodyStateAttributeType
-  | StringAttributeType
-  | TeamPaintAttributeType
-  | UniqueIdAttributeType
-  | WeldedInfoAttributeType
+  = AttributeTypeAppliedDamage
+  | AttributeTypeBoolean
+  | AttributeTypeByte
+  | AttributeTypeCamSettings
+  | AttributeTypeClubColors
+  | AttributeTypeDamageState
+  | AttributeTypeDemolish
+  | AttributeTypeEnum
+  | AttributeTypeExplosion
+  | AttributeTypeExtendedExplosion
+  | AttributeTypeFlaggedInt
+  | AttributeTypeFloat
+  | AttributeTypeGameMode
+  | AttributeTypeInt
+  | AttributeTypeLoadout
+  | AttributeTypeLoadoutOnline
+  | AttributeTypeLoadouts
+  | AttributeTypeLoadoutsOnline
+  | AttributeTypeLocation
+  | AttributeTypeMusicStinger
+  | AttributeTypePartyLeader
+  | AttributeTypePickup
+  | AttributeTypePrivateMatchSettings
+  | AttributeTypeQWord
+  | AttributeTypeReservation
+  | AttributeTypeRigidBodyState
+  | AttributeTypeString
+  | AttributeTypeTeamPaint
+  | AttributeTypeUniqueId
+  | AttributeTypeWeldedInfo
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''AttributeType)
