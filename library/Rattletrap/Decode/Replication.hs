@@ -18,7 +18,8 @@ getReplications
   -> Word
   -> ClassAttributeMap
   -> Map.Map CompressedWord Word32le
-  -> BinaryBit.BitGet ([Replication], Map.Map CompressedWord Word32le)
+  -> BinaryBit.BitGet
+       ([Replication], Map.Map CompressedWord Word32le)
 getReplications version maxChannels classAttributeMap actorMap = do
   maybeReplication <- getReplication
     version
@@ -40,7 +41,8 @@ getReplication
   -> Word
   -> ClassAttributeMap
   -> Map.Map CompressedWord Word32le
-  -> BinaryBit.BitGet (Maybe (Replication, Map.Map CompressedWord Word32le))
+  -> BinaryBit.BitGet
+       (Maybe (Replication, Map.Map CompressedWord Word32le))
 getReplication version maxChannels classAttributeMap actorMap = do
   hasReplication <- BinaryBit.getBool
   if not hasReplication

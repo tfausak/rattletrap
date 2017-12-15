@@ -7,7 +7,8 @@ import Rattletrap.Decode.Float32le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 
-getCamSettingsAttribute :: (Int, Int, Int) -> BinaryBit.BitGet CamSettingsAttribute
+getCamSettingsAttribute
+  :: (Int, Int, Int) -> BinaryBit.BitGet CamSettingsAttribute
 getCamSettingsAttribute version = do
   fov <- getFloat32Bits
   height <- getFloat32Bits

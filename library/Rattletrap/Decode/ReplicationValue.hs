@@ -18,7 +18,8 @@ getReplicationValue
   -> ClassAttributeMap
   -> Map.Map CompressedWord Word32le
   -> CompressedWord
-  -> BinaryBit.BitGet (ReplicationValue, Map.Map CompressedWord Word32le)
+  -> BinaryBit.BitGet
+       (ReplicationValue, Map.Map CompressedWord Word32le)
 getReplicationValue version classAttributeMap actorMap actorId = do
   isOpen <- BinaryBit.getBool
   if isOpen

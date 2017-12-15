@@ -41,8 +41,9 @@ normalizeTextSize size = case int32leValue size of
 getTextDecoder :: Int32le -> ByteString.ByteString -> Text.Text
 getTextDecoder size bytes =
   let
-    decode =
-      if size < Int32le 0 then Encoding.decodeUtf16LE else Encoding.decodeLatin1
+    decode = if size < Int32le 0
+      then Encoding.decodeUtf16LE
+      else Encoding.decodeLatin1
   in
     decode (ByteString.toStrict bytes)
 

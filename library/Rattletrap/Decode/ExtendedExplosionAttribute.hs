@@ -15,4 +15,10 @@ getExtendedExplosionAttribute = do
   x <- getExplosionAttribute
   unknown1 <- BinaryBit.getBool
   unknown2 <- getInt32Bits
-  pure (ExtendedExplosionAttribute (explosionAttributeActorId x) (explosionAttributeLocation x) unknown1 unknown2)
+  pure
+    ( ExtendedExplosionAttribute
+      (explosionAttributeActorId x)
+      (explosionAttributeLocation x)
+      unknown1
+      unknown2
+    )

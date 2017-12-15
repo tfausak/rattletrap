@@ -9,7 +9,8 @@ import Rattletrap.Decode.RemoteId
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 
-getPartyLeaderAttribute :: (Int, Int, Int) -> BinaryBit.BitGet PartyLeaderAttribute
+getPartyLeaderAttribute
+  :: (Int, Int, Int) -> BinaryBit.BitGet PartyLeaderAttribute
 getPartyLeaderAttribute version = do
   systemId <- getWord8Bits
   maybeRemoteAndLocalId <- if systemId == Word8le 0

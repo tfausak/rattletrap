@@ -11,7 +11,8 @@ import Rattletrap.Type.Word8le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 
-getReservationAttribute :: (Int, Int, Int) -> BinaryBit.BitGet ReservationAttribute
+getReservationAttribute
+  :: (Int, Int, Int) -> BinaryBit.BitGet ReservationAttribute
 getReservationAttribute version = do
   number <- getCompressedWord 7
   uniqueId <- getUniqueIdAttribute version

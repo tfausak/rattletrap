@@ -19,7 +19,8 @@ getSpawnedReplication
   -> ClassAttributeMap
   -> Map.Map CompressedWord Word32le
   -> CompressedWord
-  -> BinaryBit.BitGet (SpawnedReplication, Map.Map CompressedWord Word32le)
+  -> BinaryBit.BitGet
+       (SpawnedReplication, Map.Map CompressedWord Word32le)
 getSpawnedReplication version classAttributeMap actorMap actorId = do
   flag <- BinaryBit.getBool
   nameIndex <- if version < (868, 14, 0)

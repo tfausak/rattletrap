@@ -39,7 +39,8 @@ getAttribute version classAttributeMap actorMap actorId =
   case getAttributeMap classAttributeMap actorMap actorId of
     Nothing -> fail ("could not get attribute map for " <> show actorId)
     Just attributeMap -> case getAttributeIdLimit attributeMap of
-      Nothing -> fail ("could not get attribute ID limit for " <> show actorId)
+      Nothing ->
+        fail ("could not get attribute ID limit for " <> show actorId)
       Just limit -> do
         id_ <- getCompressedWord limit
         case getAttributeName classAttributeMap attributeMap id_ of

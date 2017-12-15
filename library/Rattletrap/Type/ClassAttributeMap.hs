@@ -129,7 +129,9 @@ getClassId objectMap classMap objectId = do
   lookupR className classMap
 
 makeClassCache
-  :: Bimap Word32le Str -> List Cache -> [(Maybe Str, Word32le, Word32le, Word32le)]
+  :: Bimap Word32le Str
+  -> List Cache
+  -> [(Maybe Str, Word32le, Word32le, Word32le)]
 makeClassCache classMap caches = fmap
   ( \cache ->
     let
@@ -220,7 +222,10 @@ getParentClassById parentCacheId xs =
     (_, parentClassId, _, _):_ -> Just parentClassId
 
 getParentClassByName
-  :: Str -> Word32le -> [(Maybe Str, Word32le, Word32le, Word32le)] -> Maybe Word32le
+  :: Str
+  -> Word32le
+  -> [(Maybe Str, Word32le, Word32le, Word32le)]
+  -> Maybe Word32le
 getParentClassByName className parentCacheId xs =
   case Map.lookup className parentClasses of
     Nothing -> getParentClassById parentCacheId xs
@@ -243,9 +248,8 @@ getParentClassByName className parentCacheId xs =
       )
 
 parentClasses :: Map Str Str
-parentClasses = Map.map
-  toStr
-  (Map.mapKeys toStr (Map.fromList rawParentClasses))
+parentClasses =
+  Map.map toStr (Map.mapKeys toStr (Map.fromList rawParentClasses))
 
 makeObjectMap :: List Str -> Map Word32le Str
 makeObjectMap objects =
@@ -281,9 +285,8 @@ normalizeObjectName objectName =
               else objectName
 
 objectClasses :: Map Str Str
-objectClasses = Map.map
-  toStr
-  (Map.mapKeys toStr (Map.fromList rawObjectClasses))
+objectClasses =
+  Map.map toStr (Map.mapKeys toStr (Map.fromList rawObjectClasses))
 
 classHasLocation :: Str -> Bool
 classHasLocation className = Set.member className classesWithLocation

@@ -17,7 +17,9 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map
 
 getProductAttributes
-  :: (Int, Int, Int) -> Map.Map Word32le Str -> BinaryBit.BitGet [ProductAttribute]
+  :: (Int, Int, Int)
+  -> Map.Map Word32le Str
+  -> BinaryBit.BitGet [ProductAttribute]
 getProductAttributes version objectMap = do
   size <- getWord8Bits
   Monad.replicateM
@@ -25,7 +27,9 @@ getProductAttributes version objectMap = do
     (getProductAttribute version objectMap)
 
 getProductAttribute
-  :: (Int, Int, Int) -> Map.Map Word32le Str -> BinaryBit.BitGet ProductAttribute
+  :: (Int, Int, Int)
+  -> Map.Map Word32le Str
+  -> BinaryBit.BitGet ProductAttribute
 getProductAttribute version objectMap = do
   flag <- BinaryBit.getBool
   objectId <- getWord32Bits
