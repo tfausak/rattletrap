@@ -2,7 +2,6 @@ module Rattletrap.Decode.SpawnedReplication
   ( getSpawnedReplication
   ) where
 
-import Rattletrap.Type.ActorMap
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Decode.Initialization
 import Rattletrap.Type.Word32
@@ -17,9 +16,9 @@ import qualified Data.Map as Map
 getSpawnedReplication
   :: (Int, Int, Int)
   -> ClassAttributeMap
-  -> ActorMap
+  -> Map.Map CompressedWord Word32
   -> CompressedWord
-  -> BinaryBit.BitGet (SpawnedReplication, ActorMap)
+  -> BinaryBit.BitGet (SpawnedReplication, Map.Map CompressedWord Word32)
 getSpawnedReplication version classAttributeMap actorMap actorId = do
   flag <- BinaryBit.getBool
   nameIndex <- if version < (868, 14, 0)

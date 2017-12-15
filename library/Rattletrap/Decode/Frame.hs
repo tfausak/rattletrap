@@ -3,21 +3,23 @@ module Rattletrap.Decode.Frame
   , getFrame
   ) where
 
-import Rattletrap.Type.ActorMap
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.Frame
+import Rattletrap.Type.Word32
+import Rattletrap.Type.CompressedWord
 import Rattletrap.Decode.Float32
 import Rattletrap.Decode.Replication
 
 import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Map as Map
 
 getFrames
   :: (Int, Int, Int)
   -> Int
   -> Word
   -> ClassAttributeMap
-  -> ActorMap
-  -> BinaryBit.BitGet ([Frame], ActorMap)
+  -> Map.Map CompressedWord Word32
+  -> BinaryBit.BitGet ([Frame], Map.Map CompressedWord Word32)
 getFrames version numFrames maxChannels classAttributeMap actorMap =
   if numFrames <= 0
     then pure ([], actorMap)
@@ -39,8 +41,8 @@ getFrame
   :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
-  -> ActorMap
-  -> BinaryBit.BitGet (Frame, ActorMap)
+  -> Map.Map CompressedWord Word32
+  -> BinaryBit.BitGet (Frame, Map.Map CompressedWord Word32)
 getFrame version maxChannels classAttributeMap actorMap = do
   time <- getFloat32Bits
   delta <- getFloat32Bits

@@ -11,7 +11,6 @@ module Rattletrap.Type.ClassAttributeMap
   , makeClassAttributeMap
   ) where
 
-import Rattletrap.Type.ActorMap
 import Rattletrap.Type.AttributeMapping
 import Rattletrap.Type.Cache
 import Rattletrap.Type.ClassMapping
@@ -313,7 +312,7 @@ getAttributeName classAttributeMap attributeMap streamId = do
 
 getAttributeMap
   :: ClassAttributeMap
-  -> ActorMap
+  -> Map.Map CompressedWord Word32
   -> CompressedWord
   -> Maybe (Map.Map Word32 Word32)
 getAttributeMap classAttributeMap actorMap actorId = do

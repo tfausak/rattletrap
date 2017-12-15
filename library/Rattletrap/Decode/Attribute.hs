@@ -3,19 +3,20 @@ module Rattletrap.Decode.Attribute
   , getAttribute
   ) where
 
-import Rattletrap.Type.ActorMap
 import Rattletrap.Type.Attribute
 import Rattletrap.Decode.AttributeValue
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
+import Rattletrap.Type.Word32
 import Rattletrap.Decode.CompressedWord
 
 import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Map as Map
 
 getAttributes
   :: (Int, Int, Int)
   -> ClassAttributeMap
-  -> ActorMap
+  -> Map.Map CompressedWord Word32
   -> CompressedWord
   -> BinaryBit.BitGet [Attribute]
 getAttributes version classAttributeMap actorMap actorId = do
@@ -30,7 +31,7 @@ getAttributes version classAttributeMap actorMap actorId = do
 getAttribute
   :: (Int, Int, Int)
   -> ClassAttributeMap
-  -> ActorMap
+  -> Map.Map CompressedWord Word32
   -> CompressedWord
   -> BinaryBit.BitGet Attribute
 getAttribute version classAttributeMap actorMap actorId =
