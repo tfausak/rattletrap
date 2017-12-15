@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.PrivateMatchSettingsAttribute
   ( PrivateMatchSettingsAttribute(..)
@@ -15,6 +15,11 @@ data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
   , privateMatchSettingsAttributeGameName :: Text
   , privateMatchSettingsAttributePassword :: Text
   , privateMatchSettingsAttributeFlag :: Bool
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''PrivateMatchSettingsAttribute)
+instance FromJSON PrivateMatchSettingsAttribute where
+  parseJSON = defaultParseJson "PrivateMatchSettingsAttribute"
+
+instance ToJSON PrivateMatchSettingsAttribute where
+  toEncoding = defaultToEncoding "PrivateMatchSettingsAttribute"
+  toJSON = defaultToJson "PrivateMatchSettingsAttribute"

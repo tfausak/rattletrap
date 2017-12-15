@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.SpawnedReplication
   ( SpawnedReplication(..)
@@ -24,6 +24,11 @@ data SpawnedReplication = SpawnedReplication
   -- ^ Read-only! Changing a replication's class requires editing the class
   -- attribute map.
   , spawnedReplicationInitialization :: Initialization
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''SpawnedReplication)
+instance FromJSON SpawnedReplication where
+  parseJSON = defaultParseJson "SpawnedReplication"
+
+instance ToJSON SpawnedReplication where
+  toEncoding = defaultToEncoding "SpawnedReplication"
+  toJSON = defaultToJson "SpawnedReplication"

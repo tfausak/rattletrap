@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.AttributeType
   ( AttributeType(..)
@@ -37,6 +37,11 @@ data AttributeType
   | AttributeTypeTeamPaint
   | AttributeTypeUniqueId
   | AttributeTypeWeldedInfo
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''AttributeType)
+instance FromJSON AttributeType where
+  parseJSON = defaultParseJson "AttributeType"
+
+instance ToJSON AttributeType where
+  toEncoding = defaultToEncoding "AttributeType"
+  toJSON = defaultToJson "AttributeType"

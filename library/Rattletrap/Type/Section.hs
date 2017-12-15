@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.Section
   ( Section(..)
@@ -18,6 +18,11 @@ data Section a = Section
   -- ^ read only
   , sectionBody :: a
   -- ^ The actual content in the section.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''Section)
+instance FromJSON a => FromJSON (Section a) where
+  parseJSON = defaultParseJson "Section"
+
+instance ToJSON a => ToJSON (Section a) where
+  toEncoding = defaultToEncoding "Section"
+  toJSON = defaultToJson "Section"

@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.PickupAttribute
   ( PickupAttribute(..)
@@ -10,6 +10,11 @@ import Rattletrap.Type.Word32
 data PickupAttribute = PickupAttribute
   { pickupAttributeInstigatorId :: Maybe Word32
   , pickupAttributePickedUp :: Bool
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''PickupAttribute)
+instance FromJSON PickupAttribute where
+  parseJSON = defaultParseJson "PickupAttribute"
+
+instance ToJSON PickupAttribute where
+  toEncoding = defaultToEncoding "PickupAttribute"
+  toJSON = defaultToJson "PickupAttribute"

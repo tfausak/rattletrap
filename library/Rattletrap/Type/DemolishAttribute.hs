@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.DemolishAttribute
   ( DemolishAttribute(..)
@@ -15,6 +15,11 @@ data DemolishAttribute = DemolishAttribute
   , demolishAttributeVictimActorId :: Word32
   , demolishAttributeAttackerVelocity :: Vector
   , demolishAttributeVictimVelocity :: Vector
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''DemolishAttribute)
+instance FromJSON DemolishAttribute where
+  parseJSON = defaultParseJson "DemolishAttribute"
+
+instance ToJSON DemolishAttribute where
+  toEncoding = defaultToEncoding "DemolishAttribute"
+  toJSON = defaultToJson "DemolishAttribute"

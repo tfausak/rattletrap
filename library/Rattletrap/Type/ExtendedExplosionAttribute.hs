@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.ExtendedExplosionAttribute
   ( ExtendedExplosionAttribute(..)
@@ -13,6 +13,11 @@ data ExtendedExplosionAttribute = ExtendedExplosionAttribute
   , extendedExplosionAttributeLocation :: Vector
   , extendedExplosionAttributeUnknown1 :: Bool
   , extendedExplosionAttributeUnknown2 :: Int32
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''ExtendedExplosionAttribute)
+instance FromJSON ExtendedExplosionAttribute where
+  parseJSON = defaultParseJson "ExtendedExplosionAttribute"
+
+instance ToJSON ExtendedExplosionAttribute where
+  toEncoding = defaultToEncoding "ExtendedExplosionAttribute"
+  toJSON = defaultToJson "ExtendedExplosionAttribute"

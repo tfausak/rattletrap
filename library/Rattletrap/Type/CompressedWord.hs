@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.CompressedWord
   ( CompressedWord(..)
@@ -9,6 +9,11 @@ import Rattletrap.Type.Common
 data CompressedWord = CompressedWord
   { compressedWordLimit :: Word
   , compressedWordValue :: Word
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''CompressedWord)
+instance FromJSON CompressedWord where
+  parseJSON = defaultParseJson "CompressedWord"
+
+instance ToJSON CompressedWord where
+  toEncoding = defaultToEncoding "CompressedWord"
+  toJSON = defaultToJson "CompressedWord"

@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.WeldedInfoAttribute
   ( WeldedInfoAttribute(..)
@@ -16,6 +16,11 @@ data WeldedInfoAttribute = WeldedInfoAttribute
   , weldedInfoAttributeOffset :: Vector
   , weldedInfoAttributeMass :: Float32
   , weldedInfoAttributeRotation :: Int8Vector
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''WeldedInfoAttribute)
+instance FromJSON WeldedInfoAttribute where
+  parseJSON = defaultParseJson "WeldedInfoAttribute"
+
+instance ToJSON WeldedInfoAttribute where
+  toEncoding = defaultToEncoding "WeldedInfoAttribute"
+  toJSON = defaultToJson "WeldedInfoAttribute"

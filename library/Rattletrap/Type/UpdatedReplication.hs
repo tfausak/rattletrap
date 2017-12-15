@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.UpdatedReplication
   ( UpdatedReplication(..)
@@ -9,6 +9,11 @@ import Rattletrap.Type.Attribute
 
 newtype UpdatedReplication = UpdatedReplication
   { updatedReplicationAttributes :: [Attribute]
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''UpdatedReplication)
+instance FromJSON UpdatedReplication where
+  parseJSON = defaultParseJson "UpdatedReplication"
+
+instance ToJSON UpdatedReplication where
+  toEncoding = defaultToEncoding "UpdatedReplication"
+  toJSON = defaultToJson "UpdatedReplication"

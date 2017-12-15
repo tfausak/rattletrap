@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.ByteAttribute
   ( ByteAttribute(..)
@@ -9,6 +9,11 @@ import Rattletrap.Type.Word8
 
 newtype ByteAttribute = ByteAttribute
   { byteAttributeValue :: Word8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''ByteAttribute)
+instance FromJSON ByteAttribute where
+  parseJSON = defaultParseJson "ByteAttribute"
+
+instance ToJSON ByteAttribute where
+  toEncoding = defaultToEncoding "ByteAttribute"
+  toJSON = defaultToJson "ByteAttribute"

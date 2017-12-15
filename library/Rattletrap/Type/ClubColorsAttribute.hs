@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.ClubColorsAttribute
   ( ClubColorsAttribute(..)
@@ -12,6 +12,11 @@ data ClubColorsAttribute = ClubColorsAttribute
   , clubColorsAttributeBlueColor :: Word8
   , clubColorsAttributeOrangeFlag :: Bool
   , clubColorsAttributeOrangeColor :: Word8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''ClubColorsAttribute)
+instance FromJSON ClubColorsAttribute where
+  parseJSON = defaultParseJson "ClubColorsAttribute"
+
+instance ToJSON ClubColorsAttribute where
+  toEncoding = defaultToEncoding "ClubColorsAttribute"
+  toJSON = defaultToJson "ClubColorsAttribute"

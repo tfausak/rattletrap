@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.QWordAttribute
   ( QWordAttribute(..)
@@ -9,6 +9,11 @@ import Rattletrap.Type.Word64
 
 newtype QWordAttribute = QWordAttribute
   { qWordAttributeValue :: Word64
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''QWordAttribute)
+instance FromJSON QWordAttribute where
+  parseJSON = defaultParseJson "QWordAttribute"
+
+instance ToJSON QWordAttribute where
+  toEncoding = defaultToEncoding "QWordAttribute"
+  toJSON = defaultToJson "QWordAttribute"

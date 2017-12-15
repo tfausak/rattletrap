@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.GameModeAttribute
   ( GameModeAttribute(..)
@@ -11,6 +11,11 @@ import qualified Data.Word as Word
 data GameModeAttribute = GameModeAttribute
   { gameModeAttributeNumBits :: Int
   , gameModeAttributeWord :: Word.Word8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''GameModeAttribute)
+instance FromJSON GameModeAttribute where
+  parseJSON = defaultParseJson "GameModeAttribute"
+
+instance ToJSON GameModeAttribute where
+  toEncoding = defaultToEncoding "GameModeAttribute"
+  toJSON = defaultToJson "GameModeAttribute"

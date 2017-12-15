@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.KeyFrame
   ( KeyFrame(..)
@@ -15,6 +15,11 @@ data KeyFrame = KeyFrame
   -- ^ The frame number of this key frame, starting from 0.
   , keyFramePosition :: Word32
   -- ^ The bit position of this key frame in the stream.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''KeyFrame)
+instance FromJSON KeyFrame where
+  parseJSON = defaultParseJson "KeyFrame"
+
+instance ToJSON KeyFrame where
+  toEncoding = defaultToEncoding "KeyFrame"
+  toJSON = defaultToJson "KeyFrame"

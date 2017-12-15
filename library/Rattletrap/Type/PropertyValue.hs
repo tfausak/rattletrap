@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.PropertyValue
   ( PropertyValue(..)
@@ -26,6 +26,11 @@ data PropertyValue a
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.
   | PropertyValueQWord Word64
   | PropertyValueStr Text
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''PropertyValue)
+instance FromJSON a => FromJSON (PropertyValue a) where
+  parseJSON = defaultParseJson "PropertyValue"
+
+instance ToJSON a => ToJSON (PropertyValue a) where
+  toEncoding = defaultToEncoding "PropertyValue"
+  toJSON = defaultToJson "PropertyValue"

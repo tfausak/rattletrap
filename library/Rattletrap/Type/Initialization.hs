@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.Initialization
   ( Initialization(..)
@@ -15,6 +15,11 @@ data Initialization = Initialization
   , initializationRotation :: Maybe Int8Vector
   -- ^ Only classes with location can have rotation, but not every one does.
   -- See 'Rattletrap.Data.rawClassesWithRotation'.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''Initialization)
+instance FromJSON Initialization where
+  parseJSON = defaultParseJson "Initialization"
+
+instance ToJSON Initialization where
+  toEncoding = defaultToEncoding "Initialization"
+  toJSON = defaultToJson "Initialization"

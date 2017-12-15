@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.MusicStingerAttribute
   ( MusicStingerAttribute(..)
@@ -12,6 +12,11 @@ data MusicStingerAttribute = MusicStingerAttribute
   { musicStingerAttributeFlag :: Bool
   , musicStingerAttributeCue :: Word32
   , musicStingerAttributeTrigger :: Word8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''MusicStingerAttribute)
+instance FromJSON MusicStingerAttribute where
+  parseJSON = defaultParseJson "MusicStingerAttribute"
+
+instance ToJSON MusicStingerAttribute where
+  toEncoding = defaultToEncoding "MusicStingerAttribute"
+  toJSON = defaultToJson "MusicStingerAttribute"

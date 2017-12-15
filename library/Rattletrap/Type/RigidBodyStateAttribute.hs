@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.RigidBodyStateAttribute
   ( RigidBodyStateAttribute(..)
@@ -14,6 +14,11 @@ data RigidBodyStateAttribute = RigidBodyStateAttribute
   , rigidBodyStateAttributeRotation :: CompressedWordVector
   , rigidBodyStateAttributeLinearVelocity :: Maybe Vector
   , rigidBodyStateAttributeAngularVelocity :: Maybe Vector
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''RigidBodyStateAttribute)
+instance FromJSON RigidBodyStateAttribute where
+  parseJSON = defaultParseJson "RigidBodyStateAttribute"
+
+instance ToJSON RigidBodyStateAttribute where
+  toEncoding = defaultToEncoding "RigidBodyStateAttribute"
+  toJSON = defaultToJson "RigidBodyStateAttribute"

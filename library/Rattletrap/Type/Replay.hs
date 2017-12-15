@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.Replay
   ( Replay(..)
@@ -15,6 +15,11 @@ data Replay = Replay
   -- ^ This has most of the high-level metadata.
   , replayContent :: Section Content
   -- ^ This has most of the low-level game data.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''Replay)
+instance FromJSON Replay where
+  parseJSON = defaultParseJson "Replay"
+
+instance ToJSON Replay where
+  toEncoding = defaultToEncoding "Replay"
+  toJSON = defaultToJson "Replay"

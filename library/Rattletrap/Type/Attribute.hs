@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.Attribute
   ( Attribute(..)
@@ -15,6 +15,11 @@ data Attribute = Attribute
   -- ^ Read-only! Changing an attribute's name requires editing the class
   -- attribute map.
   , attributeValue :: AttributeValue
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''Attribute)
+instance FromJSON Attribute where
+  parseJSON = defaultParseJson "Attribute"
+
+instance ToJSON Attribute where
+  toEncoding = defaultToEncoding "Attribute"
+  toJSON = defaultToJson "Attribute"

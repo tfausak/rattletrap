@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.Mark
   ( Mark(..)
@@ -13,6 +13,11 @@ data Mark = Mark
   -- ^ Which type of mark this is, like @Team0Goal@.
   , markFrame :: Word32
   -- ^ Which frame this mark belongs to, starting from 0.
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''Mark)
+instance FromJSON Mark where
+  parseJSON = defaultParseJson "Mark"
+
+instance ToJSON Mark where
+  toEncoding = defaultToEncoding "Mark"
+  toJSON = defaultToJson "Mark"

@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.ReplicationValue
   ( ReplicationValue(..)
@@ -16,6 +16,11 @@ data ReplicationValue
   -- ^ Updates an existing actor.
   | ReplicationValueDestroyed DestroyedReplication
   -- ^ Destroys an existing actor.
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''ReplicationValue)
+instance FromJSON ReplicationValue where
+  parseJSON = defaultParseJson "ReplicationValue"
+
+instance ToJSON ReplicationValue where
+  toEncoding = defaultToEncoding "ReplicationValue"
+  toJSON = defaultToJson "ReplicationValue"

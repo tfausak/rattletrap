@@ -1,15 +1,43 @@
+{-# LANGUAGE FlexibleContexts #-}
+
 module Rattletrap.Type.Common
-  ( deriveJson
+  ( Ghc.Generic
+  , Json.ToJSON
+  , Json.toJSON
+  , defaultToJson
+  , Json.toEncoding
+  , defaultToEncoding
+  , Json.FromJSON
+  , Json.parseJSON
+  , defaultParseJson
   ) where
 
 import qualified Data.Aeson as Json
-import qualified Data.Aeson.TH as Json
+import qualified Data.Aeson.Types as Json
 import qualified Data.Char as Char
 import qualified Data.Maybe as Maybe
-import qualified Language.Haskell.TH as TH
+import qualified GHC.Generics as Ghc
 
-deriveJson :: TH.Name -> TH.Q [TH.Dec]
-deriveJson name = Json.deriveJSON (jsonOptions $ TH.nameBase name) name
+defaultParseJson
+  :: (Ghc.Generic a, Json.GFromJSON Json.Zero (Ghc.Rep a))
+  => String
+  -> Json.Value
+  -> Json.Parser a
+defaultParseJson = Json.genericParseJSON . jsonOptions
+
+defaultToEncoding
+  :: (Ghc.Generic a, Json.GToEncoding Json.Zero (Ghc.Rep a))
+  => String
+  -> a
+  -> Json.Encoding
+defaultToEncoding = Json.genericToEncoding . jsonOptions
+
+defaultToJson
+  :: (Ghc.Generic a, Json.GToJSON Json.Zero (Ghc.Rep a))
+  => String
+  -> a
+  -> Json.Value
+defaultToJson = Json.genericToJSON . jsonOptions
 
 jsonOptions :: String -> Json.Options
 jsonOptions prefix = Json.defaultOptions

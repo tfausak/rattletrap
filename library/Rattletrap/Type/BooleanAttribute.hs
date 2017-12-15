@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Rattletrap.Type.BooleanAttribute
   ( BooleanAttribute(..)
@@ -8,6 +8,11 @@ import Rattletrap.Type.Common
 
 newtype BooleanAttribute = BooleanAttribute
   { booleanAttributeValue :: Bool
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Generic, Ord, Show)
 
-$(deriveJson ''BooleanAttribute)
+instance FromJSON BooleanAttribute where
+  parseJSON = defaultParseJson "BooleanAttribute"
+
+instance ToJSON BooleanAttribute where
+  toEncoding = defaultToEncoding "BooleanAttribute"
+  toJSON = defaultToJson "BooleanAttribute"
