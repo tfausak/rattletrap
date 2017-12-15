@@ -77,7 +77,7 @@ upload token owner repo tag file name = do
     ( \archive handle -> do
       IO.hClose handle
       ByteString.writeFile archive output
-      GitHubRelease.upload token owner repo tag archive name
+      GitHubRelease.upload token (Just owner) repo tag archive name
     )
 
 getEnv :: String -> IO String
