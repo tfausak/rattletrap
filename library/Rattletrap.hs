@@ -63,6 +63,7 @@ module Rattletrap
   , Rattletrap.Type.StringAttribute.StringAttribute(..)
   , Rattletrap.Type.TeamPaintAttribute.TeamPaintAttribute(..)
   , Rattletrap.Type.WeldedInfoAttribute.WeldedInfoAttribute(..)
+  , Rattletrap.Type.DestroyedReplication.DestroyedReplication(..)
   , Rattletrap.Type.Message.Message(..)
   , Rattletrap.Type.Mark.Mark(..)
   , Rattletrap.Type.ClassMapping.ClassMapping(..)
@@ -84,7 +85,9 @@ module Rattletrap
   , Rattletrap.Decode.Int32.getInt32
   , Rattletrap.Decode.Content.getContent
   , Rattletrap.Decode.KeyFrame.getKeyFrame
+  , Rattletrap.Decode.Frame.getFrames
   , Rattletrap.Decode.Frame.getFrame
+  , Rattletrap.Decode.Replication.getReplications
   , Rattletrap.Decode.Replication.getReplication
   , Rattletrap.Decode.CompressedWord.getCompressedWord
   , Rattletrap.Decode.ReplicationValue.getReplicationValue
@@ -94,6 +97,7 @@ module Rattletrap
   , Rattletrap.Decode.Int8Vector.getInt8Vector
   , Rattletrap.Decode.Int8.getInt8
   , Rattletrap.Decode.UpdatedReplication.getUpdatedReplication
+  , Rattletrap.Decode.Attribute.getAttributes
   , Rattletrap.Decode.Attribute.getAttribute
   , Rattletrap.Decode.AttributeValue.getAttributeValue
   , Rattletrap.Decode.AppliedDamageAttribute.getAppliedDamageAttribute
@@ -129,6 +133,7 @@ module Rattletrap
   , Rattletrap.Decode.StringAttribute.getStringAttribute
   , Rattletrap.Decode.TeamPaintAttribute.getTeamPaintAttribute
   , Rattletrap.Decode.WeldedInfoAttribute.getWeldedInfoAttribute
+  , Rattletrap.Decode.DestroyedReplication.getDestroyedReplication
   , Rattletrap.Decode.Message.getMessage
   , Rattletrap.Decode.Mark.getMark
   , Rattletrap.Decode.ClassMapping.getClassMapping
@@ -150,7 +155,9 @@ module Rattletrap
   , Rattletrap.Encode.Int32.putInt32
   , Rattletrap.Encode.Content.putContent
   , Rattletrap.Encode.KeyFrame.putKeyFrame
+  , Rattletrap.Encode.Frame.putFrames
   , Rattletrap.Encode.Frame.putFrame
+  , Rattletrap.Encode.Replication.putReplications
   , Rattletrap.Encode.Replication.putReplication
   , Rattletrap.Encode.CompressedWord.putCompressedWord
   , Rattletrap.Encode.ReplicationValue.putReplicationValue
@@ -160,6 +167,7 @@ module Rattletrap
   , Rattletrap.Encode.Int8Vector.putInt8Vector
   , Rattletrap.Encode.Int8.putInt8
   , Rattletrap.Encode.UpdatedReplication.putUpdatedReplication
+  , Rattletrap.Encode.Attribute.putAttributes
   , Rattletrap.Encode.Attribute.putAttribute
   , Rattletrap.Encode.AttributeValue.putAttributeValue
   , Rattletrap.Encode.AppliedDamageAttribute.putAppliedDamageAttribute
@@ -194,7 +202,7 @@ module Rattletrap
   , Rattletrap.Encode.CompressedWordVector.putCompressedWordVector
   , Rattletrap.Encode.StringAttribute.putStringAttribute
   , Rattletrap.Encode.TeamPaintAttribute.putTeamPaintAttribute
-  , Rattletrap.Encode.WeldedInfoAttribute.putWeldedInfoAttribute
+  , Rattletrap.Encode.DestroyedReplication.putDestroyedReplication
   , Rattletrap.Encode.Message.putMessage
   , Rattletrap.Encode.Mark.putMark
   , Rattletrap.Encode.ClassMapping.putClassMapping
@@ -217,6 +225,7 @@ import qualified Rattletrap.Decode.CompressedWordVector
 import qualified Rattletrap.Decode.Content
 import qualified Rattletrap.Decode.DamageStateAttribute
 import qualified Rattletrap.Decode.DemolishAttribute
+import qualified Rattletrap.Decode.DestroyedReplication
 import qualified Rattletrap.Decode.Dictionary
 import qualified Rattletrap.Decode.EnumAttribute
 import qualified Rattletrap.Decode.ExplosionAttribute
@@ -282,6 +291,7 @@ import qualified Rattletrap.Encode.CompressedWordVector
 import qualified Rattletrap.Encode.Content
 import qualified Rattletrap.Encode.DamageStateAttribute
 import qualified Rattletrap.Encode.DemolishAttribute
+import qualified Rattletrap.Encode.DestroyedReplication
 import qualified Rattletrap.Encode.Dictionary
 import qualified Rattletrap.Encode.EnumAttribute
 import qualified Rattletrap.Encode.ExplosionAttribute
@@ -348,6 +358,7 @@ import qualified Rattletrap.Type.CompressedWordVector
 import qualified Rattletrap.Type.Content
 import qualified Rattletrap.Type.DamageStateAttribute
 import qualified Rattletrap.Type.DemolishAttribute
+import qualified Rattletrap.Type.DestroyedReplication
 import qualified Rattletrap.Type.Dictionary
 import qualified Rattletrap.Type.EnumAttribute
 import qualified Rattletrap.Type.ExplosionAttribute
