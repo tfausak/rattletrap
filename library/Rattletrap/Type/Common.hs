@@ -13,7 +13,7 @@ deriveJson name = Json.deriveJSON (jsonOptions $ TH.nameBase name) name
 
 jsonOptions :: String -> Json.Options
 jsonOptions prefix = Json.defaultOptions
-  { Json.constructorTagModifier = toSnakeCase
+  { Json.constructorTagModifier = toSnakeCase . partialDropPrefix prefix
   , Json.fieldLabelModifier = toSnakeCase
     . partialDropPrefix (lowerFirst prefix)
   , Json.omitNothingFields = True
