@@ -9,7 +9,7 @@ import Rattletrap.Type.List
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Word8
 import Rattletrap.Type.Text
-import Rattletrap.Type.Float32
+import Rattletrap.Type.Float32le
 import Rattletrap.Type.Int32
 import Rattletrap.Type.Word64
 
@@ -20,7 +20,7 @@ data PropertyValue a
   | PropertyValueBool Word8
   | PropertyValueByte Text (Maybe Text)
   -- ^ This is a strange name for essentially a key-value pair.
-  | PropertyValueFloat Float32
+  | PropertyValueFloat Float32le
   | PropertyValueInt Int32
   | PropertyValueName Text
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.

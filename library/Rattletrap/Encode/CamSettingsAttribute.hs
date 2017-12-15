@@ -3,7 +3,7 @@ module Rattletrap.Encode.CamSettingsAttribute
   ) where
 
 import Rattletrap.Type.CamSettingsAttribute
-import Rattletrap.Encode.Float32
+import Rattletrap.Encode.Float32le
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

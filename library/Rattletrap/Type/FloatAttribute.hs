@@ -5,10 +5,10 @@ module Rattletrap.Type.FloatAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Float32
+import Rattletrap.Type.Float32le
 
 newtype FloatAttribute = FloatAttribute
-  { floatAttributeValue :: Float32
+  { floatAttributeValue :: Float32le
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''FloatAttribute)

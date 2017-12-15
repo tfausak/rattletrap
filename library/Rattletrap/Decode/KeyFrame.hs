@@ -3,7 +3,7 @@ module Rattletrap.Decode.KeyFrame
   ) where
 
 import Rattletrap.Type.KeyFrame
-import Rattletrap.Decode.Float32
+import Rattletrap.Decode.Float32le
 import Rattletrap.Decode.Word32
 
 import qualified Data.Binary as Binary

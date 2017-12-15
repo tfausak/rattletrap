@@ -7,7 +7,7 @@ import Rattletrap.Encode.List
 import Rattletrap.Encode.Dictionary
 import Rattletrap.Encode.Word8
 import Rattletrap.Encode.Text
-import Rattletrap.Encode.Float32
+import Rattletrap.Encode.Float32le
 import Rattletrap.Encode.Int32
 import Rattletrap.Encode.Word64
 

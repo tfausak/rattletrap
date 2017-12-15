@@ -4,7 +4,7 @@ module Rattletrap.Encode.Frame
   ) where
 
 import Rattletrap.Type.Frame
-import Rattletrap.Encode.Float32
+import Rattletrap.Encode.Float32le
 import Rattletrap.Encode.Replication
 
 import qualified Data.Binary.Bits.Put as BinaryBit

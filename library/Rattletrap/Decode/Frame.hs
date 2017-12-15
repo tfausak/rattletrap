@@ -7,7 +7,7 @@ import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.Frame
 import Rattletrap.Type.Word32
 import Rattletrap.Type.CompressedWord
-import Rattletrap.Decode.Float32
+import Rattletrap.Decode.Float32le
 import Rattletrap.Decode.Replication
 
 import qualified Data.Binary.Bits.Get as BinaryBit

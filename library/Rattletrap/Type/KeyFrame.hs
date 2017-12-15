@@ -5,11 +5,11 @@ module Rattletrap.Type.KeyFrame
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Float32
+import Rattletrap.Type.Float32le
 import Rattletrap.Type.Word32
 
 data KeyFrame = KeyFrame
-  { keyFrameTime :: Float32
+  { keyFrameTime :: Float32le
   -- ^ When this key frame occurs, in seconds.
   , keyFrameFrame :: Word32
   -- ^ The frame number of this key frame, starting from 0.

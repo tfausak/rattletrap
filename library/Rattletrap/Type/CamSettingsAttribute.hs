@@ -5,16 +5,16 @@ module Rattletrap.Type.CamSettingsAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Float32
+import Rattletrap.Type.Float32le
 
 data CamSettingsAttribute = CamSettingsAttribute
-  { camSettingsAttributeFov :: Float32
-  , camSettingsAttributeHeight :: Float32
-  , camSettingsAttributeAngle :: Float32
-  , camSettingsAttributeDistance :: Float32
-  , camSettingsAttributeStiffness :: Float32
-  , camSettingsAttributeSwivelSpeed :: Float32
-  , camSettingsAttributeTransitionSpeed :: Maybe Float32
+  { camSettingsAttributeFov :: Float32le
+  , camSettingsAttributeHeight :: Float32le
+  , camSettingsAttributeAngle :: Float32le
+  , camSettingsAttributeDistance :: Float32le
+  , camSettingsAttributeStiffness :: Float32le
+  , camSettingsAttributeSwivelSpeed :: Float32le
+  , camSettingsAttributeTransitionSpeed :: Maybe Float32le
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''CamSettingsAttribute)

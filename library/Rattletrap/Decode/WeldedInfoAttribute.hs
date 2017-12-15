@@ -5,7 +5,7 @@ module Rattletrap.Decode.WeldedInfoAttribute
 import Rattletrap.Type.WeldedInfoAttribute
 import Rattletrap.Decode.Int32
 import Rattletrap.Decode.Vector
-import Rattletrap.Decode.Float32
+import Rattletrap.Decode.Float32le
 import Rattletrap.Decode.Int8Vector
 
 import qualified Data.Binary.Bits.Get as BinaryBit

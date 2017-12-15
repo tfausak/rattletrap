@@ -16,7 +16,7 @@ module Rattletrap
   , Rattletrap.Type.PropertyValue.PropertyValue(..)
   , Rattletrap.Type.List.List(..)
   , Rattletrap.Type.Word8.Word8(..)
-  , Rattletrap.Type.Float32.Float32(..)
+  , Rattletrap.Type.Float32le.Float32le(..)
   , Rattletrap.Type.Int32.Int32(..)
   , Rattletrap.Type.Content.Content(..)
   , Rattletrap.Type.KeyFrame.KeyFrame(..)
@@ -83,7 +83,7 @@ module Rattletrap
   , Rattletrap.Decode.PropertyValue.getPropertyValue
   , Rattletrap.Decode.List.getList
   , Rattletrap.Decode.Word8.getWord8
-  , Rattletrap.Decode.Float32.getFloat32
+  , Rattletrap.Decode.Float32le.getFloat32
   , Rattletrap.Decode.Int32.getInt32
   , Rattletrap.Decode.Content.getContent
   , Rattletrap.Decode.KeyFrame.getKeyFrame
@@ -153,7 +153,7 @@ module Rattletrap
   , Rattletrap.Encode.PropertyValue.putPropertyValue
   , Rattletrap.Encode.List.putList
   , Rattletrap.Encode.Word8.putWord8
-  , Rattletrap.Encode.Float32.putFloat32
+  , Rattletrap.Encode.Float32le.putFloat32
   , Rattletrap.Encode.Int32.putInt32
   , Rattletrap.Encode.Content.putContent
   , Rattletrap.Encode.KeyFrame.putKeyFrame
@@ -234,7 +234,7 @@ import qualified Rattletrap.Decode.EnumAttribute
 import qualified Rattletrap.Decode.ExplosionAttribute
 import qualified Rattletrap.Decode.ExtendedExplosionAttribute
 import qualified Rattletrap.Decode.FlaggedIntAttribute
-import qualified Rattletrap.Decode.Float32
+import qualified Rattletrap.Decode.Float32le
 import qualified Rattletrap.Decode.FloatAttribute
 import qualified Rattletrap.Decode.Frame
 import qualified Rattletrap.Decode.GameModeAttribute
@@ -300,7 +300,7 @@ import qualified Rattletrap.Encode.EnumAttribute
 import qualified Rattletrap.Encode.ExplosionAttribute
 import qualified Rattletrap.Encode.ExtendedExplosionAttribute
 import qualified Rattletrap.Encode.FlaggedIntAttribute
-import qualified Rattletrap.Encode.Float32
+import qualified Rattletrap.Encode.Float32le
 import qualified Rattletrap.Encode.FloatAttribute
 import qualified Rattletrap.Encode.Frame
 import qualified Rattletrap.Encode.GameModeAttribute
@@ -366,7 +366,7 @@ import qualified Rattletrap.Type.EnumAttribute
 import qualified Rattletrap.Type.ExplosionAttribute
 import qualified Rattletrap.Type.ExtendedExplosionAttribute
 import qualified Rattletrap.Type.FlaggedIntAttribute
-import qualified Rattletrap.Type.Float32
+import qualified Rattletrap.Type.Float32le
 import qualified Rattletrap.Type.FloatAttribute
 import qualified Rattletrap.Type.Frame
 import qualified Rattletrap.Type.GameModeAttribute
