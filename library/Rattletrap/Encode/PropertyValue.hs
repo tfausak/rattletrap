@@ -5,7 +5,7 @@ module Rattletrap.Encode.PropertyValue
 import Rattletrap.Type.PropertyValue
 import Rattletrap.Encode.List
 import Rattletrap.Encode.Dictionary
-import Rattletrap.Encode.Word8
+import Rattletrap.Encode.Word8le
 import Rattletrap.Encode.Text
 import Rattletrap.Encode.Float32le
 import Rattletrap.Encode.Int32le

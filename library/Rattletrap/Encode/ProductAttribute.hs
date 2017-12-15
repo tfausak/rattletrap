@@ -7,14 +7,14 @@ import Rattletrap.Type.ProductAttribute
 import Rattletrap.Encode.Word32
 import Rattletrap.Type.Text
 import Rattletrap.Encode.CompressedWord
-import Rattletrap.Type.Word8
-import Rattletrap.Encode.Word8
+import Rattletrap.Type.Word8le
+import Rattletrap.Encode.Word8le
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 
 putProductAttributes :: [ProductAttribute] -> BinaryBit.BitPut ()
 putProductAttributes attributes = do
-  putWord8Bits (Word8 (fromIntegral (length attributes)))
+  putWord8Bits (Word8le (fromIntegral (length attributes)))
   mapM_ putProductAttribute attributes
 
 putProductAttribute :: ProductAttribute -> BinaryBit.BitPut ()

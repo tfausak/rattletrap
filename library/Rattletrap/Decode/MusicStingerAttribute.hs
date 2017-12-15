@@ -4,7 +4,7 @@ module Rattletrap.Decode.MusicStingerAttribute
 
 import Rattletrap.Type.MusicStingerAttribute
 import Rattletrap.Decode.Word32
-import Rattletrap.Decode.Word8
+import Rattletrap.Decode.Word8le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

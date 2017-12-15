@@ -3,7 +3,7 @@ module Rattletrap.Encode.DamageStateAttribute
   ) where
 
 import Rattletrap.Type.DamageStateAttribute
-import Rattletrap.Encode.Word8
+import Rattletrap.Encode.Word8le
 import Rattletrap.Encode.Int32le
 import Rattletrap.Encode.Vector
 

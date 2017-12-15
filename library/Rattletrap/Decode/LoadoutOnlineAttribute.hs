@@ -6,8 +6,8 @@ import Rattletrap.Decode.ProductAttribute
 import Rattletrap.Type.LoadoutOnlineAttribute
 import Rattletrap.Type.Word32
 import Rattletrap.Type.Text
-import Rattletrap.Type.Word8
-import Rattletrap.Decode.Word8
+import Rattletrap.Type.Word8le
+import Rattletrap.Decode.Word8le
 
 import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -20,6 +20,6 @@ getLoadoutOnlineAttribute
 getLoadoutOnlineAttribute version objectMap = do
   size <- getWord8Bits
   values <- Monad.replicateM
-    (fromIntegral (word8Value size))
+    (fromIntegral (word8leValue size))
     (getProductAttributes version objectMap)
   pure (LoadoutOnlineAttribute values)

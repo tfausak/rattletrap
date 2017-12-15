@@ -3,7 +3,7 @@ module Rattletrap.Decode.ByteAttribute
   ) where
 
 import Rattletrap.Type.ByteAttribute
-import Rattletrap.Decode.Word8
+import Rattletrap.Decode.Word8le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

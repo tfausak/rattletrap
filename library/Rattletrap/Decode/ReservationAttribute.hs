@@ -7,7 +7,7 @@ import Rattletrap.Decode.UniqueIdAttribute
 import Rattletrap.Type.ReservationAttribute
 import Rattletrap.Decode.Text
 import Rattletrap.Decode.CompressedWord
-import Rattletrap.Type.Word8
+import Rattletrap.Type.Word8le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 
@@ -15,7 +15,7 @@ getReservationAttribute :: (Int, Int, Int) -> BinaryBit.BitGet ReservationAttrib
 getReservationAttribute version = do
   number <- getCompressedWord 7
   uniqueId <- getUniqueIdAttribute version
-  name <- if uniqueIdAttributeSystemId uniqueId == Word8 0
+  name <- if uniqueIdAttributeSystemId uniqueId == Word8le 0
     then pure Nothing
     else do
       name <- getTextBits

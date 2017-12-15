@@ -5,12 +5,12 @@ module Rattletrap.Type.DamageStateAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word8
+import Rattletrap.Type.Word8le
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Vector
 
 data DamageStateAttribute = DamageStateAttribute
-  { damageStateAttributeUnknown1 :: Word8
+  { damageStateAttributeUnknown1 :: Word8le
   , damageStateAttributeUnknown2 :: Bool
   , damageStateAttributeUnknown3 :: Int32le
   , damageStateAttributeUnknown4 :: Vector

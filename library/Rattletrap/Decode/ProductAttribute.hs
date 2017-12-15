@@ -8,8 +8,8 @@ import Rattletrap.Type.Word32
 import Rattletrap.Decode.Word32
 import Rattletrap.Type.Text
 import Rattletrap.Decode.CompressedWord
-import Rattletrap.Type.Word8
-import Rattletrap.Decode.Word8
+import Rattletrap.Type.Word8le
+import Rattletrap.Decode.Word8le
 
 import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -20,7 +20,7 @@ getProductAttributes
 getProductAttributes version objectMap = do
   size <- getWord8Bits
   Monad.replicateM
-    (fromIntegral (word8Value size))
+    (fromIntegral (word8leValue size))
     (getProductAttribute version objectMap)
 
 getProductAttribute

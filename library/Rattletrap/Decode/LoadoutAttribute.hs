@@ -4,8 +4,8 @@ module Rattletrap.Decode.LoadoutAttribute
 
 import Rattletrap.Type.LoadoutAttribute
 import Rattletrap.Decode.Word32
-import Rattletrap.Type.Word8
-import Rattletrap.Decode.Word8
+import Rattletrap.Type.Word8le
+import Rattletrap.Decode.Word8le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 
@@ -19,11 +19,11 @@ getLoadoutAttribute = do
   antenna <- getWord32Bits
   topper <- getWord32Bits
   unknown1 <- getWord32Bits
-  unknown2 <- getOptional (version > Word8 10) getWord32Bits
-  engineAudio <- getOptional (version >= Word8 16) getWord32Bits
-  trail <- getOptional (version >= Word8 16) getWord32Bits
-  goalExplosion <- getOptional (version >= Word8 16) getWord32Bits
-  banner <- getOptional (version >= Word8 17) getWord32Bits
+  unknown2 <- getOptional (version > Word8le 10) getWord32Bits
+  engineAudio <- getOptional (version >= Word8le 16) getWord32Bits
+  trail <- getOptional (version >= Word8le 16) getWord32Bits
+  goalExplosion <- getOptional (version >= Word8le 16) getWord32Bits
+  banner <- getOptional (version >= Word8le 17) getWord32Bits
   pure
     ( LoadoutAttribute
       version

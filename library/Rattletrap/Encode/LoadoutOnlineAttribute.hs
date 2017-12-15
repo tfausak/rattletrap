@@ -4,13 +4,13 @@ module Rattletrap.Encode.LoadoutOnlineAttribute
 
 import Rattletrap.Encode.ProductAttribute
 import Rattletrap.Type.LoadoutOnlineAttribute
-import Rattletrap.Type.Word8
-import Rattletrap.Encode.Word8
+import Rattletrap.Type.Word8le
+import Rattletrap.Encode.Word8le
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 
 putLoadoutOnlineAttribute :: LoadoutOnlineAttribute -> BinaryBit.BitPut ()
 putLoadoutOnlineAttribute loadoutAttribute = do
   let attributes = loadoutAttributeValue loadoutAttribute
-  putWord8Bits (Word8 (fromIntegral (length attributes)))
+  putWord8Bits (Word8le (fromIntegral (length attributes)))
   mapM_ putProductAttributes attributes

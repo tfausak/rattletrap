@@ -5,10 +5,10 @@ module Rattletrap.Type.ByteAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word8
+import Rattletrap.Type.Word8le
 
 newtype ByteAttribute = ByteAttribute
-  { byteAttributeValue :: Word8
+  { byteAttributeValue :: Word8le
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''ByteAttribute)

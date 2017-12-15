@@ -5,13 +5,13 @@ module Rattletrap.Type.ClubColorsAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word8
+import Rattletrap.Type.Word8le
 
 data ClubColorsAttribute = ClubColorsAttribute
   { clubColorsAttributeBlueFlag :: Bool
-  , clubColorsAttributeBlueColor :: Word8
+  , clubColorsAttributeBlueColor :: Word8le
   , clubColorsAttributeOrangeFlag :: Bool
-  , clubColorsAttributeOrangeColor :: Word8
+  , clubColorsAttributeOrangeColor :: Word8le
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''ClubColorsAttribute)

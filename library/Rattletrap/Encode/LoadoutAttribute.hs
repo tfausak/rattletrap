@@ -4,7 +4,7 @@ module Rattletrap.Encode.LoadoutAttribute
 
 import Rattletrap.Type.LoadoutAttribute
 import Rattletrap.Encode.Word32
-import Rattletrap.Encode.Word8
+import Rattletrap.Encode.Word8le
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

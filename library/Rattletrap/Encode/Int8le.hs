@@ -11,7 +11,7 @@ import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
 
 putInt8 :: Int8le -> Binary.Put
-putInt8 int8 = Binary.putInt8 (int8Value int8)
+putInt8 int8 = Binary.putInt8 (int8leValue int8)
 
 putInt8Bits :: Int8le -> BinaryBit.BitPut ()
 putInt8Bits int8 = do

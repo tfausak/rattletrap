@@ -6,7 +6,7 @@ import Rattletrap.Type.PropertyValue
 import Rattletrap.Type.Text
 import Rattletrap.Decode.List
 import Rattletrap.Decode.Dictionary
-import Rattletrap.Decode.Word8
+import Rattletrap.Decode.Word8le
 import Rattletrap.Decode.Text
 import Rattletrap.Decode.Float32le
 import Rattletrap.Decode.Int32le

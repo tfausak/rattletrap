@@ -4,7 +4,7 @@ module Rattletrap.Decode.RemoteId
 
 import Rattletrap.Type.RemoteId
 import Rattletrap.Decode.Word64
-import Rattletrap.Type.Word8
+import Rattletrap.Type.Word8le
 import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -12,8 +12,8 @@ import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Encoding
 
-getRemoteId :: (Int, Int, Int) -> Word8 -> BinaryBit.BitGet RemoteId
-getRemoteId (_, _, patchVersion) systemId = case word8Value systemId of
+getRemoteId :: (Int, Int, Int) -> Word8le -> BinaryBit.BitGet RemoteId
+getRemoteId (_, _, patchVersion) systemId = case word8leValue systemId of
   0 -> do
     word24 <- BinaryBit.getWord32be 24
     pure (RemoteIdSplitscreen word24)

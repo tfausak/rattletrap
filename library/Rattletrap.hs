@@ -15,7 +15,7 @@ module Rattletrap
   , Rattletrap.Type.Word64.Word64(..)
   , Rattletrap.Type.PropertyValue.PropertyValue(..)
   , Rattletrap.Type.List.List(..)
-  , Rattletrap.Type.Word8.Word8(..)
+  , Rattletrap.Type.Word8le.Word8le(..)
   , Rattletrap.Type.Float32le.Float32le(..)
   , Rattletrap.Type.Int32le.Int32le(..)
   , Rattletrap.Type.Content.Content(..)
@@ -82,7 +82,7 @@ module Rattletrap
   , Rattletrap.Decode.Word64.getWord64
   , Rattletrap.Decode.PropertyValue.getPropertyValue
   , Rattletrap.Decode.List.getList
-  , Rattletrap.Decode.Word8.getWord8
+  , Rattletrap.Decode.Word8le.getWord8
   , Rattletrap.Decode.Float32le.getFloat32
   , Rattletrap.Decode.Int32le.getInt32
   , Rattletrap.Decode.Content.getContent
@@ -152,7 +152,7 @@ module Rattletrap
   , Rattletrap.Encode.Word64.putWord64
   , Rattletrap.Encode.PropertyValue.putPropertyValue
   , Rattletrap.Encode.List.putList
-  , Rattletrap.Encode.Word8.putWord8
+  , Rattletrap.Encode.Word8le.putWord8
   , Rattletrap.Encode.Float32le.putFloat32
   , Rattletrap.Encode.Int32le.putInt32
   , Rattletrap.Encode.Content.putContent
@@ -278,7 +278,7 @@ import qualified Rattletrap.Decode.Vector
 import qualified Rattletrap.Decode.WeldedInfoAttribute
 import qualified Rattletrap.Decode.Word32
 import qualified Rattletrap.Decode.Word64
-import qualified Rattletrap.Decode.Word8
+import qualified Rattletrap.Decode.Word8le
 import qualified Rattletrap.Encode.AppliedDamageAttribute
 import qualified Rattletrap.Encode.Attribute
 import qualified Rattletrap.Encode.AttributeMapping
@@ -344,7 +344,7 @@ import qualified Rattletrap.Encode.Vector
 import qualified Rattletrap.Encode.WeldedInfoAttribute
 import qualified Rattletrap.Encode.Word32
 import qualified Rattletrap.Encode.Word64
-import qualified Rattletrap.Encode.Word8
+import qualified Rattletrap.Encode.Word8le
 import qualified Rattletrap.Type.AppliedDamageAttribute
 import qualified Rattletrap.Type.Attribute
 import qualified Rattletrap.Type.AttributeMapping
@@ -410,5 +410,5 @@ import qualified Rattletrap.Type.Vector
 import qualified Rattletrap.Type.WeldedInfoAttribute
 import qualified Rattletrap.Type.Word32
 import qualified Rattletrap.Type.Word64
-import qualified Rattletrap.Type.Word8
+import qualified Rattletrap.Type.Word8le
 import qualified Rattletrap.Utility.Helper

@@ -6,10 +6,10 @@ module Rattletrap.Type.LoadoutAttribute
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32
-import Rattletrap.Type.Word8
+import Rattletrap.Type.Word8le
 
 data LoadoutAttribute = LoadoutAttribute
-  { loadoutAttributeVersion :: Word8
+  { loadoutAttributeVersion :: Word8le
   , loadoutAttributeBody :: Word32
   , loadoutAttributeDecal :: Word32
   , loadoutAttributeWheels :: Word32
