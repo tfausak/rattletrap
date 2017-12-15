@@ -1,4 +1,7 @@
-module Rattletrap.Main where
+module Rattletrap.Main
+  ( rattletrap
+  , rattletrapWithArgs
+  ) where
 
 import Rattletrap.Utility.Helper
 import Rattletrap.Utility.Version
@@ -9,25 +12,25 @@ import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified System.Environment as Environment
 
--- | Gets command-line arguments and passes them to 'mainWithArgs'.
-main :: IO ()
-main = do
+-- | Gets command-line arguments and passes them to 'rattletrapWithArgs'.
+rattletrap :: IO ()
+rattletrap = do
   args <- Environment.getArgs
-  mainWithArgs args
+  rattletrapWithArgs args
 
 -- | Runs the main command-line interface. Can be used in one of three modes:
 --
--- 1. @mainWithArgs ["version"]@: Prints out the version number and exits.
+-- 1. @rattletrapWithArgs ["version"]@: Prints out the version number and exits.
 --    Mostly useful for debugging.
--- 2. @mainWithArgs ["decode"]@: Parses a raw replay into JSON. By default
+-- 2. @rattletrapWithArgs ["decode"]@: Parses a raw replay into JSON. By default
 --    this reads from STDIN and writes to STDOUT. To read from a file, pass a
---    second argument like @mainWithArgs ["decode", "input.replay"]@. To write
+--    second argument like @rattletrapWithArgs ["decode", "input.replay"]@. To write
 --    to a file, pass a third argument like
---    @mainWithArgs ["decode", "input.replay", "output.json"]@.
--- 3. @mainWithArgs ["encode"]@: Generates a raw replay from JSON. The
+--    @rattletrapWithArgs ["decode", "input.replay", "output.json"]@.
+-- 3. @rattletrapWithArgs ["encode"]@: Generates a raw replay from JSON. The
 --    handling of input and output is the same as decoding.
-mainWithArgs :: [String] -> IO ()
-mainWithArgs args = case args of
+rattletrapWithArgs :: [String] -> IO ()
+rattletrapWithArgs args = case args of
   ["version"] -> putStrLn (Version.showVersion version)
   action:files -> do
     (getInput, putOutput) <- getIO files
