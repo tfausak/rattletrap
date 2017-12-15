@@ -2,20 +2,26 @@ build: off
 platform: x64
 version: '{build}'
 clone_folder: c:/rattletrap
+
 environment:
   GITHUB_TOKEN:
     secure: 'L/78Qw3wSosowhhilcm/u+wHOM97yiHdXgz8pbwRD3PQVtVSB1lZQ/BDaIm8RpsA'
   PATH: c:/bin;%PATH%
   STACK_ROOT: c:/stack
 
+cache:
+  - c:/bin
+  - c:/stack
+
 install:
   - powershell -File tools/install-stack.ps1
   - powershell -File tools/install-github-release.ps1
+
 test_script:
-  - stack --jobs 1 setup > nul
-  - stack build --jobs 1 --only-dependencies --test rattletrap
-  - stack build --ghc-options -O2 --jobs 1 --pedantic --test rattletrap
-  - stack --jobs 1 sdist .
+  - stack setup > nul
+  - stack build --only-dependencies --test
+  - stack build --test
+  - stack sdist .
+
 on_success:
-  - stack --jobs 1 build rattletrap-tools
-  - stack exec attach-binary
+  - stack exec runghc tools/attach-binary.hs
