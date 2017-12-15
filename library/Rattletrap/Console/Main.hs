@@ -1,5 +1,5 @@
-module Rattletrap.Main
-  ( defaultMain
+module Rattletrap.Console.Main
+  ( main
   , rattletrap
   ) where
 
@@ -10,8 +10,7 @@ import qualified Data.Version as Version
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified Paths_rattletrap as This
-import qualified Rattletrap.Type.Replay as Rattletrap
-import qualified Rattletrap.Utility.Helper as Rattletrap
+import qualified Rattletrap
 import qualified System.Console.GetOpt as Console
 import qualified System.Environment as Environment
 import qualified System.Exit as Exit
@@ -19,8 +18,8 @@ import qualified System.FilePath as Path
 import qualified System.IO as IO
 import qualified Text.Printf as Printf
 
-defaultMain :: IO ()
-defaultMain = do
+main :: IO ()
+main = do
   name <- Environment.getProgName
   arguments <- Environment.getArgs
   rattletrap name arguments

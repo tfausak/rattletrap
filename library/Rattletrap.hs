@@ -1,7 +1,9 @@
 -- | TODO
 module Rattletrap
-  ( Rattletrap.Main.defaultMain
-  , Rattletrap.Main.rattletrap
+  ( Rattletrap.Utility.Helper.decodeReplay
+  , Rattletrap.Utility.Helper.encodeJson
+  , Rattletrap.Utility.Helper.decodeJson
+  , Rattletrap.Utility.Helper.encodeReplay
   -- * Types
   , Rattletrap.Type.Replay.Replay(..)
   , Rattletrap.Type.Section.Section(..)
@@ -343,7 +345,6 @@ import qualified Rattletrap.Encode.WeldedInfoAttribute
 import qualified Rattletrap.Encode.Word32
 import qualified Rattletrap.Encode.Word64
 import qualified Rattletrap.Encode.Word8
-import qualified Rattletrap.Main
 import qualified Rattletrap.Type.AppliedDamageAttribute
 import qualified Rattletrap.Type.Attribute
 import qualified Rattletrap.Type.AttributeMapping
@@ -410,3 +411,4 @@ import qualified Rattletrap.Type.WeldedInfoAttribute
 import qualified Rattletrap.Type.Word32
 import qualified Rattletrap.Type.Word64
 import qualified Rattletrap.Type.Word8
+import qualified Rattletrap.Utility.Helper

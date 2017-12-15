@@ -1,7 +1,7 @@
 import qualified Control.Exception as Exception
 import qualified Control.Monad as Monad
 import qualified Data.ByteString.Lazy as ByteString
-import qualified Rattletrap
+import qualified Rattletrap.Console.Main as Rattletrap
 import qualified System.FilePath as FilePath
 import qualified System.IO.Temp as Temp
 import qualified Test.Hspec as Hspec
