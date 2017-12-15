@@ -4,7 +4,7 @@ module Rattletrap.Decode.Property
 
 import Rattletrap.Type.Property
 import Rattletrap.Decode.Text
-import Rattletrap.Decode.Word64
+import Rattletrap.Decode.Word64le
 import Rattletrap.Decode.PropertyValue
 
 import qualified Data.Binary as Binary

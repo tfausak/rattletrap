@@ -3,7 +3,7 @@ module Rattletrap.Encode.RemoteId
   ) where
 
 import Rattletrap.Type.RemoteId
-import Rattletrap.Encode.Word64
+import Rattletrap.Encode.Word64le
 import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary.Bits.Put as BinaryBit

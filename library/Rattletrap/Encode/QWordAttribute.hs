@@ -3,7 +3,7 @@ module Rattletrap.Encode.QWordAttribute
   ) where
 
 import Rattletrap.Type.QWordAttribute
-import Rattletrap.Encode.Word64
+import Rattletrap.Encode.Word64le
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

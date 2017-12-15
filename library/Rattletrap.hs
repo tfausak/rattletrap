@@ -12,7 +12,7 @@ module Rattletrap
   , Rattletrap.Type.Text.Text(..)
   , Rattletrap.Type.Dictionary.Dictionary(..)
   , Rattletrap.Type.Property.Property(..)
-  , Rattletrap.Type.Word64.Word64(..)
+  , Rattletrap.Type.Word64le.Word64le(..)
   , Rattletrap.Type.PropertyValue.PropertyValue(..)
   , Rattletrap.Type.List.List(..)
   , Rattletrap.Type.Word8le.Word8le(..)
@@ -79,7 +79,7 @@ module Rattletrap
   , Rattletrap.Decode.Text.getText
   , Rattletrap.Decode.Dictionary.getDictionary
   , Rattletrap.Decode.Property.getProperty
-  , Rattletrap.Decode.Word64.getWord64
+  , Rattletrap.Decode.Word64le.getWord64
   , Rattletrap.Decode.PropertyValue.getPropertyValue
   , Rattletrap.Decode.List.getList
   , Rattletrap.Decode.Word8le.getWord8
@@ -149,7 +149,7 @@ module Rattletrap
   , Rattletrap.Encode.Text.putText
   , Rattletrap.Encode.Dictionary.putDictionary
   , Rattletrap.Encode.Property.putProperty
-  , Rattletrap.Encode.Word64.putWord64
+  , Rattletrap.Encode.Word64le.putWord64
   , Rattletrap.Encode.PropertyValue.putPropertyValue
   , Rattletrap.Encode.List.putList
   , Rattletrap.Encode.Word8le.putWord8
@@ -277,7 +277,7 @@ import qualified Rattletrap.Decode.UpdatedReplication
 import qualified Rattletrap.Decode.Vector
 import qualified Rattletrap.Decode.WeldedInfoAttribute
 import qualified Rattletrap.Decode.Word32
-import qualified Rattletrap.Decode.Word64
+import qualified Rattletrap.Decode.Word64le
 import qualified Rattletrap.Decode.Word8le
 import qualified Rattletrap.Encode.AppliedDamageAttribute
 import qualified Rattletrap.Encode.Attribute
@@ -343,7 +343,7 @@ import qualified Rattletrap.Encode.UpdatedReplication
 import qualified Rattletrap.Encode.Vector
 import qualified Rattletrap.Encode.WeldedInfoAttribute
 import qualified Rattletrap.Encode.Word32
-import qualified Rattletrap.Encode.Word64
+import qualified Rattletrap.Encode.Word64le
 import qualified Rattletrap.Encode.Word8le
 import qualified Rattletrap.Type.AppliedDamageAttribute
 import qualified Rattletrap.Type.Attribute
@@ -409,6 +409,6 @@ import qualified Rattletrap.Type.UpdatedReplication
 import qualified Rattletrap.Type.Vector
 import qualified Rattletrap.Type.WeldedInfoAttribute
 import qualified Rattletrap.Type.Word32
-import qualified Rattletrap.Type.Word64
+import qualified Rattletrap.Type.Word64le
 import qualified Rattletrap.Type.Word8le
 import qualified Rattletrap.Utility.Helper

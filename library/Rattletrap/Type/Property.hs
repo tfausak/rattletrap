@@ -6,12 +6,12 @@ module Rattletrap.Type.Property
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Text
-import Rattletrap.Type.Word64
+import Rattletrap.Type.Word64le
 import Rattletrap.Type.PropertyValue
 
 data Property = Property
   { propertyKind :: Text
-  , propertySize :: Word64
+  , propertySize :: Word64le
   -- ^ Not used.
   , propertyValue :: PropertyValue Property
   } deriving (Eq, Ord, Show)

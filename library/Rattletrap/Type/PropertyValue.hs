@@ -11,7 +11,7 @@ import Rattletrap.Type.Word8le
 import Rattletrap.Type.Text
 import Rattletrap.Type.Float32le
 import Rattletrap.Type.Int32le
-import Rattletrap.Type.Word64
+import Rattletrap.Type.Word64le
 
 data PropertyValue a
   = PropertyValueArray (List (Dictionary a))
@@ -24,7 +24,7 @@ data PropertyValue a
   | PropertyValueInt Int32le
   | PropertyValueName Text
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.
-  | PropertyValueQWord Word64
+  | PropertyValueQWord Word64le
   | PropertyValueStr Text
   deriving (Eq, Ord, Show)
 

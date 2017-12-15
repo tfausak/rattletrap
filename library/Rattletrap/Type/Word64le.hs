@@ -1,15 +1,15 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.Word64
-  ( Word64(..)
+module Rattletrap.Type.Word64le
+  ( Word64le(..)
   ) where
 
 import Rattletrap.Type.Common
 
 import qualified Data.Word as Word
 
-newtype Word64 = Word64
-  { word64Value :: Word.Word64
+newtype Word64le = Word64le
+  { word64leValue :: Word.Word64
   } deriving (Eq, Ord, Show)
 
-$(deriveJson ''Word64)
+$(deriveJson ''Word64le)

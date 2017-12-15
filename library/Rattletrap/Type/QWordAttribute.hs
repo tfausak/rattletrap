@@ -5,10 +5,10 @@ module Rattletrap.Type.QWordAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word64
+import Rattletrap.Type.Word64le
 
 newtype QWordAttribute = QWordAttribute
-  { qWordAttributeValue :: Word64
+  { qWordAttributeValue :: Word64le
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''QWordAttribute)

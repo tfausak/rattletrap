@@ -9,7 +9,7 @@ import Rattletrap.Encode.Word8le
 import Rattletrap.Encode.Text
 import Rattletrap.Encode.Float32le
 import Rattletrap.Encode.Int32le
-import Rattletrap.Encode.Word64
+import Rattletrap.Encode.Word64le
 
 import qualified Data.Binary as Binary
 

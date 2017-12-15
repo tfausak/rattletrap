@@ -3,7 +3,7 @@ module Rattletrap.Decode.RemoteId
   ) where
 
 import Rattletrap.Type.RemoteId
-import Rattletrap.Decode.Word64
+import Rattletrap.Decode.Word64le
 import Rattletrap.Type.Word8le
 import Rattletrap.Utility.Bytes
 
