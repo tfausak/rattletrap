@@ -12,12 +12,12 @@ import Rattletrap.Type.KeyFrame
 import Rattletrap.Type.Mark
 import Rattletrap.Type.Message
 import Rattletrap.Type.List
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
 -- | Contains low-level game data about a 'Rattletrap.Replay.Replay'.
 data Content = Content
-  { contentLevels :: List Text
+  { contentLevels :: List Str
   -- ^ This typically only has one element, like @stadium_oob_audio_map@.
   , contentKeyFrames :: List KeyFrame
   -- ^ A list of which frames are key frames. Although they aren't necessary
@@ -32,13 +32,13 @@ data Content = Content
   -- ^ Debugging messages. In newer replays, this is always empty.
   , contentMarks :: List Mark
   -- ^ Tick marks shown on the scrubber when watching a replay.
-  , contentPackages :: List Text
+  , contentPackages :: List Str
   -- ^ A list of @.upk@ files to load, like
   -- @..\\..\\TAGame\\CookedPCConsole\\Stadium_P.upk@.
-  , contentObjects :: List Text
+  , contentObjects :: List Str
   -- ^ Objects in the stream. Used for the
   -- 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-  , contentNames :: List Text
+  , contentNames :: List Str
   -- ^ It's not clear what these are used for. This list is usually not empty,
   -- but appears unused otherwise.
   , contentClassMappings :: List ClassMapping

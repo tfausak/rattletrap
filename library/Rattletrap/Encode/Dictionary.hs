@@ -2,8 +2,8 @@ module Rattletrap.Encode.Dictionary
   ( putDictionary
   ) where
 
-import Rattletrap.Encode.Text
-import Rattletrap.Type.Text
+import Rattletrap.Encode.Str
+import Rattletrap.Type.Str
 import Rattletrap.Type.Dictionary
 
 import qualified Data.Binary as Binary
@@ -15,8 +15,8 @@ putDictionary putValue dictionary = do
   mapM_
     ( \key -> do
       putText key
-      case Map.lookup (textValue key) elements of
-        Nothing -> fail ("could not find key " ++ textToString key)
+      case Map.lookup (strValue key) elements of
+        Nothing -> fail ("could not find key " ++ fromStr key)
         Just value -> putValue value
     )
     (dictionaryKeys dictionary)

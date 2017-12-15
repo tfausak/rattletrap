@@ -5,12 +5,12 @@ module Rattletrap.Type.Property
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 import Rattletrap.Type.Word64le
 import Rattletrap.Type.PropertyValue
 
 data Property = Property
-  { propertyKind :: Text
+  { propertyKind :: Str
   , propertySize :: Word64le
   -- ^ Not used.
   , propertyValue :: PropertyValue Property

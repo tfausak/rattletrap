@@ -4,7 +4,7 @@ module Rattletrap.Encode.Header
 
 import Rattletrap.Type.Header
 import Rattletrap.Encode.Word32le
-import Rattletrap.Encode.Text
+import Rattletrap.Encode.Str
 import Rattletrap.Encode.Dictionary
 import Rattletrap.Encode.Property
 

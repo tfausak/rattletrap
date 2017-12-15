@@ -9,7 +9,7 @@ module Rattletrap
   , Rattletrap.Type.Section.Section(..)
   , Rattletrap.Type.Header.Header(..)
   , Rattletrap.Type.Word32le.Word32le(..)
-  , Rattletrap.Type.Text.Text(..)
+  , Rattletrap.Type.Str.Str(..)
   , Rattletrap.Type.Dictionary.Dictionary(..)
   , Rattletrap.Type.Property.Property(..)
   , Rattletrap.Type.Word64le.Word64le(..)
@@ -76,7 +76,7 @@ module Rattletrap
   , Rattletrap.Decode.Section.getSection
   , Rattletrap.Decode.Header.getHeader
   , Rattletrap.Decode.Word32le.getWord32
-  , Rattletrap.Decode.Text.getText
+  , Rattletrap.Decode.Str.getText
   , Rattletrap.Decode.Dictionary.getDictionary
   , Rattletrap.Decode.Property.getProperty
   , Rattletrap.Decode.Word64le.getWord64
@@ -146,7 +146,7 @@ module Rattletrap
   , Rattletrap.Encode.Section.putSection
   , Rattletrap.Encode.Header.putHeader
   , Rattletrap.Encode.Word32le.putWord32
-  , Rattletrap.Encode.Text.putText
+  , Rattletrap.Encode.Str.putText
   , Rattletrap.Encode.Dictionary.putDictionary
   , Rattletrap.Encode.Property.putProperty
   , Rattletrap.Encode.Word64le.putWord64
@@ -271,7 +271,7 @@ import qualified Rattletrap.Decode.Section
 import qualified Rattletrap.Decode.SpawnedReplication
 import qualified Rattletrap.Decode.StringAttribute
 import qualified Rattletrap.Decode.TeamPaintAttribute
-import qualified Rattletrap.Decode.Text
+import qualified Rattletrap.Decode.Str
 import qualified Rattletrap.Decode.UniqueIdAttribute
 import qualified Rattletrap.Decode.UpdatedReplication
 import qualified Rattletrap.Decode.Vector
@@ -337,7 +337,7 @@ import qualified Rattletrap.Encode.Section
 import qualified Rattletrap.Encode.SpawnedReplication
 import qualified Rattletrap.Encode.StringAttribute
 import qualified Rattletrap.Encode.TeamPaintAttribute
-import qualified Rattletrap.Encode.Text
+import qualified Rattletrap.Encode.Str
 import qualified Rattletrap.Encode.UniqueIdAttribute
 import qualified Rattletrap.Encode.UpdatedReplication
 import qualified Rattletrap.Encode.Vector
@@ -403,7 +403,7 @@ import qualified Rattletrap.Type.Section
 import qualified Rattletrap.Type.SpawnedReplication
 import qualified Rattletrap.Type.StringAttribute
 import qualified Rattletrap.Type.TeamPaintAttribute
-import qualified Rattletrap.Type.Text
+import qualified Rattletrap.Type.Str
 import qualified Rattletrap.Type.UniqueIdAttribute
 import qualified Rattletrap.Type.UpdatedReplication
 import qualified Rattletrap.Type.Vector

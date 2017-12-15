@@ -5,7 +5,7 @@ module Rattletrap.Decode.Header
 import Rattletrap.Type.Header
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Word32le
-import Rattletrap.Decode.Text
+import Rattletrap.Decode.Str
 import Rattletrap.Decode.Dictionary
 import Rattletrap.Decode.Property
 

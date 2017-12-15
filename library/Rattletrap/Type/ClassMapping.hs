@@ -6,10 +6,10 @@ module Rattletrap.Type.ClassMapping
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 
 data ClassMapping = ClassMapping
-  { classMappingName :: Text
+  { classMappingName :: Str
   , classMappingStreamId :: Word32le
   } deriving (Eq, Ord, Show)
 

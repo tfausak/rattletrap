@@ -6,7 +6,7 @@ import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Decode.Initialization
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Word32le
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.SpawnedReplication
 
@@ -46,7 +46,7 @@ getSpawnedReplication version classAttributeMap actorMap actorId = do
     , newActorMap
     )
 
-lookupName :: Monad m => ClassAttributeMap -> Maybe Word32le -> m (Maybe Text)
+lookupName :: Monad m => ClassAttributeMap -> Maybe Word32le -> m (Maybe Str)
 lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
   Nothing -> pure Nothing
   Just nameIndex ->
@@ -54,13 +54,13 @@ lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
       Nothing -> fail ("could not get name for index " ++ show nameIndex)
       Just name -> pure (Just name)
 
-lookupObjectName :: Monad m => ClassAttributeMap -> Word32le -> m Text
+lookupObjectName :: Monad m => ClassAttributeMap -> Word32le -> m Str
 lookupObjectName classAttributeMap objectId =
   case getObjectName (classAttributeMapObjectMap classAttributeMap) objectId of
     Nothing -> fail ("could not get object name for id " ++ show objectId)
     Just objectName -> pure objectName
 
-lookupClassName :: Monad m => Text -> m Text
+lookupClassName :: Monad m => Str -> m Str
 lookupClassName objectName = case getClassName objectName of
   Nothing -> fail ("could not get class name for object " ++ show objectName)
   Just className -> pure className

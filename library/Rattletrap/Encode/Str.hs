@@ -1,11 +1,11 @@
-module Rattletrap.Encode.Text
+module Rattletrap.Encode.Str
   ( putText
   , putTextBits
   ) where
 
 import Rattletrap.Encode.Int32le
 import Rattletrap.Type.Int32le
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary
@@ -16,25 +16,25 @@ import qualified Data.Char as Char
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Encoding
 
-putText :: Text -> Binary.Put
+putText :: Str -> Binary.Put
 putText text = do
   let size = getTextSize text
   let encode = getTextEncoder size
   putInt32 size
-  Binary.putLazyByteString (encode (addNull (textValue text)))
+  Binary.putLazyByteString (encode (addNull (strValue text)))
 
-putTextBits :: Text -> BinaryBit.BitPut ()
+putTextBits :: Str -> BinaryBit.BitPut ()
 putTextBits text = do
   let size = getTextSize text
   let encode = getTextEncoder size
   putInt32Bits size
   BinaryBit.putByteString
-    (ByteString.toStrict (reverseBytes (encode (addNull (textValue text)))))
+    (ByteString.toStrict (reverseBytes (encode (addNull (strValue text)))))
 
-getTextSize :: Text -> Int32le
+getTextSize :: Str -> Int32le
 getTextSize text =
   let
-    value = textValue text
+    value = strValue text
     scale = if Text.all Char.isLatin1 value then 1 else -1
     rawSize =
       if Text.null value then 0 else fromIntegral (Text.length value) + 1

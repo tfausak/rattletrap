@@ -2,8 +2,8 @@ module Rattletrap.Decode.Dictionary
   ( getDictionary
   ) where
 
-import Rattletrap.Decode.Text
-import Rattletrap.Type.Text
+import Rattletrap.Decode.Str
+import Rattletrap.Type.Str
 import Rattletrap.Type.Dictionary
 
 import qualified Data.Binary as Binary
@@ -13,10 +13,10 @@ getDictionary :: Binary.Get a -> Binary.Get (Dictionary a)
 getDictionary getValue = do
   (elements, lastKey) <- getElements getValue
   let keys = map fst elements
-  let value = Map.mapKeys textValue (Map.fromList elements)
+  let value = Map.mapKeys strValue (Map.fromList elements)
   pure (Dictionary keys lastKey value)
 
-getElements :: Binary.Get a -> Binary.Get ([(Text, a)], Text)
+getElements :: Binary.Get a -> Binary.Get ([(Str, a)], Str)
 getElements getValue = do
   (key, maybeValue) <- getElement getValue
   case maybeValue of
@@ -26,7 +26,7 @@ getElements getValue = do
       (elements, lastKey) <- getElements getValue
       pure (element : elements, lastKey)
 
-getElement :: Binary.Get a -> Binary.Get (Text, Maybe a)
+getElement :: Binary.Get a -> Binary.Get (Str, Maybe a)
 getElement getValue = do
   key <- getText
   if isNoneKey key
@@ -35,5 +35,5 @@ getElement getValue = do
       value <- getValue
       pure (key, Just value)
 
-isNoneKey :: Text -> Bool
-isNoneKey text = filter (/= '\x00') (textToString text) == "None"
+isNoneKey :: Str -> Bool
+isNoneKey text = filter (/= '\x00') (fromStr text) == "None"

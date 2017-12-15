@@ -4,7 +4,7 @@ module Rattletrap.Encode.ReservationAttribute
 
 import Rattletrap.Encode.UniqueIdAttribute
 import Rattletrap.Type.ReservationAttribute
-import Rattletrap.Encode.Text
+import Rattletrap.Encode.Str
 import Rattletrap.Encode.CompressedWord
 
 import qualified Data.Binary.Bits.Put as BinaryBit

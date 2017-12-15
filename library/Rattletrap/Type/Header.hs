@@ -9,7 +9,7 @@ module Rattletrap.Type.Header
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Property
@@ -25,7 +25,7 @@ data Header = Header
   -- ^ The "minor" ("licensee") version number.
   , headerPatchVersion :: Maybe Word32le
   -- ^ The "patch" ("net") version number.
-  , headerLabel :: Text
+  , headerLabel :: Str
   -- ^ Always @TAGame.Replay_Soccar_TA@.
   , headerProperties :: Dictionary Property
   -- ^ These properties determine how a replay will look in the list of
@@ -76,7 +76,7 @@ getVersion header =
 getNumFrames :: Header -> Int
 getNumFrames header =
   let
-    key = textValue (stringToText "NumFrames")
+    key = strValue (toStr "NumFrames")
     properties = dictionaryValue (headerProperties header)
   in case Map.lookup key properties of
     Just (Property _ _ (PropertyValueInt numFrames)) ->
@@ -86,7 +86,7 @@ getNumFrames header =
 getMaxChannels :: Header -> Word
 getMaxChannels header =
   let
-    key = textValue (stringToText "MaxChannels")
+    key = strValue (toStr "MaxChannels")
     properties = dictionaryValue (headerProperties header)
   in case Map.lookup key properties of
     Just (Property _ _ (PropertyValueInt numFrames)) ->

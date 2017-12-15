@@ -4,7 +4,7 @@ module Rattletrap.Decode.Message
 
 import Rattletrap.Type.Message
 import Rattletrap.Decode.Word32le
-import Rattletrap.Decode.Text
+import Rattletrap.Decode.Str
 
 import qualified Data.Binary as Binary
 

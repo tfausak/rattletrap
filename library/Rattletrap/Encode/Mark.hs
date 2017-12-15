@@ -3,7 +3,7 @@ module Rattletrap.Encode.Mark
   ) where
 
 import Rattletrap.Type.Mark
-import Rattletrap.Encode.Text
+import Rattletrap.Encode.Str
 import Rattletrap.Encode.Word32le
 
 import qualified Data.Binary as Binary

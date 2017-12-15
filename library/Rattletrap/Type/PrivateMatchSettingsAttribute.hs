@@ -6,14 +6,14 @@ module Rattletrap.Type.PrivateMatchSettingsAttribute
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 
 data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
-  { privateMatchSettingsAttributeMutators :: Text
+  { privateMatchSettingsAttributeMutators :: Str
   , privateMatchSettingsAttributeJoinableBy :: Word32le
   , privateMatchSettingsAttributeMaxPlayers :: Word32le
-  , privateMatchSettingsAttributeGameName :: Text
-  , privateMatchSettingsAttributePassword :: Text
+  , privateMatchSettingsAttributeGameName :: Str
+  , privateMatchSettingsAttributePassword :: Str
   , privateMatchSettingsAttributeFlag :: Bool
   } deriving (Eq, Ord, Show)
 

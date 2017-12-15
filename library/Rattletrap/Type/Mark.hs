@@ -5,11 +5,11 @@ module Rattletrap.Type.Mark
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
 data Mark = Mark
-  { markValue :: Text
+  { markValue :: Str
   -- ^ Which type of mark this is, like @Team0Goal@.
   , markFrame :: Word32le
   -- ^ Which frame this mark belongs to, starting from 0.

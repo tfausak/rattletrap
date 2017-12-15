@@ -11,7 +11,7 @@ import Rattletrap.Decode.KeyFrame
 import Rattletrap.Decode.Mark
 import Rattletrap.Decode.Message
 import Rattletrap.Decode.List
-import Rattletrap.Decode.Text
+import Rattletrap.Decode.Str
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Word32le
 import Rattletrap.Utility.Bytes

@@ -3,19 +3,19 @@ module Rattletrap.Decode.PropertyValue
   ) where
 
 import Rattletrap.Type.PropertyValue
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 import Rattletrap.Decode.List
 import Rattletrap.Decode.Dictionary
 import Rattletrap.Decode.Word8le
-import Rattletrap.Decode.Text
+import Rattletrap.Decode.Str
 import Rattletrap.Decode.Float32le
 import Rattletrap.Decode.Int32le
 import Rattletrap.Decode.Word64le
 
 import qualified Data.Binary as Binary
 
-getPropertyValue :: Binary.Get a -> Text -> Binary.Get (PropertyValue a)
-getPropertyValue getProperty kind = case textToString kind of
+getPropertyValue :: Binary.Get a -> Str -> Binary.Get (PropertyValue a)
+getPropertyValue getProperty kind = case fromStr kind of
   "ArrayProperty" -> do
     list <- getList (getDictionary getProperty)
     pure (PropertyValueArray list)
@@ -24,7 +24,7 @@ getPropertyValue getProperty kind = case textToString kind of
     pure (PropertyValueBool word8)
   "ByteProperty" -> do
     k <- getText
-    v <- if textToString k == "OnlinePlatform_Steam"
+    v <- if fromStr k == "OnlinePlatform_Steam"
       then pure Nothing
       else do
         v <- getText

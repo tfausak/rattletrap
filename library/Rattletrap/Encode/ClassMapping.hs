@@ -4,7 +4,7 @@ module Rattletrap.Encode.ClassMapping
 
 import Rattletrap.Type.ClassMapping
 import Rattletrap.Encode.Word32le
-import Rattletrap.Encode.Text
+import Rattletrap.Encode.Str
 
 import qualified Data.Binary as Binary
 

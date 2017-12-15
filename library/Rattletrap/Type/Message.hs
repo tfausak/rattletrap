@@ -6,14 +6,14 @@ module Rattletrap.Type.Message
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 
 data Message = Message
   { messageFrame :: Word32le
   -- ^ Which frame this message belongs to, starting from 0.
-  , messageName :: Text
+  , messageName :: Str
   -- ^ The primary player's name.
-  , messageValue :: Text
+  , messageValue :: Str
   -- ^ The content of the message.
   } deriving (Eq, Ord, Show)
 

@@ -5,7 +5,7 @@ module Rattletrap.Encode.ProductAttribute
 
 import Rattletrap.Type.ProductAttribute
 import Rattletrap.Encode.Word32le
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 import Rattletrap.Encode.CompressedWord
 import Rattletrap.Type.Word8le
 import Rattletrap.Encode.Word8le
@@ -22,7 +22,7 @@ putProductAttribute attribute = do
   BinaryBit.putBool (productAttributeUnknown attribute)
   putWord32Bits (productAttributeObjectId attribute)
   case productAttributeObjectName attribute of
-    Just name -> case textToString name of
+    Just name -> case fromStr name of
       "TAGame.ProductAttribute_Painted_TA" ->
         case productAttributeValue attribute of
           Nothing -> pure ()

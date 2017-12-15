@@ -5,10 +5,10 @@ module Rattletrap.Type.StringAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 
 newtype StringAttribute = StringAttribute
-  { stringAttributeValue :: Text
+  { stringAttributeValue :: Str
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''StringAttribute)

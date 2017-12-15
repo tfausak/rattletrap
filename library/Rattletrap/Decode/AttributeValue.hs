@@ -36,15 +36,15 @@ import Rattletrap.Decode.UniqueIdAttribute
 import Rattletrap.Decode.WeldedInfoAttribute
 import Rattletrap.Data
 import Rattletrap.Type.Word32le
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map
 
 getAttributeValue
   :: (Int, Int, Int)
-  -> Map.Map Word32le Text
-  -> Text
+  -> Map.Map Word32le Str
+  -> Str
   -> BinaryBit.BitGet AttributeValue
 getAttributeValue version objectMap name =
   case Map.lookup name attributeTypes of
@@ -141,5 +141,5 @@ getAttributeValue version objectMap name =
         pure (AttributeValueWeldedInfo x)
     Nothing -> fail ("don't know how to get attribute value " ++ show name)
 
-attributeTypes :: Map.Map Text AttributeType
-attributeTypes = Map.mapKeys stringToText (Map.fromList rawAttributeTypes)
+attributeTypes :: Map.Map Str AttributeType
+attributeTypes = Map.mapKeys toStr (Map.fromList rawAttributeTypes)

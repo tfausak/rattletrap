@@ -6,7 +6,7 @@ module Rattletrap.Decode.ProductAttribute
 import Rattletrap.Type.ProductAttribute
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Word32le
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Word8le
@@ -16,7 +16,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map
 
 getProductAttributes
-  :: (Int, Int, Int) -> Map.Map Word32le Text -> BinaryBit.BitGet [ProductAttribute]
+  :: (Int, Int, Int) -> Map.Map Word32le Str -> BinaryBit.BitGet [ProductAttribute]
 getProductAttributes version objectMap = do
   size <- getWord8Bits
   Monad.replicateM
@@ -24,13 +24,13 @@ getProductAttributes version objectMap = do
     (getProductAttribute version objectMap)
 
 getProductAttribute
-  :: (Int, Int, Int) -> Map.Map Word32le Text -> BinaryBit.BitGet ProductAttribute
+  :: (Int, Int, Int) -> Map.Map Word32le Str -> BinaryBit.BitGet ProductAttribute
 getProductAttribute version objectMap = do
   flag <- BinaryBit.getBool
   objectId <- getWord32Bits
   let objectName = Map.lookup objectId objectMap
   value <- case objectName of
-    Just name -> case textToString name of
+    Just name -> case fromStr name of
       "TAGame.ProductAttribute_Painted_TA" -> if version >= (868, 18, 0)
         then do
           x <- BinaryBit.getWord32be 31

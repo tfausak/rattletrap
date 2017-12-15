@@ -7,11 +7,11 @@ module Rattletrap.Type.Attribute
 import Rattletrap.Type.Common
 import Rattletrap.Type.AttributeValue
 import Rattletrap.Type.CompressedWord
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 
 data Attribute = Attribute
   { attributeId :: CompressedWord
-  , attributeName :: Text
+  , attributeName :: Str
   -- ^ Read-only! Changing an attribute's name requires editing the class
   -- attribute map.
   , attributeValue :: AttributeValue

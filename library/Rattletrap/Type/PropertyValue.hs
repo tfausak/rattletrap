@@ -8,7 +8,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.List
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Word8le
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 import Rattletrap.Type.Float32le
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Word64le
@@ -18,14 +18,14 @@ data PropertyValue a
   -- ^ Yes, a list of dictionaries. No, it doesn't make sense. These usually
   -- only have one element.
   | PropertyValueBool Word8le
-  | PropertyValueByte Text (Maybe Text)
+  | PropertyValueByte Str (Maybe Str)
   -- ^ This is a strange name for essentially a key-value pair.
   | PropertyValueFloat Float32le
   | PropertyValueInt Int32le
-  | PropertyValueName Text
+  | PropertyValueName Str
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.
   | PropertyValueQWord Word64le
-  | PropertyValueStr Text
+  | PropertyValueStr Str
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''PropertyValue)

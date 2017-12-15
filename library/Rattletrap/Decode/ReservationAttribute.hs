@@ -5,7 +5,7 @@ module Rattletrap.Decode.ReservationAttribute
 import Rattletrap.Type.UniqueIdAttribute
 import Rattletrap.Decode.UniqueIdAttribute
 import Rattletrap.Type.ReservationAttribute
-import Rattletrap.Decode.Text
+import Rattletrap.Decode.Str
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Type.Word8le
 

@@ -3,7 +3,7 @@ module Rattletrap.Decode.Property
   ) where
 
 import Rattletrap.Type.Property
-import Rattletrap.Decode.Text
+import Rattletrap.Decode.Str
 import Rattletrap.Decode.Word64le
 import Rattletrap.Decode.PropertyValue
 

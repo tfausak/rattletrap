@@ -6,7 +6,7 @@ module Rattletrap.Type.ReservationAttribute
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.UniqueIdAttribute
-import Rattletrap.Type.Text
+import Rattletrap.Type.Str
 import Rattletrap.Type.CompressedWord
 
 import qualified Data.Word as Word
@@ -14,7 +14,7 @@ import qualified Data.Word as Word
 data ReservationAttribute = ReservationAttribute
   { reservationAttributeNumber :: CompressedWord
   , reservationAttributeUniqueId :: UniqueIdAttribute
-  , reservationAttributeName :: Maybe Text
+  , reservationAttributeName :: Maybe Str
   , reservationAttributeUnknown1 :: Bool
   , reservationAttributeUnknown2 :: Bool
   , reservationAttributeUnknown3 :: Maybe Word.Word8
