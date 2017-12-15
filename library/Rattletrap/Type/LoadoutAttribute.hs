@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.LoadoutAttribute
   ( LoadoutAttribute(..)
@@ -23,11 +23,6 @@ data LoadoutAttribute = LoadoutAttribute
   , loadoutAttributeTrail :: Maybe Word32
   , loadoutAttributeGoalExplosion :: Maybe Word32
   , loadoutAttributeBanner :: Maybe Word32
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON LoadoutAttribute where
-  parseJSON = defaultParseJson "LoadoutAttribute"
-
-instance ToJSON LoadoutAttribute where
-  toEncoding = defaultToEncoding "LoadoutAttribute"
-  toJSON = defaultToJson "LoadoutAttribute"
+$(deriveJson ''LoadoutAttribute)

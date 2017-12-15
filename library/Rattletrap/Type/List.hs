@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.List
   ( List(..)
@@ -8,11 +8,6 @@ import Rattletrap.Type.Common
 
 newtype List a = List
   { listValue :: [a]
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON a => FromJSON (List a) where
-  parseJSON = defaultParseJson "List"
-
-instance ToJSON a => ToJSON (List a) where
-  toEncoding = defaultToEncoding "List"
-  toJSON = defaultToJson "List"
+$(deriveJson ''List)

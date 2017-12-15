@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.AppliedDamageAttribute
   ( AppliedDamageAttribute(..)
@@ -14,11 +14,6 @@ data AppliedDamageAttribute = AppliedDamageAttribute
   , appliedDamageAttributeLocation :: Vector
   , appliedDamageAttributeUnknown3 :: Int32
   , appliedDamageAttributeUnknown4 :: Int32
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON AppliedDamageAttribute where
-  parseJSON = defaultParseJson "AppliedDamageAttribute"
-
-instance ToJSON AppliedDamageAttribute where
-  toEncoding = defaultToEncoding "AppliedDamageAttribute"
-  toJSON = defaultToJson "AppliedDamageAttribute"
+$(deriveJson ''AppliedDamageAttribute)

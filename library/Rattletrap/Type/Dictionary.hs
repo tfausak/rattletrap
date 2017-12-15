@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.Dictionary
   ( Dictionary(..)
@@ -19,11 +19,6 @@ data Dictionary a = Dictionary
   , dictionaryValue :: Map.Map Text.Text a
   -- ^ Be sure to update 'dictionaryKeys' if you add, change, or remove a key
   -- in this map.
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON a => FromJSON (Dictionary a) where
-  parseJSON = defaultParseJson "Dictionary"
-
-instance ToJSON a => ToJSON (Dictionary a) where
-  toEncoding = defaultToEncoding "Dictionary"
-  toJSON = defaultToJson "Dictionary"
+$(deriveJson ''Dictionary)

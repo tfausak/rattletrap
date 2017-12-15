@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.ProductAttribute
   ( ProductAttribute(..)
@@ -17,11 +17,6 @@ data ProductAttribute = ProductAttribute
   , productAttributeObjectName :: Maybe Text
   -- ^ read-only
   , productAttributeValue :: Maybe (Either CompressedWord Word.Word32)
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON ProductAttribute where
-  parseJSON = defaultParseJson "ProductAttribute"
-
-instance ToJSON ProductAttribute where
-  toEncoding = defaultToEncoding "ProductAttribute"
-  toJSON = defaultToJson "ProductAttribute"
+$(deriveJson ''ProductAttribute)

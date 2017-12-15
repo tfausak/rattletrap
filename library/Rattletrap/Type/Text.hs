@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.Text
   ( Text(..)
@@ -12,14 +12,9 @@ import qualified Data.Text as Text
 
 newtype Text = Text
   { textValue :: Text.Text
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON Text where
-  parseJSON = defaultParseJson "Text"
-
-instance ToJSON Text where
-  toEncoding = defaultToEncoding "Text"
-  toJSON = defaultToJson "Text"
+$(deriveJson ''Text)
 
 stringToText :: String -> Text
 stringToText string = Text (Text.pack string)

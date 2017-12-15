@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.ClassMapping
   ( ClassMapping(..)
@@ -11,11 +11,6 @@ import Rattletrap.Type.Text
 data ClassMapping = ClassMapping
   { classMappingName :: Text
   , classMappingStreamId :: Word32
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON ClassMapping where
-  parseJSON = defaultParseJson "ClassMapping"
-
-instance ToJSON ClassMapping where
-  toEncoding = defaultToEncoding "ClassMapping"
-  toJSON = defaultToJson "ClassMapping"
+$(deriveJson ''ClassMapping)

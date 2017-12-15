@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.PartyLeaderAttribute
   ( PartyLeaderAttribute(..)
@@ -11,11 +11,6 @@ import Rattletrap.Type.RemoteId
 data PartyLeaderAttribute = PartyLeaderAttribute
   { partyLeaderAttributeSystemId :: Word8
   , partyLeaderAttributeId :: Maybe (RemoteId, Word8)
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON PartyLeaderAttribute where
-  parseJSON = defaultParseJson "PartyLeaderAttribute"
-
-instance ToJSON PartyLeaderAttribute where
-  toEncoding = defaultToEncoding "PartyLeaderAttribute"
-  toJSON = defaultToJson "PartyLeaderAttribute"
+$(deriveJson ''PartyLeaderAttribute)

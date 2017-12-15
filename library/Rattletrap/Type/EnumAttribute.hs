@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.EnumAttribute
   ( EnumAttribute(..)
@@ -10,11 +10,6 @@ import qualified Data.Word as Word
 
 newtype EnumAttribute = EnumAttribute
   { enumAttributeValue :: Word.Word16
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON EnumAttribute where
-  parseJSON = defaultParseJson "EnumAttribute"
-
-instance ToJSON EnumAttribute where
-  toEncoding = defaultToEncoding "EnumAttribute"
-  toJSON = defaultToJson "EnumAttribute"
+$(deriveJson ''EnumAttribute)

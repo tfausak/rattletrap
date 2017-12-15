@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.ReservationAttribute
   ( ReservationAttribute(..)
@@ -18,11 +18,6 @@ data ReservationAttribute = ReservationAttribute
   , reservationAttributeUnknown1 :: Bool
   , reservationAttributeUnknown2 :: Bool
   , reservationAttributeUnknown3 :: Maybe Word.Word8
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON ReservationAttribute where
-  parseJSON = defaultParseJson "ReservationAttribute"
-
-instance ToJSON ReservationAttribute where
-  toEncoding = defaultToEncoding "ReservationAttribute"
-  toJSON = defaultToJson "ReservationAttribute"
+$(deriveJson ''ReservationAttribute)

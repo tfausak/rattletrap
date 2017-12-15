@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.Replication
   ( Replication(..)
@@ -11,11 +11,6 @@ import Rattletrap.Type.ReplicationValue
 data Replication = Replication
   { replicationActorId :: CompressedWord
   , replicationValue :: ReplicationValue
-  } deriving (Eq, Generic, Ord, Show)
+  } deriving (Eq, Ord, Show)
 
-instance FromJSON Replication where
-  parseJSON = defaultParseJson "Replication"
-
-instance ToJSON Replication where
-  toEncoding = defaultToEncoding "Replication"
-  toJSON = defaultToJson "Replication"
+$(deriveJson ''Replication)

@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.DestroyedReplication
   ( DestroyedReplication(..)
@@ -10,11 +10,6 @@ import Rattletrap.Type.Common
 -- you need to know is the actor's ID, which is given by the
 -- 'Rattletrap.Replication.Replication'.
 data DestroyedReplication = DestroyedReplication
-  deriving (Eq, Generic, Ord, Show)
+  deriving (Eq, Ord, Show)
 
-instance FromJSON DestroyedReplication where
-  parseJSON = defaultParseJson "DestroyedReplication"
-
-instance ToJSON DestroyedReplication where
-  toEncoding = defaultToEncoding "DestroyedReplication"
-  toJSON = defaultToJson "DestroyedReplication"
+$(deriveJson ''DestroyedReplication)
