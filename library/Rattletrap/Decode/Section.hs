@@ -25,7 +25,7 @@ getSection getBody = do
   let actualCrc = Word32 (getCrc32 rawBody)
   Monad.when (actualCrc /= crc) (fail (crcMessage actualCrc crc))
   let body = Binary.runGet getBody rawBody
-  pure (Section body)
+  pure (Section size crc body)
 
 crcMessage :: Word32 -> Word32 -> String
 crcMessage actual expected = unwords
