@@ -21,13 +21,13 @@ import Rattletrap.Type.Text
 import Rattletrap.Type.List
 import Rattletrap.Type.CompressedWord
 
-import qualified Data.Bimap as Bimap
 import qualified Data.IntMap.Strict as IntMap
 import qualified Data.List as List
 import qualified Data.Map.Strict as Map
 import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
 import qualified Data.Text as Text
+import qualified Data.Tuple as Tuple
 
 -- | This data structure holds all the information about classes, objects, and
 -- attributes in the replay. The class hierarchy is not fixed; it is encoded
@@ -44,6 +44,17 @@ data ClassAttributeMap = ClassAttributeMap
   -- IDs.
   , classAttributeMapNameMap :: IntMap.IntMap Text
   } deriving (Eq, Ord, Show)
+
+type Bimap l r = (Map.Map l r, Map.Map r l)
+
+bimap :: (Ord l, Ord r) => [(l, r)] -> Bimap l r
+bimap xs = (Map.fromList xs, Map.fromList (fmap Tuple.swap xs))
+
+lookupL :: Ord l => l -> Bimap l r -> Maybe r
+lookupL k = Map.lookup k . fst
+
+lookupR :: Ord r => r -> Bimap l r -> Maybe l
+lookupR k = Map.lookup k . snd
 
 -- | Makes a 'ClassAttributeMap' given the necessary fields from the
 -- 'Rattletrap.Content.Content'.
@@ -96,7 +107,7 @@ getName nameMap nameIndex =
   IntMap.lookup (fromIntegral (word32Value nameIndex)) nameMap
 
 makeObjectClassMap
-  :: Map.Map Word32 Text -> Bimap.Bimap Word32 Text -> Map.Map Word32 Word32
+  :: Map.Map Word32 Text -> Bimap Word32 Text -> Map.Map Word32 Word32
 makeObjectClassMap objectMap classMap = do
   let objectIds = Map.keys objectMap
   let classIds = fmap (getClassId objectMap classMap) objectIds
@@ -111,22 +122,20 @@ makeObjectClassMap objectMap classMap = do
   Map.fromList pairs
 
 getClassId
-  :: Map.Map Word32 Text -> Bimap.Bimap Word32 Text -> Word32 -> Maybe Word32
+  :: Map.Map Word32 Text -> Bimap Word32 Text -> Word32 -> Maybe Word32
 getClassId objectMap classMap objectId = do
   objectName <- getObjectName objectMap objectId
   className <- getClassName objectName
-  Bimap.lookupR className classMap
+  lookupR className classMap
 
 makeClassCache
-  :: Bimap.Bimap Word32 Text
-  -> List Cache
-  -> [(Maybe Text, Word32, Word32, Word32)]
+  :: Bimap Word32 Text -> List Cache -> [(Maybe Text, Word32, Word32, Word32)]
 makeClassCache classMap caches = fmap
   ( \cache ->
     let
       classId = cacheClassId cache
     in
-      ( Bimap.lookup classId classMap
+      ( lookupL classId classMap
       , classId
       , cacheCacheId cache
       , cacheParentCacheId cache
@@ -134,8 +143,8 @@ makeClassCache classMap caches = fmap
   )
   (listValue caches)
 
-makeClassMap :: List ClassMapping -> Bimap.Bimap Word32 Text
-makeClassMap classMappings = Bimap.fromList
+makeClassMap :: List ClassMapping -> Bimap Word32 Text
+makeClassMap classMappings = bimap
   ( fmap
     ( \classMapping ->
       (classMappingStreamId classMapping, classMappingName classMapping)
