@@ -4,12 +4,13 @@ module Rattletrap.Main
   ) where
 
 import Rattletrap.Utility.Helper
-import Rattletrap.Utility.Version
 
 import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Version as Version
+import qualified Data.Version as Version
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
+import qualified Paths_rattletrap as This
 import qualified System.Environment as Environment
 
 -- | Gets command-line arguments and passes them to 'rattletrapWithArgs'.
@@ -31,7 +32,7 @@ rattletrap = do
 --    handling of input and output is the same as decoding.
 rattletrapWithArgs :: [String] -> IO ()
 rattletrapWithArgs args = case args of
-  ["version"] -> putStrLn (Version.showVersion version)
+  ["version"] -> putStrLn (Version.showVersion This.version)
   action:files -> do
     (getInput, putOutput) <- getIO files
     input <- getInput
