@@ -12,6 +12,7 @@ import Rattletrap.Decode.Replay
 import Rattletrap.Encode.Replay
 
 import qualified Data.Aeson as Aeson
+import qualified Data.Aeson.Encode.Pretty as Aeson
 import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
@@ -24,7 +25,11 @@ decodeReplay contents = case Binary.runGetOrFail getReplay contents of
 
 -- | Encodes a replay as JSON.
 encodeJson :: Replay -> ByteString.ByteString
-encodeJson = Aeson.encode
+encodeJson = Aeson.encodePretty' Aeson.defConfig
+  { Aeson.confCompare = compare
+  , Aeson.confIndent = Aeson.Spaces 2
+  , Aeson.confTrailingNewline = True
+  }
 
 -- | Parses a JSON replay.
 decodeJson :: ByteString.ByteString -> Either String Replay
