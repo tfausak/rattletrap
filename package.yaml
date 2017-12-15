@@ -5,7 +5,6 @@ category: Game
 description: Rattletrap parses and generates Rocket League replays.
 extra-source-files:
   - CHANGELOG.markdown
-  - replays/*.replay
   - package.yaml
   - README.markdown
   - stack.yaml
