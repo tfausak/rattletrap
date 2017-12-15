@@ -3,7 +3,7 @@ module Rattletrap.Decode.ExplosionAttribute
   ) where
 
 import Rattletrap.Type.ExplosionAttribute
-import Rattletrap.Decode.Int32
+import Rattletrap.Decode.Int32le
 import Rattletrap.Decode.Vector
 
 import qualified Data.Binary.Bits.Get as BinaryBit

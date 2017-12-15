@@ -5,11 +5,11 @@ module Rattletrap.Type.FlaggedIntAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Int32
+import Rattletrap.Type.Int32le
 
 data FlaggedIntAttribute = FlaggedIntAttribute
   { flaggedIntAttributeFlag :: Bool
-  , flaggedIntAttributeInt :: Int32
+  , flaggedIntAttributeInt :: Int32le
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''FlaggedIntAttribute)

@@ -4,7 +4,7 @@ module Rattletrap.Encode.DamageStateAttribute
 
 import Rattletrap.Type.DamageStateAttribute
 import Rattletrap.Encode.Word8
-import Rattletrap.Encode.Int32
+import Rattletrap.Encode.Int32le
 import Rattletrap.Encode.Vector
 
 import qualified Data.Binary.Bits.Put as BinaryBit

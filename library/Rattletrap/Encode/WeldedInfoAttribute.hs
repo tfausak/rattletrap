@@ -3,7 +3,7 @@ module Rattletrap.Encode.WeldedInfoAttribute
   ) where
 
 import Rattletrap.Type.WeldedInfoAttribute
-import Rattletrap.Encode.Int32
+import Rattletrap.Encode.Int32le
 import Rattletrap.Encode.Vector
 import Rattletrap.Encode.Float32le
 import Rattletrap.Encode.Int8Vector

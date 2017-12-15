@@ -3,7 +3,7 @@ module Rattletrap.Encode.IntAttribute
   ) where
 
 import Rattletrap.Type.IntAttribute
-import Rattletrap.Encode.Int32
+import Rattletrap.Encode.Int32le
 
 import qualified Data.Binary.Bits.Put as BinaryBit
 

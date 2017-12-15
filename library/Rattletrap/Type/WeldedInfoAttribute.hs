@@ -5,14 +5,14 @@ module Rattletrap.Type.WeldedInfoAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Int32
+import Rattletrap.Type.Int32le
 import Rattletrap.Type.Vector
 import Rattletrap.Type.Float32le
 import Rattletrap.Type.Int8Vector
 
 data WeldedInfoAttribute = WeldedInfoAttribute
   { weldedInfoAttributeActive :: Bool
-  , weldedInfoAttributeActorId :: Int32
+  , weldedInfoAttributeActorId :: Int32le
   , weldedInfoAttributeOffset :: Vector
   , weldedInfoAttributeMass :: Float32le
   , weldedInfoAttributeRotation :: Int8Vector

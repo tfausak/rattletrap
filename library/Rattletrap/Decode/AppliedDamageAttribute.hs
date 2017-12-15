@@ -5,7 +5,7 @@ module Rattletrap.Decode.AppliedDamageAttribute
 import Rattletrap.Type.AppliedDamageAttribute
 import Rattletrap.Decode.Word8
 import Rattletrap.Decode.Vector
-import Rattletrap.Decode.Int32
+import Rattletrap.Decode.Int32le
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 

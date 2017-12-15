@@ -3,8 +3,8 @@ module Rattletrap.Encode.Text
   , putTextBits
   ) where
 
-import Rattletrap.Encode.Int32
-import Rattletrap.Type.Int32
+import Rattletrap.Encode.Int32le
+import Rattletrap.Type.Int32le
 import Rattletrap.Type.Text
 import Rattletrap.Utility.Bytes
 
@@ -31,7 +31,7 @@ putTextBits text = do
   BinaryBit.putByteString
     (ByteString.toStrict (reverseBytes (encode (addNull (textValue text)))))
 
-getTextSize :: Text -> Int32
+getTextSize :: Text -> Int32le
 getTextSize text =
   let
     value = textValue text
@@ -42,10 +42,10 @@ getTextSize text =
       then 0x05000000
       else scale * rawSize
   in
-    Int32 size
+    Int32le size
 
-getTextEncoder :: Int32 -> Text.Text -> ByteString.ByteString
-getTextEncoder size text = if size < Int32 0
+getTextEncoder :: Int32le -> Text.Text -> ByteString.ByteString
+getTextEncoder size text = if size < Int32le 0
   then ByteString.fromStrict (Encoding.encodeUtf16LE text)
   else encodeLatin1 text
 

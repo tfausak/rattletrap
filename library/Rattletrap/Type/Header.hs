@@ -10,7 +10,7 @@ module Rattletrap.Type.Header
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32
 import Rattletrap.Type.Text
-import Rattletrap.Type.Int32
+import Rattletrap.Type.Int32le
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Property
 import Rattletrap.Type.PropertyValue
@@ -80,7 +80,7 @@ getNumFrames header =
     properties = dictionaryValue (headerProperties header)
   in case Map.lookup key properties of
     Just (Property _ _ (PropertyValueInt numFrames)) ->
-      fromIntegral (int32Value numFrames)
+      fromIntegral (int32leValue numFrames)
     _ -> 0
 
 getMaxChannels :: Header -> Word
@@ -90,5 +90,5 @@ getMaxChannels header =
     properties = dictionaryValue (headerProperties header)
   in case Map.lookup key properties of
     Just (Property _ _ (PropertyValueInt numFrames)) ->
-      fromIntegral (int32Value numFrames)
+      fromIntegral (int32leValue numFrames)
     _ -> 1023

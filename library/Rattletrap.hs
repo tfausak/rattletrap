@@ -17,7 +17,7 @@ module Rattletrap
   , Rattletrap.Type.List.List(..)
   , Rattletrap.Type.Word8.Word8(..)
   , Rattletrap.Type.Float32le.Float32le(..)
-  , Rattletrap.Type.Int32.Int32(..)
+  , Rattletrap.Type.Int32le.Int32le(..)
   , Rattletrap.Type.Content.Content(..)
   , Rattletrap.Type.KeyFrame.KeyFrame(..)
   , Rattletrap.Type.Frame.Frame(..)
@@ -84,7 +84,7 @@ module Rattletrap
   , Rattletrap.Decode.List.getList
   , Rattletrap.Decode.Word8.getWord8
   , Rattletrap.Decode.Float32le.getFloat32
-  , Rattletrap.Decode.Int32.getInt32
+  , Rattletrap.Decode.Int32le.getInt32
   , Rattletrap.Decode.Content.getContent
   , Rattletrap.Decode.KeyFrame.getKeyFrame
   , Rattletrap.Decode.Frame.getFrames
@@ -154,7 +154,7 @@ module Rattletrap
   , Rattletrap.Encode.List.putList
   , Rattletrap.Encode.Word8.putWord8
   , Rattletrap.Encode.Float32le.putFloat32
-  , Rattletrap.Encode.Int32.putInt32
+  , Rattletrap.Encode.Int32le.putInt32
   , Rattletrap.Encode.Content.putContent
   , Rattletrap.Encode.KeyFrame.putKeyFrame
   , Rattletrap.Encode.Frame.putFrames
@@ -240,7 +240,7 @@ import qualified Rattletrap.Decode.Frame
 import qualified Rattletrap.Decode.GameModeAttribute
 import qualified Rattletrap.Decode.Header
 import qualified Rattletrap.Decode.Initialization
-import qualified Rattletrap.Decode.Int32
+import qualified Rattletrap.Decode.Int32le
 import qualified Rattletrap.Decode.Int8
 import qualified Rattletrap.Decode.Int8Vector
 import qualified Rattletrap.Decode.IntAttribute
@@ -306,7 +306,7 @@ import qualified Rattletrap.Encode.Frame
 import qualified Rattletrap.Encode.GameModeAttribute
 import qualified Rattletrap.Encode.Header
 import qualified Rattletrap.Encode.Initialization
-import qualified Rattletrap.Encode.Int32
+import qualified Rattletrap.Encode.Int32le
 import qualified Rattletrap.Encode.Int8
 import qualified Rattletrap.Encode.Int8Vector
 import qualified Rattletrap.Encode.IntAttribute
@@ -372,7 +372,7 @@ import qualified Rattletrap.Type.Frame
 import qualified Rattletrap.Type.GameModeAttribute
 import qualified Rattletrap.Type.Header
 import qualified Rattletrap.Type.Initialization
-import qualified Rattletrap.Type.Int32
+import qualified Rattletrap.Type.Int32le
 import qualified Rattletrap.Type.Int8
 import qualified Rattletrap.Type.Int8Vector
 import qualified Rattletrap.Type.IntAttribute
