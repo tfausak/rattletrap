@@ -3,10 +3,12 @@ module Rattletrap.Console.Main
   , rattletrap
   ) where
 
+import qualified Control.Exception as Exception
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Json
 import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Version as Version
+import qualified Language.Haskell.Interpreter as Hint
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified Paths_rattletrap as This
@@ -31,7 +33,8 @@ rattletrap name arguments = do
   Monad.when (configVersion config) (printVersion *> Exit.exitFailure)
   input <- getInput config
   let decode = getDecoder config
-  replay <- either fail pure (decode input)
+  original <- either fail pure (decode input)
+  replay <- evaluate config original
   let encode = getEncoder config
   putOutput config (encode replay)
 
@@ -61,6 +64,19 @@ putOutput config = case configOutput config of
   Nothing -> LazyBytes.putStr
   Just file -> LazyBytes.writeFile file
 
+evaluate :: Config -> Rattletrap.Replay -> IO Rattletrap.Replay
+evaluate config replay = do
+  result <- Hint.runInterpreter (interpret config)
+  case result of
+    Left problem -> fail (Exception.displayException problem)
+    Right modify -> pure (modify replay)
+
+interpret
+  :: Config -> Hint.InterpreterT IO (Rattletrap.Replay -> Rattletrap.Replay)
+interpret config = do
+  Hint.setImports ["Prelude", "Rattletrap"]
+  Hint.interpret (configExpression config) Hint.infer
+
 getConfig :: [String] -> IO Config
 getConfig arguments = do
   let
@@ -79,6 +95,7 @@ type Update = Config -> Either String Config
 options :: [Option]
 options =
   [ compactOption
+  , expressionOption
   , helpOption
   , inputOption
   , modeOption
@@ -92,6 +109,16 @@ compactOption = Console.Option
   ["compact"]
   (Console.NoArg (\config -> pure config { configCompact = True }))
   "minify JSON output"
+
+expressionOption :: Option
+expressionOption = Console.Option
+  ['e']
+  ["expression"]
+  ( Console.ReqArg
+    (\expression config -> pure config { configExpression = expression })
+    "EXPRESSION"
+  )
+  "todo"
 
 helpOption :: Option
 helpOption = Console.Option
@@ -145,6 +172,7 @@ applyUpdate config update = update config
 
 data Config = Config
   { configCompact :: Bool
+  , configExpression :: String
   , configHelp :: Bool
   , configInput :: Maybe String
   , configMode :: Maybe Mode
@@ -155,6 +183,7 @@ data Config = Config
 defaultConfig :: Config
 defaultConfig = Config
   { configCompact = False
+  , configExpression = "id"
   , configHelp = False
   , configInput = Nothing
   , configMode = Nothing
