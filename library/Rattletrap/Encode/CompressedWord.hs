@@ -8,25 +8,29 @@ import qualified Data.Binary.Bits.Put as BinaryBit
 import qualified Data.Bits as Bits
 
 putCompressedWord :: CompressedWord -> BinaryBit.BitPut ()
-putCompressedWord compressedWord = do
-  let limit = compressedWordLimit compressedWord
-  let value = compressedWordValue compressedWord
-  let maxBits = getMaxBits limit
+putCompressedWord compressedWord =
   let
-    go position soFar = if position < maxBits
-      then do
-        let x = Bits.shiftL 1 position
-        if maxBits > 1 && position == maxBits - 1 && soFar + x > limit
-          then pure ()
-          else do
-            let bit = Bits.testBit value position
-            BinaryBit.putBool bit
-            let delta = if bit then x else 0
-            go (position + 1) (soFar + delta)
-      else pure ()
-  go 0 0
+    limit = compressedWordLimit compressedWord
+    value = compressedWordValue compressedWord
+    maxBits = getMaxBits limit
+  in putCompressedWordStep limit value maxBits 0 0
 
-getMaxBits :: (Integral a, Integral b) => a -> b
-getMaxBits x = do
-  let n = max 1 (ceiling (logBase (2 :: Double) (fromIntegral (max 1 x))))
-  if x < 1024 && x == 2 ^ n then n + 1 else n
+putCompressedWordStep :: Word -> Word -> Int -> Int -> Word -> BinaryBit.BitPut ()
+putCompressedWordStep limit value maxBits position soFar = if position < maxBits
+  then do
+    let x = Bits.shiftL 1 position :: Word
+    if maxBits > 1 && position == maxBits - 1 && soFar + x > limit
+      then pure ()
+      else do
+        let bit = Bits.testBit value position
+        BinaryBit.putBool bit
+        let delta = if bit then x else 0
+        putCompressedWordStep limit value maxBits (position + 1) (soFar + delta)
+  else pure ()
+
+getMaxBits :: Word -> Int
+getMaxBits x =
+  let
+    n :: Int
+    n = max 1 (ceiling (logBase (2 :: Double) (fromIntegral (max 1 x))))
+  in if x < 1024 && x == 2 ^ n then n + 1 else n

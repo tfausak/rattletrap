@@ -9,7 +9,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 
 getCompressedWordVector :: BinaryBit.BitGet CompressedWordVector
 getCompressedWordVector = do
-  let limit = 65536
+  let limit = 65536 :: Word
   x <- getCompressedWord limit
   y <- getCompressedWord limit
   z <- getCompressedWord limit

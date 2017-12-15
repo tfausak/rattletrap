@@ -11,15 +11,15 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 getVector :: BinaryBit.BitGet Vector
 getVector = do
   bitSize <- getCompressedWord 19
-  let limit = 2 ^ (compressedWordValue bitSize + 2)
+  let limit = 2 ^ (compressedWordValue bitSize + 2) :: Word
   dx <- getCompressedWord limit
   dy <- getCompressedWord limit
   dz <- getCompressedWord limit
   let
     fromCompressedWord :: Num a => CompressedWord -> a
     fromCompressedWord = fromIntegral . compressedWordValue
-    bias = 2 ^ (fromCompressedWord bitSize + 1 :: Word)
-    x = fromCompressedWord dx - fromIntegral bias
-    y = fromCompressedWord dy - fromIntegral bias
-    z = fromCompressedWord dz - fromIntegral bias
+    bias = 2 ^ (fromCompressedWord bitSize + 1 :: Word) :: Word
+    x = fromCompressedWord dx - fromIntegral bias :: Int
+    y = fromCompressedWord dy - fromIntegral bias :: Int
+    z = fromCompressedWord dz - fromIntegral bias :: Int
   pure (Vector bias x y z)

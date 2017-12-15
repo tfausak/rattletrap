@@ -32,7 +32,6 @@ ghc-options:
   - -Weverything
   - -Wno-implicit-prelude
   - -Wno-missing-import-lists
-  - -Wno-monomorphism-restriction
   - -Wno-safe
   - -Wno-unsafe
 

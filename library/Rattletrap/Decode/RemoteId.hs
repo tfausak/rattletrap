@@ -27,7 +27,7 @@ getRemoteId (_, _, patchVersion) systemId = case word8leValue systemId of
       name = Text.dropWhileEnd
         (== '\x00')
         (Encoding.decodeLatin1 (ByteString.toStrict (reverseBytes rawName)))
-      numBytes = if patchVersion >= 1 then 24 else 16
+      numBytes = if patchVersion >= 1 then 24 else 16 :: Int
     bytes <- BinaryBit.getLazyByteString numBytes
     pure (RemoteIdPlayStation name (ByteString.unpack bytes))
   4 -> do

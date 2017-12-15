@@ -1,6 +1,7 @@
 module Rattletrap.Type.Common
   ( Int.Int8
   , Int.Int32
+  , Int.Int64
   , Map.Map
   , Text.Text
   , Word.Word8

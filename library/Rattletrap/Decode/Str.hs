@@ -5,6 +5,7 @@ module Rattletrap.Decode.Str
 
 import Rattletrap.Decode.Int32le
 import Rattletrap.Type.Int32le
+import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Utility.Bytes
 
@@ -19,7 +20,7 @@ getText :: Binary.Get Str
 getText = do
   rawSize <- getInt32
   let decode = getTextDecoder rawSize
-  let size = normalizeTextSize rawSize
+  let size = normalizeTextSize rawSize :: Int64
   bytes <- Binary.getLazyByteString size
   let text = dropNull (decode bytes)
   pure (Str text)
@@ -28,7 +29,7 @@ getTextBits :: BinaryBit.BitGet Str
 getTextBits = do
   rawSize <- getInt32Bits
   let decode = getTextDecoder rawSize
-  let size = normalizeTextSize rawSize
+  let size = normalizeTextSize rawSize :: Int
   bytes <- BinaryBit.getLazyByteString size
   let text = dropNull (decode (reverseBytes bytes))
   pure (Str text)

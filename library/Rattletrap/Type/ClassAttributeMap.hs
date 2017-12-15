@@ -303,8 +303,7 @@ classesWithRotation = Set.fromList (fmap toStr rawClassesWithRotation)
 getAttributeIdLimit :: Map Word32le Word32le -> Maybe Word
 getAttributeIdLimit attributeMap = do
   ((streamId, _), _) <- Map.maxViewWithKey attributeMap
-  let limit = fromIntegral (word32leValue streamId)
-  pure limit
+  pure (fromIntegral (word32leValue streamId))
 
 getAttributeName
   :: ClassAttributeMap -> Map Word32le Word32le -> CompressedWord -> Maybe Str
