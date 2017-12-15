@@ -1,55 +1,27 @@
-import qualified Control.Monad as Monad
-import qualified Data.Aeson as Aeson
-import qualified Data.ByteString.Lazy as ByteString
-import qualified Data.Text as Text
-import qualified System.Directory as Directory
-import qualified System.Environment as Environment
-import qualified System.Exit as Exit
-import qualified System.FilePath as FilePath
-import qualified System.Process as Process
+import Control.Monad (when)
+import Data.Aeson (encode, object, (.=))
+import Data.ByteString.Lazy (writeFile)
+import Data.Text (pack)
+import Prelude hiding (writeFile)
+import System.Environment (getEnv)
+import System.Exit (die)
+import System.Directory (createDirectoryIfMissing, getHomeDirectory)
+import System.FilePath (joinPath)
+import System.Process (callProcess)
 
 main :: IO ()
 main = do
-  checkTravisTag
-  checkTravisOsName
-  directory <- getStackUploadDirectory
-  credentials <- getHackageCredentials
-  let file = FilePath.joinPath [directory, "credentials.json"]
-  Directory.createDirectoryIfMissing True directory
-  ByteString.writeFile file (Aeson.encode credentials)
-  Process.callProcess "stack" ["upload", "--no-signature", "."]
-
-checkTravisTag :: IO ()
-checkTravisTag = do
-  maybeTag <- Environment.lookupEnv "TRAVIS_TAG"
-  case maybeTag of
-    Just (_:_) -> pure ()
-    _ -> do
-      putStrLn "The $TRAVIS_TAG variable is empty or not set."
-      Exit.exitSuccess
-
-checkTravisOsName :: IO ()
-checkTravisOsName = do
-  maybeOs <- Environment.lookupEnv "TRAVIS_OS_NAME"
-  Monad.when
-    (maybeOs /= Just "linux")
-    ( do
-      putStrLn "The $TRAVIS_OS_NAME variable is not 'linux'."
-      Exit.exitSuccess
-    )
-
-getStackUploadDirectory :: IO FilePath
-getStackUploadDirectory = do
-  home <- Directory.getHomeDirectory
-  pure (FilePath.joinPath [home, ".stack", "upload"])
-
-getHackageCredentials :: IO Aeson.Value
-getHackageCredentials = do
-  username <- Environment.getEnv "HACKAGE_USERNAME"
-  password <- Environment.getEnv "HACKAGE_PASSWORD"
-  pure
-    ( Aeson.object
-      [ Text.pack "username" Aeson..= username
-      , Text.pack "password" Aeson..= password
-      ]
-    )
+  tag <- getEnv "TRAVIS_TAG"
+  os <- getEnv "TRAVIS_OS_NAME"
+  user <- getEnv "HACKAGE_USERNAME"
+  pass <- getEnv "HACKAGE_PASSWORD"
+  when (null tag) (die "empty $TRAVIS_TAG")
+  when (os /= "linux") (die "wrong $TRAVIS_OS_NAME")
+  when (null user) (die "empty $HACKAGE_USERNAME")
+  when (null pass) (die "empty $HACKAGE_PASSWORD")
+  home <- getHomeDirectory
+  let directory = joinPath [home, ".stack", "upload"]
+  createDirectoryIfMissing True directory
+  writeFile
+    (joinPath [directory, "credentials.json"])
+    (encode (object [pack "username" .= user, pack "password" .= pass]))
