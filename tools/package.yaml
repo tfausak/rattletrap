@@ -4,20 +4,18 @@ version: 1.0.0
 dependencies:
   - base
   - bytestring
+  - filepath
   - process
 ghc-options: -Wall
 
 executables:
   attach-binary:
     dependencies:
-      - github-release
       - temporary
-      - zlib
     main: attach-binary.hs
   upload-package:
     dependencies:
       - aeson
       - directory
-      - filepath
       - text
     main: upload-package.hs
