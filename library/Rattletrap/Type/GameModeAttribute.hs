@@ -6,11 +6,9 @@ module Rattletrap.Type.GameModeAttribute
 
 import Rattletrap.Type.Common
 
-import qualified Data.Word as Word
-
 data GameModeAttribute = GameModeAttribute
   { gameModeAttributeNumBits :: Int
-  , gameModeAttributeWord :: Word.Word8
+  , gameModeAttributeWord :: Word8
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''GameModeAttribute)

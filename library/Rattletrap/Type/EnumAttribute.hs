@@ -6,10 +6,8 @@ module Rattletrap.Type.EnumAttribute
 
 import Rattletrap.Type.Common
 
-import qualified Data.Word as Word
-
 newtype EnumAttribute = EnumAttribute
-  { enumAttributeValue :: Word.Word16
+  { enumAttributeValue :: Word16
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''EnumAttribute)

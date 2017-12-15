@@ -14,6 +14,7 @@ module Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.AttributeMapping
 import Rattletrap.Type.Cache
 import Rattletrap.Type.ClassMapping
+import Rattletrap.Type.Common
 import Rattletrap.Data
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.Str
@@ -34,17 +35,17 @@ import qualified Data.Tuple as Tuple
 -- to each class are not fixed either. Converting the raw data into a usable
 -- structure is tedious; see 'makeClassAttributeMap'.
 data ClassAttributeMap = ClassAttributeMap
-  { classAttributeMapObjectMap :: Map.Map Word32le Str
+  { classAttributeMapObjectMap :: Map Word32le Str
   -- ^ A map from object IDs to their names.
-  , classAttributeMapObjectClassMap :: Map.Map Word32le Word32le
+  , classAttributeMapObjectClassMap :: Map Word32le Word32le
   -- ^ A map from object IDs to their class IDs.
-  , classAttributeMapValue :: Map.Map Word32le (Map.Map Word32le Word32le)
+  , classAttributeMapValue :: Map Word32le (Map Word32le Word32le)
   -- ^ A map from class IDs to a map from attribute stream IDs to attribute
   -- IDs.
   , classAttributeMapNameMap :: IntMap.IntMap Str
   } deriving (Eq, Ord, Show)
 
-type Bimap l r = (Map.Map l r, Map.Map r l)
+type Bimap l r = (Map l r, Map r l)
 
 bimap :: (Ord l, Ord r) => [(l, r)] -> Bimap l r
 bimap xs = (Map.fromList xs, Map.fromList (fmap Tuple.swap xs))
@@ -106,7 +107,7 @@ getName nameMap nameIndex =
   IntMap.lookup (fromIntegral (word32leValue nameIndex)) nameMap
 
 makeObjectClassMap
-  :: Map.Map Word32le Str -> Bimap Word32le Str -> Map.Map Word32le Word32le
+  :: Map Word32le Str -> Bimap Word32le Str -> Map Word32le Word32le
 makeObjectClassMap objectMap classMap = do
   let objectIds = Map.keys objectMap
   let classIds = fmap (getClassId objectMap classMap) objectIds
@@ -121,7 +122,7 @@ makeObjectClassMap objectMap classMap = do
   Map.fromList pairs
 
 getClassId
-  :: Map.Map Word32le Str -> Bimap Word32le Str -> Word32le -> Maybe Word32le
+  :: Map Word32le Str -> Bimap Word32le Str -> Word32le -> Maybe Word32le
 getClassId objectMap classMap objectId = do
   objectName <- getObjectName objectMap objectId
   className <- getClassName objectName
@@ -151,7 +152,7 @@ makeClassMap classMappings = bimap
     (listValue classMappings)
   )
 
-makeAttributeMap :: List Cache -> Map.Map Word32le (Map.Map Word32le Word32le)
+makeAttributeMap :: List Cache -> Map Word32le (Map Word32le Word32le)
 makeAttributeMap caches = Map.fromList
   ( fmap
     ( \cache ->
@@ -171,7 +172,7 @@ makeAttributeMap caches = Map.fromList
   )
 
 makeShallowParentMap
-  :: [(Maybe Str, Word32le, Word32le, Word32le)] -> Map.Map Word32le Word32le
+  :: [(Maybe Str, Word32le, Word32le, Word32le)] -> Map Word32le Word32le
 makeShallowParentMap classCache = Map.fromList
   ( Maybe.mapMaybe
     ( \xs -> case xs of
@@ -184,7 +185,7 @@ makeShallowParentMap classCache = Map.fromList
   )
 
 makeParentMap
-  :: [(Maybe Str, Word32le, Word32le, Word32le)] -> Map.Map Word32le [Word32le]
+  :: [(Maybe Str, Word32le, Word32le, Word32le)] -> Map Word32le [Word32le]
 makeParentMap classCache =
   let
     shallowParentMap = makeShallowParentMap classCache
@@ -193,7 +194,7 @@ makeParentMap classCache =
       (\classId _ -> getParentClasses shallowParentMap classId)
       shallowParentMap
 
-getParentClasses :: Map.Map Word32le Word32le -> Word32le -> [Word32le]
+getParentClasses :: Map Word32le Word32le -> Word32le -> [Word32le]
 getParentClasses shallowParentMap classId =
   case Map.lookup classId shallowParentMap of
     Nothing -> []
@@ -241,16 +242,16 @@ getParentClassByName className parentCacheId xs =
         )
       )
 
-parentClasses :: Map.Map Str Str
+parentClasses :: Map Str Str
 parentClasses = Map.map
   toStr
   (Map.mapKeys toStr (Map.fromList rawParentClasses))
 
-makeObjectMap :: List Str -> Map.Map Word32le Str
+makeObjectMap :: List Str -> Map Word32le Str
 makeObjectMap objects =
   Map.fromAscList (zip (fmap Word32le [0 ..]) (listValue objects))
 
-getObjectName :: Map.Map Word32le Str -> Word32le -> Maybe Str
+getObjectName :: Map Word32le Str -> Word32le -> Maybe Str
 getObjectName objectMap objectId = Map.lookup objectId objectMap
 
 getClassName :: Str -> Maybe Str
@@ -279,7 +280,7 @@ normalizeObjectName objectName =
               then Str breakout
               else objectName
 
-objectClasses :: Map.Map Str Str
+objectClasses :: Map Str Str
 objectClasses = Map.map
   toStr
   (Map.mapKeys toStr (Map.fromList rawObjectClasses))
@@ -296,14 +297,14 @@ classHasRotation className = Set.member className classesWithRotation
 classesWithRotation :: Set.Set Str
 classesWithRotation = Set.fromList (fmap toStr rawClassesWithRotation)
 
-getAttributeIdLimit :: Map.Map Word32le Word32le -> Maybe Word
+getAttributeIdLimit :: Map Word32le Word32le -> Maybe Word
 getAttributeIdLimit attributeMap = do
   ((streamId, _), _) <- Map.maxViewWithKey attributeMap
   let limit = fromIntegral (word32leValue streamId)
   pure limit
 
 getAttributeName
-  :: ClassAttributeMap -> Map.Map Word32le Word32le -> CompressedWord -> Maybe Str
+  :: ClassAttributeMap -> Map Word32le Word32le -> CompressedWord -> Maybe Str
 getAttributeName classAttributeMap attributeMap streamId = do
   let key = Word32le (fromIntegral (compressedWordValue streamId))
   attributeId <- Map.lookup key attributeMap
@@ -312,9 +313,9 @@ getAttributeName classAttributeMap attributeMap streamId = do
 
 getAttributeMap
   :: ClassAttributeMap
-  -> Map.Map CompressedWord Word32le
+  -> Map CompressedWord Word32le
   -> CompressedWord
-  -> Maybe (Map.Map Word32le Word32le)
+  -> Maybe (Map Word32le Word32le)
 getAttributeMap classAttributeMap actorMap actorId = do
   objectId <- Map.lookup actorId actorMap
   let objectClassMap = classAttributeMapObjectClassMap classAttributeMap

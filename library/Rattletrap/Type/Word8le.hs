@@ -6,10 +6,8 @@ module Rattletrap.Type.Word8le
 
 import Rattletrap.Type.Common
 
-import qualified Data.Word as Word
-
 newtype Word8le = Word8le
-  { word8leValue :: Word.Word8
+  { word8leValue :: Word8
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''Word8le)

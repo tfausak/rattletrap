@@ -6,10 +6,8 @@ module Rattletrap.Type.Int8le
 
 import Rattletrap.Type.Common
 
-import qualified Data.Int as Int
-
 newtype Int8le = Int8le
-  { int8leValue :: Int.Int8
+  { int8leValue :: Int8
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''Int8le)

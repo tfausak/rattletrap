@@ -11,7 +11,7 @@ import Rattletrap.Type.Common
 import qualified Data.Text as Text
 
 newtype Str = Str
-  { strValue :: Text.Text
+  { strValue :: Text
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''Str)
