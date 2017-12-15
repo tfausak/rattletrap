@@ -6,7 +6,6 @@ import Rattletrap.Type.ExtendedExplosionAttribute
 import Rattletrap.Type.ExplosionAttribute
 import Rattletrap.Decode.ExplosionAttribute
 import Rattletrap.Decode.Int32le
-import Rattletrap.Decode.Vector
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 
