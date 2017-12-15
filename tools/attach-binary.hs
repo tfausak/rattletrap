@@ -1,4 +1,5 @@
 import System.Environment (getEnv, lookupEnv)
+import System.Exit (exitSuccess)
 import System.FilePath (addExtension)
 import System.Process (callProcess)
 
