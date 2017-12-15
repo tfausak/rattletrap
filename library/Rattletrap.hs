@@ -28,7 +28,7 @@ module Rattletrap
   , Rattletrap.Type.Initialization.Initialization(..)
   , Rattletrap.Type.Vector.Vector(..)
   , Rattletrap.Type.Int8Vector.Int8Vector(..)
-  , Rattletrap.Type.Int8.Int8(..)
+  , Rattletrap.Type.Int8le.Int8le(..)
   , Rattletrap.Type.UpdatedReplication.UpdatedReplication(..)
   , Rattletrap.Type.Attribute.Attribute(..)
   , Rattletrap.Type.AttributeValue.AttributeValue(..)
@@ -97,7 +97,7 @@ module Rattletrap
   , Rattletrap.Decode.Initialization.getInitialization
   , Rattletrap.Decode.Vector.getVector
   , Rattletrap.Decode.Int8Vector.getInt8Vector
-  , Rattletrap.Decode.Int8.getInt8
+  , Rattletrap.Decode.Int8le.getInt8
   , Rattletrap.Decode.UpdatedReplication.getUpdatedReplication
   , Rattletrap.Decode.Attribute.getAttributes
   , Rattletrap.Decode.Attribute.getAttribute
@@ -167,7 +167,7 @@ module Rattletrap
   , Rattletrap.Encode.Initialization.putInitialization
   , Rattletrap.Encode.Vector.putVector
   , Rattletrap.Encode.Int8Vector.putInt8Vector
-  , Rattletrap.Encode.Int8.putInt8
+  , Rattletrap.Encode.Int8le.putInt8
   , Rattletrap.Encode.UpdatedReplication.putUpdatedReplication
   , Rattletrap.Encode.Attribute.putAttributes
   , Rattletrap.Encode.Attribute.putAttribute
@@ -241,7 +241,7 @@ import qualified Rattletrap.Decode.GameModeAttribute
 import qualified Rattletrap.Decode.Header
 import qualified Rattletrap.Decode.Initialization
 import qualified Rattletrap.Decode.Int32le
-import qualified Rattletrap.Decode.Int8
+import qualified Rattletrap.Decode.Int8le
 import qualified Rattletrap.Decode.Int8Vector
 import qualified Rattletrap.Decode.IntAttribute
 import qualified Rattletrap.Decode.KeyFrame
@@ -307,7 +307,7 @@ import qualified Rattletrap.Encode.GameModeAttribute
 import qualified Rattletrap.Encode.Header
 import qualified Rattletrap.Encode.Initialization
 import qualified Rattletrap.Encode.Int32le
-import qualified Rattletrap.Encode.Int8
+import qualified Rattletrap.Encode.Int8le
 import qualified Rattletrap.Encode.Int8Vector
 import qualified Rattletrap.Encode.IntAttribute
 import qualified Rattletrap.Encode.KeyFrame
@@ -373,7 +373,7 @@ import qualified Rattletrap.Type.GameModeAttribute
 import qualified Rattletrap.Type.Header
 import qualified Rattletrap.Type.Initialization
 import qualified Rattletrap.Type.Int32le
-import qualified Rattletrap.Type.Int8
+import qualified Rattletrap.Type.Int8le
 import qualified Rattletrap.Type.Int8Vector
 import qualified Rattletrap.Type.IntAttribute
 import qualified Rattletrap.Type.KeyFrame

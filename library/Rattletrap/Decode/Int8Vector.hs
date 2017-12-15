@@ -2,8 +2,8 @@ module Rattletrap.Decode.Int8Vector
   ( getInt8Vector
   ) where
 
-import Rattletrap.Decode.Int8
-import Rattletrap.Type.Int8
+import Rattletrap.Decode.Int8le
+import Rattletrap.Type.Int8le
 import Rattletrap.Type.Int8Vector
 
 import qualified Data.Binary.Bits.Get as BinaryBit
@@ -15,7 +15,7 @@ getInt8Vector = do
   z <- getInt8VectorField
   pure (Int8Vector x y z)
 
-getInt8VectorField :: BinaryBit.BitGet (Maybe Int8)
+getInt8VectorField :: BinaryBit.BitGet (Maybe Int8le)
 getInt8VectorField = do
   hasField <- BinaryBit.getBool
   if hasField
