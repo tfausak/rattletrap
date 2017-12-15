@@ -6,8 +6,8 @@ import Rattletrap.Data
 
 import qualified Data.Bits as Bits
 import qualified Data.ByteString.Lazy as ByteString
-import qualified Data.Vector.Unboxed as Vector
 import qualified Data.Word as Word
+import qualified Data.IntMap as IntMap
 
 -- | Computes the CRC32 of some bytes. This is done to ensure that the bytes
 -- are valid before trying to parse them.
@@ -26,17 +26,17 @@ getCrc32 bytes = do
   Bits.complement crc
 
 crc32Update
-  :: Vector.Vector Word.Word32 -> Word.Word32 -> Word.Word8 -> Word.Word32
+  :: IntMap.IntMap Word.Word32 -> Word.Word32 -> Word.Word8 -> Word.Word32
 crc32Update table crc byte = do
   let toWord8 = fromIntegral :: (Integral a) => a -> Word.Word8
   let toInt = fromIntegral :: (Integral a) => a -> Int
   let index = toInt (Bits.xor byte (toWord8 (Bits.shiftR crc 24)))
-  let left = Vector.unsafeIndex table index
+  let left = table IntMap.! index
   let right = Bits.shiftL crc 8
   Bits.xor left right
 
 crc32Initial :: Word.Word32
 crc32Initial = 0xefcbf201
 
-crc32Table :: Vector.Vector Word.Word32
-crc32Table = Vector.fromList rawCrc32Table
+crc32Table :: IntMap.IntMap Word.Word32
+crc32Table = IntMap.fromDistinctAscList (zip [0 ..] rawCrc32Table)

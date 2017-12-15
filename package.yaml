@@ -27,7 +27,6 @@ dependencies:
   http-client: ^>= 0.5.7
   template-haskell: ^>= 2.12.0
   text: ^>= 1.2.2
-  vector: ^>= 0.12.0
 ghc-options: -Wall
 
 library:
