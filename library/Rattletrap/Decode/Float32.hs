@@ -9,11 +9,10 @@ import Rattletrap.Utility.Bytes
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Get as Binary
-import qualified Data.Binary.IEEE754 as IEEE754
 
 getFloat32 :: Binary.Get Float32
 getFloat32 = do
-  float32 <- IEEE754.getFloat32le
+  float32 <- Binary.getFloatle
   pure (Float32 float32)
 
 getFloat32Bits :: BinaryBit.BitGet Float32

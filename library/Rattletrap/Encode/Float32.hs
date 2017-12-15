@@ -8,12 +8,11 @@ import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBit
-import qualified Data.Binary.IEEE754 as IEEE754
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as ByteString
 
 putFloat32 :: Float32 -> Binary.Put
-putFloat32 = IEEE754.putFloat32le . float32Value
+putFloat32 = Binary.putFloatle . float32Value
 
 putFloat32Bits :: Float32 -> BinaryBit.BitPut ()
 putFloat32Bits float32 = do
