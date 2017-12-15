@@ -29,9 +29,9 @@ specBody uuid = do
       "replay-"
       ( \directory -> do
         let jsonFile = FilePath.combine directory "replay.json"
-        Rattletrap.rattletrapWithArgs ["decode", inputFile, jsonFile]
+        Rattletrap.rattletrap "" ["-i", inputFile, "-o", jsonFile]
         let outputFile = FilePath.combine directory "output.replay"
-        Rattletrap.rattletrapWithArgs ["encode", jsonFile, outputFile]
+        Rattletrap.rattletrap "" ["-i", jsonFile, "-o", outputFile]
         output <- ByteString.readFile outputFile
         Monad.unless
           (output == input)

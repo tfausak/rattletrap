@@ -1,7 +1,7 @@
 -- | TODO
 module Rattletrap
-  ( Rattletrap.Main.rattletrap
-  , Rattletrap.Main.rattletrapWithArgs
+  ( Rattletrap.Main.defaultMain
+  , Rattletrap.Main.rattletrap
   -- * Types
   , Rattletrap.Type.Replay.Replay(..)
   , Rattletrap.Type.Section.Section(..)

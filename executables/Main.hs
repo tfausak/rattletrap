@@ -1,4 +1,4 @@
 import qualified Rattletrap
 
 main :: IO ()
-main = Rattletrap.rattletrap
+main = Rattletrap.defaultMain
