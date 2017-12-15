@@ -64,17 +64,17 @@ makeClassAttributeMap objects classMappings caches names =
     objectClassMap = makeObjectClassMap objectMap classMap
     classCache = makeClassCache classMap caches
     attributeMap = makeAttributeMap caches
-    classIds = map (\(_, classId, _, _) -> classId) classCache
+    classIds = fmap (\(_, classId, _, _) -> classId) classCache
     parentMap = makeParentMap classCache
     value = Map.fromList
-      ( map
+      ( fmap
         ( \classId ->
           let
             ownAttributes =
               Maybe.fromMaybe Map.empty (Map.lookup classId attributeMap)
             parentsAttributes = case Map.lookup classId parentMap of
               Nothing -> []
-              Just parentClassIds -> map
+              Just parentClassIds -> fmap
                 ( \parentClassId -> Maybe.fromMaybe
                   Map.empty
                   (Map.lookup parentClassId attributeMap)
@@ -99,7 +99,7 @@ makeObjectClassMap
   :: Map.Map Word32 Text -> Bimap.Bimap Word32 Text -> Map.Map Word32 Word32
 makeObjectClassMap objectMap classMap = do
   let objectIds = Map.keys objectMap
-  let classIds = map (getClassId objectMap classMap) objectIds
+  let classIds = fmap (getClassId objectMap classMap) objectIds
   let rawPairs = zip objectIds classIds
   let
     pairs = Maybe.mapMaybe
@@ -121,7 +121,7 @@ makeClassCache
   :: Bimap.Bimap Word32 Text
   -> List Cache
   -> [(Maybe Text, Word32, Word32, Word32)]
-makeClassCache classMap caches = map
+makeClassCache classMap caches = fmap
   ( \cache ->
     let
       classId = cacheClassId cache
@@ -136,7 +136,7 @@ makeClassCache classMap caches = map
 
 makeClassMap :: List ClassMapping -> Bimap.Bimap Word32 Text
 makeClassMap classMappings = Bimap.fromList
-  ( map
+  ( fmap
     ( \classMapping ->
       (classMappingStreamId classMapping, classMappingName classMapping)
     )
@@ -145,11 +145,11 @@ makeClassMap classMappings = Bimap.fromList
 
 makeAttributeMap :: List Cache -> Map.Map Word32 (Map.Map Word32 Word32)
 makeAttributeMap caches = Map.fromList
-  ( map
+  ( fmap
     ( \cache ->
       ( cacheClassId cache
       , Map.fromList
-        ( map
+        ( fmap
           ( \attributeMapping ->
             ( attributeMappingStreamId attributeMapping
             , attributeMappingObjectId attributeMapping
@@ -219,7 +219,7 @@ getParentClassByName className parentCacheId xs =
       (getParentClassById parentCacheId xs)
       Just
       ( Maybe.listToMaybe
-        ( map
+        ( fmap
           (\(_, parentClassId, _, _) -> parentClassId)
           ( filter
             (\(_, _, cacheId, _) -> cacheId <= parentCacheId)
@@ -240,7 +240,7 @@ parentClasses = Map.map
 
 makeObjectMap :: List Text -> Map.Map Word32 Text
 makeObjectMap objects =
-  Map.fromAscList (zip (map Word32 [0 ..]) (listValue objects))
+  Map.fromAscList (zip (fmap Word32 [0 ..]) (listValue objects))
 
 getObjectName :: Map.Map Word32 Text -> Word32 -> Maybe Text
 getObjectName objectMap objectId = Map.lookup objectId objectMap
@@ -279,13 +279,13 @@ classHasLocation :: Text -> Bool
 classHasLocation className = Set.member className classesWithLocation
 
 classesWithLocation :: Set.Set Text
-classesWithLocation = Set.fromList (map stringToText rawClassesWithLocation)
+classesWithLocation = Set.fromList (fmap stringToText rawClassesWithLocation)
 
 classHasRotation :: Text -> Bool
 classHasRotation className = Set.member className classesWithRotation
 
 classesWithRotation :: Set.Set Text
-classesWithRotation = Set.fromList (map stringToText rawClassesWithRotation)
+classesWithRotation = Set.fromList (fmap stringToText rawClassesWithRotation)
 
 getAttributeIdLimit :: Map.Map Word32 Word32 -> Maybe Word
 getAttributeIdLimit attributeMap = do
