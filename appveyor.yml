@@ -10,6 +10,7 @@ environment:
 
 install:
   - powershell -File tools/install-stack.ps1
+  - powershell -File tools/install-github-release.ps1
 test_script:
   - stack --jobs 1 setup > nul
   - stack build --jobs 1 --only-dependencies --test rattletrap

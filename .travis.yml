@@ -20,6 +20,7 @@ env:
 
 before_install:
   - sh tools/install-stack.sh
+  - sh tools/install-github-release.sh
 script:
   - stack --jobs 1 setup
   - stack build --jobs 1 --only-dependencies --test rattletrap
