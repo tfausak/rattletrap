@@ -6,7 +6,12 @@ dependencies:
   - bytestring
   - filepath
   - process
-ghc-options: -Wall
+ghc-options:
+  - -Weverything
+  - -Wno-implicit-prelude
+  - -Wno-missing-import-lists
+  - -Wno-safe
+  - -Wno-unsafe
 
 executables:
   attach-binary:

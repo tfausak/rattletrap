@@ -1,6 +1,4 @@
-import Control.Monad (when)
 import System.Environment (getEnv, lookupEnv)
-import System.Exit (die)
 import System.FilePath (addExtension)
 import System.Process (callProcess)
 
