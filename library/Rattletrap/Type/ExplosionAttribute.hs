@@ -9,7 +9,8 @@ import Rattletrap.Type.Int32le
 import Rattletrap.Type.Vector
 
 data ExplosionAttribute = ExplosionAttribute
-  { explosionAttributeActorId :: Int32le
+  { explosionAttributeFlag :: Bool
+  , explosionAttributeActorId :: Int32le
   , explosionAttributeLocation :: Vector
   } deriving (Eq, Ord, Show)
 

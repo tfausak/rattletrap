@@ -10,7 +10,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 
 getExplosionAttribute :: BinaryBit.BitGet ExplosionAttribute
 getExplosionAttribute = do
-  False <- BinaryBit.getBool
+  flag <- BinaryBit.getBool
   actorId <- getInt32Bits
   location <- getVector
-  pure (ExplosionAttribute actorId location)
+  pure (ExplosionAttribute flag actorId location)
