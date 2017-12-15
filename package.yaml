@@ -31,8 +31,6 @@ dependencies:
 ghc-options: -Wall
 
 library:
-  default-extensions:
-    - Strict
   other-modules: Paths_rattletrap
   source-dirs: library
 
