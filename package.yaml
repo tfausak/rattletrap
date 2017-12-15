@@ -44,7 +44,7 @@ executable:
 tests:
   test:
     dependencies:
-      hspec: ^>= 2.4.4
+      HUnit: ^>= 1.6.0
       rattletrap:
       temporary: ^>= 1.2.1
     ghc-options:

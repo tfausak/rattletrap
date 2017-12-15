@@ -1,46 +1,43 @@
-import qualified Control.Exception as Exception
-import qualified Control.Monad as Monad
-import qualified Data.ByteString.Lazy as ByteString
-import qualified Rattletrap.Console.Main as Rattletrap
-import qualified System.FilePath as FilePath
-import qualified System.IO.Temp as Temp
-import qualified Test.Hspec as Hspec
+import Control.Exception (displayException, try)
+import Control.Monad (unless)
+import Data.ByteString.Lazy (readFile)
+import Prelude hiding (readFile)
+import Rattletrap.Console.Main (rattletrap)
+import System.FilePath (addExtension, joinPath)
+import System.IO.Temp (withSystemTempDirectory)
+import Text.Printf (printf)
 
-main :: IO ()
-main = Hspec.hspec spec
+import qualified Test.HUnit as Test
 
-spec :: Hspec.Spec
-spec = Hspec.describe "Rattletrap" (mapM_ (uncurry itCanRoundTrip) replays)
+main :: IO Test.Counts
+main = withSystemTempDirectory "rattletrap-" (Test.runTestTT . toTests)
 
-itCanRoundTrip :: String -> String -> Hspec.Spec
-itCanRoundTrip uuid description =
-  Hspec.it (specName uuid description) (specBody uuid)
+toTests :: FilePath -> Test.Test
+toTests directory = Test.TestList (fmap (toTest directory) replays)
 
-specName :: String -> String -> String
-specName uuid description = unwords [uuid, description]
+toTest :: FilePath -> (String, String) -> Test.Test
+toTest directory (uuid, name) = Test.TestLabel
+  (toLabel uuid name)
+  (Test.TestCase (toAssertion directory uuid))
 
-specBody :: String -> IO ()
-specBody uuid = do
-  let inputFile = pathToReplay uuid
-  result <- Exception.try (ByteString.readFile inputFile)
+toLabel :: String -> String -> String
+toLabel = printf "%s: %s"
+
+toAssertion :: FilePath -> String -> Test.Assertion
+toAssertion directory uuid = do
+  let inputFile = joinPath ["replays", addExtension uuid ".replay"]
+  result <- try (readFile inputFile)
   case result of
-    Left exception -> Hspec.pendingWith (Exception.displayException (exception :: Exception.SomeException))
-    Right input -> Temp.withSystemTempDirectory
-      "replay-"
-      ( \directory -> do
-        let jsonFile = FilePath.combine directory "replay.json"
-        Rattletrap.rattletrap "" ["-i", inputFile, "-o", jsonFile]
-        let outputFile = FilePath.combine directory "output.replay"
-        Rattletrap.rattletrap "" ["-i", jsonFile, "-o", outputFile]
-        output <- ByteString.readFile outputFile
-        Monad.unless
-          (output == input)
-          (Hspec.expectationFailure "output does not match input")
-      )
-
-pathToReplay :: String -> FilePath
-pathToReplay uuid =
-  FilePath.joinPath ["replays", FilePath.addExtension uuid ".replay"]
+    Left problem -> putStrLn (displayException (problem :: IOError))
+    Right input -> do
+      let jsonFile = joinPath [directory, addExtension uuid ".json"]
+      rattletrap "" ["--compact", "--input", inputFile, "--output", jsonFile]
+      let outputFile = joinPath [directory, addExtension uuid ".replay"]
+      rattletrap "" ["--input", jsonFile, "--output", outputFile]
+      output <- readFile outputFile
+      unless
+        (output == input)
+        (Test.assertFailure "output does not match input")
 
 replays :: [(String, String)]
 replays =
