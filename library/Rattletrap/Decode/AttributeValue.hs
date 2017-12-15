@@ -39,7 +39,7 @@ import Rattletrap.Type.Word32
 import Rattletrap.Type.Text
 
 import qualified Data.Binary.Bits.Get as BinaryBit
-import qualified Data.Map.Strict as Map
+import qualified Data.Map as Map
 
 getAttributeValue
   :: (Int, Int, Int)

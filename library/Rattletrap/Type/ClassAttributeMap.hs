@@ -21,9 +21,9 @@ import Rattletrap.Type.Text
 import Rattletrap.Type.List
 import Rattletrap.Type.CompressedWord
 
-import qualified Data.IntMap.Strict as IntMap
+import qualified Data.IntMap as IntMap
 import qualified Data.List as List
-import qualified Data.Map.Strict as Map
+import qualified Data.Map as Map
 import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
 import qualified Data.Text as Text
