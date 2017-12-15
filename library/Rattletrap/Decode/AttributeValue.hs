@@ -2,6 +2,7 @@ module Rattletrap.Decode.AttributeValue
   ( getAttributeValue
   ) where
 
+import Data.Semigroup ((<>))
 import Rattletrap.Type.AttributeValue
 import Rattletrap.Type.AttributeType
 import Rattletrap.Decode.AppliedDamageAttribute
@@ -139,7 +140,7 @@ getAttributeValue version objectMap name =
       AttributeTypeWeldedInfo -> do
         x <- getWeldedInfoAttribute
         pure (AttributeValueWeldedInfo x)
-    Nothing -> fail ("don't know how to get attribute value " ++ show name)
+    Nothing -> fail ("don't know how to get attribute value " <> show name)
 
 attributeTypes :: Map.Map Str AttributeType
 attributeTypes = Map.mapKeys toStr (Map.fromList rawAttributeTypes)

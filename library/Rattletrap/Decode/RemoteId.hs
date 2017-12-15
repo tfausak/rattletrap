@@ -2,6 +2,7 @@ module Rattletrap.Decode.RemoteId
   ( getRemoteId
   ) where
 
+import Data.Semigroup ((<>))
 import Rattletrap.Type.RemoteId
 import Rattletrap.Decode.Word64le
 import Rattletrap.Type.Word8le
@@ -32,4 +33,4 @@ getRemoteId (_, _, patchVersion) systemId = case word8leValue systemId of
   4 -> do
     word64 <- getWord64Bits
     pure (RemoteIdXbox word64)
-  _ -> fail ("unknown system id " ++ show systemId)
+  _ -> fail ("unknown system id " <> show systemId)

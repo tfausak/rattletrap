@@ -3,6 +3,7 @@ module Rattletrap.Decode.ProductAttribute
   , getProductAttribute
   ) where
 
+import Data.Semigroup ((<>))
 import Rattletrap.Type.ProductAttribute
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Word32le
@@ -49,9 +50,9 @@ getProductAttribute version objectMap = do
       _ ->
         fail
           ( "unknown object name "
-          ++ show objectName
-          ++ " for ID "
-          ++ show objectId
+          <> show objectName
+          <> " for ID "
+          <> show objectId
           )
-    Nothing -> fail ("missing object name for ID " ++ show objectId)
+    Nothing -> fail ("missing object name for ID " <> show objectId)
   pure (ProductAttribute flag objectId objectName value)

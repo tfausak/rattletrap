@@ -2,6 +2,7 @@ module Rattletrap.Decode.PropertyValue
   ( getPropertyValue
   ) where
 
+import Data.Semigroup ((<>))
 import Rattletrap.Type.PropertyValue
 import Rattletrap.Type.Str
 import Rattletrap.Decode.List
@@ -45,4 +46,4 @@ getPropertyValue getProperty kind = case fromStr kind of
   "StrProperty" -> do
     text <- getText
     pure (PropertyValueStr text)
-  _ -> fail ("don't know how to read property value " ++ show kind)
+  _ -> fail ("don't know how to read property value " <> show kind)

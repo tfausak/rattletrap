@@ -3,6 +3,7 @@ module Rattletrap.Encode.ProductAttribute
   , putProductAttribute
   ) where
 
+import Data.Semigroup ((<>))
 import Rattletrap.Type.ProductAttribute
 import Rattletrap.Encode.Word32le
 import Rattletrap.Type.Str
@@ -37,6 +38,6 @@ putProductAttribute attribute = do
               Left x -> putCompressedWord x
               Right x -> BinaryBit.putWord32be 31 x
       _ ->
-        fail ("unknown object name for product attribute " ++ show attribute)
+        fail ("unknown object name for product attribute " <> show attribute)
     Nothing ->
-      fail ("missing object name for product attribute " ++ show attribute)
+      fail ("missing object name for product attribute " <> show attribute)

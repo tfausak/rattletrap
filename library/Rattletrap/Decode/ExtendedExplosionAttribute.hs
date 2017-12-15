@@ -3,6 +3,8 @@ module Rattletrap.Decode.ExtendedExplosionAttribute
   ) where
 
 import Rattletrap.Type.ExtendedExplosionAttribute
+import Rattletrap.Type.ExplosionAttribute
+import Rattletrap.Decode.ExplosionAttribute
 import Rattletrap.Decode.Int32le
 import Rattletrap.Decode.Vector
 
@@ -10,9 +12,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 
 getExtendedExplosionAttribute :: BinaryBit.BitGet ExtendedExplosionAttribute
 getExtendedExplosionAttribute = do
-  False <- BinaryBit.getBool
-  actorId <- getInt32Bits
-  location <- getVector
+  x <- getExplosionAttribute
   unknown1 <- BinaryBit.getBool
   unknown2 <- getInt32Bits
-  pure (ExtendedExplosionAttribute actorId location unknown1 unknown2)
+  pure (ExtendedExplosionAttribute (explosionAttributeActorId x) (explosionAttributeLocation x) unknown1 unknown2)

@@ -12,7 +12,7 @@ import qualified Data.Map as Map
 getDictionary :: Binary.Get a -> Binary.Get (Dictionary a)
 getDictionary getValue = do
   (elements, lastKey) <- getElements getValue
-  let keys = map fst elements
+  let keys = fmap fst elements
   let value = Map.mapKeys strValue (Map.fromList elements)
   pure (Dictionary keys lastKey value)
 

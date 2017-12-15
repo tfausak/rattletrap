@@ -2,6 +2,7 @@ module Rattletrap.Encode.Dictionary
   ( putDictionary
   ) where
 
+import Data.Semigroup ((<>))
 import Rattletrap.Encode.Str
 import Rattletrap.Type.Str
 import Rattletrap.Type.Dictionary
@@ -16,7 +17,7 @@ putDictionary putValue dictionary = do
     ( \key -> do
       putText key
       case Map.lookup (strValue key) elements of
-        Nothing -> fail ("could not find key " ++ fromStr key)
+        Nothing -> fail ("could not find key " <> fromStr key)
         Just value -> putValue value
     )
     (dictionaryKeys dictionary)
