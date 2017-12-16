@@ -22,5 +22,5 @@ getReplay = do
   let version = getVersion (sectionBody header)
   let numFrames = getNumFrames (sectionBody header)
   let maxChannels = getMaxChannels (sectionBody header)
-  content <- getSection (getContent version numFrames maxChannels)
+  content <- getSection (decodeContent version numFrames maxChannels)
   pure (Replay header content)

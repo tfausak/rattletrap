@@ -1,14 +1,10 @@
 module Rattletrap.Decode.AttributeMapping
-  ( getAttributeMapping
+  ( decodeAttributeMapping
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word32le
 import Rattletrap.Type.AttributeMapping
 
-import qualified Data.Binary as Binary
-
-getAttributeMapping :: Binary.Get AttributeMapping
-getAttributeMapping = do
-  objectId <- getWord32
-  streamId <- getWord32
-  pure (AttributeMapping objectId streamId)
+decodeAttributeMapping :: Decode AttributeMapping
+decodeAttributeMapping = AttributeMapping <$> getWord32 <*> getWord32

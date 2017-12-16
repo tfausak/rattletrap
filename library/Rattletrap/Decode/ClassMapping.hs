@@ -1,15 +1,11 @@
 module Rattletrap.Decode.ClassMapping
-  ( getClassMapping
+  ( decodeClassMapping
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Str
 import Rattletrap.Decode.Word32le
 import Rattletrap.Type.ClassMapping
 
-import qualified Data.Binary as Binary
-
-getClassMapping :: Binary.Get ClassMapping
-getClassMapping = do
-  name <- getText
-  streamId <- getWord32
-  pure (ClassMapping name streamId)
+decodeClassMapping :: Decode ClassMapping
+decodeClassMapping = ClassMapping <$> getText <*> getWord32

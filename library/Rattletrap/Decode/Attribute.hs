@@ -1,6 +1,6 @@
 module Rattletrap.Decode.Attribute
-  ( decodeAttributes
-  , decodeAttribute
+  ( decodeAttributesBits
+  , decodeAttributeBits
   ) where
 
 import Data.Semigroup ((<>))
@@ -16,34 +16,37 @@ import Rattletrap.Type.Word32le
 
 import qualified Data.Binary.Bits.Get as BinaryBits
 
-decodeAttributes
+decodeAttributesBits
   :: (Int, Int, Int)
   -> ClassAttributeMap
   -> Map CompressedWord Word32le
   -> CompressedWord
   -> DecodeBits [Attribute]
-decodeAttributes version classes actors actor = do
+decodeAttributesBits version classes actors actor = do
   hasAttribute <- BinaryBits.getBool
   if hasAttribute
     then
       (:)
-      <$> decodeAttribute version classes actors actor
-      <*> decodeAttributes version classes actors actor
+      <$> decodeAttributeBits version classes actors actor
+      <*> decodeAttributesBits version classes actors actor
     else pure []
 
-decodeAttribute
+decodeAttributeBits
   :: (Int, Int, Int)
   -> ClassAttributeMap
   -> Map CompressedWord Word32le
   -> CompressedWord
   -> DecodeBits Attribute
-decodeAttribute version classes actors actor = do
+decodeAttributeBits version classes actors actor = do
   attributes <- lookupAttributeMap classes actors actor
   limit <- lookupAttributeIdLimit attributes actor
-  attribute <- getCompressedWord limit
+  attribute <- decodeCompressedWordBits limit
   name <- lookupAttributeName classes attributes attribute
   Attribute attribute name
-    <$> getAttributeValue version (classAttributeMapObjectMap classes) name
+    <$> decodeAttributeValueBits
+          version
+          (classAttributeMapObjectMap classes)
+          name
 
 lookupAttributeMap
   :: ClassAttributeMap

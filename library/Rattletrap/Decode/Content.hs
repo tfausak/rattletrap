@@ -1,9 +1,10 @@
 module Rattletrap.Decode.Content
-  ( getContent
+  ( decodeContent
   ) where
 
 import Rattletrap.Decode.Cache
 import Rattletrap.Decode.ClassMapping
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Frame
 import Rattletrap.Decode.KeyFrame
 import Rattletrap.Decode.List
@@ -16,12 +17,10 @@ import Rattletrap.Type.Content
 import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes
 
-import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Get as Binary
-import qualified Data.Map as Map
 
-getContent
+decodeContent
   :: (Int, Int, Int)
   -- ^ Version numbers, usually from 'Rattletrap.Header.getVersion'.
   -> Int
@@ -30,36 +29,26 @@ getContent
   -> Word
   -- ^ The maximum number of channels in the stream, usually from
   -- 'Rattletrap.Header.getMaxChannels'.
-  -> Binary.Get Content
-getContent version numFrames maxChannels = do
-  levels <- getList getText
-  keyFrames <- getList getKeyFrame
-  streamSize <- getWord32
-  stream <- Binary.getLazyByteString (fromIntegral (word32leValue streamSize))
-  messages <- getList getMessage
-  marks <- getList getMark
-  packages <- getList getText
-  objects <- getList getText
-  names <- getList getText
-  classMappings <- getList getClassMapping
-  caches <- getList getCache
+  -> Decode Content
+decodeContent version numFrames maxChannels = do
+  (levels, keyFrames, streamSize) <-
+    (,,) <$> getList getText <*> getList getKeyFrame <*> getWord32
+  (stream, messages, marks, packages, objects, names, classMappings, caches) <-
+    (,,,,,,,)
+    <$> Binary.getLazyByteString (fromIntegral (word32leValue streamSize))
+    <*> getList getMessage
+    <*> getList getMark
+    <*> getList getText
+    <*> getList getText
+    <*> getList getText
+    <*> getList decodeClassMapping
+    <*> getList decodeCache
   let
     classAttributeMap =
       makeClassAttributeMap objects classMappings caches names
-  let
-    frames = Binary.runGet
-      ( BinaryBit.runBitGet
-        ( do
-          (theFrames, _) <- getFrames
-            version
-            numFrames
-            maxChannels
-            classAttributeMap
-            Map.empty
-          pure theFrames
-        )
-      )
-      (reverseBytes stream)
+    bitGet = getFrames version numFrames maxChannels classAttributeMap mempty
+    get = BinaryBit.runBitGet (fst <$> bitGet)
+    frames = Binary.runGet get (reverseBytes stream)
   pure
     ( Content
       levels

@@ -1,16 +1,17 @@
 module Rattletrap.Decode.CompressedWordVector
-  ( getCompressedWordVector
+  ( decodeCompressedWordVectorBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Type.CompressedWordVector
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+decodeCompressedWordVectorBits :: DecodeBits CompressedWordVector
+decodeCompressedWordVectorBits =
+  CompressedWordVector
+    <$> decodeCompressedWordBits limit
+    <*> decodeCompressedWordBits limit
+    <*> decodeCompressedWordBits limit
 
-getCompressedWordVector :: BinaryBit.BitGet CompressedWordVector
-getCompressedWordVector = do
-  let limit = 65536 :: Word
-  x <- getCompressedWord limit
-  y <- getCompressedWord limit
-  z <- getCompressedWord limit
-  pure (CompressedWordVector x y z)
+limit :: Word
+limit = 65536

@@ -48,7 +48,7 @@ getReplication version maxChannels classAttributeMap actorMap = do
   if not hasReplication
     then pure Nothing
     else do
-      actorId <- getCompressedWord maxChannels
+      actorId <- decodeCompressedWordBits maxChannels
       (value, newActorMap) <- getReplicationValue
         version
         classAttributeMap

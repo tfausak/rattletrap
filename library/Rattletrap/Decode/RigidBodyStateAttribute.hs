@@ -12,7 +12,7 @@ getRigidBodyStateAttribute :: BinaryBit.BitGet RigidBodyStateAttribute
 getRigidBodyStateAttribute = do
   sleeping <- BinaryBit.getBool
   location <- getVector
-  rotation <- getCompressedWordVector
+  rotation <- decodeCompressedWordVectorBits
   linearVelocity <- if sleeping
     then pure Nothing
     else do

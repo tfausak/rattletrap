@@ -14,7 +14,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 getReservationAttribute
   :: (Int, Int, Int) -> BinaryBit.BitGet ReservationAttribute
 getReservationAttribute version = do
-  number <- getCompressedWord 7
+  number <- decodeCompressedWordBits 7
   uniqueId <- getUniqueIdAttribute version
   name <- if uniqueIdAttributeSystemId uniqueId == Word8le 0
     then pure Nothing

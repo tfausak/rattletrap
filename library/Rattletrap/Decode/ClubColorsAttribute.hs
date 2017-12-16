@@ -1,16 +1,17 @@
 module Rattletrap.Decode.ClubColorsAttribute
-  ( getClubColorsAttribute
+  ( decodeClubColorsAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word8le
 import Rattletrap.Type.ClubColorsAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 
-getClubColorsAttribute :: BinaryBit.BitGet ClubColorsAttribute
-getClubColorsAttribute = do
-  blueFlag <- BinaryBit.getBool
-  blueColor <- getWord8Bits
-  orangeFlag <- BinaryBit.getBool
-  orangeColor <- getWord8Bits
-  pure (ClubColorsAttribute blueFlag blueColor orangeFlag orangeColor)
+decodeClubColorsAttributeBits :: DecodeBits ClubColorsAttribute
+decodeClubColorsAttributeBits =
+  ClubColorsAttribute
+    <$> BinaryBits.getBool
+    <*> getWord8Bits
+    <*> BinaryBits.getBool
+    <*> getWord8Bits

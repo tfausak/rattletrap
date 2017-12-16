@@ -10,11 +10,11 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 
 getVector :: BinaryBit.BitGet Vector
 getVector = do
-  bitSize <- getCompressedWord 19
+  bitSize <- decodeCompressedWordBits 19
   let limit = 2 ^ (compressedWordValue bitSize + 2) :: Word
-  dx <- getCompressedWord limit
-  dy <- getCompressedWord limit
-  dz <- getCompressedWord limit
+  dx <- decodeCompressedWordBits limit
+  dy <- decodeCompressedWordBits limit
+  dz <- decodeCompressedWordBits limit
   let
     fromCompressedWord :: Num a => CompressedWord -> a
     fromCompressedWord = fromIntegral . compressedWordValue

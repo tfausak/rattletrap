@@ -41,7 +41,7 @@ getProductAttribute version objectMap = do
           x <- BinaryBit.getWord32be 31
           pure (Just (Right x))
         else do
-          x <- getCompressedWord 13
+          x <- decodeCompressedWordBits 13
           pure (Just (Left x))
       "TAGame.ProductAttribute_UserColor_TA" -> do
         hasValue <- BinaryBit.getBool

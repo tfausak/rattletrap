@@ -1,12 +1,11 @@
 module Rattletrap.Decode.BooleanAttribute
-  ( getBooleanAttribute
+  ( decodeBooleanAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Type.BooleanAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 
-getBooleanAttribute :: BinaryBit.BitGet BooleanAttribute
-getBooleanAttribute = do
-  value <- BinaryBit.getBool
-  pure (BooleanAttribute value)
+decodeBooleanAttributeBits :: DecodeBits BooleanAttribute
+decodeBooleanAttributeBits = BooleanAttribute <$> BinaryBits.getBool

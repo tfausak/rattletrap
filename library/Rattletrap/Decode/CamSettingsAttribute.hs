@@ -1,33 +1,27 @@
 module Rattletrap.Decode.CamSettingsAttribute
-  ( getCamSettingsAttribute
+  ( decodeCamSettingsAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Float32le
 import Rattletrap.Type.CamSettingsAttribute
+import Rattletrap.Type.Float32le
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+decodeCamSettingsAttributeBits
+  :: (Int, Int, Int) -> DecodeBits CamSettingsAttribute
+decodeCamSettingsAttributeBits version =
+  CamSettingsAttribute
+    <$> getFloat32Bits
+    <*> getFloat32Bits
+    <*> getFloat32Bits
+    <*> getFloat32Bits
+    <*> getFloat32Bits
+    <*> getFloat32Bits
+    <*> getTransitionSpeed version
 
-getCamSettingsAttribute
-  :: (Int, Int, Int) -> BinaryBit.BitGet CamSettingsAttribute
-getCamSettingsAttribute version = do
-  fov <- getFloat32Bits
-  height <- getFloat32Bits
-  angle <- getFloat32Bits
-  distance <- getFloat32Bits
-  stiffness <- getFloat32Bits
-  swivelSpeed <- getFloat32Bits
-  transitionSpeed <- if version >= (868, 20, 0)
-    then do
-      x <- getFloat32Bits
-      pure (Just x)
-    else pure Nothing
-  pure
-    ( CamSettingsAttribute
-      fov
-      height
-      angle
-      distance
-      stiffness
-      swivelSpeed
-      transitionSpeed
-    )
+getTransitionSpeed :: (Int, Int, Int) -> DecodeBits (Maybe Float32le)
+getTransitionSpeed version =
+  if hasTransitionSpeed version then Just <$> getFloat32Bits else pure Nothing
+
+hasTransitionSpeed :: (Int, Int, Int) -> Bool
+hasTransitionSpeed version = version >= (868, 20, 0)

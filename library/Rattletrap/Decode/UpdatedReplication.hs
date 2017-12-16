@@ -18,5 +18,5 @@ getUpdatedReplication
   -> CompressedWord
   -> BinaryBit.BitGet UpdatedReplication
 getUpdatedReplication version classAttributeMap actorMap actorId = do
-  attributes <- decodeAttributes version classAttributeMap actorMap actorId
+  attributes <- decodeAttributesBits version classAttributeMap actorMap actorId
   pure (UpdatedReplication attributes)
