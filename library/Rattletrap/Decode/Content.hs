@@ -48,7 +48,9 @@ decodeContent version numFrames maxChannels = do
       makeClassAttributeMap objects classMappings caches names
     bitGet = getFrames version numFrames maxChannels classAttributeMap mempty
     get = BinaryBit.runBitGet (fst <$> bitGet)
-    frames = Binary.runGet get (reverseBytes stream)
+  frames <- case Binary.runGetOrFail get (reverseBytes stream) of
+    Left (_, _, problem) -> fail problem
+    Right (_, _, frames) -> pure frames
   pure
     ( Content
       levels
