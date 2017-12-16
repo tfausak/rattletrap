@@ -37,5 +37,5 @@ getReplicationValue version classAttributeMap actorMap actorId = do
           x <- getUpdatedReplication version classAttributeMap actorMap actorId
           pure (ReplicationValueUpdated x, actorMap)
     else do
-      x <- getDestroyedReplication
+      x <- decodeDestroyedReplicationBits
       pure (ReplicationValueDestroyed x, actorMap)

@@ -1,7 +1,8 @@
 module Rattletrap.Decode.DamageStateAttribute
-  ( getDamageStateAttribute
+  ( decodeDamageStateAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int32le
 import Rattletrap.Decode.Vector
 import Rattletrap.Decode.Word8le
@@ -9,20 +10,12 @@ import Rattletrap.Type.DamageStateAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 
-getDamageStateAttribute :: BinaryBit.BitGet DamageStateAttribute
-getDamageStateAttribute = do
-  unknown1 <- getWord8Bits
-  unknown2 <- BinaryBit.getBool
-  unknown3 <- getInt32Bits
-  unknown4 <- getVector
-  unknown5 <- BinaryBit.getBool
-  unknown6 <- BinaryBit.getBool
-  pure
-    ( DamageStateAttribute
-      unknown1
-      unknown2
-      unknown3
-      unknown4
-      unknown5
-      unknown6
-    )
+decodeDamageStateAttributeBits :: DecodeBits DamageStateAttribute
+decodeDamageStateAttributeBits =
+  DamageStateAttribute
+    <$> getWord8Bits
+    <*> BinaryBit.getBool
+    <*> getInt32Bits
+    <*> getVector
+    <*> BinaryBit.getBool
+    <*> BinaryBit.getBool

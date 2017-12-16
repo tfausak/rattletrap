@@ -61,8 +61,9 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypeClubColors ->
       AttributeValueClubColors <$> decodeClubColorsAttributeBits
     AttributeTypeDamageState ->
-      AttributeValueDamageState <$> getDamageStateAttribute
-    AttributeTypeDemolish -> AttributeValueDemolish <$> getDemolishAttribute
+      AttributeValueDamageState <$> decodeDamageStateAttributeBits
+    AttributeTypeDemolish ->
+      AttributeValueDemolish <$> decodeDemolishAttributeBits
     AttributeTypeEnum -> AttributeValueEnum <$> getEnumAttribute
     AttributeTypeExplosion ->
       AttributeValueExplosion <$> getExplosionAttribute

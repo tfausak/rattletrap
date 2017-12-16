@@ -1,10 +1,9 @@
 module Rattletrap.Decode.DestroyedReplication
-  ( getDestroyedReplication
+  ( decodeDestroyedReplicationBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Type.DestroyedReplication
 
-import qualified Data.Binary.Bits.Get as BinaryBit
-
-getDestroyedReplication :: BinaryBit.BitGet DestroyedReplication
-getDestroyedReplication = pure DestroyedReplication
+decodeDestroyedReplicationBits :: DecodeBits DestroyedReplication
+decodeDestroyedReplicationBits = pure DestroyedReplication
