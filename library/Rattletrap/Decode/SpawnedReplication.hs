@@ -11,31 +11,34 @@ import Rattletrap.Type.SpawnedReplication
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
+import qualified Control.Monad.Trans.Class as Trans
+import qualified Control.Monad.Trans.State as State
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map
 
 getSpawnedReplication
   :: (Int, Int, Int)
   -> ClassAttributeMap
-  -> Map.Map CompressedWord Word32le
   -> CompressedWord
-  -> BinaryBit.BitGet
-       (SpawnedReplication, Map.Map CompressedWord Word32le)
-getSpawnedReplication version classAttributeMap actorMap actorId = do
-  flag <- BinaryBit.getBool
+  -> State.StateT
+       (Map.Map CompressedWord Word32le)
+       BinaryBit.BitGet
+       SpawnedReplication
+getSpawnedReplication version classAttributeMap actorId = do
+  flag <- Trans.lift BinaryBit.getBool
   nameIndex <- if version < (868, 14, 0)
     then pure Nothing
     else do
-      nameIndex <- getWord32Bits
+      nameIndex <- Trans.lift getWord32Bits
       pure (Just nameIndex)
   name <- lookupName classAttributeMap nameIndex
-  objectId <- getWord32Bits
-  let newActorMap = Map.insert actorId objectId actorMap
+  objectId <- Trans.lift getWord32Bits
+  State.modify (Map.insert actorId objectId)
   objectName <- lookupObjectName classAttributeMap objectId
   className <- lookupClassName objectName
   let hasLocation = classHasLocation className
   let hasRotation = classHasRotation className
-  initialization <- getInitialization hasLocation hasRotation
+  initialization <- Trans.lift (getInitialization hasLocation hasRotation)
   pure
     ( SpawnedReplication
       flag
@@ -45,7 +48,6 @@ getSpawnedReplication version classAttributeMap actorMap actorId = do
       objectName
       className
       initialization
-    , newActorMap
     )
 
 lookupName :: Monad m => ClassAttributeMap -> Maybe Word32le -> m (Maybe Str)

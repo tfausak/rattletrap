@@ -28,6 +28,7 @@ dependencies:
   http-client: ^>= 0.5.7
   template-haskell: ^>= 2.12.0
   text: ^>= 1.2.2
+  transformers: ^>= 0.5.2
 ghc-options:
   - -Weverything
   - -Wno-implicit-prelude
