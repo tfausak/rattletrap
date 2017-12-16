@@ -1,23 +1,14 @@
 module Rattletrap.Decode.ExtendedExplosionAttribute
-  ( getExtendedExplosionAttribute
+  ( decodeExtendedExplosionAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.ExplosionAttribute
-import Rattletrap.Decode.Int32le
-import Rattletrap.Type.ExplosionAttribute
+import Rattletrap.Decode.FlaggedIntAttribute
 import Rattletrap.Type.ExtendedExplosionAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
-
-getExtendedExplosionAttribute :: BinaryBit.BitGet ExtendedExplosionAttribute
-getExtendedExplosionAttribute = do
-  x <- decodeExplosionAttributeBits
-  unknown1 <- BinaryBit.getBool
-  unknown2 <- getInt32Bits
-  pure
-    ( ExtendedExplosionAttribute
-      (explosionAttributeActorId x)
-      (explosionAttributeLocation x)
-      unknown1
-      unknown2
-    )
+decodeExtendedExplosionAttributeBits :: DecodeBits ExtendedExplosionAttribute
+decodeExtendedExplosionAttributeBits =
+  ExtendedExplosionAttribute
+    <$> decodeExplosionAttributeBits
+    <*> getFlaggedIntAttribute

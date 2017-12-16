@@ -5,14 +5,12 @@ module Rattletrap.Type.ExtendedExplosionAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Int32le
-import Rattletrap.Type.Vector
+import Rattletrap.Type.ExplosionAttribute
+import Rattletrap.Type.FlaggedIntAttribute
 
 data ExtendedExplosionAttribute = ExtendedExplosionAttribute
-  { extendedExplosionAttributeActorId :: Int32le
-  , extendedExplosionAttributeLocation :: Vector
-  , extendedExplosionAttributeUnknown1 :: Bool
-  , extendedExplosionAttributeUnknown2 :: Int32le
+  { extendedExplosionAttributeExplosion :: ExplosionAttribute
+  , extendedExplosionAttributeUnknown :: FlaggedIntAttribute
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''ExtendedExplosionAttribute)

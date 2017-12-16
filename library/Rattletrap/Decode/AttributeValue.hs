@@ -68,7 +68,7 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypeExplosion ->
       AttributeValueExplosion <$> decodeExplosionAttributeBits
     AttributeTypeExtendedExplosion ->
-      AttributeValueExtendedExplosion <$> getExtendedExplosionAttribute
+      AttributeValueExtendedExplosion <$> decodeExtendedExplosionAttributeBits
     AttributeTypeFlaggedInt ->
       AttributeValueFlaggedInt <$> getFlaggedIntAttribute
     AttributeTypeFloat -> AttributeValueFloat <$> getFloatAttribute
