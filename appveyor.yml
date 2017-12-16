@@ -15,6 +15,7 @@ cache:
 
 install:
   - powershell -File tools/install-stack.ps1
+  - stack path
   - powershell -File tools/install-github-release.ps1
 
 test_script:
