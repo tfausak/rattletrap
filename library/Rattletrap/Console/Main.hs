@@ -40,14 +40,14 @@ rattletrap name arguments = do
 
 getDecoder :: Config -> LazyBytes.ByteString -> Either String Rattletrap.Replay
 getDecoder config = case getMode config of
-  ModeDecode -> Rattletrap.decodeReplay
-  ModeEncode -> Rattletrap.decodeJson
+  ModeDecode -> Rattletrap.decodeReplayFile
+  ModeEncode -> Rattletrap.decodeReplayJson
 
 getEncoder :: Config -> Rattletrap.Replay -> LazyBytes.ByteString
 getEncoder config = case getMode config of
   ModeDecode ->
-    if configCompact config then Json.encode else Rattletrap.encodeJson
-  ModeEncode -> Rattletrap.encodeReplay
+    if configCompact config then Json.encode else Rattletrap.encodeReplayJson
+  ModeEncode -> Rattletrap.encodeReplayFile
 
 getInput :: Config -> IO LazyBytes.ByteString
 getInput config = case configInput config of

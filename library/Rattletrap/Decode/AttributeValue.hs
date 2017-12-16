@@ -51,7 +51,7 @@ getAttributeValue version objectMap name =
   case Map.lookup name attributeTypes of
     Just constructor -> case constructor of
       AttributeTypeAppliedDamage -> do
-        x <- getAppliedDamageAttribute
+        x <- decodeAppliedDamageAttributeBits
         pure (AttributeValueAppliedDamage x)
       AttributeTypeBoolean -> do
         x <- getBooleanAttribute
