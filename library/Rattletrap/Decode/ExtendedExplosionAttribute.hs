@@ -11,7 +11,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 
 getExtendedExplosionAttribute :: BinaryBit.BitGet ExtendedExplosionAttribute
 getExtendedExplosionAttribute = do
-  x <- getExplosionAttribute
+  x <- decodeExplosionAttributeBits
   unknown1 <- BinaryBit.getBool
   unknown2 <- getInt32Bits
   pure

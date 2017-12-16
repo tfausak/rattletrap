@@ -1,12 +1,11 @@
 module Rattletrap.Decode.EnumAttribute
-  ( getEnumAttribute
+  ( decodeEnumAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Type.EnumAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 
-getEnumAttribute :: BinaryBit.BitGet EnumAttribute
-getEnumAttribute = do
-  value <- BinaryBit.getWord16be 11
-  pure (EnumAttribute value)
+decodeEnumAttributeBits :: DecodeBits EnumAttribute
+decodeEnumAttributeBits = EnumAttribute <$> BinaryBit.getWord16be 11

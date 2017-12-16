@@ -64,9 +64,9 @@ decodeAttributeValueBits version objectMap name = do
       AttributeValueDamageState <$> decodeDamageStateAttributeBits
     AttributeTypeDemolish ->
       AttributeValueDemolish <$> decodeDemolishAttributeBits
-    AttributeTypeEnum -> AttributeValueEnum <$> getEnumAttribute
+    AttributeTypeEnum -> AttributeValueEnum <$> decodeEnumAttributeBits
     AttributeTypeExplosion ->
-      AttributeValueExplosion <$> getExplosionAttribute
+      AttributeValueExplosion <$> decodeExplosionAttributeBits
     AttributeTypeExtendedExplosion ->
       AttributeValueExtendedExplosion <$> getExtendedExplosionAttribute
     AttributeTypeFlaggedInt ->
