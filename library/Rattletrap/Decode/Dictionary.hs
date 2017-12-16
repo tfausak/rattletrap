@@ -10,7 +10,7 @@ import Rattletrap.Type.Str
 decodeDictionary :: Decode a -> Decode (Dictionary a)
 decodeDictionary decodeValue = do
   key <- getText
-  case take 4 (fromStr key) of
+  case filter (/= '\x00') (fromStr key) of
     "None" -> pure (DictionaryEnd key)
     _ ->
       DictionaryElement key <$> decodeValue <*> decodeDictionary decodeValue

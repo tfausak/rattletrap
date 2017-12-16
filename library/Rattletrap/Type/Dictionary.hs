@@ -20,7 +20,7 @@ data Dictionary a
 $(deriveJson ''Dictionary)
 
 dictionaryKeys :: Dictionary a -> [Str]
-dictionaryKeys = map fst . toList
+dictionaryKeys = fmap fst . toList
 
 dictionaryLastKey :: Dictionary a -> Str
 dictionaryLastKey x = case x of
