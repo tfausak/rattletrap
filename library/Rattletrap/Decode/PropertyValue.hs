@@ -18,7 +18,7 @@ import qualified Data.Binary as Binary
 getPropertyValue :: Binary.Get a -> Str -> Binary.Get (PropertyValue a)
 getPropertyValue getProperty kind = case fromStr kind of
   "ArrayProperty" -> do
-    list <- getList (getDictionary getProperty)
+    list <- getList (decodeDictionary getProperty)
     pure (PropertyValueArray list)
   "BoolProperty" -> do
     word8 <- getWord8

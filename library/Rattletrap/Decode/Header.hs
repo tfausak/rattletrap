@@ -17,7 +17,7 @@ getHeader = do
   licenseeVersion <- getWord32
   patchVersion <- getPatchVersion engineVersion licenseeVersion
   label <- getText
-  properties <- getDictionary getProperty
+  properties <- decodeDictionary getProperty
   pure (Header engineVersion licenseeVersion patchVersion label properties)
 
 getPatchVersion :: Word32le -> Word32le -> Binary.Get (Maybe Word32le)
