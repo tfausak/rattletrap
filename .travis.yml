@@ -42,7 +42,6 @@ env:
 
 before_install:
   - sh tools/install-stack.sh
-  - stack path
   - sh tools/install-github-release.sh
 
 script:
