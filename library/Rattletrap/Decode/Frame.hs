@@ -44,8 +44,8 @@ getFrame
   -> Map.Map CompressedWord Word32le
   -> BinaryBit.BitGet (Frame, Map.Map CompressedWord Word32le)
 getFrame version maxChannels classAttributeMap actorMap = do
-  time <- getFloat32Bits
-  delta <- getFloat32Bits
+  time <- decodeFloat32leBits
+  delta <- decodeFloat32leBits
   (replications, newActorMap) <- getReplications
     version
     maxChannels

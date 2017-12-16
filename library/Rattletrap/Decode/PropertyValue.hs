@@ -32,7 +32,7 @@ getPropertyValue getProperty kind = case fromStr kind of
         pure (Just v)
     pure (PropertyValueByte k v)
   "FloatProperty" -> do
-    float32 <- getFloat32
+    float32 <- decodeFloat32le
     pure (PropertyValueFloat float32)
   "IntProperty" -> do
     int32 <- getInt32

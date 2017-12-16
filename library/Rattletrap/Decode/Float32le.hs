@@ -1,21 +1,15 @@
 module Rattletrap.Decode.Float32le
-  ( getFloat32
-  , getFloat32Bits
+  ( decodeFloat32le
+  , decodeFloat32leBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Type.Float32le
-import Rattletrap.Utility.Bytes
 
-import qualified Data.Binary as Binary
-import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Get as Binary
 
-getFloat32 :: Binary.Get Float32le
-getFloat32 = do
-  float32 <- Binary.getFloatle
-  pure (Float32le float32)
+decodeFloat32le :: Decode Float32le
+decodeFloat32le = Float32le <$> Binary.getFloatle
 
-getFloat32Bits :: BinaryBit.BitGet Float32le
-getFloat32Bits = do
-  bytes <- BinaryBit.getLazyByteString 4
-  pure (Binary.runGet getFloat32 (reverseBytes bytes))
+decodeFloat32leBits :: DecodeBits Float32le
+decodeFloat32leBits = toBits decodeFloat32le 4

@@ -1,14 +1,13 @@
 module Rattletrap.Decode.FlaggedIntAttribute
-  ( getFlaggedIntAttribute
+  ( decodeFlaggedIntAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int32le
 import Rattletrap.Type.FlaggedIntAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 
-getFlaggedIntAttribute :: BinaryBit.BitGet FlaggedIntAttribute
-getFlaggedIntAttribute = do
-  flag <- BinaryBit.getBool
-  int <- getInt32Bits
-  pure (FlaggedIntAttribute flag int)
+decodeFlaggedIntAttributeBits :: DecodeBits FlaggedIntAttribute
+decodeFlaggedIntAttributeBits =
+  FlaggedIntAttribute <$> BinaryBit.getBool <*> getInt32Bits

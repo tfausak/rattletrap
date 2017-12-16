@@ -10,7 +10,7 @@ import qualified Data.Binary as Binary
 
 getKeyFrame :: Binary.Get KeyFrame
 getKeyFrame = do
-  time <- getFloat32
+  time <- decodeFloat32le
   frame <- getWord32
   position <- getWord32
   pure (KeyFrame time frame position)

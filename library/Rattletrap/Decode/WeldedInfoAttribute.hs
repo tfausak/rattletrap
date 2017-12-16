@@ -15,6 +15,6 @@ getWeldedInfoAttribute = do
   active <- BinaryBit.getBool
   actorId <- getInt32Bits
   offset <- getVector
-  mass <- getFloat32Bits
+  mass <- decodeFloat32leBits
   rotation <- getInt8Vector
   pure (WeldedInfoAttribute active actorId offset mass rotation)

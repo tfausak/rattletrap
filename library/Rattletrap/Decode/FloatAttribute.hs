@@ -1,13 +1,10 @@
 module Rattletrap.Decode.FloatAttribute
-  ( getFloatAttribute
+  ( decodeFloatAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Float32le
 import Rattletrap.Type.FloatAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
-
-getFloatAttribute :: BinaryBit.BitGet FloatAttribute
-getFloatAttribute = do
-  value <- getFloat32Bits
-  pure (FloatAttribute value)
+decodeFloatAttributeBits :: DecodeBits FloatAttribute
+decodeFloatAttributeBits = FloatAttribute <$> decodeFloat32leBits

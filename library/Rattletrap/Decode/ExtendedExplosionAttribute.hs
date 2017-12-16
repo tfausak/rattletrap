@@ -11,4 +11,4 @@ decodeExtendedExplosionAttributeBits :: DecodeBits ExtendedExplosionAttribute
 decodeExtendedExplosionAttributeBits =
   ExtendedExplosionAttribute
     <$> decodeExplosionAttributeBits
-    <*> getFlaggedIntAttribute
+    <*> decodeFlaggedIntAttributeBits
