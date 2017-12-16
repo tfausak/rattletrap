@@ -1,13 +1,16 @@
 module Rattletrap.Decode.GameModeAttribute
-  ( getGameModeAttribute
+  ( decodeGameModeAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Type.GameModeAttribute
 
 import qualified Data.Binary.Bits.Get as BinaryBit
 
-getGameModeAttribute :: (Int, Int, Int) -> BinaryBit.BitGet GameModeAttribute
-getGameModeAttribute version = do
-  let numBits = if version < (868, 12, 0) then 2 else 8 :: Int
-  word <- BinaryBit.getWord8 numBits
-  pure (GameModeAttribute numBits word)
+decodeGameModeAttributeBits :: (Int, Int, Int) -> DecodeBits GameModeAttribute
+decodeGameModeAttributeBits version =
+  GameModeAttribute <$> pure (numBits version) <*> BinaryBit.getWord8
+    (numBits version)
+
+numBits :: (Int, Int, Int) -> Int
+numBits version = if version < (868, 12, 0) then 2 else 8

@@ -1,7 +1,8 @@
 module Rattletrap.Decode.Header
-  ( getHeader
+  ( decodeHeader
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Dictionary
 import Rattletrap.Decode.Property
 import Rattletrap.Decode.Str
@@ -9,23 +10,17 @@ import Rattletrap.Decode.Word32le
 import Rattletrap.Type.Header
 import Rattletrap.Type.Word32le
 
-import qualified Data.Binary as Binary
+decodeHeader :: Decode Header
+decodeHeader = do
+  (major, minor) <- (,) <$> getWord32 <*> getWord32
+  Header major minor
+    <$> decodePatch major minor
+    <*> getText
+    <*> decodeDictionary getProperty
 
-getHeader :: Binary.Get Header
-getHeader = do
-  engineVersion <- getWord32
-  licenseeVersion <- getWord32
-  patchVersion <- getPatchVersion engineVersion licenseeVersion
-  label <- getText
-  properties <- decodeDictionary getProperty
-  pure (Header engineVersion licenseeVersion patchVersion label properties)
-
-getPatchVersion :: Word32le -> Word32le -> Binary.Get (Maybe Word32le)
-getPatchVersion major minor = if hasPatchVersion major minor
-  then do
-    patchVersion <- getWord32
-    pure (Just patchVersion)
-  else pure Nothing
+decodePatch :: Word32le -> Word32le -> Decode (Maybe Word32le)
+decodePatch major minor =
+  if hasPatchVersion major minor then Just <$> getWord32 else pure Nothing
 
 hasPatchVersion :: Word32le -> Word32le -> Bool
 hasPatchVersion major minor = major >= Word32le 868 && minor >= Word32le 18

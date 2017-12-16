@@ -48,7 +48,7 @@ decodeContent version numFrames maxChannels = do
     classAttributeMap =
       makeClassAttributeMap objects classMappings caches names
     bitGet = State.evalStateT
-      (getFrames version numFrames maxChannels classAttributeMap)
+      (decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
     get = BinaryBit.runBitGet bitGet
   frames <- case Binary.runGetOrFail get (reverseBytes stream) of

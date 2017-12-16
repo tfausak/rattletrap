@@ -18,7 +18,7 @@ import qualified Data.Binary as Binary
 -- @
 getReplay :: Binary.Get Replay
 getReplay = do
-  header <- getSection getHeader
+  header <- getSection decodeHeader
   let version = getVersion (sectionBody header)
   let numFrames = getNumFrames (sectionBody header)
   let maxChannels = getMaxChannels (sectionBody header)

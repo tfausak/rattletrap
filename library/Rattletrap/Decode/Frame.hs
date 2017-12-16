@@ -1,6 +1,6 @@
 module Rattletrap.Decode.Frame
-  ( getFrames
-  , getFrame
+  ( decodeFramesBits
+  , decodeFrameBits
   ) where
 
 import Rattletrap.Decode.Float32le
@@ -15,7 +15,7 @@ import qualified Control.Monad.Trans.State as State
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map
 
-getFrames
+decodeFramesBits
   :: (Int, Int, Int)
   -> Int
   -> Word
@@ -24,14 +24,14 @@ getFrames
        (Map.Map CompressedWord Word32le)
        BinaryBit.BitGet
        [Frame]
-getFrames version numFrames maxChannels classAttributeMap = if numFrames <= 0
+decodeFramesBits version count limit classes = if count <= 0
   then pure []
-  else do
-    frame <- getFrame version maxChannels classAttributeMap
-    frames <- getFrames version (numFrames - 1) maxChannels classAttributeMap
-    pure (frame : frames)
+  else
+    (:)
+    <$> decodeFrameBits version limit classes
+    <*> decodeFramesBits version (count - 1) limit classes
 
-getFrame
+decodeFrameBits
   :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
@@ -39,8 +39,8 @@ getFrame
        (Map.Map CompressedWord Word32le)
        BinaryBit.BitGet
        Frame
-getFrame version maxChannels classAttributeMap = do
-  time <- Trans.lift decodeFloat32leBits
-  delta <- Trans.lift decodeFloat32leBits
-  replications <- getReplications version maxChannels classAttributeMap
-  pure (Frame time delta replications)
+decodeFrameBits version limit classes =
+  Frame
+    <$> Trans.lift decodeFloat32leBits
+    <*> Trans.lift decodeFloat32leBits
+    <*> getReplications version limit classes

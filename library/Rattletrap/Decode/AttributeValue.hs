@@ -73,7 +73,7 @@ decodeAttributeValueBits version objectMap name = do
       AttributeValueFlaggedInt <$> decodeFlaggedIntAttributeBits
     AttributeTypeFloat -> AttributeValueFloat <$> decodeFloatAttributeBits
     AttributeTypeGameMode ->
-      AttributeValueGameMode <$> getGameModeAttribute version
+      AttributeValueGameMode <$> decodeGameModeAttributeBits version
     AttributeTypeInt -> AttributeValueInt <$> getIntAttribute
     AttributeTypeLoadout -> AttributeValueLoadout <$> getLoadoutAttribute
     AttributeTypeLoadoutOnline ->
