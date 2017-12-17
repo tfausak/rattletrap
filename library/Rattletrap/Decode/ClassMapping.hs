@@ -8,4 +8,4 @@ import Rattletrap.Decode.Word32le
 import Rattletrap.Type.ClassMapping
 
 decodeClassMapping :: Decode ClassMapping
-decodeClassMapping = ClassMapping <$> getText <*> getWord32
+decodeClassMapping = ClassMapping <$> decodeStr <*> decodeWord32le

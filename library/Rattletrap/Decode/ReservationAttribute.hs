@@ -1,7 +1,8 @@
 module Rattletrap.Decode.ReservationAttribute
-  ( getReservationAttribute
+  ( decodeReservationAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Decode.Str
 import Rattletrap.Decode.UniqueIdAttribute
@@ -9,23 +10,17 @@ import Rattletrap.Type.ReservationAttribute
 import Rattletrap.Type.UniqueIdAttribute
 import Rattletrap.Type.Word8le
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 
-getReservationAttribute
-  :: (Int, Int, Int) -> BinaryBit.BitGet ReservationAttribute
-getReservationAttribute version = do
+decodeReservationAttributeBits
+  :: (Int, Int, Int) -> DecodeBits ReservationAttribute
+decodeReservationAttributeBits version = do
   number <- decodeCompressedWordBits 7
-  uniqueId <- getUniqueIdAttribute version
-  name <- if uniqueIdAttributeSystemId uniqueId == Word8le 0
-    then pure Nothing
-    else do
-      name <- getTextBits
-      pure (Just name)
-  a <- BinaryBit.getBool
-  b <- BinaryBit.getBool
-  mc <- if version < (868, 12, 0)
-    then pure Nothing
-    else do
-      c <- BinaryBit.getWord8 6
-      pure (Just c)
-  pure (ReservationAttribute number uniqueId name a b mc)
+  uniqueId <- decodeUniqueIdAttributeBits version
+  ReservationAttribute number uniqueId
+    <$> decodeWhen
+          (uniqueIdAttributeSystemId uniqueId /= Word8le 0)
+          decodeStrBits
+    <*> BinaryBits.getBool
+    <*> BinaryBits.getBool
+    <*> decodeWhen (version >= (868, 12, 0)) (BinaryBits.getWord8 6)

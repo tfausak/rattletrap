@@ -1,12 +1,15 @@
 module Rattletrap.Decode.ProductAttribute
-  ( getProductAttributes
-  , getProductAttribute
+  ( decodeProductAttributesBits
+  , decodeProductAttributeBits
   ) where
 
 import Data.Semigroup ((<>))
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.Word8le
+import Rattletrap.Type.Common
+import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.ProductAttribute
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
@@ -16,41 +19,24 @@ import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map
 
-getProductAttributes
-  :: (Int, Int, Int)
-  -> Map.Map Word32le Str
-  -> BinaryBit.BitGet [ProductAttribute]
-getProductAttributes version objectMap = do
-  size <- getWord8Bits
+decodeProductAttributesBits
+  :: (Int, Int, Int) -> Map Word32le Str -> DecodeBits [ProductAttribute]
+decodeProductAttributesBits version objectMap = do
+  size <- decodeWord8leBits
   Monad.replicateM
     (fromIntegral (word8leValue size))
-    (getProductAttribute version objectMap)
+    (decodeProductAttributeBits version objectMap)
 
-getProductAttribute
-  :: (Int, Int, Int)
-  -> Map.Map Word32le Str
-  -> BinaryBit.BitGet ProductAttribute
-getProductAttribute version objectMap = do
+decodeProductAttributeBits
+  :: (Int, Int, Int) -> Map Word32le Str -> DecodeBits ProductAttribute
+decodeProductAttributeBits version objectMap = do
   flag <- BinaryBit.getBool
-  objectId <- getWord32Bits
+  objectId <- decodeWord32leBits
   let objectName = Map.lookup objectId objectMap
   value <- case objectName of
     Just name -> case fromStr name of
-      "TAGame.ProductAttribute_Painted_TA" -> if version >= (868, 18, 0)
-        then do
-          x <- BinaryBit.getWord32be 31
-          pure (Just (Right x))
-        else do
-          x <- decodeCompressedWordBits 13
-          pure (Just (Left x))
-      "TAGame.ProductAttribute_UserColor_TA" -> do
-        hasValue <- BinaryBit.getBool
-        value <- if hasValue
-          then do
-            x <- BinaryBit.getWord32be 31
-            pure (Just (Right x))
-          else pure Nothing
-        pure value
+      "TAGame.ProductAttribute_Painted_TA" -> Just <$> decodePainted version
+      "TAGame.ProductAttribute_UserColor_TA" -> decodeColor
       _ ->
         fail
           ( "unknown object name "
@@ -60,3 +46,13 @@ getProductAttribute version objectMap = do
           )
     Nothing -> fail ("missing object name for ID " <> show objectId)
   pure (ProductAttribute flag objectId objectName value)
+
+decodePainted :: (Int, Int, Int) -> DecodeBits (Either CompressedWord Word32)
+decodePainted version = if version >= (868, 18, 0)
+  then Right <$> BinaryBit.getWord32be 31
+  else Left <$> decodeCompressedWordBits 13
+
+decodeColor :: DecodeBits (Maybe (Either CompressedWord Word32))
+decodeColor = do
+  hasValue <- BinaryBit.getBool
+  decodeWhen hasValue (Right <$> BinaryBit.getWord32be 31)

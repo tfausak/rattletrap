@@ -1,14 +1,13 @@
 module Rattletrap.Decode.LoadoutsAttribute
-  ( getLoadoutsAttribute
+  ( decodeLoadoutsAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.LoadoutAttribute
 import Rattletrap.Type.LoadoutsAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
-
-getLoadoutsAttribute :: BinaryBit.BitGet LoadoutsAttribute
-getLoadoutsAttribute = do
-  blue <- getLoadoutAttribute
-  orange <- getLoadoutAttribute
-  pure (LoadoutsAttribute blue orange)
+decodeLoadoutsAttributeBits :: DecodeBits LoadoutsAttribute
+decodeLoadoutsAttributeBits =
+  LoadoutsAttribute
+    <$> decodeLoadoutAttributeBits
+    <*> decodeLoadoutAttributeBits

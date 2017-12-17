@@ -11,7 +11,7 @@ import Rattletrap.Type.AppliedDamageAttribute
 decodeAppliedDamageAttributeBits :: DecodeBits AppliedDamageAttribute
 decodeAppliedDamageAttributeBits =
   AppliedDamageAttribute
-    <$> getWord8Bits
-    <*> getVector
-    <*> getInt32Bits
-    <*> getInt32Bits
+    <$> decodeWord8leBits
+    <*> decodeVectorBits
+    <*> decodeInt32leBits
+    <*> decodeInt32leBits

@@ -1,22 +1,21 @@
 module Rattletrap.Decode.UpdatedReplication
-  ( getUpdatedReplication
+  ( decodeUpdatedReplicationBits
   ) where
 
 import Rattletrap.Decode.Attribute
+import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.UpdatedReplication
 import Rattletrap.Type.Word32le
 
-import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map
 
-getUpdatedReplication
+decodeUpdatedReplicationBits
   :: (Int, Int, Int)
   -> ClassAttributeMap
   -> Map.Map CompressedWord Word32le
   -> CompressedWord
-  -> BinaryBit.BitGet UpdatedReplication
-getUpdatedReplication version classAttributeMap actorMap actorId = do
-  attributes <- decodeAttributesBits version classAttributeMap actorMap actorId
-  pure (UpdatedReplication attributes)
+  -> DecodeBits UpdatedReplication
+decodeUpdatedReplicationBits version classes actors actor =
+  UpdatedReplication <$> decodeAttributesBits version classes actors actor

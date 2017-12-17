@@ -12,6 +12,6 @@ decodeClubColorsAttributeBits :: DecodeBits ClubColorsAttribute
 decodeClubColorsAttributeBits =
   ClubColorsAttribute
     <$> BinaryBits.getBool
-    <*> getWord8Bits
+    <*> decodeWord8leBits
     <*> BinaryBits.getBool
-    <*> getWord8Bits
+    <*> decodeWord8leBits

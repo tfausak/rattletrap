@@ -1,25 +1,19 @@
 module Rattletrap.Decode.Int8Vector
-  ( getInt8Vector
+  ( decodeInt8VectorBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int8le
 import Rattletrap.Type.Int8Vector
 import Rattletrap.Type.Int8le
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 
-getInt8Vector :: BinaryBit.BitGet Int8Vector
-getInt8Vector = do
-  x <- getInt8VectorField
-  y <- getInt8VectorField
-  z <- getInt8VectorField
-  pure (Int8Vector x y z)
+decodeInt8VectorBits :: DecodeBits Int8Vector
+decodeInt8VectorBits =
+  Int8Vector <$> decodeFieldBits <*> decodeFieldBits <*> decodeFieldBits
 
-getInt8VectorField :: BinaryBit.BitGet (Maybe Int8le)
-getInt8VectorField = do
-  hasField <- BinaryBit.getBool
-  if hasField
-    then do
-      field <- getInt8Bits
-      pure (Just field)
-    else pure Nothing
+decodeFieldBits :: DecodeBits (Maybe Int8le)
+decodeFieldBits = do
+  hasField <- BinaryBits.getBool
+  decodeWhen hasField decodeInt8leBits

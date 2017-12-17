@@ -1,16 +1,17 @@
 module Rattletrap.Decode.MusicStingerAttribute
-  ( getMusicStingerAttribute
+  ( decodeMusicStingerAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.Word8le
 import Rattletrap.Type.MusicStingerAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 
-getMusicStingerAttribute :: BinaryBit.BitGet MusicStingerAttribute
-getMusicStingerAttribute = do
-  flag <- BinaryBit.getBool
-  cue <- getWord32Bits
-  trigger <- getWord8Bits
-  pure (MusicStingerAttribute flag cue trigger)
+decodeMusicStingerAttributeBits :: DecodeBits MusicStingerAttribute
+decodeMusicStingerAttributeBits =
+  MusicStingerAttribute
+    <$> BinaryBits.getBool
+    <*> decodeWord32leBits
+    <*> decodeWord8leBits

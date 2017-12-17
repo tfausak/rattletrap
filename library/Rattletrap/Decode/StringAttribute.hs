@@ -1,13 +1,10 @@
 module Rattletrap.Decode.StringAttribute
-  ( getStringAttribute
+  ( decodeStringAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Str
 import Rattletrap.Type.StringAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
-
-getStringAttribute :: BinaryBit.BitGet StringAttribute
-getStringAttribute = do
-  value <- getTextBits
-  pure (StringAttribute value)
+decodeStringAttributeBits :: DecodeBits StringAttribute
+decodeStringAttributeBits = StringAttribute <$> decodeStrBits

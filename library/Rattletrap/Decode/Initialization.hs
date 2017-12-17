@@ -1,23 +1,14 @@
 module Rattletrap.Decode.Initialization
-  ( getInitialization
+  ( decodeInitializationBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int8Vector
 import Rattletrap.Decode.Vector
 import Rattletrap.Type.Initialization
 
-import qualified Data.Binary.Bits.Get as BinaryBit
-
-getInitialization :: Bool -> Bool -> BinaryBit.BitGet Initialization
-getInitialization hasLocation hasRotation = do
-  location <- if hasLocation
-    then do
-      location <- getVector
-      pure (Just location)
-    else pure Nothing
-  rotation <- if hasRotation
-    then do
-      rotation <- getInt8Vector
-      pure (Just rotation)
-    else pure Nothing
-  pure (Initialization location rotation)
+decodeInitializationBits :: Bool -> Bool -> DecodeBits Initialization
+decodeInitializationBits hasLocation hasRotation =
+  Initialization
+    <$> decodeWhen hasLocation decodeVectorBits
+    <*> decodeWhen hasRotation decodeInt8VectorBits

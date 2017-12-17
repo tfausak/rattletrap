@@ -7,4 +7,5 @@ import Rattletrap.Decode.Word32le
 import Rattletrap.Type.AttributeMapping
 
 decodeAttributeMapping :: Decode AttributeMapping
-decodeAttributeMapping = AttributeMapping <$> getWord32 <*> getWord32
+decodeAttributeMapping =
+  AttributeMapping <$> decodeWord32le <*> decodeWord32le

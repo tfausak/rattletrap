@@ -33,17 +33,20 @@ decodeContent
   -> Decode Content
 decodeContent version numFrames maxChannels = do
   (levels, keyFrames, streamSize) <-
-    (,,) <$> getList getText <*> getList getKeyFrame <*> getWord32
+    (,,)
+    <$> decodeList decodeStr
+    <*> decodeList decodeKeyFrame
+    <*> decodeWord32le
   (stream, messages, marks, packages, objects, names, classMappings, caches) <-
     (,,,,,,,)
     <$> Binary.getLazyByteString (fromIntegral (word32leValue streamSize))
-    <*> getList getMessage
-    <*> getList getMark
-    <*> getList getText
-    <*> getList getText
-    <*> getList getText
-    <*> getList decodeClassMapping
-    <*> getList decodeCache
+    <*> decodeList decodeMessage
+    <*> decodeList decodeMark
+    <*> decodeList decodeStr
+    <*> decodeList decodeStr
+    <*> decodeList decodeStr
+    <*> decodeList decodeClassMapping
+    <*> decodeList decodeCache
   let
     classAttributeMap =
       makeClassAttributeMap objects classMappings caches names

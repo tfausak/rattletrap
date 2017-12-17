@@ -1,13 +1,10 @@
 module Rattletrap.Decode.QWordAttribute
-  ( getQWordAttribute
+  ( decodeQWordAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word64le
 import Rattletrap.Type.QWordAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
-
-getQWordAttribute :: BinaryBit.BitGet QWordAttribute
-getQWordAttribute = do
-  value <- getWord64Bits
-  pure (QWordAttribute value)
+decodeQWordAttributeBits :: DecodeBits QWordAttribute
+decodeQWordAttributeBits = QWordAttribute <$> decodeWord64leBits

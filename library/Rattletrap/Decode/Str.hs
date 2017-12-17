@@ -1,38 +1,31 @@
 module Rattletrap.Decode.Str
-  ( getText
-  , getTextBits
+  ( decodeStr
+  , decodeStrBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int32le
-import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Str
 import Rattletrap.Utility.Bytes
 
-import qualified Data.Binary as Binary
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Binary.Get as Binary
 import qualified Data.ByteString.Lazy as ByteString
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Encoding
 
-getText :: Binary.Get Str
-getText = do
-  rawSize <- getInt32
-  let decode = getTextDecoder rawSize
-  let size = normalizeTextSize rawSize :: Int64
-  bytes <- Binary.getLazyByteString size
-  let text = dropNull (decode bytes)
-  pure (Str text)
+decodeStr :: Decode Str
+decodeStr = do
+  rawSize <- decodeInt32le
+  bytes <- Binary.getLazyByteString (normalizeTextSize rawSize)
+  pure (Str (dropNull (getTextDecoder rawSize bytes)))
 
-getTextBits :: BinaryBit.BitGet Str
-getTextBits = do
-  rawSize <- getInt32Bits
-  let decode = getTextDecoder rawSize
-  let size = normalizeTextSize rawSize :: Int
-  bytes <- BinaryBit.getLazyByteString size
-  let text = dropNull (decode (reverseBytes bytes))
-  pure (Str text)
+decodeStrBits :: DecodeBits Str
+decodeStrBits = do
+  rawSize <- decodeInt32leBits
+  bytes <- BinaryBits.getLazyByteString (normalizeTextSize rawSize)
+  pure (Str (dropNull (getTextDecoder rawSize (reverseBytes bytes))))
 
 normalizeTextSize :: Integral a => Int32le -> a
 normalizeTextSize size = case int32leValue size of

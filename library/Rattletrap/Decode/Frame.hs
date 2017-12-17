@@ -43,4 +43,4 @@ decodeFrameBits version limit classes =
   Frame
     <$> Trans.lift decodeFloat32leBits
     <*> Trans.lift decodeFloat32leBits
-    <*> getReplications version limit classes
+    <*> decodeReplicationsBits version limit classes

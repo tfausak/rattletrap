@@ -19,7 +19,7 @@ import qualified Data.ByteString.Lazy as ByteString
 
 -- | Parses a raw replay.
 decodeReplayFile :: ByteString.ByteString -> Either String Replay
-decodeReplayFile contents = case Binary.runGetOrFail getReplay contents of
+decodeReplayFile contents = case Binary.runGetOrFail decodeReplay contents of
   Left (_, _, message) -> fail message
   Right (_, _, replay) -> pure replay
 

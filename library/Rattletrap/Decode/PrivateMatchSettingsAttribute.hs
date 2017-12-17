@@ -1,28 +1,21 @@
 module Rattletrap.Decode.PrivateMatchSettingsAttribute
-  ( getPrivateMatchSettingsAttribute
+  ( decodePrivateMatchSettingsAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Str
 import Rattletrap.Decode.Word32le
 import Rattletrap.Type.PrivateMatchSettingsAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 
-getPrivateMatchSettingsAttribute
-  :: BinaryBit.BitGet PrivateMatchSettingsAttribute
-getPrivateMatchSettingsAttribute = do
-  mutators <- getTextBits
-  joinableBy <- getWord32Bits
-  maxPlayers <- getWord32Bits
-  gameName <- getTextBits
-  password <- getTextBits
-  flag <- BinaryBit.getBool
-  pure
-    ( PrivateMatchSettingsAttribute
-      mutators
-      joinableBy
-      maxPlayers
-      gameName
-      password
-      flag
-    )
+decodePrivateMatchSettingsAttributeBits
+  :: DecodeBits PrivateMatchSettingsAttribute
+decodePrivateMatchSettingsAttributeBits =
+  PrivateMatchSettingsAttribute
+    <$> decodeStrBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> decodeStrBits
+    <*> decodeStrBits
+    <*> BinaryBits.getBool

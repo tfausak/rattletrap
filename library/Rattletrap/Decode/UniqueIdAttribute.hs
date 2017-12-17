@@ -1,16 +1,15 @@
 module Rattletrap.Decode.UniqueIdAttribute
-  ( getUniqueIdAttribute
+  ( decodeUniqueIdAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.RemoteId
 import Rattletrap.Decode.Word8le
 import Rattletrap.Type.UniqueIdAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
-
-getUniqueIdAttribute :: (Int, Int, Int) -> BinaryBit.BitGet UniqueIdAttribute
-getUniqueIdAttribute version = do
-  systemId <- getWord8Bits
-  remoteId <- getRemoteId version systemId
-  localId <- getWord8Bits
-  pure (UniqueIdAttribute systemId remoteId localId)
+decodeUniqueIdAttributeBits :: (Int, Int, Int) -> DecodeBits UniqueIdAttribute
+decodeUniqueIdAttributeBits version = do
+  systemId <- decodeWord8leBits
+  UniqueIdAttribute systemId
+    <$> decodeRemoteIdBits version systemId
+    <*> decodeWord8leBits

@@ -11,7 +11,7 @@ import Rattletrap.Type.Cache
 decodeCache :: Decode Cache
 decodeCache =
   Cache
-    <$> getWord32
-    <*> getWord32
-    <*> getWord32
-    <*> getList decodeAttributeMapping
+    <$> decodeWord32le
+    <*> decodeWord32le
+    <*> decodeWord32le
+    <*> decodeList decodeAttributeMapping

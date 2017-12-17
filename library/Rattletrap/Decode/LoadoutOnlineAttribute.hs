@@ -1,7 +1,8 @@
 module Rattletrap.Decode.LoadoutOnlineAttribute
-  ( getLoadoutOnlineAttribute
+  ( decodeLoadoutOnlineAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.ProductAttribute
 import Rattletrap.Decode.Word8le
 import Rattletrap.Type.LoadoutOnlineAttribute
@@ -10,16 +11,14 @@ import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
 
 import qualified Control.Monad as Monad
-import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map
 
-getLoadoutOnlineAttribute
+decodeLoadoutOnlineAttributeBits
   :: (Int, Int, Int)
   -> Map.Map Word32le Str
-  -> BinaryBit.BitGet LoadoutOnlineAttribute
-getLoadoutOnlineAttribute version objectMap = do
-  size <- getWord8Bits
-  values <- Monad.replicateM
+  -> DecodeBits LoadoutOnlineAttribute
+decodeLoadoutOnlineAttributeBits version objectMap = do
+  size <- decodeWord8leBits
+  LoadoutOnlineAttribute <$> Monad.replicateM
     (fromIntegral (word8leValue size))
-    (getProductAttributes version objectMap)
-  pure (LoadoutOnlineAttribute values)
+    (decodeProductAttributesBits version objectMap)

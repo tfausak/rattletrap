@@ -10,4 +10,4 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 
 decodeFlaggedIntAttributeBits :: DecodeBits FlaggedIntAttribute
 decodeFlaggedIntAttributeBits =
-  FlaggedIntAttribute <$> BinaryBit.getBool <*> getInt32Bits
+  FlaggedIntAttribute <$> BinaryBit.getBool <*> decodeInt32leBits

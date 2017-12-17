@@ -1,21 +1,15 @@
 module Rattletrap.Decode.Word32le
-  ( getWord32
-  , getWord32Bits
+  ( decodeWord32le
+  , decodeWord32leBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Type.Word32le
-import Rattletrap.Utility.Bytes
 
-import qualified Data.Binary as Binary
-import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Binary.Get as Binary
 
-getWord32 :: Binary.Get Word32le
-getWord32 = do
-  word32 <- Binary.getWord32le
-  pure (Word32le word32)
+decodeWord32le :: Decode Word32le
+decodeWord32le = Word32le <$> Binary.getWord32le
 
-getWord32Bits :: BinaryBit.BitGet Word32le
-getWord32Bits = do
-  bytes <- BinaryBit.getLazyByteString 4
-  pure (Binary.runGet getWord32 (reverseBytes bytes))
+decodeWord32leBits :: DecodeBits Word32le
+decodeWord32leBits = toBits decodeWord32le 4

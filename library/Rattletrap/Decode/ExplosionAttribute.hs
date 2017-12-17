@@ -11,4 +11,7 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 
 decodeExplosionAttributeBits :: DecodeBits ExplosionAttribute
 decodeExplosionAttributeBits =
-  ExplosionAttribute <$> BinaryBit.getBool <*> getInt32Bits <*> getVector
+  ExplosionAttribute
+    <$> BinaryBit.getBool
+    <*> decodeInt32leBits
+    <*> decodeVectorBits

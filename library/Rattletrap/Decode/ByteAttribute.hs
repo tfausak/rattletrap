@@ -7,4 +7,4 @@ import Rattletrap.Decode.Word8le
 import Rattletrap.Type.ByteAttribute
 
 decodeByteAttributeBits :: DecodeBits ByteAttribute
-decodeByteAttributeBits = ByteAttribute <$> getWord8Bits
+decodeByteAttributeBits = ByteAttribute <$> decodeWord8leBits

@@ -1,16 +1,11 @@
 module Rattletrap.Decode.Message
-  ( getMessage
+  ( decodeMessage
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Str
 import Rattletrap.Decode.Word32le
 import Rattletrap.Type.Message
 
-import qualified Data.Binary as Binary
-
-getMessage :: Binary.Get Message
-getMessage = do
-  frame <- getWord32
-  name <- getText
-  value <- getText
-  pure (Message frame name value)
+decodeMessage :: Decode Message
+decodeMessage = Message <$> decodeWord32le <*> decodeStr <*> decodeStr

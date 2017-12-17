@@ -13,8 +13,8 @@ decodeDemolishAttributeBits :: DecodeBits DemolishAttribute
 decodeDemolishAttributeBits =
   DemolishAttribute
     <$> BinaryBit.getBool
-    <*> getWord32Bits
+    <*> decodeWord32leBits
     <*> BinaryBit.getBool
-    <*> getWord32Bits
-    <*> getVector
-    <*> getVector
+    <*> decodeWord32leBits
+    <*> decodeVectorBits
+    <*> decodeVectorBits

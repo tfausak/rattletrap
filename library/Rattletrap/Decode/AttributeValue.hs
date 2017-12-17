@@ -74,35 +74,39 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypeFloat -> AttributeValueFloat <$> decodeFloatAttributeBits
     AttributeTypeGameMode ->
       AttributeValueGameMode <$> decodeGameModeAttributeBits version
-    AttributeTypeInt -> AttributeValueInt <$> getIntAttribute
-    AttributeTypeLoadout -> AttributeValueLoadout <$> getLoadoutAttribute
+    AttributeTypeInt -> AttributeValueInt <$> decodeIntAttributeBits
+    AttributeTypeLoadout ->
+      AttributeValueLoadout <$> decodeLoadoutAttributeBits
     AttributeTypeLoadoutOnline ->
       AttributeValueLoadoutOnline
-        <$> getLoadoutOnlineAttribute version objectMap
-    AttributeTypeLoadouts -> AttributeValueLoadouts <$> getLoadoutsAttribute
+        <$> decodeLoadoutOnlineAttributeBits version objectMap
+    AttributeTypeLoadouts ->
+      AttributeValueLoadouts <$> decodeLoadoutsAttributeBits
     AttributeTypeLoadoutsOnline ->
       AttributeValueLoadoutsOnline
-        <$> getLoadoutsOnlineAttribute version objectMap
-    AttributeTypeLocation -> AttributeValueLocation <$> getLocationAttribute
+        <$> decodeLoadoutsOnlineAttributeBits version objectMap
+    AttributeTypeLocation ->
+      AttributeValueLocation <$> decodeLocationAttributeBits
     AttributeTypeMusicStinger ->
-      AttributeValueMusicStinger <$> getMusicStingerAttribute
+      AttributeValueMusicStinger <$> decodeMusicStingerAttributeBits
     AttributeTypePartyLeader ->
-      AttributeValuePartyLeader <$> getPartyLeaderAttribute version
-    AttributeTypePickup -> AttributeValuePickup <$> getPickupAttribute
+      AttributeValuePartyLeader <$> decodePartyLeaderAttributeBits version
+    AttributeTypePickup -> AttributeValuePickup <$> decodePickupAttributeBits
     AttributeTypePrivateMatchSettings ->
-      AttributeValuePrivateMatchSettings <$> getPrivateMatchSettingsAttribute
-    AttributeTypeQWord -> AttributeValueQWord <$> getQWordAttribute
+      AttributeValuePrivateMatchSettings
+        <$> decodePrivateMatchSettingsAttributeBits
+    AttributeTypeQWord -> AttributeValueQWord <$> decodeQWordAttributeBits
     AttributeTypeReservation ->
-      AttributeValueReservation <$> getReservationAttribute version
+      AttributeValueReservation <$> decodeReservationAttributeBits version
     AttributeTypeRigidBodyState ->
-      AttributeValueRigidBodyState <$> getRigidBodyStateAttribute
-    AttributeTypeString -> AttributeValueString <$> getStringAttribute
+      AttributeValueRigidBodyState <$> decodeRigidBodyStateAttributeBits
+    AttributeTypeString -> AttributeValueString <$> decodeStringAttributeBits
     AttributeTypeTeamPaint ->
-      AttributeValueTeamPaint <$> getTeamPaintAttribute
+      AttributeValueTeamPaint <$> decodeTeamPaintAttributeBits
     AttributeTypeUniqueId ->
-      AttributeValueUniqueId <$> getUniqueIdAttribute version
+      AttributeValueUniqueId <$> decodeUniqueIdAttributeBits version
     AttributeTypeWeldedInfo ->
-      AttributeValueWeldedInfo <$> getWeldedInfoAttribute
+      AttributeValueWeldedInfo <$> decodeWeldedInfoAttributeBits
 
 attributeTypes :: Map Str AttributeType
 attributeTypes = Map.mapKeys toStr (Map.fromList rawAttributeTypes)

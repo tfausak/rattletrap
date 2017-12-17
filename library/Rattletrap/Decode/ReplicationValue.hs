@@ -1,5 +1,5 @@
 module Rattletrap.Decode.ReplicationValue
-  ( getReplicationValue
+  ( decodeReplicationValueBits
   ) where
 
 import Rattletrap.Decode.DestroyedReplication
@@ -15,7 +15,7 @@ import qualified Control.Monad.Trans.State as State
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map
 
-getReplicationValue
+decodeReplicationValueBits
   :: (Int, Int, Int)
   -> ClassAttributeMap
   -> CompressedWord
@@ -23,20 +23,22 @@ getReplicationValue
        (Map.Map CompressedWord Word32le)
        BinaryBit.BitGet
        ReplicationValue
-getReplicationValue version classAttributeMap actorId = do
+decodeReplicationValueBits version classAttributeMap actorId = do
+  actorMap <- State.get
   isOpen <- Trans.lift BinaryBit.getBool
   if isOpen
     then do
       isNew <- Trans.lift BinaryBit.getBool
       if isNew
-        then do
-          x <- getSpawnedReplication version classAttributeMap actorId
-          pure (ReplicationValueSpawned x)
-        else do
-          actorMap <- State.get
-          x <- Trans.lift
-            (getUpdatedReplication version classAttributeMap actorMap actorId)
-          pure (ReplicationValueUpdated x)
-    else do
-      x <- Trans.lift decodeDestroyedReplicationBits
-      pure (ReplicationValueDestroyed x)
+        then
+          ReplicationValueSpawned
+            <$> decodeSpawnedReplicationBits version classAttributeMap actorId
+        else ReplicationValueUpdated <$> Trans.lift
+          ( decodeUpdatedReplicationBits
+            version
+            classAttributeMap
+            actorMap
+            actorId
+          )
+    else ReplicationValueDestroyed
+      <$> Trans.lift decodeDestroyedReplicationBits

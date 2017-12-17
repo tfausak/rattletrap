@@ -1,25 +1,17 @@
 module Rattletrap.Decode.TeamPaintAttribute
-  ( getTeamPaintAttribute
+  ( decodeTeamPaintAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.Word8le
 import Rattletrap.Type.TeamPaintAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
-
-getTeamPaintAttribute :: BinaryBit.BitGet TeamPaintAttribute
-getTeamPaintAttribute = do
-  team <- getWord8Bits
-  primaryColor <- getWord8Bits
-  accentColor <- getWord8Bits
-  primaryFinish <- getWord32Bits
-  accentFinish <- getWord32Bits
-  pure
-    ( TeamPaintAttribute
-      team
-      primaryColor
-      accentColor
-      primaryFinish
-      accentFinish
-    )
+decodeTeamPaintAttributeBits :: DecodeBits TeamPaintAttribute
+decodeTeamPaintAttributeBits =
+  TeamPaintAttribute
+    <$> decodeWord8leBits
+    <*> decodeWord8leBits
+    <*> decodeWord8leBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits

@@ -1,6 +1,6 @@
 module Rattletrap.Decode.Replication
-  ( getReplications
-  , getReplication
+  ( decodeReplicationsBits
+  , decodeReplicationBits
   ) where
 
 import Rattletrap.Decode.CompressedWord
@@ -12,38 +12,34 @@ import Rattletrap.Type.Word32le
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Map as Map
 
-getReplications
+decodeReplicationsBits
   :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       BinaryBit.BitGet
+       BinaryBits.BitGet
        [Replication]
-getReplications version maxChannels classAttributeMap = do
-  maybeReplication <- getReplication version maxChannels classAttributeMap
-  case maybeReplication of
-    Nothing -> pure []
-    Just replication -> do
-      replications <- getReplications version maxChannels classAttributeMap
-      pure (replication : replications)
+decodeReplicationsBits version limit classes = do
+  hasReplication <- Trans.lift BinaryBits.getBool
+  if hasReplication
+    then
+      (:)
+      <$> decodeReplicationBits version limit classes
+      <*> decodeReplicationsBits version limit classes
+    else pure []
 
-getReplication
+decodeReplicationBits
   :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       BinaryBit.BitGet
-       (Maybe Replication)
-getReplication version maxChannels classAttributeMap = do
-  hasReplication <- Trans.lift BinaryBit.getBool
-  if not hasReplication
-    then pure Nothing
-    else do
-      actorId <- Trans.lift (decodeCompressedWordBits maxChannels)
-      value <- getReplicationValue version classAttributeMap actorId
-      pure (Just (Replication actorId value))
+       BinaryBits.BitGet
+       Replication
+decodeReplicationBits version limit classes = do
+  actor <- Trans.lift (decodeCompressedWordBits limit)
+  Replication actor <$> decodeReplicationValueBits version classes actor

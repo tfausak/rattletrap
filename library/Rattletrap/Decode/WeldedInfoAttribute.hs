@@ -1,20 +1,21 @@
 module Rattletrap.Decode.WeldedInfoAttribute
-  ( getWeldedInfoAttribute
+  ( decodeWeldedInfoAttributeBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Float32le
 import Rattletrap.Decode.Int32le
 import Rattletrap.Decode.Int8Vector
 import Rattletrap.Decode.Vector
 import Rattletrap.Type.WeldedInfoAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 
-getWeldedInfoAttribute :: BinaryBit.BitGet WeldedInfoAttribute
-getWeldedInfoAttribute = do
-  active <- BinaryBit.getBool
-  actorId <- getInt32Bits
-  offset <- getVector
-  mass <- decodeFloat32leBits
-  rotation <- getInt8Vector
-  pure (WeldedInfoAttribute active actorId offset mass rotation)
+decodeWeldedInfoAttributeBits :: DecodeBits WeldedInfoAttribute
+decodeWeldedInfoAttributeBits =
+  WeldedInfoAttribute
+    <$> BinaryBits.getBool
+    <*> decodeInt32leBits
+    <*> decodeVectorBits
+    <*> decodeFloat32leBits
+    <*> decodeInt8VectorBits

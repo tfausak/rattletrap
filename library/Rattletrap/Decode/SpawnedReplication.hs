@@ -1,8 +1,9 @@
 module Rattletrap.Decode.SpawnedReplication
-  ( getSpawnedReplication
+  ( decodeSpawnedReplicationBits
   ) where
 
 import Data.Semigroup ((<>))
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Initialization
 import Rattletrap.Decode.Word32le
 import Rattletrap.Type.ClassAttributeMap
@@ -16,7 +17,7 @@ import qualified Control.Monad.Trans.State as State
 import qualified Data.Binary.Bits.Get as BinaryBit
 import qualified Data.Map as Map
 
-getSpawnedReplication
+decodeSpawnedReplicationBits
   :: (Int, Int, Int)
   -> ClassAttributeMap
   -> CompressedWord
@@ -24,21 +25,20 @@ getSpawnedReplication
        (Map.Map CompressedWord Word32le)
        BinaryBit.BitGet
        SpawnedReplication
-getSpawnedReplication version classAttributeMap actorId = do
+decodeSpawnedReplicationBits version classAttributeMap actorId = do
   flag <- Trans.lift BinaryBit.getBool
-  nameIndex <- if version < (868, 14, 0)
-    then pure Nothing
-    else do
-      nameIndex <- Trans.lift getWord32Bits
-      pure (Just nameIndex)
+  nameIndex <- decodeWhen
+    (version >= (868, 14, 0))
+    (Trans.lift decodeWord32leBits)
   name <- lookupName classAttributeMap nameIndex
-  objectId <- Trans.lift getWord32Bits
+  objectId <- Trans.lift decodeWord32leBits
   State.modify (Map.insert actorId objectId)
   objectName <- lookupObjectName classAttributeMap objectId
   className <- lookupClassName objectName
   let hasLocation = classHasLocation className
   let hasRotation = classHasRotation className
-  initialization <- Trans.lift (getInitialization hasLocation hasRotation)
+  initialization <- Trans.lift
+    (decodeInitializationBits hasLocation hasRotation)
   pure
     ( SpawnedReplication
       flag

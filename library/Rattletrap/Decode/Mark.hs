@@ -1,15 +1,11 @@
 module Rattletrap.Decode.Mark
-  ( getMark
+  ( decodeMark
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Str
 import Rattletrap.Decode.Word32le
 import Rattletrap.Type.Mark
 
-import qualified Data.Binary as Binary
-
-getMark :: Binary.Get Mark
-getMark = do
-  value <- getText
-  frame <- getWord32
-  pure (Mark value frame)
+decodeMark :: Decode Mark
+decodeMark = Mark <$> decodeStr <*> decodeWord32le

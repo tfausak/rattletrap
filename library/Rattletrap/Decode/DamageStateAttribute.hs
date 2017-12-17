@@ -13,9 +13,9 @@ import qualified Data.Binary.Bits.Get as BinaryBit
 decodeDamageStateAttributeBits :: DecodeBits DamageStateAttribute
 decodeDamageStateAttributeBits =
   DamageStateAttribute
-    <$> getWord8Bits
+    <$> decodeWord8leBits
     <*> BinaryBit.getBool
-    <*> getInt32Bits
-    <*> getVector
+    <*> decodeInt32leBits
+    <*> decodeVectorBits
     <*> BinaryBit.getBool
     <*> BinaryBit.getBool
