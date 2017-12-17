@@ -65,17 +65,19 @@ putOutput config = case configOutput config of
   Just file -> LazyBytes.writeFile file
 
 evaluate :: Config -> Rattletrap.Replay -> IO Rattletrap.Replay
-evaluate config replay = do
-  result <- Hint.runInterpreter (interpret config)
-  case result of
-    Left problem -> fail (Exception.displayException problem)
-    Right modify -> pure (modify replay)
+evaluate config replay = case configExpression config of
+  Nothing -> pure replay
+  Just expression -> do
+    result <- Hint.runInterpreter (interpret expression)
+    case result of
+      Left problem -> fail (Exception.displayException problem)
+      Right modify -> pure (modify replay)
 
 interpret
-  :: Config -> Hint.InterpreterT IO (Rattletrap.Replay -> Rattletrap.Replay)
-interpret config = do
+  :: String -> Hint.InterpreterT IO (Rattletrap.Replay -> Rattletrap.Replay)
+interpret expression = do
   Hint.setImports ["Prelude", "Rattletrap"]
-  Hint.interpret (configExpression config) Hint.infer
+  Hint.interpret expression Hint.infer
 
 getConfig :: [String] -> IO Config
 getConfig arguments = do
@@ -115,7 +117,7 @@ expressionOption = Console.Option
   ['e']
   ["expression"]
   ( Console.ReqArg
-    (\expression config -> pure config { configExpression = expression })
+    (\expression config -> pure config { configExpression = Just expression })
     "EXPRESSION"
   )
   "todo"
@@ -172,7 +174,7 @@ applyUpdate config update = update config
 
 data Config = Config
   { configCompact :: Bool
-  , configExpression :: String
+  , configExpression :: Maybe String
   , configHelp :: Bool
   , configInput :: Maybe String
   , configMode :: Maybe Mode
@@ -183,7 +185,7 @@ data Config = Config
 defaultConfig :: Config
 defaultConfig = Config
   { configCompact = False
-  , configExpression = "id"
+  , configExpression = Nothing
   , configHelp = False
   , configInput = Nothing
   , configMode = Nothing
