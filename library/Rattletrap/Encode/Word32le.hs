@@ -7,14 +7,14 @@ import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as ByteString
+import qualified Data.ByteString.Lazy as LazyBytes
 
 putWord32 :: Word32le -> Binary.Put
 putWord32 word32 = Binary.putWord32le (word32leValue word32)
 
-putWord32Bits :: Word32le -> BinaryBit.BitPut ()
+putWord32Bits :: Word32le -> BinaryBits.BitPut ()
 putWord32Bits word32 = do
   let bytes = Binary.runPut (putWord32 word32)
-  BinaryBit.putByteString (ByteString.toStrict (reverseBytes bytes))
+  BinaryBits.putByteString (LazyBytes.toStrict (reverseBytes bytes))

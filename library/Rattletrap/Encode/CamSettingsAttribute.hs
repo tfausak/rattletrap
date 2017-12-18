@@ -5,9 +5,9 @@ module Rattletrap.Encode.CamSettingsAttribute
 import Rattletrap.Encode.Float32le
 import Rattletrap.Type.CamSettingsAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putCamSettingsAttribute :: CamSettingsAttribute -> BinaryBit.BitPut ()
+putCamSettingsAttribute :: CamSettingsAttribute -> BinaryBits.BitPut ()
 putCamSettingsAttribute camSettingsAttribute = do
   putFloat32Bits (camSettingsAttributeFov camSettingsAttribute)
   putFloat32Bits (camSettingsAttributeHeight camSettingsAttribute)

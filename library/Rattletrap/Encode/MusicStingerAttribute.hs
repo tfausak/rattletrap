@@ -6,10 +6,10 @@ import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Word8le
 import Rattletrap.Type.MusicStingerAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putMusicStingerAttribute :: MusicStingerAttribute -> BinaryBit.BitPut ()
+putMusicStingerAttribute :: MusicStingerAttribute -> BinaryBits.BitPut ()
 putMusicStingerAttribute musicStingerAttribute = do
-  BinaryBit.putBool (musicStingerAttributeFlag musicStingerAttribute)
+  BinaryBits.putBool (musicStingerAttributeFlag musicStingerAttribute)
   putWord32Bits (musicStingerAttributeCue musicStingerAttribute)
   putWord8Bits (musicStingerAttributeTrigger musicStingerAttribute)

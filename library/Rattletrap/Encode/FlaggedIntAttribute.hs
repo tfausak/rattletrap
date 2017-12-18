@@ -5,9 +5,9 @@ module Rattletrap.Encode.FlaggedIntAttribute
 import Rattletrap.Encode.Int32le
 import Rattletrap.Type.FlaggedIntAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putFlaggedIntAttribute :: FlaggedIntAttribute -> BinaryBit.BitPut ()
+putFlaggedIntAttribute :: FlaggedIntAttribute -> BinaryBits.BitPut ()
 putFlaggedIntAttribute flaggedIntAttribute = do
-  BinaryBit.putBool (flaggedIntAttributeFlag flaggedIntAttribute)
+  BinaryBits.putBool (flaggedIntAttributeFlag flaggedIntAttribute)
   putInt32Bits (flaggedIntAttributeInt flaggedIntAttribute)

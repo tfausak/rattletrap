@@ -4,10 +4,10 @@ module Rattletrap.Encode.GameModeAttribute
 
 import Rattletrap.Type.GameModeAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putGameModeAttribute :: GameModeAttribute -> BinaryBit.BitPut ()
+putGameModeAttribute :: GameModeAttribute -> BinaryBits.BitPut ()
 putGameModeAttribute gameModeAttribute = do
   let numBits = gameModeAttributeNumBits gameModeAttribute
   let word = gameModeAttributeWord gameModeAttribute
-  BinaryBit.putWord8 numBits word
+  BinaryBits.putWord8 numBits word

@@ -6,10 +6,10 @@ import Rattletrap.Encode.Str
 import Rattletrap.Encode.Word32le
 import Rattletrap.Type.PrivateMatchSettingsAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 putPrivateMatchSettingsAttribute
-  :: PrivateMatchSettingsAttribute -> BinaryBit.BitPut ()
+  :: PrivateMatchSettingsAttribute -> BinaryBits.BitPut ()
 putPrivateMatchSettingsAttribute privateMatchSettingsAttribute = do
   putTextBits
     (privateMatchSettingsAttributeMutators privateMatchSettingsAttribute)
@@ -21,5 +21,5 @@ putPrivateMatchSettingsAttribute privateMatchSettingsAttribute = do
     (privateMatchSettingsAttributeGameName privateMatchSettingsAttribute)
   putTextBits
     (privateMatchSettingsAttributePassword privateMatchSettingsAttribute)
-  BinaryBit.putBool
+  BinaryBits.putBool
     (privateMatchSettingsAttributeFlag privateMatchSettingsAttribute)

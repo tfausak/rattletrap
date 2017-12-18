@@ -7,13 +7,13 @@ import Rattletrap.Encode.Vector
 import Rattletrap.Encode.Word8le
 import Rattletrap.Type.DamageStateAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putDamageStateAttribute :: DamageStateAttribute -> BinaryBit.BitPut ()
+putDamageStateAttribute :: DamageStateAttribute -> BinaryBits.BitPut ()
 putDamageStateAttribute damageStateAttribute = do
   putWord8Bits (damageStateAttributeUnknown1 damageStateAttribute)
-  BinaryBit.putBool (damageStateAttributeUnknown2 damageStateAttribute)
+  BinaryBits.putBool (damageStateAttributeUnknown2 damageStateAttribute)
   putInt32Bits (damageStateAttributeUnknown3 damageStateAttribute)
   putVector (damageStateAttributeUnknown4 damageStateAttribute)
-  BinaryBit.putBool (damageStateAttributeUnknown5 damageStateAttribute)
-  BinaryBit.putBool (damageStateAttributeUnknown6 damageStateAttribute)
+  BinaryBits.putBool (damageStateAttributeUnknown5 damageStateAttribute)
+  BinaryBits.putBool (damageStateAttributeUnknown6 damageStateAttribute)

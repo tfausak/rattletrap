@@ -5,9 +5,9 @@ module Rattletrap.Encode.CompressedWordVector
 import Rattletrap.Encode.CompressedWord
 import Rattletrap.Type.CompressedWordVector
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putCompressedWordVector :: CompressedWordVector -> BinaryBit.BitPut ()
+putCompressedWordVector :: CompressedWordVector -> BinaryBits.BitPut ()
 putCompressedWordVector compressedWordVector = do
   putCompressedWord (compressedWordVectorX compressedWordVector)
   putCompressedWord (compressedWordVectorY compressedWordVector)

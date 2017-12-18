@@ -5,8 +5,8 @@ module Rattletrap.Encode.StringAttribute
 import Rattletrap.Encode.Str
 import Rattletrap.Type.StringAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putStringAttribute :: StringAttribute -> BinaryBit.BitPut ()
+putStringAttribute :: StringAttribute -> BinaryBits.BitPut ()
 putStringAttribute stringAttribute =
   putTextBits (stringAttributeValue stringAttribute)

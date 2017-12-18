@@ -10,12 +10,12 @@ import Rattletrap.Type.Str
 import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary as Binary
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as ByteString
+import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Char as Char
 import qualified Data.Text as Text
-import qualified Data.Text.Encoding as Encoding
+import qualified Data.Text.Encoding as Text
 
 putText :: Str -> Binary.Put
 putText text = do
@@ -24,13 +24,13 @@ putText text = do
   putInt32 size
   Binary.putLazyByteString (encode (addNull (strValue text)))
 
-putTextBits :: Str -> BinaryBit.BitPut ()
+putTextBits :: Str -> BinaryBits.BitPut ()
 putTextBits text = do
   let size = getTextSize text
   let encode = getTextEncoder size
   putInt32Bits size
-  BinaryBit.putByteString
-    (ByteString.toStrict (reverseBytes (encode (addNull (strValue text)))))
+  BinaryBits.putByteString
+    (LazyBytes.toStrict (reverseBytes (encode (addNull (strValue text)))))
 
 getTextSize :: Str -> Int32le
 getTextSize text =
@@ -46,9 +46,9 @@ getTextSize text =
   in
     Int32le size
 
-getTextEncoder :: Int32le -> Text.Text -> ByteString.ByteString
+getTextEncoder :: Int32le -> Text.Text -> LazyBytes.ByteString
 getTextEncoder size text = if size < Int32le 0
-  then ByteString.fromStrict (Encoding.encodeUtf16LE text)
+  then LazyBytes.fromStrict (Text.encodeUtf16LE text)
   else encodeLatin1 text
 
 addNull :: Text.Text -> Text.Text

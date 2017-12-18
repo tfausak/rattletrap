@@ -7,18 +7,18 @@ import Rattletrap.Encode.SpawnedReplication
 import Rattletrap.Encode.UpdatedReplication
 import Rattletrap.Type.ReplicationValue
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putReplicationValue :: ReplicationValue -> BinaryBit.BitPut ()
+putReplicationValue :: ReplicationValue -> BinaryBits.BitPut ()
 putReplicationValue value = case value of
   ReplicationValueSpawned x -> do
-    BinaryBit.putBool True
-    BinaryBit.putBool True
+    BinaryBits.putBool True
+    BinaryBits.putBool True
     putSpawnedReplication x
   ReplicationValueUpdated x -> do
-    BinaryBit.putBool True
-    BinaryBit.putBool False
+    BinaryBits.putBool True
+    BinaryBits.putBool False
     putUpdatedReplication x
   ReplicationValueDestroyed x -> do
-    BinaryBit.putBool False
+    BinaryBits.putBool False
     putDestroyedReplication x

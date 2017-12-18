@@ -7,15 +7,15 @@ import Rattletrap.Encode.CompressedWord
 import Rattletrap.Encode.ReplicationValue
 import Rattletrap.Type.Replication
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putReplications :: [Replication] -> BinaryBit.BitPut ()
+putReplications :: [Replication] -> BinaryBits.BitPut ()
 putReplications replications = do
   mapM_ putReplication replications
-  BinaryBit.putBool False
+  BinaryBits.putBool False
 
-putReplication :: Replication -> BinaryBit.BitPut ()
+putReplication :: Replication -> BinaryBits.BitPut ()
 putReplication replication = do
-  BinaryBit.putBool True
+  BinaryBits.putBool True
   putCompressedWord (replicationActorId replication)
   putReplicationValue (replicationValue replication)

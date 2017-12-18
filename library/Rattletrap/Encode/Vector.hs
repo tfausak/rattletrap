@@ -6,9 +6,9 @@ import Rattletrap.Encode.CompressedWord
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Vector
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putVector :: Vector -> BinaryBit.BitPut ()
+putVector :: Vector -> BinaryBits.BitPut ()
 putVector vector = do
   let
     bitSize =

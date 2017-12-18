@@ -5,11 +5,11 @@ module Rattletrap.Decode.GameModeAttribute
 import Rattletrap.Decode.Common
 import Rattletrap.Type.GameModeAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 
 decodeGameModeAttributeBits :: (Int, Int, Int) -> DecodeBits GameModeAttribute
 decodeGameModeAttributeBits version =
-  GameModeAttribute <$> pure (numBits version) <*> BinaryBit.getWord8
+  GameModeAttribute <$> pure (numBits version) <*> BinaryBits.getWord8
     (numBits version)
 
 numBits :: (Int, Int, Int) -> Int

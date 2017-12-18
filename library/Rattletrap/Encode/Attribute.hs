@@ -7,15 +7,15 @@ import Rattletrap.Encode.AttributeValue
 import Rattletrap.Encode.CompressedWord
 import Rattletrap.Type.Attribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putAttributes :: [Attribute] -> BinaryBit.BitPut ()
+putAttributes :: [Attribute] -> BinaryBits.BitPut ()
 putAttributes attributes = do
   mapM_ putAttribute attributes
-  BinaryBit.putBool False
+  BinaryBits.putBool False
 
-putAttribute :: Attribute -> BinaryBit.BitPut ()
+putAttribute :: Attribute -> BinaryBits.BitPut ()
 putAttribute attribute = do
-  BinaryBit.putBool True
+  BinaryBits.putBool True
   putCompressedWord (attributeId attribute)
   putAttributeValue (attributeValue attribute)

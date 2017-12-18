@@ -6,11 +6,11 @@ import Rattletrap.Encode.Initialization
 import Rattletrap.Encode.Word32le
 import Rattletrap.Type.SpawnedReplication
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putSpawnedReplication :: SpawnedReplication -> BinaryBit.BitPut ()
+putSpawnedReplication :: SpawnedReplication -> BinaryBits.BitPut ()
 putSpawnedReplication spawnedReplication = do
-  BinaryBit.putBool (spawnedReplicationFlag spawnedReplication)
+  BinaryBits.putBool (spawnedReplicationFlag spawnedReplication)
   case spawnedReplicationNameIndex spawnedReplication of
     Nothing -> pure ()
     Just nameIndex -> putWord32Bits nameIndex

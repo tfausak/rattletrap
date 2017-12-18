@@ -6,8 +6,8 @@ import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int32le
 import Rattletrap.Type.FlaggedIntAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 
 decodeFlaggedIntAttributeBits :: DecodeBits FlaggedIntAttribute
 decodeFlaggedIntAttributeBits =
-  FlaggedIntAttribute <$> BinaryBit.getBool <*> decodeInt32leBits
+  FlaggedIntAttribute <$> BinaryBits.getBool <*> decodeInt32leBits

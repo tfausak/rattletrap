@@ -4,7 +4,7 @@ module Rattletrap.Encode.DestroyedReplication
 
 import Rattletrap.Type.DestroyedReplication
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putDestroyedReplication :: DestroyedReplication -> BinaryBit.BitPut ()
+putDestroyedReplication :: DestroyedReplication -> BinaryBits.BitPut ()
 putDestroyedReplication _ = pure ()

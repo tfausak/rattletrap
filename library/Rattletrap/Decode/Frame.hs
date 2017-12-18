@@ -12,7 +12,7 @@ import Rattletrap.Type.Word32le
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Map as Map
 
 decodeFramesBits
@@ -22,7 +22,7 @@ decodeFramesBits
   -> ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       BinaryBit.BitGet
+       BinaryBits.BitGet
        [Frame]
 decodeFramesBits version count limit classes = if count <= 0
   then pure []
@@ -37,7 +37,7 @@ decodeFrameBits
   -> ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       BinaryBit.BitGet
+       BinaryBits.BitGet
        Frame
 decodeFrameBits version limit classes =
   Frame

@@ -6,13 +6,13 @@ import Rattletrap.Encode.Vector
 import Rattletrap.Encode.Word32le
 import Rattletrap.Type.DemolishAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putDemolishAttribute :: DemolishAttribute -> BinaryBit.BitPut ()
+putDemolishAttribute :: DemolishAttribute -> BinaryBits.BitPut ()
 putDemolishAttribute demolishAttribute = do
-  BinaryBit.putBool (demolishAttributeAttackerFlag demolishAttribute)
+  BinaryBits.putBool (demolishAttributeAttackerFlag demolishAttribute)
   putWord32Bits (demolishAttributeAttackerActorId demolishAttribute)
-  BinaryBit.putBool (demolishAttributeVictimFlag demolishAttribute)
+  BinaryBits.putBool (demolishAttributeVictimFlag demolishAttribute)
   putWord32Bits (demolishAttributeVictimActorId demolishAttribute)
   putVector (demolishAttributeAttackerVelocity demolishAttribute)
   putVector (demolishAttributeVictimVelocity demolishAttribute)

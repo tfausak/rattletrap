@@ -5,8 +5,8 @@ module Rattletrap.Encode.QWordAttribute
 import Rattletrap.Encode.Word64le
 import Rattletrap.Type.QWordAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putQWordAttribute :: QWordAttribute -> BinaryBit.BitPut ()
+putQWordAttribute :: QWordAttribute -> BinaryBits.BitPut ()
 putQWordAttribute qWordAttribute =
   putWord64Bits (qWordAttributeValue qWordAttribute)

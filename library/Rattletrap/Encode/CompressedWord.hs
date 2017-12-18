@@ -4,10 +4,10 @@ module Rattletrap.Encode.CompressedWord
 
 import Rattletrap.Type.CompressedWord
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Bits as Bits
 
-putCompressedWord :: CompressedWord -> BinaryBit.BitPut ()
+putCompressedWord :: CompressedWord -> BinaryBits.BitPut ()
 putCompressedWord compressedWord =
   let
     limit = compressedWordLimit compressedWord
@@ -16,7 +16,7 @@ putCompressedWord compressedWord =
   in putCompressedWordStep limit value maxBits 0 0
 
 putCompressedWordStep
-  :: Word -> Word -> Int -> Int -> Word -> BinaryBit.BitPut ()
+  :: Word -> Word -> Int -> Int -> Word -> BinaryBits.BitPut ()
 putCompressedWordStep limit value maxBits position soFar =
   if position < maxBits
     then do
@@ -25,7 +25,7 @@ putCompressedWordStep limit value maxBits position soFar =
         then pure ()
         else do
           let bit = Bits.testBit value position
-          BinaryBit.putBool bit
+          BinaryBits.putBool bit
           let delta = if bit then x else 0
           putCompressedWordStep
             limit

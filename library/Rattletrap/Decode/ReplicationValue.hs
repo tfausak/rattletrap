@@ -12,7 +12,7 @@ import Rattletrap.Type.Word32le
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Map as Map
 
 decodeReplicationValueBits
@@ -21,14 +21,14 @@ decodeReplicationValueBits
   -> CompressedWord
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       BinaryBit.BitGet
+       BinaryBits.BitGet
        ReplicationValue
 decodeReplicationValueBits version classAttributeMap actorId = do
   actorMap <- State.get
-  isOpen <- Trans.lift BinaryBit.getBool
+  isOpen <- Trans.lift BinaryBits.getBool
   if isOpen
     then do
-      isNew <- Trans.lift BinaryBit.getBool
+      isNew <- Trans.lift BinaryBits.getBool
       if isNew
         then
           ReplicationValueSpawned

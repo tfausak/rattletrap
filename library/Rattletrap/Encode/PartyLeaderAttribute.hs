@@ -6,9 +6,9 @@ import Rattletrap.Encode.RemoteId
 import Rattletrap.Encode.Word8le
 import Rattletrap.Type.PartyLeaderAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putPartyLeaderAttribute :: PartyLeaderAttribute -> BinaryBit.BitPut ()
+putPartyLeaderAttribute :: PartyLeaderAttribute -> BinaryBits.BitPut ()
 putPartyLeaderAttribute partyLeaderAttribute = do
   putWord8Bits (partyLeaderAttributeSystemId partyLeaderAttribute)
   case partyLeaderAttributeId partyLeaderAttribute of

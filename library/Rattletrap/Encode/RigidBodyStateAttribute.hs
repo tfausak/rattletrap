@@ -6,11 +6,11 @@ import Rattletrap.Encode.CompressedWordVector
 import Rattletrap.Encode.Vector
 import Rattletrap.Type.RigidBodyStateAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putRigidBodyStateAttribute :: RigidBodyStateAttribute -> BinaryBit.BitPut ()
+putRigidBodyStateAttribute :: RigidBodyStateAttribute -> BinaryBits.BitPut ()
 putRigidBodyStateAttribute rigidBodyStateAttribute = do
-  BinaryBit.putBool (rigidBodyStateAttributeSleeping rigidBodyStateAttribute)
+  BinaryBits.putBool (rigidBodyStateAttributeSleeping rigidBodyStateAttribute)
   putVector (rigidBodyStateAttributeLocation rigidBodyStateAttribute)
   putCompressedWordVector
     (rigidBodyStateAttributeRotation rigidBodyStateAttribute)

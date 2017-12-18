@@ -4,8 +4,8 @@ module Rattletrap.Encode.BooleanAttribute
 
 import Rattletrap.Type.BooleanAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putBooleanAttribute :: BooleanAttribute -> BinaryBit.BitPut ()
+putBooleanAttribute :: BooleanAttribute -> BinaryBits.BitPut ()
 putBooleanAttribute booleanAttribute =
-  BinaryBit.putBool (booleanAttributeValue booleanAttribute)
+  BinaryBits.putBool (booleanAttributeValue booleanAttribute)

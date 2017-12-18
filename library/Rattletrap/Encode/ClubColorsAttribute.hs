@@ -5,11 +5,11 @@ module Rattletrap.Encode.ClubColorsAttribute
 import Rattletrap.Encode.Word8le
 import Rattletrap.Type.ClubColorsAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putClubColorsAttribute :: ClubColorsAttribute -> BinaryBit.BitPut ()
+putClubColorsAttribute :: ClubColorsAttribute -> BinaryBits.BitPut ()
 putClubColorsAttribute clubColorsAttribute = do
-  BinaryBit.putBool (clubColorsAttributeBlueFlag clubColorsAttribute)
+  BinaryBits.putBool (clubColorsAttributeBlueFlag clubColorsAttribute)
   putWord8Bits (clubColorsAttributeBlueColor clubColorsAttribute)
-  BinaryBit.putBool (clubColorsAttributeOrangeFlag clubColorsAttribute)
+  BinaryBits.putBool (clubColorsAttributeOrangeFlag clubColorsAttribute)
   putWord8Bits (clubColorsAttributeOrangeColor clubColorsAttribute)

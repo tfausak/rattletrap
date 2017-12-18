@@ -5,13 +5,13 @@ module Rattletrap.Encode.LoadoutsOnlineAttribute
 import Rattletrap.Encode.LoadoutOnlineAttribute
 import Rattletrap.Type.LoadoutsOnlineAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putLoadoutsOnlineAttribute :: LoadoutsOnlineAttribute -> BinaryBit.BitPut ()
+putLoadoutsOnlineAttribute :: LoadoutsOnlineAttribute -> BinaryBits.BitPut ()
 putLoadoutsOnlineAttribute loadoutsOnlineAttribute = do
   putLoadoutOnlineAttribute
     (loadoutsOnlineAttributeBlue loadoutsOnlineAttribute)
   putLoadoutOnlineAttribute
     (loadoutsOnlineAttributeOrange loadoutsOnlineAttribute)
-  BinaryBit.putBool (loadoutsOnlineAttributeUnknown1 loadoutsOnlineAttribute)
-  BinaryBit.putBool (loadoutsOnlineAttributeUnknown2 loadoutsOnlineAttribute)
+  BinaryBits.putBool (loadoutsOnlineAttributeUnknown1 loadoutsOnlineAttribute)
+  BinaryBits.putBool (loadoutsOnlineAttributeUnknown2 loadoutsOnlineAttribute)

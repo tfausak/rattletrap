@@ -34,9 +34,9 @@ import Rattletrap.Encode.UniqueIdAttribute
 import Rattletrap.Encode.WeldedInfoAttribute
 import Rattletrap.Type.AttributeValue
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putAttributeValue :: AttributeValue -> BinaryBit.BitPut ()
+putAttributeValue :: AttributeValue -> BinaryBits.BitPut ()
 putAttributeValue value = case value of
   AttributeValueAppliedDamage x -> putAppliedDamageAttribute x
   AttributeValueBoolean x -> putBooleanAttribute x

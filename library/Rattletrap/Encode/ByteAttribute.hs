@@ -5,8 +5,8 @@ module Rattletrap.Encode.ByteAttribute
 import Rattletrap.Encode.Word8le
 import Rattletrap.Type.ByteAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putByteAttribute :: ByteAttribute -> BinaryBit.BitPut ()
+putByteAttribute :: ByteAttribute -> BinaryBits.BitPut ()
 putByteAttribute byteAttribute =
   putWord8Bits (byteAttributeValue byteAttribute)

@@ -6,9 +6,9 @@ import Rattletrap.Encode.RemoteId
 import Rattletrap.Encode.Word8le
 import Rattletrap.Type.UniqueIdAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putUniqueIdAttribute :: UniqueIdAttribute -> BinaryBit.BitPut ()
+putUniqueIdAttribute :: UniqueIdAttribute -> BinaryBits.BitPut ()
 putUniqueIdAttribute uniqueIdAttribute = do
   putWord8Bits (uniqueIdAttributeSystemId uniqueIdAttribute)
   putRemoteId (uniqueIdAttributeRemoteId uniqueIdAttribute)

@@ -14,7 +14,7 @@ import Rattletrap.Type.Word32le
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Map as Map
 
 decodeSpawnedReplicationBits
@@ -23,10 +23,10 @@ decodeSpawnedReplicationBits
   -> CompressedWord
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       BinaryBit.BitGet
+       BinaryBits.BitGet
        SpawnedReplication
 decodeSpawnedReplicationBits version classAttributeMap actorId = do
-  flag <- Trans.lift BinaryBit.getBool
+  flag <- Trans.lift BinaryBits.getBool
   nameIndex <- decodeWhen
     (version >= (868, 14, 0))
     (Trans.lift decodeWord32leBits)

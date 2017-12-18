@@ -6,9 +6,9 @@ import Rattletrap.Encode.Int8Vector
 import Rattletrap.Encode.Vector
 import Rattletrap.Type.Initialization
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putInitialization :: Initialization -> BinaryBit.BitPut ()
+putInitialization :: Initialization -> BinaryBits.BitPut ()
 putInitialization initialization = do
   case initializationLocation initialization of
     Nothing -> pure ()

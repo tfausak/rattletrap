@@ -5,7 +5,7 @@ module Rattletrap.Decode.CompressedWord
 import Rattletrap.Decode.Common
 import Rattletrap.Type.CompressedWord
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Bits as Bits
 
 decodeCompressedWordBits :: Word -> DecodeBits CompressedWord
@@ -24,7 +24,7 @@ step limit maxBits position value = do
   let x = Bits.shiftL 1 (fromIntegral position) :: Word
   if position < maxBits && value + x <= limit
     then do
-      bit <- BinaryBit.getBool
+      bit <- BinaryBits.getBool
       let newValue = if bit then value + x else value
       step limit maxBits (position + 1) newValue
     else pure value

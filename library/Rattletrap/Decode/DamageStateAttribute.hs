@@ -8,14 +8,14 @@ import Rattletrap.Decode.Vector
 import Rattletrap.Decode.Word8le
 import Rattletrap.Type.DamageStateAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 
 decodeDamageStateAttributeBits :: DecodeBits DamageStateAttribute
 decodeDamageStateAttributeBits =
   DamageStateAttribute
     <$> decodeWord8leBits
-    <*> BinaryBit.getBool
+    <*> BinaryBits.getBool
     <*> decodeInt32leBits
     <*> decodeVectorBits
-    <*> BinaryBit.getBool
-    <*> BinaryBit.getBool
+    <*> BinaryBits.getBool
+    <*> BinaryBits.getBool

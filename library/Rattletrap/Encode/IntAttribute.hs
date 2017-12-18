@@ -5,7 +5,7 @@ module Rattletrap.Encode.IntAttribute
 import Rattletrap.Encode.Int32le
 import Rattletrap.Type.IntAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putIntAttribute :: IntAttribute -> BinaryBit.BitPut ()
+putIntAttribute :: IntAttribute -> BinaryBits.BitPut ()
 putIntAttribute intAttribute = putInt32Bits (intAttributeValue intAttribute)

@@ -7,12 +7,12 @@ import Rattletrap.Encode.Float32le
 import Rattletrap.Encode.Replication
 import Rattletrap.Type.Frame
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putFrames :: [Frame] -> BinaryBit.BitPut ()
+putFrames :: [Frame] -> BinaryBits.BitPut ()
 putFrames = mapM_ putFrame
 
-putFrame :: Frame -> BinaryBit.BitPut ()
+putFrame :: Frame -> BinaryBits.BitPut ()
 putFrame frame = do
   putFloat32Bits (frameTime frame)
   putFloat32Bits (frameDelta frame)

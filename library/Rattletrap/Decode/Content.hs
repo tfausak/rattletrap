@@ -18,7 +18,7 @@ import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes
 
 import qualified Control.Monad.Trans.State as State
-import qualified Data.Binary.Bits.Get as BinaryBit
+import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Binary.Get as Binary
 
 decodeContent
@@ -53,7 +53,7 @@ decodeContent version numFrames maxChannels = do
     bitGet = State.evalStateT
       (decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
-    get = BinaryBit.runBitGet bitGet
+    get = BinaryBits.runBitGet bitGet
   frames <- case Binary.runGetOrFail get (reverseBytes stream) of
     Left (_, _, problem) -> fail problem
     Right (_, _, frames) -> pure frames

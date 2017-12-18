@@ -7,9 +7,9 @@ import Rattletrap.Encode.Vector
 import Rattletrap.Encode.Word8le
 import Rattletrap.Type.AppliedDamageAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putAppliedDamageAttribute :: AppliedDamageAttribute -> BinaryBit.BitPut ()
+putAppliedDamageAttribute :: AppliedDamageAttribute -> BinaryBits.BitPut ()
 putAppliedDamageAttribute appliedDamageAttribute = do
   putWord8Bits (appliedDamageAttributeUnknown1 appliedDamageAttribute)
   putVector (appliedDamageAttributeLocation appliedDamageAttribute)

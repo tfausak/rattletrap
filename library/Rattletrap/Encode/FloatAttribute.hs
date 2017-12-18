@@ -5,8 +5,8 @@ module Rattletrap.Encode.FloatAttribute
 import Rattletrap.Encode.Float32le
 import Rattletrap.Type.FloatAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putFloatAttribute :: FloatAttribute -> BinaryBit.BitPut ()
+putFloatAttribute :: FloatAttribute -> BinaryBits.BitPut ()
 putFloatAttribute floatAttribute =
   putFloat32Bits (floatAttributeValue floatAttribute)

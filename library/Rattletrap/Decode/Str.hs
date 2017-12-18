@@ -11,9 +11,9 @@ import Rattletrap.Utility.Bytes
 
 import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Binary.Get as Binary
-import qualified Data.ByteString.Lazy as ByteString
+import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Text as Text
-import qualified Data.Text.Encoding as Encoding
+import qualified Data.Text.Encoding as Text
 
 decodeStr :: Decode Str
 decodeStr = do
@@ -32,14 +32,14 @@ normalizeTextSize size = case int32leValue size of
   0x05000000 -> 8
   x -> if x < 0 then (-2 * fromIntegral x) else fromIntegral x
 
-getTextDecoder :: Int32le -> ByteString.ByteString -> Text.Text
+getTextDecoder :: Int32le -> LazyBytes.ByteString -> Text.Text
 getTextDecoder size bytes =
   let
     decode = if size < Int32le 0
-      then Encoding.decodeUtf16LE
-      else Encoding.decodeLatin1
+      then Text.decodeUtf16LE
+      else Text.decodeLatin1
   in
-    decode (ByteString.toStrict bytes)
+    decode (LazyBytes.toStrict bytes)
 
 dropNull :: Text.Text -> Text.Text
 dropNull = Text.dropWhileEnd (== '\x00')

@@ -5,13 +5,13 @@ module Rattletrap.Encode.PickupAttribute
 import Rattletrap.Encode.Word32le
 import Rattletrap.Type.PickupAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putPickupAttribute :: PickupAttribute -> BinaryBit.BitPut ()
+putPickupAttribute :: PickupAttribute -> BinaryBits.BitPut ()
 putPickupAttribute pickupAttribute = do
   case pickupAttributeInstigatorId pickupAttribute of
-    Nothing -> BinaryBit.putBool False
+    Nothing -> BinaryBits.putBool False
     Just instigatorId -> do
-      BinaryBit.putBool True
+      BinaryBits.putBool True
       putWord32Bits instigatorId
-  BinaryBit.putBool (pickupAttributePickedUp pickupAttribute)
+  BinaryBits.putBool (pickupAttributePickedUp pickupAttribute)

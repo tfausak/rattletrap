@@ -8,11 +8,11 @@ import Rattletrap.Encode.Int8Vector
 import Rattletrap.Encode.Vector
 import Rattletrap.Type.WeldedInfoAttribute
 
-import qualified Data.Binary.Bits.Put as BinaryBit
+import qualified Data.Binary.Bits.Put as BinaryBits
 
-putWeldedInfoAttribute :: WeldedInfoAttribute -> BinaryBit.BitPut ()
+putWeldedInfoAttribute :: WeldedInfoAttribute -> BinaryBits.BitPut ()
 putWeldedInfoAttribute weldedInfoAttribute = do
-  BinaryBit.putBool (weldedInfoAttributeActive weldedInfoAttribute)
+  BinaryBits.putBool (weldedInfoAttributeActive weldedInfoAttribute)
   putInt32Bits (weldedInfoAttributeActorId weldedInfoAttribute)
   putVector (weldedInfoAttributeOffset weldedInfoAttribute)
   putFloat32Bits (weldedInfoAttributeMass weldedInfoAttribute)
