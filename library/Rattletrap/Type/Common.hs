@@ -22,7 +22,7 @@ import qualified Data.Word as Word
 import qualified Language.Haskell.TH as TH
 
 deriveJson :: TH.Name -> TH.Q [TH.Dec]
-deriveJson name = Json.deriveJSON (jsonOptions $ TH.nameBase name) name
+deriveJson name = Json.deriveJSON (jsonOptions (TH.nameBase name)) name
 
 jsonOptions :: String -> Json.Options
 jsonOptions prefix = Json.defaultOptions
@@ -43,10 +43,9 @@ toSnakeCase :: String -> String
 toSnakeCase = Json.camelTo2 '_'
 
 partialDropPrefix :: (Eq a, Show a) => [a] -> [a] -> [a]
-partialDropPrefix prefix list =
-  Maybe.fromMaybe
-      (error $ unwords [show prefix, "is not a prefix of", show list])
-    $ dropPrefix prefix list
+partialDropPrefix prefix list = Maybe.fromMaybe
+  (error (unwords [show prefix, "is not a prefix of", show list]))
+  (dropPrefix prefix list)
 
 dropPrefix :: Eq a => [a] -> [a] -> Maybe [a]
 dropPrefix prefix list = case prefix of

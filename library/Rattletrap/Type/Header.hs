@@ -70,7 +70,7 @@ getVersion :: Header -> (Int, Int, Int)
 getVersion header =
   ( fromIntegral (word32leValue (headerEngineVersion header))
   , fromIntegral (word32leValue (headerLicenseeVersion header))
-  , maybe 0 (fromIntegral . word32leValue) $ headerPatchVersion header
+  , maybe 0 (fromIntegral . word32leValue) (headerPatchVersion header)
   )
 
 getNumFrames :: Header -> Int
