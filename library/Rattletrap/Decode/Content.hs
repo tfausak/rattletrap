@@ -52,9 +52,7 @@ decodeContent version numFrames maxChannels = do
       (decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
     get = runBitGet bitGet
-  frames <- case runGetOrFail get (reverseBytes stream) of
-    Left (_, _, problem) -> fail problem
-    Right (_, _, frames) -> pure frames
+  frames <- either fail pure (runDecode get (reverseBytes stream))
   pure
     ( Content
       levels

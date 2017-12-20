@@ -7,6 +7,7 @@ module Rattletrap.Utility.Helper
   , encodeReplayFile
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.Replay
 import Rattletrap.Encode.Replay
 import Rattletrap.Type.Replay
@@ -19,9 +20,7 @@ import qualified Data.ByteString.Lazy as LazyBytes
 
 -- | Parses a raw replay.
 decodeReplayFile :: LazyBytes.ByteString -> Either String Replay
-decodeReplayFile contents = case Binary.runGetOrFail decodeReplay contents of
-  Left (_, _, message) -> fail message
-  Right (_, _, replay) -> pure replay
+decodeReplayFile = runDecode decodeReplay
 
 -- | Encodes a replay as JSON.
 encodeReplayJson :: Replay -> LazyBytes.ByteString

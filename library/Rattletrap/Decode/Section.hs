@@ -17,9 +17,8 @@ decodeSection getBody = do
   rawBody <- getLazyByteString (fromIntegral (word32leValue size))
   let actualCrc = Word32le (getCrc32 rawBody)
   Monad.when (actualCrc /= crc) (fail (crcMessage actualCrc crc))
-  case runGetOrFail getBody rawBody of
-    Left (_, _, problem) -> fail problem
-    Right (_, _, body) -> pure (Section size crc body)
+  body <- either fail pure (runDecode getBody rawBody)
+  pure (Section size crc body)
 
 crcMessage :: Word32le -> Word32le -> String
 crcMessage actual expected = unwords

@@ -4,7 +4,9 @@ module Rattletrap.Decode.Common
   , decodeWhen
   , getLazyByteStringBits
   , getWord8Bits
+  , runDecode
   , toBits
+  , BinaryBits.runBitGet
   , Binary.getFloatle
   , Binary.getLazyByteString
   , Binary.getInt8
@@ -12,11 +14,9 @@ module Rattletrap.Decode.Common
   , Binary.getWord8
   , Binary.getWord32le
   , Binary.getWord64le
-  , Binary.runGetOrFail
   , BinaryBits.getBool
   , BinaryBits.getWord16be
   , BinaryBits.getWord32be
-  , BinaryBits.runBitGet
   ) where
 
 import qualified Control.Applicative as Applicative
@@ -40,6 +40,11 @@ getLazyByteStringBits = BinaryBits.getLazyByteString
 
 getWord8Bits :: Int -> DecodeBits Word.Word8
 getWord8Bits = BinaryBits.getWord8
+
+runDecode :: Decode a -> LazyBytes.ByteString -> Either String a
+runDecode decode bytes = case Binary.runGetOrFail decode bytes of
+  Left (_, _, x) -> fail x
+  Right (_, _, x) -> pure x
 
 toBits :: Decode a -> Int -> DecodeBits a
 toBits decode =
