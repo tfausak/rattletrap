@@ -15,8 +15,6 @@ import Rattletrap.Type.PropertyValue
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
-import qualified Data.Map as Map
-
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
   { headerEngineVersion :: Word32le
@@ -75,20 +73,14 @@ getVersion header =
 
 getNumFrames :: Header -> Int
 getNumFrames header =
-  let
-    key = strValue (toStr "NumFrames")
-    properties = dictionaryValue (headerProperties header)
-  in case Map.lookup key properties of
+  case dictionaryLookup (toStr "NumFrames") (headerProperties header) of
     Just (Property _ _ (PropertyValueInt numFrames)) ->
       fromIntegral (int32leValue numFrames)
     _ -> 0
 
 getMaxChannels :: Header -> Word
 getMaxChannels header =
-  let
-    key = strValue (toStr "MaxChannels")
-    properties = dictionaryValue (headerProperties header)
-  in case Map.lookup key properties of
+  case dictionaryLookup (toStr "MaxChannels") (headerProperties header) of
     Just (Property _ _ (PropertyValueInt numFrames)) ->
       fromIntegral (int32leValue numFrames)
     _ -> 1023

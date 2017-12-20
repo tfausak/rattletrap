@@ -1,8 +1,6 @@
 module Rattletrap.Type.Dictionary
   ( Dictionary(..)
-  , dictionaryKeys
-  , dictionaryLastKey
-  , dictionaryValue
+  , dictionaryLookup
   ) where
 
 import Rattletrap.Type.Common
@@ -31,18 +29,12 @@ instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
       (DictionaryEnd lastKey)
       (reverse keys))
 
-get :: Json.FromJSON a => Json.Object -> String -> Json.Parser a
-get o k = o Json..: Text.pack k
-
 instance Json.ToJSON a => Json.ToJSON (Dictionary a) where
   toJSON d = Json.object
     [ pair "keys" (dictionaryKeys d)
     , pair "last_key" (dictionaryLastKey d)
     , pair "value" (dictionaryValue d)
     ]
-
-pair :: Json.ToJSON a => String -> a -> (Text, Json.Value)
-pair k v = (Text.pack k, Json.toJSON v)
 
 dictionaryKeys :: Dictionary a -> [Str]
 dictionaryKeys = fmap fst . toList
@@ -52,8 +44,19 @@ dictionaryLastKey x = case x of
   DictionaryElement _ _ y -> dictionaryLastKey y
   DictionaryEnd y -> y
 
+dictionaryLookup :: Str -> Dictionary a -> Maybe a
+dictionaryLookup k x = case x of
+  DictionaryElement j v y -> if k == j then Just v else dictionaryLookup k y
+  DictionaryEnd _ -> Nothing
+
 dictionaryValue :: Dictionary a -> Map Text a
 dictionaryValue = Map.mapKeys strValue . Map.fromList . toList
+
+get :: Json.FromJSON a => Json.Object -> String -> Json.Parser a
+get o k = o Json..: Text.pack k
+
+pair :: Json.ToJSON a => String -> a -> (Text, Json.Value)
+pair k v = (Text.pack k, Json.toJSON v)
 
 toList :: Dictionary a -> [(Str, a)]
 toList x = case x of
