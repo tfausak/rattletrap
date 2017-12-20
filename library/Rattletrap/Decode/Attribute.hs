@@ -14,8 +14,6 @@ import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
-import qualified Control.Monad.Trans.Reader as Reader
-
 decodeAttributesBits
   :: (Int, Int, Int)
   -> ClassAttributeMap
@@ -42,10 +40,11 @@ decodeAttributeBits version classes actors actor = do
   limit <- lookupAttributeIdLimit attributes actor
   attribute <- decodeCompressedWordBits limit
   name <- lookupAttributeName classes attributes attribute
-  Attribute attribute name <$> Reader.runReaderT
-    (decodeAttributeValueBits name)
-    (version, (classAttributeMapObjectMap classes))
-
+  Attribute attribute name
+    <$> decodeAttributeValueBits
+          version
+          (classAttributeMapObjectMap classes)
+          name
 
 lookupAttributeMap
   :: ClassAttributeMap
