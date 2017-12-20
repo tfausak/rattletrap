@@ -18,8 +18,6 @@ import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes
 
 import qualified Control.Monad.Trans.State as State
-import qualified Data.Binary.Bits.Get as BinaryBits
-import qualified Data.Binary.Get as Binary
 
 decodeContent
   :: (Int, Int, Int)
@@ -39,7 +37,7 @@ decodeContent version numFrames maxChannels = do
     <*> decodeWord32le
   (stream, messages, marks, packages, objects, names, classMappings, caches) <-
     (,,,,,,,)
-    <$> Binary.getLazyByteString (fromIntegral (word32leValue streamSize))
+    <$> getLazyByteString (fromIntegral (word32leValue streamSize))
     <*> decodeList decodeMessage
     <*> decodeList decodeMark
     <*> decodeList decodeStr
@@ -53,8 +51,8 @@ decodeContent version numFrames maxChannels = do
     bitGet = State.evalStateT
       (decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
-    get = BinaryBits.runBitGet bitGet
-  frames <- case Binary.runGetOrFail get (reverseBytes stream) of
+    get = runBitGet bitGet
+  frames <- case runGetOrFail get (reverseBytes stream) of
     Left (_, _, problem) -> fail problem
     Right (_, _, frames) -> pure frames
   pure

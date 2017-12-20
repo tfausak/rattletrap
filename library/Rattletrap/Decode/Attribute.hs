@@ -14,8 +14,6 @@ import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
-import qualified Data.Binary.Bits.Get as BinaryBits
-
 decodeAttributesBits
   :: (Int, Int, Int)
   -> ClassAttributeMap
@@ -23,7 +21,7 @@ decodeAttributesBits
   -> CompressedWord
   -> DecodeBits [Attribute]
 decodeAttributesBits version classes actors actor = do
-  hasAttribute <- BinaryBits.getBool
+  hasAttribute <- getBool
   if hasAttribute
     then
       (:)

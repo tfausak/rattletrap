@@ -6,12 +6,10 @@ import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word8le
 import Rattletrap.Type.ClubColorsAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBits
-
 decodeClubColorsAttributeBits :: DecodeBits ClubColorsAttribute
 decodeClubColorsAttributeBits =
   ClubColorsAttribute
-    <$> BinaryBits.getBool
+    <$> getBool
     <*> decodeWord8leBits
-    <*> BinaryBits.getBool
+    <*> getBool
     <*> decodeWord8leBits

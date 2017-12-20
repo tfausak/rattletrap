@@ -8,7 +8,6 @@ import Rattletrap.Type.LoadoutsOnlineAttribute
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
-import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Map as Map
 
 decodeLoadoutsOnlineAttributeBits
@@ -19,5 +18,5 @@ decodeLoadoutsOnlineAttributeBits version objectMap =
   LoadoutsOnlineAttribute
     <$> decodeLoadoutOnlineAttributeBits version objectMap
     <*> decodeLoadoutOnlineAttributeBits version objectMap
-    <*> BinaryBits.getBool
-    <*> BinaryBits.getBool
+    <*> getBool
+    <*> getBool

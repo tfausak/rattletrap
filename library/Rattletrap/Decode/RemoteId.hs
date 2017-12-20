@@ -9,7 +9,6 @@ import Rattletrap.Type.RemoteId
 import Rattletrap.Type.Word8le
 import Rattletrap.Utility.Bytes
 
-import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -17,7 +16,7 @@ import qualified Data.Word as Word
 
 decodeRemoteIdBits :: (Int, Int, Int) -> Word8le -> DecodeBits RemoteId
 decodeRemoteIdBits (_, _, patch) systemId = case word8leValue systemId of
-  0 -> RemoteIdSplitscreen <$> BinaryBits.getWord32be 24
+  0 -> RemoteIdSplitscreen <$> getWord32be 24
   1 -> RemoteIdSteam <$> decodeWord64leBits
   2 -> RemoteIdPlayStation <$> decodePsName <*> decodePsBytes patch
   4 -> RemoteIdXbox <$> decodeWord64leBits
@@ -30,8 +29,8 @@ decodePsName = fmap
   . LazyBytes.toStrict
   . reverseBytes
   )
-  (BinaryBits.getLazyByteString 16)
+  (getLazyByteStringBits 16)
 
 decodePsBytes :: Int -> DecodeBits [Word.Word8]
 decodePsBytes patch = LazyBytes.unpack
-  <$> BinaryBits.getLazyByteString (if patch >= 1 then 24 else 16)
+  <$> getLazyByteStringBits (if patch >= 1 then 24 else 16)

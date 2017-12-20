@@ -9,12 +9,10 @@ import Rattletrap.Decode.Int8Vector
 import Rattletrap.Decode.Vector
 import Rattletrap.Type.WeldedInfoAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBits
-
 decodeWeldedInfoAttributeBits :: DecodeBits WeldedInfoAttribute
 decodeWeldedInfoAttributeBits =
   WeldedInfoAttribute
-    <$> BinaryBits.getBool
+    <$> getBool
     <*> decodeInt32leBits
     <*> decodeVectorBits
     <*> decodeFloat32leBits

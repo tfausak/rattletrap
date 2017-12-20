@@ -7,8 +7,6 @@ import Rattletrap.Decode.Str
 import Rattletrap.Decode.Word32le
 import Rattletrap.Type.PrivateMatchSettingsAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBits
-
 decodePrivateMatchSettingsAttributeBits
   :: DecodeBits PrivateMatchSettingsAttribute
 decodePrivateMatchSettingsAttributeBits =
@@ -18,4 +16,4 @@ decodePrivateMatchSettingsAttributeBits =
     <*> decodeWord32leBits
     <*> decodeStrBits
     <*> decodeStrBits
-    <*> BinaryBits.getBool
+    <*> getBool

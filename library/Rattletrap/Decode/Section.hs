@@ -9,16 +9,15 @@ import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Crc
 
 import qualified Control.Monad as Monad
-import qualified Data.Binary.Get as Binary
 
 decodeSection :: Decode a -> Decode (Section a)
 decodeSection getBody = do
   size <- decodeWord32le
   crc <- decodeWord32le
-  rawBody <- Binary.getLazyByteString (fromIntegral (word32leValue size))
+  rawBody <- getLazyByteString (fromIntegral (word32leValue size))
   let actualCrc = Word32le (getCrc32 rawBody)
   Monad.when (actualCrc /= crc) (fail (crcMessage actualCrc crc))
-  case Binary.runGetOrFail getBody rawBody of
+  case runGetOrFail getBody rawBody of
     Left (_, _, problem) -> fail problem
     Right (_, _, body) -> pure (Section size crc body)
 

@@ -10,8 +10,6 @@ import Rattletrap.Type.ReservationAttribute
 import Rattletrap.Type.UniqueIdAttribute
 import Rattletrap.Type.Word8le
 
-import qualified Data.Binary.Bits.Get as BinaryBits
-
 decodeReservationAttributeBits
   :: (Int, Int, Int) -> DecodeBits ReservationAttribute
 decodeReservationAttributeBits version = do
@@ -21,6 +19,6 @@ decodeReservationAttributeBits version = do
     <$> decodeWhen
           (uniqueIdAttributeSystemId uniqueId /= Word8le 0)
           decodeStrBits
-    <*> BinaryBits.getBool
-    <*> BinaryBits.getBool
-    <*> decodeWhen (version >= (868, 12, 0)) (BinaryBits.getWord8 6)
+    <*> getBool
+    <*> getBool
+    <*> decodeWhen (version >= (868, 12, 0)) (getWord8Bits 6)

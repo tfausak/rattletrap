@@ -3,6 +3,7 @@ module Rattletrap.Decode.Replication
   , decodeReplicationBits
   ) where
 
+import Rattletrap.Decode.Common
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Decode.ReplicationValue
 import Rattletrap.Type.ClassAttributeMap
@@ -12,7 +13,6 @@ import Rattletrap.Type.Word32le
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
-import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Map as Map
 
 decodeReplicationsBits
@@ -21,10 +21,10 @@ decodeReplicationsBits
   -> ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       BinaryBits.BitGet
+       DecodeBits
        [Replication]
 decodeReplicationsBits version limit classes = do
-  hasReplication <- Trans.lift BinaryBits.getBool
+  hasReplication <- Trans.lift getBool
   if hasReplication
     then
       (:)
@@ -38,7 +38,7 @@ decodeReplicationBits
   -> ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       BinaryBits.BitGet
+       DecodeBits
        Replication
 decodeReplicationBits version limit classes = do
   actor <- Trans.lift (decodeCompressedWordBits limit)

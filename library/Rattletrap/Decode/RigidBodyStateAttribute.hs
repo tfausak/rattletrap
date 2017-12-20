@@ -7,11 +7,9 @@ import Rattletrap.Decode.CompressedWordVector
 import Rattletrap.Decode.Vector
 import Rattletrap.Type.RigidBodyStateAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBits
-
 decodeRigidBodyStateAttributeBits :: DecodeBits RigidBodyStateAttribute
 decodeRigidBodyStateAttributeBits = do
-  sleeping <- BinaryBits.getBool
+  sleeping <- getBool
   RigidBodyStateAttribute sleeping
     <$> decodeVectorBits
     <*> decodeCompressedWordVectorBits

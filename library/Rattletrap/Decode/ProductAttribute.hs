@@ -16,7 +16,6 @@ import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
 
 import qualified Control.Monad as Monad
-import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Map as Map
 
 decodeProductAttributesBits
@@ -30,7 +29,7 @@ decodeProductAttributesBits version objectMap = do
 decodeProductAttributeBits
   :: (Int, Int, Int) -> Map Word32le Str -> DecodeBits ProductAttribute
 decodeProductAttributeBits version objectMap = do
-  flag <- BinaryBits.getBool
+  flag <- getBool
   objectId <- decodeWord32leBits
   let objectName = Map.lookup objectId objectMap
   value <- case objectName of
@@ -49,10 +48,10 @@ decodeProductAttributeBits version objectMap = do
 
 decodePainted :: (Int, Int, Int) -> DecodeBits (Either CompressedWord Word32)
 decodePainted version = if version >= (868, 18, 0)
-  then Right <$> BinaryBits.getWord32be 31
+  then Right <$> getWord32be 31
   else Left <$> decodeCompressedWordBits 13
 
 decodeColor :: DecodeBits (Maybe (Either CompressedWord Word32))
 decodeColor = do
-  hasValue <- BinaryBits.getBool
-  decodeWhen hasValue (Right <$> BinaryBits.getWord32be 31)
+  hasValue <- getBool
+  decodeWhen hasValue (Right <$> getWord32be 31)

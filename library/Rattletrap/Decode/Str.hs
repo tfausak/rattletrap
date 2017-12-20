@@ -9,8 +9,6 @@ import Rattletrap.Type.Int32le
 import Rattletrap.Type.Str
 import Rattletrap.Utility.Bytes
 
-import qualified Data.Binary.Bits.Get as BinaryBits
-import qualified Data.Binary.Get as Binary
 import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -18,13 +16,13 @@ import qualified Data.Text.Encoding as Text
 decodeStr :: Decode Str
 decodeStr = do
   rawSize <- decodeInt32le
-  bytes <- Binary.getLazyByteString (normalizeTextSize rawSize)
+  bytes <- getLazyByteString (normalizeTextSize rawSize)
   pure (Str (dropNull (getTextDecoder rawSize bytes)))
 
 decodeStrBits :: DecodeBits Str
 decodeStrBits = do
   rawSize <- decodeInt32leBits
-  bytes <- BinaryBits.getLazyByteString (normalizeTextSize rawSize)
+  bytes <- getLazyByteStringBits (normalizeTextSize rawSize)
   pure (Str (dropNull (getTextDecoder rawSize (reverseBytes bytes))))
 
 normalizeTextSize :: Integral a => Int32le -> a

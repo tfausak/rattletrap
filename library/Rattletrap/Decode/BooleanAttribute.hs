@@ -5,7 +5,5 @@ module Rattletrap.Decode.BooleanAttribute
 import Rattletrap.Decode.Common
 import Rattletrap.Type.BooleanAttribute
 
-import qualified Data.Binary.Bits.Get as BinaryBits
-
 decodeBooleanAttributeBits :: DecodeBits BooleanAttribute
-decodeBooleanAttributeBits = BooleanAttribute <$> BinaryBits.getBool
+decodeBooleanAttributeBits = BooleanAttribute <$> getBool
