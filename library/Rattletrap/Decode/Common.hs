@@ -5,8 +5,8 @@ module Rattletrap.Decode.Common
   , getLazyByteStringBits
   , getWord8Bits
   , runDecode
+  , runDecodeBits
   , toBits
-  , BinaryBits.runBitGet
   , Binary.getFloatle
   , Binary.getLazyByteString
   , Binary.getInt8
@@ -45,6 +45,9 @@ runDecode :: Decode a -> LazyBytes.ByteString -> Either String a
 runDecode decode bytes = case Binary.runGetOrFail decode bytes of
   Left (_, _, x) -> fail x
   Right (_, _, x) -> pure x
+
+runDecodeBits :: DecodeBits a -> LazyBytes.ByteString -> Either String a
+runDecodeBits = runDecode . BinaryBits.runBitGet
 
 toBits :: Decode a -> Int -> DecodeBits a
 toBits decode =

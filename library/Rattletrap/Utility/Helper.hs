@@ -14,7 +14,6 @@ import Rattletrap.Type.Replay
 
 import qualified Data.Aeson as Json
 import qualified Data.Aeson.Encode.Pretty as Json
-import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as LazyBytes
 
