@@ -41,47 +41,52 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
+import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.Reader as Reader
 import qualified Data.Map as Map
 
 decodeAttributeValueBits
-  :: (Int, Int, Int) -> Map Word32le Str -> Str -> DecodeBits AttributeValue
-decodeAttributeValueBits version objectMap name = do
+  :: Str
+  -> Reader.ReaderT
+       ((Int, Int, Int), Map Word32le Str)
+       DecodeBits
+       AttributeValue
+decodeAttributeValueBits name = do
   constructor <- maybe
     (fail ("don't know how to get attribute value " <> show name))
     pure
     (Map.lookup name attributeTypes)
   case constructor of
-    AttributeTypeAppliedDamage -> AttributeValueAppliedDamage <$> decodeAppliedDamageAttributeBits
-    AttributeTypeBoolean -> AttributeValueBoolean <$> decodeBooleanAttributeBits
-    AttributeTypeByte -> AttributeValueByte <$> decodeByteAttributeBits
-    AttributeTypeCamSettings -> AttributeValueCamSettings <$> Reader.runReaderT decodeCamSettingsAttributeBits version
-    AttributeTypeClubColors -> AttributeValueClubColors <$> decodeClubColorsAttributeBits
-    AttributeTypeDamageState -> AttributeValueDamageState <$> decodeDamageStateAttributeBits
-    AttributeTypeDemolish -> AttributeValueDemolish <$> decodeDemolishAttributeBits
-    AttributeTypeEnum -> AttributeValueEnum <$> decodeEnumAttributeBits
-    AttributeTypeExplosion -> AttributeValueExplosion <$> decodeExplosionAttributeBits
-    AttributeTypeExtendedExplosion -> AttributeValueExtendedExplosion <$> decodeExtendedExplosionAttributeBits
-    AttributeTypeFlaggedInt -> AttributeValueFlaggedInt <$> decodeFlaggedIntAttributeBits
-    AttributeTypeFloat -> AttributeValueFloat <$> decodeFloatAttributeBits
-    AttributeTypeGameMode -> AttributeValueGameMode <$> Reader.runReaderT decodeGameModeAttributeBits version
-    AttributeTypeInt -> AttributeValueInt <$> decodeIntAttributeBits
-    AttributeTypeLoadout -> AttributeValueLoadout <$> decodeLoadoutAttributeBits
-    AttributeTypeLoadoutOnline -> AttributeValueLoadoutOnline <$> Reader.runReaderT decodeLoadoutOnlineAttributeBits (version, objectMap)
-    AttributeTypeLoadouts -> AttributeValueLoadouts <$> decodeLoadoutsAttributeBits
-    AttributeTypeLoadoutsOnline -> AttributeValueLoadoutsOnline <$> Reader.runReaderT decodeLoadoutsOnlineAttributeBits (version, objectMap)
-    AttributeTypeLocation -> AttributeValueLocation <$> decodeLocationAttributeBits
-    AttributeTypeMusicStinger -> AttributeValueMusicStinger <$> decodeMusicStingerAttributeBits
-    AttributeTypePartyLeader -> AttributeValuePartyLeader <$> Reader.runReaderT decodePartyLeaderAttributeBits version
-    AttributeTypePickup -> AttributeValuePickup <$> decodePickupAttributeBits
-    AttributeTypePrivateMatchSettings -> AttributeValuePrivateMatchSettings <$> decodePrivateMatchSettingsAttributeBits
-    AttributeTypeQWord -> AttributeValueQWord <$> decodeQWordAttributeBits
-    AttributeTypeReservation -> AttributeValueReservation <$> Reader.runReaderT decodeReservationAttributeBits version
-    AttributeTypeRigidBodyState -> AttributeValueRigidBodyState <$> decodeRigidBodyStateAttributeBits
-    AttributeTypeString -> AttributeValueString <$> decodeStringAttributeBits
-    AttributeTypeTeamPaint -> AttributeValueTeamPaint <$> decodeTeamPaintAttributeBits
-    AttributeTypeUniqueId -> AttributeValueUniqueId <$> Reader.runReaderT decodeUniqueIdAttributeBits version
-    AttributeTypeWeldedInfo -> AttributeValueWeldedInfo <$> decodeWeldedInfoAttributeBits
+    AttributeTypeAppliedDamage -> AttributeValueAppliedDamage <$> Trans.lift decodeAppliedDamageAttributeBits
+    AttributeTypeBoolean -> AttributeValueBoolean <$> Trans.lift decodeBooleanAttributeBits
+    AttributeTypeByte -> AttributeValueByte <$> Trans.lift decodeByteAttributeBits
+    AttributeTypeCamSettings -> AttributeValueCamSettings <$> Reader.withReaderT fst decodeCamSettingsAttributeBits
+    AttributeTypeClubColors -> AttributeValueClubColors <$> Trans.lift decodeClubColorsAttributeBits
+    AttributeTypeDamageState -> AttributeValueDamageState <$> Trans.lift decodeDamageStateAttributeBits
+    AttributeTypeDemolish -> AttributeValueDemolish <$> Trans.lift decodeDemolishAttributeBits
+    AttributeTypeEnum -> AttributeValueEnum <$> Trans.lift decodeEnumAttributeBits
+    AttributeTypeExplosion -> AttributeValueExplosion <$> Trans.lift decodeExplosionAttributeBits
+    AttributeTypeExtendedExplosion -> AttributeValueExtendedExplosion <$> Trans.lift decodeExtendedExplosionAttributeBits
+    AttributeTypeFlaggedInt -> AttributeValueFlaggedInt <$> Trans.lift decodeFlaggedIntAttributeBits
+    AttributeTypeFloat -> AttributeValueFloat <$> Trans.lift decodeFloatAttributeBits
+    AttributeTypeGameMode -> AttributeValueGameMode <$> Reader.withReaderT fst decodeGameModeAttributeBits
+    AttributeTypeInt -> AttributeValueInt <$> Trans.lift decodeIntAttributeBits
+    AttributeTypeLoadout -> AttributeValueLoadout <$> Trans.lift decodeLoadoutAttributeBits
+    AttributeTypeLoadoutOnline -> AttributeValueLoadoutOnline <$> decodeLoadoutOnlineAttributeBits
+    AttributeTypeLoadouts -> AttributeValueLoadouts <$> Trans.lift decodeLoadoutsAttributeBits
+    AttributeTypeLoadoutsOnline -> AttributeValueLoadoutsOnline <$> decodeLoadoutsOnlineAttributeBits
+    AttributeTypeLocation -> AttributeValueLocation <$> Trans.lift decodeLocationAttributeBits
+    AttributeTypeMusicStinger -> AttributeValueMusicStinger <$> Trans.lift decodeMusicStingerAttributeBits
+    AttributeTypePartyLeader -> AttributeValuePartyLeader <$> Reader.withReaderT fst decodePartyLeaderAttributeBits
+    AttributeTypePickup -> AttributeValuePickup <$> Trans.lift decodePickupAttributeBits
+    AttributeTypePrivateMatchSettings -> AttributeValuePrivateMatchSettings <$> Trans.lift decodePrivateMatchSettingsAttributeBits
+    AttributeTypeQWord -> AttributeValueQWord <$> Trans.lift decodeQWordAttributeBits
+    AttributeTypeReservation -> AttributeValueReservation <$> Reader.withReaderT fst decodeReservationAttributeBits
+    AttributeTypeRigidBodyState -> AttributeValueRigidBodyState <$> Trans.lift decodeRigidBodyStateAttributeBits
+    AttributeTypeString -> AttributeValueString <$> Trans.lift decodeStringAttributeBits
+    AttributeTypeTeamPaint -> AttributeValueTeamPaint <$> Trans.lift decodeTeamPaintAttributeBits
+    AttributeTypeUniqueId -> AttributeValueUniqueId <$> Reader.withReaderT fst decodeUniqueIdAttributeBits
+    AttributeTypeWeldedInfo -> AttributeValueWeldedInfo <$> Trans.lift decodeWeldedInfoAttributeBits
 
 attributeTypes :: Map Str AttributeType
 attributeTypes = Map.mapKeys toStr (Map.fromList rawAttributeTypes)
