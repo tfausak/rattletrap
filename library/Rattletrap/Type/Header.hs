@@ -2,16 +2,11 @@
 
 module Rattletrap.Type.Header
   ( Header(..)
-  , getVersion
-  , getNumFrames
-  , getMaxChannels
   ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Dictionary
-import Rattletrap.Type.Int32le
 import Rattletrap.Type.Property
-import Rattletrap.Type.PropertyValue
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
@@ -63,24 +58,3 @@ data Header = Header
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''Header)
-
-getVersion :: Header -> (Int, Int, Int)
-getVersion header =
-  ( fromIntegral (word32leValue (headerEngineVersion header))
-  , fromIntegral (word32leValue (headerLicenseeVersion header))
-  , maybe 0 (fromIntegral . word32leValue) (headerPatchVersion header)
-  )
-
-getNumFrames :: Header -> Int
-getNumFrames header =
-  case dictionaryLookup (toStr "NumFrames") (headerProperties header) of
-    Just (Property _ _ (PropertyValueInt numFrames)) ->
-      fromIntegral (int32leValue numFrames)
-    _ -> 0
-
-getMaxChannels :: Header -> Word
-getMaxChannels header =
-  case dictionaryLookup (toStr "MaxChannels") (headerProperties header) of
-    Just (Property _ _ (PropertyValueInt numFrames)) ->
-      fromIntegral (int32leValue numFrames)
-    _ -> 1023
