@@ -41,7 +41,6 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
-import qualified Control.Monad.Trans.Reader as Reader
 import qualified Data.Map as Map
 
 decodeAttributeValueBits
@@ -52,36 +51,62 @@ decodeAttributeValueBits version objectMap name = do
     pure
     (Map.lookup name attributeTypes)
   case constructor of
-    AttributeTypeAppliedDamage -> AttributeValueAppliedDamage <$> decodeAppliedDamageAttributeBits
-    AttributeTypeBoolean -> AttributeValueBoolean <$> decodeBooleanAttributeBits
+    AttributeTypeAppliedDamage ->
+      AttributeValueAppliedDamage <$> decodeAppliedDamageAttributeBits
+    AttributeTypeBoolean ->
+      AttributeValueBoolean <$> decodeBooleanAttributeBits
     AttributeTypeByte -> AttributeValueByte <$> decodeByteAttributeBits
-    AttributeTypeCamSettings -> AttributeValueCamSettings <$> Reader.runReaderT decodeCamSettingsAttributeBits version
-    AttributeTypeClubColors -> AttributeValueClubColors <$> decodeClubColorsAttributeBits
-    AttributeTypeDamageState -> AttributeValueDamageState <$> decodeDamageStateAttributeBits
-    AttributeTypeDemolish -> AttributeValueDemolish <$> decodeDemolishAttributeBits
+    AttributeTypeCamSettings ->
+      AttributeValueCamSettings <$> decodeCamSettingsAttributeBits version
+    AttributeTypeClubColors ->
+      AttributeValueClubColors <$> decodeClubColorsAttributeBits
+    AttributeTypeDamageState ->
+      AttributeValueDamageState <$> decodeDamageStateAttributeBits
+    AttributeTypeDemolish ->
+      AttributeValueDemolish <$> decodeDemolishAttributeBits
     AttributeTypeEnum -> AttributeValueEnum <$> decodeEnumAttributeBits
-    AttributeTypeExplosion -> AttributeValueExplosion <$> decodeExplosionAttributeBits
-    AttributeTypeExtendedExplosion -> AttributeValueExtendedExplosion <$> decodeExtendedExplosionAttributeBits
-    AttributeTypeFlaggedInt -> AttributeValueFlaggedInt <$> decodeFlaggedIntAttributeBits
+    AttributeTypeExplosion ->
+      AttributeValueExplosion <$> decodeExplosionAttributeBits
+    AttributeTypeExtendedExplosion ->
+      AttributeValueExtendedExplosion <$> decodeExtendedExplosionAttributeBits
+    AttributeTypeFlaggedInt ->
+      AttributeValueFlaggedInt <$> decodeFlaggedIntAttributeBits
     AttributeTypeFloat -> AttributeValueFloat <$> decodeFloatAttributeBits
-    AttributeTypeGameMode -> AttributeValueGameMode <$> Reader.runReaderT decodeGameModeAttributeBits version
+    AttributeTypeGameMode ->
+      AttributeValueGameMode <$> decodeGameModeAttributeBits version
     AttributeTypeInt -> AttributeValueInt <$> decodeIntAttributeBits
-    AttributeTypeLoadout -> AttributeValueLoadout <$> decodeLoadoutAttributeBits
-    AttributeTypeLoadoutOnline -> AttributeValueLoadoutOnline <$> Reader.runReaderT decodeLoadoutOnlineAttributeBits (version, objectMap)
-    AttributeTypeLoadouts -> AttributeValueLoadouts <$> decodeLoadoutsAttributeBits
-    AttributeTypeLoadoutsOnline -> AttributeValueLoadoutsOnline <$> Reader.runReaderT decodeLoadoutsOnlineAttributeBits (version, objectMap)
-    AttributeTypeLocation -> AttributeValueLocation <$> decodeLocationAttributeBits
-    AttributeTypeMusicStinger -> AttributeValueMusicStinger <$> decodeMusicStingerAttributeBits
-    AttributeTypePartyLeader -> AttributeValuePartyLeader <$> Reader.runReaderT decodePartyLeaderAttributeBits version
+    AttributeTypeLoadout ->
+      AttributeValueLoadout <$> decodeLoadoutAttributeBits
+    AttributeTypeLoadoutOnline ->
+      AttributeValueLoadoutOnline
+        <$> decodeLoadoutOnlineAttributeBits version objectMap
+    AttributeTypeLoadouts ->
+      AttributeValueLoadouts <$> decodeLoadoutsAttributeBits
+    AttributeTypeLoadoutsOnline ->
+      AttributeValueLoadoutsOnline
+        <$> decodeLoadoutsOnlineAttributeBits version objectMap
+    AttributeTypeLocation ->
+      AttributeValueLocation <$> decodeLocationAttributeBits
+    AttributeTypeMusicStinger ->
+      AttributeValueMusicStinger <$> decodeMusicStingerAttributeBits
+    AttributeTypePartyLeader ->
+      AttributeValuePartyLeader <$> decodePartyLeaderAttributeBits version
     AttributeTypePickup -> AttributeValuePickup <$> decodePickupAttributeBits
-    AttributeTypePrivateMatchSettings -> AttributeValuePrivateMatchSettings <$> decodePrivateMatchSettingsAttributeBits
+    AttributeTypePrivateMatchSettings ->
+      AttributeValuePrivateMatchSettings
+        <$> decodePrivateMatchSettingsAttributeBits
     AttributeTypeQWord -> AttributeValueQWord <$> decodeQWordAttributeBits
-    AttributeTypeReservation -> AttributeValueReservation <$> Reader.runReaderT decodeReservationAttributeBits version
-    AttributeTypeRigidBodyState -> AttributeValueRigidBodyState <$> decodeRigidBodyStateAttributeBits
+    AttributeTypeReservation ->
+      AttributeValueReservation <$> decodeReservationAttributeBits version
+    AttributeTypeRigidBodyState ->
+      AttributeValueRigidBodyState <$> decodeRigidBodyStateAttributeBits
     AttributeTypeString -> AttributeValueString <$> decodeStringAttributeBits
-    AttributeTypeTeamPaint -> AttributeValueTeamPaint <$> decodeTeamPaintAttributeBits
-    AttributeTypeUniqueId -> AttributeValueUniqueId <$> Reader.runReaderT decodeUniqueIdAttributeBits version
-    AttributeTypeWeldedInfo -> AttributeValueWeldedInfo <$> decodeWeldedInfoAttributeBits
+    AttributeTypeTeamPaint ->
+      AttributeValueTeamPaint <$> decodeTeamPaintAttributeBits
+    AttributeTypeUniqueId ->
+      AttributeValueUniqueId <$> decodeUniqueIdAttributeBits version
+    AttributeTypeWeldedInfo ->
+      AttributeValueWeldedInfo <$> decodeWeldedInfoAttributeBits
 
 attributeTypes :: Map Str AttributeType
 attributeTypes = Map.mapKeys toStr (Map.fromList rawAttributeTypes)

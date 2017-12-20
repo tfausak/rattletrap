@@ -8,18 +8,15 @@ import Rattletrap.Type.LoadoutsOnlineAttribute
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
-import qualified Control.Monad.Trans.Class as Trans
-import qualified Control.Monad.Trans.Reader as Reader
 import qualified Data.Map as Map
 
 decodeLoadoutsOnlineAttributeBits
-  :: Reader.ReaderT
-       ((Int, Int, Int), Map.Map Word32le Str)
-       DecodeBits
-       LoadoutsOnlineAttribute
-decodeLoadoutsOnlineAttributeBits =
+  :: (Int, Int, Int)
+  -> Map.Map Word32le Str
+  -> DecodeBits LoadoutsOnlineAttribute
+decodeLoadoutsOnlineAttributeBits version objectMap =
   LoadoutsOnlineAttribute
-    <$> decodeLoadoutOnlineAttributeBits
-    <*> decodeLoadoutOnlineAttributeBits
-    <*> Trans.lift getBool
-    <*> Trans.lift getBool
+    <$> decodeLoadoutOnlineAttributeBits version objectMap
+    <*> decodeLoadoutOnlineAttributeBits version objectMap
+    <*> getBool
+    <*> getBool
