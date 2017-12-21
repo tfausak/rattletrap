@@ -1,31 +1,55 @@
 os:
   - linux
   - osx
-language: c
+
+language: generic
+
 addons:
   apt:
     packages:
       - libgmp-dev
+
 cache:
   directories:
     - $HOME/.local/bin
     - $HOME/.stack
+
 env:
   global:
     - HACKAGE_USERNAME=fozworth
-    # HACKAGE_PASSWORD
-    - secure: P2DddimkMUbzfSgu+ye6YMe6L4OTeijhGUYjejuzl0fKXm651lUwUAHQipFXo9+9nWKtCu68N1DxYBW6TI9Ez9AqKNXpVVVd5wmRvy/giMT1fLsay/U8Ie/8zLA3T13wxpILlqCs/UaLY4YJpAM2z37CkMEhFGqQxd3EKmeYNAM6rs778aIwncPCfsJwEmcXKqkOc3z4ACBoYIg+leRem5E1QfNB/zL5MRbhp0X3rh4ugO3OJ7X36smeO6eIIsPXNKikdIOp5Jfz+xWhLCTLTvoxho4VoFmt472Bi/B7F3lzywWBZXm6xvifQas31/v9UczflUui7uyMFj1OWV3/yI8SCoLsyf9EJq9+fymrrK1u0Z1ZMlNQRT10YPXF/z7BNHQon4U19Q/h6LiNNh1UN/iJj/N87vWjUJnDvZaxzlvBEeomWxnqmJlqDPmBDEb3Tj5TZXk512Pb/cKlNE7ySIceWm7unTobuk6/sUmZZFno7jLa89/m5Cml+mNeoCVAAg++/8Mv2pmoSjGpMdKMdTdmhRfFrr5bEi61PbSXKkesuyfPIdIyKrNryEFmHNZNKaGYn5RfooL8SlzwxHtXk/NkE4gv79Njkxo+TbWE882Yo47GCswfSGfeOFNKCZT59pTf0pRY/GkWK16Z+8bKg3hR5lfoXez/vhxL/JzU/sk=
-    # GITHUB_TOKEN
-    - secure: 'IaFWykf+LAWgXH1KOwnGfLDMxOmH697UmUZvi9xIR2ycac2Bga6hqdSUVQQ9keY5Pd5bjUZeSh3GJ8d+/hgWUTOp3qCReyf054GixyVQju4r9sYonBk5MqyeBRqrOo74UjVETlDc+tSSwBdYXBwz+Jk1I23JWEmq9n96Gf8v9gvv2dR7v6PVhdWhpep4qBLR96D5LCOFKyECymBTtqnYFJADxscTD+Hi+O+fwbbsd+DeTXIGZkvtNyDLQCArAfHXk7O5keHcVhTg2RYVz1i9isb/Lp4/nZCRG4CLTiFcoeIWwyWjs6uCWKnvGIN3ujZQo6y06rxsGuHRD10BwfZwh38TgYf8r939IyeRXXP9pmLiheG+Pd8NJuqwp0FGXYYw8ovAiQvECJIHZb64X2N8LmKQ9X2AAl3xgCTzkcEaYzV1AxC7RwfS9dsgxkt3ZVaNt6hJQPcvaSmtQhHEktQSPrttL6Ft2sbEKINvOJOmDP38aJ/pBBlyg/PL2x6cjC3XQ9MkQjBiKc5rQGEi5cQIw9tHF2U0Jelm5AfEMVYFeih6YI83mPuRIrvFsNQvFlISUi1i8FsbnC/B5TE1RQNFYavECPyibX6sUbfqhRikMMGhk7EE4/Fddb0B3qHi0jh9LYRoMBJ3+Nq5NfILjp2WoruVQBZDM4aoVjCgRrpgQ/Y='
+    - secure: # HACKAGE_PASSWORD
+        "P2DddimkMUbzfSgu+ye6YMe6L4OTeijhGUYjejuzl0fKXm651lUwUAHQipFXo9+9nWKtC\
+        u68N1DxYBW6TI9Ez9AqKNXpVVVd5wmRvy/giMT1fLsay/U8Ie/8zLA3T13wxpILlqCs/Ua\
+        LY4YJpAM2z37CkMEhFGqQxd3EKmeYNAM6rs778aIwncPCfsJwEmcXKqkOc3z4ACBoYIg+l\
+        eRem5E1QfNB/zL5MRbhp0X3rh4ugO3OJ7X36smeO6eIIsPXNKikdIOp5Jfz+xWhLCTLTvo\
+        xho4VoFmt472Bi/B7F3lzywWBZXm6xvifQas31/v9UczflUui7uyMFj1OWV3/yI8SCoLsy\
+        f9EJq9+fymrrK1u0Z1ZMlNQRT10YPXF/z7BNHQon4U19Q/h6LiNNh1UN/iJj/N87vWjUJn\
+        DvZaxzlvBEeomWxnqmJlqDPmBDEb3Tj5TZXk512Pb/cKlNE7ySIceWm7unTobuk6/sUmZZ\
+        Fno7jLa89/m5Cml+mNeoCVAAg++/8Mv2pmoSjGpMdKMdTdmhRfFrr5bEi61PbSXKkesuyf\
+        PIdIyKrNryEFmHNZNKaGYn5RfooL8SlzwxHtXk/NkE4gv79Njkxo+TbWE882Yo47GCswfS\
+        GfeOFNKCZT59pTf0pRY/GkWK16Z+8bKg3hR5lfoXez/vhxL/JzU/sk="
+    - secure: # GITHUB_TOKEN
+        "IaFWykf+LAWgXH1KOwnGfLDMxOmH697UmUZvi9xIR2ycac2Bga6hqdSUVQQ9keY5Pd5bj\
+        UZeSh3GJ8d+/hgWUTOp3qCReyf054GixyVQju4r9sYonBk5MqyeBRqrOo74UjVETlDc+tS\
+        SwBdYXBwz+Jk1I23JWEmq9n96Gf8v9gvv2dR7v6PVhdWhpep4qBLR96D5LCOFKyECymBTt\
+        qnYFJADxscTD+Hi+O+fwbbsd+DeTXIGZkvtNyDLQCArAfHXk7O5keHcVhTg2RYVz1i9isb\
+        /Lp4/nZCRG4CLTiFcoeIWwyWjs6uCWKnvGIN3ujZQo6y06rxsGuHRD10BwfZwh38TgYf8r\
+        939IyeRXXP9pmLiheG+Pd8NJuqwp0FGXYYw8ovAiQvECJIHZb64X2N8LmKQ9X2AAl3xgCT\
+        zkcEaYzV1AxC7RwfS9dsgxkt3ZVaNt6hJQPcvaSmtQhHEktQSPrttL6Ft2sbEKINvOJOmD\
+        P38aJ/pBBlyg/PL2x6cjC3XQ9MkQjBiKc5rQGEi5cQIw9tHF2U0Jelm5AfEMVYFeih6YI8\
+        3mPuRIrvFsNQvFlISUi1i8FsbnC/B5TE1RQNFYavECPyibX6sUbfqhRikMMGhk7EE4/Fdd\
+        b0B3qHi0jh9LYRoMBJ3+Nq5NfILjp2WoruVQBZDM4aoVjCgRrpgQ/Y="
 
 before_install:
   - sh tools/install-stack.sh
+  - sh tools/install-github-release.sh
+
 script:
-  - stack --jobs 1 setup
-  - stack build --jobs 1 --only-dependencies --test rattletrap
-  - stack build --ghc-options -O2 --jobs 1 --pedantic --test --test-arguments '--match 29F5' rattletrap
-  - stack --jobs 1 sdist .
+  - stack setup
+  - stack build --only-dependencies --test
+  - stack build --test
+  - stack sdist .
+
 after_success:
-  - stack --jobs 1 build rattletrap-tools
-  - stack exec upload-package
-  - stack exec attach-binary
+  - stack exec runghc tools/upload-package.hs
+  - stack exec runghc tools/attach-binary.hs

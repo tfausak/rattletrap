@@ -1,5 +1,5 @@
 module Main
-  ( module Rattletrap
+  ( main
   ) where
 
-import Rattletrap (main)
+import Rattletrap.Console.Main (main)

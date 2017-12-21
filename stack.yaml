@@ -1,5 +1,1 @@
-resolver: nightly-2017-11-25
-
-packages:
-  - .
-  - tools
+resolver: lts-10.0
