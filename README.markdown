@@ -52,11 +52,11 @@ override this behavior by passing `--mode` (or `-m`) with either `decode` or
 
 Input extension | Output extension | Mode
 --- | --- | ---
-`.replay` | anything | `decode`
-`.json` | anything | `encode`
-anything | `.replay` | `encode`
-anything | `.json` | `decode`
-anything | anything | `decode`
+`.replay` | anything | `decode` (parse)
+`.json` | anything | `encode` (generate)
+anything | `.replay` | `encode` (generate)
+anything | `.json` | `decode` (parse)
+anything | anything | `decode` (parse)
 
 ## Parse
 
