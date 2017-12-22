@@ -9,6 +9,11 @@ import Rattletrap.Type.RemoteId
 import Rattletrap.Type.Word8le
 import Rattletrap.Utility.Bytes
 
+import Control.Monad
+import System.Environment
+import System.IO.Unsafe
+import Text.Read
+
 import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -20,6 +25,7 @@ decodeRemoteIdBits (_, _, patch) systemId = case word8leValue systemId of
   1 -> RemoteIdSteam <$> decodeWord64leBits
   2 -> RemoteIdPlayStation <$> decodePsName <*> decodePsBytes patch
   4 -> RemoteIdXbox <$> decodeWord64leBits
+  6 -> RemoteIdSwitch <$> decodeSwitchId
   _ -> fail ("unknown system id " <> show systemId)
 
 decodePsName :: DecodeBits Text.Text
@@ -34,3 +40,16 @@ decodePsName = fmap
 decodePsBytes :: Int -> DecodeBits [Word.Word8]
 decodePsBytes patch =
   LazyBytes.unpack <$> getLazyByteStringBits (if patch >= 1 then 24 else 16)
+
+decodeSwitchId :: DecodeBits [Bool]
+decodeSwitchId = replicateM numBits getBool
+
+numBits :: Int
+numBits = unsafePerformIO (do
+  x <- lookupEnv "RATTLETRAP_NUM_BITS"
+  case x of
+    Nothing -> pure 0
+    Just y -> case readMaybe y of
+      Nothing -> pure 0
+      Just z -> pure z)
+{-# NOINLINE numBits #-}

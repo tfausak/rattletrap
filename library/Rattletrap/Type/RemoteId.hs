@@ -11,6 +11,7 @@ data RemoteId
   = RemoteIdPlayStation Text [Word8]
   | RemoteIdSplitscreen Word32
   | RemoteIdSteam Word64le
+  | RemoteIdSwitch [Bool]
   | RemoteIdXbox Word64le
   deriving (Eq, Ord, Show)
 
