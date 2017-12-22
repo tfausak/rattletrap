@@ -35,10 +35,7 @@ decodeFrameBits
   :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
-  -> State.StateT
-       (Map.Map CompressedWord Word32le)
-       DecodeBits
-       Frame
+  -> State.StateT (Map.Map CompressedWord Word32le) DecodeBits Frame
 decodeFrameBits version limit classes =
   Frame
     <$> Trans.lift decodeFloat32leBits

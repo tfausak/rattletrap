@@ -33,9 +33,8 @@ normalizeTextSize size = case int32leValue size of
 getTextDecoder :: Int32le -> LazyBytes.ByteString -> Text.Text
 getTextDecoder size bytes =
   let
-    decode = if size < Int32le 0
-      then Text.decodeUtf16LE
-      else Text.decodeLatin1
+    decode =
+      if size < Int32le 0 then Text.decodeUtf16LE else Text.decodeLatin1
   in
     decode (LazyBytes.toStrict bytes)
 

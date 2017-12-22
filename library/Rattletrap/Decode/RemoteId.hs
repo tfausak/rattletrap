@@ -32,5 +32,5 @@ decodePsName = fmap
   (getLazyByteStringBits 16)
 
 decodePsBytes :: Int -> DecodeBits [Word.Word8]
-decodePsBytes patch = LazyBytes.unpack
-  <$> getLazyByteStringBits (if patch >= 1 then 24 else 16)
+decodePsBytes patch =
+  LazyBytes.unpack <$> getLazyByteStringBits (if patch >= 1 then 24 else 16)
