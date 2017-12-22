@@ -9,11 +9,7 @@ import Rattletrap.Type.RemoteId
 import Rattletrap.Type.Word8le
 import Rattletrap.Utility.Bytes
 
-import Control.Monad
-import System.Environment
-import System.IO.Unsafe
-import Text.Read
-
+import qualified Control.Monad as Monad
 import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -42,14 +38,4 @@ decodePsBytes patch =
   LazyBytes.unpack <$> getLazyByteStringBits (if patch >= 1 then 24 else 16)
 
 decodeSwitchId :: DecodeBits [Bool]
-decodeSwitchId = replicateM numBits getBool
-
-numBits :: Int
-numBits = unsafePerformIO (do
-  x <- lookupEnv "RATTLETRAP_NUM_BITS"
-  case x of
-    Nothing -> pure 0
-    Just y -> case readMaybe y of
-      Nothing -> pure 0
-      Just z -> pure z)
-{-# NOINLINE numBits #-}
+decodeSwitchId = Monad.replicateM 256 getBool
