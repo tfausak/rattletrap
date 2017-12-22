@@ -120,7 +120,7 @@ expressionOption = Console.Option
     (\expression config -> pure config { configExpression = Just expression })
     "EXPRESSION"
   )
-  "todo"
+  "expression to modify replay"
 
 helpOption :: Option
 helpOption = Console.Option
