@@ -27,6 +27,7 @@ import Rattletrap.Decode.LocationAttribute
 import Rattletrap.Decode.MusicStingerAttribute
 import Rattletrap.Decode.PartyLeaderAttribute
 import Rattletrap.Decode.PickupAttribute
+import Rattletrap.Decode.PlayerHistoryKeyAttribute
 import Rattletrap.Decode.PrivateMatchSettingsAttribute
 import Rattletrap.Decode.QWordAttribute
 import Rattletrap.Decode.ReservationAttribute
@@ -92,6 +93,7 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypePartyLeader ->
       AttributeValuePartyLeader <$> decodePartyLeaderAttributeBits version
     AttributeTypePickup -> AttributeValuePickup <$> decodePickupAttributeBits
+    AttributeTypePlayerHistoryKey -> AttributeValuePlayerHistoryKey <$> decodePlayerHistoryKeyAttributeBits
     AttributeTypePrivateMatchSettings ->
       AttributeValuePrivateMatchSettings
         <$> decodePrivateMatchSettingsAttributeBits

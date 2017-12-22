@@ -273,6 +273,7 @@ rawAttributeTypes =
   , ("TAGame.PRI_TA:PartyLeader", AttributeTypePartyLeader)
   , ("TAGame.PRI_TA:PawnType", AttributeTypeByte)
   , ("TAGame.PRI_TA:PersistentCamera", AttributeTypeFlaggedInt)
+  , ("TAGame.PRI_TA:PlayerHistoryKey", AttributeTypePlayerHistoryKey)
   , ("TAGame.PRI_TA:PlayerHistoryValid", AttributeTypeBoolean)
   , ("TAGame.PRI_TA:ReplicatedGameEvent", AttributeTypeFlaggedInt)
   , ("TAGame.PRI_TA:SteeringSensitivity", AttributeTypeFloat)

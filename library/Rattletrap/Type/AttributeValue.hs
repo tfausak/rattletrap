@@ -27,6 +27,7 @@ import Rattletrap.Type.LocationAttribute
 import Rattletrap.Type.MusicStingerAttribute
 import Rattletrap.Type.PartyLeaderAttribute
 import Rattletrap.Type.PickupAttribute
+import Rattletrap.Type.PlayerHistoryKeyAttribute
 import Rattletrap.Type.PrivateMatchSettingsAttribute
 import Rattletrap.Type.QWordAttribute
 import Rattletrap.Type.ReservationAttribute
@@ -59,6 +60,7 @@ data AttributeValue
   | AttributeValueMusicStinger MusicStingerAttribute
   | AttributeValuePartyLeader PartyLeaderAttribute
   | AttributeValuePickup PickupAttribute
+  | AttributeValuePlayerHistoryKey PlayerHistoryKeyAttribute
   | AttributeValuePrivateMatchSettings PrivateMatchSettingsAttribute
   | AttributeValueQWord QWordAttribute
   | AttributeValueReservation ReservationAttribute
