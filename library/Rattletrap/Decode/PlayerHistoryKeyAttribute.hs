@@ -8,5 +8,4 @@ import Rattletrap.Type.PlayerHistoryKeyAttribute
 import qualified Control.Monad as Monad
 
 decodePlayerHistoryKeyAttributeBits :: DecodeBits PlayerHistoryKeyAttribute
-decodePlayerHistoryKeyAttributeBits = PlayerHistoryKeyAttribute <$> Monad.replicateM 14 getBool
-
+decodePlayerHistoryKeyAttributeBits = (PlayerHistoryKeyAttribute . Bits) <$> Monad.replicateM 1253 getBool
