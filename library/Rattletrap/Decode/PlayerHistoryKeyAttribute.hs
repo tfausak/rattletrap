@@ -5,5 +5,8 @@ module Rattletrap.Decode.PlayerHistoryKeyAttribute
 import Rattletrap.Decode.Common
 import Rattletrap.Type.PlayerHistoryKeyAttribute
 
+import qualified Control.Monad as Monad
+
 decodePlayerHistoryKeyAttributeBits :: DecodeBits PlayerHistoryKeyAttribute
-decodePlayerHistoryKeyAttributeBits = PlayerHistoryKeyAttribute <$> getWord16be 14
+decodePlayerHistoryKeyAttributeBits = PlayerHistoryKeyAttribute <$> Monad.replicateM 14 getBool
+

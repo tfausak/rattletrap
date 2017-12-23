@@ -7,7 +7,7 @@ module Rattletrap.Type.PlayerHistoryKeyAttribute
 import Rattletrap.Type.Common
 
 data PlayerHistoryKeyAttribute = PlayerHistoryKeyAttribute
-  { playerHistoryKeyAttributeValue :: Word16
+  { playerHistoryKeyAttributeValue :: [Bool]
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''PlayerHistoryKeyAttribute)
