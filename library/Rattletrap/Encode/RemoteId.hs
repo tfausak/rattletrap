@@ -19,5 +19,5 @@ putRemoteId remoteId = case remoteId of
     BinaryBits.putByteString (LazyBytes.toStrict (LazyBytes.pack bytes))
   RemoteIdSplitscreen word24 -> BinaryBits.putWord32be 24 word24
   RemoteIdSteam word64 -> putWord64Bits word64
-  RemoteIdSwitch bits -> mapM_ BinaryBits.putBool bits
+  RemoteIdSwitch x -> mapM_ BinaryBits.putBool (unwrapBits x)
   RemoteIdXbox word64 -> putWord64Bits word64

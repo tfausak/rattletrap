@@ -37,5 +37,5 @@ decodePsBytes :: Int -> DecodeBits [Word.Word8]
 decodePsBytes patch =
   LazyBytes.unpack <$> getLazyByteStringBits (if patch >= 1 then 24 else 16)
 
-decodeSwitchId :: DecodeBits [Bool]
-decodeSwitchId = Monad.replicateM 256 getBool
+decodeSwitchId :: DecodeBits Bits
+decodeSwitchId = Bits <$> Monad.replicateM 256 getBool
