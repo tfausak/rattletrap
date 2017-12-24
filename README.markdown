@@ -35,7 +35,7 @@ Rattletrap is a command line application.
 
 ``` sh
 > rattletrap --help
-rattletrap version 3.1.2
+rattletrap version 4.0.0
   -c             --compact                minify JSON output
   -e EXPRESSION  --expression=EXPRESSION  expression to modify replay
   -h             --help                   show the help
