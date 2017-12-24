@@ -18,23 +18,28 @@ data Dictionary a
   deriving (Eq, Ord, Show)
 
 instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
-  parseJSON = Json.withObject "Dictionary" (\ o -> do
-    keys <- get o "keys"
-    lastKey <- get o "last_key"
-    value <- get o "value"
-    Monad.foldM
-      (\ d k -> case Map.lookup k value of
-        Nothing -> fail (unwords ["missing key", show k])
-        Just v -> pure (DictionaryElement (Str k) v d))
-      (DictionaryEnd lastKey)
-      (reverse keys))
+  parseJSON =
+    Json.withObject
+      "Dictionary"
+      (\o -> do
+         keys <- get o "keys"
+         lastKey <- get o "last_key"
+         value <- get o "value"
+         Monad.foldM
+           (\d k ->
+              case Map.lookup k value of
+                Nothing -> fail (unwords ["missing key", show k])
+                Just v -> pure (DictionaryElement (Str k) v d))
+           (DictionaryEnd lastKey)
+           (reverse keys))
 
 instance Json.ToJSON a => Json.ToJSON (Dictionary a) where
-  toJSON d = Json.object
-    [ pair "keys" (dictionaryKeys d)
-    , pair "last_key" (dictionaryLastKey d)
-    , pair "value" (dictionaryValue d)
-    ]
+  toJSON d =
+    Json.object
+      [ pair "keys" (dictionaryKeys d)
+      , pair "last_key" (dictionaryLastKey d)
+      , pair "value" (dictionaryValue d)
+      ]
 
 dictionaryKeys :: Dictionary a -> [Str]
 dictionaryKeys = fmap fst . toList
