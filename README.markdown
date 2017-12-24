@@ -112,7 +112,7 @@ Haskell, the expression must have the type `Replay -> Replay`.
 
 ``` sh
 > rattletrap -i input.replay -e '\ replay -> replay' |
-  rattletrap -o output.repaly
+  rattletrap -o output.replay
 ```
 
 [Rattletrap]: https://github.com/tfausak/rattletrap
