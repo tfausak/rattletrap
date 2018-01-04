@@ -3,7 +3,6 @@ module Rattletrap.Console.Main
   , rattletrap
   ) where
 
-import qualified Control.Exception as Exception
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Json
 import qualified Data.ByteString.Lazy as LazyBytes

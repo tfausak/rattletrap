@@ -3,6 +3,7 @@ module Rattletrap.Decode.RemoteId
   ) where
 
 import Data.Semigroup ((<>))
+import Rattletrap.Decode.Bitstream
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word64le
 import Rattletrap.Type.RemoteId
@@ -20,6 +21,7 @@ decodeRemoteIdBits (_, _, patch) systemId = case word8leValue systemId of
   1 -> RemoteIdSteam <$> decodeWord64leBits
   2 -> RemoteIdPlayStation <$> decodePsName <*> decodePsBytes patch
   4 -> RemoteIdXbox <$> decodeWord64leBits
+  6 -> RemoteIdSwitch <$> decodeBitstreamBits 256
   _ -> fail ("unknown system id " <> show systemId)
 
 decodePsName :: DecodeBits Text.Text

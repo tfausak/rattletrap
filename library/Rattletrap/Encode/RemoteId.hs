@@ -2,6 +2,7 @@ module Rattletrap.Encode.RemoteId
   ( putRemoteId
   ) where
 
+import Rattletrap.Encode.Bitstream
 import Rattletrap.Encode.Word64le
 import Rattletrap.Type.RemoteId
 import Rattletrap.Utility.Bytes
@@ -19,4 +20,5 @@ putRemoteId remoteId = case remoteId of
     BinaryBits.putByteString (LazyBytes.toStrict (LazyBytes.pack bytes))
   RemoteIdSplitscreen word24 -> BinaryBits.putWord32be 24 word24
   RemoteIdSteam word64 -> putWord64Bits word64
+  RemoteIdSwitch x -> putBitstream x
   RemoteIdXbox word64 -> putWord64Bits word64
