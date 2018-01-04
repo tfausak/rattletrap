@@ -93,7 +93,8 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypePartyLeader ->
       AttributeValuePartyLeader <$> decodePartyLeaderAttributeBits version
     AttributeTypePickup -> AttributeValuePickup <$> decodePickupAttributeBits
-    AttributeTypePlayerHistoryKey -> AttributeValuePlayerHistoryKey <$> decodePlayerHistoryKeyAttributeBits
+    AttributeTypePlayerHistoryKey ->
+      AttributeValuePlayerHistoryKey <$> decodePlayerHistoryKeyAttributeBits
     AttributeTypePrivateMatchSettings ->
       AttributeValuePrivateMatchSettings
         <$> decodePrivateMatchSettingsAttributeBits

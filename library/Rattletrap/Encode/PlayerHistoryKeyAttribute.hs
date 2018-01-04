@@ -7,5 +7,6 @@ import Rattletrap.Type.PlayerHistoryKeyAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-putPlayerHistoryKeyAttribute :: PlayerHistoryKeyAttribute -> BinaryBits.BitPut ()
+putPlayerHistoryKeyAttribute
+  :: PlayerHistoryKeyAttribute -> BinaryBits.BitPut ()
 putPlayerHistoryKeyAttribute = putBitstream . playerHistoryKeyAttributeUnknown
