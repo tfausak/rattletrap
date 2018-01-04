@@ -3,13 +3,14 @@ module Rattletrap.Decode.RemoteId
   ) where
 
 import Data.Semigroup ((<>))
+import Rattletrap.Decode.Bitstream
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word64le
+import Rattletrap.Type.Bitstream
 import Rattletrap.Type.RemoteId
 import Rattletrap.Type.Word8le
 import Rattletrap.Utility.Bytes
 
-import qualified Control.Monad as Monad
 import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -37,5 +38,5 @@ decodePsBytes :: Int -> DecodeBits [Word.Word8]
 decodePsBytes patch =
   LazyBytes.unpack <$> getLazyByteStringBits (if patch >= 1 then 24 else 16)
 
-decodeSwitchId :: DecodeBits Bits
-decodeSwitchId = Bits <$> Monad.replicateM 256 getBool
+decodeSwitchId :: DecodeBits Bitstream
+decodeSwitchId = decodeBitstreamBits 256
