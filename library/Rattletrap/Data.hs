@@ -78,7 +78,6 @@ rawClassesWithLocation =
   , "TAGame.SpecialPickup_BallCarSpring_TA"
   , "TAGame.SpecialPickup_BallFreeze_TA"
   , "TAGame.SpecialPickup_BallGravity_TA"
-  , "TAGame.SpecialPickup_BallGravity_TA"
   , "TAGame.SpecialPickup_BallLasso_TA"
   , "TAGame.SpecialPickup_BallVelcro_TA"
   , "TAGame.SpecialPickup_Batarang_TA"
