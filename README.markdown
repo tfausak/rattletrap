@@ -6,8 +6,6 @@
 
 Rattletrap parses and generates [Rocket League][] replays.
 
-WARNING: This documentation is for the version of Rattletrap that is currently in development. If you installed the latest release from GitHub (3.1.2), be sure to read the documentation for that release: <https://github.com/tfausak/rattletrap/blob/3.1.2/README.markdown>
-
 ## Install
 
 Get Rattletrap by downloading and unpacking [the latest release][] for your
