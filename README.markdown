@@ -6,6 +6,8 @@
 
 Rattletrap parses and generates [Rocket League][] replays.
 
+WARNING: This documentation is for the version of Rattletrap that is currently in development. If you installed the latest release from GitHub (3.1.2), be sure to read the documentation for that release: <https://github.com/tfausak/rattletrap/blob/3.1.2/README.markdown>
+
 ## Install
 
 Get Rattletrap by downloading and unpacking [the latest release][] for your
@@ -35,9 +37,8 @@ Rattletrap is a command line application.
 
 ``` sh
 > rattletrap --help
-rattletrap version 3.1.2
+rattletrap version 4.0.0
   -c             --compact                minify JSON output
-  -e EXPRESSION  --expression=EXPRESSION  expression to modify replay
   -h             --help                   show the help
   -i FILE|URL    --input=FILE|URL         input file or URL
   -m MODE        --mode=MODE              decode or encode
@@ -103,16 +104,6 @@ used to modify replays.
 > rattletrap -i input.replay |
   modify-replay-json |
   rattletrap -o output.replay
-```
-
-Alternatively you can pass `--expression` (or `-e`) to Rattletrap along with a
-Haskell expression to modify the replay. If you're not familiar with Haskell,
-this is probably more trouble than it's worth. If you are familiar with
-Haskell, the expression must have the type `Replay -> Replay`.
-
-``` sh
-> rattletrap -i input.replay -e '\ replay -> replay' |
-  rattletrap -o output.repaly
 ```
 
 [Rattletrap]: https://github.com/tfausak/rattletrap
