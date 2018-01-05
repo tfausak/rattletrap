@@ -47,8 +47,9 @@ before_install:
 script:
   - stack setup
   - stack build --only-dependencies --test
+  - stack build --no-run-tests --test
   - stack build --test
-  - stack sdist .
+  - stack sdist
 
 after_success:
   - stack exec runghc tools/upload-package.hs
