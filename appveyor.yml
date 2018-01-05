@@ -20,7 +20,7 @@ install:
 test_script:
   - stack setup > nul
   - stack build --only-dependencies --test
-  - stack build --no-run-tests --test
+  - stack build --no-run-tests --pedantic --test
   - stack build --test
   - stack sdist
 
