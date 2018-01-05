@@ -20,8 +20,8 @@ Rocket League saves your replays in a folder that depends on your operating
 system.
 
 - Windows:
-  - `%UserProfile%\Documents\My Games\Rocket League\TAGame\Demos`
-  - For example: `C:\Users\Taylor\Documents\My Games\Rocket League\TAGame\Demos`
+  - `%UserProfile%/Documents/My Games/Rocket League/TAGame/Demos`
+  - For example: `C:/Users/Taylor/Documents/My Games/Rocket League/TAGame/Demos`
 - macOS:
   - `$HOME/Library/Application Support/Rocket League/TAGame/Demos`
   - For example: `/Users/taylor/Library/Application Support/Rocket League/TAGame/Demos`
