@@ -20,7 +20,8 @@ main = do
   callProcess "stack" ["build", "--copy-bins", "--local-bin-path", "."]
   callProcess
     "github-release"
-    [ "--token"
+    [ "upload"
+    , "--token"
     , token
     , "--repo"
     , repo
@@ -29,5 +30,5 @@ main = do
     , "--file"
     , addExtension executable (if windows then "exe" else "")
     , "--name"
-    , concat [executable, "-", tag, "-", os, ".gz"]
+    , concat [executable, "-", tag, "-", os]
     ]
