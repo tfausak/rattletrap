@@ -106,9 +106,9 @@ used to modify replays.
 
 [Rattletrap]: https://github.com/tfausak/rattletrap
 [Version badge]: https://img.shields.io/hackage/v/rattletrap.svg?label=version
-[version]: https://www.stackage.org/nightly/package/rattletrap
+[version]: https://hackage.haskell.org/package/rattletrap
 [Windows build badge]: https://img.shields.io/appveyor/ci/taylorfausak/rattletrap/master.svg?logo=appveyor
-[windows build]: https://ci.appveyor.com/project/TaylorFausak/rattletrap
+[windows build]: https://ci.appveyor.com/project/taylorfausak/rattletrap
 [Build badge]: https://img.shields.io/travis/tfausak/rattletrap/master.svg
 [build]: https://travis-ci.org/tfausak/rattletrap
 [Rocket League]: https://www.rocketleaguegame.com
