@@ -12,6 +12,7 @@ environment:
 cache:
   - c:/bin
   - c:/stack
+  - c:/Users/appveyor/AppData/Local/Programs/stack
 
 install:
   - powershell -File tools/install-stack.ps1
