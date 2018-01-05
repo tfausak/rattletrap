@@ -7,7 +7,7 @@ module Rattletrap.Type.PlayerHistoryKeyAttribute
 import Rattletrap.Type.Bitstream
 import Rattletrap.Type.Common
 
-data PlayerHistoryKeyAttribute = PlayerHistoryKeyAttribute
+newtype PlayerHistoryKeyAttribute = PlayerHistoryKeyAttribute
   { playerHistoryKeyAttributeUnknown :: Bitstream
   } deriving (Eq, Ord, Show)
 
