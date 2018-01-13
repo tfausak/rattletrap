@@ -77,6 +77,7 @@ replays =
   , ("6b0d", "patch 1.37")
   , ("6d1b", "a flip right")
   , ("6f7c", "a map with numbers")
+  , ("7083", "weird basketball capitalization")
   , ("7109", "a boost modifier")
   , ("7bf6", "an online loadouts attribute")
   , ("89cb", "remote user data")
