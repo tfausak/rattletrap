@@ -72,6 +72,7 @@ replays =
   , ("52aa", "a match-ending attribute")
   , ("540d", "a demolish attribute")
   , ("551c", "private match settings")
+  , ("6210", "different player history key")
   , ("6320", "a forfeit attribute")
   , ("6688", "a malformed byte property")
   , ("6b0d", "patch 1.37")
