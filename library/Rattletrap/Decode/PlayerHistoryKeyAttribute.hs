@@ -8,4 +8,4 @@ import Rattletrap.Type.PlayerHistoryKeyAttribute
 
 decodePlayerHistoryKeyAttributeBits :: DecodeBits PlayerHistoryKeyAttribute
 decodePlayerHistoryKeyAttributeBits =
-  PlayerHistoryKeyAttribute <$> decodeBitstreamBits 1253
+  PlayerHistoryKeyAttribute <$> decodeBitstreamBits 14
