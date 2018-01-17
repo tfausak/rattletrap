@@ -24,7 +24,7 @@ dependencies:
   containers: == 0.5.10.*
   filepath: == 1.4.1.*
   http-client-tls: == 0.3.5.*
-  http-client: == 0.5.7.*
+  http-client: == 0.5.8.*
   template-haskell: == 2.12.*
   text: == 1.2.2.*
   transformers: == 0.5.2.*
