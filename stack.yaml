@@ -1,4 +1,1 @@
 resolver: lts-10.0
-
-extra-deps:
-  - http-client-0.5.8
