@@ -15,19 +15,19 @@ maintainer: Taylor Fausak
 synopsis: Parse and generate Rocket League replays.
 
 dependencies:
-  aeson-pretty: == 0.8.5.*
-  aeson: == 1.2.3.*
-  base: == 4.10.1.*
-  binary-bits: == 0.5.*
-  binary: == 0.8.5.*
-  bytestring: == 0.10.8.*
-  containers: == 0.5.10.*
-  filepath: == 1.4.1.*
-  http-client-tls: == 0.3.5.*
-  http-client: == 0.5.8.*
-  template-haskell: == 2.12.*
-  text: == 1.2.2.*
-  transformers: == 0.5.2.*
+  aeson-pretty: '>= 0.8.5 && < 0.9'
+  aeson: '>= 1.2.3 && < 1.3'
+  base: '>= 4.10.1 && < 4.11'
+  binary-bits: '>= 0.5 && < 0.6'
+  binary: '>= 0.8.5 && < 0.9'
+  bytestring: '>= 0.10.8 && < 0.11'
+  containers: '>= 0.5.10 && < 0.6'
+  filepath: '>= 1.4.1 && < 1.5'
+  http-client-tls: '>= 0.3.5 && < 0.4'
+  http-client: '>= 0.5.8 && < 0.6'
+  template-haskell: '>= 2.12.0 && < 2.13'
+  text: '>= 1.2.2 && < 1.3'
+  transformers: '>= 0.5.2 && < 0.6'
 ghc-options:
   - -Weverything
   - -Wno-implicit-prelude
@@ -49,9 +49,9 @@ executable:
 tests:
   test:
     dependencies:
-      HUnit: == 1.6.*
+      HUnit: '>= 1.6.0 && < 1.7'
       rattletrap:
-      temporary: == 1.2.1.*
+      temporary: '>= 1.2.1 && < 1.3'
     ghc-options:
       - -rtsopts
       - -threaded
