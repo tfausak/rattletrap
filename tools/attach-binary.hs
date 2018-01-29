@@ -30,5 +30,5 @@ main = do
     , "--file"
     , addExtension executable (if windows then "exe" else "")
     , "--name"
-    , concat [executable, "-", tag, "-", os]
+    , addExtension (concat [executable, "-", tag, "-", os]) (if windows then "exe" else "")
     ]
