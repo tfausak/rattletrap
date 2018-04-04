@@ -29,6 +29,7 @@ dependencies:
   text: '>= 1.2.3 && < 1.3'
   transformers: '>= 0.5.2 && < 0.6'
 ghc-options:
+  - -optP -Wno-nonportable-include-path # https://github.com/haskell/cabal/issues/4739
   - -Weverything
   - -Wno-implicit-prelude
   - -Wno-missing-import-lists
