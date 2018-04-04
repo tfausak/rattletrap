@@ -242,6 +242,7 @@ rawAttributeTypes =
   , ("TAGame.GameEvent_TA:GameMode", AttributeTypeGameMode)
   , ("TAGame.GameEvent_TA:MatchTypeClass", AttributeTypeFlaggedInt)
   , ("TAGame.GameEvent_TA:ReplicatedGameStateTimeRemaining", AttributeTypeInt)
+  , ("TAGame.GameEvent_TA:ReplicatedRoundCountDownNumber", AttributeTypeInt)
   , ("TAGame.GameEvent_TA:ReplicatedStateIndex", AttributeTypeByte)
   , ("TAGame.GameEvent_TA:ReplicatedStateName", AttributeTypeInt)
   , ("TAGame.GameEvent_Team_TA:bForfeit", AttributeTypeBoolean)
