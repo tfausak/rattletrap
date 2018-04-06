@@ -32,6 +32,7 @@ import Rattletrap.Decode.PrivateMatchSettingsAttribute
 import Rattletrap.Decode.QWordAttribute
 import Rattletrap.Decode.ReservationAttribute
 import Rattletrap.Decode.RigidBodyStateAttribute
+import Rattletrap.Decode.StatEventAttribute
 import Rattletrap.Decode.StringAttribute
 import Rattletrap.Decode.TeamPaintAttribute
 import Rattletrap.Decode.UniqueIdAttribute
@@ -103,6 +104,8 @@ decodeAttributeValueBits version objectMap name = do
       AttributeValueReservation <$> decodeReservationAttributeBits version
     AttributeTypeRigidBodyState ->
       AttributeValueRigidBodyState <$> decodeRigidBodyStateAttributeBits
+    AttributeTypeStatEvent ->
+      AttributeValueStatEvent <$> decodeStatEventAttributeBits
     AttributeTypeString -> AttributeValueString <$> decodeStringAttributeBits
     AttributeTypeTeamPaint ->
       AttributeValueTeamPaint <$> decodeTeamPaintAttributeBits

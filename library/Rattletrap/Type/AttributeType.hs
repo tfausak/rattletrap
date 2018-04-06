@@ -34,6 +34,7 @@ data AttributeType
   | AttributeTypeQWord
   | AttributeTypeReservation
   | AttributeTypeRigidBodyState
+  | AttributeTypeStatEvent
   | AttributeTypeString
   | AttributeTypeTeamPaint
   | AttributeTypeUniqueId

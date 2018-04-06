@@ -32,6 +32,7 @@ import Rattletrap.Type.PrivateMatchSettingsAttribute
 import Rattletrap.Type.QWordAttribute
 import Rattletrap.Type.ReservationAttribute
 import Rattletrap.Type.RigidBodyStateAttribute
+import Rattletrap.Type.StatEventAttribute
 import Rattletrap.Type.StringAttribute
 import Rattletrap.Type.TeamPaintAttribute
 import Rattletrap.Type.UniqueIdAttribute
@@ -65,6 +66,7 @@ data AttributeValue
   | AttributeValueQWord QWordAttribute
   | AttributeValueReservation ReservationAttribute
   | AttributeValueRigidBodyState RigidBodyStateAttribute
+  | AttributeValueStatEvent StatEventAttribute
   | AttributeValueString StringAttribute
   | AttributeValueTeamPaint TeamPaintAttribute
   | AttributeValueUniqueId UniqueIdAttribute

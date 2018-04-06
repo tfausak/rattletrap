@@ -29,6 +29,7 @@ import Rattletrap.Encode.PrivateMatchSettingsAttribute
 import Rattletrap.Encode.QWordAttribute
 import Rattletrap.Encode.ReservationAttribute
 import Rattletrap.Encode.RigidBodyStateAttribute
+import Rattletrap.Encode.StatEventAttribute
 import Rattletrap.Encode.StringAttribute
 import Rattletrap.Encode.TeamPaintAttribute
 import Rattletrap.Encode.UniqueIdAttribute
@@ -66,6 +67,7 @@ putAttributeValue value = case value of
   AttributeValueQWord x -> putQWordAttribute x
   AttributeValueReservation x -> putReservationAttribute x
   AttributeValueRigidBodyState x -> putRigidBodyStateAttribute x
+  AttributeValueStatEvent x -> putStatEventAttribute x
   AttributeValueString x -> putStringAttribute x
   AttributeValueTeamPaint x -> putTeamPaintAttribute x
   AttributeValueUniqueId x -> putUniqueIdAttribute x

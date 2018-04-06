@@ -232,6 +232,7 @@ rawAttributeTypes =
   , ("TAGame.GameEvent_Soccar_TA:GameTime", AttributeTypeInt)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedMusicStinger", AttributeTypeMusicStinger)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam", AttributeTypeByte)
+  , ("TAGame.GameEvent_Soccar_TA:ReplicatedStatEvent", AttributeTypeStatEvent)
   , ("TAGame.GameEvent_Soccar_TA:RoundNum", AttributeTypeInt)
   , ("TAGame.GameEvent_Soccar_TA:SecondsRemaining", AttributeTypeInt)
   , ("TAGame.GameEvent_Soccar_TA:SubRulesArchetype", AttributeTypeFlaggedInt)
