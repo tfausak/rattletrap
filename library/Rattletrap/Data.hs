@@ -235,6 +235,7 @@ rawAttributeTypes =
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedStatEvent", AttributeTypeStatEvent)
   , ("TAGame.GameEvent_Soccar_TA:RoundNum", AttributeTypeInt)
   , ("TAGame.GameEvent_Soccar_TA:SecondsRemaining", AttributeTypeInt)
+  , ("TAGame.GameEvent_Soccar_TA:SeriesLength", AttributeTypeInt)
   , ("TAGame.GameEvent_Soccar_TA:SubRulesArchetype", AttributeTypeFlaggedInt)
   , ("TAGame.GameEvent_SoccarPrivate_TA:MatchSettings", AttributeTypePrivateMatchSettings)
   , ("TAGame.GameEvent_TA:bCanVoteToForfeit", AttributeTypeBoolean)

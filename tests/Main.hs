@@ -86,6 +86,7 @@ replays =
   , ("946f", "patch 1.43")
   , ("9704", "a batarang")
   , ("98e5", "a player using behind view")
+  , ("a09e", "a tournament")
   , ("a128", "a round count down")
   , ("a52f", "some more mutators")
   , ("a558", "extended explosion data")
