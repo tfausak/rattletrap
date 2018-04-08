@@ -32,8 +32,10 @@ import Rattletrap.Type.PrivateMatchSettingsAttribute
 import Rattletrap.Type.QWordAttribute
 import Rattletrap.Type.ReservationAttribute
 import Rattletrap.Type.RigidBodyStateAttribute
+import Rattletrap.Type.StatEventAttribute
 import Rattletrap.Type.StringAttribute
 import Rattletrap.Type.TeamPaintAttribute
+import Rattletrap.Type.TitleAttribute
 import Rattletrap.Type.UniqueIdAttribute
 import Rattletrap.Type.WeldedInfoAttribute
 
@@ -65,8 +67,10 @@ data AttributeValue
   | AttributeValueQWord QWordAttribute
   | AttributeValueReservation ReservationAttribute
   | AttributeValueRigidBodyState RigidBodyStateAttribute
+  | AttributeValueStatEvent StatEventAttribute
   | AttributeValueString StringAttribute
   | AttributeValueTeamPaint TeamPaintAttribute
+  | AttributeValueTitle TitleAttribute
   | AttributeValueUniqueId UniqueIdAttribute
   | AttributeValueWeldedInfo WeldedInfoAttribute
   deriving (Eq, Ord, Show)
