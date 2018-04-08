@@ -100,6 +100,7 @@ replays =
   , ("d044", "hoops mutators")
   , ("d428", "a private hockey match")
   , ("d7fb", "an explosion attribute")
+  , ("db70", "new lag indicator")
   , ("dcb3", "a pawn type attribute")
   , ("de56", "a problematic product attribute")
   , ("eae3", "an actor/object ID collision")
