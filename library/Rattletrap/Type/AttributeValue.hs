@@ -35,6 +35,7 @@ import Rattletrap.Type.RigidBodyStateAttribute
 import Rattletrap.Type.StatEventAttribute
 import Rattletrap.Type.StringAttribute
 import Rattletrap.Type.TeamPaintAttribute
+import Rattletrap.Type.TitleAttribute
 import Rattletrap.Type.UniqueIdAttribute
 import Rattletrap.Type.WeldedInfoAttribute
 
@@ -69,6 +70,7 @@ data AttributeValue
   | AttributeValueStatEvent StatEventAttribute
   | AttributeValueString StringAttribute
   | AttributeValueTeamPaint TeamPaintAttribute
+  | AttributeValueTitle TitleAttribute
   | AttributeValueUniqueId UniqueIdAttribute
   | AttributeValueWeldedInfo WeldedInfoAttribute
   deriving (Eq, Ord, Show)

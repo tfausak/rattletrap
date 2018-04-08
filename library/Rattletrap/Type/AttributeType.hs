@@ -37,6 +37,7 @@ data AttributeType
   | AttributeTypeStatEvent
   | AttributeTypeString
   | AttributeTypeTeamPaint
+  | AttributeTypeTitle
   | AttributeTypeUniqueId
   | AttributeTypeWeldedInfo
   deriving (Eq, Ord, Show)

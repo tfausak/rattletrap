@@ -35,6 +35,7 @@ import Rattletrap.Decode.RigidBodyStateAttribute
 import Rattletrap.Decode.StatEventAttribute
 import Rattletrap.Decode.StringAttribute
 import Rattletrap.Decode.TeamPaintAttribute
+import Rattletrap.Decode.TitleAttribute
 import Rattletrap.Decode.UniqueIdAttribute
 import Rattletrap.Decode.WeldedInfoAttribute
 import Rattletrap.Type.AttributeType
@@ -109,6 +110,7 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypeString -> AttributeValueString <$> decodeStringAttributeBits
     AttributeTypeTeamPaint ->
       AttributeValueTeamPaint <$> decodeTeamPaintAttributeBits
+    AttributeTypeTitle -> AttributeValueTitle <$> decodeTitleAttributeBits
     AttributeTypeUniqueId ->
       AttributeValueUniqueId <$> decodeUniqueIdAttributeBits version
     AttributeTypeWeldedInfo ->
