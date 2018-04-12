@@ -34,8 +34,10 @@ data AttributeType
   | AttributeTypeQWord
   | AttributeTypeReservation
   | AttributeTypeRigidBodyState
+  | AttributeTypeStatEvent
   | AttributeTypeString
   | AttributeTypeTeamPaint
+  | AttributeTypeTitle
   | AttributeTypeUniqueId
   | AttributeTypeWeldedInfo
   deriving (Eq, Ord, Show)
