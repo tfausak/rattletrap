@@ -105,6 +105,7 @@ replays =
   , ("db70", "new lag indicator")
   , ("dcb3", "a pawn type attribute")
   , ("de56", "a problematic product attribute")
+  , ("e80d", "unlimited time")
   , ("eae3", "an actor/object ID collision")
   , ("eae8", "custom team colors")
   , ("f299", "a location attribute")
