@@ -13,7 +13,7 @@ decodeRigidBodyStateAttributeBits version = do
   RigidBodyStateAttribute sleeping
     <$> decodeVectorBits version
     <*> decodeWhen (version >= (868, 22, 7)) getBool
-    <*> decodeCompressedWordVectorBits
+    <*> decodeCompressedWordVectorBits version
     <*> decodeWhen (version >= (868, 22, 7)) getBool
     <*> decodeWhen (not sleeping) (decodeVectorBits version)
     <*> decodeWhen (not sleeping) (decodeVectorBits version)
