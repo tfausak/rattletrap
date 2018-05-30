@@ -20,7 +20,7 @@ putVector vector = do
     dz =
       fromIntegral (vectorZ vector + fromIntegral (vectorBias vector)) :: Word
     limit = 2 ^ (bitSize + 2) :: Word
-  putCompressedWord (CompressedWord 19 bitSize)
+  putCompressedWord (vectorSize vector)
   putCompressedWord (CompressedWord limit dx)
   putCompressedWord (CompressedWord limit dy)
   putCompressedWord (CompressedWord limit dz)

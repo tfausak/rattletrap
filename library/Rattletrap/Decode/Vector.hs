@@ -13,7 +13,7 @@ decodeVectorBits version = do
   let
     limit = getLimit size
     bias = getBias size
-  Vector bias
+  Vector size bias
     <$> fmap (fromDelta bias) (decodeCompressedWordBits limit)
     <*> fmap (fromDelta bias) (decodeCompressedWordBits limit)
     <*> fmap (fromDelta bias) (decodeCompressedWordBits limit)
