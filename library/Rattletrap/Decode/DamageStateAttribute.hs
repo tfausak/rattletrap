@@ -8,12 +8,12 @@ import Rattletrap.Decode.Vector
 import Rattletrap.Decode.Word8le
 import Rattletrap.Type.DamageStateAttribute
 
-decodeDamageStateAttributeBits :: DecodeBits DamageStateAttribute
-decodeDamageStateAttributeBits =
+decodeDamageStateAttributeBits :: (Int, Int, Int) -> DecodeBits DamageStateAttribute
+decodeDamageStateAttributeBits version =
   DamageStateAttribute
     <$> decodeWord8leBits
     <*> getBool
     <*> decodeInt32leBits
-    <*> decodeVectorBits
+    <*> decodeVectorBits version
     <*> getBool
     <*> getBool

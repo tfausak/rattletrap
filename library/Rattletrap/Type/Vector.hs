@@ -5,9 +5,11 @@ module Rattletrap.Type.Vector
   ) where
 
 import Rattletrap.Type.Common
+import Rattletrap.Type.CompressedWord
 
 data Vector = Vector
-  { vectorBias :: Word
+  { vectorSize :: CompressedWord
+  , vectorBias :: Word
   , vectorX :: Int
   , vectorY :: Int
   , vectorZ :: Int

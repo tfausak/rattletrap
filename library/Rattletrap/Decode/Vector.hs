@@ -7,13 +7,13 @@ import Rattletrap.Decode.CompressedWord
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Vector
 
-decodeVectorBits :: DecodeBits Vector
-decodeVectorBits = do
-  size <- decodeCompressedWordBits 19
+decodeVectorBits :: (Int, Int, Int) -> DecodeBits Vector
+decodeVectorBits version = do
+  size <- decodeCompressedWordBits (if version >= (868, 22, 7) then 21 else 19)
   let
     limit = getLimit size
     bias = getBias size
-  Vector bias
+  Vector size bias
     <$> fmap (fromDelta bias) (decodeCompressedWordBits limit)
     <*> fmap (fromDelta bias) (decodeCompressedWordBits limit)
     <*> fmap (fromDelta bias) (decodeCompressedWordBits limit)

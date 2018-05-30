@@ -55,7 +55,7 @@ decodeAttributeValueBits version objectMap name = do
     (Map.lookup name attributeTypes)
   case constructor of
     AttributeTypeAppliedDamage ->
-      AttributeValueAppliedDamage <$> decodeAppliedDamageAttributeBits
+      AttributeValueAppliedDamage <$> decodeAppliedDamageAttributeBits version
     AttributeTypeBoolean ->
       AttributeValueBoolean <$> decodeBooleanAttributeBits
     AttributeTypeByte -> AttributeValueByte <$> decodeByteAttributeBits
@@ -64,14 +64,14 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypeClubColors ->
       AttributeValueClubColors <$> decodeClubColorsAttributeBits
     AttributeTypeDamageState ->
-      AttributeValueDamageState <$> decodeDamageStateAttributeBits
+      AttributeValueDamageState <$> decodeDamageStateAttributeBits version
     AttributeTypeDemolish ->
-      AttributeValueDemolish <$> decodeDemolishAttributeBits
+      AttributeValueDemolish <$> decodeDemolishAttributeBits version
     AttributeTypeEnum -> AttributeValueEnum <$> decodeEnumAttributeBits
     AttributeTypeExplosion ->
-      AttributeValueExplosion <$> decodeExplosionAttributeBits
+      AttributeValueExplosion <$> decodeExplosionAttributeBits version
     AttributeTypeExtendedExplosion ->
-      AttributeValueExtendedExplosion <$> decodeExtendedExplosionAttributeBits
+      AttributeValueExtendedExplosion <$> decodeExtendedExplosionAttributeBits version
     AttributeTypeFlaggedInt ->
       AttributeValueFlaggedInt <$> decodeFlaggedIntAttributeBits
     AttributeTypeFloat -> AttributeValueFloat <$> decodeFloatAttributeBits
@@ -89,7 +89,7 @@ decodeAttributeValueBits version objectMap name = do
       AttributeValueLoadoutsOnline
         <$> decodeLoadoutsOnlineAttributeBits version objectMap
     AttributeTypeLocation ->
-      AttributeValueLocation <$> decodeLocationAttributeBits
+      AttributeValueLocation <$> decodeLocationAttributeBits version
     AttributeTypeMusicStinger ->
       AttributeValueMusicStinger <$> decodeMusicStingerAttributeBits
     AttributeTypePartyLeader ->
@@ -104,7 +104,7 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypeReservation ->
       AttributeValueReservation <$> decodeReservationAttributeBits version
     AttributeTypeRigidBodyState ->
-      AttributeValueRigidBodyState <$> decodeRigidBodyStateAttributeBits
+      AttributeValueRigidBodyState <$> decodeRigidBodyStateAttributeBits version
     AttributeTypeStatEvent ->
       AttributeValueStatEvent <$> decodeStatEventAttributeBits
     AttributeTypeString -> AttributeValueString <$> decodeStringAttributeBits
@@ -114,7 +114,7 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypeUniqueId ->
       AttributeValueUniqueId <$> decodeUniqueIdAttributeBits version
     AttributeTypeWeldedInfo ->
-      AttributeValueWeldedInfo <$> decodeWeldedInfoAttributeBits
+      AttributeValueWeldedInfo <$> decodeWeldedInfoAttributeBits version
 
 attributeTypes :: Map Str AttributeType
 attributeTypes = Map.mapKeys toStr (Map.fromList rawAttributeTypes)

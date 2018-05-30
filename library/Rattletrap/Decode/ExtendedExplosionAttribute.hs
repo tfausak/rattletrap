@@ -7,8 +7,8 @@ import Rattletrap.Decode.ExplosionAttribute
 import Rattletrap.Decode.FlaggedIntAttribute
 import Rattletrap.Type.ExtendedExplosionAttribute
 
-decodeExtendedExplosionAttributeBits :: DecodeBits ExtendedExplosionAttribute
-decodeExtendedExplosionAttributeBits =
+decodeExtendedExplosionAttributeBits :: (Int, Int, Int) -> DecodeBits ExtendedExplosionAttribute
+decodeExtendedExplosionAttributeBits version =
   ExtendedExplosionAttribute
-    <$> decodeExplosionAttributeBits
+    <$> decodeExplosionAttributeBits version
     <*> decodeFlaggedIntAttributeBits

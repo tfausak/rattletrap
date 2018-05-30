@@ -7,6 +7,6 @@ import Rattletrap.Decode.Int32le
 import Rattletrap.Decode.Vector
 import Rattletrap.Type.ExplosionAttribute
 
-decodeExplosionAttributeBits :: DecodeBits ExplosionAttribute
-decodeExplosionAttributeBits =
-  ExplosionAttribute <$> getBool <*> decodeInt32leBits <*> decodeVectorBits
+decodeExplosionAttributeBits :: (Int, Int, Int) -> DecodeBits ExplosionAttribute
+decodeExplosionAttributeBits version =
+  ExplosionAttribute <$> getBool <*> decodeInt32leBits <*> decodeVectorBits version
