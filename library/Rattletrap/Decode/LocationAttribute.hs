@@ -6,5 +6,5 @@ import Rattletrap.Decode.Common
 import Rattletrap.Decode.Vector
 import Rattletrap.Type.LocationAttribute
 
-decodeLocationAttributeBits :: DecodeBits LocationAttribute
-decodeLocationAttributeBits = LocationAttribute <$> decodeVectorBits
+decodeLocationAttributeBits :: (Int, Int, Int) -> DecodeBits LocationAttribute
+decodeLocationAttributeBits version = LocationAttribute <$> decodeVectorBits version

@@ -7,12 +7,12 @@ import Rattletrap.Decode.Vector
 import Rattletrap.Decode.Word32le
 import Rattletrap.Type.DemolishAttribute
 
-decodeDemolishAttributeBits :: DecodeBits DemolishAttribute
-decodeDemolishAttributeBits =
+decodeDemolishAttributeBits :: (Int, Int, Int) -> DecodeBits DemolishAttribute
+decodeDemolishAttributeBits version =
   DemolishAttribute
     <$> getBool
     <*> decodeWord32leBits
     <*> getBool
     <*> decodeWord32leBits
-    <*> decodeVectorBits
-    <*> decodeVectorBits
+    <*> decodeVectorBits version
+    <*> decodeVectorBits version

@@ -37,7 +37,7 @@ decodeSpawnedReplicationBits version classAttributeMap actorId = do
   let hasLocation = classHasLocation className
   let hasRotation = classHasRotation className
   initialization <- Trans.lift
-    (decodeInitializationBits hasLocation hasRotation)
+    (decodeInitializationBits version hasLocation hasRotation)
   pure
     ( SpawnedReplication
       flag

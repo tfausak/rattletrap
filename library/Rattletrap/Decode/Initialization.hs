@@ -7,8 +7,8 @@ import Rattletrap.Decode.Int8Vector
 import Rattletrap.Decode.Vector
 import Rattletrap.Type.Initialization
 
-decodeInitializationBits :: Bool -> Bool -> DecodeBits Initialization
-decodeInitializationBits hasLocation hasRotation =
+decodeInitializationBits :: (Int, Int, Int) -> Bool -> Bool -> DecodeBits Initialization
+decodeInitializationBits version hasLocation hasRotation =
   Initialization
-    <$> decodeWhen hasLocation decodeVectorBits
+    <$> decodeWhen hasLocation (decodeVectorBits version)
     <*> decodeWhen hasRotation decodeInt8VectorBits
