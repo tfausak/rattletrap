@@ -9,7 +9,7 @@ import Rattletrap.Type.Vector
 
 decodeVectorBits :: (Int, Int, Int) -> DecodeBits Vector
 decodeVectorBits version = do
-  size <- decodeCompressedWordBits (if version >= (868,22,7) then 21 else 19)
+  size <- decodeCompressedWordBits (if version >= (868, 22, 7) then 21 else 19)
   let
     limit = getLimit size
     bias = getBias size

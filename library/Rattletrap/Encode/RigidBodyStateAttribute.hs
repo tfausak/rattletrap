@@ -12,8 +12,10 @@ putRigidBodyStateAttribute :: RigidBodyStateAttribute -> BinaryBits.BitPut ()
 putRigidBodyStateAttribute rigidBodyStateAttribute = do
   BinaryBits.putBool (rigidBodyStateAttributeSleeping rigidBodyStateAttribute)
   putVector (rigidBodyStateAttributeLocation rigidBodyStateAttribute)
+  maybe (pure ()) BinaryBits.putBool (rigidBodyStateAttributeUnknown1 rigidBodyStateAttribute)
   putCompressedWordVector
     (rigidBodyStateAttributeRotation rigidBodyStateAttribute)
+  maybe (pure ()) BinaryBits.putBool (rigidBodyStateAttributeUnknown2 rigidBodyStateAttribute)
   case rigidBodyStateAttributeLinearVelocity rigidBodyStateAttribute of
     Nothing -> pure ()
     Just linearVelocity -> putVector linearVelocity
