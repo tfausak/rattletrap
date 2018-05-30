@@ -24,6 +24,9 @@ data LoadoutAttribute = LoadoutAttribute
   , loadoutAttributeGoalExplosion :: Maybe Word32le
   , loadoutAttributeBanner :: Maybe Word32le
   , loadoutAttributeUnknown3 :: Maybe Word32le
+  , loadoutAttributeUnknown4 :: Maybe Word32le
+  , loadoutAttributeUnknown5 :: Maybe Word32le
+  , loadoutAttributeUnknown6 :: Maybe Word32le
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''LoadoutAttribute)

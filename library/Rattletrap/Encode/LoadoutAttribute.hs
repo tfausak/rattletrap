@@ -24,6 +24,9 @@ putLoadoutAttribute loadoutAttribute = do
   putOptional (loadoutAttributeGoalExplosion loadoutAttribute) putWord32Bits
   putOptional (loadoutAttributeBanner loadoutAttribute) putWord32Bits
   putOptional (loadoutAttributeUnknown3 loadoutAttribute) putWord32Bits
+  putOptional (loadoutAttributeUnknown4 loadoutAttribute) putWord32Bits
+  putOptional (loadoutAttributeUnknown5 loadoutAttribute) putWord32Bits
+  putOptional (loadoutAttributeUnknown6 loadoutAttribute) putWord32Bits
 
 putOptional :: Maybe a -> (a -> BinaryBits.BitPut ()) -> BinaryBits.BitPut ()
 putOptional m f = case m of
