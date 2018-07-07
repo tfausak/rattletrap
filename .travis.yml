@@ -48,6 +48,11 @@ script:
   - stack setup
   - stack build --only-dependencies --test
   - stack build --no-run-tests --test
+  - ls -h -l $( stack exec which rattletrap )
+  - ldd $( stack exec which rattletrap )
+  - stack build --force-dirty --ghc-options='-optl-static -optl-pthread' --no-run-tests --test
+  - ls -h -l $( stack exec which rattletrap )
+  - ldd $( stack exec which rattletrap )
   - stack build --test
   - stack sdist
 
