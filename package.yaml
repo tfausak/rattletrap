@@ -36,6 +36,11 @@ ghc-options:
   - -Wno-safe
   - -Wno-unsafe
 
+flags:
+  static:
+    default: false
+    manual: true
+
 library:
   source-dirs: library
 
@@ -46,6 +51,9 @@ executable:
     - -threaded
   main: Main.hs
   source-dirs: executables
+  when:
+    - condition: flag(static)
+      ld-options: -static
 
 tests:
   test:
