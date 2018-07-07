@@ -48,8 +48,9 @@ script:
   - stack setup
   - stack build --only-dependencies --test
   - stack build --flag rattletrap:static --no-run-tests --test
-  - ls -h -l $( stack exec which rattletrap ) && ldd $( stack exec which rattletrap ) || otool -L $( stack exec which rattletrap )
-  - stack build --test
+  - ls -h -l $( stack exec which rattletrap )
+  - ldd $( stack exec which rattletrap ) || otool -L $( stack exec which rattletrap )
+  - stack build --flag rattletrap:static --test
   - stack sdist
 
 after_success:
