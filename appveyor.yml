@@ -8,6 +8,7 @@ environment:
     secure: 'L/78Qw3wSosowhhilcm/u+wHOM97yiHdXgz8pbwRD3PQVtVSB1lZQ/BDaIm8RpsA'
   PATH: c:/bin;%PATH%
   STACK_ROOT: c:/stack
+  TMP: c:/tmp # https://github.com/haskell/cabal/issues/5386
 
 cache:
   - c:/bin
