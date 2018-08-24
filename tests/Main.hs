@@ -61,6 +61,7 @@ replays =
   , ("27b6", "some UTF-16 text")
   , ("29f5", "frames")
   , ("2cfe", "a new playstation id")
+  , ("3abd", "rlcs")
   , ("3381", "patch 1.37")
   , ("372d", "a camera yaw attribute")
   , ("387f", "a frozen attribute")
