@@ -123,6 +123,7 @@ rawObjectClasses =
   , ("Archetypes.GameEvent.GameEvent_Season:CarArchetype", "TAGame.Car_TA")
   , ("Archetypes.GameEvent.GameEvent_Season", "TAGame.GameEvent_Season_TA")
   , ("Archetypes.GameEvent.GameEvent_Soccar", "TAGame.GameEvent_Soccar_TA")
+  , ("Archetypes.GameEvent.GameEvent_SoccarLan", "TAGame.GameEvent_Soccar_TA")
   , ("Archetypes.GameEvent.GameEvent_SoccarPrivate", "TAGame.GameEvent_SoccarPrivate_TA")
   , ("Archetypes.GameEvent.GameEvent_SoccarSplitscreen", "TAGame.GameEvent_SoccarSplitscreen_TA")
   , ("Archetypes.SpecialPickups.SpecialPickup_BallFreeze", "TAGame.SpecialPickup_BallFreeze_TA")
