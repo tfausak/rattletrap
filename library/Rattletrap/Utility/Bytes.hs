@@ -1,4 +1,9 @@
-module Rattletrap.Utility.Bytes where
+module Rattletrap.Utility.Bytes
+  ( encodeLatin1
+  , padBytes
+  , reverseByte
+  , reverseBytes
+  ) where
 
 import qualified Data.Bits as Bits
 import qualified Data.ByteString.Lazy as LazyBytes

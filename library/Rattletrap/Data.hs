@@ -1,4 +1,11 @@
-module Rattletrap.Data where
+module Rattletrap.Data
+  ( rawParentClasses
+  , rawClassesWithLocation
+  , rawClassesWithRotation
+  , rawObjectClasses
+  , rawAttributeTypes
+  , rawCrc32Table
+  ) where
 
 import Rattletrap.Type.AttributeType
 

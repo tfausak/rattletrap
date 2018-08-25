@@ -31,7 +31,9 @@ dependencies:
 ghc-options:
   - -optP -Wno-nonportable-include-path # https://github.com/haskell/cabal/issues/4739
   - -Weverything
+  - -Wno-all-missed-specialisations
   - -Wno-implicit-prelude
+  - -Wno-missing-exported-signatures # https://ghc.haskell.org/trac/ghc/ticket/14794
   - -Wno-missing-import-lists
   - -Wno-safe
   - -Wno-unsafe
