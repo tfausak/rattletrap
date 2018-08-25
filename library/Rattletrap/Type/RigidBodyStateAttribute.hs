@@ -5,15 +5,13 @@ module Rattletrap.Type.RigidBodyStateAttribute
   ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWordVector
+import Rattletrap.Type.Rotation
 import Rattletrap.Type.Vector
 
 data RigidBodyStateAttribute = RigidBodyStateAttribute
   { rigidBodyStateAttributeSleeping :: Bool
   , rigidBodyStateAttributeLocation :: Vector
-  , rigidBodyStateAttributeUnknown1 :: Maybe Bool
-  , rigidBodyStateAttributeRotation :: CompressedWordVector
-  , rigidBodyStateAttributeUnknown2 :: Maybe Bool
+  , rigidBodyStateAttributeRotation :: Rotation
   , rigidBodyStateAttributeLinearVelocity :: Maybe Vector
   , rigidBodyStateAttributeAngularVelocity :: Maybe Vector
   } deriving (Eq, Ord, Show)

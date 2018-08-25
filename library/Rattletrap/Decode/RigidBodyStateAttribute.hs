@@ -3,7 +3,7 @@ module Rattletrap.Decode.RigidBodyStateAttribute
   ) where
 
 import Rattletrap.Decode.Common
-import Rattletrap.Decode.CompressedWordVector
+import Rattletrap.Decode.Rotation
 import Rattletrap.Decode.Vector
 import Rattletrap.Type.RigidBodyStateAttribute
 
@@ -12,8 +12,6 @@ decodeRigidBodyStateAttributeBits version = do
   sleeping <- getBool
   RigidBodyStateAttribute sleeping
     <$> decodeVectorBits version
-    <*> decodeWhen (version >= (868, 22, 7)) getBool
-    <*> decodeCompressedWordVectorBits version
-    <*> decodeWhen (version >= (868, 22, 7)) getBool
+    <*> decodeRotationBits version
     <*> decodeWhen (not sleeping) (decodeVectorBits version)
     <*> decodeWhen (not sleeping) (decodeVectorBits version)
