@@ -11,8 +11,9 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 
 putQuaternion :: Quaternion -> BinaryBits.BitPut ()
 putQuaternion q = do
-  putComponent (maxComponent q)
-  case maxComponent q of
+  let c = maxComponent q
+  putComponent c
+  case c of
     ComponentX -> putParts (quaternionY q) (quaternionZ q) (quaternionW q)
     ComponentY -> putParts (quaternionX q) (quaternionZ q) (quaternionW q)
     ComponentZ -> putParts (quaternionX q) (quaternionY q) (quaternionW q)
@@ -37,23 +38,4 @@ putParts a b c = do
   putPart c
 
 putPart :: Double -> BinaryBits.BitPut ()
-putPart =
-  putCompressedWord
-    . CompressedWord (maxValueWord + 1)
-    . round
-    . (* wordToDouble maxValueWord)
-    . (+ 0.5)
-    . (/ 2.0)
-    . (/ maxValueDouble)
-
-numBits :: Word
-numBits = 18
-
-wordToDouble :: Word -> Double
-wordToDouble = fromIntegral
-
-maxValueWord :: Word
-maxValueWord = (2 ^ numBits) - 1
-
-maxValueDouble :: Double
-maxValueDouble = 1.0 / sqrt 2.0
+putPart = putCompressedWord . compressPart

@@ -23,23 +23,4 @@ decodeComponent = do
     y -> fail ("invalid component: " <> show y)
 
 decodePart :: DecodeBits Double
-decodePart =
-  (* maxValueDouble)
-    . (* 2.0)
-    . subtract 0.5
-    . (/ wordToDouble maxValueWord)
-    . wordToDouble
-    . compressedWordValue
-    <$> decodeCompressedWordBits (maxValueWord + 1)
-
-numBits :: Word
-numBits = 18
-
-wordToDouble :: Word -> Double
-wordToDouble = fromIntegral
-
-maxValueWord :: Word
-maxValueWord = (2 ^ numBits) - 1
-
-maxValueDouble :: Double
-maxValueDouble = 1.0 / sqrt 2.0
+decodePart = decompressPart <$> decodeCompressedWordBits maxCompressedValue
