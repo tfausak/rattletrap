@@ -2,7 +2,7 @@ module Rattletrap.Encode.RigidBodyStateAttribute
   ( putRigidBodyStateAttribute
   ) where
 
-import Rattletrap.Encode.CompressedWordVector
+import Rattletrap.Encode.Rotation
 import Rattletrap.Encode.Vector
 import Rattletrap.Type.RigidBodyStateAttribute
 
@@ -12,10 +12,8 @@ putRigidBodyStateAttribute :: RigidBodyStateAttribute -> BinaryBits.BitPut ()
 putRigidBodyStateAttribute rigidBodyStateAttribute = do
   BinaryBits.putBool (rigidBodyStateAttributeSleeping rigidBodyStateAttribute)
   putVector (rigidBodyStateAttributeLocation rigidBodyStateAttribute)
-  maybe (pure ()) BinaryBits.putBool (rigidBodyStateAttributeUnknown1 rigidBodyStateAttribute)
-  putCompressedWordVector
+  putRotation
     (rigidBodyStateAttributeRotation rigidBodyStateAttribute)
-  maybe (pure ()) BinaryBits.putBool (rigidBodyStateAttributeUnknown2 rigidBodyStateAttribute)
   case rigidBodyStateAttributeLinearVelocity rigidBodyStateAttribute of
     Nothing -> pure ()
     Just linearVelocity -> putVector linearVelocity

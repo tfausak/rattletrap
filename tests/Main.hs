@@ -1,16 +1,25 @@
-import Control.Exception (displayException, try)
-import Control.Monad (unless)
-import Data.ByteString.Lazy (readFile)
-import Prelude hiding (readFile)
-import Rattletrap.Console.Main (rattletrap)
-import System.FilePath (addExtension, joinPath)
-import System.IO.Temp (withSystemTempDirectory)
-import Text.Printf (printf)
+module Main
+  ( main
+  )
+where
 
+import qualified Control.Monad as Monad
+import qualified Data.ByteString.Lazy as Bytes
+import qualified Rattletrap.Console.Main as Rattletrap
+import qualified System.Exit as Exit
+import qualified System.FilePath as Path
+import qualified System.IO.Temp as Temp
 import qualified Test.HUnit as Test
 
-main :: IO Test.Counts
-main = withSystemTempDirectory "rattletrap-" (Test.runTestTT . toTests)
+main :: IO ()
+main = Temp.withSystemTempDirectory "rattletrap-" (runTests . toTests)
+
+runTests :: Test.Test -> IO ()
+runTests test = do
+  result <- Test.runTestTT test
+  Monad.when
+    (Test.errors result > 0 || Test.failures result > 0)
+    Exit.exitFailure
 
 toTests :: FilePath -> Test.Test
 toTests directory = Test.TestList (fmap (toTest directory) replays)
@@ -21,23 +30,23 @@ toTest directory (uuid, name) = Test.TestLabel
   (Test.TestCase (toAssertion directory uuid))
 
 toLabel :: String -> String -> String
-toLabel = printf "%s: %s"
+toLabel uuid name = uuid <> ": " <> name
 
 toAssertion :: FilePath -> String -> Test.Assertion
 toAssertion directory uuid = do
-  let inputFile = joinPath ["replays", addExtension uuid ".replay"]
-  result <- try (readFile inputFile)
-  case result of
-    Left problem -> putStrLn (displayException (problem :: IOError))
-    Right input -> do
-      let jsonFile = joinPath [directory, addExtension uuid ".json"]
-      rattletrap "" ["--compact", "--input", inputFile, "--output", jsonFile]
-      let outputFile = joinPath [directory, addExtension uuid ".replay"]
-      rattletrap "" ["--input", jsonFile, "--output", outputFile]
-      output <- readFile outputFile
-      unless
-        (output == input)
-        (Test.assertFailure "output does not match input")
+  let
+    inputFile = Path.joinPath ["replays", Path.addExtension uuid ".replay"]
+    jsonFile = Path.joinPath [directory, Path.addExtension uuid ".json"]
+    outputFile = Path.joinPath [directory, Path.addExtension uuid ".replay"]
+  input <- Bytes.readFile inputFile
+  Rattletrap.rattletrap
+    ""
+    ["--compact", "--input", inputFile, "--output", jsonFile]
+  Rattletrap.rattletrap "" ["--input", jsonFile, "--output", outputFile]
+  output <- Bytes.readFile outputFile
+  Monad.unless
+    (output == input)
+    (Test.assertFailure "output does not match input")
 
 replays :: [(String, String)]
 replays =
@@ -61,15 +70,16 @@ replays =
   , ("27b6", "some UTF-16 text")
   , ("29f5", "frames")
   , ("2cfe", "a new playstation id")
-  , ("3abd", "rlcs")
   , ("3381", "patch 1.37")
   , ("372d", "a camera yaw attribute")
   , ("387f", "a frozen attribute")
+  , ("3abd", "rlcs")
   , ("3ea1", "a custom team name")
   , ("4126", "a game mode after Neo Tokyo")
   , ("42f0", "reservations after Neo Tokyo")
   , ("504e", "some messages")
   , ("520e", "no pickup attribute")
+  , ("524f", "quat edge case")
   , ("52aa", "a match-ending attribute")
   , ("540d", "a demolish attribute")
   , ("551c", "private match settings")

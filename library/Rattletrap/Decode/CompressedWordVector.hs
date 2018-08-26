@@ -6,12 +6,12 @@ import Rattletrap.Decode.Common
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Type.CompressedWordVector
 
-decodeCompressedWordVectorBits :: (Int, Int, Int) -> DecodeBits CompressedWordVector
-decodeCompressedWordVectorBits version =
+decodeCompressedWordVectorBits :: DecodeBits CompressedWordVector
+decodeCompressedWordVectorBits =
   CompressedWordVector
-    <$> decodeCompressedWordBits (limit version)
-    <*> decodeCompressedWordBits (limit version)
-    <*> decodeCompressedWordBits (limit version)
+    <$> decodeCompressedWordBits limit
+    <*> decodeCompressedWordBits limit
+    <*> decodeCompressedWordBits limit
 
-limit :: (Int, Int, Int) -> Word
-limit version = if version >= (868, 22, 7) then 262144 else 65536
+limit :: Word
+limit = 65536
