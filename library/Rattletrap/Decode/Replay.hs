@@ -30,8 +30,19 @@ getVersion :: Header -> (Int, Int, Int)
 getVersion header =
   ( fromIntegral (word32leValue (headerEngineVersion header))
   , fromIntegral (word32leValue (headerLicenseeVersion header))
-  , maybe 0 (fromIntegral . word32leValue) (headerPatchVersion header)
+  , getPatchVersion header
   )
+
+getPatchVersion :: Header -> Int
+getPatchVersion header = case headerPatchVersion header of
+  Just version -> fromIntegral (word32leValue version)
+  Nothing ->
+    case dictionaryLookup (toStr "MatchType") (headerProperties header) of
+      -- This is an ugly, ugly hack to handle replays from season 2 of RLCS.
+      -- See `decodeSpawnedReplicationBits` and #85.
+      Just Property { propertyValue = PropertyValueName str }
+        | fromStr str == "Lan" -> -1
+      _ -> 0
 
 getNumFrames :: Header -> Int
 getNumFrames header =

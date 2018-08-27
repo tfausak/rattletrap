@@ -112,6 +112,7 @@ replays =
   , ("c837", "a spectator")
   , ("cc4c", "after Starbase ARC")
   , ("d044", "hoops mutators")
+  , ("d236", "rlcs s2")
   , ("d428", "a private hockey match")
   , ("d7fb", "an explosion attribute")
   , ("db70", "new lag indicator")
