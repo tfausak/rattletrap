@@ -292,6 +292,7 @@ rawAttributeTypes =
   , ("TAGame.PRI_TA:ReplicatedGameEvent", AttributeTypeFlaggedInt)
   , ("TAGame.PRI_TA:ReplicatedWorstNetQualityBeyondLatency", AttributeTypeByte)
   , ("TAGame.PRI_TA:SecondaryTitle", AttributeTypeTitle)
+  , ("TAGame.PRI_TA:SpectatorShortcut", AttributeTypeInt)
   , ("TAGame.PRI_TA:SteeringSensitivity", AttributeTypeFloat)
   , ("TAGame.PRI_TA:TimeTillItem", AttributeTypeInt)
   , ("TAGame.PRI_TA:Title", AttributeTypeInt)
