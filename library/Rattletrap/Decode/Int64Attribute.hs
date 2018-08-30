@@ -1,4 +1,4 @@
-module Rattletrap.Decode.IntAttribute
+module Rattletrap.Decode.Int64Attribute
   ( decodeIntAttributeBits
   ) where
 
