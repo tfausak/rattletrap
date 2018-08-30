@@ -19,6 +19,7 @@ import Rattletrap.Decode.FlaggedIntAttribute
 import Rattletrap.Decode.FloatAttribute
 import Rattletrap.Decode.GameModeAttribute
 import Rattletrap.Decode.IntAttribute
+import Rattletrap.Decode.Int64Attribute
 import Rattletrap.Decode.LoadoutAttribute
 import Rattletrap.Decode.LoadoutOnlineAttribute
 import Rattletrap.Decode.LoadoutsAttribute
@@ -78,6 +79,7 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypeGameMode ->
       AttributeValueGameMode <$> decodeGameModeAttributeBits version
     AttributeTypeInt -> AttributeValueInt <$> decodeIntAttributeBits
+    AttributeTypeInt64 -> AttributeValueInt64 <$> decodeInt64AttributeBits
     AttributeTypeLoadout ->
       AttributeValueLoadout <$> decodeLoadoutAttributeBits
     AttributeTypeLoadoutOnline ->
