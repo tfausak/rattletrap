@@ -59,5 +59,4 @@ decodeColor = do
   decodeWhen hasValue (Right <$> getWord32be 31)
   
 decodeTitle :: Decode Str
-decodeTitle = do
-  uselessString <- decodeStr
+decodeTitle = decodeStr
