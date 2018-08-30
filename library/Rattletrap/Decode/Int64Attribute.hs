@@ -1,10 +1,10 @@
 module Rattletrap.Decode.Int64Attribute
-  ( decodeIntAttributeBits
+  ( decodeInt64AttributeBits
   ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int64le
-import Rattletrap.Type.IntAttribute
+import Rattletrap.Type.Int64Attribute
 
-decodeIntAttributeBits :: DecodeBits IntAttribute
-decodeIntAttributeBits = IntAttribute <$> decodeInt64leBits
+decodeInt64AttributeBits :: DecodeBits Int64Attribute
+decodeInt64AttributeBits = Int64Attribute <$> decodeInt64leBits
