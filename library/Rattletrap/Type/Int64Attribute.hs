@@ -11,4 +11,4 @@ newtype Int64Attribute = Int64Attribute
   { int64AttributeValue :: Int64le
   } deriving (Eq, Ord, Show)
 
-$(deriveJson ''IntAttribute)
+$(deriveJson ''Int64Attribute)
