@@ -15,7 +15,6 @@ import Rattletrap.Type.ProductAttribute
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
-
 import qualified Control.Monad as Monad
 import qualified Data.Map as Map
 
@@ -37,10 +36,13 @@ decodeProductAttributeBits version objectMap = do
     Just name -> case fromStr name of
       "TAGame.ProductAttribute_Painted_TA" -> Just <$> decodePainted version
       "TAGame.ProductAttribute_UserColor_TA" -> decodeColor
-      
+      _ -> decodeWhen False (Right <$> getWord32be 31)
+    Nothing -> fail ("missing object name for ID " <> show objectId) 
   value2 <- case objectName of
     Just name -> case fromStr name of      
       "TAGame.ProductAttribute_TitleID_TA" -> decodeTitle
+      _ -> decodeWhen False (decodeStrBits)
+    Nothing -> fail ("missing object name for ID " <> show objectId)  
   pure (ProductAttribute flag objectId objectName value value2)
 
 decodePainted :: (Int, Int, Int) -> DecodeBits (Either CompressedWord Word32)
