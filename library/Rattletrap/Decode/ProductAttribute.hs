@@ -36,6 +36,7 @@ decodeProductAttributeBits version objectMap = do
     Just name -> case fromStr name of
       "TAGame.ProductAttribute_Painted_TA" -> Just <$> decodePainted version
       "TAGame.ProductAttribute_UserColor_TA" -> decodeColor
+      "TAGame.ProductAttribute_TitleID_TA" -> decodeTitle
       _ ->
         fail
           ( "unknown object name "
@@ -55,3 +56,7 @@ decodeColor :: DecodeBits (Maybe (Either CompressedWord Word32))
 decodeColor = do
   hasValue <- getBool
   decodeWhen hasValue (Right <$> getWord32be 31)
+  
+decodeTitle :: DecodeBits (Maybe Str)
+decodeTitle = do
+  decodeStr
