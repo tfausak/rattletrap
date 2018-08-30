@@ -15,6 +15,7 @@ data ProductAttribute = ProductAttribute
   , productAttributeObjectName :: Maybe Str
   -- ^ read-only
   , productAttributeValue :: Maybe (Either CompressedWord Word32)
+  , productAttributeValue2 :: Maybe Str
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''ProductAttribute)
