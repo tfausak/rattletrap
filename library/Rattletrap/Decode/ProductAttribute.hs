@@ -57,6 +57,5 @@ decodeColor = do
   hasValue <- getBool
   decodeWhen hasValue (Right <$> getWord32be 31)
   
-decodeTitle :: DecodeBits (Maybe Str)
-decodeTitle = do
-  decodeStr
+decodeTitle :: Decode Str
+decodeTitle = decodeStr
