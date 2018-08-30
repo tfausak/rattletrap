@@ -319,6 +319,8 @@ rawAttributeTypes =
   , ("TAGame.Vehicle_TA:ReplicatedThrottle", AttributeTypeByte)
   , ("TAGame.VehiclePickup_TA:bNoPickup", AttributeTypeBoolean)
   , ("TAGame.VehiclePickup_TA:ReplicatedPickupData", AttributeTypePickup)
+  , ("TAGame.Team_TA:ClubID", AttributeTypeInt64)
+  , ("TAGame.PRI_TA:ClubID", AttributeTypeInt64)
   ]
 
 rawCrc32Table :: Integral a => [a]
