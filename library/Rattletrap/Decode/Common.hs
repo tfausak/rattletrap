@@ -11,6 +11,7 @@ module Rattletrap.Decode.Common
   , Binary.getLazyByteString
   , Binary.getInt8
   , Binary.getInt32le
+  , Binary.getInt64le
   , Binary.getWord8
   , Binary.getWord32le
   , Binary.getWord64le
