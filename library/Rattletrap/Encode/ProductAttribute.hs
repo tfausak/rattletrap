@@ -7,6 +7,7 @@ import Data.Semigroup ((<>))
 import Rattletrap.Encode.CompressedWord
 import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Word8le
+import Rattletrap.Encode.Str
 import Rattletrap.Type.ProductAttribute
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word8le
@@ -37,6 +38,10 @@ putProductAttribute attribute = do
             case value of
               Left x -> putCompressedWord x
               Right x -> BinaryBits.putWord32be 31 x
+      "TAGame.ProductAttribute_TitleID_TA" ->
+        case productAttributeValue2 attribute of
+          Nothing -> pure ()
+          Just x -> putTextBits x
       _ ->
         fail ("unknown object name for product attribute " <> show attribute)
     Nothing ->

@@ -16,6 +16,7 @@ import Rattletrap.Encode.FlaggedIntAttribute
 import Rattletrap.Encode.FloatAttribute
 import Rattletrap.Encode.GameModeAttribute
 import Rattletrap.Encode.IntAttribute
+import Rattletrap.Encode.Int64Attribute
 import Rattletrap.Encode.LoadoutAttribute
 import Rattletrap.Encode.LoadoutOnlineAttribute
 import Rattletrap.Encode.LoadoutsAttribute
@@ -55,6 +56,7 @@ putAttributeValue value = case value of
   AttributeValueFloat x -> putFloatAttribute x
   AttributeValueGameMode x -> putGameModeAttribute x
   AttributeValueInt x -> putIntAttribute x
+  AttributeValueInt64 x -> putInt64Attribute x
   AttributeValueLoadout x -> putLoadoutAttribute x
   AttributeValueLoadoutOnline x -> putLoadoutOnlineAttribute x
   AttributeValueLoadouts x -> putLoadoutsAttribute x
