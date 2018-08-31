@@ -106,6 +106,7 @@ replays =
   , ("a671", "a waiting player")
   , ("a7f0", "a ready attribute")
   , ("a9df", "salty shores patch 1.45")
+  , ("aa70", "patch 1.50 - TitleID attribute")
   , ("afb1", "patch 1.37")
   , ("b9f9", "a party leader")
   , ("c14f", "some mutators")
