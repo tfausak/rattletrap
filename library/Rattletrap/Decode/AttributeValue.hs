@@ -18,6 +18,7 @@ import Rattletrap.Decode.ExtendedExplosionAttribute
 import Rattletrap.Decode.FlaggedIntAttribute
 import Rattletrap.Decode.FloatAttribute
 import Rattletrap.Decode.GameModeAttribute
+import Rattletrap.Decode.Int64Attribute
 import Rattletrap.Decode.IntAttribute
 import Rattletrap.Decode.LoadoutAttribute
 import Rattletrap.Decode.LoadoutOnlineAttribute
@@ -70,14 +71,15 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypeEnum -> AttributeValueEnum <$> decodeEnumAttributeBits
     AttributeTypeExplosion ->
       AttributeValueExplosion <$> decodeExplosionAttributeBits version
-    AttributeTypeExtendedExplosion ->
-      AttributeValueExtendedExplosion <$> decodeExtendedExplosionAttributeBits version
+    AttributeTypeExtendedExplosion -> AttributeValueExtendedExplosion
+      <$> decodeExtendedExplosionAttributeBits version
     AttributeTypeFlaggedInt ->
       AttributeValueFlaggedInt <$> decodeFlaggedIntAttributeBits
     AttributeTypeFloat -> AttributeValueFloat <$> decodeFloatAttributeBits
     AttributeTypeGameMode ->
       AttributeValueGameMode <$> decodeGameModeAttributeBits version
     AttributeTypeInt -> AttributeValueInt <$> decodeIntAttributeBits
+    AttributeTypeInt64 -> AttributeValueInt64 <$> decodeInt64AttributeBits
     AttributeTypeLoadout ->
       AttributeValueLoadout <$> decodeLoadoutAttributeBits
     AttributeTypeLoadoutOnline ->
@@ -103,8 +105,8 @@ decodeAttributeValueBits version objectMap name = do
     AttributeTypeQWord -> AttributeValueQWord <$> decodeQWordAttributeBits
     AttributeTypeReservation ->
       AttributeValueReservation <$> decodeReservationAttributeBits version
-    AttributeTypeRigidBodyState ->
-      AttributeValueRigidBodyState <$> decodeRigidBodyStateAttributeBits version
+    AttributeTypeRigidBodyState -> AttributeValueRigidBodyState
+      <$> decodeRigidBodyStateAttributeBits version
     AttributeTypeStatEvent ->
       AttributeValueStatEvent <$> decodeStatEventAttributeBits
     AttributeTypeString -> AttributeValueString <$> decodeStringAttributeBits

@@ -18,6 +18,7 @@ import Rattletrap.Type.ExtendedExplosionAttribute
 import Rattletrap.Type.FlaggedIntAttribute
 import Rattletrap.Type.FloatAttribute
 import Rattletrap.Type.GameModeAttribute
+import Rattletrap.Type.Int64Attribute
 import Rattletrap.Type.IntAttribute
 import Rattletrap.Type.LoadoutAttribute
 import Rattletrap.Type.LoadoutOnlineAttribute
@@ -54,6 +55,7 @@ data AttributeValue
   | AttributeValueFloat FloatAttribute
   | AttributeValueGameMode GameModeAttribute
   | AttributeValueInt IntAttribute
+  | AttributeValueInt64 Int64Attribute
   | AttributeValueLoadout LoadoutAttribute
   | AttributeValueLoadoutOnline LoadoutOnlineAttribute
   | AttributeValueLoadouts LoadoutsAttribute

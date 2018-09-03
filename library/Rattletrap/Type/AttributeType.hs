@@ -21,6 +21,7 @@ data AttributeType
   | AttributeTypeFloat
   | AttributeTypeGameMode
   | AttributeTypeInt
+  | AttributeTypeInt64
   | AttributeTypeLoadout
   | AttributeTypeLoadoutOnline
   | AttributeTypeLoadouts
