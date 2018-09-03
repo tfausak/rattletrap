@@ -33,11 +33,9 @@ decodeProductAttributeBits version objectMap = do
   objectId <- decodeWord32leBits
   let maybeObjectName = Map.lookup objectId objectMap
   value <- case fromStr <$> maybeObjectName of
-    Just "TAGame.ProductAttribute_Painted_TA" ->
-      Just <$> decodePainted version
-    Just "TAGame.ProductAttribute_TitleID_TA" -> Just <$> decodeTitle
-    Just "TAGame.ProductAttribute_UserColor_TA" ->
-      Just <$> decodeColor version
+    Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
+    Just "TAGame.ProductAttribute_TitleID_TA" -> decodeTitle
+    Just "TAGame.ProductAttribute_UserColor_TA" -> decodeColor version
     Just objectName ->
       fail
         ("unknown object name "
