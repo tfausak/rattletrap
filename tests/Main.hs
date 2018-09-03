@@ -76,6 +76,7 @@ replays =
   , ("3abd", "rlcs")
   , ("3ea1", "a custom team name")
   , ("4126", "a game mode after Neo Tokyo")
+  , ("419a", "a club match")
   , ("42f0", "reservations after Neo Tokyo")
   , ("504e", "some messages")
   , ("520e", "no pickup attribute")

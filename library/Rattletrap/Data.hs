@@ -236,6 +236,7 @@ rawAttributeTypes =
   , ("TAGame.CrowdManager_TA:GameEvent", AttributeTypeFlaggedInt)
   , ("TAGame.CrowdManager_TA:ReplicatedGlobalOneShotSound", AttributeTypeFlaggedInt)
   , ("TAGame.GameEvent_Soccar_TA:bBallHasBeenHit", AttributeTypeBoolean)
+  , ("TAGame.GameEvent_Soccar_TA:bClubMatch", AttributeTypeBoolean)
   , ("TAGame.GameEvent_Soccar_TA:bOverTime", AttributeTypeBoolean)
   , ("TAGame.GameEvent_Soccar_TA:bUnlimitedTime", AttributeTypeBoolean)
   , ("TAGame.GameEvent_Soccar_TA:GameTime", AttributeTypeInt)
