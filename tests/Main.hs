@@ -104,6 +104,7 @@ replays =
   , ("a52f", "some more mutators")
   , ("a558", "extended explosion data")
   , ("a671", "a waiting player")
+  , ("a676", "new user color")
   , ("a7f0", "a ready attribute")
   , ("a9df", "salty shores patch 1.45")
   , ("aa70", "patch 1.50 - TitleID attribute")

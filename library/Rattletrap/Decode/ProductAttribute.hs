@@ -36,7 +36,8 @@ decodeProductAttributeBits version objectMap = do
     Just "TAGame.ProductAttribute_Painted_TA" ->
       Just <$> decodePainted version
     Just "TAGame.ProductAttribute_TitleID_TA" -> Just <$> decodeTitle
-    Just "TAGame.ProductAttribute_UserColor_TA" -> Just <$> decodeColor
+    Just "TAGame.ProductAttribute_UserColor_TA" ->
+      Just <$> decodeColor version
     Just objectName ->
       fail
         ("unknown object name "
@@ -52,10 +53,12 @@ decodePainted version = if version >= (868, 18, 0)
   then ProductAttributeValuePaintedNew <$> getWord32be 31
   else ProductAttributeValuePaintedOld <$> decodeCompressedWordBits 13
 
-decodeColor :: DecodeBits ProductAttributeValue
-decodeColor = do
-  hasValue <- getBool
-  ProductAttributeValueUserColor <$> decodeWhen hasValue (getWord32be 31)
+decodeColor :: (Int, Int, Int) -> DecodeBits ProductAttributeValue
+decodeColor version = if version >= (868, 23, 8)
+  then ProductAttributeValueUserColorNew <$> decodeWord32leBits
+  else do
+    hasValue <- getBool
+    ProductAttributeValueUserColorOld <$> decodeWhen hasValue (getWord32be 31)
 
 decodeTitle :: DecodeBits ProductAttributeValue
 decodeTitle = ProductAttributeValueTitleId <$> decodeStrBits

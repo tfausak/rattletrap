@@ -25,9 +25,10 @@ putProductAttribute attribute = do
     Nothing -> pure ()
     Just (ProductAttributeValuePaintedOld x) -> putCompressedWord x
     Just (ProductAttributeValuePaintedNew x) -> BinaryBits.putWord32be 31 x
-    Just (ProductAttributeValueUserColor x) -> case x of
+    Just (ProductAttributeValueUserColorOld x) -> case x of
       Nothing -> BinaryBits.putBool False
       Just y -> do
         BinaryBits.putBool True
         BinaryBits.putWord32be 31 y
+    Just (ProductAttributeValueUserColorNew x) -> putWord32Bits x
     Just (ProductAttributeValueTitleId x) -> putTextBits x
