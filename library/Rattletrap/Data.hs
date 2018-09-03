@@ -127,8 +127,8 @@ rawObjectClasses =
   , ("Archetypes.GameEvent.GameEvent_HockeyPrivate", "TAGame.GameEvent_SoccarPrivate_TA")
   , ("Archetypes.GameEvent.GameEvent_HockeySplitscreen", "TAGame.GameEvent_SoccarSplitscreen_TA")
   , ("Archetypes.GameEvent.GameEvent_Items", "TAGame.GameEvent_Soccar_TA")
-  , ("Archetypes.GameEvent.GameEvent_Season:CarArchetype", "TAGame.Car_TA")
   , ("Archetypes.GameEvent.GameEvent_Season", "TAGame.GameEvent_Season_TA")
+  , ("Archetypes.GameEvent.GameEvent_Season:CarArchetype", "TAGame.Car_TA")
   , ("Archetypes.GameEvent.GameEvent_Soccar", "TAGame.GameEvent_Soccar_TA")
   , ("Archetypes.GameEvent.GameEvent_SoccarLan", "TAGame.GameEvent_Soccar_TA")
   , ("Archetypes.GameEvent.GameEvent_SoccarPrivate", "TAGame.GameEvent_SoccarPrivate_TA")
@@ -276,6 +276,7 @@ rawAttributeTypes =
   , ("TAGame.PRI_TA:ClientLoadoutOnline", AttributeTypeLoadoutOnline)
   , ("TAGame.PRI_TA:ClientLoadouts", AttributeTypeLoadouts)
   , ("TAGame.PRI_TA:ClientLoadoutsOnline", AttributeTypeLoadoutsOnline)
+  , ("TAGame.PRI_TA:ClubID", AttributeTypeInt64)
   , ("TAGame.PRI_TA:MatchAssists", AttributeTypeInt)
   , ("TAGame.PRI_TA:MatchBreakoutDamage", AttributeTypeInt)
   , ("TAGame.PRI_TA:MatchGoals", AttributeTypeInt)
@@ -310,6 +311,7 @@ rawAttributeTypes =
   , ("TAGame.SpecialPickup_Targeted_TA:Targeted", AttributeTypeFlaggedInt)
   , ("TAGame.Team_Soccar_TA:GameScore", AttributeTypeInt)
   , ("TAGame.Team_TA:ClubColors", AttributeTypeClubColors)
+  , ("TAGame.Team_TA:ClubID", AttributeTypeInt64)
   , ("TAGame.Team_TA:CustomTeamName", AttributeTypeString)
   , ("TAGame.Team_TA:GameEvent", AttributeTypeFlaggedInt)
   , ("TAGame.Team_TA:LogoData", AttributeTypeFlaggedInt)
@@ -319,8 +321,6 @@ rawAttributeTypes =
   , ("TAGame.Vehicle_TA:ReplicatedThrottle", AttributeTypeByte)
   , ("TAGame.VehiclePickup_TA:bNoPickup", AttributeTypeBoolean)
   , ("TAGame.VehiclePickup_TA:ReplicatedPickupData", AttributeTypePickup)
-  , ("TAGame.Team_TA:ClubID", AttributeTypeInt64)
-  , ("TAGame.PRI_TA:ClubID", AttributeTypeInt64)
   ]
 
 rawCrc32Table :: Integral a => [a]

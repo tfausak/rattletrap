@@ -15,8 +15,8 @@ import Rattletrap.Encode.ExtendedExplosionAttribute
 import Rattletrap.Encode.FlaggedIntAttribute
 import Rattletrap.Encode.FloatAttribute
 import Rattletrap.Encode.GameModeAttribute
-import Rattletrap.Encode.IntAttribute
 import Rattletrap.Encode.Int64Attribute
+import Rattletrap.Encode.IntAttribute
 import Rattletrap.Encode.LoadoutAttribute
 import Rattletrap.Encode.LoadoutOnlineAttribute
 import Rattletrap.Encode.LoadoutsAttribute
