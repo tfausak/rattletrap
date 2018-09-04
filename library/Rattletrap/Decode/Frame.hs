@@ -1,7 +1,8 @@
 module Rattletrap.Decode.Frame
   ( decodeFramesBits
   , decodeFrameBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Float32le

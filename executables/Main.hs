@@ -1,5 +1,6 @@
 module Main
   ( main
-  ) where
+  )
+where
 
 import Rattletrap.Console.Main (main)

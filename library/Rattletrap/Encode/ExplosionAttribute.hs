@@ -1,6 +1,7 @@
 module Rattletrap.Encode.ExplosionAttribute
   ( putExplosionAttribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Int32le
 import Rattletrap.Encode.Vector

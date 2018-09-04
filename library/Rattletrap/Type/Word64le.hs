@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.Word64le
   ( Word64le(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 

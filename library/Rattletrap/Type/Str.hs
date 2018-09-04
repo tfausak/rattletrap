@@ -4,7 +4,8 @@ module Rattletrap.Type.Str
   ( Str(..)
   , toStr
   , fromStr
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 

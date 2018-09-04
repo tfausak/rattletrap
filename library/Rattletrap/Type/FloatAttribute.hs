@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.FloatAttribute
   ( FloatAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Float32le

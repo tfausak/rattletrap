@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.ReplicationValue
   ( ReplicationValue(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.DestroyedReplication

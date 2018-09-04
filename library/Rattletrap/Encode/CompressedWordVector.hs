@@ -1,6 +1,7 @@
 module Rattletrap.Encode.CompressedWordVector
   ( putCompressedWordVector
-  ) where
+  )
+where
 
 import Rattletrap.Encode.CompressedWord
 import Rattletrap.Type.CompressedWordVector

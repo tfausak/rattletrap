@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.Initialization
   ( Initialization(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int8Vector

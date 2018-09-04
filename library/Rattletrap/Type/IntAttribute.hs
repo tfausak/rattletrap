@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.IntAttribute
   ( IntAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le

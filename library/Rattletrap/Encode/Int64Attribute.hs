@@ -1,6 +1,7 @@
 module Rattletrap.Encode.Int64Attribute
   ( putInt64Attribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Int64le
 import Rattletrap.Type.Int64Attribute

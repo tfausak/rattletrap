@@ -1,6 +1,7 @@
 module Rattletrap.Encode.Initialization
   ( putInitialization
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Int8Vector
 import Rattletrap.Encode.Vector

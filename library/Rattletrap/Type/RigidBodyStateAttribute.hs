@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.RigidBodyStateAttribute
   ( RigidBodyStateAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Rotation

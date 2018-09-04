@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.RemoteId
   ( RemoteId(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Bitstream
 import Rattletrap.Type.Common

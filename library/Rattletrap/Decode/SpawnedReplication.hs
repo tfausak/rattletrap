@@ -1,6 +1,7 @@
 module Rattletrap.Decode.SpawnedReplication
   ( decodeSpawnedReplicationBits
-  ) where
+  )
+where
 
 import Data.Semigroup ((<>))
 import Rattletrap.Decode.Common
@@ -39,7 +40,7 @@ decodeSpawnedReplicationBits version classAttributeMap actorId = do
   initialization <- Trans.lift
     (decodeInitializationBits version hasLocation hasRotation)
   pure
-    ( SpawnedReplication
+    (SpawnedReplication
       flag
       nameIndex
       name

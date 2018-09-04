@@ -1,6 +1,7 @@
 module Rattletrap.Encode.PartyLeaderAttribute
   ( putPartyLeaderAttribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.RemoteId
 import Rattletrap.Encode.Word8le

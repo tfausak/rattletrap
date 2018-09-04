@@ -14,7 +14,7 @@ main = do
   repo <- getEnv (if windows then "APPVEYOR_REPO_NAME" else "TRAVIS_REPO_SLUG")
   let
     executable = case break (== '/') repo of
-      (_, '/':x) -> x
+      (_, '/' : x) -> x
       (x, _) -> x
   os <- if windows then pure "windows" else getEnv "TRAVIS_OS_NAME"
   callProcess "stack" ["build", "--copy-bins", "--local-bin-path", "."]
@@ -30,5 +30,7 @@ main = do
     , "--file"
     , addExtension executable (if windows then "exe" else "")
     , "--name"
-    , addExtension (concat [executable, "-", tag, "-", os]) (if windows then "exe" else "")
+    , addExtension
+      (concat [executable, "-", tag, "-", os])
+      (if windows then "exe" else "")
     ]

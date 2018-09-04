@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.DamageStateAttribute
   ( DamageStateAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le

@@ -1,6 +1,7 @@
 module Rattletrap.Encode.MusicStingerAttribute
   ( putMusicStingerAttribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Word8le

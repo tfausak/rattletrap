@@ -9,7 +9,8 @@ module Rattletrap.Type.Common
   , Word.Word32
   , Word.Word64
   , deriveJson
-  ) where
+  )
+where
 
 import qualified Data.Aeson as Json
 import qualified Data.Aeson.TH as Json
@@ -37,7 +38,7 @@ jsonOptions prefix = Json.defaultOptions
 lowerFirst :: String -> String
 lowerFirst string = case string of
   "" -> string
-  first:rest -> Char.toLower first : rest
+  first : rest -> Char.toLower first : rest
 
 toSnakeCase :: String -> String
 toSnakeCase = Json.camelTo2 '_'
@@ -50,6 +51,6 @@ partialDropPrefix prefix list = Maybe.fromMaybe
 dropPrefix :: Eq a => [a] -> [a] -> Maybe [a]
 dropPrefix prefix list = case prefix of
   [] -> Just list
-  ph:pt -> case list of
+  ph : pt -> case list of
     [] -> Nothing
-    lh:lt -> if ph == lh then dropPrefix pt lt else Nothing
+    lh : lt -> if ph == lh then dropPrefix pt lt else Nothing

@@ -1,6 +1,7 @@
 module Rattletrap.Decode.Content
   ( decodeContent
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Cache
 import Rattletrap.Decode.ClassMapping
@@ -53,7 +54,7 @@ decodeContent version numFrames maxChannels = do
       mempty
   frames <- either fail pure (runDecodeBits bitGet (reverseBytes stream))
   pure
-    ( Content
+    (Content
       levels
       keyFrames
       streamSize

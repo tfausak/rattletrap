@@ -69,7 +69,8 @@ module Rattletrap
   , Rattletrap.Type.ClassMapping.ClassMapping(..)
   , Rattletrap.Type.Cache.Cache(..)
   , Rattletrap.Type.AttributeMapping.AttributeMapping(..)
-  ) where
+  )
+where
 
 import qualified Rattletrap.Type.AppliedDamageAttribute
 import qualified Rattletrap.Type.Attribute

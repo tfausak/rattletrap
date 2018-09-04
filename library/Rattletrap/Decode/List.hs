@@ -1,6 +1,7 @@
 module Rattletrap.Decode.List
   ( decodeList
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word32le

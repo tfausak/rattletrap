@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.Content
   ( Content(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Cache
 import Rattletrap.Type.ClassMapping

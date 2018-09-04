@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.Replay
   ( Replay(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Content

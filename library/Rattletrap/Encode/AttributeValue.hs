@@ -1,6 +1,7 @@
 module Rattletrap.Encode.AttributeValue
   ( putAttributeValue
-  ) where
+  )
+where
 
 import Rattletrap.Encode.AppliedDamageAttribute
 import Rattletrap.Encode.BooleanAttribute

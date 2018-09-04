@@ -1,6 +1,7 @@
 module Rattletrap.Encode.Content
   ( putContent
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Cache
 import Rattletrap.Encode.ClassMapping

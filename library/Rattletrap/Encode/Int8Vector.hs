@@ -1,6 +1,7 @@
 module Rattletrap.Encode.Int8Vector
   ( putInt8Vector
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Int8le
 import Rattletrap.Type.Int8Vector

@@ -9,7 +9,8 @@ module Rattletrap.Type.ClassAttributeMap
   , getName
   , getObjectName
   , makeClassAttributeMap
-  ) where
+  )
+where
 
 import Rattletrap.Data
 import Rattletrap.Type.AttributeMapping
@@ -39,7 +40,7 @@ data ClassAttributeMap = ClassAttributeMap
   -- ^ A map from object IDs to their names.
   , classAttributeMapObjectClassMap :: Map Word32le Word32le
   -- ^ A map from object IDs to their class IDs.
-  , classAttributeMapValue :: Map Word32le (Map Word32le Word32le)
+    , classAttributeMapValue :: Map Word32le (Map Word32le Word32le)
   -- ^ A map from class IDs to a map from attribute stream IDs to attribute
   -- IDs.
   , classAttributeMapNameMap :: IntMap.IntMap Str
@@ -68,36 +69,36 @@ makeClassAttributeMap
   -> List Str
   -- ^ From 'Rattletrap.Content.contentNames'.
   -> ClassAttributeMap
-makeClassAttributeMap objects classMappings caches names =
-  let
-    objectMap = makeObjectMap objects
-    classMap = makeClassMap classMappings
-    objectClassMap = makeObjectClassMap objectMap classMap
-    classCache = makeClassCache classMap caches
-    attributeMap = makeAttributeMap caches
-    classIds = fmap (\(_, classId, _, _) -> classId) classCache
-    parentMap = makeParentMap classCache
-    value = Map.fromList
-      ( fmap
-        ( \classId ->
-          let
-            ownAttributes =
-              Maybe.fromMaybe Map.empty (Map.lookup classId attributeMap)
-            parentsAttributes = case Map.lookup classId parentMap of
-              Nothing -> []
-              Just parentClassIds -> fmap
-                ( \parentClassId -> Maybe.fromMaybe
-                  Map.empty
-                  (Map.lookup parentClassId attributeMap)
-                )
-                parentClassIds
-            attributes = ownAttributes : parentsAttributes
-          in (classId, Map.fromList (concatMap Map.toList attributes))
+makeClassAttributeMap objects classMappings caches names
+  = let
+      objectMap = makeObjectMap objects
+      classMap = makeClassMap classMappings
+      objectClassMap = makeObjectClassMap objectMap classMap
+      classCache = makeClassCache classMap caches
+      attributeMap = makeAttributeMap caches
+      classIds = fmap (\(_, classId, _, _) -> classId) classCache
+      parentMap = makeParentMap classCache
+      value = Map.fromList
+        (fmap
+          (\classId ->
+            let
+              ownAttributes =
+                Maybe.fromMaybe Map.empty (Map.lookup classId attributeMap)
+              parentsAttributes = case Map.lookup classId parentMap of
+                Nothing -> []
+                Just parentClassIds -> fmap
+                  (\parentClassId -> Maybe.fromMaybe
+                    Map.empty
+                    (Map.lookup parentClassId attributeMap)
+                  )
+                  parentClassIds
+              attributes = ownAttributes : parentsAttributes
+            in (classId, Map.fromList (concatMap Map.toList attributes))
+          )
+          classIds
         )
-        classIds
-      )
-    nameMap = makeNameMap names
-  in ClassAttributeMap objectMap objectClassMap value nameMap
+      nameMap = makeNameMap names
+    in ClassAttributeMap objectMap objectClassMap value nameMap
 
 makeNameMap :: List Str -> IntMap.IntMap Str
 makeNameMap names = IntMap.fromDistinctAscList (zip [0 ..] (listValue names))
@@ -114,7 +115,7 @@ makeObjectClassMap objectMap classMap = do
   let rawPairs = zip objectIds classIds
   let
     pairs = Maybe.mapMaybe
-      ( \(objectId, maybeClassId) -> case maybeClassId of
+      (\(objectId, maybeClassId) -> case maybeClassId of
         Nothing -> Nothing
         Just classId -> Just (objectId, classId)
       )
@@ -133,9 +134,8 @@ makeClassCache
   -> List Cache
   -> [(Maybe Str, Word32le, Word32le, Word32le)]
 makeClassCache classMap caches = fmap
-  ( \cache ->
-    let
-      classId = cacheClassId cache
+  (\cache ->
+    let classId = cacheClassId cache
     in
       ( lookupL classId classMap
       , classId
@@ -147,8 +147,8 @@ makeClassCache classMap caches = fmap
 
 makeClassMap :: List ClassMapping -> Bimap Word32le Str
 makeClassMap classMappings = bimap
-  ( fmap
-    ( \classMapping ->
+  (fmap
+    (\classMapping ->
       (classMappingStreamId classMapping, classMappingName classMapping)
     )
     (listValue classMappings)
@@ -156,12 +156,12 @@ makeClassMap classMappings = bimap
 
 makeAttributeMap :: List Cache -> Map Word32le (Map Word32le Word32le)
 makeAttributeMap caches = Map.fromList
-  ( fmap
-    ( \cache ->
+  (fmap
+    (\cache ->
       ( cacheClassId cache
       , Map.fromList
-        ( fmap
-          ( \attributeMapping ->
+        (fmap
+          (\attributeMapping ->
             ( attributeMappingStreamId attributeMapping
             , attributeMappingObjectId attributeMapping
             )
@@ -176,10 +176,10 @@ makeAttributeMap caches = Map.fromList
 makeShallowParentMap
   :: [(Maybe Str, Word32le, Word32le, Word32le)] -> Map Word32le Word32le
 makeShallowParentMap classCache = Map.fromList
-  ( Maybe.mapMaybe
-    ( \xs -> case xs of
+  (Maybe.mapMaybe
+    (\xs -> case xs of
       [] -> Nothing
-      (maybeClassName, classId, _, parentCacheId):rest -> do
+      (maybeClassName, classId, _, parentCacheId) : rest -> do
         parentClassId <- getParentClass maybeClassName parentCacheId rest
         pure (classId, parentClassId)
     )
@@ -189,8 +189,7 @@ makeShallowParentMap classCache = Map.fromList
 makeParentMap
   :: [(Maybe Str, Word32le, Word32le, Word32le)] -> Map Word32le [Word32le]
 makeParentMap classCache =
-  let
-    shallowParentMap = makeShallowParentMap classCache
+  let shallowParentMap = makeShallowParentMap classCache
   in
     Map.mapWithKey
       (\classId _ -> getParentClasses shallowParentMap classId)
@@ -219,7 +218,7 @@ getParentClassById parentCacheId xs =
     [] -> if parentCacheId == Word32le 0
       then Nothing
       else getParentClassById (Word32le (word32leValue parentCacheId - 1)) xs
-    (_, parentClassId, _, _):_ -> Just parentClassId
+    (_, parentClassId, _, _) : _ -> Just parentClassId
 
 getParentClassByName
   :: Str
@@ -232,13 +231,13 @@ getParentClassByName className parentCacheId xs =
     Just parentClassName -> Maybe.maybe
       (getParentClassById parentCacheId xs)
       Just
-      ( Maybe.listToMaybe
-        ( fmap
+      (Maybe.listToMaybe
+        (fmap
           (\(_, parentClassId, _, _) -> parentClassId)
-          ( filter
+          (filter
             (\(_, _, cacheId, _) -> cacheId <= parentCacheId)
-            ( filter
-              ( \(maybeClassName, _, _, _) ->
+            (filter
+              (\(maybeClassName, _, _, _) ->
                 maybeClassName == Just parentClassName
               )
               xs
@@ -271,18 +270,17 @@ normalizeObjectName objectName =
     boostPickup = Text.pack "TheWorld:PersistentLevel.VehiclePickup_Boost_TA"
     mapScoreboard = Text.pack "TheWorld:PersistentLevel.InMapScoreboard_TA"
     breakout = Text.pack "TheWorld:PersistentLevel.BreakOutActor_Platform_TA"
-  in
-    if Text.isInfixOf crowdActor name
-      then Str crowdActor
-      else if Text.isInfixOf crowdManager name
-        then Str crowdManager
-        else if Text.isInfixOf boostPickup name
-          then Str boostPickup
-          else if Text.isInfixOf mapScoreboard name
-            then Str mapScoreboard
-            else if Text.isInfixOf breakout name
-              then Str breakout
-              else objectName
+  in if Text.isInfixOf crowdActor name
+    then Str crowdActor
+    else if Text.isInfixOf crowdManager name
+      then Str crowdManager
+      else if Text.isInfixOf boostPickup name
+        then Str boostPickup
+        else if Text.isInfixOf mapScoreboard name
+          then Str mapScoreboard
+          else if Text.isInfixOf breakout name
+            then Str breakout
+            else objectName
 
 objectClasses :: Map Str Str
 objectClasses =

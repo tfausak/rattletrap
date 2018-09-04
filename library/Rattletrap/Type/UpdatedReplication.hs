@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.UpdatedReplication
   ( UpdatedReplication(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Attribute
 import Rattletrap.Type.Common

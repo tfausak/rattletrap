@@ -1,7 +1,8 @@
 module Rattletrap.Console.Main
   ( main
   , rattletrap
-  ) where
+  )
+where
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Json
@@ -104,7 +105,7 @@ inputOption :: Option
 inputOption = Console.Option
   ['i']
   ["input"]
-  ( Console.ReqArg
+  (Console.ReqArg
     (\input config -> pure config { configInput = Just input })
     "FILE|URL"
   )
@@ -114,8 +115,8 @@ modeOption :: Option
 modeOption = Console.Option
   ['m']
   ["mode"]
-  ( Console.ReqArg
-    ( \rawMode config -> do
+  (Console.ReqArg
+    (\rawMode config -> do
       mode <- parseMode rawMode
       pure config { configMode = Just mode }
     )
@@ -127,7 +128,7 @@ outputOption :: Option
 outputOption = Console.Option
   ['o']
   ["output"]
-  ( Console.ReqArg
+  (Console.ReqArg
     (\output config -> pure config { configOutput = Just output })
     "FILE"
   )

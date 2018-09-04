@@ -1,6 +1,7 @@
 module Rattletrap.Utility.Crc
   ( getCrc32
-  ) where
+  )
+where
 
 import Rattletrap.Data
 

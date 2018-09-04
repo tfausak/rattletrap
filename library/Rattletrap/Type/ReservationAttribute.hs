@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.ReservationAttribute
   ( ReservationAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord

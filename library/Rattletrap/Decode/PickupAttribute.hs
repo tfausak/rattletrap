@@ -1,6 +1,7 @@
 module Rattletrap.Decode.PickupAttribute
   ( decodePickupAttributeBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word32le

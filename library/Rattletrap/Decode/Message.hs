@@ -1,6 +1,7 @@
 module Rattletrap.Decode.Message
   ( decodeMessage
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Str

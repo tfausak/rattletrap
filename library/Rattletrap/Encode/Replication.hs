@@ -1,7 +1,8 @@
 module Rattletrap.Encode.Replication
   ( putReplications
   , putReplication
-  ) where
+  )
+where
 
 import Rattletrap.Encode.CompressedWord
 import Rattletrap.Encode.ReplicationValue

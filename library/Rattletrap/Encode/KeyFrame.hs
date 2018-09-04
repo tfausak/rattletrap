@@ -1,6 +1,7 @@
 module Rattletrap.Encode.KeyFrame
   ( putKeyFrame
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Float32le
 import Rattletrap.Encode.Word32le

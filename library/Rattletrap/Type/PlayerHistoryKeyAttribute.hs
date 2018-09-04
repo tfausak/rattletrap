@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.PlayerHistoryKeyAttribute
   ( PlayerHistoryKeyAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Bitstream
 import Rattletrap.Type.Common

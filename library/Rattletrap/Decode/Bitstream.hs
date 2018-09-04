@@ -1,6 +1,7 @@
 module Rattletrap.Decode.Bitstream
   ( decodeBitstreamBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Type.Bitstream

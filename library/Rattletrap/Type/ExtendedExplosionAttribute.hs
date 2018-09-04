@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.ExtendedExplosionAttribute
   ( ExtendedExplosionAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.ExplosionAttribute

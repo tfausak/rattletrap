@@ -3,7 +3,8 @@ module Rattletrap.Utility.Bytes
   , padBytes
   , reverseByte
   , reverseBytes
-  ) where
+  )
+where
 
 import qualified Data.Bits as Bits
 import qualified Data.ByteString.Lazy as LazyBytes

@@ -1,6 +1,7 @@
 module Rattletrap.Decode.ReplicationValue
   ( decodeReplicationValueBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.DestroyedReplication
@@ -34,7 +35,7 @@ decodeReplicationValueBits version classAttributeMap actorId = do
           ReplicationValueSpawned
             <$> decodeSpawnedReplicationBits version classAttributeMap actorId
         else ReplicationValueUpdated <$> Trans.lift
-          ( decodeUpdatedReplicationBits
+          (decodeUpdatedReplicationBits
             version
             classAttributeMap
             actorMap

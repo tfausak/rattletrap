@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.Message
   ( Message(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str

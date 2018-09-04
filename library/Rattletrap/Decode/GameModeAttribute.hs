@@ -1,6 +1,7 @@
 module Rattletrap.Decode.GameModeAttribute
   ( decodeGameModeAttributeBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Type.GameModeAttribute

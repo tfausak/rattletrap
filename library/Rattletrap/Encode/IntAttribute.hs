@@ -1,6 +1,7 @@
 module Rattletrap.Encode.IntAttribute
   ( putIntAttribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Int32le
 import Rattletrap.Type.IntAttribute

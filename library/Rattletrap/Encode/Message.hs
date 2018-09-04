@@ -1,6 +1,7 @@
 module Rattletrap.Encode.Message
   ( putMessage
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Str
 import Rattletrap.Encode.Word32le

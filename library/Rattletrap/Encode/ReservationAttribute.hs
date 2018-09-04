@@ -1,6 +1,7 @@
 module Rattletrap.Encode.ReservationAttribute
   ( putReservationAttribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.CompressedWord
 import Rattletrap.Encode.Str

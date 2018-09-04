@@ -1,6 +1,7 @@
 module Rattletrap.Encode.LocationAttribute
   ( putLocationAttribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Vector
 import Rattletrap.Type.LocationAttribute

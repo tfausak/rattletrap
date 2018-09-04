@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.PropertyValue
   ( PropertyValue(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Dictionary

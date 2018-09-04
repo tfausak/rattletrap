@@ -1,6 +1,7 @@
 module Rattletrap.Decode.FlaggedIntAttribute
   ( decodeFlaggedIntAttributeBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int32le

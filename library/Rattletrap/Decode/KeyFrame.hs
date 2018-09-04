@@ -1,6 +1,7 @@
 module Rattletrap.Decode.KeyFrame
   ( decodeKeyFrame
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Float32le

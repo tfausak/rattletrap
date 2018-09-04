@@ -1,7 +1,8 @@
 module Rattletrap.Decode.Replication
   ( decodeReplicationsBits
   , decodeReplicationBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.CompressedWord

@@ -1,6 +1,7 @@
 module Rattletrap.Type.Bitstream
   ( Bitstream(..)
-  ) where
+  )
+where
 
 import qualified Data.Aeson as Json
 import qualified Data.Bool as Bool

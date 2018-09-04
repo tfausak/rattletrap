@@ -1,6 +1,7 @@
 module Rattletrap.Encode.AttributeMapping
   ( putAttributeMapping
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Word32le
 import Rattletrap.Type.AttributeMapping

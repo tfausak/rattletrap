@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.ClubColorsAttribute
   ( ClubColorsAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word8le

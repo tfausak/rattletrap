@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.ClassMapping
   ( ClassMapping(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str

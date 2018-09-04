@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.TitleAttribute
   ( TitleAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le

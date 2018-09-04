@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.Cache
   ( Cache(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.AttributeMapping
 import Rattletrap.Type.Common

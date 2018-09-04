@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.DemolishAttribute
   ( DemolishAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Vector

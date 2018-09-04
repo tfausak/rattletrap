@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.CompressedWord
   ( CompressedWord(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 

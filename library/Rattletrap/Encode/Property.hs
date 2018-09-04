@@ -1,6 +1,7 @@
 module Rattletrap.Encode.Property
   ( putProperty
-  ) where
+  )
+where
 
 import Rattletrap.Encode.PropertyValue
 import Rattletrap.Encode.Str

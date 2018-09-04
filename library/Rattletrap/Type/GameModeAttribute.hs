@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.GameModeAttribute
   ( GameModeAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 

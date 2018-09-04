@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.LocationAttribute
   ( LocationAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Vector

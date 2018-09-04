@@ -1,6 +1,7 @@
 module Rattletrap.Decode.PropertyValue
   ( decodePropertyValue
-  ) where
+  )
+where
 
 import Data.Semigroup ((<>))
 import Rattletrap.Decode.Common

@@ -1,6 +1,7 @@
 module Rattletrap.Decode.Cache
   ( decodeCache
-  ) where
+  )
+where
 
 import Rattletrap.Decode.AttributeMapping
 import Rattletrap.Decode.Common

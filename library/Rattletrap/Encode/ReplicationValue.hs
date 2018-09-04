@@ -1,6 +1,7 @@
 module Rattletrap.Encode.ReplicationValue
   ( putReplicationValue
-  ) where
+  )
+where
 
 import Rattletrap.Encode.DestroyedReplication
 import Rattletrap.Encode.SpawnedReplication

@@ -5,7 +5,8 @@ module Rattletrap.Utility.Helper
   , encodeReplayJson
   , decodeReplayJson
   , encodeReplayFile
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Replay

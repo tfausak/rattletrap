@@ -1,7 +1,8 @@
 module Rattletrap.Decode.ProductAttribute
   ( decodeProductAttributesBits
   , decodeProductAttributeBits
-  ) where
+  )
+where
 
 import Data.Semigroup ((<>))
 import Rattletrap.Decode.Common

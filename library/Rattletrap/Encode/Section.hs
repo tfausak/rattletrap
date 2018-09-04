@@ -1,6 +1,7 @@
 module Rattletrap.Encode.Section
   ( putSection
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Word32le
 import Rattletrap.Type.Section

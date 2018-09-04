@@ -1,6 +1,7 @@
 module Rattletrap.Encode.CamSettingsAttribute
   ( putCamSettingsAttribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Float32le
 import Rattletrap.Type.CamSettingsAttribute

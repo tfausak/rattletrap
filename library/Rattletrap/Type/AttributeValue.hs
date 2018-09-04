@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.AttributeValue
   ( AttributeValue(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.AppliedDamageAttribute
 import Rattletrap.Type.BooleanAttribute

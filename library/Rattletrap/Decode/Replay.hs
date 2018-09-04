@@ -1,6 +1,7 @@
 module Rattletrap.Decode.Replay
   ( decodeReplay
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Content
@@ -20,7 +21,7 @@ decodeReplay :: Decode Replay
 decodeReplay = do
   header <- decodeSection decodeHeader
   Replay header <$> decodeSection
-    ( decodeContent
+    (decodeContent
       (getVersion (sectionBody header))
       (getNumFrames (sectionBody header))
       (getMaxChannels (sectionBody header))

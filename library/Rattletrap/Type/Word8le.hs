@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.Word8le
   ( Word8le(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 

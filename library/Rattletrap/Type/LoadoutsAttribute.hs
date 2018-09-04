@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.LoadoutsAttribute
   ( LoadoutsAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.LoadoutAttribute

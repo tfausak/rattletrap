@@ -1,6 +1,7 @@
 module Rattletrap.Encode.RemoteId
   ( putRemoteId
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Bitstream
 import Rattletrap.Encode.Word64le

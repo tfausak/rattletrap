@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.Attribute
   ( Attribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.AttributeValue
 import Rattletrap.Type.Common

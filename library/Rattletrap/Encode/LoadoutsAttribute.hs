@@ -1,6 +1,7 @@
 module Rattletrap.Encode.LoadoutsAttribute
   ( putLoadoutsAttribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.LoadoutAttribute
 import Rattletrap.Type.LoadoutsAttribute

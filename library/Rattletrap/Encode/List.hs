@@ -1,6 +1,7 @@
 module Rattletrap.Encode.List
   ( putList
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Word32le
 import Rattletrap.Type.List

@@ -1,6 +1,7 @@
 module Rattletrap.Encode.PlayerHistoryKeyAttribute
   ( putPlayerHistoryKeyAttribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Bitstream
 import Rattletrap.Type.PlayerHistoryKeyAttribute

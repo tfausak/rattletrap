@@ -1,6 +1,7 @@
 module Rattletrap.Decode.ClubColorsAttribute
   ( decodeClubColorsAttributeBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word8le

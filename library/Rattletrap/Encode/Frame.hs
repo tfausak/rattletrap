@@ -1,7 +1,8 @@
 module Rattletrap.Encode.Frame
   ( putFrames
   , putFrame
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Float32le
 import Rattletrap.Encode.Replication

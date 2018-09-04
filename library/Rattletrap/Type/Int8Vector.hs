@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.Int8Vector
   ( Int8Vector(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int8le

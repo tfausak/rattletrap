@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.UniqueIdAttribute
   ( UniqueIdAttribute(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.RemoteId

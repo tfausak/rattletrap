@@ -1,6 +1,7 @@
 module Rattletrap.Decode.Header
   ( decodeHeader
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Dictionary

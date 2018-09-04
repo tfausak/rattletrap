@@ -1,6 +1,7 @@
 module Rattletrap.Encode.ClubColorsAttribute
   ( putClubColorsAttribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Word8le
 import Rattletrap.Type.ClubColorsAttribute

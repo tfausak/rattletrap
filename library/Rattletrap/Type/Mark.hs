@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.Mark
   ( Mark(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str

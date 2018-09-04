@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.SpawnedReplication
   ( SpawnedReplication(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Initialization

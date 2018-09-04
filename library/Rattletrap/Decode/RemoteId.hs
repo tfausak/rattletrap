@@ -1,6 +1,7 @@
 module Rattletrap.Decode.RemoteId
   ( decodeRemoteIdBits
-  ) where
+  )
+where
 
 import Data.Semigroup ((<>))
 import Rattletrap.Decode.Bitstream
@@ -26,7 +27,7 @@ decodeRemoteIdBits (_, _, patch) systemId = case word8leValue systemId of
 
 decodePsName :: DecodeBits Text.Text
 decodePsName = fmap
-  ( Text.dropWhileEnd (== '\x00')
+  (Text.dropWhileEnd (== '\x00')
   . Text.decodeLatin1
   . LazyBytes.toStrict
   . reverseBytes

@@ -1,6 +1,7 @@
 module Rattletrap.Encode.Header
   ( putHeader
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Dictionary
 import Rattletrap.Encode.Property

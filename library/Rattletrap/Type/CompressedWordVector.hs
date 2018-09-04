@@ -2,7 +2,8 @@
 
 module Rattletrap.Type.CompressedWordVector
   ( CompressedWordVector(..)
-  ) where
+  )
+where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord

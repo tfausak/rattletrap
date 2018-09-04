@@ -1,6 +1,7 @@
 module Rattletrap.Decode.DemolishAttribute
   ( decodeDemolishAttributeBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Vector

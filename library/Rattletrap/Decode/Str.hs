@@ -1,7 +1,8 @@
 module Rattletrap.Decode.Str
   ( decodeStr
   , decodeStrBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int32le
@@ -35,8 +36,7 @@ getTextDecoder size bytes =
   let
     decode =
       if size < Int32le 0 then Text.decodeUtf16LE else Text.decodeLatin1
-  in
-    decode (LazyBytes.toStrict bytes)
+  in decode (LazyBytes.toStrict bytes)
 
 dropNull :: Text.Text -> Text.Text
 dropNull = Text.dropWhileEnd (== '\x00')

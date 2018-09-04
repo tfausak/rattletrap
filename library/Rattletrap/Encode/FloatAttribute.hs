@@ -1,6 +1,7 @@
 module Rattletrap.Encode.FloatAttribute
   ( putFloatAttribute
-  ) where
+  )
+where
 
 import Rattletrap.Encode.Float32le
 import Rattletrap.Type.FloatAttribute

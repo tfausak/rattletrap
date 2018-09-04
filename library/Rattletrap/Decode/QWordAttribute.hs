@@ -1,6 +1,7 @@
 module Rattletrap.Decode.QWordAttribute
   ( decodeQWordAttributeBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word64le

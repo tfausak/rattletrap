@@ -1,6 +1,7 @@
 module Rattletrap.Decode.PlayerHistoryKeyAttribute
   ( decodePlayerHistoryKeyAttributeBits
-  ) where
+  )
+where
 
 import Rattletrap.Decode.Bitstream
 import Rattletrap.Decode.Common
