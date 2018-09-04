@@ -21,7 +21,7 @@ instance Json.FromJSON Bitstream where
               case char of
                 '0' -> pure False
                 '1' -> pure True
-                _ -> fail ("invalid bit: " ++ show char))
+                _ -> fail ("invalid bit: " <> show char))
            (Text.unpack text))
 
 instance Json.ToJSON Bitstream where

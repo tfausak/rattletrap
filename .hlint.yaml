@@ -1,0 +1,10 @@
+# https://github.com/ndmitchell/hlint
+- extensions:
+  - default: false
+  - name: TemplateHaskell
+- flags:
+  - default: false
+- group: { name: dollar, enabled: true }
+- group: { name: generalise, enabled: true }
+- ignore: { name: Use <|> }
+- ignore: { name: Use lambda-case }
