@@ -5,11 +5,15 @@ where
 
 import qualified Control.Monad as Monad
 import qualified Data.ByteString.Lazy as Bytes
+import qualified Data.Int as Int
 import qualified Rattletrap.Console.Main as Rattletrap
+import qualified System.Clock as Clock
 import qualified System.Exit as Exit
 import qualified System.FilePath as Path
 import qualified System.IO.Temp as Temp
+import qualified System.Mem as Mem
 import qualified Test.HUnit as Test
+import qualified Text.Printf as Printf
 
 main :: IO ()
 main = Temp.withSystemTempDirectory "rattletrap-" (runTests . toTests)
@@ -39,14 +43,54 @@ toAssertion directory uuid = do
     jsonFile = Path.joinPath [directory, Path.addExtension uuid ".json"]
     outputFile = Path.joinPath [directory, Path.addExtension uuid ".replay"]
   input <- Bytes.readFile inputFile
-  Rattletrap.rattletrap
-    ""
-    ["--compact", "--input", inputFile, "--output", jsonFile]
-  Rattletrap.rattletrap "" ["--input", jsonFile, "--output", outputFile]
+  putStrLn ("\t" <> uuid)
+  do
+    (((), allocated), elapsed) <- withElapsed
+      (withAllocations (decode inputFile jsonFile))
+    put "decoding" (Bytes.length input) (Clock.toNanoSecs elapsed) allocated
+  do
+    (((), allocated), elapsed) <- withElapsed
+      (withAllocations (encode jsonFile outputFile))
+    put "encoding" (Bytes.length input) (Clock.toNanoSecs elapsed) allocated
   output <- Bytes.readFile outputFile
   Monad.unless
     (output == input)
     (Test.assertFailure "output does not match input")
+
+put :: String -> Int.Int64 -> Integer -> Int.Int64 -> IO ()
+put label size elapsed allocated = Printf.printf
+  "%s %d byte%s took %d nanosecond%s (%.3f MB/s) and allocated %d byte%s (%d x)\n"
+  label
+  size
+  (if size == 1 then "" else "s")
+  elapsed
+  (if elapsed == 1 then "" else "s")
+  ((1e9 * fromIntegral size) / (1048576 * fromIntegral elapsed) :: Double)
+  allocated
+  (if allocated == 1 then "" else "s")
+  (div allocated size)
+
+decode :: FilePath -> FilePath -> IO ()
+decode input output =
+  Rattletrap.rattletrap "" ["--compact", "--input", input, "--output", output]
+
+encode :: FilePath -> FilePath -> IO ()
+encode input output =
+  Rattletrap.rattletrap "" ["--input", input, "--output", output]
+
+withAllocations :: IO a -> IO (a, Int.Int64)
+withAllocations action = do
+  before <- Mem.getAllocationCounter
+  result <- action
+  after <- Mem.getAllocationCounter
+  pure (result, before - after)
+
+withElapsed :: IO a -> IO (a, Clock.TimeSpec)
+withElapsed action = do
+  before <- Clock.getTime Clock.Monotonic
+  result <- action
+  after <- Clock.getTime Clock.Monotonic
+  pure (result, Clock.diffTimeSpec before after)
 
 replays :: [(String, String)]
 replays =
