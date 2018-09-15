@@ -17,5 +17,5 @@ putInt64 int64 = Binary.putInt64le (int64leValue int64)
 
 putInt64Bits :: Int64le -> BinaryBits.BitPut ()
 putInt64Bits int64 = do
-  let bytes = Binary.runPut (putInt64 int64)
-  BinaryBits.putByteString (LazyBytes.toStrict (reverseBytes bytes))
+  let bytes = LazyBytes.toStrict (Binary.runPut (putInt64 int64))
+  BinaryBits.putByteString (reverseBytes bytes)

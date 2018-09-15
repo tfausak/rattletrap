@@ -17,5 +17,5 @@ putInt32 int32 = Binary.putInt32le (int32leValue int32)
 
 putInt32Bits :: Int32le -> BinaryBits.BitPut ()
 putInt32Bits int32 = do
-  let bytes = Binary.runPut (putInt32 int32)
-  BinaryBits.putByteString (LazyBytes.toStrict (reverseBytes bytes))
+  let bytes = LazyBytes.toStrict (Binary.runPut (putInt32 int32))
+  BinaryBits.putByteString (reverseBytes bytes)

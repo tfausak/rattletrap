@@ -15,7 +15,7 @@ decodeSection :: Decode a -> Decode (Section a)
 decodeSection getBody = do
   size <- decodeWord32le
   crc <- decodeWord32le
-  rawBody <- getLazyByteString (fromIntegral (word32leValue size))
+  rawBody <- getByteString (fromIntegral (word32leValue size))
   let actualCrc = Word32le (getCrc32 rawBody)
   Monad.when (actualCrc /= crc) (fail (crcMessage actualCrc crc))
   body <- either fail pure (runDecode getBody rawBody)

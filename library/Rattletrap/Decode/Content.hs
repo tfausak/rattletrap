@@ -38,7 +38,7 @@ decodeContent version numFrames maxChannels = do
     <*> decodeWord32le
   (stream, messages, marks, packages, objects, names, classMappings, caches) <-
     (,,,,,,,)
-    <$> getLazyByteString (fromIntegral (word32leValue streamSize))
+    <$> getByteString (fromIntegral (word32leValue streamSize))
     <*> decodeList decodeMessage
     <*> decodeList decodeMark
     <*> decodeList decodeStr

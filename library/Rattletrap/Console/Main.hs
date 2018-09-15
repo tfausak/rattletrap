@@ -6,6 +6,7 @@ where
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Json
+import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Version as Version
 import qualified Network.HTTP.Client as Client
@@ -36,31 +37,32 @@ rattletrap name arguments = do
   let encode = getEncoder config
   putOutput config (encode replay)
 
-getDecoder :: Config -> LazyBytes.ByteString -> Either String Rattletrap.Replay
+getDecoder :: Config -> Bytes.ByteString -> Either String Rattletrap.Replay
 getDecoder config = case getMode config of
   ModeDecode -> Rattletrap.decodeReplayFile
   ModeEncode -> Rattletrap.decodeReplayJson
 
-getEncoder :: Config -> Rattletrap.Replay -> LazyBytes.ByteString
+getEncoder :: Config -> Rattletrap.Replay -> Bytes.ByteString
 getEncoder config = case getMode config of
-  ModeDecode ->
-    if configCompact config then Json.encode else Rattletrap.encodeReplayJson
+  ModeDecode -> if configCompact config
+    then LazyBytes.toStrict . Json.encode
+    else Rattletrap.encodeReplayJson
   ModeEncode -> Rattletrap.encodeReplayFile
 
-getInput :: Config -> IO LazyBytes.ByteString
+getInput :: Config -> IO Bytes.ByteString
 getInput config = case configInput config of
-  Nothing -> LazyBytes.getContents
+  Nothing -> Bytes.getContents
   Just fileOrUrl -> case Client.parseUrlThrow fileOrUrl of
-    Nothing -> LazyBytes.readFile fileOrUrl
+    Nothing -> Bytes.readFile fileOrUrl
     Just request -> do
       manager <- Client.newTlsManager
       response <- Client.httpLbs request manager
-      pure (Client.responseBody response)
+      pure (LazyBytes.toStrict (Client.responseBody response))
 
-putOutput :: Config -> LazyBytes.ByteString -> IO ()
+putOutput :: Config -> Bytes.ByteString -> IO ()
 putOutput config = case configOutput config of
-  Nothing -> LazyBytes.putStr
-  Just file -> LazyBytes.writeFile file
+  Nothing -> Bytes.putStr
+  Just file -> Bytes.writeFile file
 
 getConfig :: [String] -> IO Config
 getConfig arguments = do

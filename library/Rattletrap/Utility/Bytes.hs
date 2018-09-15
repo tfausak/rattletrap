@@ -7,19 +7,17 @@ module Rattletrap.Utility.Bytes
 where
 
 import qualified Data.Bits as Bits
-import qualified Data.ByteString.Lazy as LazyBytes
-import qualified Data.ByteString.Lazy.Char8 as LazyBytes8
+import qualified Data.ByteString as Bytes
+import qualified Data.ByteString.Char8 as Bytes8
 import qualified Data.Text as Text
 import qualified Data.Word as Word
 
-encodeLatin1 :: Text.Text -> LazyBytes.ByteString
-encodeLatin1 text = LazyBytes8.pack (Text.unpack text)
+encodeLatin1 :: Text.Text -> Bytes.ByteString
+encodeLatin1 text = Bytes8.pack (Text.unpack text)
 
-padBytes :: Integral a => a -> LazyBytes.ByteString -> LazyBytes.ByteString
-padBytes size bytes = LazyBytes.concat
-  [ bytes
-  , LazyBytes.replicate (fromIntegral size - LazyBytes.length bytes) 0x00
-  ]
+padBytes :: Integral a => a -> Bytes.ByteString -> Bytes.ByteString
+padBytes size bytes =
+  bytes <> Bytes.replicate (fromIntegral size - Bytes.length bytes) 0x00
 
 reverseByte :: Word.Word8 -> Word.Word8
 reverseByte byte =
@@ -32,5 +30,5 @@ reverseByte byte =
     + Bits.shiftL (byte Bits..&. Bits.bit 1) 5
     + Bits.shiftL (byte Bits..&. Bits.bit 0) 7
 
-reverseBytes :: LazyBytes.ByteString -> LazyBytes.ByteString
-reverseBytes = LazyBytes.map reverseByte
+reverseBytes :: Bytes.ByteString -> Bytes.ByteString
+reverseBytes = Bytes.map reverseByte

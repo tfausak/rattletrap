@@ -6,7 +6,7 @@ where
 import Rattletrap.Data
 
 import qualified Data.Bits as Bits
-import qualified Data.ByteString.Lazy as LazyBytes
+import qualified Data.ByteString as Bytes
 import qualified Data.IntMap as IntMap
 import qualified Data.Word as Word
 
@@ -19,12 +19,12 @@ import qualified Data.Word as Word
 --
 -- This CRC uses an initial value of @0xefcbf201@ and a polynomial of
 -- @0x04c11db7@.
-getCrc32 :: LazyBytes.ByteString -> Word.Word32
+getCrc32 :: Bytes.ByteString -> Word.Word32
 getCrc32 bytes = do
   let
     update = crc32Update crc32Table
     initial = Bits.complement crc32Initial
-    crc = LazyBytes.foldl update initial bytes
+    crc = Bytes.foldl update initial bytes
   Bits.complement crc
 
 crc32Update

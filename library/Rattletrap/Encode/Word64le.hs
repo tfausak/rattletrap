@@ -17,5 +17,5 @@ putWord64 word64 = Binary.putWord64le (word64leValue word64)
 
 putWord64Bits :: Word64le -> BinaryBits.BitPut ()
 putWord64Bits word64 = do
-  let bytes = Binary.runPut (putWord64 word64)
-  BinaryBits.putByteString (LazyBytes.toStrict (reverseBytes bytes))
+  let bytes = LazyBytes.toStrict (Binary.runPut (putWord64 word64))
+  BinaryBits.putByteString (reverseBytes bytes)

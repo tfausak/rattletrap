@@ -19,6 +19,7 @@ import Rattletrap.Utility.Bytes
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
+import qualified Data.ByteString.Lazy as LazyBytes
 
 putContent :: Content -> Binary.Put
 putContent content = do
@@ -27,9 +28,10 @@ putContent content = do
   let streamSize = contentStreamSize content
   putWord32 streamSize
   let
-    stream =
-      Binary.runPut (BinaryBits.runBitPut (putFrames (contentFrames content)))
-  Binary.putLazyByteString
+    stream = LazyBytes.toStrict
+      (Binary.runPut (BinaryBits.runBitPut (putFrames (contentFrames content)))
+      )
+  Binary.putByteString
     (reverseBytes (padBytes (word32leValue streamSize) stream))
   putList putMessage (contentMessages content)
   putList putMark (contentMarks content)

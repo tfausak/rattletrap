@@ -17,5 +17,5 @@ putWord8 word8 = Binary.putWord8 (word8leValue word8)
 
 putWord8Bits :: Word8le -> BinaryBits.BitPut ()
 putWord8Bits word8 = do
-  let bytes = Binary.runPut (putWord8 word8)
-  BinaryBits.putByteString (LazyBytes.toStrict (reverseBytes bytes))
+  let bytes = LazyBytes.toStrict (Binary.runPut (putWord8 word8))
+  BinaryBits.putByteString (reverseBytes bytes)

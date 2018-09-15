@@ -17,5 +17,5 @@ putWord32 word32 = Binary.putWord32le (word32leValue word32)
 
 putWord32Bits :: Word32le -> BinaryBits.BitPut ()
 putWord32Bits word32 = do
-  let bytes = Binary.runPut (putWord32 word32)
-  BinaryBits.putByteString (LazyBytes.toStrict (reverseBytes bytes))
+  let bytes = LazyBytes.toStrict (Binary.runPut (putWord32 word32))
+  BinaryBits.putByteString (reverseBytes bytes)

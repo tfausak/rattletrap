@@ -16,24 +16,26 @@ import Rattletrap.Type.Replay
 import qualified Data.Aeson as Json
 import qualified Data.Aeson.Encode.Pretty as Json
 import qualified Data.Binary.Put as Binary
+import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
 
 -- | Parses a raw replay.
-decodeReplayFile :: LazyBytes.ByteString -> Either String Replay
+decodeReplayFile :: Bytes.ByteString -> Either String Replay
 decodeReplayFile = runDecode decodeReplay
 
 -- | Encodes a replay as JSON.
-encodeReplayJson :: Replay -> LazyBytes.ByteString
-encodeReplayJson = Json.encodePretty' Json.defConfig
+encodeReplayJson :: Replay -> Bytes.ByteString
+encodeReplayJson = LazyBytes.toStrict . Json.encodePretty' Json.defConfig
   { Json.confCompare = compare
   , Json.confIndent = Json.Spaces 2
   , Json.confTrailingNewline = True
   }
 
 -- | Parses a JSON replay.
-decodeReplayJson :: LazyBytes.ByteString -> Either String Replay
-decodeReplayJson = Json.eitherDecode
+decodeReplayJson :: Bytes.ByteString -> Either String Replay
+decodeReplayJson = Json.eitherDecodeStrict'
 
 -- | Encodes a raw replay.
-encodeReplayFile :: Replay -> LazyBytes.ByteString
-encodeReplayFile replay = Binary.runPut (putReplay replay)
+encodeReplayFile :: Replay -> Bytes.ByteString
+encodeReplayFile replay =
+  LazyBytes.toStrict (Binary.runPut (putReplay replay))
