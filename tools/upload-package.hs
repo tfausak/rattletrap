@@ -19,4 +19,4 @@ main = do
   writeFile
     (joinPath [directory, "credentials.json"])
     (encode (object [pack "username" .= user, pack "password" .= pass]))
-  callProcess "stack" ["upload", "."]
+  callProcess "stack" ["upload", "--no-signature", "."]
