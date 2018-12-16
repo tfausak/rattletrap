@@ -161,6 +161,7 @@ replays =
   , ("d044", "hoops mutators")
   , ("d236", "rlcs s2")
   , ("d428", "a private hockey match")
+  , ("d52e", "psynet system id")
   , ("d7fb", "an explosion attribute")
   , ("db70", "new lag indicator")
   , ("dcb3", "a pawn type attribute")

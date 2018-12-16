@@ -11,6 +11,7 @@ import Rattletrap.Type.Word64le
 
 data RemoteId
   = RemoteIdPlayStation Text [Word8]
+  | RemoteIdPsyNet Bitstream
   | RemoteIdSplitscreen Word32
   | RemoteIdSteam Word64le
   | RemoteIdSwitch Bitstream

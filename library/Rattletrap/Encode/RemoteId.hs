@@ -17,6 +17,7 @@ putRemoteId remoteId = case remoteId of
     let rawName = reverseBytes (padBytes (16 :: Int) (encodeLatin1 name))
     BinaryBits.putByteString rawName
     BinaryBits.putByteString (Bytes.pack bytes)
+  RemoteIdPsyNet x -> putBitstream x
   RemoteIdSplitscreen word24 -> BinaryBits.putWord32be 24 word24
   RemoteIdSteam word64 -> putWord64Bits word64
   RemoteIdSwitch x -> putBitstream x
