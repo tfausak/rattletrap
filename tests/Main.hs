@@ -122,6 +122,7 @@ replays =
   , ("4126", "a game mode after Neo Tokyo")
   , ("419a", "a club match")
   , ("42f0", "reservations after Neo Tokyo")
+  , ("4bc3", "with timed out attribute")
   , ("504e", "some messages")
   , ("520e", "no pickup attribute")
   , ("524f", "quat edge case")
