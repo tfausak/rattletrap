@@ -23,6 +23,7 @@ decodeRemoteIdBits (_, _, patch) systemId = case word8leValue systemId of
   2 -> RemoteIdPlayStation <$> decodePsName <*> decodePsBytes patch
   4 -> RemoteIdXbox <$> decodeWord64leBits
   6 -> RemoteIdSwitch <$> decodeBitstreamBits 256
+  7 -> RemoteIdPsyNet <$> decodeBitstreamBits 256
   _ -> fail ("unknown system id " <> show systemId)
 
 decodePsName :: DecodeBits Text.Text
