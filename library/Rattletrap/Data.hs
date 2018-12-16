@@ -179,6 +179,7 @@ rawAttributeTypes =
   , ("Engine.PlayerReplicationInfo:bBot", AttributeTypeBoolean)
   , ("Engine.PlayerReplicationInfo:bIsSpectator", AttributeTypeBoolean)
   , ("Engine.PlayerReplicationInfo:bReadyToPlay", AttributeTypeBoolean)
+  , ("Engine.PlayerReplicationInfo:bTimedOut", AttributeTypeBoolean)
   , ("Engine.PlayerReplicationInfo:bWaitingPlayer", AttributeTypeBoolean)
   , ("Engine.PlayerReplicationInfo:Ping", AttributeTypeByte)
   , ("Engine.PlayerReplicationInfo:PlayerID", AttributeTypeInt)
