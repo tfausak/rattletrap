@@ -24,7 +24,7 @@ decodeReplayFile :: Bytes.ByteString -> Either String Replay
 decodeReplayFile = runDecode decodeReplay
 
 -- | Encodes a replay as JSON.
-encodeReplayJson :: Replay -> Bytes.ByteString
+encodeReplayJson :: Json.ToJSON a => a -> Bytes.ByteString
 encodeReplayJson = LazyBytes.toStrict . Json.encodePretty' Json.defConfig
   { Json.confCompare = compare
   , Json.confIndent = Json.Spaces 2

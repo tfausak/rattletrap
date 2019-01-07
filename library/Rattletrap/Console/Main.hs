@@ -13,6 +13,9 @@ import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified Paths_rattletrap as This
 import qualified Rattletrap
+import qualified Rattletrap.Decode.Common as Common
+import qualified Rattletrap.Decode.Header as Header
+import           Rattletrap.Decode.Section
 import qualified System.Console.GetOpt as Console
 import qualified System.Environment as Environment
 import qualified System.Exit as Exit
@@ -32,22 +35,34 @@ rattletrap name arguments = do
   Monad.when (configHelp config) (printHelp name *> Exit.exitFailure)
   Monad.when (configVersion config) (printVersion *> Exit.exitFailure)
   input <- getInput config
-  let decode = getDecoder config
-  replay <- either fail pure (decode input)
-  let encode = getEncoder config
-  putOutput config (encode replay)
+  let outputResult = getTransformation config input
+  output <- either fail return outputResult
+  putOutput config output
 
-getDecoder :: Config -> Bytes.ByteString -> Either String Rattletrap.Replay
-getDecoder config = case getMode config of
-  ModeDecode -> Rattletrap.decodeReplayFile
-  ModeEncode -> Rattletrap.decodeReplayJson
-
-getEncoder :: Config -> Rattletrap.Replay -> Bytes.ByteString
-getEncoder config = case getMode config of
-  ModeDecode -> if configCompact config
-    then LazyBytes.toStrict . Json.encode
-    else Rattletrap.encodeReplayJson
-  ModeEncode -> Rattletrap.encodeReplayFile
+getTransformation :: Config -> Bytes.ByteString -> Either String Bytes.ByteString
+getTransformation config =
+  if configHeaderOnly config
+  then
+    let (decoder, encoder) = case getMode config of
+            ModeDecode ->
+              let e = if configCompact config
+                      then LazyBytes.toStrict . Json.encode
+                      else Rattletrap.encodeReplayJson
+              in (Common.runDecode (decodeSection Header.decodeHeader), e)
+            ModeEncode -> ( const $ Left "Unable to use header-only mode when encoding replay file"
+                          , const Bytes.empty
+                          )
+    in fmap encoder . decoder
+  else
+    let (decoder, encoder) =
+          case getMode config of
+            ModeDecode ->
+              let e = if configCompact config
+                      then LazyBytes.toStrict . Json.encode
+                      else Rattletrap.encodeReplayJson
+              in (Rattletrap.decodeReplayFile, e)
+            ModeEncode -> (Rattletrap.decodeReplayJson, Rattletrap.encodeReplayFile)
+    in fmap encoder . decoder
 
 getInput :: Config -> IO Bytes.ByteString
 getInput config = case configInput config of
@@ -85,6 +100,7 @@ options =
   , helpOption
   , inputOption
   , modeOption
+  , headerOnlyOption
   , outputOption
   , versionOption
   ]
@@ -126,6 +142,13 @@ modeOption = Console.Option
   )
   "decode or encode"
 
+headerOnlyOption :: Option
+headerOnlyOption = Console.Option
+  ['f']
+  ["header-only"]
+  (Console.NoArg (\config -> pure config { configHeaderOnly = True }))
+  "Only input or output the header of the replay file"
+
 outputOption :: Option
 outputOption = Console.Option
   ['o']
@@ -151,6 +174,7 @@ data Config = Config
   , configHelp :: Bool
   , configInput :: Maybe String
   , configMode :: Maybe Mode
+  , configHeaderOnly :: Bool
   , configOutput :: Maybe String
   , configVersion :: Bool
   } deriving (Show)
@@ -161,6 +185,7 @@ defaultConfig = Config
   , configHelp = False
   , configInput = Nothing
   , configMode = Nothing
+  , configHeaderOnly = False
   , configOutput = Nothing
   , configVersion = False
   }
