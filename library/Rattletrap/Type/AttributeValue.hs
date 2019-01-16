@@ -35,6 +35,7 @@ import Rattletrap.Type.QWordAttribute
 import Rattletrap.Type.ReservationAttribute
 import Rattletrap.Type.RigidBodyStateAttribute
 import Rattletrap.Type.StatEventAttribute
+import Rattletrap.Type.StatTitle
 import Rattletrap.Type.StringAttribute
 import Rattletrap.Type.TeamPaintAttribute
 import Rattletrap.Type.TitleAttribute
@@ -71,6 +72,7 @@ data AttributeValue
   | AttributeValueReservation ReservationAttribute
   | AttributeValueRigidBodyState RigidBodyStateAttribute
   | AttributeValueStatEvent StatEventAttribute
+  | AttributeValueStatTitle StatTitle
   | AttributeValueString StringAttribute
   | AttributeValueTeamPaint TeamPaintAttribute
   | AttributeValueTitle TitleAttribute

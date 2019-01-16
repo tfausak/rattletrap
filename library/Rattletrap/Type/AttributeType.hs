@@ -37,6 +37,7 @@ data AttributeType
   | AttributeTypeReservation
   | AttributeTypeRigidBodyState
   | AttributeTypeStatEvent
+  | AttributeTypeStatTitle
   | AttributeTypeString
   | AttributeTypeTeamPaint
   | AttributeTypeTitle
