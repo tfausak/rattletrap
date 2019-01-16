@@ -35,6 +35,7 @@ decodeProductAttributeBits version objectMap = do
   let maybeObjectName = Map.lookup objectId objectMap
   value <- case fromStr <$> maybeObjectName of
     Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
+    Just "TAGame.ProductAttribute_SpecialEdition_TA" -> decodeSpecialEdition
     Just "TAGame.ProductAttribute_TitleID_TA" -> decodeTitle
     Just "TAGame.ProductAttribute_UserColor_TA" -> decodeColor version
     Just objectName ->
@@ -46,6 +47,9 @@ decodeProductAttributeBits version objectMap = do
         )
     Nothing -> fail ("missing object name for ID " <> show objectId)
   pure (ProductAttribute flag objectId maybeObjectName value)
+
+decodeSpecialEdition :: DecodeBits ProductAttributeValue
+decodeSpecialEdition = ProductAttributeValueSpecialEdition <$> getWord32be 31
 
 decodePainted :: (Int, Int, Int) -> DecodeBits ProductAttributeValue
 decodePainted version = if version >= (868, 18, 0)
