@@ -137,6 +137,7 @@ replays =
   , ("6f7c", "a map with numbers")
   , ("7083", "weird basketball capitalization")
   , ("7109", "a boost modifier")
+  , ("7256", "special edition")
   , ("75ce", "primary and secondary titles")
   , ("7bf6", "an online loadouts attribute")
   , ("89cb", "remote user data")
