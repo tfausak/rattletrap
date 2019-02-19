@@ -171,6 +171,7 @@ replays =
   , ("e80d", "unlimited time")
   , ("eae3", "an actor/object ID collision")
   , ("eae8", "custom team colors")
+  , ("edbb", "remote role")
   , ("f299", "a location attribute")
   , ("f7b9", "a hockey game event")
   , ("f811", "no frames")
