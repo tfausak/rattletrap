@@ -171,6 +171,7 @@ rawAttributeTypes =
   , ("Engine.Actor:bCollideActors", AttributeTypeBoolean)
   , ("Engine.Actor:bHidden", AttributeTypeBoolean)
   , ("Engine.Actor:DrawScale", AttributeTypeFloat)
+  , ("Engine.Actor:RemoteRole", AttributeTypeEnum)
   , ("Engine.Actor:Role", AttributeTypeEnum)
   , ("Engine.GameReplicationInfo:bMatchIsOver", AttributeTypeBoolean)
   , ("Engine.GameReplicationInfo:GameClass", AttributeTypeFlaggedInt)
