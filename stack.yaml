@@ -1,1 +1,9 @@
 resolver: lts-13.0
+
+# The LTS 13.0 resolver uses the GHC 8.6.3 compiler. Unfortunately GHC 8.6.3
+# has a bug on Windows that prevents Template Haskell splices from running.
+# This package uses TH splices extensively and needs to build on Windows, so
+# that's a problem. Fortunately Using the same resolver with an older compiler
+# fixes the problem. Once either GHC 8.6.4 or 8.8.1 are released this project
+# can go back to using the compiler provided by the resolver.
+compiler: ghc-8.6.2 # https://github.com/tfausak/rattletrap/issues/108
