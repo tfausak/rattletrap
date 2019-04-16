@@ -36,6 +36,7 @@ decodeProductAttributeBits version objectMap = do
   value <- case fromStr <$> maybeObjectName of
     Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
     Just "TAGame.ProductAttribute_SpecialEdition_TA" -> decodeSpecialEdition
+    Just "TAGame.ProductAttribute_TeamEdition_TA" -> decodeTeamEdition version
     Just "TAGame.ProductAttribute_TitleID_TA" -> decodeTitle
     Just "TAGame.ProductAttribute_UserColor_TA" -> decodeColor version
     Just objectName ->
@@ -55,6 +56,11 @@ decodePainted :: (Int, Int, Int) -> DecodeBits ProductAttributeValue
 decodePainted version = if version >= (868, 18, 0)
   then ProductAttributeValuePaintedNew <$> getWord32be 31
   else ProductAttributeValuePaintedOld <$> decodeCompressedWordBits 13
+
+decodeTeamEdition :: (Int, Int, Int) -> DecodeBits ProductAttributeValue
+decodeTeamEdition version = if version >= (868, 18, 0)
+  then ProductAttributeValueTeamEditionNew <$> getWord32be 31
+  else ProductAttributeValueTeamEditionOld <$> decodeCompressedWordBits 13
 
 decodeColor :: (Int, Int, Int) -> DecodeBits ProductAttributeValue
 decodeColor version = if version >= (868, 23, 8)

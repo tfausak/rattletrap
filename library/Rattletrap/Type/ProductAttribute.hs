@@ -14,6 +14,8 @@ import Rattletrap.Type.Word32le
 data ProductAttributeValue
   = ProductAttributeValuePaintedOld CompressedWord
   | ProductAttributeValuePaintedNew Word32
+  | ProductAttributeValueTeamEditionOld CompressedWord
+  | ProductAttributeValueTeamEditionNew Word32
   | ProductAttributeValueSpecialEdition Word32
   | ProductAttributeValueUserColorOld (Maybe Word32)
   | ProductAttributeValueUserColorNew Word32le
