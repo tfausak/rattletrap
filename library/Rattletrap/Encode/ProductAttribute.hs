@@ -25,6 +25,8 @@ putProductAttribute attribute = do
   case productAttributeValue attribute of
     ProductAttributeValuePaintedOld x -> putCompressedWord x
     ProductAttributeValuePaintedNew x -> BinaryBits.putWord32be 31 x
+    ProductAttributeValueTeamEditionOld x -> putCompressedWord x
+    ProductAttributeValueTeamEditionNew x -> BinaryBits.putWord32be 31 x
     ProductAttributeValueSpecialEdition x -> BinaryBits.putWord32be 31 x
     ProductAttributeValueUserColorOld x -> case x of
       Nothing -> BinaryBits.putBool False
