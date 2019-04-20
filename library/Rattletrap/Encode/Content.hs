@@ -40,3 +40,6 @@ putContent content = do
   putList putText (contentNames content)
   putList putClassMapping (contentClassMappings content)
   putList putCache (contentCaches content)
+  case contentUnknown content of
+    Nothing -> pure ()
+    Just unknown -> putWord32 unknown

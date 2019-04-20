@@ -48,6 +48,7 @@ data Content = Content
   , contentCaches :: List Cache
   -- ^ A list of classes along with their parent classes and attributes. Used
   -- for the 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
+  , contentUnknown :: Maybe Word32le
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''Content)
