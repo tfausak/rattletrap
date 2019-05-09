@@ -60,7 +60,6 @@ executable:
 tests:
   test:
     dependencies:
-      clock: '>= 0.7.2 && < 0.8'
       HUnit: '>= 1.6.0 && < 1.7'
       rattletrap: -any
       temporary: '>= 1.2.1 && < 1.4'

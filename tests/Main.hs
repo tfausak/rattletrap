@@ -6,8 +6,9 @@ where
 import qualified Control.Monad as Monad
 import qualified Data.ByteString.Lazy as Bytes
 import qualified Data.Int as Int
+import qualified Data.Word as Word
+import qualified GHC.Clock as Clock
 import qualified Rattletrap.Console.Main as Rattletrap
-import qualified System.Clock as Clock
 import qualified System.Exit as Exit
 import qualified System.FilePath as Path
 import qualified System.IO.Temp as Temp
@@ -47,17 +48,17 @@ toAssertion directory uuid = do
   do
     (((), allocated), elapsed) <- withElapsed
       (withAllocations (decode inputFile jsonFile))
-    put "decoding" (Bytes.length input) (Clock.toNanoSecs elapsed) allocated
+    put "decoding" (Bytes.length input) elapsed allocated
   do
     (((), allocated), elapsed) <- withElapsed
       (withAllocations (encode jsonFile outputFile))
-    put "encoding" (Bytes.length input) (Clock.toNanoSecs elapsed) allocated
+    put "encoding" (Bytes.length input) elapsed allocated
   output <- Bytes.readFile outputFile
   Monad.unless
     (output == input)
     (Test.assertFailure "output does not match input")
 
-put :: String -> Int.Int64 -> Integer -> Int.Int64 -> IO ()
+put :: String -> Int.Int64 -> Word.Word64 -> Int.Int64 -> IO ()
 put label size elapsed allocated = Printf.printf
   "%s %d byte%s took %d nanosecond%s (%.3f MB/s) and allocated %d byte%s (%d x)\n"
   label
@@ -85,12 +86,12 @@ withAllocations action = do
   after <- Mem.getAllocationCounter
   pure (result, before - after)
 
-withElapsed :: IO a -> IO (a, Clock.TimeSpec)
+withElapsed :: IO a -> IO (a, Word.Word64)
 withElapsed action = do
-  before <- Clock.getTime Clock.Monotonic
+  before <- Clock.getMonotonicTimeNSec
   result <- action
-  after <- Clock.getTime Clock.Monotonic
-  pure (result, Clock.diffTimeSpec before after)
+  after <- Clock.getMonotonicTimeNSec
+  pure (result, after - before)
 
 replays :: [(String, String)]
 replays =
