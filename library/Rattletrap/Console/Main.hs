@@ -39,7 +39,7 @@ rattletrap name arguments = do
 
 getDecoder :: Config -> Bytes.ByteString -> Either String Rattletrap.Replay
 getDecoder config = case getMode config of
-  ModeDecode -> Rattletrap.decodeReplayFile
+  ModeDecode -> Rattletrap.decodeReplayFile $ configFast config
   ModeEncode -> Rattletrap.decodeReplayJson
 
 getEncoder :: Config -> Rattletrap.Replay -> Bytes.ByteString
@@ -47,7 +47,7 @@ getEncoder config = case getMode config of
   ModeDecode -> if configCompact config
     then LazyBytes.toStrict . Json.encode
     else Rattletrap.encodeReplayJson
-  ModeEncode -> Rattletrap.encodeReplayFile
+  ModeEncode -> Rattletrap.encodeReplayFile $ configFast config
 
 getInput :: Config -> IO Bytes.ByteString
 getInput config = case configInput config of
@@ -82,6 +82,7 @@ type Update = Config -> Either String Config
 options :: [Option]
 options =
   [ compactOption
+  , fastOption
   , helpOption
   , inputOption
   , modeOption
@@ -95,6 +96,13 @@ compactOption = Console.Option
   ["compact"]
   (Console.NoArg (\config -> pure config { configCompact = True }))
   "minify JSON output"
+
+fastOption :: Option
+fastOption = Console.Option
+  ['f']
+  ["fast"]
+  (Console.NoArg (\config -> pure config { configFast = True }))
+  "only encode or decode the header"
 
 helpOption :: Option
 helpOption = Console.Option
@@ -148,6 +156,7 @@ applyUpdate config update = update config
 
 data Config = Config
   { configCompact :: Bool
+  , configFast :: Bool
   , configHelp :: Bool
   , configInput :: Maybe String
   , configMode :: Maybe Mode
@@ -158,6 +167,7 @@ data Config = Config
 defaultConfig :: Config
 defaultConfig = Config
   { configCompact = False
+  , configFast = False
   , configHelp = False
   , configInput = Nothing
   , configMode = Nothing

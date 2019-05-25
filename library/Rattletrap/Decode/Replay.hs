@@ -7,6 +7,8 @@ import Rattletrap.Decode.Common
 import Rattletrap.Decode.Content
 import Rattletrap.Decode.Header
 import Rattletrap.Decode.Section
+import Rattletrap.Encode.Content
+import Rattletrap.Type.Content
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Header
 import Rattletrap.Type.Int32le
@@ -17,15 +19,19 @@ import Rattletrap.Type.Section
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
-decodeReplay :: Decode Replay
-decodeReplay = do
+decodeReplay :: Bool -> Decode Replay
+decodeReplay fast = do
   header <- decodeSection decodeHeader
-  Replay header <$> decodeSection
-    (decodeContent
-      (getVersion (sectionBody header))
-      (getNumFrames (sectionBody header))
-      (getMaxChannels (sectionBody header))
-    )
+  content <- if fast
+    then pure $ toSection putContent defaultContent
+    else
+      let body = sectionBody header
+      in
+        decodeSection $ decodeContent
+          (getVersion body)
+          (getNumFrames body)
+          (getMaxChannels body)
+  pure $ Replay header content
 
 getVersion :: Header -> (Int, Int, Int)
 getVersion header =

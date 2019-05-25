@@ -2,6 +2,7 @@
 
 module Rattletrap.Type.Content
   ( Content(..)
+  , defaultContent
   )
 where
 
@@ -52,3 +53,19 @@ data Content = Content
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''Content)
+
+defaultContent :: Content
+defaultContent = Content
+  { contentLevels = List []
+  , contentKeyFrames = List []
+  , contentStreamSize = Word32le 0
+  , contentFrames = []
+  , contentMessages = List []
+  , contentMarks = List []
+  , contentPackages = List []
+  , contentObjects = List []
+  , contentNames = List []
+  , contentClassMappings = List []
+  , contentCaches = List []
+  , contentUnknown = Nothing
+  }
