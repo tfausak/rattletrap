@@ -47,7 +47,7 @@ getEncoder config = case getMode config of
   ModeDecode -> if configCompact config
     then LazyBytes.toStrict . Json.encode
     else Rattletrap.encodeReplayJson
-  ModeEncode -> Rattletrap.encodeReplayFile
+  ModeEncode -> Rattletrap.encodeReplayFile $ configFast config
 
 getInput :: Config -> IO Bytes.ByteString
 getInput config = case configInput config of
