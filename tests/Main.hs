@@ -160,6 +160,7 @@ replays =
   , ("afb1", "patch 1.37")
   , ("b9f9", "a party leader")
   , ("c14f", "some mutators")
+  , ("c23b", "new psynet id")
   , ("c837", "a spectator")
   , ("cc4c", "after Starbase ARC")
   , ("d044", "hoops mutators")
