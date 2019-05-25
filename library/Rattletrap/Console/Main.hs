@@ -82,6 +82,7 @@ type Update = Config -> Either String Config
 options :: [Option]
 options =
   [ compactOption
+  , fastOption
   , helpOption
   , inputOption
   , modeOption
@@ -95,6 +96,13 @@ compactOption = Console.Option
   ["compact"]
   (Console.NoArg (\config -> pure config { configCompact = True }))
   "minify JSON output"
+
+fastOption :: Option
+fastOption = Console.Option
+  ['f']
+  ["fast"]
+  (Console.NoArg (\config -> pure config { configFast = True }))
+  "only encode or decode the header"
 
 helpOption :: Option
 helpOption = Console.Option
@@ -148,6 +156,7 @@ applyUpdate config update = update config
 
 data Config = Config
   { configCompact :: Bool
+  , configFast :: Bool
   , configHelp :: Bool
   , configInput :: Maybe String
   , configMode :: Maybe Mode
@@ -158,6 +167,7 @@ data Config = Config
 defaultConfig :: Config
 defaultConfig = Config
   { configCompact = False
+  , configFast = False
   , configHelp = False
   , configInput = Nothing
   , configMode = Nothing
