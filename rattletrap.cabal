@@ -1,0 +1,308 @@
+cabal-version: 2.4
+
+name: rattletrap
+version: 6.4.0
+
+category: Game
+description: Rattletrap parses and generates Rocket League replays.
+extra-source-files: CHANGELOG.markdown README.markdown stack.yaml
+license-file: LICENSE.markdown
+license: MIT
+maintainer: Taylor Fausak
+synopsis: Parse and generate Rocket League replays.
+
+source-repository head
+  type: git
+  location: https://github.com/tfausak/rattletrap
+
+flag static
+  manual: True
+  default: False
+
+common basics
+  build-depends:
+    aeson ^>= 1.4.2,
+    aeson-pretty ^>= 0.8.7,
+    base ^>= 4.12.0,
+    binary ^>= 0.8.6,
+    binary-bits ^>= 0.5,
+    bytestring ^>= 0.10.8,
+    containers ^>= 0.6.0,
+    filepath ^>= 1.4.2,
+    http-client ^>= 0.5.14,
+    http-client-tls ^>= 0.3.5,
+    template-haskell ^>= 2.14.0,
+    text ^>= 1.2.3,
+    transformers ^>= 0.5.6,
+  default-language: Haskell2010
+  ghc-options:
+    -optP -Wno-nonportable-include-path
+    -Weverything
+    -Wno-all-missed-specialisations
+    -Wno-implicit-prelude
+    -Wno-missing-exported-signatures
+    -Wno-missing-import-lists
+    -Wno-safe
+    -Wno-unsafe
+
+library
+  import: basics
+
+  autogen-modules: Paths_rattletrap
+  exposed-modules:
+      Rattletrap
+      Rattletrap.Console.Main
+      Rattletrap.Data
+      Rattletrap.Decode.AppliedDamageAttribute
+      Rattletrap.Decode.Attribute
+      Rattletrap.Decode.AttributeMapping
+      Rattletrap.Decode.AttributeValue
+      Rattletrap.Decode.Bitstream
+      Rattletrap.Decode.BooleanAttribute
+      Rattletrap.Decode.ByteAttribute
+      Rattletrap.Decode.Cache
+      Rattletrap.Decode.CamSettingsAttribute
+      Rattletrap.Decode.ClassMapping
+      Rattletrap.Decode.ClubColorsAttribute
+      Rattletrap.Decode.Common
+      Rattletrap.Decode.CompressedWord
+      Rattletrap.Decode.CompressedWordVector
+      Rattletrap.Decode.Content
+      Rattletrap.Decode.DamageStateAttribute
+      Rattletrap.Decode.DemolishAttribute
+      Rattletrap.Decode.DestroyedReplication
+      Rattletrap.Decode.Dictionary
+      Rattletrap.Decode.EnumAttribute
+      Rattletrap.Decode.ExplosionAttribute
+      Rattletrap.Decode.ExtendedExplosionAttribute
+      Rattletrap.Decode.FlaggedIntAttribute
+      Rattletrap.Decode.Float32le
+      Rattletrap.Decode.FloatAttribute
+      Rattletrap.Decode.Frame
+      Rattletrap.Decode.GameModeAttribute
+      Rattletrap.Decode.Header
+      Rattletrap.Decode.Initialization
+      Rattletrap.Decode.Int32le
+      Rattletrap.Decode.Int64Attribute
+      Rattletrap.Decode.Int64le
+      Rattletrap.Decode.Int8le
+      Rattletrap.Decode.Int8Vector
+      Rattletrap.Decode.IntAttribute
+      Rattletrap.Decode.KeyFrame
+      Rattletrap.Decode.List
+      Rattletrap.Decode.LoadoutAttribute
+      Rattletrap.Decode.LoadoutOnlineAttribute
+      Rattletrap.Decode.LoadoutsAttribute
+      Rattletrap.Decode.LoadoutsOnlineAttribute
+      Rattletrap.Decode.LocationAttribute
+      Rattletrap.Decode.Mark
+      Rattletrap.Decode.Message
+      Rattletrap.Decode.MusicStingerAttribute
+      Rattletrap.Decode.PartyLeaderAttribute
+      Rattletrap.Decode.PickupAttribute
+      Rattletrap.Decode.PlayerHistoryKeyAttribute
+      Rattletrap.Decode.PrivateMatchSettingsAttribute
+      Rattletrap.Decode.ProductAttribute
+      Rattletrap.Decode.Property
+      Rattletrap.Decode.PropertyValue
+      Rattletrap.Decode.Quaternion
+      Rattletrap.Decode.QWordAttribute
+      Rattletrap.Decode.RemoteId
+      Rattletrap.Decode.Replay
+      Rattletrap.Decode.Replication
+      Rattletrap.Decode.ReplicationValue
+      Rattletrap.Decode.ReservationAttribute
+      Rattletrap.Decode.RigidBodyStateAttribute
+      Rattletrap.Decode.Rotation
+      Rattletrap.Decode.Section
+      Rattletrap.Decode.SpawnedReplication
+      Rattletrap.Decode.StatEventAttribute
+      Rattletrap.Decode.Str
+      Rattletrap.Decode.StringAttribute
+      Rattletrap.Decode.TeamPaintAttribute
+      Rattletrap.Decode.TitleAttribute
+      Rattletrap.Decode.UniqueIdAttribute
+      Rattletrap.Decode.UpdatedReplication
+      Rattletrap.Decode.Vector
+      Rattletrap.Decode.WeldedInfoAttribute
+      Rattletrap.Decode.Word32le
+      Rattletrap.Decode.Word64le
+      Rattletrap.Decode.Word8le
+      Rattletrap.Encode.AppliedDamageAttribute
+      Rattletrap.Encode.Attribute
+      Rattletrap.Encode.AttributeMapping
+      Rattletrap.Encode.AttributeValue
+      Rattletrap.Encode.Bitstream
+      Rattletrap.Encode.BooleanAttribute
+      Rattletrap.Encode.ByteAttribute
+      Rattletrap.Encode.Cache
+      Rattletrap.Encode.CamSettingsAttribute
+      Rattletrap.Encode.ClassMapping
+      Rattletrap.Encode.ClubColorsAttribute
+      Rattletrap.Encode.CompressedWord
+      Rattletrap.Encode.CompressedWordVector
+      Rattletrap.Encode.Content
+      Rattletrap.Encode.DamageStateAttribute
+      Rattletrap.Encode.DemolishAttribute
+      Rattletrap.Encode.DestroyedReplication
+      Rattletrap.Encode.Dictionary
+      Rattletrap.Encode.EnumAttribute
+      Rattletrap.Encode.ExplosionAttribute
+      Rattletrap.Encode.ExtendedExplosionAttribute
+      Rattletrap.Encode.FlaggedIntAttribute
+      Rattletrap.Encode.Float32le
+      Rattletrap.Encode.FloatAttribute
+      Rattletrap.Encode.Frame
+      Rattletrap.Encode.GameModeAttribute
+      Rattletrap.Encode.Header
+      Rattletrap.Encode.Initialization
+      Rattletrap.Encode.Int32le
+      Rattletrap.Encode.Int64Attribute
+      Rattletrap.Encode.Int64le
+      Rattletrap.Encode.Int8le
+      Rattletrap.Encode.Int8Vector
+      Rattletrap.Encode.IntAttribute
+      Rattletrap.Encode.KeyFrame
+      Rattletrap.Encode.List
+      Rattletrap.Encode.LoadoutAttribute
+      Rattletrap.Encode.LoadoutOnlineAttribute
+      Rattletrap.Encode.LoadoutsAttribute
+      Rattletrap.Encode.LoadoutsOnlineAttribute
+      Rattletrap.Encode.LocationAttribute
+      Rattletrap.Encode.Mark
+      Rattletrap.Encode.Message
+      Rattletrap.Encode.MusicStingerAttribute
+      Rattletrap.Encode.PartyLeaderAttribute
+      Rattletrap.Encode.PickupAttribute
+      Rattletrap.Encode.PlayerHistoryKeyAttribute
+      Rattletrap.Encode.PrivateMatchSettingsAttribute
+      Rattletrap.Encode.ProductAttribute
+      Rattletrap.Encode.Property
+      Rattletrap.Encode.PropertyValue
+      Rattletrap.Encode.Quaternion
+      Rattletrap.Encode.QWordAttribute
+      Rattletrap.Encode.RemoteId
+      Rattletrap.Encode.Replay
+      Rattletrap.Encode.Replication
+      Rattletrap.Encode.ReplicationValue
+      Rattletrap.Encode.ReservationAttribute
+      Rattletrap.Encode.RigidBodyStateAttribute
+      Rattletrap.Encode.Rotation
+      Rattletrap.Encode.Section
+      Rattletrap.Encode.SpawnedReplication
+      Rattletrap.Encode.StatEventAttribute
+      Rattletrap.Encode.Str
+      Rattletrap.Encode.StringAttribute
+      Rattletrap.Encode.TeamPaintAttribute
+      Rattletrap.Encode.TitleAttribute
+      Rattletrap.Encode.UniqueIdAttribute
+      Rattletrap.Encode.UpdatedReplication
+      Rattletrap.Encode.Vector
+      Rattletrap.Encode.WeldedInfoAttribute
+      Rattletrap.Encode.Word32le
+      Rattletrap.Encode.Word64le
+      Rattletrap.Encode.Word8le
+      Rattletrap.Type.AppliedDamageAttribute
+      Rattletrap.Type.Attribute
+      Rattletrap.Type.AttributeMapping
+      Rattletrap.Type.AttributeType
+      Rattletrap.Type.AttributeValue
+      Rattletrap.Type.Bitstream
+      Rattletrap.Type.BooleanAttribute
+      Rattletrap.Type.ByteAttribute
+      Rattletrap.Type.Cache
+      Rattletrap.Type.CamSettingsAttribute
+      Rattletrap.Type.ClassAttributeMap
+      Rattletrap.Type.ClassMapping
+      Rattletrap.Type.ClubColorsAttribute
+      Rattletrap.Type.Common
+      Rattletrap.Type.CompressedWord
+      Rattletrap.Type.CompressedWordVector
+      Rattletrap.Type.Content
+      Rattletrap.Type.DamageStateAttribute
+      Rattletrap.Type.DemolishAttribute
+      Rattletrap.Type.DestroyedReplication
+      Rattletrap.Type.Dictionary
+      Rattletrap.Type.EnumAttribute
+      Rattletrap.Type.ExplosionAttribute
+      Rattletrap.Type.ExtendedExplosionAttribute
+      Rattletrap.Type.FlaggedIntAttribute
+      Rattletrap.Type.Float32le
+      Rattletrap.Type.FloatAttribute
+      Rattletrap.Type.Frame
+      Rattletrap.Type.GameModeAttribute
+      Rattletrap.Type.Header
+      Rattletrap.Type.Initialization
+      Rattletrap.Type.Int32le
+      Rattletrap.Type.Int64Attribute
+      Rattletrap.Type.Int64le
+      Rattletrap.Type.Int8le
+      Rattletrap.Type.Int8Vector
+      Rattletrap.Type.IntAttribute
+      Rattletrap.Type.KeyFrame
+      Rattletrap.Type.List
+      Rattletrap.Type.LoadoutAttribute
+      Rattletrap.Type.LoadoutOnlineAttribute
+      Rattletrap.Type.LoadoutsAttribute
+      Rattletrap.Type.LoadoutsOnlineAttribute
+      Rattletrap.Type.LocationAttribute
+      Rattletrap.Type.Mark
+      Rattletrap.Type.Message
+      Rattletrap.Type.MusicStingerAttribute
+      Rattletrap.Type.PartyLeaderAttribute
+      Rattletrap.Type.PickupAttribute
+      Rattletrap.Type.PlayerHistoryKeyAttribute
+      Rattletrap.Type.PrivateMatchSettingsAttribute
+      Rattletrap.Type.ProductAttribute
+      Rattletrap.Type.Property
+      Rattletrap.Type.PropertyValue
+      Rattletrap.Type.Quaternion
+      Rattletrap.Type.QWordAttribute
+      Rattletrap.Type.RemoteId
+      Rattletrap.Type.Replay
+      Rattletrap.Type.Replication
+      Rattletrap.Type.ReplicationValue
+      Rattletrap.Type.ReservationAttribute
+      Rattletrap.Type.RigidBodyStateAttribute
+      Rattletrap.Type.Rotation
+      Rattletrap.Type.Section
+      Rattletrap.Type.SpawnedReplication
+      Rattletrap.Type.StatEventAttribute
+      Rattletrap.Type.Str
+      Rattletrap.Type.StringAttribute
+      Rattletrap.Type.TeamPaintAttribute
+      Rattletrap.Type.TitleAttribute
+      Rattletrap.Type.UniqueIdAttribute
+      Rattletrap.Type.UpdatedReplication
+      Rattletrap.Type.Vector
+      Rattletrap.Type.WeldedInfoAttribute
+      Rattletrap.Type.Word32le
+      Rattletrap.Type.Word64le
+      Rattletrap.Type.Word8le
+      Rattletrap.Utility.Bytes
+      Rattletrap.Utility.Crc
+      Rattletrap.Utility.Helper
+  hs-source-dirs: library
+  other-modules: Paths_rattletrap
+
+executable rattletrap
+  import: basics
+
+  build-depends: rattletrap
+  ghc-options: -rtsopts -threaded
+  hs-source-dirs: executables
+  main-is: Main.hs
+
+  if flag(static)
+    ld-options: -static
+
+test-suite test
+  import: basics
+
+  build-depends:
+    HUnit ^>= 1.6.0,
+    rattletrap,
+    temporary ^>= 1.3,
+  hs-source-dirs: tests
+  main-is: Main.hs
+  type: exitcode-stdio-1.0
