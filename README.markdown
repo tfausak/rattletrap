@@ -126,7 +126,7 @@ used to modify replays.
 ```
 
 [Rattletrap]: https://github.com/tfausak/rattletrap
-[Version badge]: https://img.shields.io/hackage/v/rattletrap.svg?logo=haskell&label=version
+[Version badge]: https://img.shields.io/hackage/v/rattletrap.svg?logo=haskell&label=version&color=brightgreen
 [version]: https://hackage.haskell.org/package/rattletrap
 [Windows build badge]: https://img.shields.io/appveyor/ci/taylorfausak/rattletrap/master.svg?logo=appveyor&logoColor=white
 [windows build]: https://ci.appveyor.com/project/taylorfausak/rattletrap
