@@ -4,7 +4,22 @@
 [![Windows build badge][]][windows build]
 [![Build badge][]][build]
 
-Rattletrap parses and generates [Rocket League][] replays.
+Rattletrap parses and generates [Rocket League][] replays. Parsing replays can
+be used to analyze data in order to collect high-level statistics like players
+and points, or low-level details like positions and cameras. Generating replays
+can be used to modify replays in order to force everyone into the same car or
+change the map a game was played on.
+
+Rattletrap supports every version of Rocket League up to [1.62][], also known
+as the "esports shop update". If a replay can be played by the Rocket League
+client, it can be parsed by Rattletrap. (If not, that's a bug. Please report
+it!)
+
+Rattletrap is a command-line application. You should only use it if you're
+comfortable running things in terminals or command prompts. Otherwise consider
+using another tool like [Ball Chasing][]. Rattletrap is written in [Haskell][].
+If you'd like to use a program written in a different language, consider
+@jjbott's [C# parser][] or @nickbabcock's [Rust parser][].
 
 ## Install
 
@@ -35,13 +50,14 @@ Rattletrap is a command line application.
 
 ``` sh
 > rattletrap --help
-rattletrap version 4.0.0
-  -c             --compact                minify JSON output
-  -h             --help                   show the help
-  -i FILE|URL    --input=FILE|URL         input file or URL
-  -m MODE        --mode=MODE              decode or encode
-  -o FILE        --output=FILE            output file
-  -v             --version                show the version
+rattletrap.EXE version 6.4.0
+  -c           --compact         minify JSON output
+  -f           --fast            only encode or decode the header
+  -h           --help            show the help
+  -i FILE|URL  --input=FILE|URL  input file or URL
+  -m MODE      --mode=MODE       decode or encode
+  -o FILE      --output=FILE     output file
+  -v           --version         show the version
 ```
 
 By default Rattletrap will try to determine the appropriate mode (either decode
@@ -64,7 +80,7 @@ Rattletrap can parse (decode) Rocket League replays and output them as JSON.
 ``` sh
 > rattletrap --input http://example.com/input.replay --output output.json
 # or
-> rattletrap -i input.replay > output.json
+> rattletrap -i input.replay -o output.json
 # or
 > rattletrap < input.replay > output.json
 ```
@@ -76,6 +92,10 @@ By default the JSON is pretty-printed. To minify the JSON, pass `--compact` (or
 output can be up to 100 times larger than the input. For example, a 1.5 MB
 replay turns into 31 MB of minified JSON or 159 MB of pretty-printed JSON.
 
+Be aware that Rattletrap can output some very large numbers! Some languages,
+like JavaScript, don't natively support parsing them from JSON. See issue #117
+for details.
+
 ## Generate
 
 Rattletrap can also generate (encode) Rocket League replays from JSON files.
@@ -83,7 +103,7 @@ Rattletrap can also generate (encode) Rocket League replays from JSON files.
 ``` sh
 > rattletrap --input http://example.com/input.json --output output.replay
 # or
-> rattletrap -i input.json > output.replay
+> rattletrap -i input.json -o output.replay
 # or
 > rattletrap --mode encode < input.json > output.replay
 ```
@@ -105,12 +125,17 @@ used to modify replays.
 ```
 
 [Rattletrap]: https://github.com/tfausak/rattletrap
-[Version badge]: https://img.shields.io/hackage/v/rattletrap.svg?label=version
+[Version badge]: https://img.shields.io/hackage/v/rattletrap.svg?logo=haskell&label=version
 [version]: https://hackage.haskell.org/package/rattletrap
-[Windows build badge]: https://img.shields.io/appveyor/ci/taylorfausak/rattletrap/master.svg?logo=appveyor
+[Windows build badge]: https://img.shields.io/appveyor/ci/taylorfausak/rattletrap/master.svg?logo=appveyor&logoColor=white
 [windows build]: https://ci.appveyor.com/project/taylorfausak/rattletrap
-[Build badge]: https://img.shields.io/travis/tfausak/rattletrap/master.svg
+[Build badge]: https://img.shields.io/travis/tfausak/rattletrap/master.svg?logo=travis-ci&logoColor=white
 [build]: https://travis-ci.org/tfausak/rattletrap
-[Rocket League]: https://www.rocketleaguegame.com
+[Rocket League]: https://www.rocketleague.com
+[1.62]: https://www.rocketleague.com/news/patch-notes-v1-62/
+[Ball Chasing]: https://ballchasing.com
+[Haskell]: https://www.haskell.org
+[C# parser]: https://github.com/jjbott/RocketLeagueReplayParser
+[Rust parser]: https://github.com/nickbabcock/rrrocket
 [the latest release]: https://github.com/tfausak/rattletrap/releases/latest
 [Stack]: https://docs.haskellstack.org/en/stable/README/
