@@ -4,6 +4,7 @@ version: '{build}'
 clone_folder: c:/rattletrap
 
 environment:
+  APPVEYOR_CACHE_SKIP_RESTORE: 'true'
   GITHUB_TOKEN:
     secure: 'L/78Qw3wSosowhhilcm/u+wHOM97yiHdXgz8pbwRD3PQVtVSB1lZQ/BDaIm8RpsA'
   PATH: c:/bin;%PATH%
