@@ -1,6 +1,5 @@
 module Rattletrap.Encode.ProductAttribute
   ( putProductAttributes
-  , putProductAttribute
   )
 where
 

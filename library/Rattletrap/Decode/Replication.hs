@@ -1,6 +1,5 @@
 module Rattletrap.Decode.Replication
   ( decodeReplicationsBits
-  , decodeReplicationBits
   )
 where
 

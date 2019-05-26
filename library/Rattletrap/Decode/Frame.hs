@@ -1,6 +1,5 @@
 module Rattletrap.Decode.Frame
   ( decodeFramesBits
-  , decodeFrameBits
   )
 where
 

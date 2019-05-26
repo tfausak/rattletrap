@@ -1,6 +1,5 @@
 module Rattletrap.Decode.Attribute
   ( decodeAttributesBits
-  , decodeAttributeBits
   )
 where
 

@@ -1,6 +1,5 @@
 module Rattletrap.Decode.ProductAttribute
   ( decodeProductAttributesBits
-  , decodeProductAttributeBits
   )
 where
 

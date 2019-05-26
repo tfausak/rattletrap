@@ -1,6 +1,5 @@
 module Rattletrap.Encode.Frame
   ( putFrames
-  , putFrame
   )
 where
 

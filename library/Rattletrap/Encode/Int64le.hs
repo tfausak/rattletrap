@@ -1,6 +1,5 @@
 module Rattletrap.Encode.Int64le
-  ( putInt64
-  , putInt64Bits
+  ( putInt64Bits
   )
 where
 

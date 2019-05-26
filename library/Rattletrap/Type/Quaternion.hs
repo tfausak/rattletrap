@@ -4,7 +4,6 @@ module Rattletrap.Type.Quaternion
   ( Quaternion(..)
   , Component(..)
   , toQuaternion
-  , toPart
   , compressPart
   , decompressPart
   , maxComponent

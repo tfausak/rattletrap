@@ -1,6 +1,5 @@
 module Rattletrap.Decode.Int8le
-  ( decodeInt8le
-  , decodeInt8leBits
+  ( decodeInt8leBits
   )
 where
 

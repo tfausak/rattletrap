@@ -1,6 +1,5 @@
 module Rattletrap.Encode.Int8le
-  ( putInt8
-  , putInt8Bits
+  ( putInt8Bits
   )
 where
 

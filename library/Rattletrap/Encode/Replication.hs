@@ -1,6 +1,5 @@
 module Rattletrap.Encode.Replication
   ( putReplications
-  , putReplication
   )
 where
 
