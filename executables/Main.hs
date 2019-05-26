@@ -3,4 +3,4 @@ module Main
   )
 where
 
-import Rattletrap.Console.Main (main)
+import Rattletrap (main)

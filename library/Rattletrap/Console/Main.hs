@@ -12,7 +12,8 @@ import qualified Data.Version as Version
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified Paths_rattletrap as This
-import qualified Rattletrap
+import qualified Rattletrap.Type.Replay as Rattletrap
+import qualified Rattletrap.Utility.Helper as Rattletrap
 import qualified System.Console.GetOpt as Console
 import qualified System.Environment as Environment
 import qualified System.Exit as Exit

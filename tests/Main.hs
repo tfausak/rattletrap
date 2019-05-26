@@ -8,7 +8,7 @@ import qualified Data.ByteString.Lazy as Bytes
 import qualified Data.Int as Int
 import qualified Data.Word as Word
 import qualified GHC.Clock as Clock
-import qualified Rattletrap.Console.Main as Rattletrap
+import qualified Rattletrap
 import qualified System.Exit as Exit
 import qualified System.FilePath as Path
 import qualified System.IO.Temp as Temp
