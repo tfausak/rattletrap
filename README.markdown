@@ -51,7 +51,7 @@ Rattletrap is a command line application.
 
 ``` sh
 > rattletrap --help
-rattletrap.EXE version 6.4.0
+rattletrap.EXE version 7.0.0
   -c           --compact         minify JSON output
   -f           --fast            only encode or decode the header
   -h           --help            show the help
@@ -92,10 +92,6 @@ By default the JSON is pretty-printed. To minify the JSON, pass `--compact` (or
 `-c`) to Rattletrap. Even when the JSON is minified, it's extremely large. The
 output can be up to 100 times larger than the input. For example, a 1.5 MB
 replay turns into 31 MB of minified JSON or 159 MB of pretty-printed JSON.
-
-Be aware that Rattletrap can output some very large numbers! Some languages,
-like JavaScript, don't natively support parsing them from JSON. See issue #117
-for details.
 
 ## Generate
 
