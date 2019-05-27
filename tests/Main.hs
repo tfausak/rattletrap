@@ -117,6 +117,7 @@ replays =
   , ("2cfe", "a new playstation id")
   , ("3381", "patch 1.37")
   , ("372d", "a camera yaw attribute")
+  , ("383e", "older unknown content field")
   , ("387f", "a frozen attribute")
   , ("3abd", "rlcs")
   , ("3ea1", "a custom team name")
