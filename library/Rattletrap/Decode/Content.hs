@@ -53,7 +53,7 @@ decodeContent version numFrames maxChannels = do
       (decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
   frames <- either fail pure (runDecodeBits bitGet (reverseBytes stream))
-  unknown <- decodeWhen (version >= (868, 24, 10)) decodeWord32le
+  unknown <- decodeWhen (version >= (868, 23, 9)) decodeWord32le
   pure
     (Content
       levels
