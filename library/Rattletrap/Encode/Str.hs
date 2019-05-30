@@ -43,8 +43,7 @@ getTextSize text =
     size = if value == Text.pack "\x00\x00\x00None"
       then 0x05000000
       else scale * rawSize :: Int32
-  in
-    Int32le size
+  in Int32le size
 
 getTextEncoder :: Int32le -> Text.Text -> Bytes.ByteString
 getTextEncoder size text =

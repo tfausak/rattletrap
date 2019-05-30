@@ -69,36 +69,36 @@ makeClassAttributeMap
   -> List Str
   -- ^ From 'Rattletrap.Content.contentNames'.
   -> ClassAttributeMap
-makeClassAttributeMap objects classMappings caches names
-  = let
-      objectMap = makeObjectMap objects
-      classMap = makeClassMap classMappings
-      objectClassMap = makeObjectClassMap objectMap classMap
-      classCache = makeClassCache classMap caches
-      attributeMap = makeAttributeMap caches
-      classIds = fmap (\(_, classId, _, _) -> classId) classCache
-      parentMap = makeParentMap classCache
-      value = Map.fromList
-        (fmap
-          (\classId ->
-            let
-              ownAttributes =
-                Maybe.fromMaybe Map.empty (Map.lookup classId attributeMap)
-              parentsAttributes = case Map.lookup classId parentMap of
-                Nothing -> []
-                Just parentClassIds -> fmap
-                  (\parentClassId -> Maybe.fromMaybe
-                    Map.empty
-                    (Map.lookup parentClassId attributeMap)
-                  )
-                  parentClassIds
-              attributes = ownAttributes : parentsAttributes
-            in (classId, Map.fromList (concatMap Map.toList attributes))
-          )
-          classIds
+makeClassAttributeMap objects classMappings caches names =
+  let
+    objectMap = makeObjectMap objects
+    classMap = makeClassMap classMappings
+    objectClassMap = makeObjectClassMap objectMap classMap
+    classCache = makeClassCache classMap caches
+    attributeMap = makeAttributeMap caches
+    classIds = fmap (\(_, classId, _, _) -> classId) classCache
+    parentMap = makeParentMap classCache
+    value = Map.fromList
+      (fmap
+        (\classId ->
+          let
+            ownAttributes =
+              Maybe.fromMaybe Map.empty (Map.lookup classId attributeMap)
+            parentsAttributes = case Map.lookup classId parentMap of
+              Nothing -> []
+              Just parentClassIds -> fmap
+                (\parentClassId -> Maybe.fromMaybe
+                  Map.empty
+                  (Map.lookup parentClassId attributeMap)
+                )
+                parentClassIds
+            attributes = ownAttributes : parentsAttributes
+          in (classId, Map.fromList (concatMap Map.toList attributes))
         )
-      nameMap = makeNameMap names
-    in ClassAttributeMap objectMap objectClassMap value nameMap
+        classIds
+      )
+    nameMap = makeNameMap names
+  in ClassAttributeMap objectMap objectClassMap value nameMap
 
 makeNameMap :: List Str -> IntMap.IntMap Str
 makeNameMap names = IntMap.fromDistinctAscList (zip [0 ..] (listValue names))

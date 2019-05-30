@@ -64,27 +64,27 @@ decompressPart x =
     $ compressedWordValue x
 
 maxComponent :: Quaternion -> Component
-maxComponent quaternion
-  = let
-      x = quaternionX quaternion
-      y = quaternionY quaternion
-      z = quaternionZ quaternion
-      w = quaternionW quaternion
-      parts =
-        [(x, ComponentX), (y, ComponentY), (z, ComponentZ), (w, ComponentW)]
-      biggestPart = maximum parts
-      roundTrip = decompressPart . compressPart
-      computedPart = Maybe.fromMaybe
-        biggestPart
-        (Maybe.listToMaybe
-          (filter (\(value, _) -> value /= roundTrip value) parts)
-        )
-    in snd
-      (if (biggestPart == computedPart)
-          || (abs (fst biggestPart - fst computedPart) > 0.00001)
-        then biggestPart
-        else computedPart
+maxComponent quaternion =
+  let
+    x = quaternionX quaternion
+    y = quaternionY quaternion
+    z = quaternionZ quaternion
+    w = quaternionW quaternion
+    parts =
+      [(x, ComponentX), (y, ComponentY), (z, ComponentZ), (w, ComponentW)]
+    biggestPart = maximum parts
+    roundTrip = decompressPart . compressPart
+    computedPart = Maybe.fromMaybe
+      biggestPart
+      (Maybe.listToMaybe
+        (filter (\(value, _) -> value /= roundTrip value) parts)
       )
+  in snd
+    (if (biggestPart == computedPart)
+        || (abs (fst biggestPart - fst computedPart) > 0.00001)
+      then biggestPart
+      else computedPart
+    )
 
 numBits :: Word
 numBits = 18
