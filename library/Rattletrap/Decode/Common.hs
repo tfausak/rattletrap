@@ -47,13 +47,15 @@ getWord8Bits = BinaryBits.getWord8
 runDecode :: Decode a -> Bytes.ByteString -> Either String a
 runDecode decode bytes =
   case Binary.runGetOrFail decode (LazyBytes.fromStrict bytes) of
-    Left (_, _, x) -> fail x
-    Right (_, _, x) -> pure x
+    Left (_, _, x) -> Left x
+    Right (_, _, x) -> Right x
 
 runDecodeBits :: DecodeBits a -> Bytes.ByteString -> Either String a
 runDecodeBits = runDecode . BinaryBits.runBitGet
 
 toBits :: Decode a -> Int -> DecodeBits a
-toBits decode =
-  fmap (Binary.runGet decode . LazyBytes.fromStrict . Utility.reverseBytes)
-    . BinaryBits.getByteString
+toBits decode size = do
+  bytes <- BinaryBits.getByteString size
+  case runDecode decode (Utility.reverseBytes bytes) of
+    Left problem -> fail problem
+    Right result -> pure result

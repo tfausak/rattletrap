@@ -31,10 +31,11 @@ data Section a = Section
 $(deriveJson ''Section)
 
 toSection :: (a -> Binary.Put) -> a -> Section a
-toSection encode body = let
-  bytes = LazyBytes.toStrict . Binary.runPut $ encode body
-  in Section
-  { sectionSize = Word32le . fromIntegral $ Bytes.length bytes
-  , sectionCrc = Word32le $ getCrc32 bytes
-  , sectionBody = body
-  }
+toSection encode body =
+  let bytes = LazyBytes.toStrict . Binary.runPut $ encode body
+  in
+    Section
+      { sectionSize = Word32le . fromIntegral $ Bytes.length bytes
+      , sectionCrc = Word32le $ getCrc32 bytes
+      , sectionBody = body
+      }

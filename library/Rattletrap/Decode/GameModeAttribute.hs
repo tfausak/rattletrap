@@ -12,4 +12,4 @@ decodeGameModeAttributeBits version =
     (numBits version)
 
 numBits :: (Int, Int, Int) -> Int
-numBits version = if version < (868, 12, 0) then 2 else 8
+numBits version = if version >= (868, 12, 0) then 8 else 2

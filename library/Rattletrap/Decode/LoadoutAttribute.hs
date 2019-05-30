@@ -20,7 +20,7 @@ decodeLoadoutAttributeBits = do
     <*> decodeWord32leBits
     <*> decodeWord32leBits
     <*> decodeWord32leBits
-    <*> decodeWhen (version > Word8le 10) decodeWord32leBits
+    <*> decodeWhen (version >= Word8le 11) decodeWord32leBits
     <*> decodeWhen (version >= Word8le 16) decodeWord32leBits
     <*> decodeWhen (version >= Word8le 16) decodeWord32leBits
     <*> decodeWhen (version >= Word8le 16) decodeWord32leBits
