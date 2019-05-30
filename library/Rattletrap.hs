@@ -10,7 +10,6 @@ module Rattletrap
   , Rattletrap.Type.AttributeMapping.AttributeMapping(..)
   , Rattletrap.Type.AttributeType.AttributeType(..)
   , Rattletrap.Type.AttributeValue.AttributeValue(..)
-  , Rattletrap.Type.Bitstream.Bitstream(..)
   , Rattletrap.Type.BooleanAttribute.BooleanAttribute(..)
   , Rattletrap.Type.ByteAttribute.ByteAttribute(..)
   , Rattletrap.Type.Cache.Cache(..)
@@ -90,7 +89,6 @@ import qualified Rattletrap.Type.Attribute
 import qualified Rattletrap.Type.AttributeMapping
 import qualified Rattletrap.Type.AttributeType
 import qualified Rattletrap.Type.AttributeValue
-import qualified Rattletrap.Type.Bitstream
 import qualified Rattletrap.Type.BooleanAttribute
 import qualified Rattletrap.Type.ByteAttribute
 import qualified Rattletrap.Type.Cache

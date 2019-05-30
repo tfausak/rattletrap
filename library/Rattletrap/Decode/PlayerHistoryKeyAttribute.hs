@@ -3,10 +3,9 @@ module Rattletrap.Decode.PlayerHistoryKeyAttribute
   )
 where
 
-import Rattletrap.Decode.Bitstream
 import Rattletrap.Decode.Common
 import Rattletrap.Type.PlayerHistoryKeyAttribute
 
 decodePlayerHistoryKeyAttributeBits :: DecodeBits PlayerHistoryKeyAttribute
 decodePlayerHistoryKeyAttributeBits =
-  PlayerHistoryKeyAttribute <$> decodeBitstreamBits 14
+  PlayerHistoryKeyAttribute <$> getWord16be 14
