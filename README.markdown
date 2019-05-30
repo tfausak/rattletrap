@@ -24,8 +24,9 @@ If you'd like to use a program written in a different language, consider
 
 ## Install
 
-Get Rattletrap by downloading and unpacking [the latest release][] for your
-platform.
+Get Rattletrap by downloading [the latest release][] for your platform.
+
+Rattletrap is also available as [a Docker image][].
 
 To build Rattletrap from source, install [Stack][]. Then run
 `stack --resolver nightly install rattletrap`.
@@ -51,7 +52,7 @@ Rattletrap is a command line application.
 
 ``` sh
 > rattletrap --help
-rattletrap.EXE version 7.0.0
+rattletrap.EXE version 8.0.0
   -c           --compact         minify JSON output
   -f           --fast            only encode or decode the header
   -h           --help            show the help
@@ -137,4 +138,5 @@ used to modify replays.
 [C# parser]: https://github.com/jjbott/RocketLeagueReplayParser
 [Rust parser]: https://github.com/nickbabcock/rrrocket
 [the latest release]: https://github.com/tfausak/rattletrap/releases/latest
+[a Docker image]: https://hub.docker.com/r/taylorfausak/rattletrap
 [Stack]: https://docs.haskellstack.org/en/stable/README/
