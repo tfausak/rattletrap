@@ -5,11 +5,10 @@ module Rattletrap.Type.PlayerHistoryKeyAttribute
   )
 where
 
-import Rattletrap.Type.Bitstream
 import Rattletrap.Type.Common
 
 newtype PlayerHistoryKeyAttribute = PlayerHistoryKeyAttribute
-  { playerHistoryKeyAttributeUnknown :: Bitstream
+  { playerHistoryKeyAttributeUnknown :: Word16
   } deriving (Eq, Ord, Show)
 
 $(deriveJson ''PlayerHistoryKeyAttribute)
