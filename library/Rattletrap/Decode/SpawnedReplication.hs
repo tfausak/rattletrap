@@ -30,11 +30,11 @@ decodeSpawnedReplicationBits version classAttributeMap actorId = do
   nameIndex <- decodeWhen
     (version >= (868, 14, 0))
     (Trans.lift decodeWord32leBits)
-  name <- lookupName classAttributeMap nameIndex
+  name <- either fail pure (lookupName classAttributeMap nameIndex)
   objectId <- Trans.lift decodeWord32leBits
   State.modify (Map.insert actorId objectId)
-  objectName <- lookupObjectName classAttributeMap objectId
-  className <- lookupClassName objectName
+  objectName <- either fail pure (lookupObjectName classAttributeMap objectId)
+  className <- either fail pure (lookupClassName objectName)
   let hasLocation = classHasLocation className
   let hasRotation = classHasRotation className
   initialization <- Trans.lift
@@ -50,21 +50,21 @@ decodeSpawnedReplicationBits version classAttributeMap actorId = do
       initialization
     )
 
-lookupName :: Monad m => ClassAttributeMap -> Maybe Word32le -> m (Maybe Str)
+lookupName :: ClassAttributeMap -> Maybe Word32le -> Either String (Maybe Str)
 lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
-  Nothing -> pure Nothing
+  Nothing -> Right Nothing
   Just nameIndex ->
     case getName (classAttributeMapNameMap classAttributeMap) nameIndex of
-      Nothing -> fail ("could not get name for index " <> show nameIndex)
-      Just name -> pure (Just name)
+      Nothing -> Left ("could not get name for index " <> show nameIndex)
+      Just name -> Right (Just name)
 
-lookupObjectName :: Monad m => ClassAttributeMap -> Word32le -> m Str
+lookupObjectName :: ClassAttributeMap -> Word32le -> Either String Str
 lookupObjectName classAttributeMap objectId =
   case getObjectName (classAttributeMapObjectMap classAttributeMap) objectId of
-    Nothing -> fail ("could not get object name for id " <> show objectId)
-    Just objectName -> pure objectName
+    Nothing -> Left ("could not get object name for id " <> show objectId)
+    Just objectName -> Right objectName
 
-lookupClassName :: Monad m => Str -> m Str
+lookupClassName :: Str -> Either String Str
 lookupClassName objectName = case getClassName objectName of
-  Nothing -> fail ("could not get class name for object " <> show objectName)
-  Just className -> pure className
+  Nothing -> Left ("could not get class name for object " <> show objectName)
+  Just className -> Right className

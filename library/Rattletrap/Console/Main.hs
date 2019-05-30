@@ -195,9 +195,9 @@ data Mode
 
 parseMode :: String -> Either String Mode
 parseMode mode = case mode of
-  "decode" -> pure ModeDecode
-  "encode" -> pure ModeEncode
-  _ -> fail (Printf.printf "invalid mode: %s" (show mode))
+  "decode" -> Right ModeDecode
+  "encode" -> Right ModeEncode
+  _ -> Left (Printf.printf "invalid mode: %s" (show mode))
 
 printUnexpectedArguments :: [String] -> IO ()
 printUnexpectedArguments = mapM_ printUnexpectedArgument
