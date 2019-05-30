@@ -20,5 +20,9 @@ putRemoteId remoteId = case remoteId of
   RemoteIdPsyNet x -> putBitstream x
   RemoteIdSplitscreen word24 -> BinaryBits.putWord32be 24 word24
   RemoteIdSteam word64 -> putWord64Bits word64
-  RemoteIdSwitch x -> putBitstream x
+  RemoteIdSwitch a b c d -> do
+    putWord64Bits a
+    putWord64Bits b
+    putWord64Bits c
+    putWord64Bits d
   RemoteIdXbox word64 -> putWord64Bits word64

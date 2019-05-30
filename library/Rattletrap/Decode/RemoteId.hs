@@ -22,7 +22,12 @@ decodeRemoteIdBits version systemId = case word8leValue systemId of
   1 -> RemoteIdSteam <$> decodeWord64leBits
   2 -> RemoteIdPlayStation <$> decodePsName <*> decodePsBytes version
   4 -> RemoteIdXbox <$> decodeWord64leBits
-  6 -> RemoteIdSwitch <$> decodeBitstreamBits 256
+  6 ->
+    RemoteIdSwitch
+      <$> decodeWord64leBits
+      <*> decodeWord64leBits
+      <*> decodeWord64leBits
+      <*> decodeWord64leBits
   7 -> RemoteIdPsyNet
     <$> decodeBitstreamBits (if version >= (868, 24, 10) then 64 else 256)
   _ -> fail ("unknown system id " <> show systemId)
