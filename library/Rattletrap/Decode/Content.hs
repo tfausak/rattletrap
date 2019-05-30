@@ -19,6 +19,8 @@ import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes
 
 import qualified Control.Monad.Trans.State as State
+import qualified Data.Binary.Get as Binary
+import qualified Data.ByteString.Lazy as LazyBytes
 
 decodeContent
   :: (Int, Int, Int)
@@ -53,7 +55,7 @@ decodeContent version numFrames maxChannels = do
       (decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
   frames <- either fail pure (runDecodeBits bitGet (reverseBytes stream))
-  unknown <- decodeWhen (version >= (868, 23, 9)) decodeWord32le
+  unknown <- Binary.getRemainingLazyByteString
   pure
     (Content
       levels
@@ -67,5 +69,5 @@ decodeContent version numFrames maxChannels = do
       names
       classMappings
       caches
-      unknown
+      (LazyBytes.unpack unknown)
     )
