@@ -4,10 +4,10 @@ module Rattletrap.Decode.RemoteId
 where
 
 import Data.Semigroup ((<>))
-import Rattletrap.Decode.Bitstream
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word64le
 import Rattletrap.Type.RemoteId
+import Rattletrap.Type.Word64le
 import Rattletrap.Type.Word8le
 import Rattletrap.Utility.Bytes
 
@@ -22,14 +22,12 @@ decodeRemoteIdBits version systemId = case word8leValue systemId of
   1 -> RemoteIdSteam <$> decodeWord64leBits
   2 -> RemoteIdPlayStation <$> decodePsName <*> decodePsBytes version
   4 -> RemoteIdXbox <$> decodeWord64leBits
-  6 ->
-    RemoteIdSwitch
-      <$> decodeWord64leBits
-      <*> decodeWord64leBits
-      <*> decodeWord64leBits
-      <*> decodeWord64leBits
-  7 -> RemoteIdPsyNet
-    <$> decodeBitstreamBits (if version >= (868, 24, 10) then 64 else 256)
+  6 -> do
+    (a, b, c, d) <- getWord256
+    pure $ RemoteIdSwitch a b c d
+  7 -> if version >= (868, 24, 10)
+    then RemoteIdPsyNet . Left <$> decodeWord64leBits
+    else RemoteIdPsyNet . Right <$> getWord256
   _ -> fail ("unknown system id " <> show systemId)
 
 decodePsName :: DecodeBits Text.Text
@@ -40,3 +38,11 @@ decodePsName = fmap
 decodePsBytes :: (Int, Int, Int) -> DecodeBits [Word.Word8]
 decodePsBytes version = Bytes.unpack
   <$> getByteStringBits (if version >= (868, 20, 1) then 24 else 16)
+
+getWord256 :: DecodeBits (Word64le, Word64le, Word64le, Word64le)
+getWord256 = do
+  a <- decodeWord64leBits
+  b <- decodeWord64leBits
+  c <- decodeWord64leBits
+  d <- decodeWord64leBits
+  pure (a, b, c, d)
