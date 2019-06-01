@@ -48,7 +48,7 @@ script:
   - stack setup
   - stack build --only-dependencies --test
   - stack build --no-run-tests --test
-  - stack build --test --test-arguments '+RTS -M1G'
+  - stack build --test
   - stack sdist
 
 after_success:
