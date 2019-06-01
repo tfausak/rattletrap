@@ -10,7 +10,6 @@ import Rattletrap.Utility.Crc
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
 
 -- | Given a way to put the 'sectionBody', puts a section. This will also put
@@ -21,11 +20,9 @@ import qualified Data.ByteString.Lazy as LazyBytes
 -- @
 putSection :: (a -> Binary.Put) -> Section a -> Binary.Put
 putSection putBody section = do
-  let
-    rawBody =
-      LazyBytes.toStrict (Binary.runPut (putBody (sectionBody section)))
-  let size = Bytes.length rawBody
-  let crc = getCrc32 rawBody
+  let rawBody = Binary.runPut . putBody $ sectionBody section
+  let size = LazyBytes.length rawBody
+  let crc = getLazyCrc32 rawBody
   putWord32 (Word32le (fromIntegral size))
   putWord32 (Word32le crc)
-  Binary.putByteString rawBody
+  Binary.putLazyByteString rawBody
