@@ -10,9 +10,14 @@ import Rattletrap.Type.Replication
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 putReplications :: [Replication] -> BinaryBits.BitPut ()
-putReplications replications = do
-  mapM_ putReplication replications
-  BinaryBits.putBool False
+putReplications replications = case replications of
+  [] -> BinaryBits.putBool False
+  [replication] -> do
+    putReplication replication
+    BinaryBits.putBool False
+  first : rest -> do
+    putReplication first
+    putReplications rest
 
 putReplication :: Replication -> BinaryBits.BitPut ()
 putReplication replication = do

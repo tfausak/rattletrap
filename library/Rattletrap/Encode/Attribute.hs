@@ -10,9 +10,14 @@ import Rattletrap.Type.Attribute
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 putAttributes :: [Attribute] -> BinaryBits.BitPut ()
-putAttributes attributes = do
-  mapM_ putAttribute attributes
-  BinaryBits.putBool False
+putAttributes attributes = case attributes of
+  [] -> BinaryBits.putBool False
+  [attribute] -> do
+    putAttribute attribute
+    BinaryBits.putBool False
+  first : rest -> do
+    putAttribute first
+    putAttributes rest
 
 putAttribute :: Attribute -> BinaryBits.BitPut ()
 putAttribute attribute = do

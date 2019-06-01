@@ -3,10 +3,11 @@ module Rattletrap.Encode.EnumAttribute
   )
 where
 
+import Rattletrap.Encode.Common
 import Rattletrap.Type.EnumAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 putEnumAttribute :: EnumAttribute -> BinaryBits.BitPut ()
 putEnumAttribute enumAttribute =
-  BinaryBits.putWord16be 11 (enumAttributeValue enumAttribute)
+  putBitsLE 11 (enumAttributeValue enumAttribute)

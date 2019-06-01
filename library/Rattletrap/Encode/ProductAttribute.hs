@@ -3,6 +3,7 @@ module Rattletrap.Encode.ProductAttribute
   )
 where
 
+import Rattletrap.Encode.Common
 import Rattletrap.Encode.CompressedWord
 import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Word8le
@@ -23,14 +24,14 @@ putProductAttribute attribute = do
   putWord32Bits (productAttributeObjectId attribute)
   case productAttributeValue attribute of
     ProductAttributeValuePaintedOld x -> putCompressedWord x
-    ProductAttributeValuePaintedNew x -> BinaryBits.putWord32be 31 x
+    ProductAttributeValuePaintedNew x -> putBitsLE 31 x
     ProductAttributeValueTeamEditionOld x -> putCompressedWord x
-    ProductAttributeValueTeamEditionNew x -> BinaryBits.putWord32be 31 x
-    ProductAttributeValueSpecialEdition x -> BinaryBits.putWord32be 31 x
+    ProductAttributeValueTeamEditionNew x -> putBitsLE 31 x
+    ProductAttributeValueSpecialEdition x -> putBitsLE 31 x
     ProductAttributeValueUserColorOld x -> case x of
       Nothing -> BinaryBits.putBool False
       Just y -> do
         BinaryBits.putBool True
-        BinaryBits.putWord32be 31 y
+        putBitsLE 31 y
     ProductAttributeValueUserColorNew x -> putWord32Bits x
     ProductAttributeValueTitleId x -> putTextBits x
