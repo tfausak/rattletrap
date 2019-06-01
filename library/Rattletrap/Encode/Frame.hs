@@ -10,7 +10,12 @@ import Rattletrap.Type.Frame
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 putFrames :: [Frame] -> BinaryBits.BitPut ()
-putFrames = mapM_ putFrame
+putFrames frames = case frames of
+  [] -> pure ()
+  [frame] -> putFrame frame
+  first : rest -> do
+    putFrame first
+    putFrames rest
 
 putFrame :: Frame -> BinaryBits.BitPut ()
 putFrame frame = do
