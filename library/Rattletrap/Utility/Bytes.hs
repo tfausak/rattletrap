@@ -1,7 +1,6 @@
 module Rattletrap.Utility.Bytes
   ( encodeLatin1
   , padBytes
-  , reverseByte
   , reverseBytes
   )
 where

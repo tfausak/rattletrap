@@ -27,13 +27,12 @@ putContent content = do
   putList putKeyFrame (contentKeyFrames content)
   let streamSize = contentStreamSize content
   putWord32 streamSize
-  Binary.putLazyByteString
-    . padLazyBytes streamSize
-    . reverseLazyBytes
-    . Binary.runPut
-    . BinaryBits.runBitPut
-    . putFrames
-    $ contentFrames content
+  let
+    stream = LazyBytes.toStrict
+      (Binary.runPut (BinaryBits.runBitPut (putFrames (contentFrames content)))
+      )
+  Binary.putByteString
+    (reverseBytes (padBytes (word32leValue streamSize) stream))
   putList putMessage (contentMessages content)
   putList putMark (contentMarks content)
   putList putText (contentPackages content)
@@ -42,11 +41,3 @@ putContent content = do
   putList putClassMapping (contentClassMappings content)
   putList putCache (contentCaches content)
   mapM_ Binary.putWord8 (contentUnknown content)
-
-padLazyBytes :: Word32le -> LazyBytes.ByteString -> LazyBytes.ByteString
-padLazyBytes size bytes = LazyBytes.take
-  (fromIntegral $ word32leValue size)
-  (LazyBytes.append bytes $ LazyBytes.repeat 0x00)
-
-reverseLazyBytes :: LazyBytes.ByteString -> LazyBytes.ByteString
-reverseLazyBytes = LazyBytes.map reverseByte
