@@ -302,6 +302,7 @@ test-suite test
     HUnit ^>= 1.6.0,
     rattletrap,
     temporary ^>= 1.3,
+  ghc-options: -rtsopts -threaded
   hs-source-dirs: tests
   main-is: Main.hs
   type: exitcode-stdio-1.0
