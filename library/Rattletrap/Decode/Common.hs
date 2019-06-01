@@ -21,13 +21,13 @@ module Rattletrap.Decode.Common
 where
 
 import qualified Control.Applicative as Applicative
+import qualified Control.Monad as Monad
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Binary.Get as Binary
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
-import qualified Data.Vector as Vector
 import qualified Data.Word as Word
 import qualified Rattletrap.Utility.Bytes as Utility
 
@@ -63,8 +63,8 @@ toBits decode size = do
 
 getBitsLE :: Bits.Bits a => Int -> BinaryBits.BitGet a
 getBitsLE size = do
-  bits <- Vector.replicateM size BinaryBits.getBool
-  pure $ Vector.foldr
+  bits <- Monad.replicateM size BinaryBits.getBool
+  pure $ foldr
     (\bit x -> let y = Bits.shiftL x 1 in if bit then Bits.setBit y 0 else y)
     Bits.zeroBits
     bits
