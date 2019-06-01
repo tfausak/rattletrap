@@ -49,16 +49,16 @@ decodeProductAttributeBits version objectMap = do
   pure (ProductAttribute flag objectId maybeObjectName value)
 
 decodeSpecialEdition :: DecodeBits ProductAttributeValue
-decodeSpecialEdition = ProductAttributeValueSpecialEdition <$> getWord32be 31
+decodeSpecialEdition = ProductAttributeValueSpecialEdition <$> getBitsLE 31
 
 decodePainted :: (Int, Int, Int) -> DecodeBits ProductAttributeValue
 decodePainted version = if version >= (868, 18, 0)
-  then ProductAttributeValuePaintedNew <$> getWord32be 31
+  then ProductAttributeValuePaintedNew <$> getBitsLE 31
   else ProductAttributeValuePaintedOld <$> decodeCompressedWordBits 13
 
 decodeTeamEdition :: (Int, Int, Int) -> DecodeBits ProductAttributeValue
 decodeTeamEdition version = if version >= (868, 18, 0)
-  then ProductAttributeValueTeamEditionNew <$> getWord32be 31
+  then ProductAttributeValueTeamEditionNew <$> getBitsLE 31
   else ProductAttributeValueTeamEditionOld <$> decodeCompressedWordBits 13
 
 decodeColor :: (Int, Int, Int) -> DecodeBits ProductAttributeValue
@@ -66,7 +66,7 @@ decodeColor version = if version >= (868, 23, 8)
   then ProductAttributeValueUserColorNew <$> decodeWord32leBits
   else do
     hasValue <- getBool
-    ProductAttributeValueUserColorOld <$> decodeWhen hasValue (getWord32be 31)
+    ProductAttributeValueUserColorOld <$> decodeWhen hasValue (getBitsLE 31)
 
 decodeTitle :: DecodeBits ProductAttributeValue
 decodeTitle = ProductAttributeValueTitleId <$> decodeStrBits

@@ -3,6 +3,7 @@ module Rattletrap.Encode.RemoteId
   )
 where
 
+import Rattletrap.Encode.Common
 import Rattletrap.Encode.Word64le
 import Rattletrap.Type.RemoteId
 import Rattletrap.Type.Word64le
@@ -20,7 +21,7 @@ putRemoteId remoteId = case remoteId of
   RemoteIdPsyNet e -> case e of
     Left l -> putWord64Bits l
     Right (a, b, c, d) -> putWord256 a b c d
-  RemoteIdSplitscreen word24 -> BinaryBits.putWord32be 24 word24
+  RemoteIdSplitscreen word24 -> putBitsLE 24 word24
   RemoteIdSteam word64 -> putWord64Bits word64
   RemoteIdSwitch a b c d -> putWord256 a b c d
   RemoteIdXbox word64 -> putWord64Bits word64

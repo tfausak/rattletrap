@@ -18,7 +18,7 @@ import qualified Data.Word as Word
 
 decodeRemoteIdBits :: (Int, Int, Int) -> Word8le -> DecodeBits RemoteId
 decodeRemoteIdBits version systemId = case word8leValue systemId of
-  0 -> RemoteIdSplitscreen <$> getWord32be 24
+  0 -> RemoteIdSplitscreen <$> getBitsLE 24
   1 -> RemoteIdSteam <$> decodeWord64leBits
   2 -> RemoteIdPlayStation <$> decodePsName <*> decodePsBytes version
   4 -> RemoteIdXbox <$> decodeWord64leBits
