@@ -24,7 +24,7 @@ getCrc32 bytes = do
   let
     update = crc32Update crc32Table
     initial = Bits.complement crc32Initial
-    crc = Bytes.foldl update initial bytes
+    crc = Bytes.foldl' update initial bytes
   Bits.complement crc
 
 crc32Update
