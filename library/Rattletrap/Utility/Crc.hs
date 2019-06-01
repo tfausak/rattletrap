@@ -1,6 +1,5 @@
 module Rattletrap.Utility.Crc
   ( getCrc32
-  , getLazyCrc32
   )
 where
 
@@ -8,7 +7,6 @@ import Rattletrap.Data
 
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as Bytes
-import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.IntMap as IntMap
 import qualified Data.Word as Word
 
@@ -28,14 +26,6 @@ getCrc32 bytes = do
     initial = Bits.complement crc32Initial
     crc = Bytes.foldl' update initial bytes
   Bits.complement crc
-
-getLazyCrc32 :: LazyBytes.ByteString -> Word.Word32
-getLazyCrc32 bytes =
-  let
-    update = crc32Update crc32Table
-    initial = Bits.complement crc32Initial
-    crc = LazyBytes.foldl' update initial bytes
-  in Bits.complement crc
 
 crc32Update
   :: IntMap.IntMap Word.Word32 -> Word.Word32 -> Word.Word8 -> Word.Word32
