@@ -19,6 +19,7 @@ data AttributeType
   | AttributeTypeExplosion
   | AttributeTypeExtendedExplosion
   | AttributeTypeFlaggedInt
+  | AttributeTypeFlaggedByte
   | AttributeTypeFloat
   | AttributeTypeGameMode
   | AttributeTypeInt

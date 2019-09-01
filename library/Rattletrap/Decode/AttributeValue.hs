@@ -17,6 +17,7 @@ import Rattletrap.Decode.EnumAttribute
 import Rattletrap.Decode.ExplosionAttribute
 import Rattletrap.Decode.ExtendedExplosionAttribute
 import Rattletrap.Decode.FlaggedIntAttribute
+import Rattletrap.Decode.FlaggedByteAttribute
 import Rattletrap.Decode.FloatAttribute
 import Rattletrap.Decode.GameModeAttribute
 import Rattletrap.Decode.Int64Attribute
@@ -76,6 +77,8 @@ decodeAttributeValueBits version objectMap name = do
       <$> decodeExtendedExplosionAttributeBits version
     AttributeTypeFlaggedInt ->
       AttributeValueFlaggedInt <$> decodeFlaggedIntAttributeBits
+    AttributeTypeFlaggedByte ->
+      AttributeValueFlaggedByte <$> decodeFlaggedByteAttributeBits
     AttributeTypeFloat -> AttributeValueFloat <$> decodeFloatAttributeBits
     AttributeTypeGameMode ->
       AttributeValueGameMode <$> decodeGameModeAttributeBits version

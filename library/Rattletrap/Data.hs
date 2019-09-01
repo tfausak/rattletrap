@@ -59,6 +59,7 @@ rawParentClasses =
   , ("TAGame.SpecialPickup_TA", "TAGame.CarComponent_TA")
   , ("TAGame.SpecialPickup_Targeted_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.SpecialPickup_Tornado_TA", "TAGame.SpecialPickup_TA")
+  , ("TAGame.SpecialPickup_HauntedBallBeam_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.Team_Soccar_TA", "TAGame.Team_TA")
   , ("TAGame.Team_TA", "Engine.TeamInfo")
   , ("TAGame.Vehicle_TA", "TAGame.RBActor_TA")
@@ -69,10 +70,23 @@ rawParentClasses =
 rawClassesWithLocation :: [String]
 rawClassesWithLocation =
   [ "TAGame.Ball_Breakout_TA"
+  , "Archetypes.Ball.Ball_Breakout"
   , "TAGame.Ball_TA"
-  , "TAGame.CameraSettingsActor_TA"
+  , "Archetypes.Ball.Ball_BasketBall_Mutator"
+  , "Archetypes.Ball.Ball_BasketBall"
+  , "Archetypes.Ball.Ball_Basketball"
+  , "Archetypes.Ball.Ball_Default"
+  , "Archetypes.Ball.Ball_Puck"
+  , "Archetypes.Ball.CubeBall"
+  , "Archetypes.Ball.Ball_Haunted"
+  , "TAGame.Ball_Haunted_TA"
   , "TAGame.Car_Season_TA"
   , "TAGame.Car_TA"
+  , "Archetypes.Car.Car_Default"
+  , "Archetypes.GameEvent.GameEvent_Season:CarArchetype"
+  , "Archetypes.SpecialPickups.SpecialPickup_HauntedBallBeam"
+  , "Archetypes.SpecialPickups.SpecialPickup_Rugby"
+  , "TAGame.CameraSettingsActor_TA"
   , "TAGame.CarComponent_Boost_TA"
   , "TAGame.CarComponent_Dodge_TA"
   , "TAGame.CarComponent_DoubleJump_TA"
@@ -96,14 +110,36 @@ rawClassesWithLocation =
   , "TAGame.SpecialPickup_Swapper_TA"
   , "TAGame.SpecialPickup_Tornado_TA"
   , "TAGame.Team_Soccar_TA"
+  , "TAGame.Default__CameraSettingsActor_TA"
+  , "TAGame.Default__PRI_TA"
+  , "TheWorld:PersistentLevel.BreakOutActor_Platform_TA"
+  , "TheWorld:PersistentLevel.CrowdActor_TA"
+  , "TheWorld:PersistentLevel.CrowdManager_TA"
+  , "TheWorld:PersistentLevel.InMapScoreboard_TA"
+  , "TheWorld:PersistentLevel.VehiclePickup_Boost_TA"
+  , "TAGame.HauntedBallTrapTrigger_TA"
+  , "ProjectX.NetModeReplicator"
   ]
 
 rawClassesWithRotation :: [String]
 rawClassesWithRotation =
   [ "TAGame.Ball_Breakout_TA"
+  , "Archetypes.Ball.Ball_Breakout"
   , "TAGame.Ball_TA"
+  , "Archetypes.Ball.Ball_BasketBall_Mutator"
+  , "Archetypes.Ball.Ball_BasketBall"
+  , "Archetypes.Ball.Ball_Basketball"
+  , "Archetypes.Ball.Ball_Default"
+  , "Archetypes.Ball.Ball_Puck"
+  , "Archetypes.Ball.CubeBall"
+  , "Archetypes.Ball.Ball_Haunted"
+  , "TAGame.Ball_Haunted_TA"
   , "TAGame.Car_Season_TA"
   , "TAGame.Car_TA"
+  , "Archetypes.Car.Car_Default"
+  , "Archetypes.GameEvent.GameEvent_Season:CarArchetype"
+  , "Archetypes.SpecialPickups.SpecialPickup_HauntedBallBeam"
+  , "Archetypes.SpecialPickups.SpecialPickup_Rugby"
   -- This comments forces Brittany to use a multi-line layout for this list.
   ]
 
@@ -112,8 +148,10 @@ rawObjectClasses =
   [ ("Archetypes.Ball.Ball_BasketBall_Mutator", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Basketball", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_BasketBall", "TAGame.Ball_TA")
+  , ("Archetypes.Ball.Ball_Beachball", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Breakout", "TAGame.Ball_Breakout_TA")
   , ("Archetypes.Ball.Ball_Default", "TAGame.Ball_TA")
+  , ("Archetypes.Ball.Ball_Haunted", "TAGame.Ball_Haunted_TA")
   , ("Archetypes.Ball.Ball_Puck", "TAGame.Ball_TA")
   , ("Archetypes.Ball.CubeBall", "TAGame.Ball_TA")
   , ("Archetypes.Car.Car_Default", "TAGame.Car_TA")
@@ -148,6 +186,8 @@ rawObjectClasses =
   , ("Archetypes.SpecialPickups.SpecialPickup_StrongHit", "TAGame.SpecialPickup_HitForce_TA")
   , ("Archetypes.SpecialPickups.SpecialPickup_Swapper", "TAGame.SpecialPickup_Swapper_TA")
   , ("Archetypes.SpecialPickups.SpecialPickup_Tornado", "TAGame.SpecialPickup_Tornado_TA")
+  , ("Archetypes.SpecialPickups.SpecialPickup_HauntedBallBeam", "TAGame.SpecialPickup_HauntedBallBeam_TA")
+  , ("Archetypes.SpecialPickups.SpecialPickup_Rugby", "TAGame.SpecialPickup_Rugby_TA")
   , ("Archetypes.Teams.Team0", "TAGame.Team_Soccar_TA")
   , ("Archetypes.Teams.Team1", "TAGame.Team_Soccar_TA")
   , ("GameInfo_Basketball.GameInfo.GameInfo_Basketball:GameReplicationInfoArchetype", "TAGame.GRI_TA")
@@ -156,6 +196,7 @@ rawObjectClasses =
   , ("GameInfo_Items.GameInfo.GameInfo_Items:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Season.GameInfo.GameInfo_Season:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Soccar.GameInfo.GameInfo_Soccar:GameReplicationInfoArchetype", "TAGame.GRI_TA")
+  , ("ProjectX.Default__NetModeReplicator_X", "ProjectX.NetModeReplicator")
   , ("TAGame.Default__CameraSettingsActor_TA", "TAGame.CameraSettingsActor_TA")
   , ("TAGame.Default__PRI_TA", "TAGame.PRI_TA")
   , ("TheWorld:PersistentLevel.BreakOutActor_Platform_TA", "TAGame.BreakOutActor_Platform_TA")
@@ -163,6 +204,8 @@ rawObjectClasses =
   , ("TheWorld:PersistentLevel.CrowdManager_TA", "TAGame.CrowdManager_TA")
   , ("TheWorld:PersistentLevel.InMapScoreboard_TA", "TAGame.InMapScoreboard_TA")
   , ("TheWorld:PersistentLevel.VehiclePickup_Boost_TA", "TAGame.VehiclePickup_Boost_TA")
+  , ("Haunted_TrainStation_P.TheWorld:PersistentLevel.HauntedBallTrapTrigger_TA_1", "TAGame.HauntedBallTrapTrigger_TA")
+  , ("Haunted_TrainStation_P.TheWorld:PersistentLevel.HauntedBallTrapTrigger_TA_0", "TAGame.HauntedBallTrapTrigger_TA")
   ]
 
 rawAttributeTypes :: [(String, AttributeType)]
@@ -297,15 +340,16 @@ rawAttributeTypes =
   , ("TAGame.PRI_TA:PersistentCamera", AttributeTypeFlaggedInt)
   , ("TAGame.PRI_TA:PlayerHistoryKey", AttributeTypePlayerHistoryKey)
   , ("TAGame.PRI_TA:PlayerHistoryValid", AttributeTypeBoolean)
-  , ("TAGame.PRI_TA:PrimaryTitle", AttributeTypeTitle)
   , ("TAGame.PRI_TA:ReplicatedGameEvent", AttributeTypeFlaggedInt)
   , ("TAGame.PRI_TA:ReplicatedWorstNetQualityBeyondLatency", AttributeTypeByte)
-  , ("TAGame.PRI_TA:SecondaryTitle", AttributeTypeTitle)
-  , ("TAGame.PRI_TA:SpectatorShortcut", AttributeTypeInt)
   , ("TAGame.PRI_TA:SteeringSensitivity", AttributeTypeFloat)
+  , ("TAGame.PRI_TA:SkillTier", AttributeTypeFlaggedByte)
   , ("TAGame.PRI_TA:TimeTillItem", AttributeTypeInt)
   , ("TAGame.PRI_TA:Title", AttributeTypeInt)
   , ("TAGame.PRI_TA:TotalXP", AttributeTypeInt)
+  , ("TAGame.PRI_TA:PrimaryTitle", AttributeTypeTitle)
+  , ("TAGame.PRI_TA:SecondaryTitle", AttributeTypeTitle)
+  , ("TAGame.PRI_TA:SpectatorShortcut", AttributeTypeInt)
   , ("TAGame.RBActor_TA:bFrozen", AttributeTypeBoolean)
   , ("TAGame.RBActor_TA:bIgnoreSyncing", AttributeTypeBoolean)
   , ("TAGame.RBActor_TA:bReplayActor", AttributeTypeBoolean)
@@ -329,6 +373,12 @@ rawAttributeTypes =
   , ("TAGame.Vehicle_TA:ReplicatedThrottle", AttributeTypeByte)
   , ("TAGame.VehiclePickup_TA:bNoPickup", AttributeTypeBoolean)
   , ("TAGame.VehiclePickup_TA:ReplicatedPickupData", AttributeTypePickup)
+  , ("TAGame.Ball_Haunted_TA:LastTeamTouch", AttributeTypeByte)
+  , ("TAGame.Ball_Haunted_TA:TotalActiveBeams", AttributeTypeByte)
+  , ("TAGame.Ball_Haunted_TA:DeactivatedGoalIndex", AttributeTypeByte)
+  , ("TAGame.Ball_Haunted_TA:ReplicatedBeamBrokenValue", AttributeTypeByte)
+  , ("TAGame.Ball_Haunted_TA:bIsBallBeamed", AttributeTypeBoolean)
+  , ("TAGame.SpecialPickup_Rugby_TA:bBallWelded", AttributeTypeBoolean)
   ]
 
 rawCrc32Table :: Integral a => [a]

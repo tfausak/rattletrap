@@ -78,6 +78,7 @@ library
     Rattletrap.Decode.ExplosionAttribute
     Rattletrap.Decode.ExtendedExplosionAttribute
     Rattletrap.Decode.FlaggedIntAttribute
+    Rattletrap.Decode.FlaggedByteAttribute
     Rattletrap.Decode.Float32le
     Rattletrap.Decode.FloatAttribute
     Rattletrap.Decode.Frame
@@ -152,6 +153,7 @@ library
     Rattletrap.Encode.ExplosionAttribute
     Rattletrap.Encode.ExtendedExplosionAttribute
     Rattletrap.Encode.FlaggedIntAttribute
+    Rattletrap.Encode.FlaggedByteAttribute
     Rattletrap.Encode.Float32le
     Rattletrap.Encode.FloatAttribute
     Rattletrap.Encode.Frame
@@ -228,6 +230,7 @@ library
     Rattletrap.Type.ExplosionAttribute
     Rattletrap.Type.ExtendedExplosionAttribute
     Rattletrap.Type.FlaggedIntAttribute
+    Rattletrap.Type.FlaggedByteAttribute
     Rattletrap.Type.Float32le
     Rattletrap.Type.FloatAttribute
     Rattletrap.Type.Frame

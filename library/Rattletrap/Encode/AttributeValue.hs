@@ -14,6 +14,7 @@ import Rattletrap.Encode.EnumAttribute
 import Rattletrap.Encode.ExplosionAttribute
 import Rattletrap.Encode.ExtendedExplosionAttribute
 import Rattletrap.Encode.FlaggedIntAttribute
+import Rattletrap.Encode.FlaggedByteAttribute
 import Rattletrap.Encode.FloatAttribute
 import Rattletrap.Encode.GameModeAttribute
 import Rattletrap.Encode.Int64Attribute
@@ -54,6 +55,7 @@ putAttributeValue value = case value of
   AttributeValueExplosion x -> putExplosionAttribute x
   AttributeValueExtendedExplosion x -> putExtendedExplosionAttribute x
   AttributeValueFlaggedInt x -> putFlaggedIntAttribute x
+  AttributeValueFlaggedByte x -> putFlaggedByteAttribute x
   AttributeValueFloat x -> putFloatAttribute x
   AttributeValueGameMode x -> putGameModeAttribute x
   AttributeValueInt x -> putIntAttribute x
