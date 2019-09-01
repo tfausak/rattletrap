@@ -68,7 +68,8 @@ rawParentClasses =
 
 rawClassesWithLocation :: [String]
 rawClassesWithLocation =
-  [ "TAGame.Ball_Breakout_TA"
+  [ "ProjectX.Default__NetModeReplicator_X"
+  , "TAGame.Ball_Breakout_TA"
   , "TAGame.Ball_TA"
   , "TAGame.CameraSettingsActor_TA"
   , "TAGame.Car_Season_TA"

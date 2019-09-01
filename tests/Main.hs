@@ -161,6 +161,7 @@ replays =
   , ("a9df", "salty shores patch 1.45")
   , ("aa70", "patch 1.50 - TitleID attribute")
   , ("afb1", "patch 1.37")
+  , ("b0a6", "patch 1.66")
   , ("b9f9", "a party leader")
   , ("c14f", "some mutators")
   , ("c23b", "new psynet id")
