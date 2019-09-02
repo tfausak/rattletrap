@@ -17,6 +17,7 @@ import Rattletrap.Type.EnumAttribute
 import Rattletrap.Type.ExplosionAttribute
 import Rattletrap.Type.ExtendedExplosionAttribute
 import Rattletrap.Type.FlaggedIntAttribute
+import Rattletrap.Type.FlaggedByteAttribute
 import Rattletrap.Type.FloatAttribute
 import Rattletrap.Type.GameModeAttribute
 import Rattletrap.Type.Int64Attribute
@@ -53,6 +54,7 @@ data AttributeValue
   | AttributeValueExplosion ExplosionAttribute
   | AttributeValueExtendedExplosion ExtendedExplosionAttribute
   | AttributeValueFlaggedInt FlaggedIntAttribute
+  | AttributeValueFlaggedByte FlaggedByteAttribute
   | AttributeValueFloat FloatAttribute
   | AttributeValueGameMode GameModeAttribute
   | AttributeValueInt IntAttribute
