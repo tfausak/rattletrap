@@ -95,7 +95,8 @@ withElapsed action = do
 
 replays :: [(String, String)]
 replays =
-  [ ("21a8", "v1.66")
+  [ ("d1d5", "v1.68")
+  , ("21a8", "v1.66")
   , ("0008", "a flip time")
   , ("000b", "nintendo switch")
   , ("07e9", "a game mode before Neo Tokyo")
