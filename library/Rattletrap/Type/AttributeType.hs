@@ -32,6 +32,7 @@ data AttributeType
   | AttributeTypeMusicStinger
   | AttributeTypePartyLeader
   | AttributeTypePickup
+  | AttributeTypePickupNew
   | AttributeTypePlayerHistoryKey
   | AttributeTypePrivateMatchSettings
   | AttributeTypeQWord

@@ -103,6 +103,7 @@ library
     Rattletrap.Decode.MusicStingerAttribute
     Rattletrap.Decode.PartyLeaderAttribute
     Rattletrap.Decode.PickupAttribute
+    Rattletrap.Decode.PickupAttributeNew
     Rattletrap.Decode.PlayerHistoryKeyAttribute
     Rattletrap.Decode.PrivateMatchSettingsAttribute
     Rattletrap.Decode.ProductAttribute
@@ -178,6 +179,7 @@ library
     Rattletrap.Encode.MusicStingerAttribute
     Rattletrap.Encode.PartyLeaderAttribute
     Rattletrap.Encode.PickupAttribute
+    Rattletrap.Encode.PickupAttributeNew
     Rattletrap.Encode.PlayerHistoryKeyAttribute
     Rattletrap.Encode.PrivateMatchSettingsAttribute
     Rattletrap.Encode.ProductAttribute
@@ -255,6 +257,7 @@ library
     Rattletrap.Type.MusicStingerAttribute
     Rattletrap.Type.PartyLeaderAttribute
     Rattletrap.Type.PickupAttribute
+    Rattletrap.Type.PickupAttributeNew
     Rattletrap.Type.PlayerHistoryKeyAttribute
     Rattletrap.Type.PrivateMatchSettingsAttribute
     Rattletrap.Type.ProductAttribute

@@ -27,6 +27,7 @@ import Rattletrap.Encode.LocationAttribute
 import Rattletrap.Encode.MusicStingerAttribute
 import Rattletrap.Encode.PartyLeaderAttribute
 import Rattletrap.Encode.PickupAttribute
+import Rattletrap.Encode.PickupAttributeNew
 import Rattletrap.Encode.PlayerHistoryKeyAttribute
 import Rattletrap.Encode.PrivateMatchSettingsAttribute
 import Rattletrap.Encode.QWordAttribute
@@ -68,6 +69,7 @@ putAttributeValue value = case value of
   AttributeValueMusicStinger x -> putMusicStingerAttribute x
   AttributeValuePartyLeader x -> putPartyLeaderAttribute x
   AttributeValuePickup x -> putPickupAttribute x
+  AttributeValuePickupNew x -> putPickupAttributeNew x
   AttributeValuePlayerHistoryKey x -> putPlayerHistoryKeyAttribute x
   AttributeValuePrivateMatchSettings x -> putPrivateMatchSettingsAttribute x
   AttributeValueQWord x -> putQWordAttribute x

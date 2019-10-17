@@ -373,6 +373,7 @@ rawAttributeTypes =
   , ("TAGame.Vehicle_TA:ReplicatedThrottle", AttributeTypeByte)
   , ("TAGame.VehiclePickup_TA:bNoPickup", AttributeTypeBoolean)
   , ("TAGame.VehiclePickup_TA:ReplicatedPickupData", AttributeTypePickup)
+  , ("TAGame.VehiclePickup_TA:NewReplicatedPickupData", AttributeTypePickupNew)
   , ("TAGame.Ball_Haunted_TA:LastTeamTouch", AttributeTypeByte)
   , ("TAGame.Ball_Haunted_TA:TotalActiveBeams", AttributeTypeByte)
   , ("TAGame.Ball_Haunted_TA:DeactivatedGoalIndex", AttributeTypeByte)
