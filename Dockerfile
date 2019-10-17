@@ -1,11 +1,11 @@
-FROM alpine:3.9.4 AS build
+FROM alpine:3.10.2
 RUN apk add --no-cache cabal ghc gmp-dev musl-dev wget zlib-dev
-RUN cabal update
 WORKDIR /root/rattletrap
 COPY . .
-RUN cabal new-build --flags static
-RUN cp $( cabal new-exec which rattletrap | tail -n 1 ) /usr/local/bin/
+RUN cabal v2-update
+RUN cabal v2-build --flags static
+RUN cabal v2-exec -- sh -c 'cp $( which rattletrap ) /usr/local/bin/'
 
-FROM alpine:3.9.4
-COPY --from=build /usr/local/bin/rattletrap /usr/local/bin/rattletrap
+FROM alpine:3.10.2
+COPY --from=0 /usr/local/bin/rattletrap /usr/local/bin/
 CMD rattletrap

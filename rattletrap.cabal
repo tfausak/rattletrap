@@ -5,7 +5,7 @@ version: 9.0.2
 
 category: Game
 description: Rattletrap parses and generates Rocket League replays.
-extra-source-files: CHANGELOG.markdown README.markdown stack.yaml
+extra-source-files: CHANGELOG.markdown README.markdown
 license-file: LICENSE.markdown
 license: MIT
 maintainer: Taylor Fausak
@@ -21,20 +21,20 @@ flag static
 
 common basics
   build-depends:
-    aeson ^>= 1.4.2,
+    aeson ^>= 1.3.1,
     aeson-pretty ^>= 0.8.7,
-    base ^>= 4.11.1 || ^>= 4.12.0,
-    binary ^>= 0.8.6,
+    base ^>= 4.11.1,
+    binary ^>= 0.8.5,
     binary-bits ^>= 0.5,
     bytestring ^>= 0.10.8,
-    containers ^>= 0.6.0,
+    containers ^>= 0.5.11,
     filepath ^>= 1.4.2,
-    http-client ^>= 0.6.4,
+    http-client ^>= 0.5.13,
     http-client-tls ^>= 0.3.5,
     scientific ^>= 0.3.6,
-    template-haskell ^>= 2.13.0 || ^>= 2.14.0,
+    template-haskell ^>= 2.13.0,
     text ^>= 1.2.3,
-    transformers ^>= 0.5.6,
+    transformers ^>= 0.5.5,
   default-language: Haskell2010
   ghc-options:
     -optP -Wno-nonportable-include-path
@@ -51,7 +51,7 @@ library
 
   autogen-modules: Paths_rattletrap
   exposed-modules: Rattletrap
-  hs-source-dirs: library
+  hs-source-dirs: source/library
   other-modules:
     Paths_rattletrap
     Rattletrap.Console.Main
@@ -295,7 +295,7 @@ executable rattletrap
 
   build-depends: rattletrap
   ghc-options: -rtsopts -threaded
-  hs-source-dirs: executables
+  hs-source-dirs: source/executable
   main-is: Main.hs
 
   if flag(static)
@@ -309,6 +309,6 @@ test-suite test
     rattletrap,
     temporary ^>= 1.3,
   ghc-options: -rtsopts -threaded
-  hs-source-dirs: tests
+  hs-source-dirs: source/test-suite
   main-is: Main.hs
   type: exitcode-stdio-1.0
