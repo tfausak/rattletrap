@@ -250,6 +250,7 @@ rawAttributeTypes =
   , ("TAGame.Ball_TA:ReplicatedBallScale", AttributeTypeFloat)
   , ("TAGame.Ball_TA:ReplicatedExplosionData", AttributeTypeExplosion)
   , ("TAGame.Ball_TA:ReplicatedExplosionDataExtended", AttributeTypeExtendedExplosion)
+  , ("TAGame.Ball_TA:ReplicatedPhysMatOverride", AttributeTypeFlaggedInt)
   , ("TAGame.Ball_TA:ReplicatedWorldBounceScale", AttributeTypeFloat)
   , ("TAGame.BreakOutActor_Platform_TA:DamageState", AttributeTypeDamageState)
   , ("TAGame.CameraSettingsActor_TA:bUsingBehindView", AttributeTypeBoolean)

@@ -175,6 +175,7 @@ replays =
   , ("d52e", "psynet system id")
   , ("d7fb", "an explosion attribute")
   , ("db70", "new lag indicator")
+  , ("dcab", "weird ball attribute value")
   , ("dcb3", "a pawn type attribute")
   , ("de56", "a problematic product attribute")
   , ("e80d", "unlimited time")
