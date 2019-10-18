@@ -153,6 +153,7 @@ rawObjectClasses =
   , ("Archetypes.Ball.Ball_Default", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Haunted", "TAGame.Ball_Haunted_TA")
   , ("Archetypes.Ball.Ball_Puck", "TAGame.Ball_TA")
+  , ("Archetypes.Ball.Ball_Anniversary", "TAGame.Ball_TA")
   , ("Archetypes.Ball.CubeBall", "TAGame.Ball_TA")
   , ("Archetypes.Car.Car_Default", "TAGame.Car_TA")
   , ("Archetypes.CarComponents.CarComponent_Boost", "TAGame.CarComponent_Boost_TA")
