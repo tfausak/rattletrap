@@ -3,7 +3,6 @@ module Rattletrap.Decode.RemoteId
   )
 where
 
-import Data.Semigroup ((<>))
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word64le
 import Rattletrap.Type.RemoteId

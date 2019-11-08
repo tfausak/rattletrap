@@ -3,7 +3,6 @@ module Rattletrap.Decode.AttributeValue
   )
 where
 
-import Data.Semigroup ((<>))
 import Rattletrap.Data
 import Rattletrap.Decode.AppliedDamageAttribute
 import Rattletrap.Decode.BooleanAttribute

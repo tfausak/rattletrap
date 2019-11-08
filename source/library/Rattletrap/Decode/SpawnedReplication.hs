@@ -3,7 +3,6 @@ module Rattletrap.Decode.SpawnedReplication
   )
 where
 
-import Data.Semigroup ((<>))
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Initialization
 import Rattletrap.Decode.Word32le

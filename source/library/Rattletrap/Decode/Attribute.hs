@@ -3,7 +3,6 @@ module Rattletrap.Decode.Attribute
   )
 where
 
-import Data.Semigroup ((<>))
 import Rattletrap.Decode.AttributeValue
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.CompressedWord

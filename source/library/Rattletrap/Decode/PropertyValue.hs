@@ -3,7 +3,6 @@ module Rattletrap.Decode.PropertyValue
   )
 where
 
-import Data.Semigroup ((<>))
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Dictionary
 import Rattletrap.Decode.Float32le

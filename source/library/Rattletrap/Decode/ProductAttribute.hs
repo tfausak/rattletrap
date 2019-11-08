@@ -3,7 +3,6 @@ module Rattletrap.Decode.ProductAttribute
   )
 where
 
-import Data.Semigroup ((<>))
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.CompressedWord
 import Rattletrap.Decode.Word32le
