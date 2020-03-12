@@ -179,6 +179,7 @@ replays =
   , ("dcb3", "a pawn type attribute")
   , ("de56", "a problematic product attribute")
   , ("e80d", "unlimited time")
+  , ("e978", "distracted")
   , ("eae3", "an actor/object ID collision")
   , ("eae8", "custom team colors")
   , ("edbb", "remote role")

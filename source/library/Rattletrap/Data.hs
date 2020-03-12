@@ -318,6 +318,7 @@ rawAttributeTypes =
   , ("TAGame.PRI_TA:bOnlineLoadoutSet", AttributeTypeBoolean)
   , ("TAGame.PRI_TA:bOnlineLoadoutsSet", AttributeTypeBoolean)
   , ("TAGame.PRI_TA:BotProductName", AttributeTypeInt)
+  , ("TAGame.PRI_TA:bIsDistracted", AttributeTypeBoolean)
   , ("TAGame.PRI_TA:bReady", AttributeTypeBoolean)
   , ("TAGame.PRI_TA:bUsingBehindView", AttributeTypeBoolean)
   , ("TAGame.PRI_TA:bUsingItems", AttributeTypeBoolean)
