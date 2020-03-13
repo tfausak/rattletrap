@@ -292,6 +292,7 @@ rawAttributeTypes =
   , ("TAGame.GameEvent_Soccar_TA:bOverTime", AttributeTypeBoolean)
   , ("TAGame.GameEvent_Soccar_TA:bUnlimitedTime", AttributeTypeBoolean)
   , ("TAGame.GameEvent_Soccar_TA:GameTime", AttributeTypeInt)
+  , ("TAGame.GameEvent_Soccar_TA:MaxScore", AttributeTypeInt)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedMusicStinger", AttributeTypeMusicStinger)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam", AttributeTypeByte)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedServerPerformanceState", AttributeTypeByte)
