@@ -1,1 +1,5 @@
-resolver: lts-12.14
+resolver: lts-15.4
+extra-deps:
+  # https://github.com/kolmodin/binary-bits/pull/13
+  - git: https://github.com/tfausak/binary-bits
+    commit: b7480fd7023d9d3adb1862309dd7bc9276e778ed
