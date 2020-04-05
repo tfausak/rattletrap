@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 set -o errexit -o xtrace
 
-# if test ! -f "$HOME/.local/bin/stack"
-# then
+if test ! -f "$HOME/.local/bin/stack"
+then
   URL="https://github.com/commercialhaskell/stack/releases/download/v2.3.0.1/stack-2.3.0.1-$TRAVIS_OS_NAME-x86_64.tar.gz"
   curl --location "$URL" --output stack.tar.gz
   gunzip stack.tar.gz
@@ -10,6 +10,6 @@ set -o errexit -o xtrace
   mkdir -p "$HOME/.local/bin"
   mv stack "$HOME/.local/bin/"
   rm stack.tar
-# fi
+fi
 
 stack --version

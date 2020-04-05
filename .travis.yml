@@ -52,5 +52,11 @@ script:
   - stack sdist
 
 after_success:
-  - stack exec runghc tools/upload-package.hs
   - stack exec runghc tools/attach-binary.hs
+
+deploy:
+  provider: script
+  on:
+    tags: true
+  skip_cleanup: true
+  script: yes | stack upload .
