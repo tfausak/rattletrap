@@ -10,10 +10,10 @@ environment:
   STACK_ROOT: c:/stack
   TMP: c:/tmp # https://github.com/haskell/cabal/issues/5386
 
-cache:
-  - c:/bin
-  - c:/stack
-  - c:/Users/appveyor/AppData/Local/Programs/stack
+# cache:
+#   - c:/bin
+#   - c:/stack
+#   - c:/Users/appveyor/AppData/Local/Programs/stack
 
 install:
   - powershell -File tools/install-stack.ps1
