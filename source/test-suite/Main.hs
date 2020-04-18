@@ -175,6 +175,7 @@ replays =
   , ("d428", "a private hockey match")
   , ("d52e", "psynet system id")
   , ("d7fb", "an explosion attribute")
+  , ("d818", "heatseeker")
   , ("db70", "new lag indicator")
   , ("dcab", "weird ball attribute value")
   , ("dcb3", "a pawn type attribute")
