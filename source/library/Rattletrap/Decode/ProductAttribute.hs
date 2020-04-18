@@ -39,12 +39,12 @@ decodeProductAttributeBits version objectMap = do
     Just "TAGame.ProductAttribute_UserColor_TA" -> decodeColor version
     Just objectName ->
       fail
-        ("unknown object name "
+        ("[RT05] unknown object name "
         <> show objectName
         <> " for ID "
         <> show objectId
         )
-    Nothing -> fail ("missing object name for ID " <> show objectId)
+    Nothing -> fail ("[RT06] missing object name for ID " <> show objectId)
   pure (ProductAttribute flag objectId maybeObjectName value)
 
 decodeSpecialEdition :: DecodeBits ProductAttributeValue

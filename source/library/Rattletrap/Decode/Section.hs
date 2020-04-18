@@ -23,4 +23,4 @@ decodeSection getBody = do
 
 crcMessage :: Word32le -> Word32le -> String
 crcMessage actual expected = unwords
-  ["actual CRC", show actual, "does not match expected CRC", show expected]
+  ["[RT10] actual CRC", show actual, "does not match expected CRC", show expected]

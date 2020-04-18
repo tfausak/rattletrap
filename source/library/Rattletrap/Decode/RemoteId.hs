@@ -27,7 +27,7 @@ decodeRemoteIdBits version systemId = case word8leValue systemId of
   7 -> if version >= (868, 24, 10)
     then RemoteIdPsyNet . Left <$> decodeWord64leBits
     else RemoteIdPsyNet . Right <$> getWord256
-  _ -> fail ("unknown system id " <> show systemId)
+  _ -> fail ("[RT09] unknown system id " <> show systemId)
 
 decodePsName :: DecodeBits Text.Text
 decodePsName = fmap
