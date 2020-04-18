@@ -57,6 +57,7 @@ rawParentClasses =
   , ("TAGame.SpecialPickup_GrapplingHook_TA", "TAGame.SpecialPickup_Targeted_TA")
   , ("TAGame.SpecialPickup_HauntedBallBeam_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.SpecialPickup_HitForce_TA", "TAGame.SpecialPickup_TA")
+  , ("TAGame.SpecialPickup_Rugby_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.SpecialPickup_Spring_TA", "TAGame.SpecialPickup_Targeted_TA")
   , ("TAGame.SpecialPickup_Swapper_TA", "TAGame.SpecialPickup_Targeted_TA")
   , ("TAGame.SpecialPickup_TA", "TAGame.CarComponent_TA")
@@ -115,6 +116,7 @@ rawClassesWithLocation =
   , "TAGame.SpecialPickup_BoostOverride_TA"
   , "TAGame.SpecialPickup_GrapplingHook_TA"
   , "TAGame.SpecialPickup_HitForce_TA"
+  , "TAGame.SpecialPickup_Rugby_TA"
   , "TAGame.SpecialPickup_Swapper_TA"
   , "TAGame.SpecialPickup_Tornado_TA"
   , "TAGame.Team_Soccar_TA"
