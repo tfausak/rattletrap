@@ -24,6 +24,7 @@ rawParentClasses =
   , ("ProjectX.Pawn_X", "Engine.Pawn")
   , ("ProjectX.PRI_X", "Engine.PlayerReplicationInfo")
   , ("TAGame.Ball_God_TA", "TAGame.Ball_TA")
+  , ("TAGame.Ball_Haunted_TA", "TAGame.Ball_TA")
   , ("TAGame.Ball_TA", "TAGame.RBActor_TA")
   , ("TAGame.CameraSettingsActor_TA", "Engine.ReplicationInfo")
   , ("TAGame.Car_Season_TA", "TAGame.PRI_TA")
@@ -44,6 +45,7 @@ rawParentClasses =
   , ("TAGame.GameEvent_TA", "Engine.ReplicationInfo")
   , ("TAGame.GameEvent_Team_TA", "TAGame.GameEvent_TA")
   , ("TAGame.GRI_TA", "ProjectX.GRI_X")
+  , ("TAGame.HauntedBallTrapTrigger_TA", "Engine.Actor")
   , ("TAGame.InMapScoreboard_TA", "Engine.Actor")
   , ("TAGame.PRI_TA", "ProjectX.PRI_X")
   , ("TAGame.RBActor_TA", "ProjectX.Pawn_X")
@@ -77,12 +79,10 @@ rawClassesWithLocation =
   , "Archetypes.Ball.Ball_BasketBall"
   , "Archetypes.Ball.Ball_Breakout"
   , "Archetypes.Ball.Ball_Default"
-  , "Archetypes.Ball.Ball_Haunted"
   , "Archetypes.Ball.Ball_Puck"
   , "Archetypes.Ball.CubeBall"
   , "Archetypes.Car.Car_Default"
   , "Archetypes.GameEvent.GameEvent_Season:CarArchetype"
-  , "Archetypes.SpecialPickups.SpecialPickup_HauntedBallBeam"
   , "Archetypes.SpecialPickups.SpecialPickup_Rugby"
   , "ProjectX.NetModeReplicator"
   , "TAGame.Ball_Breakout_TA"
@@ -105,7 +105,6 @@ rawClassesWithLocation =
   , "TAGame.GameEvent_SoccarPrivate_TA"
   , "TAGame.GameEvent_SoccarSplitscreen_TA"
   , "TAGame.GRI_TA"
-  , "TAGame.HauntedBallTrapTrigger_TA"
   , "TAGame.PRI_TA"
   , "TAGame.SpecialPickup_BallCarSpring_TA"
   , "TAGame.SpecialPickup_BallFreeze_TA"
@@ -115,6 +114,7 @@ rawClassesWithLocation =
   , "TAGame.SpecialPickup_Batarang_TA"
   , "TAGame.SpecialPickup_BoostOverride_TA"
   , "TAGame.SpecialPickup_GrapplingHook_TA"
+  , "TAGame.SpecialPickup_HauntedBallBeam_TA"
   , "TAGame.SpecialPickup_HitForce_TA"
   , "TAGame.SpecialPickup_Rugby_TA"
   , "TAGame.SpecialPickup_Swapper_TA"
@@ -134,12 +134,10 @@ rawClassesWithRotation =
   , "Archetypes.Ball.Ball_BasketBall"
   , "Archetypes.Ball.Ball_Breakout"
   , "Archetypes.Ball.Ball_Default"
-  , "Archetypes.Ball.Ball_Haunted"
   , "Archetypes.Ball.Ball_Puck"
   , "Archetypes.Ball.CubeBall"
   , "Archetypes.Car.Car_Default"
   , "Archetypes.GameEvent.GameEvent_Season:CarArchetype"
-  , "Archetypes.SpecialPickups.SpecialPickup_HauntedBallBeam"
   , "Archetypes.SpecialPickups.SpecialPickup_Rugby"
   , "TAGame.Ball_Breakout_TA"
   , "TAGame.Ball_God_TA"
