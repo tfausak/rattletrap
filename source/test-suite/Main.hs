@@ -95,9 +95,7 @@ withElapsed action = do
 
 replays :: [(String, String)]
 replays =
-  [ ("d1d5", "v1.68")
-  , ("21a8", "v1.66")
-  , ("0008", "a flip time")
+  [ ("0008", "a flip time")
   , ("000b", "nintendo switch")
   , ("07e9", "a game mode before Neo Tokyo")
   , ("0ad2", "some Latin-1 text")
@@ -113,6 +111,7 @@ replays =
   , ("1ef9", "a private hoops match")
   , ("1f37", "splitscreen players")
   , ("2114", "a match save")
+  , ("21a8", "v1.66")
   , ("2266", "dropshot")
   , ("22ba", "a vote to forfeit")
   , ("27b6", "some UTF-16 text")
@@ -171,6 +170,7 @@ replays =
   , ("c837", "a spectator")
   , ("cc4c", "after Starbase ARC")
   , ("d044", "hoops mutators")
+  , ("d1d5", "v1.68")
   , ("d236", "rlcs s2")
   , ("d428", "a private hockey match")
   , ("d52e", "psynet system id")
