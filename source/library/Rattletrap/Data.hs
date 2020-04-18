@@ -23,6 +23,7 @@ rawParentClasses =
   , ("ProjectX.GRI_X", "Engine.GameReplicationInfo")
   , ("ProjectX.Pawn_X", "Engine.Pawn")
   , ("ProjectX.PRI_X", "Engine.PlayerReplicationInfo")
+  , ("TAGame.Ball_God_TA", "TAGame.Ball_TA")
   , ("TAGame.Ball_TA", "TAGame.RBActor_TA")
   , ("TAGame.CameraSettingsActor_TA", "Engine.ReplicationInfo")
   , ("TAGame.Car_Season_TA", "TAGame.PRI_TA")
@@ -35,6 +36,7 @@ rawParentClasses =
   , ("TAGame.CarComponent_TA", "Engine.ReplicationInfo")
   , ("TAGame.CrowdActor_TA", "Engine.ReplicationInfo")
   , ("TAGame.CrowdManager_TA", "Engine.ReplicationInfo")
+  , ("TAGame.GameEvent_GodBall_TA", "TAGame.GameEvent_Soccar_TA")
   , ("TAGame.GameEvent_Season_TA", "TAGame.GameEvent_Soccar_TA")
   , ("TAGame.GameEvent_Soccar_TA", "TAGame.GameEvent_Team_TA")
   , ("TAGame.GameEvent_SoccarPrivate_TA", "TAGame.GameEvent_Soccar_TA")
@@ -83,6 +85,7 @@ rawClassesWithLocation =
   , "Archetypes.SpecialPickups.SpecialPickup_Rugby"
   , "ProjectX.NetModeReplicator"
   , "TAGame.Ball_Breakout_TA"
+  , "TAGame.Ball_God_TA"
   , "TAGame.Ball_Haunted_TA"
   , "TAGame.Ball_TA"
   , "TAGame.CameraSettingsActor_TA"
@@ -95,6 +98,7 @@ rawClassesWithLocation =
   , "TAGame.CarComponent_Jump_TA"
   , "TAGame.Default__CameraSettingsActor_TA"
   , "TAGame.Default__PRI_TA"
+  , "TAGame.GameEvent_GodBall_TA"
   , "TAGame.GameEvent_Season_TA"
   , "TAGame.GameEvent_Soccar_TA"
   , "TAGame.GameEvent_SoccarPrivate_TA"
@@ -136,6 +140,7 @@ rawClassesWithRotation =
   , "Archetypes.SpecialPickups.SpecialPickup_HauntedBallBeam"
   , "Archetypes.SpecialPickups.SpecialPickup_Rugby"
   , "TAGame.Ball_Breakout_TA"
+  , "TAGame.Ball_God_TA"
   , "TAGame.Ball_Haunted_TA"
   , "TAGame.Ball_TA"
   , "TAGame.Car_Season_TA"
@@ -151,6 +156,7 @@ rawObjectClasses =
   , ("Archetypes.Ball.Ball_Beachball", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Breakout", "TAGame.Ball_Breakout_TA")
   , ("Archetypes.Ball.Ball_Default", "TAGame.Ball_TA")
+  , ("Archetypes.Ball.Ball_God", "TAGame.Ball_God_TA")
   , ("Archetypes.Ball.Ball_Haunted", "TAGame.Ball_Haunted_TA")
   , ("Archetypes.Ball.Ball_Puck", "TAGame.Ball_TA")
   , ("Archetypes.Ball.CubeBall", "TAGame.Ball_TA")
@@ -192,6 +198,8 @@ rawObjectClasses =
   , ("Archetypes.Teams.Team1", "TAGame.Team_Soccar_TA")
   , ("GameInfo_Basketball.GameInfo.GameInfo_Basketball:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Breakout.GameInfo.GameInfo_Breakout:GameReplicationInfoArchetype", "TAGame.GRI_TA")
+  , ("gameinfo_godball.GameInfo.gameinfo_godball:Archetype", "TAGame.GameEvent_GodBall_TA")
+  , ("gameinfo_godball.GameInfo.gameinfo_godball:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("Gameinfo_Hockey.GameInfo.Gameinfo_Hockey:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Items.GameInfo.GameInfo_Items:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Season.GameInfo.GameInfo_Season:GameReplicationInfoArchetype", "TAGame.GRI_TA")
@@ -242,6 +250,7 @@ rawAttributeTypes =
   , ("TAGame.Ball_Breakout_TA:AppliedDamage", AttributeTypeAppliedDamage)
   , ("TAGame.Ball_Breakout_TA:DamageIndex", AttributeTypeInt)
   , ("TAGame.Ball_Breakout_TA:LastTeamTouch", AttributeTypeByte)
+  , ("TAGame.Ball_God_TA:TargetSpeed", AttributeTypeFloat)
   , ("TAGame.Ball_Haunted_TA:bIsBallBeamed", AttributeTypeBoolean)
   , ("TAGame.Ball_Haunted_TA:DeactivatedGoalIndex", AttributeTypeByte)
   , ("TAGame.Ball_Haunted_TA:LastTeamTouch", AttributeTypeByte)
