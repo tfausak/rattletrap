@@ -28,4 +28,4 @@ decodePropertyValue getProperty kind = case fromStr kind of
   "NameProperty" -> PropertyValueName <$> decodeStr
   "QWordProperty" -> PropertyValueQWord <$> decodeWord64le
   "StrProperty" -> PropertyValueStr <$> decodeStr
-  _ -> fail ("don't know how to read property value " <> show kind)
+  _ -> fail ("[RT07] don't know how to read property value " <> show kind)

@@ -20,7 +20,7 @@ decodeComponent = do
     1 -> pure ComponentY
     2 -> pure ComponentZ
     3 -> pure ComponentW
-    y -> fail ("invalid component: " <> show y)
+    y -> fail ("[RT08] invalid component: " <> show y)
 
 decodePart :: DecodeBits Double
 decodePart = decompressPart <$> decodeCompressedWordBits maxCompressedValue

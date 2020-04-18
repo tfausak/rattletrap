@@ -53,7 +53,7 @@ decodeAttributeValueBits
   :: (Int, Int, Int) -> Map Word32le Str -> Str -> DecodeBits AttributeValue
 decodeAttributeValueBits version objectMap name = do
   constructor <- maybe
-    (fail ("don't know how to get attribute value " <> show name))
+    (fail ("[RT04] don't know how to get attribute value " <> show name))
     pure
     (Map.lookup name attributeTypes)
   case constructor of
