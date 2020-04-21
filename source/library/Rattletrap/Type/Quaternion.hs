@@ -14,6 +14,7 @@ where
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
 
+import qualified Data.List as List
 import qualified Data.Maybe as Maybe
 
 data Quaternion = Quaternion
@@ -76,9 +77,7 @@ maxComponent quaternion =
     roundTrip = decompressPart . compressPart
     computedPart = Maybe.fromMaybe
       biggestPart
-      (Maybe.listToMaybe
-        (filter (\(value, _) -> value /= roundTrip value) parts)
-      )
+      (List.find (\(value, _) -> value /= roundTrip value) parts)
   in snd
     (if (biggestPart == computedPart)
         || (abs (fst biggestPart - fst computedPart) > 0.00001)

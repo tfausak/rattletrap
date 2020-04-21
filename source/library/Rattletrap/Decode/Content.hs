@@ -55,9 +55,7 @@ decodeContent version numFrames maxChannels = do
       (decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
   frames <- either fail pure (runDecodeBits bitGet (reverseBytes stream))
-  unknown <- Binary.getRemainingLazyByteString
-  pure
-    (Content
+  Content
       levels
       keyFrames
       streamSize
@@ -69,5 +67,5 @@ decodeContent version numFrames maxChannels = do
       names
       classMappings
       caches
-      (LazyBytes.unpack unknown)
-    )
+    . LazyBytes.unpack
+    <$> Binary.getRemainingLazyByteString

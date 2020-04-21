@@ -13,6 +13,8 @@ import Rattletrap.Utility.Bytes
 import qualified Data.ByteString as Bytes
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
+import qualified Data.Text.Encoding.Error as Text
+import qualified Debug.Trace as Debug
 
 decodeStr :: Decode Str
 decodeStr = do
@@ -34,8 +36,11 @@ normalizeTextSize size = case int32leValue size of
 getTextDecoder :: Int32le -> Bytes.ByteString -> Text.Text
 getTextDecoder size bytes =
   let
-    decode =
-      if size < Int32le 0 then Text.decodeUtf16LE else Text.decodeLatin1
+    decode = if size < Int32le 0
+      then Text.decodeUtf16LEWith $ \message input -> do
+        Debug.traceM $ "WARNING: " <> show (Text.DecodeError message input)
+        Text.lenientDecode message input
+      else Text.decodeLatin1
   in decode bytes
 
 dropNull :: Text.Text -> Text.Text
