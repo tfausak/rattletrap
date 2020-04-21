@@ -61,9 +61,7 @@ getInput config = case configInput config of
       pure (LazyBytes.toStrict (Client.responseBody response))
 
 putOutput :: Config -> Bytes.ByteString -> IO ()
-putOutput config = case configOutput config of
-  Nothing -> Bytes.putStr
-  Just file -> Bytes.writeFile file
+putOutput = maybe Bytes.putStr Bytes.writeFile . configOutput
 
 getConfig :: [String] -> IO Config
 getConfig arguments = do
