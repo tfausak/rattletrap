@@ -11,4 +11,6 @@ import Rattletrap.Type.PickupAttributeNew
 decodePickupAttributeNewBits :: DecodeBits PickupAttributeNew
 decodePickupAttributeNewBits = do
   instigator <- getBool
-  PickupAttributeNew <$> decodeWhen instigator decodeWord32leBits <*> decodeWord8leBits
+  PickupAttributeNew
+    <$> decodeWhen instigator decodeWord32leBits
+    <*> decodeWord8leBits

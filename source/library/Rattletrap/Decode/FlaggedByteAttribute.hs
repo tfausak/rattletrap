@@ -9,4 +9,5 @@ import Rattletrap.Type.FlaggedByteAttribute
 
 
 decodeFlaggedByteAttributeBits :: DecodeBits FlaggedByteAttribute
-decodeFlaggedByteAttributeBits = FlaggedByteAttribute <$> getBool <*> decodeWord8leBits
+decodeFlaggedByteAttributeBits =
+  FlaggedByteAttribute <$> getBool <*> decodeWord8leBits

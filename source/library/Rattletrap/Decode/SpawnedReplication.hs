@@ -54,16 +54,19 @@ lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
   Nothing -> Right Nothing
   Just nameIndex ->
     case getName (classAttributeMapNameMap classAttributeMap) nameIndex of
-      Nothing -> Left ("[RT11] could not get name for index " <> show nameIndex)
+      Nothing ->
+        Left ("[RT11] could not get name for index " <> show nameIndex)
       Just name -> Right (Just name)
 
 lookupObjectName :: ClassAttributeMap -> Word32le -> Either String Str
 lookupObjectName classAttributeMap objectId =
   case getObjectName (classAttributeMapObjectMap classAttributeMap) objectId of
-    Nothing -> Left ("[RT12] could not get object name for id " <> show objectId)
+    Nothing ->
+      Left ("[RT12] could not get object name for id " <> show objectId)
     Just objectName -> Right objectName
 
 lookupClassName :: Str -> Either String Str
 lookupClassName objectName = case getClassName objectName of
-  Nothing -> Left ("[RT13] could not get class name for object " <> show objectName)
+  Nothing ->
+    Left ("[RT13] could not get class name for object " <> show objectName)
   Just className -> Right className
