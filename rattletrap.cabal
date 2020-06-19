@@ -78,6 +78,7 @@ library
     Rattletrap.Decode.CompressedWord
     Rattletrap.Decode.CompressedWordVector
     Rattletrap.Decode.Content
+    Rattletrap.Decode.CustomDemolishAttribute
     Rattletrap.Decode.DamageStateAttribute
     Rattletrap.Decode.DemolishAttribute
     Rattletrap.Decode.DestroyedReplication
@@ -154,6 +155,7 @@ library
     Rattletrap.Encode.CompressedWord
     Rattletrap.Encode.CompressedWordVector
     Rattletrap.Encode.Content
+    Rattletrap.Encode.CustomDemolishAttribute
     Rattletrap.Encode.DamageStateAttribute
     Rattletrap.Encode.DemolishAttribute
     Rattletrap.Encode.DestroyedReplication
@@ -232,6 +234,7 @@ library
     Rattletrap.Type.CompressedWord
     Rattletrap.Type.CompressedWordVector
     Rattletrap.Type.Content
+    Rattletrap.Type.CustomDemolishAttribute
     Rattletrap.Type.DamageStateAttribute
     Rattletrap.Type.DemolishAttribute
     Rattletrap.Type.DestroyedReplication
