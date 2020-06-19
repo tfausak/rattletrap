@@ -11,6 +11,7 @@ import Rattletrap.Type.ByteAttribute
 import Rattletrap.Type.CamSettingsAttribute
 import Rattletrap.Type.ClubColorsAttribute
 import Rattletrap.Type.Common
+import Rattletrap.Type.CustomDemolishAttribute
 import Rattletrap.Type.DamageStateAttribute
 import Rattletrap.Type.DemolishAttribute
 import Rattletrap.Type.EnumAttribute
@@ -49,6 +50,7 @@ data AttributeValue
   | AttributeValueByte ByteAttribute
   | AttributeValueCamSettings CamSettingsAttribute
   | AttributeValueClubColors ClubColorsAttribute
+  | AttributeValueCustomDemolish CustomDemolishAttribute
   | AttributeValueDamageState DamageStateAttribute
   | AttributeValueDemolish DemolishAttribute
   | AttributeValueEnum EnumAttribute

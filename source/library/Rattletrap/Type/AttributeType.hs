@@ -13,6 +13,7 @@ data AttributeType
   | AttributeTypeByte
   | AttributeTypeCamSettings
   | AttributeTypeClubColors
+  | AttributeTypeCustomDemolish
   | AttributeTypeDamageState
   | AttributeTypeDemolish
   | AttributeTypeEnum

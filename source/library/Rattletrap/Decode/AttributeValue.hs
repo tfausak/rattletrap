@@ -10,6 +10,7 @@ import Rattletrap.Decode.ByteAttribute
 import Rattletrap.Decode.CamSettingsAttribute
 import Rattletrap.Decode.ClubColorsAttribute
 import Rattletrap.Decode.Common
+import Rattletrap.Decode.CustomDemolishAttribute
 import Rattletrap.Decode.DamageStateAttribute
 import Rattletrap.Decode.DemolishAttribute
 import Rattletrap.Decode.EnumAttribute
@@ -66,6 +67,8 @@ decodeAttributeValueBits version objectMap name = do
       AttributeValueCamSettings <$> decodeCamSettingsAttributeBits version
     AttributeTypeClubColors ->
       AttributeValueClubColors <$> decodeClubColorsAttributeBits
+    AttributeTypeCustomDemolish ->
+      AttributeValueCustomDemolish <$> decodeCustomDemolishAttributeBits version
     AttributeTypeDamageState ->
       AttributeValueDamageState <$> decodeDamageStateAttributeBits version
     AttributeTypeDemolish ->

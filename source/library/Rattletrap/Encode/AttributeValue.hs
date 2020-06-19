@@ -8,6 +8,7 @@ import Rattletrap.Encode.BooleanAttribute
 import Rattletrap.Encode.ByteAttribute
 import Rattletrap.Encode.CamSettingsAttribute
 import Rattletrap.Encode.ClubColorsAttribute
+import Rattletrap.Encode.CustomDemolishAttribute
 import Rattletrap.Encode.DamageStateAttribute
 import Rattletrap.Encode.DemolishAttribute
 import Rattletrap.Encode.EnumAttribute
@@ -50,6 +51,7 @@ putAttributeValue value = case value of
   AttributeValueByte x -> putByteAttribute x
   AttributeValueCamSettings x -> putCamSettingsAttribute x
   AttributeValueClubColors x -> putClubColorsAttribute x
+  AttributeValueCustomDemolish x -> putCustomDemolishAttribute x
   AttributeValueDamageState x -> putDamageStateAttribute x
   AttributeValueDemolish x -> putDemolishAttribute x
   AttributeValueEnum x -> putEnumAttribute x

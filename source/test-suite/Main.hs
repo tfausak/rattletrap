@@ -97,6 +97,7 @@ replays :: [(String, String)]
 replays =
   [ ("0008", "a flip time")
   , ("000b", "nintendo switch")
+  , ("0416", "v1.78 demolition")
   , ("07e9", "a game mode before Neo Tokyo")
   , ("0ad2", "some Latin-1 text")
   , ("1205", "rumble mode")
