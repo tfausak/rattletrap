@@ -177,6 +177,7 @@ replays =
   , ("d1d5", "v1.68")
   , ("d236", "rlcs s2")
   , ("d428", "a private hockey match")
+  , ("d44c", "ranked tournament")
   , ("d52e", "psynet system id")
   , ("d7fb", "an explosion attribute")
   , ("d818", "heatseeker")
