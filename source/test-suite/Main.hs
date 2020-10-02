@@ -159,6 +159,7 @@ replays =
   , ("a09e", "a tournament")
   , ("a128", "a round count down")
   , ("a184", "max score")
+  , ("a1c0", "epic system id")
   , ("a52f", "some more mutators")
   , ("a558", "extended explosion data")
   , ("a671", "a waiting player")

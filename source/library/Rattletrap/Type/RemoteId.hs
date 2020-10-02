@@ -6,6 +6,7 @@ module Rattletrap.Type.RemoteId
 where
 
 import Rattletrap.Type.Common
+import Rattletrap.Type.Str
 import Rattletrap.Type.Word64le
 
 data RemoteId
@@ -16,6 +17,7 @@ data RemoteId
   | RemoteIdSteam Word64le
   | RemoteIdSwitch Word64le Word64le Word64le Word64le
   | RemoteIdXbox Word64le
+  | RemoteIdEpic Str
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''RemoteId)
