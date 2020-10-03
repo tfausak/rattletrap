@@ -159,6 +159,7 @@ replays =
   , ("a09e", "a tournament")
   , ("a128", "a round count down")
   , ("a184", "max score")
+  , ("a1c0", "epic system id")
   , ("a52f", "some more mutators")
   , ("a558", "extended explosion data")
   , ("a671", "a waiting player")
@@ -176,6 +177,7 @@ replays =
   , ("d1d5", "v1.68")
   , ("d236", "rlcs s2")
   , ("d428", "a private hockey match")
+  , ("d44c", "ranked tournament")
   , ("d52e", "psynet system id")
   , ("d7fb", "an explosion attribute")
   , ("d818", "heatseeker")
@@ -192,4 +194,5 @@ replays =
   , ("f7b9", "a hockey game event")
   , ("f811", "no frames")
   , ("fdc7", "an MVP")
+  , ("ffb7", "with difficulty")
   ]

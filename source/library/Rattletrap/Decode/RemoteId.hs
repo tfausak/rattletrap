@@ -4,6 +4,7 @@ module Rattletrap.Decode.RemoteId
 where
 
 import Rattletrap.Decode.Common
+import Rattletrap.Decode.Str
 import Rattletrap.Decode.Word64le
 import Rattletrap.Type.RemoteId
 import Rattletrap.Type.Word64le
@@ -27,6 +28,7 @@ decodeRemoteIdBits version systemId = case word8leValue systemId of
   7 -> if version >= (868, 24, 10)
     then RemoteIdPsyNet . Left <$> decodeWord64leBits
     else RemoteIdPsyNet . Right <$> getWord256
+  11 -> RemoteIdEpic <$> decodeStrBits
   _ -> fail ("[RT09] unknown system id " <> show systemId)
 
 decodePsName :: DecodeBits Text.Text
