@@ -105,6 +105,7 @@ rawClassesWithLocation =
   , "TAGame.GameEvent_SoccarPrivate_TA"
   , "TAGame.GameEvent_SoccarSplitscreen_TA"
   , "TAGame.GRI_TA"
+  , "TAGame.MaxTimeWarningData_TA"
   , "TAGame.PRI_TA"
   , "TAGame.SpecialPickup_BallCarSpring_TA"
   , "TAGame.SpecialPickup_BallFreeze_TA"
@@ -208,6 +209,7 @@ rawObjectClasses =
   , ("Haunted_TrainStation_P.TheWorld:PersistentLevel.HauntedBallTrapTrigger_TA_1", "TAGame.HauntedBallTrapTrigger_TA")
   , ("ProjectX.Default__NetModeReplicator_X", "ProjectX.NetModeReplicator")
   , ("TAGame.Default__CameraSettingsActor_TA", "TAGame.CameraSettingsActor_TA")
+  , ("TAGame.Default__MaxTimeWarningData_TA", "TAGame.MaxTimeWarningData_TA")
   , ("TAGame.Default__PRI_TA", "TAGame.PRI_TA")
   , ("TheWorld:PersistentLevel.BreakOutActor_Platform_TA", "TAGame.BreakOutActor_Platform_TA")
   , ("TheWorld:PersistentLevel.CrowdActor_TA", "TAGame.CrowdActor_TA")
@@ -240,6 +242,7 @@ rawAttributeTypes =
   , ("Engine.PlayerReplicationInfo:Score", AttributeTypeInt)
   , ("Engine.PlayerReplicationInfo:Team", AttributeTypeFlaggedInt)
   , ("Engine.PlayerReplicationInfo:UniqueId", AttributeTypeUniqueId)
+  , ("Engine.ReplicatedActor_ORS:ReplicatedOwner", AttributeTypeFlaggedInt)
   , ("Engine.TeamInfo:Score", AttributeTypeInt)
   , ("ProjectX.GRI_X:bGameStarted", AttributeTypeBoolean)
   , ("ProjectX.GRI_X:GameServerID", AttributeTypeQWord)
@@ -328,6 +331,8 @@ rawAttributeTypes =
   , ("TAGame.GameEvent_Team_TA:bForfeit", AttributeTypeBoolean)
   , ("TAGame.GameEvent_Team_TA:MaxTeamSize", AttributeTypeInt)
   , ("TAGame.GRI_TA:NewDedicatedServerIP", AttributeTypeString)
+  , ("TAGame.MaxTimeWarningData_TA:EndGameEpochTime", AttributeTypeInt64)
+  , ("TAGame.MaxTimeWarningData_TA:EndGameWarningEpochTime", AttributeTypeInt64)
   , ("TAGame.PRI_TA:bIsDistracted", AttributeTypeBoolean)
   , ("TAGame.PRI_TA:bIsInSplitScreen", AttributeTypeBoolean)
   , ("TAGame.PRI_TA:bMatchMVP", AttributeTypeBoolean)
