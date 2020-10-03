@@ -194,4 +194,5 @@ replays =
   , ("f7b9", "a hockey game event")
   , ("f811", "no frames")
   , ("fdc7", "an MVP")
+  , ("ffb7", "with difficulty")
   ]

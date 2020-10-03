@@ -389,6 +389,7 @@ rawAttributeTypes =
   , ("TAGame.Team_TA:ClubColors", AttributeTypeClubColors)
   , ("TAGame.Team_TA:ClubID", AttributeTypeInt64)
   , ("TAGame.Team_TA:CustomTeamName", AttributeTypeString)
+  , ("TAGame.Team_TA:Difficulty", AttributeTypeInt)
   , ("TAGame.Team_TA:GameEvent", AttributeTypeFlaggedInt)
   , ("TAGame.Team_TA:LogoData", AttributeTypeFlaggedInt)
   , ("TAGame.Vehicle_TA:bDriving", AttributeTypeBoolean)
