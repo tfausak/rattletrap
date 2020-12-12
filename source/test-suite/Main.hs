@@ -184,6 +184,7 @@ replays =
   , ("db70", "new lag indicator")
   , ("dcab", "weird ball attribute value")
   , ("dcb3", "a pawn type attribute")
+  , ("dd14", "v1.88")
   , ("de56", "a problematic product attribute")
   , ("e80d", "unlimited time")
   , ("e978", "distracted")
