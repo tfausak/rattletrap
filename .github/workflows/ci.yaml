@@ -9,12 +9,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-10.15, ubuntu-18.04, windows-2019 ]
-        ghc: [ 8.10.2 ]
-        cabal: [ 3.2.0.0 ]
         include:
+          - { os: ubuntu-18.04, ghc: 8.10.2, cabal: 3.2.0.0 }
           - { os: ubuntu-18.04, ghc: 8.8.4, cabal: 3.2.0.0 }
           - { os: ubuntu-18.04, ghc: 8.6.5, cabal: 3.2.0.0 }
+          - { os: macos-10.15, ghc: 8.10.2, cabal: 3.2.0.0 }
+          - { os: windows-2019, ghc: 8.8.4, cabal: 3.2.0.0 }
     name: ${{ matrix.os }} ghc-${{ matrix.ghc }}
     runs-on: ${{ matrix.os }}
     steps:
