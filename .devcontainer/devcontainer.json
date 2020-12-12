@@ -1,0 +1,13 @@
+{
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "containerUser": "haskell",
+  "extensions": [
+    "taylorfausak.purple-yolk"
+  ],
+  "postCreateCommand": "cabal update",
+  "settings": {
+    "purple-yolk.ghci.command": "cabal repl"
+  }
+}
