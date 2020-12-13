@@ -1,5 +1,5 @@
 FROM alpine:3.12.2
-RUN apk add --no-cache cabal ghc gmp-dev musl-dev wget zlib-dev
+RUN apk add --no-cache cabal ghc gmp-dev musl-dev wget zlib-dev zlib-static
 WORKDIR /root/rattletrap
 COPY . .
 RUN cabal update
