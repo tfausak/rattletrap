@@ -106,6 +106,7 @@ rawClassesWithLocation =
   , "TAGame.GameEvent_SoccarSplitscreen_TA"
   , "TAGame.GRI_TA"
   , "TAGame.MaxTimeWarningData_TA"
+  , "TAGame.RumblePickups_TA"
   , "TAGame.PRI_TA"
   , "TAGame.SpecialPickup_BallCarSpring_TA"
   , "TAGame.SpecialPickup_BallFreeze_TA"
@@ -210,6 +211,7 @@ rawObjectClasses =
   , ("ProjectX.Default__NetModeReplicator_X", "ProjectX.NetModeReplicator")
   , ("TAGame.Default__CameraSettingsActor_TA", "TAGame.CameraSettingsActor_TA")
   , ("TAGame.Default__MaxTimeWarningData_TA", "TAGame.MaxTimeWarningData_TA")
+  , ("TAGame.Default__RumblePickups_TA", "TAGame.RumblePickups_TA")
   , ("TAGame.Default__PRI_TA", "TAGame.PRI_TA")
   , ("TheWorld:PersistentLevel.BreakOutActor_Platform_TA", "TAGame.BreakOutActor_Platform_TA")
   , ("TheWorld:PersistentLevel.CrowdActor_TA", "TAGame.CrowdActor_TA")
@@ -228,6 +230,7 @@ rawAttributeTypes =
   , ("Engine.Actor:Role", AttributeTypeEnum)
   , ("Engine.GameReplicationInfo:bMatchIsOver", AttributeTypeBoolean)
   , ("Engine.GameReplicationInfo:GameClass", AttributeTypeFlaggedInt)
+  , ("TAGame.Car_TA:RumblePickups", AttributeTypeFlaggedInt)
   , ("Engine.GameReplicationInfo:ServerName", AttributeTypeString)
   , ("Engine.Pawn:PlayerReplicationInfo", AttributeTypeFlaggedInt)
   , ("Engine.PlayerReplicationInfo:bBot", AttributeTypeBoolean)
