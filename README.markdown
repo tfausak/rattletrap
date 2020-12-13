@@ -134,7 +134,7 @@ $ rattletrap -i input.replay |
 [Docker build badge]: https://img.shields.io/docker/build/taylorfausak/rattletrap.svg?label=docker&logo=docker&logoColor=white
 [docker build]: https://hub.docker.com/r/taylorfausak/rattletrap
 [Rocket League]: https://www.rocketleague.com
-[1.84]: https://www.rocketleague.com/news/patch-notes--december-update/
+[1.88]: https://www.rocketleague.com/news/patch-notes--december-update/
 [Ball Chasing]: https://ballchasing.com
 [Haskell]: https://www.haskell.org
 [C# parser]: https://github.com/jjbott/RocketLeagueReplayParser
