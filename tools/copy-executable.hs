@@ -6,7 +6,7 @@ import qualified System.Process as Process
 
 main :: IO ()
 main = do
-  before <- Process.readProcess "which" [ "rattletrap" ] ""
+  before <- Process.readProcess "cabal" [ "exec", "which", "rattletrap" ] ""
   print before
   let after = convert $ List.dropWhileEnd Char.isSpace before
   print after
