@@ -32,3 +32,9 @@ jobs:
           restore-keys: ${{ matrix.os }}-${{ matrix.ghc }}-
       - run: cabal test --test-show-details direct
       - run: cabal check
+      - run: cabal sdist --output-dir output
+      - if: matrix.os == 'ubuntu-18.04' && matrix.ghc == '8.10.2'
+        uses: actions/upload-artifact@v2
+        with:
+          path: output/rattletrap-*.tar.gz
+          name: rattletrap-${{ github.sha }}.tar.gz
