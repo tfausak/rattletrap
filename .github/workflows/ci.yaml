@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     strategy:
-      fail-fast: false
       matrix:
         include:
           - { os: ubuntu-18.04, ghc: 8.10.2, cabal: 3.2.0.0, primary: true, latest: true }
