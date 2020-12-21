@@ -1,15 +1,16 @@
-cabal-version: 2.2
+cabal-version: >= 1.10
 
 name: rattletrap
 version: 9.3.0
-
-category: Game
+synopsis: Parse and generate Rocket League replays.
 description: Rattletrap parses and generates Rocket League replays.
+
+build-type: Simple
+category: Game
 extra-source-files: CHANGELOG.markdown README.markdown
 license-file: LICENSE.markdown
 license: MIT
 maintainer: Taylor Fausak
-synopsis: Parse and generate Rocket League replays.
 
 source-repository head
   type: git
@@ -19,23 +20,25 @@ flag static
   manual: True
   default: False
 
-common basics
+library
+  autogen-modules: Paths_rattletrap
   build-depends:
-    aeson >= 1.3.1 && < 1.6,
-    aeson-pretty ^>= 0.8.7,
-    base >= 4.11.1 && < 4.15,
-    binary ^>= 0.8.5,
-    bytestring ^>= 0.10.8,
-    caerbannog ^>= 0.6.0,
-    containers >= 0.5.11 && < 0.7,
-    filepath ^>= 1.4.2,
-    http-client >= 0.5.13 && < 0.8,
-    http-client-tls ^>= 0.3.5,
-    scientific ^>= 0.3.6,
-    template-haskell >= 2.13.0 && < 2.17,
-    text ^>= 1.2.3,
-    transformers ^>= 0.5.5,
+    base >= 4.12.0 && < 4.15
+    , aeson >= 1.3.1 && < 1.6
+    , aeson-pretty >= 0.8.7 && < 0.9
+    , binary >= 0.8.5 && < 0.9
+    , bytestring >= 0.10.8 && < 0.11
+    , caerbannog >= 0.6.0 && < 0.7
+    , containers >= 0.5.11&& < 0.7
+    , filepath >= 1.4.2 && < 1.5
+    , http-client >= 0.5.13 && < 0.8
+    , http-client-tls >= 0.3.5 && < 0.4
+    , scientific >= 0.3.6 && < 0.4
+    , template-haskell >= 2.13.0 && < 2.17
+    , text >= 1.2.3 && < 1.3
+    , transformers >= 0.5.5 && < 0.6
   default-language: Haskell2010
+  exposed-modules: Rattletrap
   ghc-options:
     -Weverything
     -Wno-all-missed-specialisations
@@ -44,21 +47,6 @@ common basics
     -Wno-missing-import-lists
     -Wno-safe
     -Wno-unsafe
-
-  if impl(ghc >= 8.8)
-    ghc-options:
-      -Wno-missing-deriving-strategies
-
-  if impl(ghc >= 8.10)
-    ghc-options:
-      -Wno-missing-safe-haskell-mode
-      -Wno-prepositive-qualified-module
-
-library
-  import: basics
-
-  autogen-modules: Paths_rattletrap
-  exposed-modules: Rattletrap
   hs-source-dirs: source/library
   other-modules:
     Paths_rattletrap
@@ -301,10 +289,20 @@ library
     Rattletrap.Utility.Crc
     Rattletrap.Utility.Helper
 
-executable rattletrap
-  import: basics
+  if impl(ghc >= 8.8)
+    ghc-options:
+      -Wno-missing-deriving-strategies
 
-  build-depends: rattletrap
+  if impl(ghc >= 8.10)
+    ghc-options:
+      -Wno-missing-safe-haskell-mode
+      -Wno-prepositive-qualified-module
+
+executable rattletrap
+  build-depends:
+    base -any
+    , rattletrap -any
+  default-language: Haskell2010
   ghc-options: -rtsopts -threaded
   hs-source-dirs: source/executable
   main-is: Main.hs
@@ -313,12 +311,14 @@ executable rattletrap
     ld-options: -static
 
 test-suite test
-  import: basics
-
   build-depends:
-    HUnit ^>= 1.6.0,
-    rattletrap,
-    temporary ^>= 1.3,
+    base -any
+    , bytestring -any
+    , filepath -any
+    , HUnit >= 1.6.1 && < 1.7
+    , rattletrap -any
+    , temporary >= 1.3 && < 1.4
+  default-language: Haskell2010
   ghc-options: -rtsopts -threaded
   hs-source-dirs: source/test-suite
   main-is: Main.hs
