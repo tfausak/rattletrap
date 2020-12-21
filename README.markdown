@@ -1,7 +1,6 @@
 # [Rattletrap][]
 
 [![Version badge][]][version]
-[![Windows build badge][]][windows build]
 [![Build badge][]][build]
 [![Docker build badge][]][docker build]
 
@@ -127,8 +126,6 @@ $ rattletrap -i input.replay |
 [Rattletrap]: https://github.com/tfausak/rattletrap
 [Version badge]: https://img.shields.io/hackage/v/rattletrap.svg?logo=haskell&label=version&color=brightgreen
 [version]: https://hackage.haskell.org/package/rattletrap
-[Windows build badge]: https://img.shields.io/appveyor/ci/taylorfausak/rattletrap/master.svg?logo=appveyor&logoColor=white
-[windows build]: https://ci.appveyor.com/project/taylorfausak/rattletrap
 [Build badge]: https://img.shields.io/travis/tfausak/rattletrap/master.svg?logo=travis-ci&logoColor=white
 [build]: https://travis-ci.org/tfausak/rattletrap
 [Docker build badge]: https://img.shields.io/docker/build/taylorfausak/rattletrap.svg?label=docker&logo=docker&logoColor=white

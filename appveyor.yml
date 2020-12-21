@@ -1,7 +1,0 @@
-build: off
-platform: x64
-version: '{build}'
-clone_folder: c:/rattletrap
-
-test_script:
-  - echo nothing
