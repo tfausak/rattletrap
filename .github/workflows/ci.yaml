@@ -4,6 +4,8 @@ on:
     branches: [ master ]
   push:
     branches: [ master ]
+  release:
+    types: [ created ]
 jobs:
   build:
     strategy:
@@ -38,10 +40,12 @@ jobs:
         with:
           path: output/rattletrap
           name: rattletrap-${{ matrix.os }}-ghc-${{ matrix.ghc }}-${{ github.sha }}
-      - run: cabal check
       - run: cabal sdist --output-dir output
       - if: matrix.os == 'ubuntu-18.04' && matrix.ghc == '8.10.2'
         uses: actions/upload-artifact@v2
         with:
           path: output/rattletrap-*.tar.gz
           name: rattletrap-${{ github.sha }}.tar.gz
+      - run: cabal check
+      - if: github.event_name == 'release' && matrix.os == 'ubuntu-18.04' && matrix.ghc == '8.10.2'
+        run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' output/rattletrap-*.tar.gz
