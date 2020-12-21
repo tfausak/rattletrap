@@ -1,7 +1,6 @@
 # [Rattletrap][]
 
 [![Version badge][]][version]
-[![Build badge][]][build]
 [![Docker build badge][]][docker build]
 
 Rattletrap parses and generates [Rocket League][] replays. Parsing replays can
@@ -126,8 +125,6 @@ $ rattletrap -i input.replay |
 [Rattletrap]: https://github.com/tfausak/rattletrap
 [Version badge]: https://img.shields.io/hackage/v/rattletrap.svg?logo=haskell&label=version&color=brightgreen
 [version]: https://hackage.haskell.org/package/rattletrap
-[Build badge]: https://img.shields.io/travis/tfausak/rattletrap/master.svg?logo=travis-ci&logoColor=white
-[build]: https://travis-ci.org/tfausak/rattletrap
 [Docker build badge]: https://img.shields.io/docker/build/taylorfausak/rattletrap.svg?label=docker&logo=docker&logoColor=white
 [docker build]: https://hub.docker.com/r/taylorfausak/rattletrap
 [Rocket League]: https://www.rocketleague.com
