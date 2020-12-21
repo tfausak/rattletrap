@@ -3,28 +3,5 @@ platform: x64
 version: '{build}'
 clone_folder: c:/rattletrap
 
-environment:
-  GITHUB_TOKEN:
-    secure: 'L/78Qw3wSosowhhilcm/u+wHOM97yiHdXgz8pbwRD3PQVtVSB1lZQ/BDaIm8RpsA'
-  PATH: c:/bin;%PATH%
-  STACK_ROOT: c:/stack
-  TMP: c:/tmp # https://github.com/haskell/cabal/issues/5386
-
-cache:
-  - c:/bin -> tools/install-stack.ps1
-  - c:/stack -> stack.yaml
-  - c:/Users/appveyor/AppData/Local/Programs/stack -> stack.yaml
-
-install:
-  - powershell -File tools/install-stack.ps1
-  - powershell -File tools/install-github-release.ps1
-
 test_script:
-  - stack setup > nul
-  - stack build --only-dependencies --test
-  - stack build --no-run-tests --test
-  - stack build --test
-  - stack sdist
-
-on_success:
-  - stack exec runghc tools/attach-binary.hs
+  - echo nothing
