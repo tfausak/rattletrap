@@ -32,7 +32,7 @@ jobs:
           restore-keys: ${{ matrix.os }}-${{ matrix.ghc }}-
       - run: cabal build
       - run: cabal test --test-show-details direct
-      - run: runghc tools/copy-executable.hs
+      - run: cabal exec runghc tools/copy-executable.hs
       - run: strip output/rattletrap
       - uses: actions/upload-artifact@v2
         with:
