@@ -40,7 +40,7 @@ jobs:
 
       - run: cabal test --test-show-details direct
 
-      - run: cabal exec runghc tools/copy-executable.hs
+      - run: cabal exec runghc src/util/copy-executable.hs
 
       - run: strip output/rattletrap
 
