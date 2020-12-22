@@ -7,16 +7,12 @@ import Rattletrap.Decode.Common
 import Rattletrap.Decode.Dictionary
 import Rattletrap.Decode.Property
 import Rattletrap.Decode.Str
-import Rattletrap.Decode.Word32le
 import Rattletrap.Type.Header
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Version as Version
 
 decodeHeader :: Decode Header
 decodeHeader = do
-  (major, minor) <- (,) <$> decodeWord32le <*> decodeWord32le
-  Header major minor
-    <$> decodeWhen
-          (major >= Word32le 868 && minor >= Word32le 18)
-          decodeWord32le
+  Header
+    <$> Version.fromBytes
     <*> decodeStr
     <*> decodeDictionary decodeProperty
