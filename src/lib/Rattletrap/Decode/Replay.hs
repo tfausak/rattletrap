@@ -19,7 +19,7 @@ import Rattletrap.Type.Section
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 
-decodeReplay :: Bool -> Decode Replay
+decodeReplay :: Bool -> Decode FullReplay
 decodeReplay fast = do
   header <- decodeSection decodeHeader
   content <- if fast

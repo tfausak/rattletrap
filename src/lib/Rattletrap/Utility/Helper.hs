@@ -23,11 +23,11 @@ import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
 
 -- | Parses a raw replay.
-decodeReplayFile :: Bool -> Bytes.ByteString -> Either String Replay
+decodeReplayFile :: Bool -> Bytes.ByteString -> Either String FullReplay
 decodeReplayFile fast = runDecode $ decodeReplay fast
 
 -- | Encodes a replay as JSON.
-encodeReplayJson :: Replay -> Bytes.ByteString
+encodeReplayJson :: FullReplay -> Bytes.ByteString
 encodeReplayJson = LazyBytes.toStrict . Json.encodePretty' Json.defConfig
   { Json.confCompare = compare
   , Json.confIndent = Json.Spaces 2
@@ -35,11 +35,11 @@ encodeReplayJson = LazyBytes.toStrict . Json.encodePretty' Json.defConfig
   }
 
 -- | Parses a JSON replay.
-decodeReplayJson :: Bytes.ByteString -> Either String Replay
+decodeReplayJson :: Bytes.ByteString -> Either String FullReplay
 decodeReplayJson = Json.eitherDecodeStrict'
 
 -- | Encodes a raw replay.
-encodeReplayFile :: Bool -> Replay -> Bytes.ByteString
+encodeReplayFile :: Bool -> FullReplay -> Bytes.ByteString
 encodeReplayFile fast replay =
   LazyBytes.toStrict . Binary.runPut . putReplay $ if fast
     then replay { replayContent = toSection putContent defaultContent }

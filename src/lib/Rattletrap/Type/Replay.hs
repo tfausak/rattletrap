@@ -1,7 +1,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 module Rattletrap.Type.Replay
-  ( Replay(..)
+  ( FullReplay
+  , Replay(..)
   )
 where
 
@@ -10,11 +11,13 @@ import Rattletrap.Type.Content
 import Rattletrap.Type.Header
 import Rattletrap.Type.Section
 
+type FullReplay = Replay Content
+
 -- | A Rocket League replay.
-data Replay = Replay
+data Replay content = Replay
   { replayHeader :: Section Header
   -- ^ This has most of the high-level metadata.
-  , replayContent :: Section Content
+  , replayContent :: Section content
   -- ^ This has most of the low-level game data.
   } deriving (Eq, Ord, Show)
 
