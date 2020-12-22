@@ -9,11 +9,15 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Property
 import Rattletrap.Type.Str
-import qualified Rattletrap.Type.Version as Version
+import Rattletrap.Type.Word32le
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
-  { headerVersion :: Version.Version
+  { headerEngineVersion :: Word32le
+  -- ^ The "major" ("engine") version number.
+  , headerLicenseeVersion :: Word32le
+  -- ^ The "minor" ("licensee") version number.
+  , headerPatchVersion :: Maybe Word32le
   -- ^ The "patch" ("net") version number.
   , headerLabel :: Str
   -- ^ Always @TAGame.Replay_Soccar_TA@.

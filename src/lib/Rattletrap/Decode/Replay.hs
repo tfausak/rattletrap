@@ -17,7 +17,7 @@ import Rattletrap.Type.PropertyValue
 import Rattletrap.Type.Replay
 import Rattletrap.Type.Section
 import Rattletrap.Type.Str
-import qualified Rattletrap.Type.Version as Version
+import Rattletrap.Type.Word32le
 
 decodeReplay :: Bool -> Decode FullReplay
 decodeReplay fast = do
@@ -35,14 +35,14 @@ decodeReplay fast = do
 
 getVersion :: Header -> (Int, Int, Int)
 getVersion header =
-  ( fromIntegral (Version.major (headerVersion header))
-  , fromIntegral (Version.minor (headerVersion header))
+  ( fromIntegral (word32leValue (headerEngineVersion header))
+  , fromIntegral (word32leValue (headerLicenseeVersion header))
   , getPatchVersion header
   )
 
 getPatchVersion :: Header -> Int
-getPatchVersion header = case Version.patch (headerVersion header) of
-  Just version -> fromIntegral version
+getPatchVersion header = case headerPatchVersion header of
+  Just version -> fromIntegral (word32leValue version)
   Nothing ->
     case dictionaryLookup (toStr "MatchType") (headerProperties header) of
       -- This is an ugly, ugly hack to handle replays from season 2 of RLCS.

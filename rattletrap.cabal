@@ -281,7 +281,6 @@ library
     Rattletrap.Type.UniqueIdAttribute
     Rattletrap.Type.UpdatedReplication
     Rattletrap.Type.Vector
-    Rattletrap.Type.Version
     Rattletrap.Type.WeldedInfoAttribute
     Rattletrap.Type.Word32le
     Rattletrap.Type.Word64le
