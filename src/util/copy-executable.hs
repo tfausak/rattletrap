@@ -10,7 +10,7 @@ main = do
   original <- Process.readProcess "which" [ "rattletrap" ] ""
   let
     source = convert $ List.dropWhileEnd Char.isSpace original
-    directory = "output"
+    directory = "docker"
     target = FilePath.combine directory "rattletrap"
   putStrLn $ mconcat
     [ "Copying "

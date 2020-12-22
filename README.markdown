@@ -2,7 +2,6 @@
 
 [![Version badge][]][version]
 [![Build badge][]][build]
-[![Docker build badge][]][docker build]
 
 Rattletrap parses and generates [Rocket League][] replays. Parsing replays can
 be used to analyze data in order to collect high-level statistics like players
@@ -128,8 +127,6 @@ $ rattletrap -i input.replay |
 [version]: https://hackage.haskell.org/package/rattletrap
 [Build badge]: https://github.com/tfausak/rattletrap/workflows/CI/badge.svg
 [build]: https://github.com/tfausak/rattletrap/actions
-[Docker build badge]: https://img.shields.io/docker/build/taylorfausak/rattletrap.svg?label=docker&logo=docker&logoColor=white
-[docker build]: https://hub.docker.com/r/taylorfausak/rattletrap
 [Rocket League]: https://www.rocketleague.com
 [1.88]: https://www.rocketleague.com/news/patch-notes--december-update/
 [Ball Chasing]: https://ballchasing.com
