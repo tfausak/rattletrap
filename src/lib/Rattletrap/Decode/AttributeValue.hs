@@ -44,17 +44,19 @@ import Rattletrap.Decode.UniqueIdAttribute
 import Rattletrap.Decode.WeldedInfoAttribute
 import Rattletrap.Type.AttributeType
 import Rattletrap.Type.AttributeValue
-import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Str
+import Rattletrap.Type.Word32le
 
 import qualified Data.Map as Map
 
 decodeAttributeValueBits
-  :: (Int, Int, Int) -> ClassAttributeMap -> CompressedWord -> Str -> DecodeBits AttributeValue
-decodeAttributeValueBits version classes attribute name = do
-  constructor <- getAttributeType classes attribute name
+  :: (Int, Int, Int) -> Map Word32le Str -> Str -> DecodeBits AttributeValue
+decodeAttributeValueBits version objectMap name = do
+  constructor <- maybe
+    (fail ("[RT04] don't know how to get attribute value " <> show name))
+    pure
+    (Map.lookup name attributeTypes)
   case constructor of
     AttributeTypeAppliedDamage ->
       AttributeValueAppliedDamage <$> decodeAppliedDamageAttributeBits version
@@ -89,12 +91,12 @@ decodeAttributeValueBits version classes attribute name = do
       AttributeValueLoadout <$> decodeLoadoutAttributeBits
     AttributeTypeLoadoutOnline ->
       AttributeValueLoadoutOnline
-        <$> decodeLoadoutOnlineAttributeBits version (classAttributeMapObjectMap classes)
+        <$> decodeLoadoutOnlineAttributeBits version objectMap
     AttributeTypeLoadouts ->
       AttributeValueLoadouts <$> decodeLoadoutsAttributeBits
     AttributeTypeLoadoutsOnline ->
       AttributeValueLoadoutsOnline
-        <$> decodeLoadoutsOnlineAttributeBits version (classAttributeMapObjectMap classes)
+        <$> decodeLoadoutsOnlineAttributeBits version objectMap
     AttributeTypeLocation ->
       AttributeValueLocation <$> decodeLocationAttributeBits version
     AttributeTypeMusicStinger ->
@@ -124,12 +126,6 @@ decodeAttributeValueBits version classes attribute name = do
       AttributeValueUniqueId <$> decodeUniqueIdAttributeBits version
     AttributeTypeWeldedInfo ->
       AttributeValueWeldedInfo <$> decodeWeldedInfoAttributeBits version
-
-getAttributeType :: MonadFail m => ClassAttributeMap -> CompressedWord -> Str -> m AttributeType
-getAttributeType _ _ name = maybe
-  (fail ("[RT04] don't know how to get attribute value " <> show name))
-  pure
-  (Map.lookup name attributeTypes)
 
 attributeTypes :: Map Str AttributeType
 attributeTypes = Map.mapKeys toStr (Map.fromList rawAttributeTypes)

@@ -42,8 +42,7 @@ decodeAttributeBits version classes actors actor = do
   Attribute attribute name
     <$> decodeAttributeValueBits
           version
-          classes
-          attribute
+          (classAttributeMapObjectMap classes)
           name
 
 lookupAttributeMap
