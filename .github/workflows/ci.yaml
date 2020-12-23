@@ -72,7 +72,7 @@ jobs:
           asset_path: docker/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
-      - if: github.event_name == 'release' && matrix.primary
+      - if: matrix.primary
         uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
