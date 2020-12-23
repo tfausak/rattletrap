@@ -85,5 +85,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: docker
+          file: docker/Dockerfile
           tags: taylorfausak/rattletrap:commit-${{ github.sha }}
           push: true
