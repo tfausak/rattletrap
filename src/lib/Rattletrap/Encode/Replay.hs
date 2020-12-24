@@ -15,7 +15,7 @@ import qualified Data.Binary as Binary
 -- @
 -- let bytes = 'Data.Binary.Put.runPut' ('putReplay' replay)
 -- @
-putReplay :: Replay -> Binary.Put
+putReplay :: FullReplay -> Binary.Put
 putReplay replay = do
   putSection putHeader (replayHeader replay)
   putSection putContent (replayContent replay)
