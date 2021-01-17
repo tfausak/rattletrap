@@ -11,11 +11,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - { os: ubuntu-18.04, ghc: 8.10.2, cabal: 3.2.0.0, primary: true, latest: true }
-          - { os: ubuntu-18.04, ghc: 8.8.4, cabal: 3.2.0.0, primary: false, latest: false }
-          - { os: ubuntu-18.04, ghc: 8.6.5, cabal: 3.2.0.0, primary: false, latest: false }
-          - { os: macos-10.15, ghc: 8.10.2, cabal: 3.2.0.0, primary: false, latest: true }
-          - { os: windows-2019, ghc: 8.8.4, cabal: 3.2.0.0, primary: false, latest: true }
+          - { os: ubuntu-18.04, ghc: 8.10.2, cabal: 3.2.0.0, primary: true, latest: true, extension: '' }
+          - { os: ubuntu-18.04, ghc: 8.8.4, cabal: 3.2.0.0, primary: false, latest: false, extension: '' }
+          - { os: ubuntu-18.04, ghc: 8.6.5, cabal: 3.2.0.0, primary: false, latest: false, extension: '' }
+          - { os: macos-10.15, ghc: 8.10.2, cabal: 3.2.0.0, primary: false, latest: true, extension: '' }
+          - { os: windows-2019, ghc: 8.8.4, cabal: 3.2.0.0, primary: false, latest: true, extension: '.exe' }
     name: ${{ matrix.os }} ghc-${{ matrix.ghc }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -47,7 +47,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: docker/rattletrap
-          name: rattletrap-${{ matrix.os }}-ghc-${{ matrix.ghc }}-${{ github.sha }}
+          name: rattletrap-${{ matrix.os }}-ghc-${{ matrix.ghc }}-${{ github.sha }}${{ matrix.extension }}
 
       - run: cabal sdist --output-dir docker
 
@@ -68,7 +68,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           asset_content_type: application/octet-stream
-          asset_name: rattletrap-${{ github.event.release.tag_name }}-${{ matrix.os }}
+          asset_name: rattletrap-${{ github.event.release.tag_name }}-${{ matrix.os }}${{ matrix.extension }}
           asset_path: docker/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
