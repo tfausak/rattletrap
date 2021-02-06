@@ -37,6 +37,7 @@ rawParentClasses =
   , ("TAGame.CarComponent_TA", "Engine.ReplicationInfo")
   , ("TAGame.CrowdActor_TA", "Engine.ReplicationInfo")
   , ("TAGame.CrowdManager_TA", "Engine.ReplicationInfo")
+  , ("TAGame.GameEvent_Football_TA", "TAGame.GameEvent_Soccar_TA")
   , ("TAGame.GameEvent_GodBall_TA", "TAGame.GameEvent_Soccar_TA")
   , ("TAGame.GameEvent_Season_TA", "TAGame.GameEvent_Soccar_TA")
   , ("TAGame.GameEvent_Soccar_TA", "TAGame.GameEvent_Team_TA")
@@ -53,6 +54,7 @@ rawParentClasses =
   , ("TAGame.SpecialPickup_BallFreeze_TA", "TAGame.SpecialPickup_Targeted_TA")
   , ("TAGame.SpecialPickup_BallGravity_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.SpecialPickup_BallLasso_TA", "TAGame.SpecialPickup_GrapplingHook_TA")
+  , ("TAGame.SpecialPickup_Football_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.SpecialPickup_BallVelcro_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.SpecialPickup_Batarang_TA", "TAGame.SpecialPickup_BallLasso_TA")
   , ("TAGame.SpecialPickup_BoostOverride_TA", "TAGame.SpecialPickup_Targeted_TA")
@@ -99,6 +101,7 @@ rawClassesWithLocation =
   , "TAGame.CarComponent_Jump_TA"
   , "TAGame.Default__CameraSettingsActor_TA"
   , "TAGame.Default__PRI_TA"
+  , "TAGame.GameEvent_Football_TA"
   , "TAGame.GameEvent_GodBall_TA"
   , "TAGame.GameEvent_Season_TA"
   , "TAGame.GameEvent_Soccar_TA"
@@ -115,6 +118,7 @@ rawClassesWithLocation =
   , "TAGame.SpecialPickup_BallVelcro_TA"
   , "TAGame.SpecialPickup_Batarang_TA"
   , "TAGame.SpecialPickup_BoostOverride_TA"
+  , "TAGame.SpecialPickup_Football_TA"
   , "TAGame.SpecialPickup_GrapplingHook_TA"
   , "TAGame.SpecialPickup_HauntedBallBeam_TA"
   , "TAGame.SpecialPickup_HitForce_TA"
@@ -158,6 +162,7 @@ rawObjectClasses =
   , ("Archetypes.Ball.Ball_Beachball", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Breakout", "TAGame.Ball_Breakout_TA")
   , ("Archetypes.Ball.Ball_Default", "TAGame.Ball_TA")
+  , ("Archetypes.Ball.Ball_Football", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_God", "TAGame.Ball_God_TA")
   , ("Archetypes.Ball.Ball_Haunted", "TAGame.Ball_Haunted_TA")
   , ("Archetypes.Ball.Ball_Puck", "TAGame.Ball_TA")
@@ -190,6 +195,7 @@ rawObjectClasses =
   , ("Archetypes.SpecialPickups.SpecialPickup_Batarang", "TAGame.SpecialPickup_Batarang_TA")
   , ("Archetypes.SpecialPickups.SpecialPickup_BoostOverride", "TAGame.SpecialPickup_BoostOverride_TA")
   , ("Archetypes.SpecialPickups.SpecialPickup_CarSpring", "TAGame.SpecialPickup_BallCarSpring_TA")
+  , ("Archetypes.SpecialPickups.SpecialPickup_Football", "TAGame.SpecialPickup_Football_TA")
   , ("Archetypes.SpecialPickups.SpecialPickup_GravityWell", "TAGame.SpecialPickup_BallGravity_TA")
   , ("Archetypes.SpecialPickups.SpecialPickup_HauntedBallBeam", "TAGame.SpecialPickup_HauntedBallBeam_TA")
   , ("Archetypes.SpecialPickups.SpecialPickup_Rugby", "TAGame.SpecialPickup_Rugby_TA")
@@ -200,6 +206,8 @@ rawObjectClasses =
   , ("Archetypes.Teams.Team1", "TAGame.Team_Soccar_TA")
   , ("GameInfo_Basketball.GameInfo.GameInfo_Basketball:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Breakout.GameInfo.GameInfo_Breakout:GameReplicationInfoArchetype", "TAGame.GRI_TA")
+  , ("GameInfo_FootBall.GameInfo.GameInfo_FootBall:Archetype", "TAGame.GameEvent_Football_TA")
+  , ("GameInfo_FootBall.GameInfo.GameInfo_FootBall:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("gameinfo_godball.GameInfo.gameinfo_godball:Archetype", "TAGame.GameEvent_GodBall_TA")
   , ("gameinfo_godball.GameInfo.gameinfo_godball:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("Gameinfo_Hockey.GameInfo.Gameinfo_Hockey:GameReplicationInfoArchetype", "TAGame.GRI_TA")
@@ -381,11 +389,14 @@ rawAttributeTypes =
   , ("TAGame.RBActor_TA:bReplayActor", AttributeTypeBoolean)
   , ("TAGame.RBActor_TA:ReplicatedRBState", AttributeTypeRigidBodyState)
   , ("TAGame.RBActor_TA:WeldedInfo", AttributeTypeWeldedInfo)
+  , ("TAGame.RumblePickups_TA:AttachedPickup", AttributeTypeFlaggedInt)
+  , ("TAGame.RumblePickups_TA:ConcurrentItemCount", AttributeTypeInt)
   , ("TAGame.SpecialPickup_BallFreeze_TA:RepOrigSpeed", AttributeTypeFloat)
   , ("TAGame.SpecialPickup_BallVelcro_TA:AttachTime", AttributeTypeFloat)
   , ("TAGame.SpecialPickup_BallVelcro_TA:bBroken", AttributeTypeBoolean)
   , ("TAGame.SpecialPickup_BallVelcro_TA:bHit", AttributeTypeBoolean)
   , ("TAGame.SpecialPickup_BallVelcro_TA:BreakTime", AttributeTypeFloat)
+  , ("TAGame.SpecialPickup_Football_TA:WeldedBall", AttributeTypeFlaggedInt)
   , ("TAGame.SpecialPickup_Rugby_TA:bBallWelded", AttributeTypeBoolean)
   , ("TAGame.SpecialPickup_Targeted_TA:Targeted", AttributeTypeFlaggedInt)
   , ("TAGame.Team_Soccar_TA:GameScore", AttributeTypeInt)

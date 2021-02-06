@@ -147,6 +147,7 @@ replays =
   , ("7256", "special edition")
   , ("75ce", "primary and secondary titles")
   , ("7bf6", "an online loadouts attribute")
+  , ("81d1", "gridiron")
   , ("89cb", "remote user data")
   , ("8ae5", "new painted items")
   , ("92a6", "with server performance state")
