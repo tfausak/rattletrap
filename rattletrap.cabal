@@ -26,6 +26,7 @@ library
     base >= 4.14.1 && < 4.15
     , aeson >= 1.5.5 && < 1.6
     , aeson-pretty >= 0.8.8 && < 0.9
+    , array >= 0.5.4 && < 0.6
     , binary >= 0.8.8 && < 0.9
     , bytestring >= 0.10.12 && < 0.11
     , caerbannog >= 0.6.0 && < 0.7

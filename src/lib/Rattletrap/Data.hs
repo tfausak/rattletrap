@@ -5,10 +5,13 @@ module Rattletrap.Data
   , rawClassesWithRotation
   , rawObjectClasses
   , rawAttributeTypes
-  , rawCrc32Table
+  , crc32Table
   ) where
 
 import Rattletrap.Type.AttributeType
+
+import qualified Data.Array.Unboxed as Array
+import qualified Data.Word as Word
 
 rawParentClasses :: [(String, String)]
 rawParentClasses =
@@ -414,8 +417,8 @@ rawAttributeTypes =
   , ("TAGame.VehiclePickup_TA:ReplicatedPickupData", AttributeTypePickup)
   ]
 
-rawCrc32Table :: Integral a => [a]
-rawCrc32Table =
+crc32Table :: Array.Array Word.Word8 Word.Word32
+crc32Table = Array.listArray (0, 255)
   [ 0x00000000
   , 0x04c11db7
   , 0x09823b6e
