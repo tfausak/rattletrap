@@ -38,19 +38,9 @@ library
     , text >= 1.2.4 && < 1.3
     , transformers >= 0.5.6 && < 0.6
   default-language: Haskell2010
-  exposed-modules: Rattletrap
-  ghc-options:
-    -Weverything
-    -Wno-all-missed-specialisations
-    -Wno-implicit-prelude
-    -Wno-missing-deriving-strategies
-    -Wno-missing-exported-signatures
-    -Wno-missing-import-lists
-    -Wno-safe
-    -Wno-unsafe
-  hs-source-dirs: src/lib
-  other-modules:
+  exposed-modules:
     Paths_rattletrap
+    Rattletrap
     Rattletrap.Console.Main
     Rattletrap.Data
     Rattletrap.Decode.AppliedDamageAttribute
@@ -75,8 +65,8 @@ library
     Rattletrap.Decode.EnumAttribute
     Rattletrap.Decode.ExplosionAttribute
     Rattletrap.Decode.ExtendedExplosionAttribute
-    Rattletrap.Decode.FlaggedIntAttribute
     Rattletrap.Decode.FlaggedByteAttribute
+    Rattletrap.Decode.FlaggedIntAttribute
     Rattletrap.Decode.Float32le
     Rattletrap.Decode.FloatAttribute
     Rattletrap.Decode.Frame
@@ -152,8 +142,8 @@ library
     Rattletrap.Encode.EnumAttribute
     Rattletrap.Encode.ExplosionAttribute
     Rattletrap.Encode.ExtendedExplosionAttribute
-    Rattletrap.Encode.FlaggedIntAttribute
     Rattletrap.Encode.FlaggedByteAttribute
+    Rattletrap.Encode.FlaggedIntAttribute
     Rattletrap.Encode.Float32le
     Rattletrap.Encode.FloatAttribute
     Rattletrap.Encode.Frame
@@ -231,8 +221,8 @@ library
     Rattletrap.Type.EnumAttribute
     Rattletrap.Type.ExplosionAttribute
     Rattletrap.Type.ExtendedExplosionAttribute
-    Rattletrap.Type.FlaggedIntAttribute
     Rattletrap.Type.FlaggedByteAttribute
+    Rattletrap.Type.FlaggedIntAttribute
     Rattletrap.Type.Float32le
     Rattletrap.Type.FloatAttribute
     Rattletrap.Type.Frame
@@ -289,6 +279,16 @@ library
     Rattletrap.Utility.Bytes
     Rattletrap.Utility.Crc
     Rattletrap.Utility.Helper
+  ghc-options:
+    -Weverything
+    -Wno-all-missed-specialisations
+    -Wno-implicit-prelude
+    -Wno-missing-deriving-strategies
+    -Wno-missing-exported-signatures
+    -Wno-missing-import-lists
+    -Wno-safe
+    -Wno-unsafe
+  hs-source-dirs: src/lib
 
   if impl(ghc >= 8.10)
     ghc-options:
