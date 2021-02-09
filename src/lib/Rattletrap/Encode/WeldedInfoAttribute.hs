@@ -1,7 +1,6 @@
 module Rattletrap.Encode.WeldedInfoAttribute
   ( putWeldedInfoAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Float32le
 import Rattletrap.Encode.Int32le

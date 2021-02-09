@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.ExplosionAttribute
   ( ExplosionAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le
@@ -13,6 +12,7 @@ data ExplosionAttribute = ExplosionAttribute
   { explosionAttributeFlag :: Bool
   , explosionAttributeActorId :: Int32le
   , explosionAttributeLocation :: Vector
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''ExplosionAttribute)

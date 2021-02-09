@@ -1,7 +1,6 @@
 module Rattletrap.Encode.PrivateMatchSettingsAttribute
   ( putPrivateMatchSettingsAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Str
 import Rattletrap.Encode.Word32le

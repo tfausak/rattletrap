@@ -1,7 +1,6 @@
 module Rattletrap.Encode.Dictionary
   ( putDictionary
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Str
 import Rattletrap.Type.Dictionary

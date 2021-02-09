@@ -1,8 +1,7 @@
 module Rattletrap.Encode.Int32le
   ( putInt32
   , putInt32Bits
-  )
-where
+  ) where
 
 import Rattletrap.Type.Int32le
 import Rattletrap.Utility.Bytes

@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Message
   ( Message(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
@@ -16,6 +15,7 @@ data Message = Message
   -- ^ The primary player's name.
   , messageValue :: Str
   -- ^ The content of the message.
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Message)

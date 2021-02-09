@@ -1,7 +1,6 @@
 module Rattletrap.Encode.LoadoutsOnlineAttribute
   ( putLoadoutsOnlineAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.LoadoutOnlineAttribute
 import Rattletrap.Type.LoadoutsOnlineAttribute

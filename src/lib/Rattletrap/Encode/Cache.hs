@@ -1,7 +1,6 @@
 module Rattletrap.Encode.Cache
   ( putCache
-  )
-where
+  ) where
 
 import Rattletrap.Encode.AttributeMapping
 import Rattletrap.Encode.List

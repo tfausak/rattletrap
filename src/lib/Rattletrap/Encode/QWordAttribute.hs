@@ -1,7 +1,6 @@
 module Rattletrap.Encode.QWordAttribute
   ( putQWordAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Word64le
 import Rattletrap.Type.QWordAttribute

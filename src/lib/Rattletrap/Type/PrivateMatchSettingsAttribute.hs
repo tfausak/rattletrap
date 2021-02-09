@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.PrivateMatchSettingsAttribute
   ( PrivateMatchSettingsAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
@@ -16,6 +15,7 @@ data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
   , privateMatchSettingsAttributeGameName :: Str
   , privateMatchSettingsAttributePassword :: Str
   , privateMatchSettingsAttributeFlag :: Bool
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''PrivateMatchSettingsAttribute)

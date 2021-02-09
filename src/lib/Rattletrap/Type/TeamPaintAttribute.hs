@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.TeamPaintAttribute
   ( TeamPaintAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
@@ -15,6 +14,7 @@ data TeamPaintAttribute = TeamPaintAttribute
   , teamPaintAttributeAccentColor :: Word8le
   , teamPaintAttributePrimaryFinish :: Word32le
   , teamPaintAttributeAccentFinish :: Word32le
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''TeamPaintAttribute)

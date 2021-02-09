@@ -1,7 +1,6 @@
 module Rattletrap.Decode.FlaggedByteAttribute
   ( decodeFlaggedByteAttributeBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word8le

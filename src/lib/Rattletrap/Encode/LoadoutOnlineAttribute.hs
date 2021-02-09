@@ -1,7 +1,6 @@
 module Rattletrap.Encode.LoadoutOnlineAttribute
   ( putLoadoutOnlineAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.ProductAttribute
 import Rattletrap.Encode.Word8le

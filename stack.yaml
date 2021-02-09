@@ -1,3 +1,4 @@
 resolver: lts-17.0
 extra-deps:
   - caerbannog-0.6.0.4
+  - data-tree-print-0.1.0.2

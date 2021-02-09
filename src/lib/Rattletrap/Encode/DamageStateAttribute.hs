@@ -1,7 +1,6 @@
 module Rattletrap.Encode.DamageStateAttribute
   ( putDamageStateAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Int32le
 import Rattletrap.Encode.Vector

@@ -1,7 +1,6 @@
 module Rattletrap.Decode.MusicStingerAttribute
   ( decodeMusicStingerAttributeBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word32le

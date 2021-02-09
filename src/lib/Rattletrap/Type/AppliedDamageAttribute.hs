@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.AppliedDamageAttribute
   ( AppliedDamageAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le
@@ -15,6 +14,7 @@ data AppliedDamageAttribute = AppliedDamageAttribute
   , appliedDamageAttributeLocation :: Vector
   , appliedDamageAttributeUnknown3 :: Int32le
   , appliedDamageAttributeUnknown4 :: Int32le
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''AppliedDamageAttribute)

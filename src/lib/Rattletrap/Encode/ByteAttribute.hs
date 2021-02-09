@@ -1,7 +1,6 @@
 module Rattletrap.Encode.ByteAttribute
   ( putByteAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Word8le
 import Rattletrap.Type.ByteAttribute

@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.DemolishAttribute
   ( DemolishAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Vector
@@ -16,6 +15,7 @@ data DemolishAttribute = DemolishAttribute
   , demolishAttributeVictimActorId :: Word32le
   , demolishAttributeAttackerVelocity :: Vector
   , demolishAttributeVictimVelocity :: Vector
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''DemolishAttribute)

@@ -1,7 +1,6 @@
 module Rattletrap.Encode.Quaternion
   ( putQuaternion
-  )
-where
+  ) where
 
 import Rattletrap.Encode.CompressedWord
 import Rattletrap.Type.CompressedWord

@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.LoadoutAttribute
   ( LoadoutAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
@@ -28,6 +27,7 @@ data LoadoutAttribute = LoadoutAttribute
   , loadoutAttributeUnknown4 :: Maybe Word32le
   , loadoutAttributeUnknown5 :: Maybe Word32le
   , loadoutAttributeUnknown6 :: Maybe Word32le
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''LoadoutAttribute)

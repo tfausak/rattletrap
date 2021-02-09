@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.KeyFrame
   ( KeyFrame(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Float32le
@@ -16,6 +15,7 @@ data KeyFrame = KeyFrame
   -- ^ The frame number of this key frame, starting from 0.
   , keyFramePosition :: Word32le
   -- ^ The bit position of this key frame in the stream.
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''KeyFrame)

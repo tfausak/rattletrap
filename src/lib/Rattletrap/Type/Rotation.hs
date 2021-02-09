@@ -2,12 +2,11 @@
 
 module Rattletrap.Type.Rotation
   ( Rotation(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Quaternion
 import Rattletrap.Type.CompressedWordVector
+import Rattletrap.Type.Quaternion
 
 data Rotation
   = RotationCompressedWordVector CompressedWordVector

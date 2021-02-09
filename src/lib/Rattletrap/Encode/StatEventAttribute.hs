@@ -1,7 +1,6 @@
 module Rattletrap.Encode.StatEventAttribute
   ( putStatEventAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Int32le
 import Rattletrap.Type.StatEventAttribute

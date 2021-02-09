@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Int32le
   ( Int32le(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 

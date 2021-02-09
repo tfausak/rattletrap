@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Frame
   ( Frame(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Float32le
@@ -16,6 +15,7 @@ data Frame = Frame
   -- ^ Time in seconds since the last frame. Usually about 0.03 since there
   -- are 30 frames per second.
   , frameReplications :: [Replication]
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Frame)

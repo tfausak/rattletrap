@@ -1,7 +1,6 @@
 module Rattletrap.Decode.Int64le
   ( decodeInt64leBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Type.Int64le

@@ -1,7 +1,6 @@
 module Rattletrap.Decode.Int8Vector
   ( decodeInt8VectorBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int8le

@@ -1,8 +1,7 @@
 module Rattletrap.Decode.Int32le
   ( decodeInt32le
   , decodeInt32leBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Type.Int32le

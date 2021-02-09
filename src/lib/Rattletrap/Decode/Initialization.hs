@@ -1,7 +1,6 @@
 module Rattletrap.Decode.Initialization
   ( decodeInitializationBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int8Vector

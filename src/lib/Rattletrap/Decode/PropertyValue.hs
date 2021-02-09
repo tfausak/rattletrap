@@ -1,7 +1,6 @@
 module Rattletrap.Decode.PropertyValue
   ( decodePropertyValue
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Dictionary

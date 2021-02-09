@@ -1,7 +1,6 @@
 module Rattletrap.Decode.LoadoutOnlineAttribute
   ( decodeLoadoutOnlineAttributeBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.ProductAttribute

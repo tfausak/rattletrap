@@ -1,13 +1,12 @@
 module Rattletrap.Decode.ProductAttribute
   ( decodeProductAttributesBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.CompressedWord
+import Rattletrap.Decode.Str
 import Rattletrap.Decode.Word32le
 import Rattletrap.Decode.Word8le
-import Rattletrap.Decode.Str
 import Rattletrap.Type.Common
 import Rattletrap.Type.ProductAttribute
 import Rattletrap.Type.Str

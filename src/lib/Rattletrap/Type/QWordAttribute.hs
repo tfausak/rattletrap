@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.QWordAttribute
   ( QWordAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word64le

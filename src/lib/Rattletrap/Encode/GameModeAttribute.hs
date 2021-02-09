@@ -1,7 +1,6 @@
 module Rattletrap.Encode.GameModeAttribute
   ( putGameModeAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Type.GameModeAttribute
 

@@ -1,8 +1,7 @@
 module Rattletrap.Encode.Str
   ( putText
   , putTextBits
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Int32le
 import Rattletrap.Type.Common

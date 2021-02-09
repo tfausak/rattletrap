@@ -1,7 +1,6 @@
 module Rattletrap.Encode.Replay
   ( putReplay
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Content
 import Rattletrap.Encode.Header

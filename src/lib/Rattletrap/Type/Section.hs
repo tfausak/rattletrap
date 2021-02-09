@@ -3,8 +3,7 @@
 module Rattletrap.Type.Section
   ( Section(..)
   , toSection
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
@@ -26,7 +25,8 @@ data Section a = Section
   -- ^ read only
   , sectionBody :: a
   -- ^ The actual content in the section.
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Section)
 

@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Word32le
   ( Word32le(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 

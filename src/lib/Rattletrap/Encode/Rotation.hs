@@ -1,7 +1,6 @@
 module Rattletrap.Encode.Rotation
   ( putRotation
-  )
-where
+  ) where
 
 import Rattletrap.Encode.CompressedWordVector
 import Rattletrap.Encode.Quaternion

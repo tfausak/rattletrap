@@ -1,7 +1,6 @@
 module Rattletrap.Encode.FlaggedByteAttribute
   ( putFlaggedByteAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Word8le
 import Rattletrap.Type.FlaggedByteAttribute

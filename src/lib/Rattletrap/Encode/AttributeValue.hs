@@ -1,7 +1,6 @@
 module Rattletrap.Encode.AttributeValue
   ( putAttributeValue
-  )
-where
+  ) where
 
 import Rattletrap.Encode.AppliedDamageAttribute
 import Rattletrap.Encode.BooleanAttribute
@@ -14,8 +13,8 @@ import Rattletrap.Encode.DemolishAttribute
 import Rattletrap.Encode.EnumAttribute
 import Rattletrap.Encode.ExplosionAttribute
 import Rattletrap.Encode.ExtendedExplosionAttribute
-import Rattletrap.Encode.FlaggedIntAttribute
 import Rattletrap.Encode.FlaggedByteAttribute
+import Rattletrap.Encode.FlaggedIntAttribute
 import Rattletrap.Encode.FloatAttribute
 import Rattletrap.Encode.GameModeAttribute
 import Rattletrap.Encode.Int64Attribute

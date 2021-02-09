@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.EnumAttribute
   ( EnumAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 

@@ -6,8 +6,7 @@ module Rattletrap.Data
   , rawObjectClasses
   , rawAttributeTypes
   , rawCrc32Table
-  )
-where
+  ) where
 
 import Rattletrap.Type.AttributeType
 

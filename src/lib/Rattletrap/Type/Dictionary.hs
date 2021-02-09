@@ -1,8 +1,7 @@
 module Rattletrap.Type.Dictionary
   ( Dictionary(..)
   , dictionaryLookup
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str

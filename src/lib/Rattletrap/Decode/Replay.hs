@@ -1,7 +1,6 @@
 module Rattletrap.Decode.Replay
   ( decodeReplay
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Content

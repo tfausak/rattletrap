@@ -1,7 +1,6 @@
 module Rattletrap.Decode.RemoteId
   ( decodeRemoteIdBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Str

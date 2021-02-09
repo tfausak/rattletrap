@@ -1,7 +1,6 @@
 module Rattletrap.Encode.UpdatedReplication
   ( putUpdatedReplication
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Attribute
 import Rattletrap.Type.UpdatedReplication

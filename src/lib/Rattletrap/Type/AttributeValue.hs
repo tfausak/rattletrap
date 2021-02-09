@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.AttributeValue
   ( AttributeValue(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.AppliedDamageAttribute
 import Rattletrap.Type.BooleanAttribute
@@ -17,8 +16,8 @@ import Rattletrap.Type.DemolishAttribute
 import Rattletrap.Type.EnumAttribute
 import Rattletrap.Type.ExplosionAttribute
 import Rattletrap.Type.ExtendedExplosionAttribute
-import Rattletrap.Type.FlaggedIntAttribute
 import Rattletrap.Type.FlaggedByteAttribute
+import Rattletrap.Type.FlaggedIntAttribute
 import Rattletrap.Type.FloatAttribute
 import Rattletrap.Type.GameModeAttribute
 import Rattletrap.Type.Int64Attribute

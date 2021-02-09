@@ -1,8 +1,7 @@
 module Rattletrap.Console.Main
   ( main
   , rattletrap
-  )
-where
+  ) where
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Json
@@ -38,7 +37,8 @@ rattletrap name arguments = do
   let encode = getEncoder config
   putOutput config (encode replay)
 
-getDecoder :: Config -> Bytes.ByteString -> Either String Rattletrap.FullReplay
+getDecoder
+  :: Config -> Bytes.ByteString -> Either String Rattletrap.FullReplay
 getDecoder config = case getMode config of
   ModeDecode -> Rattletrap.decodeReplayFile $ configFast config
   ModeEncode -> Rattletrap.decodeReplayJson
@@ -161,7 +161,8 @@ data Config = Config
   , configMode :: Maybe Mode
   , configOutput :: Maybe String
   , configVersion :: Bool
-  } deriving (Show)
+  }
+  deriving Show
 
 defaultConfig :: Config
 defaultConfig = Config

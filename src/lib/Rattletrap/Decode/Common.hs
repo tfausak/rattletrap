@@ -17,8 +17,7 @@ module Rattletrap.Decode.Common
   , Binary.getWord32le
   , Binary.getWord64le
   , BinaryBits.getBool
-  )
-where
+  ) where
 
 import qualified Control.Applicative as Applicative
 import qualified Control.Monad as Monad

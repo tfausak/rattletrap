@@ -1,7 +1,6 @@
 module Rattletrap.Decode.CompressedWord
   ( decodeCompressedWordBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Type.CompressedWord

@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.RigidBodyStateAttribute
   ( RigidBodyStateAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Rotation
@@ -15,6 +14,7 @@ data RigidBodyStateAttribute = RigidBodyStateAttribute
   , rigidBodyStateAttributeRotation :: Rotation
   , rigidBodyStateAttributeLinearVelocity :: Maybe Vector
   , rigidBodyStateAttributeAngularVelocity :: Maybe Vector
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''RigidBodyStateAttribute)

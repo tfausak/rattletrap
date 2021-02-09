@@ -9,8 +9,7 @@ module Rattletrap.Type.ClassAttributeMap
   , getName
   , getObjectName
   , makeClassAttributeMap
-  )
-where
+  ) where
 
 import Rattletrap.Data
 import Rattletrap.Type.AttributeMapping
@@ -40,11 +39,12 @@ data ClassAttributeMap = ClassAttributeMap
   -- ^ A map from object IDs to their names.
   , classAttributeMapObjectClassMap :: Map Word32le Word32le
   -- ^ A map from object IDs to their class IDs.
-    , classAttributeMapValue :: Map Word32le (Map Word32le Word32le)
+  , classAttributeMapValue :: Map Word32le (Map Word32le Word32le)
   -- ^ A map from class IDs to a map from attribute stream IDs to attribute
   -- IDs.
   , classAttributeMapNameMap :: IntMap.IntMap Str
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 type Bimap l r = (Map l r, Map r l)
 

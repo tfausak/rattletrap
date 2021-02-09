@@ -1,7 +1,6 @@
 module Rattletrap.Encode.CustomDemolishAttribute
   ( putCustomDemolishAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.DemolishAttribute
 import Rattletrap.Encode.Int32le

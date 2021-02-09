@@ -1,7 +1,6 @@
 module Rattletrap.Encode.ExtendedExplosionAttribute
   ( putExtendedExplosionAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.ExplosionAttribute
 import Rattletrap.Encode.FlaggedIntAttribute

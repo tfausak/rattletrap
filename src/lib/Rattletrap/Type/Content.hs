@@ -3,8 +3,7 @@
 module Rattletrap.Type.Content
   ( Content(..)
   , defaultContent
-  )
-where
+  ) where
 
 import Rattletrap.Type.Cache
 import Rattletrap.Type.ClassMapping
@@ -50,7 +49,8 @@ data Content = Content
   -- ^ A list of classes along with their parent classes and attributes. Used
   -- for the 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
   , contentUnknown :: [Word8]
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Content)
 

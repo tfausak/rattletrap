@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.BooleanAttribute
   ( BooleanAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 

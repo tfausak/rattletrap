@@ -1,7 +1,6 @@
 module Rattletrap.Encode.Attribute
   ( putAttributes
-  )
-where
+  ) where
 
 import Rattletrap.Encode.AttributeValue
 import Rattletrap.Encode.CompressedWord

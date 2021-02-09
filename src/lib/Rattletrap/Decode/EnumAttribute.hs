@@ -1,7 +1,6 @@
 module Rattletrap.Decode.EnumAttribute
   ( decodeEnumAttributeBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Type.EnumAttribute

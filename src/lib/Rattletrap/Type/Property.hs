@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Property
   ( Property(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.PropertyValue
@@ -15,6 +14,7 @@ data Property = Property
   , propertySize :: Word64le
   -- ^ Not used.
   , propertyValue :: PropertyValue Property
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Property)

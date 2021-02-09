@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.WeldedInfoAttribute
   ( WeldedInfoAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Float32le
@@ -17,6 +16,7 @@ data WeldedInfoAttribute = WeldedInfoAttribute
   , weldedInfoAttributeOffset :: Vector
   , weldedInfoAttributeMass :: Float32le
   , weldedInfoAttributeRotation :: Int8Vector
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''WeldedInfoAttribute)

@@ -1,7 +1,6 @@
 module Rattletrap.Encode.FlaggedIntAttribute
   ( putFlaggedIntAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Int32le
 import Rattletrap.Type.FlaggedIntAttribute

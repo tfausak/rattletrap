@@ -1,7 +1,6 @@
 module Rattletrap.Decode.Int8le
   ( decodeInt8leBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Type.Int8le

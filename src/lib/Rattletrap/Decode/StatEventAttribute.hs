@@ -1,7 +1,6 @@
 module Rattletrap.Decode.StatEventAttribute
   ( decodeStatEventAttributeBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Int32le

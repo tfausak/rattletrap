@@ -1,7 +1,6 @@
 module Rattletrap.Encode.TitleAttribute
   ( putTitleAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Word32le
 import Rattletrap.Type.TitleAttribute

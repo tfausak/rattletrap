@@ -3,8 +3,7 @@
 module Rattletrap.Type.ProductAttribute
   ( ProductAttribute(..)
   , ProductAttributeValue(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
@@ -30,6 +29,7 @@ data ProductAttribute = ProductAttribute
   , productAttributeObjectName :: Maybe Str
   -- ^ read-only
   , productAttributeValue :: ProductAttributeValue
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''ProductAttribute)

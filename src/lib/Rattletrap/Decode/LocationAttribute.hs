@@ -1,7 +1,6 @@
 module Rattletrap.Decode.LocationAttribute
   ( decodeLocationAttributeBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Vector

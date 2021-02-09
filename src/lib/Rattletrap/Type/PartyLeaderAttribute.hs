@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.PartyLeaderAttribute
   ( PartyLeaderAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.RemoteId
@@ -12,6 +11,7 @@ import Rattletrap.Type.Word8le
 data PartyLeaderAttribute = PartyLeaderAttribute
   { partyLeaderAttributeSystemId :: Word8le
   , partyLeaderAttributeId :: Maybe (RemoteId, Word8le)
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''PartyLeaderAttribute)

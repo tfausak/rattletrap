@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Mark
   ( Mark(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
@@ -14,6 +13,7 @@ data Mark = Mark
   -- ^ Which type of mark this is, like @Team0Goal@.
   , markFrame :: Word32le
   -- ^ Which frame this mark belongs to, starting from 0.
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Mark)

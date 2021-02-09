@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.CustomDemolishAttribute
   ( CustomDemolishAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.DemolishAttribute
@@ -13,6 +12,7 @@ data CustomDemolishAttribute = CustomDemolishAttribute
   { customDemolishAttributeFlag :: Bool
   , customDemolishAttributeId :: Int32le
   , customDemolishAttributeDemolish :: DemolishAttribute
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''CustomDemolishAttribute)

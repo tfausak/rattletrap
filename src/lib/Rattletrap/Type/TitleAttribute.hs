@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.TitleAttribute
   ( TitleAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
@@ -17,6 +16,7 @@ data TitleAttribute = TitleAttribute
   , titleAttributeUnknown6 :: Word32le
   , titleAttributeUnknown7 :: Word32le
   , titleAttributeUnknown8 :: Bool
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''TitleAttribute)

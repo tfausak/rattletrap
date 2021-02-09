@@ -1,7 +1,6 @@
 module Rattletrap.Decode.DestroyedReplication
   ( decodeDestroyedReplicationBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Type.DestroyedReplication

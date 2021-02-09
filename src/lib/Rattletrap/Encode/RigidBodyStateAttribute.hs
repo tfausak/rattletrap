@@ -1,7 +1,6 @@
 module Rattletrap.Encode.RigidBodyStateAttribute
   ( putRigidBodyStateAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Rotation
 import Rattletrap.Encode.Vector

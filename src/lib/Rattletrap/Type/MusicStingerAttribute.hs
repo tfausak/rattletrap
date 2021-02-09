@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.MusicStingerAttribute
   ( MusicStingerAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
@@ -13,6 +12,7 @@ data MusicStingerAttribute = MusicStingerAttribute
   { musicStingerAttributeFlag :: Bool
   , musicStingerAttributeCue :: Word32le
   , musicStingerAttributeTrigger :: Word8le
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''MusicStingerAttribute)

@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Int64Attribute
   ( Int64Attribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int64le

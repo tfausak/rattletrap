@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.GameModeAttribute
   ( GameModeAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 
@@ -14,6 +13,7 @@ data GameModeAttribute = GameModeAttribute
   -- 'Int8' because it just gets passed to functions that expect 'Int's.
   -- There's no reason to do a bunch of conversions.
   , gameModeAttributeWord :: Word8
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''GameModeAttribute)

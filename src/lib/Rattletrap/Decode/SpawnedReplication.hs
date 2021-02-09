@@ -1,7 +1,6 @@
 module Rattletrap.Decode.SpawnedReplication
   ( decodeSpawnedReplicationBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Initialization

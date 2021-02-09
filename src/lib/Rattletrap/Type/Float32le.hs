@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Float32le
   ( Float32le(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 

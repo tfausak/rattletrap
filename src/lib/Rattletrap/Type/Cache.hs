@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Cache
   ( Cache(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.AttributeMapping
 import Rattletrap.Type.Common
@@ -15,6 +14,7 @@ data Cache = Cache
   , cacheParentCacheId :: Word32le
   , cacheCacheId :: Word32le
   , cacheAttributeMappings :: List AttributeMapping
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Cache)

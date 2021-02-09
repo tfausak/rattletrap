@@ -1,7 +1,6 @@
 module Rattletrap.Decode.PartyLeaderAttribute
   ( decodePartyLeaderAttributeBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.RemoteId

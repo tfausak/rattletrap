@@ -1,11 +1,10 @@
 module Rattletrap.Decode.PickupAttributeNew
   ( decodePickupAttributeNewBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
-import Rattletrap.Decode.Word8le
 import Rattletrap.Decode.Word32le
+import Rattletrap.Decode.Word8le
 import Rattletrap.Type.PickupAttributeNew
 
 decodePickupAttributeNewBits :: DecodeBits PickupAttributeNew

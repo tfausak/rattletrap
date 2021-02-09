@@ -1,8 +1,7 @@
 module Rattletrap.Encode.Word32le
   ( putWord32
   , putWord32Bits
-  )
-where
+  ) where
 
 import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes

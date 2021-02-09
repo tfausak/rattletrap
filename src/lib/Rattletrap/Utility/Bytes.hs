@@ -2,8 +2,7 @@ module Rattletrap.Utility.Bytes
   ( encodeLatin1
   , padBytes
   , reverseBytes
-  )
-where
+  ) where
 
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as Bytes

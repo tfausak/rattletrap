@@ -1,7 +1,6 @@
 module Rattletrap.Encode.RemoteId
   ( putRemoteId
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Common
 import Rattletrap.Encode.Str

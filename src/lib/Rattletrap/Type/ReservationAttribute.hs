@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.ReservationAttribute
   ( ReservationAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
@@ -17,6 +16,7 @@ data ReservationAttribute = ReservationAttribute
   , reservationAttributeUnknown1 :: Bool
   , reservationAttributeUnknown2 :: Bool
   , reservationAttributeUnknown3 :: Maybe Word8
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''ReservationAttribute)

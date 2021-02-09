@@ -1,8 +1,7 @@
 module Rattletrap.Encode.Word64le
   ( putWord64
   , putWord64Bits
-  )
-where
+  ) where
 
 import Rattletrap.Type.Word64le
 import Rattletrap.Utility.Bytes

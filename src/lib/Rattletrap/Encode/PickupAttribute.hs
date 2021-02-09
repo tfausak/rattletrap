@@ -1,7 +1,6 @@
 module Rattletrap.Encode.PickupAttribute
   ( putPickupAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Word32le
 import Rattletrap.Type.PickupAttribute

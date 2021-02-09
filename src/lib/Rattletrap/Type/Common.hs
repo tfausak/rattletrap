@@ -9,8 +9,7 @@ module Rattletrap.Type.Common
   , Word.Word32
   , Word.Word64
   , deriveJson
-  )
-where
+  ) where
 
 import qualified Data.Aeson as Json
 import qualified Data.Aeson.TH as Json

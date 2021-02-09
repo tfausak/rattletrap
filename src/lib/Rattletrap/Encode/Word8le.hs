@@ -1,8 +1,7 @@
 module Rattletrap.Encode.Word8le
   ( putWord8
   , putWord8Bits
-  )
-where
+  ) where
 
 import Rattletrap.Type.Word8le
 import Rattletrap.Utility.Bytes

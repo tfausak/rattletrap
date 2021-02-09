@@ -1,7 +1,6 @@
 module Rattletrap.Decode.TeamPaintAttribute
   ( decodeTeamPaintAttributeBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Word32le

@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.DestroyedReplication
   ( DestroyedReplication(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 

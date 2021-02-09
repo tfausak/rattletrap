@@ -1,7 +1,6 @@
 module Rattletrap.Encode.CompressedWord
   ( putCompressedWord
-  )
-where
+  ) where
 
 import Rattletrap.Type.CompressedWord
 

@@ -1,7 +1,6 @@
 module Rattletrap.Decode.ExtendedExplosionAttribute
   ( decodeExtendedExplosionAttributeBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.ExplosionAttribute

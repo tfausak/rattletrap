@@ -1,4 +1,7 @@
-module Main ( main ) where
+module Main
+  ( main
+  ) where
+
 import qualified Data.Char as Char
 import qualified Data.List as List
 import qualified System.Directory as Directory
@@ -7,7 +10,7 @@ import qualified System.Process as Process
 
 main :: IO ()
 main = do
-  original <- Process.readProcess "which" [ "rattletrap" ] ""
+  original <- Process.readProcess "which" ["rattletrap"] ""
   let
     source = convert $ List.dropWhileEnd Char.isSpace original
     directory = "docker"
@@ -26,6 +29,5 @@ main = do
 
 convert :: FilePath -> FilePath
 convert path = case path of
-  '/' : drive : '/' : rest ->
-    Char.toUpper drive : ':' : '/' :  rest <> ".exe"
+  '/' : drive : '/' : rest -> Char.toUpper drive : ':' : '/' : rest <> ".exe"
   _ -> path

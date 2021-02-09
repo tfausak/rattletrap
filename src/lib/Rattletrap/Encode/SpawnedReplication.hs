@@ -1,7 +1,6 @@
 module Rattletrap.Encode.SpawnedReplication
   ( putSpawnedReplication
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Initialization
 import Rattletrap.Encode.Word32le

@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.List
   ( List(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 

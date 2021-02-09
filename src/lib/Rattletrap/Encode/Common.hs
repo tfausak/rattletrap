@@ -1,7 +1,6 @@
 module Rattletrap.Encode.Common
   ( putBitsLE
-  )
-where
+  ) where
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Bits as Bits

@@ -1,6 +1,5 @@
 module Main
   ( main
-  )
-where
+  ) where
 
 import Rattletrap (main)

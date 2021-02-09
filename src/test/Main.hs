@@ -1,7 +1,6 @@
 module Main
   ( main
-  )
-where
+  ) where
 
 import qualified Control.Monad as Monad
 import qualified Data.ByteString.Lazy as Bytes

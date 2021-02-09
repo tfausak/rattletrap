@@ -1,7 +1,6 @@
 module Rattletrap.Encode.StringAttribute
   ( putStringAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Str
 import Rattletrap.Type.StringAttribute

@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.CompressedWord
   ( CompressedWord(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 
@@ -12,6 +11,7 @@ import Rattletrap.Type.Common
 data CompressedWord = CompressedWord
   { compressedWordLimit :: Word
   , compressedWordValue :: Word
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''CompressedWord)

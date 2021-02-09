@@ -1,7 +1,6 @@
 module Rattletrap.Encode.BooleanAttribute
   ( putBooleanAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Type.BooleanAttribute
 

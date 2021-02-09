@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Vector
   ( Vector(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
@@ -21,6 +20,7 @@ data Vector = Vector
   -- ^ See 'vectorBias'.
   , vectorZ :: Int
   -- ^ See 'vectorBias'.
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Vector)

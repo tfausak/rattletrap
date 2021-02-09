@@ -1,7 +1,6 @@
 module Rattletrap.Decode.ClassMapping
   ( decodeClassMapping
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Str

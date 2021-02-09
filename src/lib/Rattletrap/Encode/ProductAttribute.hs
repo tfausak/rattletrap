@@ -1,13 +1,12 @@
 module Rattletrap.Encode.ProductAttribute
   ( putProductAttributes
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Common
 import Rattletrap.Encode.CompressedWord
+import Rattletrap.Encode.Str
 import Rattletrap.Encode.Word32le
 import Rattletrap.Encode.Word8le
-import Rattletrap.Encode.Str
 import Rattletrap.Type.ProductAttribute
 import Rattletrap.Type.Word8le
 

@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Header
   ( Header(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Dictionary
@@ -56,6 +55,7 @@ data Header = Header
   --   players per team. This value is not validated, so you can put absurd
   --   values like 99. To get an "unfair" team size like 1v4, you must set the
   --   bUnfairBots 'Rattletrap.PropertyValue.BoolProperty' to @True@.
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Header)

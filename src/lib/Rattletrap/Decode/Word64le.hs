@@ -1,8 +1,7 @@
 module Rattletrap.Decode.Word64le
   ( decodeWord64le
   , decodeWord64leBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Type.Word64le

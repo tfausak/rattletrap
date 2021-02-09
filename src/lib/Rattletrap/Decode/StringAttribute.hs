@@ -1,7 +1,6 @@
 module Rattletrap.Decode.StringAttribute
   ( decodeStringAttributeBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Str

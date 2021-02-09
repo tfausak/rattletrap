@@ -1,7 +1,6 @@
 module Rattletrap.Decode.AttributeValue
   ( decodeAttributeValueBits
-  )
-where
+  ) where
 
 import Rattletrap.Data
 import Rattletrap.Decode.AppliedDamageAttribute
@@ -16,8 +15,8 @@ import Rattletrap.Decode.DemolishAttribute
 import Rattletrap.Decode.EnumAttribute
 import Rattletrap.Decode.ExplosionAttribute
 import Rattletrap.Decode.ExtendedExplosionAttribute
-import Rattletrap.Decode.FlaggedIntAttribute
 import Rattletrap.Decode.FlaggedByteAttribute
+import Rattletrap.Decode.FlaggedIntAttribute
 import Rattletrap.Decode.FloatAttribute
 import Rattletrap.Decode.GameModeAttribute
 import Rattletrap.Decode.Int64Attribute
@@ -67,8 +66,8 @@ decodeAttributeValueBits version objectMap name = do
       AttributeValueCamSettings <$> decodeCamSettingsAttributeBits version
     AttributeTypeClubColors ->
       AttributeValueClubColors <$> decodeClubColorsAttributeBits
-    AttributeTypeCustomDemolish ->
-      AttributeValueCustomDemolish <$> decodeCustomDemolishAttributeBits version
+    AttributeTypeCustomDemolish -> AttributeValueCustomDemolish
+      <$> decodeCustomDemolishAttributeBits version
     AttributeTypeDamageState ->
       AttributeValueDamageState <$> decodeDamageStateAttributeBits version
     AttributeTypeDemolish ->

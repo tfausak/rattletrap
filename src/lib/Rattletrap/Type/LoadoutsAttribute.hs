@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.LoadoutsAttribute
   ( LoadoutsAttribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.LoadoutAttribute
@@ -11,6 +10,7 @@ import Rattletrap.Type.LoadoutAttribute
 data LoadoutsAttribute = LoadoutsAttribute
   { loadoutsAttributeBlue :: LoadoutAttribute
   , loadoutsAttributeOrange :: LoadoutAttribute
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''LoadoutsAttribute)

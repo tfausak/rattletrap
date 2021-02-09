@@ -1,7 +1,6 @@
 module Rattletrap.Decode.BooleanAttribute
   ( decodeBooleanAttributeBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Type.BooleanAttribute

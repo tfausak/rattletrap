@@ -1,7 +1,6 @@
 module Rattletrap.Encode.DestroyedReplication
   ( putDestroyedReplication
-  )
-where
+  ) where
 
 import Rattletrap.Type.DestroyedReplication
 

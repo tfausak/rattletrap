@@ -1,7 +1,6 @@
 module Rattletrap.Decode.Rotation
   ( decodeRotationBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.CompressedWordVector

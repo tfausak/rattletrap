@@ -1,7 +1,6 @@
 module Rattletrap.Encode.UniqueIdAttribute
   ( putUniqueIdAttribute
-  )
-where
+  ) where
 
 import Rattletrap.Encode.RemoteId
 import Rattletrap.Encode.Word8le

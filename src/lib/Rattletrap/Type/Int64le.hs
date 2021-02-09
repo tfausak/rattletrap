@@ -1,7 +1,6 @@
 module Rattletrap.Type.Int64le
   ( Int64le(..)
-  )
-where
+  ) where
 
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson

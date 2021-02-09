@@ -1,7 +1,6 @@
 module Rattletrap.Encode.ClassMapping
   ( putClassMapping
-  )
-where
+  ) where
 
 import Rattletrap.Encode.Str
 import Rattletrap.Encode.Word32le

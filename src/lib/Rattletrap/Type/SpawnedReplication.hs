@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.SpawnedReplication
   ( SpawnedReplication(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Initialization
@@ -25,6 +24,7 @@ data SpawnedReplication = SpawnedReplication
   -- ^ Read-only! Changing a replication's class requires editing the class
   -- attribute map.
   , spawnedReplicationInitialization :: Initialization
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''SpawnedReplication)

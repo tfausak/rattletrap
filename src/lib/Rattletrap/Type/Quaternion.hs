@@ -8,8 +8,7 @@ module Rattletrap.Type.Quaternion
   , decompressPart
   , maxComponent
   , maxCompressedValue
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
@@ -22,7 +21,8 @@ data Quaternion = Quaternion
   , quaternionY :: Double
   , quaternionZ :: Double
   , quaternionW :: Double
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Quaternion)
 

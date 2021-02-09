@@ -3,8 +3,7 @@
 module Rattletrap.Type.Replay
   ( FullReplay
   , Replay(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Content
@@ -19,6 +18,7 @@ data Replay content = Replay
   -- ^ This has most of the high-level metadata.
   , replayContent :: Section content
   -- ^ This has most of the low-level game data.
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Replay)

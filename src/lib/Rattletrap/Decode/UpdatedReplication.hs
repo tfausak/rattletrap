@@ -1,7 +1,6 @@
 module Rattletrap.Decode.UpdatedReplication
   ( decodeUpdatedReplicationBits
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Attribute
 import Rattletrap.Decode.Common

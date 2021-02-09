@@ -5,16 +5,15 @@ module Rattletrap.Utility.Helper
   , encodeReplayJson
   , decodeReplayJson
   , encodeReplayFile
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Content
 import Rattletrap.Decode.Replay
+import Rattletrap.Encode.Content
 import Rattletrap.Encode.Replay
+import Rattletrap.Type.Content
 import Rattletrap.Type.Replay
 import Rattletrap.Type.Section
-import Rattletrap.Type.Content
 
 import qualified Data.Aeson as Json
 import qualified Data.Aeson.Encode.Pretty as Json

@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Attribute
   ( Attribute(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.AttributeValue
 import Rattletrap.Type.Common
@@ -16,6 +15,7 @@ data Attribute = Attribute
   -- ^ Read-only! Changing an attribute's name requires editing the class
   -- attribute map.
   , attributeValue :: AttributeValue
-  } deriving (Eq, Ord, Show)
+  }
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Attribute)

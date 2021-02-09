@@ -1,7 +1,6 @@
 module Rattletrap.Decode.Content
   ( decodeContent
-  )
-where
+  ) where
 
 import Rattletrap.Decode.Cache
 import Rattletrap.Decode.ClassMapping

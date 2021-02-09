@@ -2,8 +2,7 @@
 
 module Rattletrap.Type.Int8le
   ( Int8le(..)
-  )
-where
+  ) where
 
 import Rattletrap.Type.Common
 
