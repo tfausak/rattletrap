@@ -20,7 +20,8 @@ main = Temp.withSystemTempDirectory "rattletrap-" (runTests . toTests)
 
 runTests :: Test.Test -> IO ()
 runTests test = do
-  result <- Test.runTestTT test
+  (result, elapsed) <- withElapsed $ Test.runTestTT test
+  Printf.printf "Total time: %.3f seconds\n" elapsed
   Monad.when
     (Test.errors result > 0 || Test.failures result > 0)
     Exit.exitFailure
@@ -43,32 +44,12 @@ toAssertion directory uuid = do
     jsonFile = Path.joinPath [directory, Path.addExtension uuid ".json"]
     outputFile = Path.joinPath [directory, Path.addExtension uuid ".replay"]
   input <- Bytes.readFile inputFile
-  putStrLn ("\t" <> uuid)
-  do
-    (((), allocated), elapsed) <- withElapsed
-      (withAllocations (decode inputFile jsonFile))
-    put "decoding" (Bytes.length input) elapsed allocated
-  do
-    (((), allocated), elapsed) <- withElapsed
-      (withAllocations (encode jsonFile outputFile))
-    put "encoding" (Bytes.length input) elapsed allocated
+  decode inputFile jsonFile
+  encode jsonFile outputFile
   output <- Bytes.readFile outputFile
   Monad.unless
     (output == input)
     (Test.assertFailure "output does not match input")
-
-put :: String -> Int.Int64 -> Word.Word64 -> Int.Int64 -> IO ()
-put label size elapsed allocated = Printf.printf
-  "%s %d byte%s took %d nanosecond%s (%.3f MB/s) and allocated %d byte%s (%d x)\n"
-  label
-  size
-  (if size == 1 then "" else "s")
-  elapsed
-  (if elapsed == 1 then "" else "s")
-  ((1e9 * fromIntegral size) / (1048576 * fromIntegral elapsed) :: Double)
-  allocated
-  (if allocated == 1 then "" else "s")
-  (div allocated size)
 
 decode :: FilePath -> FilePath -> IO ()
 decode input output =
@@ -78,18 +59,11 @@ encode :: FilePath -> FilePath -> IO ()
 encode input output =
   Rattletrap.rattletrap "" ["--input", input, "--output", output]
 
-withAllocations :: IO a -> IO (a, Int.Int64)
-withAllocations action = do
-  before <- Mem.getAllocationCounter
-  result <- action
-  after <- Mem.getAllocationCounter
-  pure (result, before - after)
-
-withElapsed :: IO a -> IO (a, Word.Word64)
+withElapsed :: IO a -> IO (a, Double)
 withElapsed action = do
-  before <- Clock.getMonotonicTimeNSec
+  before <- Clock.getMonotonicTime
   result <- action
-  after <- Clock.getMonotonicTimeNSec
+  after <- Clock.getMonotonicTime
   pure (result, after - before)
 
 replays :: [(String, String)]
