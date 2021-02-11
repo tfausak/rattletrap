@@ -2,7 +2,7 @@ module Rattletrap.Encode.PickupAttribute
   ( putPickupAttribute
   ) where
 
-import Rattletrap.Encode.Word32le
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.PickupAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBits

@@ -2,7 +2,6 @@ module Rattletrap.Encode.Section
   ( putSection
   ) where
 
-import Rattletrap.Encode.Word32le
 import Rattletrap.Type.Section
 import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Crc

@@ -2,7 +2,7 @@ module Rattletrap.Encode.LoadoutAttribute
   ( putLoadoutAttribute
   ) where
 
-import Rattletrap.Encode.Word32le
+import Rattletrap.Type.Word32le
 import Rattletrap.Encode.Word8le
 import Rattletrap.Type.LoadoutAttribute
 

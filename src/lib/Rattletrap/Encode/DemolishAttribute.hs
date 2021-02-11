@@ -3,7 +3,7 @@ module Rattletrap.Encode.DemolishAttribute
   ) where
 
 import Rattletrap.Encode.Vector
-import Rattletrap.Encode.Word32le
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.DemolishAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBits

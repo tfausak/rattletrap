@@ -2,7 +2,6 @@ module Rattletrap.Encode.List
   ( putList
   ) where
 
-import Rattletrap.Encode.Word32le
 import Rattletrap.Type.List
 import Rattletrap.Type.Word32le
 

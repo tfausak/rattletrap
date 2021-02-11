@@ -10,7 +10,6 @@ import Rattletrap.Encode.List
 import Rattletrap.Encode.Mark
 import Rattletrap.Encode.Message
 import Rattletrap.Encode.Str
-import Rattletrap.Encode.Word32le
 import Rattletrap.Type.Content
 import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes

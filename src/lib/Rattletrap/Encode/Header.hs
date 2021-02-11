@@ -5,7 +5,7 @@ module Rattletrap.Encode.Header
 import Rattletrap.Encode.Dictionary
 import Rattletrap.Encode.Property
 import Rattletrap.Encode.Str
-import Rattletrap.Encode.Word32le
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.Header
 
 import qualified Data.Binary as Binary

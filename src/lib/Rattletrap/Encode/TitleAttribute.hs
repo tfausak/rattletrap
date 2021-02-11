@@ -2,7 +2,7 @@ module Rattletrap.Encode.TitleAttribute
   ( putTitleAttribute
   ) where
 
-import Rattletrap.Encode.Word32le
+import Rattletrap.Type.Word32le
 import Rattletrap.Type.TitleAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBits

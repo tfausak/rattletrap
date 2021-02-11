@@ -195,7 +195,6 @@ library
     Rattletrap.Encode.UpdatedReplication
     Rattletrap.Encode.Vector
     Rattletrap.Encode.WeldedInfoAttribute
-    Rattletrap.Encode.Word32le
     Rattletrap.Encode.Word64le
     Rattletrap.Encode.Word8le
     Rattletrap.Type.AppliedDamageAttribute
@@ -285,6 +284,7 @@ library
     -Wno-all-missed-specialisations
     -Wno-implicit-prelude
     -Wno-missing-deriving-strategies
+    -Wno-missing-export-lists
     -Wno-missing-exported-signatures
     -Wno-missing-import-lists
     -Wno-safe
