@@ -1,9 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.Section
-  ( Section(..)
-  , toSection
-  ) where
+module Rattletrap.Type.Section where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
@@ -39,3 +36,20 @@ toSection encode body =
       , sectionCrc = Word32le $ getCrc32 bytes
       , sectionBody = body
       }
+
+-- | Given a way to put the 'sectionBody', puts a section. This will also put
+-- the size and CRC.
+--
+-- @
+-- let bytes = 'Data.Binary.Put.runPut' ('putSection' 'Rattletrap.Content.putContent' content)
+-- @
+putSection :: (a -> Binary.Put) -> Section a -> Binary.Put
+putSection putBody section = do
+  let
+    rawBody =
+      LazyBytes.toStrict (Binary.runPut (putBody (sectionBody section)))
+  let size = Bytes.length rawBody
+  let crc = getCrc32 rawBody
+  putWord32 (Word32le (fromIntegral size))
+  putWord32 (Word32le crc)
+  Binary.putByteString rawBody

@@ -1,12 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.Message
-  ( Message(..)
-  ) where
+module Rattletrap.Type.Message where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
+
+import qualified Data.Binary as Binary
 
 data Message = Message
   { messageFrame :: Word32le
@@ -19,3 +19,9 @@ data Message = Message
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''Message)
+
+putMessage :: Message -> Binary.Put
+putMessage message = do
+  putWord32 (messageFrame message)
+  putText (messageName message)
+  putText (messageValue message)

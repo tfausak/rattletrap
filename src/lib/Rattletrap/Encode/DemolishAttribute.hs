@@ -2,7 +2,7 @@ module Rattletrap.Encode.DemolishAttribute
   ( putDemolishAttribute
   ) where
 
-import Rattletrap.Encode.Vector
+import Rattletrap.Type.Vector
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.DemolishAttribute
 

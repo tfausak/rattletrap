@@ -1,8 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.PropertyValue
-  ( PropertyValue(..)
-  ) where
+module Rattletrap.Type.PropertyValue where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Dictionary
@@ -12,6 +10,10 @@ import Rattletrap.Type.List
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word64le
 import Rattletrap.Type.Word8le
+import Rattletrap.Encode.Dictionary
+import Rattletrap.Encode.Float32le
+
+import qualified Data.Binary as Binary
 
 data PropertyValue a
   = PropertyValueArray (List (Dictionary a))
@@ -29,3 +31,18 @@ data PropertyValue a
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''PropertyValue)
+
+putPropertyValue :: (a -> Binary.Put) -> PropertyValue a -> Binary.Put
+putPropertyValue putProperty value = case value of
+  PropertyValueArray list -> putList (putDictionary putProperty) list
+  PropertyValueBool word8 -> putWord8 word8
+  PropertyValueByte k mv -> do
+    putText k
+    case mv of
+      Nothing -> pure ()
+      Just v -> putText v
+  PropertyValueFloat float32 -> putFloat32 float32
+  PropertyValueInt int32 -> putInt32 int32
+  PropertyValueName text -> putText text
+  PropertyValueQWord word64 -> putWord64 word64
+  PropertyValueStr text -> putText text

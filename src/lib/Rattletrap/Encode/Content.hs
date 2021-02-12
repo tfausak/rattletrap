@@ -5,11 +5,11 @@ module Rattletrap.Encode.Content
 import Rattletrap.Encode.Cache
 import Rattletrap.Encode.ClassMapping
 import Rattletrap.Encode.Frame
-import Rattletrap.Encode.KeyFrame
-import Rattletrap.Encode.List
-import Rattletrap.Encode.Mark
-import Rattletrap.Encode.Message
-import Rattletrap.Encode.Str
+import Rattletrap.Type.KeyFrame
+import Rattletrap.Type.List
+import Rattletrap.Type.Mark
+import Rattletrap.Type.Message
+import Rattletrap.Type.Str
 import Rattletrap.Type.Content
 import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes

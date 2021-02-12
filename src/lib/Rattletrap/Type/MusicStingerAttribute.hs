@@ -1,12 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.MusicStingerAttribute
-  ( MusicStingerAttribute(..)
-  ) where
+module Rattletrap.Type.MusicStingerAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
+
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 data MusicStingerAttribute = MusicStingerAttribute
   { musicStingerAttributeFlag :: Bool
@@ -16,3 +16,9 @@ data MusicStingerAttribute = MusicStingerAttribute
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''MusicStingerAttribute)
+
+putMusicStingerAttribute :: MusicStingerAttribute -> BinaryBits.BitPut ()
+putMusicStingerAttribute musicStingerAttribute = do
+  BinaryBits.putBool (musicStingerAttributeFlag musicStingerAttribute)
+  putWord32Bits (musicStingerAttributeCue musicStingerAttribute)
+  putWord8Bits (musicStingerAttributeTrigger musicStingerAttribute)

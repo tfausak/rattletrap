@@ -2,7 +2,7 @@ module Rattletrap.Encode.FlaggedByteAttribute
   ( putFlaggedByteAttribute
   ) where
 
-import Rattletrap.Encode.Word8le
+import Rattletrap.Type.Word8le
 import Rattletrap.Type.FlaggedByteAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBits

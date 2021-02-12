@@ -3,7 +3,7 @@ module Rattletrap.Encode.Cache
   ) where
 
 import Rattletrap.Encode.AttributeMapping
-import Rattletrap.Encode.List
+import Rattletrap.Type.List
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.Cache
 

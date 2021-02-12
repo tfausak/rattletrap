@@ -149,54 +149,6 @@ library
     Rattletrap.Encode.FloatAttribute
     Rattletrap.Encode.Frame
     Rattletrap.Encode.GameModeAttribute
-    Rattletrap.Encode.Header
-    Rattletrap.Encode.Initialization
-    Rattletrap.Encode.Int32le
-    Rattletrap.Encode.Int64Attribute
-    Rattletrap.Encode.Int64le
-    Rattletrap.Encode.Int8le
-    Rattletrap.Encode.Int8Vector
-    Rattletrap.Encode.IntAttribute
-    Rattletrap.Encode.KeyFrame
-    Rattletrap.Encode.List
-    Rattletrap.Encode.LoadoutAttribute
-    Rattletrap.Encode.LoadoutOnlineAttribute
-    Rattletrap.Encode.LoadoutsAttribute
-    Rattletrap.Encode.LoadoutsOnlineAttribute
-    Rattletrap.Encode.LocationAttribute
-    Rattletrap.Encode.Mark
-    Rattletrap.Encode.Message
-    Rattletrap.Encode.MusicStingerAttribute
-    Rattletrap.Encode.PartyLeaderAttribute
-    Rattletrap.Encode.PickupAttribute
-    Rattletrap.Encode.PickupAttributeNew
-    Rattletrap.Encode.PlayerHistoryKeyAttribute
-    Rattletrap.Encode.PrivateMatchSettingsAttribute
-    Rattletrap.Encode.ProductAttribute
-    Rattletrap.Encode.Property
-    Rattletrap.Encode.PropertyValue
-    Rattletrap.Encode.Quaternion
-    Rattletrap.Encode.QWordAttribute
-    Rattletrap.Encode.RemoteId
-    Rattletrap.Encode.Replay
-    Rattletrap.Encode.Replication
-    Rattletrap.Encode.ReplicationValue
-    Rattletrap.Encode.ReservationAttribute
-    Rattletrap.Encode.RigidBodyStateAttribute
-    Rattletrap.Encode.Rotation
-    Rattletrap.Encode.Section
-    Rattletrap.Encode.SpawnedReplication
-    Rattletrap.Encode.StatEventAttribute
-    Rattletrap.Encode.Str
-    Rattletrap.Encode.StringAttribute
-    Rattletrap.Encode.TeamPaintAttribute
-    Rattletrap.Encode.TitleAttribute
-    Rattletrap.Encode.UniqueIdAttribute
-    Rattletrap.Encode.UpdatedReplication
-    Rattletrap.Encode.Vector
-    Rattletrap.Encode.WeldedInfoAttribute
-    Rattletrap.Encode.Word64le
-    Rattletrap.Encode.Word8le
     Rattletrap.Type.AppliedDamageAttribute
     Rattletrap.Type.Attribute
     Rattletrap.Type.AttributeMapping

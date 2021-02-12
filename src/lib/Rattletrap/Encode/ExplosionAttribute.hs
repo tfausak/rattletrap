@@ -2,8 +2,8 @@ module Rattletrap.Encode.ExplosionAttribute
   ( putExplosionAttribute
   ) where
 
-import Rattletrap.Encode.Int32le
-import Rattletrap.Encode.Vector
+import Rattletrap.Type.Int32le
+import Rattletrap.Type.Vector
 import Rattletrap.Type.ExplosionAttribute
 
 import qualified Data.Binary.Bits.Put as BinaryBits
