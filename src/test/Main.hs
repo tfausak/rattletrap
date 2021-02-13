@@ -4,14 +4,11 @@ module Main
 
 import qualified Control.Monad as Monad
 import qualified Data.ByteString.Lazy as Bytes
-import qualified Data.Int as Int
-import qualified Data.Word as Word
 import qualified GHC.Clock as Clock
 import qualified Rattletrap
 import qualified System.Exit as Exit
 import qualified System.FilePath as Path
 import qualified System.IO.Temp as Temp
-import qualified System.Mem as Mem
 import qualified Test.HUnit as Test
 import qualified Text.Printf as Printf
 
