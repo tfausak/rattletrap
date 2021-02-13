@@ -4,7 +4,7 @@ module Rattletrap.Data
   , classesWithLocation
   , classesWithRotation
   , objectClasses
-  , rawAttributeTypes
+  , attributeTypes
   ) where
 
 import Rattletrap.Type.AttributeType
@@ -231,8 +231,8 @@ objectClasses = Map.fromList $ fmap (Bifunctor.bimap Text.pack Text.pack)
   , ("TheWorld:PersistentLevel.VehiclePickup_Boost_TA", "TAGame.VehiclePickup_Boost_TA")
   ]
 
-rawAttributeTypes :: [(String, AttributeType)]
-rawAttributeTypes =
+attributeTypes :: Map.Map Text.Text AttributeType
+attributeTypes = Map.fromList $ fmap (Bifunctor.first Text.pack)
   [ ("Engine.Actor:bBlockActors", AttributeTypeBoolean)
   , ("Engine.Actor:bCollideActors", AttributeTypeBoolean)
   , ("Engine.Actor:bHidden", AttributeTypeBoolean)

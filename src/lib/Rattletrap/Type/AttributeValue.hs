@@ -137,7 +137,7 @@ decodeAttributeValueBits version objectMap name = do
   constructor <- maybe
     (fail ("[RT04] don't know how to get attribute value " <> show name))
     pure
-    (Map.lookup name attributeTypes)
+    (Map.lookup (strValue name) attributeTypes)
   case constructor of
     AttributeTypeAppliedDamage ->
       AttributeValueAppliedDamage <$> decodeAppliedDamageAttributeBits version
@@ -207,6 +207,3 @@ decodeAttributeValueBits version objectMap name = do
       AttributeValueUniqueId <$> decodeUniqueIdAttributeBits version
     AttributeTypeWeldedInfo ->
       AttributeValueWeldedInfo <$> decodeWeldedInfoAttributeBits version
-
-attributeTypes :: Map Str AttributeType
-attributeTypes = Map.mapKeys toStr (Map.fromList rawAttributeTypes)
