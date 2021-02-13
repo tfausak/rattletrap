@@ -119,7 +119,6 @@ library
     Rattletrap.Decode.Vector
     Rattletrap.Decode.WeldedInfoAttribute
     Rattletrap.Decode.Word32le
-    Rattletrap.Decode.Word64le
     Rattletrap.Decode.Word8le
     Rattletrap.Encode.Common
     Rattletrap.Type.AppliedDamageAttribute

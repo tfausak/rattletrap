@@ -5,7 +5,7 @@ module Rattletrap.Decode.Property
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.PropertyValue
 import Rattletrap.Decode.Str
-import Rattletrap.Decode.Word64le
+import Rattletrap.Type.Word64le
 import Rattletrap.Type.Property
 
 decodeProperty :: Decode Property

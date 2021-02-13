@@ -4,7 +4,6 @@ module Rattletrap.Decode.RemoteId
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Str
-import Rattletrap.Decode.Word64le
 import Rattletrap.Type.RemoteId
 import Rattletrap.Type.Word64le
 import Rattletrap.Type.Word8le

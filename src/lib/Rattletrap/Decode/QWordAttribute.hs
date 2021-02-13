@@ -3,7 +3,7 @@ module Rattletrap.Decode.QWordAttribute
   ) where
 
 import Rattletrap.Decode.Common
-import Rattletrap.Decode.Word64le
+import Rattletrap.Type.Word64le
 import Rattletrap.Type.QWordAttribute
 
 decodeQWordAttributeBits :: DecodeBits QWordAttribute
