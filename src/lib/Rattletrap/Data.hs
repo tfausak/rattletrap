@@ -3,7 +3,7 @@ module Rattletrap.Data
   ( parentClasses
   , classesWithLocation
   , classesWithRotation
-  , rawObjectClasses
+  , objectClasses
   , rawAttributeTypes
   ) where
 
@@ -156,8 +156,8 @@ classesWithRotation = Set.fromList $ fmap Text.pack
   , "TAGame.Car_TA"
   ]
 
-rawObjectClasses :: [(String, String)]
-rawObjectClasses =
+objectClasses :: Map.Map Text.Text Text.Text
+objectClasses = Map.fromList $ fmap (Bifunctor.bimap Text.pack Text.pack)
   [ ("Archetypes.Ball.Ball_Anniversary", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_BasketBall_Mutator", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Basketball", "TAGame.Ball_TA")

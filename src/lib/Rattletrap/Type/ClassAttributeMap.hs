@@ -255,7 +255,7 @@ getObjectName objectMap objectId = Map.lookup objectId objectMap
 
 getClassName :: Str -> Maybe Str
 getClassName rawObjectName =
-  Map.lookup (normalizeObjectName rawObjectName) objectClasses
+  Str <$> Map.lookup (strValue $ normalizeObjectName rawObjectName) objectClasses
 
 normalizeObjectName :: Str -> Str
 normalizeObjectName objectName =
@@ -277,10 +277,6 @@ normalizeObjectName objectName =
           else if Text.isInfixOf breakout name
             then Str breakout
             else objectName
-
-objectClasses :: Map Str Str
-objectClasses =
-  Map.map toStr (Map.mapKeys toStr (Map.fromList rawObjectClasses))
 
 classHasLocation :: Str -> Bool
 classHasLocation className = Set.member (strValue className) classesWithLocation
