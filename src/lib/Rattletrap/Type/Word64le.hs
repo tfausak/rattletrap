@@ -3,7 +3,6 @@ module Rattletrap.Type.Word64le where
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 
-import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as LazyBytes
@@ -24,7 +23,7 @@ instance Aeson.FromJSON Word64le where
 instance Aeson.ToJSON Word64le where
   toJSON = Aeson.toJSON . show . word64leValue
 
-putWord64 :: Word64le -> Binary.Put
+putWord64 :: Word64le -> BytePut
 putWord64 word64 = Binary.putWord64le (word64leValue word64)
 
 putWord64Bits :: Word64le -> BitPut ()

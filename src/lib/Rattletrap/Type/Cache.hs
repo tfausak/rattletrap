@@ -7,8 +7,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.List
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data Cache = Cache
   { cacheClassId :: Word32le
@@ -20,7 +19,7 @@ data Cache = Cache
 
 $(deriveJson ''Cache)
 
-putCache :: Cache -> Binary.Put
+putCache :: Cache -> BytePut
 putCache cache = do
   putWord32 (cacheClassId cache)
   putWord32 (cacheParentCacheId cache)

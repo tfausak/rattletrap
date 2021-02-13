@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data ClassMapping = ClassMapping
   { classMappingName :: Str
@@ -17,7 +16,7 @@ data ClassMapping = ClassMapping
 
 $(deriveJson ''ClassMapping)
 
-putClassMapping :: ClassMapping -> Binary.Put
+putClassMapping :: ClassMapping -> BytePut
 putClassMapping classMapping = do
   putText (classMappingName classMapping)
   putWord32 (classMappingStreamId classMapping)

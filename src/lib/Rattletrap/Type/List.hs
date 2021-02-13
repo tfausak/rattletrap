@@ -5,9 +5,9 @@ module Rattletrap.Type.List where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad as Monad
-import qualified Data.Binary as Binary
 
 newtype List a = List
   { listValue :: [a]
@@ -15,7 +15,7 @@ newtype List a = List
 
 $(deriveJson ''List)
 
-putList :: (a -> Binary.Put) -> List a -> Binary.Put
+putList :: (a -> BytePut) -> List a -> BytePut
 putList putElement list = do
   let elements = listValue list
   putWord32 (Word32le (fromIntegral (length elements)))

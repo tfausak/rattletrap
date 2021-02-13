@@ -17,7 +17,7 @@ newtype Int8le = Int8le
 
 $(deriveJson ''Int8le)
 
-putInt8 :: Int8le -> Binary.Put
+putInt8 :: Int8le -> BytePut
 putInt8 int8 = Binary.putInt8 (int8leValue int8)
 
 putInt8Bits :: Int8le -> BitPut ()

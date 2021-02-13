@@ -1,10 +1,14 @@
 module Rattletrap.Encode.Common
-  ( BitPut
+  ( BytePut
+  , BitPut
   , putBitsLE
   ) where
 
+import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Bits as Bits
+
+type BytePut = Binary.Put
 
 type BitPut = BinaryBits.BitPut
 

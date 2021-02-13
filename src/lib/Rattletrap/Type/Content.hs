@@ -14,6 +14,7 @@ import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 import Rattletrap.Type.ClassAttributeMap
 
 import qualified Control.Monad.Trans.State as State
@@ -78,7 +79,7 @@ defaultContent = Content
   , contentUnknown = []
   }
 
-putContent :: Content -> Binary.Put
+putContent :: Content -> BytePut
 putContent content = do
   putList putText (contentLevels content)
   putList putKeyFrame (contentKeyFrames content)

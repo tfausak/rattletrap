@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Float32le
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data KeyFrame = KeyFrame
   { keyFrameTime :: Float32le
@@ -21,7 +20,7 @@ data KeyFrame = KeyFrame
 
 $(deriveJson ''KeyFrame)
 
-putKeyFrame :: KeyFrame -> Binary.Put
+putKeyFrame :: KeyFrame -> BytePut
 putKeyFrame keyFrame = do
   putFloat32 (keyFrameTime keyFrame)
   putWord32 (keyFrameFrame keyFrame)

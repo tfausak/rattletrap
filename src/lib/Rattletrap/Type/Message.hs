@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data Message = Message
   { messageFrame :: Word32le
@@ -21,7 +20,7 @@ data Message = Message
 
 $(deriveJson ''Message)
 
-putMessage :: Message -> Binary.Put
+putMessage :: Message -> BytePut
 putMessage message = do
   putWord32 (messageFrame message)
   putText (messageName message)

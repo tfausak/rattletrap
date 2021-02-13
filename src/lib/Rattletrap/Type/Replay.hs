@@ -7,14 +7,13 @@ import Rattletrap.Type.Content
 import Rattletrap.Type.Header
 import Rattletrap.Type.Section
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Property
 import Rattletrap.Type.PropertyValue
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
-
-import qualified Data.Binary as Binary
 
 type FullReplay = Replay Content
 
@@ -29,12 +28,12 @@ data Replay content = Replay
 
 $(deriveJson ''Replay)
 
--- | Generates a raw replay. Use this with 'Data.Binary.Put.runPut'.
+-- | Generates a raw replay. Use this with 'Data.BytePut.runPut'.
 --
 -- @
--- let bytes = 'Data.Binary.Put.runPut' ('putReplay' replay)
+-- let bytes = 'Data.BytePut.runPut' ('putReplay' replay)
 -- @
-putReplay :: FullReplay -> Binary.Put
+putReplay :: FullReplay -> BytePut
 putReplay replay = do
   putSection putHeader (replayHeader replay)
   putSection putContent (replayContent replay)

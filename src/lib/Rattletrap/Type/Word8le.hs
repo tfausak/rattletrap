@@ -18,7 +18,7 @@ newtype Word8le = Word8le
 
 $(deriveJson ''Word8le)
 
-putWord8 :: Word8le -> Binary.Put
+putWord8 :: Word8le -> BytePut
 putWord8 word8 = Binary.putWord8 (word8leValue word8)
 
 putWord8Bits :: Word8le -> BitPut ()

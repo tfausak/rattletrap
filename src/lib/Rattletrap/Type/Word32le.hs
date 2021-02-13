@@ -7,7 +7,6 @@ import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as LazyBytes
@@ -18,7 +17,7 @@ newtype Word32le = Word32le
 
 $(deriveJson ''Word32le)
 
-putWord32 :: Word32le -> Binary.Put
+putWord32 :: Word32le -> BytePut
 putWord32 word32 = Binary.putWord32le (word32leValue word32)
 
 putWord32Bits :: Word32le -> BitPut ()

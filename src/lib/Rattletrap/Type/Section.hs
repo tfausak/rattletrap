@@ -6,9 +6,9 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Crc
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad as Monad
-import qualified Data.Binary as Binary
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
@@ -29,7 +29,7 @@ data Section a = Section
 
 $(deriveJson ''Section)
 
-toSection :: (a -> Binary.Put) -> a -> Section a
+toSection :: (a -> BytePut) -> a -> Section a
 toSection encode body =
   let bytes = LazyBytes.toStrict . Binary.runPut $ encode body
   in
@@ -43,9 +43,9 @@ toSection encode body =
 -- the size and CRC.
 --
 -- @
--- let bytes = 'Data.Binary.Put.runPut' ('putSection' 'Rattletrap.Content.putContent' content)
+-- let bytes = 'Data.BytePut.runPut' ('putSection' 'Rattletrap.Content.putContent' content)
 -- @
-putSection :: (a -> Binary.Put) -> Section a -> Binary.Put
+putSection :: (a -> BytePut) -> Section a -> BytePut
 putSection putBody section = do
   let
     rawBody =

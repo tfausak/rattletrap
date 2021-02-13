@@ -4,7 +4,6 @@ import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as LazyBytes
@@ -24,7 +23,7 @@ instance Aeson.FromJSON Int64le where
 instance Aeson.ToJSON Int64le where
   toJSON = Aeson.toJSON . show . int64leValue
 
-putInt64 :: Int64le -> Binary.Put
+putInt64 :: Int64le -> BytePut
 putInt64 int64 = Binary.putInt64le (int64leValue int64)
 
 putInt64Bits :: Int64le -> BitPut ()

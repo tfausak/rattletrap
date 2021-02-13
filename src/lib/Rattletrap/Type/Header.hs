@@ -8,8 +8,7 @@ import Rattletrap.Type.Property
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
@@ -61,7 +60,7 @@ data Header = Header
 
 $(deriveJson ''Header)
 
-putHeader :: Header -> Binary.Put
+putHeader :: Header -> BytePut
 putHeader header = do
   putWord32 (headerEngineVersion header)
   putWord32 (headerLicenseeVersion header)

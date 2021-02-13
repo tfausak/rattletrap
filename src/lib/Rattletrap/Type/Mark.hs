@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data Mark = Mark
   { markValue :: Str
@@ -19,7 +18,7 @@ data Mark = Mark
 
 $(deriveJson ''Mark)
 
-putMark :: Mark -> Binary.Put
+putMark :: Mark -> BytePut
 putMark mark = do
   putText (markValue mark)
   putWord32 (markFrame mark)

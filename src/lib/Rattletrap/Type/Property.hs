@@ -7,8 +7,7 @@ import Rattletrap.Type.PropertyValue
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word64le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data Property = Property
   { propertyKind :: Str
@@ -20,7 +19,7 @@ data Property = Property
 
 $(deriveJson ''Property)
 
-putProperty :: Property -> Binary.Put
+putProperty :: Property -> BytePut
 putProperty property = do
   putText (propertyKind property)
   putWord64 (propertySize property)
