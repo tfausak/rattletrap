@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.DestroyedReplication where
+module Rattletrap.Type.Replication.Destroyed where
 
 import Rattletrap.Type.Common
 import Rattletrap.Decode.Common

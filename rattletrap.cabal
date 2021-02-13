@@ -94,7 +94,6 @@ library
     Rattletrap.Type.CompressedWord
     Rattletrap.Type.CompressedWordVector
     Rattletrap.Type.Content
-    Rattletrap.Type.DestroyedReplication
     Rattletrap.Type.Dictionary
     Rattletrap.Type.Float32le
     Rattletrap.Type.Frame
@@ -116,12 +115,13 @@ library
     Rattletrap.Type.RemoteId
     Rattletrap.Type.Replay
     Rattletrap.Type.Replication
+    Rattletrap.Type.Replication.Destroyed
+    Rattletrap.Type.Replication.Spawned
+    Rattletrap.Type.Replication.Updated
     Rattletrap.Type.ReplicationValue
     Rattletrap.Type.Rotation
     Rattletrap.Type.Section
-    Rattletrap.Type.SpawnedReplication
     Rattletrap.Type.Str
-    Rattletrap.Type.UpdatedReplication
     Rattletrap.Type.Vector
     Rattletrap.Type.Word32le
     Rattletrap.Type.Word64le

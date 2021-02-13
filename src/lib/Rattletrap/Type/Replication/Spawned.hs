@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.SpawnedReplication where
+module Rattletrap.Type.Replication.Spawned where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Initialization

@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.UpdatedReplication where
+module Rattletrap.Type.Replication.Updated where
 
 import Rattletrap.Type.Attribute
 import Rattletrap.Type.Common
