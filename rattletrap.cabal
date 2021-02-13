@@ -46,83 +46,83 @@ library
     Rattletrap.Data
     Rattletrap.Decode.Common
     Rattletrap.Encode.Common
-    Rattletrap.Type.AppliedDamageAttribute
     Rattletrap.Type.Attribute
+    Rattletrap.Type.Attribute.AppliedDamage
+    Rattletrap.Type.Attribute.Boolean
+    Rattletrap.Type.Attribute.Byte
+    Rattletrap.Type.Attribute.CamSettings
+    Rattletrap.Type.Attribute.ClubColors
+    Rattletrap.Type.Attribute.CustomDemolish
+    Rattletrap.Type.Attribute.DamageState
+    Rattletrap.Type.Attribute.Demolish
+    Rattletrap.Type.Attribute.Enum
+    Rattletrap.Type.Attribute.Explosion
+    Rattletrap.Type.Attribute.ExtendedExplosion
+    Rattletrap.Type.Attribute.FlaggedByte
+    Rattletrap.Type.Attribute.FlaggedInt
+    Rattletrap.Type.Attribute.Float
+    Rattletrap.Type.Attribute.GameMode
+    Rattletrap.Type.Attribute.Int
+    Rattletrap.Type.Attribute.Int64
+    Rattletrap.Type.Attribute.Loadout
+    Rattletrap.Type.Attribute.LoadoutOnline
+    Rattletrap.Type.Attribute.Loadouts
+    Rattletrap.Type.Attribute.LoadoutsOnline
+    Rattletrap.Type.Attribute.Location
+    Rattletrap.Type.Attribute.MusicStinger
+    Rattletrap.Type.Attribute.PartyLeader
+    Rattletrap.Type.Attribute.Pickup
+    Rattletrap.Type.Attribute.PickupNew
+    Rattletrap.Type.Attribute.PlayerHistoryKey
+    Rattletrap.Type.Attribute.PrivateMatchSettings
+    Rattletrap.Type.Attribute.QWord
+    Rattletrap.Type.Attribute.Reservation
+    Rattletrap.Type.Attribute.RigidBodyState
+    Rattletrap.Type.Attribute.StatEvent
+    Rattletrap.Type.Attribute.String
+    Rattletrap.Type.Attribute.TeamPaint
+    Rattletrap.Type.Attribute.Title
+    Rattletrap.Type.Attribute.UniqueId
+    Rattletrap.Type.Attribute.WeldedInfo
     Rattletrap.Type.AttributeMapping
     Rattletrap.Type.AttributeType
     Rattletrap.Type.AttributeValue
-    Rattletrap.Type.BooleanAttribute
-    Rattletrap.Type.ByteAttribute
     Rattletrap.Type.Cache
-    Rattletrap.Type.CamSettingsAttribute
     Rattletrap.Type.ClassAttributeMap
     Rattletrap.Type.ClassMapping
-    Rattletrap.Type.ClubColorsAttribute
     Rattletrap.Type.Common
     Rattletrap.Type.CompressedWord
     Rattletrap.Type.CompressedWordVector
     Rattletrap.Type.Content
-    Rattletrap.Type.CustomDemolishAttribute
-    Rattletrap.Type.DamageStateAttribute
-    Rattletrap.Type.DemolishAttribute
     Rattletrap.Type.DestroyedReplication
     Rattletrap.Type.Dictionary
-    Rattletrap.Type.EnumAttribute
-    Rattletrap.Type.ExplosionAttribute
-    Rattletrap.Type.ExtendedExplosionAttribute
-    Rattletrap.Type.FlaggedByteAttribute
-    Rattletrap.Type.FlaggedIntAttribute
     Rattletrap.Type.Float32le
-    Rattletrap.Type.FloatAttribute
     Rattletrap.Type.Frame
-    Rattletrap.Type.GameModeAttribute
     Rattletrap.Type.Header
     Rattletrap.Type.Initialization
     Rattletrap.Type.Int32le
-    Rattletrap.Type.Int64Attribute
     Rattletrap.Type.Int64le
     Rattletrap.Type.Int8le
     Rattletrap.Type.Int8Vector
-    Rattletrap.Type.IntAttribute
     Rattletrap.Type.KeyFrame
     Rattletrap.Type.List
-    Rattletrap.Type.LoadoutAttribute
-    Rattletrap.Type.LoadoutOnlineAttribute
-    Rattletrap.Type.LoadoutsAttribute
-    Rattletrap.Type.LoadoutsOnlineAttribute
-    Rattletrap.Type.LocationAttribute
     Rattletrap.Type.Mark
     Rattletrap.Type.Message
-    Rattletrap.Type.MusicStingerAttribute
-    Rattletrap.Type.PartyLeaderAttribute
-    Rattletrap.Type.PickupAttribute
-    Rattletrap.Type.PickupAttributeNew
-    Rattletrap.Type.PlayerHistoryKeyAttribute
-    Rattletrap.Type.PrivateMatchSettingsAttribute
     Rattletrap.Type.ProductAttribute
     Rattletrap.Type.ProductAttributeValue
     Rattletrap.Type.Property
     Rattletrap.Type.PropertyValue
     Rattletrap.Type.Quaternion
-    Rattletrap.Type.QWordAttribute
     Rattletrap.Type.RemoteId
     Rattletrap.Type.Replay
     Rattletrap.Type.Replication
     Rattletrap.Type.ReplicationValue
-    Rattletrap.Type.ReservationAttribute
-    Rattletrap.Type.RigidBodyStateAttribute
     Rattletrap.Type.Rotation
     Rattletrap.Type.Section
     Rattletrap.Type.SpawnedReplication
-    Rattletrap.Type.StatEventAttribute
     Rattletrap.Type.Str
-    Rattletrap.Type.StringAttribute
-    Rattletrap.Type.TeamPaintAttribute
-    Rattletrap.Type.TitleAttribute
-    Rattletrap.Type.UniqueIdAttribute
     Rattletrap.Type.UpdatedReplication
     Rattletrap.Type.Vector
-    Rattletrap.Type.WeldedInfoAttribute
     Rattletrap.Type.Word32le
     Rattletrap.Type.Word64le
     Rattletrap.Type.Word8le
