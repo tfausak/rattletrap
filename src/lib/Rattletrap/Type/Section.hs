@@ -4,7 +4,7 @@ module Rattletrap.Type.Section where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
-import Rattletrap.Utility.Crc
+import qualified Rattletrap.Utility.Crc as Crc
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
@@ -35,7 +35,7 @@ toSection encode body =
   in
     Section
       { sectionSize = Word32le . fromIntegral $ Bytes.length bytes
-      , sectionCrc = Word32le $ getCrc32 bytes
+      , sectionCrc = Word32le $ Crc.compute bytes
       , sectionBody = body
       }
 
@@ -51,7 +51,7 @@ putSection putBody section = do
     rawBody =
       LazyBytes.toStrict (Binary.runPut (putBody (sectionBody section)))
   let size = Bytes.length rawBody
-  let crc = getCrc32 rawBody
+  let crc = Crc.compute rawBody
   putWord32 (Word32le (fromIntegral size))
   putWord32 (Word32le crc)
   Binary.putByteString rawBody
@@ -61,7 +61,7 @@ decodeSection getBody = do
   size <- decodeWord32le
   crc <- decodeWord32le
   rawBody <- getByteString (fromIntegral (word32leValue size))
-  let actualCrc = Word32le (getCrc32 rawBody)
+  let actualCrc = Word32le (Crc.compute rawBody)
   Monad.when (actualCrc /= crc) (fail (crcMessage actualCrc crc))
   body <- either fail pure (runDecode getBody rawBody)
   pure (Section size crc body)
