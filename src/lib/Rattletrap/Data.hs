@@ -1,7 +1,7 @@
 -- brittany --columns 120
 module Rattletrap.Data
   ( parentClasses
-  , rawClassesWithLocation
+  , classesWithLocation
   , rawClassesWithRotation
   , rawObjectClasses
   , rawAttributeTypes
@@ -11,6 +11,7 @@ import Rattletrap.Type.AttributeType
 
 import qualified Data.Bifunctor as Bifunctor
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 import qualified Data.Text as Text
 
 parentClasses :: Map.Map Text.Text Text.Text
@@ -76,8 +77,8 @@ parentClasses = Map.fromList $ fmap (Bifunctor.bimap Text.pack Text.pack)
   , ("TAGame.VehiclePickup_TA", "Engine.ReplicationInfo")
   ]
 
-rawClassesWithLocation :: [String]
-rawClassesWithLocation =
+classesWithLocation :: Set.Set Text.Text
+classesWithLocation = Set.fromList $ fmap Text.pack
   [ "Archetypes.Ball.Ball_BasketBall_Mutator"
   , "Archetypes.Ball.Ball_Basketball"
   , "Archetypes.Ball.Ball_BasketBall"

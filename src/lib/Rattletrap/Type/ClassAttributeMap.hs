@@ -283,10 +283,7 @@ objectClasses =
   Map.map toStr (Map.mapKeys toStr (Map.fromList rawObjectClasses))
 
 classHasLocation :: Str -> Bool
-classHasLocation className = Set.member className classesWithLocation
-
-classesWithLocation :: Set.Set Str
-classesWithLocation = Set.fromList (fmap toStr rawClassesWithLocation)
+classHasLocation className = Set.member (strValue className) classesWithLocation
 
 classHasRotation :: Str -> Bool
 classHasRotation className = Set.member className classesWithRotation

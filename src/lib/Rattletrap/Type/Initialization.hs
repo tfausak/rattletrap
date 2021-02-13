@@ -11,7 +11,7 @@ import Rattletrap.Encode.Common
 data Initialization = Initialization
   { initializationLocation :: Maybe Vector
   -- ^ Not every class has an initial location. See
-  -- 'Rattletrap.Data.rawClassesWithLocation'.
+  -- 'Rattletrap.Data.classesWithLocation'.
   , initializationRotation :: Maybe Int8Vector
   -- ^ Only classes with location can have rotation, but not every one does.
   -- See 'Rattletrap.Data.rawClassesWithRotation'.
