@@ -2,7 +2,7 @@
 module Rattletrap.Data
   ( parentClasses
   , classesWithLocation
-  , rawClassesWithRotation
+  , classesWithRotation
   , rawObjectClasses
   , rawAttributeTypes
   ) where
@@ -136,8 +136,8 @@ classesWithLocation = Set.fromList $ fmap Text.pack
   , "TheWorld:PersistentLevel.VehiclePickup_Boost_TA"
   ]
 
-rawClassesWithRotation :: [String]
-rawClassesWithRotation =
+classesWithRotation :: Set.Set Text.Text
+classesWithRotation = Set.fromList $ fmap Text.pack
   [ "Archetypes.Ball.Ball_BasketBall_Mutator"
   , "Archetypes.Ball.Ball_Basketball"
   , "Archetypes.Ball.Ball_BasketBall"

@@ -14,7 +14,7 @@ data Initialization = Initialization
   -- 'Rattletrap.Data.classesWithLocation'.
   , initializationRotation :: Maybe Int8Vector
   -- ^ Only classes with location can have rotation, but not every one does.
-  -- See 'Rattletrap.Data.rawClassesWithRotation'.
+  -- See 'Rattletrap.Data.classesWithRotation'.
   }
   deriving (Eq, Show)
 

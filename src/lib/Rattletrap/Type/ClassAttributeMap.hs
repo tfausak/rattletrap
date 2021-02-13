@@ -286,10 +286,7 @@ classHasLocation :: Str -> Bool
 classHasLocation className = Set.member (strValue className) classesWithLocation
 
 classHasRotation :: Str -> Bool
-classHasRotation className = Set.member className classesWithRotation
-
-classesWithRotation :: Set.Set Str
-classesWithRotation = Set.fromList (fmap toStr rawClassesWithRotation)
+classHasRotation className = Set.member (strValue className) classesWithRotation
 
 getAttributeIdLimit :: Map Word32le Word32le -> Maybe Word
 getAttributeIdLimit attributeMap = do
