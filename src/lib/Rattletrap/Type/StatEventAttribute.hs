@@ -4,6 +4,7 @@ module Rattletrap.Type.StatEventAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -19,3 +20,7 @@ putStatEventAttribute :: StatEventAttribute -> BinaryBits.BitPut ()
 putStatEventAttribute statEventAttribute = do
   BinaryBits.putBool (statEventAttributeUnknown statEventAttribute)
   putInt32Bits (statEventAttributeObjectId statEventAttribute)
+
+decodeStatEventAttributeBits :: DecodeBits StatEventAttribute
+decodeStatEventAttributeBits =
+  StatEventAttribute <$> getBool <*> decodeInt32leBits

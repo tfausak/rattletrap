@@ -5,6 +5,7 @@ module Rattletrap.Type.Message where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary as Binary
 
@@ -25,3 +26,6 @@ putMessage message = do
   putWord32 (messageFrame message)
   putText (messageName message)
   putText (messageValue message)
+
+decodeMessage :: Decode Message
+decodeMessage = Message <$> decodeWord32le <*> decodeStr <*> decodeStr

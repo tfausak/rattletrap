@@ -3,6 +3,7 @@
 module Rattletrap.Type.BooleanAttribute where
 
 import Rattletrap.Type.Common
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -15,3 +16,6 @@ $(deriveJson ''BooleanAttribute)
 putBooleanAttribute :: BooleanAttribute -> BinaryBits.BitPut ()
 putBooleanAttribute booleanAttribute =
   BinaryBits.putBool (booleanAttributeValue booleanAttribute)
+
+decodeBooleanAttributeBits :: DecodeBits BooleanAttribute
+decodeBooleanAttributeBits = BooleanAttribute <$> getBool

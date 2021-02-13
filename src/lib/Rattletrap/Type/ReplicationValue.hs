@@ -6,7 +6,14 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.DestroyedReplication
 import Rattletrap.Type.SpawnedReplication
 import Rattletrap.Type.UpdatedReplication
+import Rattletrap.Decode.Common
+import Rattletrap.Type.ClassAttributeMap
+import Rattletrap.Type.CompressedWord
+import Rattletrap.Type.Word32le
 
+import qualified Control.Monad.Trans.Class as Trans
+import qualified Control.Monad.Trans.State as State
+import qualified Data.Map as Map
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ReplicationValue
@@ -33,3 +40,31 @@ putReplicationValue value = case value of
   ReplicationValueDestroyed x -> do
     BinaryBits.putBool False
     putDestroyedReplication x
+
+decodeReplicationValueBits
+  :: (Int, Int, Int)
+  -> ClassAttributeMap
+  -> CompressedWord
+  -> State.StateT
+       (Map.Map CompressedWord Word32le)
+       DecodeBits
+       ReplicationValue
+decodeReplicationValueBits version classAttributeMap actorId = do
+  actorMap <- State.get
+  isOpen <- Trans.lift getBool
+  if isOpen
+    then do
+      isNew <- Trans.lift getBool
+      if isNew
+        then
+          ReplicationValueSpawned
+            <$> decodeSpawnedReplicationBits version classAttributeMap actorId
+        else ReplicationValueUpdated <$> Trans.lift
+          (decodeUpdatedReplicationBits
+            version
+            classAttributeMap
+            actorMap
+            actorId
+          )
+    else ReplicationValueDestroyed
+      <$> Trans.lift decodeDestroyedReplicationBits

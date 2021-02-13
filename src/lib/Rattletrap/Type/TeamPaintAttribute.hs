@@ -5,6 +5,7 @@ module Rattletrap.Type.TeamPaintAttribute where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -26,3 +27,12 @@ putTeamPaintAttribute teamPaintAttribute = do
   putWord8Bits (teamPaintAttributeAccentColor teamPaintAttribute)
   putWord32Bits (teamPaintAttributePrimaryFinish teamPaintAttribute)
   putWord32Bits (teamPaintAttributeAccentFinish teamPaintAttribute)
+
+decodeTeamPaintAttributeBits :: DecodeBits TeamPaintAttribute
+decodeTeamPaintAttributeBits =
+  TeamPaintAttribute
+    <$> decodeWord8leBits
+    <*> decodeWord8leBits
+    <*> decodeWord8leBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits

@@ -3,6 +3,7 @@
 module Rattletrap.Type.DestroyedReplication where
 
 import Rattletrap.Type.Common
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -16,3 +17,6 @@ $(deriveJson ''DestroyedReplication)
 
 putDestroyedReplication :: DestroyedReplication -> BinaryBits.BitPut ()
 putDestroyedReplication _ = pure ()
+
+decodeDestroyedReplicationBits :: DecodeBits DestroyedReplication
+decodeDestroyedReplicationBits = pure DestroyedReplication

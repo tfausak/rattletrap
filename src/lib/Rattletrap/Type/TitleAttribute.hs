@@ -4,6 +4,7 @@ module Rattletrap.Type.TitleAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -31,3 +32,15 @@ putTitleAttribute titleAttribute = do
   putWord32Bits (titleAttributeUnknown6 titleAttribute)
   putWord32Bits (titleAttributeUnknown7 titleAttribute)
   BinaryBits.putBool (titleAttributeUnknown8 titleAttribute)
+
+decodeTitleAttributeBits :: DecodeBits TitleAttribute
+decodeTitleAttributeBits =
+  TitleAttribute
+    <$> getBool
+    <*> getBool
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> getBool

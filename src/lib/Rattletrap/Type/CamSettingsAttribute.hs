@@ -4,6 +4,7 @@ module Rattletrap.Type.CamSettingsAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Float32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -31,3 +32,15 @@ putCamSettingsAttribute camSettingsAttribute = do
   case camSettingsAttributeTransitionSpeed camSettingsAttribute of
     Nothing -> pure ()
     Just transitionSpeed -> putFloat32Bits transitionSpeed
+
+decodeCamSettingsAttributeBits
+  :: (Int, Int, Int) -> DecodeBits CamSettingsAttribute
+decodeCamSettingsAttributeBits version =
+  CamSettingsAttribute
+    <$> decodeFloat32leBits
+    <*> decodeFloat32leBits
+    <*> decodeFloat32leBits
+    <*> decodeFloat32leBits
+    <*> decodeFloat32leBits
+    <*> decodeFloat32leBits
+    <*> decodeWhen (version >= (868, 20, 0)) decodeFloat32leBits

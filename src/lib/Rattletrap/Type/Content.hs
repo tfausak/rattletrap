@@ -13,7 +13,11 @@ import Rattletrap.Type.Message
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 import Rattletrap.Utility.Bytes
+import Rattletrap.Decode.Common
+import Rattletrap.Type.ClassAttributeMap
 
+import qualified Control.Monad.Trans.State as State
+import qualified Data.Binary.Get as Binary
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
@@ -108,3 +112,51 @@ putContent content = do
   putList putClassMapping (contentClassMappings content)
   putList putCache (contentCaches content)
   mapM_ Binary.putWord8 (contentUnknown content)
+
+decodeContent
+  :: (Int, Int, Int)
+  -- ^ Version numbers, usually from 'Rattletrap.Header.getVersion'.
+  -> Int
+  -- ^ The number of frames in the stream, usually from
+  -- 'Rattletrap.Header.getNumFrames'.
+  -> Word
+  -- ^ The maximum number of channels in the stream, usually from
+  -- 'Rattletrap.Header.getMaxChannels'.
+  -> Decode Content
+decodeContent version numFrames maxChannels = do
+  (levels, keyFrames, streamSize) <-
+    (,,)
+    <$> decodeList decodeStr
+    <*> decodeList decodeKeyFrame
+    <*> decodeWord32le
+  (stream, messages, marks, packages, objects, names, classMappings, caches) <-
+    (,,,,,,,)
+    <$> getByteString (fromIntegral (word32leValue streamSize))
+    <*> decodeList decodeMessage
+    <*> decodeList decodeMark
+    <*> decodeList decodeStr
+    <*> decodeList decodeStr
+    <*> decodeList decodeStr
+    <*> decodeList decodeClassMapping
+    <*> decodeList decodeCache
+  let
+    classAttributeMap =
+      makeClassAttributeMap objects classMappings caches names
+    bitGet = State.evalStateT
+      (decodeFramesBits version numFrames maxChannels classAttributeMap)
+      mempty
+  frames <- either fail pure (runDecodeBits bitGet (reverseBytes stream))
+  Content
+      levels
+      keyFrames
+      streamSize
+      frames
+      messages
+      marks
+      packages
+      objects
+      names
+      classMappings
+      caches
+    . LazyBytes.unpack
+    <$> Binary.getRemainingLazyByteString

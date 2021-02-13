@@ -5,6 +5,7 @@ module Rattletrap.Type.DemolishAttribute where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Vector
 import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -28,3 +29,13 @@ putDemolishAttribute demolishAttribute = do
   putWord32Bits (demolishAttributeVictimActorId demolishAttribute)
   putVector (demolishAttributeAttackerVelocity demolishAttribute)
   putVector (demolishAttributeVictimVelocity demolishAttribute)
+
+decodeDemolishAttributeBits :: (Int, Int, Int) -> DecodeBits DemolishAttribute
+decodeDemolishAttributeBits version =
+  DemolishAttribute
+    <$> getBool
+    <*> decodeWord32leBits
+    <*> getBool
+    <*> decodeWord32leBits
+    <*> decodeVectorBits version
+    <*> decodeVectorBits version

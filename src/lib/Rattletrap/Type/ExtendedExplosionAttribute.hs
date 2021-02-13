@@ -5,6 +5,7 @@ module Rattletrap.Type.ExtendedExplosionAttribute where
 import Rattletrap.Type.Common
 import Rattletrap.Type.ExplosionAttribute
 import Rattletrap.Type.FlaggedIntAttribute
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -21,3 +22,10 @@ putExtendedExplosionAttribute
 putExtendedExplosionAttribute x = do
   putExplosionAttribute (extendedExplosionAttributeExplosion x)
   putFlaggedIntAttribute (extendedExplosionAttributeUnknown x)
+
+decodeExtendedExplosionAttributeBits
+  :: (Int, Int, Int) -> DecodeBits ExtendedExplosionAttribute
+decodeExtendedExplosionAttributeBits version =
+  ExtendedExplosionAttribute
+    <$> decodeExplosionAttributeBits version
+    <*> decodeFlaggedIntAttributeBits

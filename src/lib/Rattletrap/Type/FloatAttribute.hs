@@ -4,6 +4,7 @@ module Rattletrap.Type.FloatAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Float32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -16,3 +17,6 @@ $(deriveJson ''FloatAttribute)
 putFloatAttribute :: FloatAttribute -> BinaryBits.BitPut ()
 putFloatAttribute floatAttribute =
   putFloat32Bits (floatAttributeValue floatAttribute)
+
+decodeFloatAttributeBits :: DecodeBits FloatAttribute
+decodeFloatAttributeBits = FloatAttribute <$> decodeFloat32leBits

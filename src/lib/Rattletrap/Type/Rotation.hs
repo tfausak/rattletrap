@@ -5,6 +5,7 @@ module Rattletrap.Type.Rotation where
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWordVector
 import Rattletrap.Type.Quaternion
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -19,3 +20,8 @@ putRotation :: Rotation -> BinaryBits.BitPut ()
 putRotation r = case r of
   RotationCompressedWordVector cwv -> putCompressedWordVector cwv
   RotationQuaternion q -> putQuaternion q
+
+decodeRotationBits :: (Int, Int, Int) -> DecodeBits Rotation
+decodeRotationBits version = if version >= (868, 22, 7)
+  then RotationQuaternion <$> decodeQuaternionBits
+  else RotationCompressedWordVector <$> decodeCompressedWordVectorBits
