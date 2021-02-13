@@ -23,7 +23,7 @@ putCompressedWordVector compressedWordVector = do
   putCompressedWord (compressedWordVectorY compressedWordVector)
   putCompressedWord (compressedWordVectorZ compressedWordVector)
 
-decodeCompressedWordVectorBits :: DecodeBits CompressedWordVector
+decodeCompressedWordVectorBits :: BitGet CompressedWordVector
 decodeCompressedWordVectorBits =
   CompressedWordVector
     <$> decodeCompressedWordBits limit

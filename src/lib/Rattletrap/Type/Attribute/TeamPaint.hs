@@ -28,7 +28,7 @@ putTeamPaintAttribute teamPaintAttribute = do
   putWord32Bits (teamPaintAttributePrimaryFinish teamPaintAttribute)
   putWord32Bits (teamPaintAttributeAccentFinish teamPaintAttribute)
 
-decodeTeamPaintAttributeBits :: DecodeBits TeamPaintAttribute
+decodeTeamPaintAttributeBits :: BitGet TeamPaintAttribute
 decodeTeamPaintAttributeBits =
   TeamPaintAttribute
     <$> decodeWord8leBits

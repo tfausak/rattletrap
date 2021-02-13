@@ -33,7 +33,7 @@ putRigidBodyStateAttribute rigidBodyStateAttribute = do
     Just angularVelocity -> putVector angularVelocity
 
 decodeRigidBodyStateAttributeBits
-  :: (Int, Int, Int) -> DecodeBits RigidBodyStateAttribute
+  :: (Int, Int, Int) -> BitGet RigidBodyStateAttribute
 decodeRigidBodyStateAttributeBits version = do
   sleeping <- getBool
   RigidBodyStateAttribute sleeping

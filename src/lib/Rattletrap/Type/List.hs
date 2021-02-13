@@ -21,7 +21,7 @@ putList putElement list = do
   putWord32 (Word32le (fromIntegral (length elements)))
   mapM_ putElement elements
 
-decodeList :: Decode a -> Decode (List a)
+decodeList :: ByteGet a -> ByteGet (List a)
 decodeList decodeElement = do
   size <- decodeWord32le
   List <$> Monad.replicateM (fromIntegral (word32leValue size)) decodeElement

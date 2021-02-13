@@ -25,7 +25,7 @@ putClubColorsAttribute clubColorsAttribute = do
   BinaryBits.putBool (clubColorsAttributeOrangeFlag clubColorsAttribute)
   putWord8Bits (clubColorsAttributeOrangeColor clubColorsAttribute)
 
-decodeClubColorsAttributeBits :: DecodeBits ClubColorsAttribute
+decodeClubColorsAttributeBits :: BitGet ClubColorsAttribute
 decodeClubColorsAttributeBits =
   ClubColorsAttribute
     <$> getBool

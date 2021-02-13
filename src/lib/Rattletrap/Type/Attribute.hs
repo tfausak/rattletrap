@@ -44,7 +44,7 @@ decodeAttributesBits
   -> ClassAttributeMap
   -> Map CompressedWord Word32le
   -> CompressedWord
-  -> DecodeBits [Attribute]
+  -> BitGet [Attribute]
 decodeAttributesBits version classes actors actor = do
   hasAttribute <- getBool
   if hasAttribute
@@ -59,7 +59,7 @@ decodeAttributeBits
   -> ClassAttributeMap
   -> Map CompressedWord Word32le
   -> CompressedWord
-  -> DecodeBits Attribute
+  -> BitGet Attribute
 decodeAttributeBits version classes actors actor = do
   attributes <- lookupAttributeMap classes actors actor
   limit <- lookupAttributeIdLimit attributes actor
@@ -75,13 +75,13 @@ lookupAttributeMap
   :: ClassAttributeMap
   -> Map CompressedWord Word32le
   -> CompressedWord
-  -> DecodeBits (Map Word32le Word32le)
+  -> BitGet (Map Word32le Word32le)
 lookupAttributeMap classes actors actor = fromMaybe
   ("[RT01] could not get attribute map for " <> show actor)
   (getAttributeMap classes actors actor)
 
 lookupAttributeIdLimit
-  :: Map Word32le Word32le -> CompressedWord -> DecodeBits Word
+  :: Map Word32le Word32le -> CompressedWord -> BitGet Word
 lookupAttributeIdLimit attributes actor = fromMaybe
   ("[RT02] could not get attribute ID limit for " <> show actor)
   (getAttributeIdLimit attributes)
@@ -90,10 +90,10 @@ lookupAttributeName
   :: ClassAttributeMap
   -> Map Word32le Word32le
   -> CompressedWord
-  -> DecodeBits Str
+  -> BitGet Str
 lookupAttributeName classes attributes attribute = fromMaybe
   ("[RT03] could not get attribute name for " <> show attribute)
   (getAttributeName classes attributes attribute)
 
-fromMaybe :: String -> Maybe a -> DecodeBits a
+fromMaybe :: String -> Maybe a -> BitGet a
 fromMaybe message = maybe (fail message) pure

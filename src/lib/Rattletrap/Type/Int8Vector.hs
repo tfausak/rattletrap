@@ -30,11 +30,11 @@ putInt8VectorField maybeField = case maybeField of
     BinaryBits.putBool True
     putInt8Bits field
 
-decodeInt8VectorBits :: DecodeBits Int8Vector
+decodeInt8VectorBits :: BitGet Int8Vector
 decodeInt8VectorBits =
   Int8Vector <$> decodeFieldBits <*> decodeFieldBits <*> decodeFieldBits
 
-decodeFieldBits :: DecodeBits (Maybe Int8le)
+decodeFieldBits :: BitGet (Maybe Int8le)
 decodeFieldBits = do
   hasField <- getBool
   decodeWhen hasField decodeInt8leBits

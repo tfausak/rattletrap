@@ -21,6 +21,6 @@ putFlaggedByteAttribute flaggedByteAttribute = do
   BinaryBits.putBool (flaggedByteAttributeFlag flaggedByteAttribute)
   putWord8Bits (flaggedByteAttributeByte flaggedByteAttribute)
 
-decodeFlaggedByteAttributeBits :: DecodeBits FlaggedByteAttribute
+decodeFlaggedByteAttributeBits :: BitGet FlaggedByteAttribute
 decodeFlaggedByteAttributeBits =
   FlaggedByteAttribute <$> getBool <*> decodeWord8leBits

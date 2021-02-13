@@ -18,5 +18,5 @@ putEnumAttribute :: EnumAttribute -> BinaryBits.BitPut ()
 putEnumAttribute enumAttribute =
   putBitsLE 11 (enumAttributeValue enumAttribute)
 
-decodeEnumAttributeBits :: DecodeBits EnumAttribute
+decodeEnumAttributeBits :: BitGet EnumAttribute
 decodeEnumAttributeBits = EnumAttribute <$> getBitsLE 11

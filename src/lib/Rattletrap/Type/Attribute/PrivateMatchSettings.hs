@@ -38,7 +38,7 @@ putPrivateMatchSettingsAttribute privateMatchSettingsAttribute = do
     (privateMatchSettingsAttributeFlag privateMatchSettingsAttribute)
 
 decodePrivateMatchSettingsAttributeBits
-  :: DecodeBits PrivateMatchSettingsAttribute
+  :: BitGet PrivateMatchSettingsAttribute
 decodePrivateMatchSettingsAttributeBits =
   PrivateMatchSettingsAttribute
     <$> decodeStrBits

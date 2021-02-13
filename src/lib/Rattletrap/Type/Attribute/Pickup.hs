@@ -25,7 +25,7 @@ putPickupAttribute pickupAttribute = do
       putWord32Bits instigatorId
   BinaryBits.putBool (pickupAttributePickedUp pickupAttribute)
 
-decodePickupAttributeBits :: DecodeBits PickupAttribute
+decodePickupAttributeBits :: BitGet PickupAttribute
 decodePickupAttributeBits = do
   instigator <- getBool
   PickupAttribute <$> decodeWhen instigator decodeWord32leBits <*> getBool

@@ -18,6 +18,6 @@ putLocationAttribute :: LocationAttribute -> BinaryBits.BitPut ()
 putLocationAttribute locationAttribute =
   putVector (locationAttributeValue locationAttribute)
 
-decodeLocationAttributeBits :: (Int, Int, Int) -> DecodeBits LocationAttribute
+decodeLocationAttributeBits :: (Int, Int, Int) -> BitGet LocationAttribute
 decodeLocationAttributeBits version =
   LocationAttribute <$> decodeVectorBits version

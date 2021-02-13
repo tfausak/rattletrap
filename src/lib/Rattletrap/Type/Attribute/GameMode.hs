@@ -25,7 +25,7 @@ putGameModeAttribute gameModeAttribute = do
   let word = gameModeAttributeWord gameModeAttribute
   BinaryBits.putWord8 numBits_ word
 
-decodeGameModeAttributeBits :: (Int, Int, Int) -> DecodeBits GameModeAttribute
+decodeGameModeAttributeBits :: (Int, Int, Int) -> BitGet GameModeAttribute
 decodeGameModeAttributeBits version =
   GameModeAttribute (numBits version) <$> getWord8Bits
     (numBits version)

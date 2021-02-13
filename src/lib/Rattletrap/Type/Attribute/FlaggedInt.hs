@@ -21,6 +21,6 @@ putFlaggedIntAttribute flaggedIntAttribute = do
   BinaryBits.putBool (flaggedIntAttributeFlag flaggedIntAttribute)
   putInt32Bits (flaggedIntAttributeInt flaggedIntAttribute)
 
-decodeFlaggedIntAttributeBits :: DecodeBits FlaggedIntAttribute
+decodeFlaggedIntAttributeBits :: BitGet FlaggedIntAttribute
 decodeFlaggedIntAttributeBits =
   FlaggedIntAttribute <$> getBool <*> decodeInt32leBits

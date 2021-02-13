@@ -18,5 +18,5 @@ $(deriveJson ''DestroyedReplication)
 putDestroyedReplication :: DestroyedReplication -> BinaryBits.BitPut ()
 putDestroyedReplication _ = pure ()
 
-decodeDestroyedReplicationBits :: DecodeBits DestroyedReplication
+decodeDestroyedReplicationBits :: BitGet DestroyedReplication
 decodeDestroyedReplicationBits = pure DestroyedReplication

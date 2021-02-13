@@ -40,7 +40,7 @@ putProductAttributeValue val = case val of
   ProductAttributeValueTitleId x -> putTextBits x
 
 decodeProductAttributeValueBits
-  :: (Int, Int, Int) -> Word32le -> Maybe Str -> DecodeBits ProductAttributeValue
+  :: (Int, Int, Int) -> Word32le -> Maybe Str -> BitGet ProductAttributeValue
 decodeProductAttributeValueBits version objectId maybeObjectName =
   case fromStr <$> maybeObjectName of
     Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
@@ -56,25 +56,25 @@ decodeProductAttributeValueBits version objectId maybeObjectName =
       )
     Nothing -> fail ("[RT06] missing object name for ID " <> show objectId)
 
-decodeSpecialEdition :: DecodeBits ProductAttributeValue
+decodeSpecialEdition :: BitGet ProductAttributeValue
 decodeSpecialEdition = ProductAttributeValueSpecialEdition <$> getBitsLE 31
 
-decodePainted :: (Int, Int, Int) -> DecodeBits ProductAttributeValue
+decodePainted :: (Int, Int, Int) -> BitGet ProductAttributeValue
 decodePainted version = if version >= (868, 18, 0)
   then ProductAttributeValuePaintedNew <$> getBitsLE 31
   else ProductAttributeValuePaintedOld <$> decodeCompressedWordBits 13
 
-decodeTeamEdition :: (Int, Int, Int) -> DecodeBits ProductAttributeValue
+decodeTeamEdition :: (Int, Int, Int) -> BitGet ProductAttributeValue
 decodeTeamEdition version = if version >= (868, 18, 0)
   then ProductAttributeValueTeamEditionNew <$> getBitsLE 31
   else ProductAttributeValueTeamEditionOld <$> decodeCompressedWordBits 13
 
-decodeColor :: (Int, Int, Int) -> DecodeBits ProductAttributeValue
+decodeColor :: (Int, Int, Int) -> BitGet ProductAttributeValue
 decodeColor version = if version >= (868, 23, 8)
   then ProductAttributeValueUserColorNew <$> decodeWord32leBits
   else do
     hasValue <- getBool
     ProductAttributeValueUserColorOld <$> decodeWhen hasValue (getBitsLE 31)
 
-decodeTitle :: DecodeBits ProductAttributeValue
+decodeTitle :: BitGet ProductAttributeValue
 decodeTitle = ProductAttributeValueTitleId <$> decodeStrBits

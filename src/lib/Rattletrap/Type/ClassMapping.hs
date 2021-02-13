@@ -22,5 +22,5 @@ putClassMapping classMapping = do
   putText (classMappingName classMapping)
   putWord32 (classMappingStreamId classMapping)
 
-decodeClassMapping :: Decode ClassMapping
+decodeClassMapping :: ByteGet ClassMapping
 decodeClassMapping = ClassMapping <$> decodeStr <*> decodeWord32le

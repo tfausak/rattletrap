@@ -18,5 +18,5 @@ putInt64Attribute :: Int64Attribute -> BinaryBits.BitPut ()
 putInt64Attribute int64Attribute =
   putInt64Bits (int64AttributeValue int64Attribute)
 
-decodeInt64AttributeBits :: DecodeBits Int64Attribute
+decodeInt64AttributeBits :: BitGet Int64Attribute
 decodeInt64AttributeBits = Int64Attribute <$> decodeInt64leBits

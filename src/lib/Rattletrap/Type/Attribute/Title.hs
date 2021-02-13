@@ -33,7 +33,7 @@ putTitleAttribute titleAttribute = do
   putWord32Bits (titleAttributeUnknown7 titleAttribute)
   BinaryBits.putBool (titleAttributeUnknown8 titleAttribute)
 
-decodeTitleAttributeBits :: DecodeBits TitleAttribute
+decodeTitleAttributeBits :: BitGet TitleAttribute
 decodeTitleAttributeBits =
   TitleAttribute
     <$> getBool

@@ -18,5 +18,5 @@ putQWordAttribute :: QWordAttribute -> BinaryBits.BitPut ()
 putQWordAttribute qWordAttribute =
   putWord64Bits (qWordAttributeValue qWordAttribute)
 
-decodeQWordAttributeBits :: DecodeBits QWordAttribute
+decodeQWordAttributeBits :: BitGet QWordAttribute
 decodeQWordAttributeBits = QWordAttribute <$> decodeWord64leBits

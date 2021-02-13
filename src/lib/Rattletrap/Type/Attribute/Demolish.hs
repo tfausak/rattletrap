@@ -30,7 +30,7 @@ putDemolishAttribute demolishAttribute = do
   putVector (demolishAttributeAttackerVelocity demolishAttribute)
   putVector (demolishAttributeVictimVelocity demolishAttribute)
 
-decodeDemolishAttributeBits :: (Int, Int, Int) -> DecodeBits DemolishAttribute
+decodeDemolishAttributeBits :: (Int, Int, Int) -> BitGet DemolishAttribute
 decodeDemolishAttributeBits version =
   DemolishAttribute
     <$> getBool

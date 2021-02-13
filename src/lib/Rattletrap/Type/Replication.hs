@@ -44,7 +44,7 @@ decodeReplicationsBits
   -> ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       DecodeBits
+       BitGet
        [Replication]
 decodeReplicationsBits version limit classes = do
   hasReplication <- Trans.lift getBool
@@ -61,7 +61,7 @@ decodeReplicationBits
   -> ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       DecodeBits
+       BitGet
        Replication
 decodeReplicationBits version limit classes = do
   actor <- Trans.lift (decodeCompressedWordBits limit)

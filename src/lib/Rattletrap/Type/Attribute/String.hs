@@ -18,5 +18,5 @@ putStringAttribute :: StringAttribute -> BinaryBits.BitPut ()
 putStringAttribute stringAttribute =
   putTextBits (stringAttributeValue stringAttribute)
 
-decodeStringAttributeBits :: DecodeBits StringAttribute
+decodeStringAttributeBits :: BitGet StringAttribute
 decodeStringAttributeBits = StringAttribute <$> decodeStrBits

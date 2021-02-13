@@ -31,8 +31,8 @@ putWord64Bits word64 = do
   let bytes = LazyBytes.toStrict (Binary.runPut (putWord64 word64))
   BinaryBits.putByteString (reverseBytes bytes)
 
-decodeWord64le :: Decode Word64le
+decodeWord64le :: ByteGet Word64le
 decodeWord64le = Word64le <$> getWord64le
 
-decodeWord64leBits :: DecodeBits Word64le
+decodeWord64leBits :: BitGet Word64le
 decodeWord64leBits = toBits decodeWord64le 8

@@ -26,7 +26,7 @@ putPickupAttributeNew pickupAttributeNew = do
       putWord32Bits instigatorId
   putWord8Bits (pickupAttributeNewPickedUp pickupAttributeNew)
 
-decodePickupAttributeNewBits :: DecodeBits PickupAttributeNew
+decodePickupAttributeNewBits :: BitGet PickupAttributeNew
 decodePickupAttributeNewBits = do
   instigator <- getBool
   PickupAttributeNew

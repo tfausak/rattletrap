@@ -27,5 +27,5 @@ putMessage message = do
   putText (messageName message)
   putText (messageValue message)
 
-decodeMessage :: Decode Message
+decodeMessage :: ByteGet Message
 decodeMessage = Message <$> decodeWord32le <*> decodeStr <*> decodeStr

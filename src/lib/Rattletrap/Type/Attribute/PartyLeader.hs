@@ -27,7 +27,7 @@ putPartyLeaderAttribute partyLeaderAttribute = do
       putWord8Bits localId
 
 decodePartyLeaderAttributeBits
-  :: (Int, Int, Int) -> DecodeBits PartyLeaderAttribute
+  :: (Int, Int, Int) -> BitGet PartyLeaderAttribute
 decodePartyLeaderAttributeBits version = do
   systemId <- decodeWord8leBits
   PartyLeaderAttribute systemId <$> decodeWhen

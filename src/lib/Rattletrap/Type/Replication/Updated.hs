@@ -27,6 +27,6 @@ decodeUpdatedReplicationBits
   -> ClassAttributeMap
   -> Map.Map CompressedWord Word32le
   -> CompressedWord
-  -> DecodeBits UpdatedReplication
+  -> BitGet UpdatedReplication
 decodeUpdatedReplicationBits version classes actors actor =
   UpdatedReplication <$> decodeAttributesBits version classes actors actor

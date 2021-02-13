@@ -34,7 +34,7 @@ putCamSettingsAttribute camSettingsAttribute = do
     Just transitionSpeed -> putFloat32Bits transitionSpeed
 
 decodeCamSettingsAttributeBits
-  :: (Int, Int, Int) -> DecodeBits CamSettingsAttribute
+  :: (Int, Int, Int) -> BitGet CamSettingsAttribute
 decodeCamSettingsAttributeBits version =
   CamSettingsAttribute
     <$> decodeFloat32leBits

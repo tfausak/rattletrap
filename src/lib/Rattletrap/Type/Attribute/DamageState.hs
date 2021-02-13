@@ -32,7 +32,7 @@ putDamageStateAttribute damageStateAttribute = do
   BinaryBits.putBool (damageStateAttributeUnknown6 damageStateAttribute)
 
 decodeDamageStateAttributeBits
-  :: (Int, Int, Int) -> DecodeBits DamageStateAttribute
+  :: (Int, Int, Int) -> BitGet DamageStateAttribute
 decodeDamageStateAttributeBits version =
   DamageStateAttribute
     <$> decodeWord8leBits

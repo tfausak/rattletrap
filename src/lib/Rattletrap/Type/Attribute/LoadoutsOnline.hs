@@ -33,7 +33,7 @@ putLoadoutsOnlineAttribute loadoutsOnlineAttribute = do
 decodeLoadoutsOnlineAttributeBits
   :: (Int, Int, Int)
   -> Map.Map Word32le Str
-  -> DecodeBits LoadoutsOnlineAttribute
+  -> BitGet LoadoutsOnlineAttribute
 decodeLoadoutsOnlineAttributeBits version objectMap =
   LoadoutsOnlineAttribute
     <$> decodeLoadoutOnlineAttributeBits version objectMap

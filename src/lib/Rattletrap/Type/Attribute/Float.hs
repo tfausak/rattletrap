@@ -18,5 +18,5 @@ putFloatAttribute :: FloatAttribute -> BinaryBits.BitPut ()
 putFloatAttribute floatAttribute =
   putFloat32Bits (floatAttributeValue floatAttribute)
 
-decodeFloatAttributeBits :: DecodeBits FloatAttribute
+decodeFloatAttributeBits :: BitGet FloatAttribute
 decodeFloatAttributeBits = FloatAttribute <$> decodeFloat32leBits

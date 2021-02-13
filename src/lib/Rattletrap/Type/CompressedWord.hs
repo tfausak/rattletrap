@@ -53,7 +53,7 @@ getMaxBits x =
     n = max 1 (ceiling (logBase (2 :: Double) (fromIntegral (max 1 x))))
   in if x < 1024 && x == 2 ^ n then n + 1 else n
 
-decodeCompressedWordBits :: Word -> DecodeBits CompressedWord
+decodeCompressedWordBits :: Word -> BitGet CompressedWord
 decodeCompressedWordBits limit =
   CompressedWord limit <$> step limit (getMaxBits_ limit) 0 0
 
@@ -64,7 +64,7 @@ getMaxBits_ x = do
     n = max 1 (ceiling (logBase (2 :: Double) (fromIntegral (max 1 x))))
   if x < 1024 && x == 2 ^ n then n + 1 else n
 
-step :: Word -> Word -> Word -> Word -> DecodeBits Word
+step :: Word -> Word -> Word -> Word -> BitGet Word
 step limit maxBits position value = do
   let x = Bits.shiftL 1 (fromIntegral position) :: Word
   if position < maxBits && value + x <= limit

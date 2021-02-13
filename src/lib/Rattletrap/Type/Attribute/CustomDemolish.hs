@@ -25,7 +25,7 @@ putCustomDemolishAttribute x = do
   putDemolishAttribute (customDemolishAttributeDemolish x)
 
 decodeCustomDemolishAttributeBits
-  :: (Int, Int, Int) -> DecodeBits CustomDemolishAttribute
+  :: (Int, Int, Int) -> BitGet CustomDemolishAttribute
 decodeCustomDemolishAttributeBits version =
   CustomDemolishAttribute
     <$> getBool

@@ -21,6 +21,6 @@ putAttributeMapping attributeMapping = do
   putWord32 (attributeMappingObjectId attributeMapping)
   putWord32 (attributeMappingStreamId attributeMapping)
 
-decodeAttributeMapping :: Decode AttributeMapping
+decodeAttributeMapping :: ByteGet AttributeMapping
 decodeAttributeMapping =
   AttributeMapping <$> decodeWord32le <*> decodeWord32le

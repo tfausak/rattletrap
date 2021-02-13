@@ -17,5 +17,5 @@ $(deriveJson ''IntAttribute)
 putIntAttribute :: IntAttribute -> BinaryBits.BitPut ()
 putIntAttribute intAttribute = putInt32Bits (intAttributeValue intAttribute)
 
-decodeIntAttributeBits :: DecodeBits IntAttribute
+decodeIntAttributeBits :: BitGet IntAttribute
 decodeIntAttributeBits = IntAttribute <$> decodeInt32leBits

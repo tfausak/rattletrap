@@ -46,7 +46,7 @@ putPropertyValue putProperty value = case value of
   PropertyValueQWord word64 -> putWord64 word64
   PropertyValueStr text -> putText text
 
-decodePropertyValue :: Decode a -> Str -> Decode (PropertyValue a)
+decodePropertyValue :: ByteGet a -> Str -> ByteGet (PropertyValue a)
 decodePropertyValue getProperty kind = case fromStr kind of
   "ArrayProperty" ->
     PropertyValueArray <$> decodeList (decodeDictionary getProperty)

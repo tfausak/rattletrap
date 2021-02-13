@@ -71,7 +71,7 @@ putHeader header = do
   putText (headerLabel header)
   putDictionary putProperty (headerProperties header)
 
-decodeHeader :: Decode Header
+decodeHeader :: ByteGet Header
 decodeHeader = do
   (major, minor) <- (,) <$> decodeWord32le <*> decodeWord32le
   Header major minor

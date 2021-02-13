@@ -122,7 +122,7 @@ decodeContent
   -> Word
   -- ^ The maximum number of channels in the stream, usually from
   -- 'Rattletrap.Header.getMaxChannels'.
-  -> Decode Content
+  -> ByteGet Content
 decodeContent version numFrames maxChannels = do
   (levels, keyFrames, streamSize) <-
     (,,)

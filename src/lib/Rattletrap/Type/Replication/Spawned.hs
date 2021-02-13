@@ -50,7 +50,7 @@ decodeSpawnedReplicationBits
   -> CompressedWord
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       DecodeBits
+       BitGet
        SpawnedReplication
 decodeSpawnedReplicationBits version classAttributeMap actorId = do
   flag <- Trans.lift getBool

@@ -21,7 +21,7 @@ putLoadoutsAttribute loadoutsAttribute = do
   putLoadoutAttribute (loadoutsAttributeBlue loadoutsAttribute)
   putLoadoutAttribute (loadoutsAttributeOrange loadoutsAttribute)
 
-decodeLoadoutsAttributeBits :: DecodeBits LoadoutsAttribute
+decodeLoadoutsAttributeBits :: BitGet LoadoutsAttribute
 decodeLoadoutsAttributeBits =
   LoadoutsAttribute
     <$> decodeLoadoutAttributeBits

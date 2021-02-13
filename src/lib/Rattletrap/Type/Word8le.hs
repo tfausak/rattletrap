@@ -25,8 +25,8 @@ putWord8Bits word8 = do
   let bytes = LazyBytes.toStrict (Binary.runPut (putWord8 word8))
   BinaryBits.putByteString (reverseBytes bytes)
 
-decodeWord8le :: Decode Word8le
+decodeWord8le :: ByteGet Word8le
 decodeWord8le = Word8le <$> getWord8
 
-decodeWord8leBits :: DecodeBits Word8le
+decodeWord8leBits :: BitGet Word8le
 decodeWord8leBits = toBits decodeWord8le 1

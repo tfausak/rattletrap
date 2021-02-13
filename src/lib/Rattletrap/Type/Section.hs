@@ -56,7 +56,7 @@ putSection putBody section = do
   putWord32 (Word32le crc)
   Binary.putByteString rawBody
 
-decodeSection :: Decode a -> Decode (Section a)
+decodeSection :: ByteGet a -> ByteGet (Section a)
 decodeSection getBody = do
   size <- decodeWord32le
   crc <- decodeWord32le

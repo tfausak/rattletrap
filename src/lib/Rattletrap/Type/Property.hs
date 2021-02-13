@@ -26,7 +26,7 @@ putProperty property = do
   putWord64 (propertySize property)
   putPropertyValue putProperty (propertyValue property)
 
-decodeProperty :: Decode Property
+decodeProperty :: ByteGet Property
 decodeProperty = do
   kind <- decodeStr
   Property kind <$> decodeWord64le <*> decodePropertyValue decodeProperty kind

@@ -126,11 +126,11 @@ putParts a b c = do
 putPart :: Double -> BinaryBits.BitPut ()
 putPart = putCompressedWord . compressPart
 
-decodeQuaternionBits :: DecodeBits Quaternion
+decodeQuaternionBits :: BitGet Quaternion
 decodeQuaternionBits =
   toQuaternion <$> decodeComponent <*> decodePart <*> decodePart <*> decodePart
 
-decodeComponent :: DecodeBits Component
+decodeComponent :: BitGet Component
 decodeComponent = do
   x <- decodeCompressedWordBits 3
   case compressedWordValue x of
@@ -140,5 +140,5 @@ decodeComponent = do
     3 -> pure ComponentW
     y -> fail ("[RT08] invalid component: " <> show y)
 
-decodePart :: DecodeBits Double
+decodePart :: BitGet Double
 decodePart = decompressPart <$> decodeCompressedWordBits maxCompressedValue

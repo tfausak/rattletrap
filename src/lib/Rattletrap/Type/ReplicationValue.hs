@@ -47,7 +47,7 @@ decodeReplicationValueBits
   -> CompressedWord
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       DecodeBits
+       BitGet
        ReplicationValue
 decodeReplicationValueBits version classAttributeMap actorId = do
   actorMap <- State.get

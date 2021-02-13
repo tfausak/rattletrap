@@ -24,7 +24,7 @@ putMusicStingerAttribute musicStingerAttribute = do
   putWord32Bits (musicStingerAttributeCue musicStingerAttribute)
   putWord8Bits (musicStingerAttributeTrigger musicStingerAttribute)
 
-decodeMusicStingerAttributeBits :: DecodeBits MusicStingerAttribute
+decodeMusicStingerAttributeBits :: BitGet MusicStingerAttribute
 decodeMusicStingerAttributeBits =
   MusicStingerAttribute
     <$> getBool

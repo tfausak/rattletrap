@@ -28,7 +28,7 @@ putAppliedDamageAttribute appliedDamageAttribute = do
   putInt32Bits (appliedDamageAttributeUnknown4 appliedDamageAttribute)
 
 decodeAppliedDamageAttributeBits
-  :: (Int, Int, Int) -> DecodeBits AppliedDamageAttribute
+  :: (Int, Int, Int) -> BitGet AppliedDamageAttribute
 decodeAppliedDamageAttributeBits version =
   AppliedDamageAttribute
     <$> decodeWord8leBits

@@ -27,7 +27,7 @@ putCache cache = do
   putWord32 (cacheCacheId cache)
   putList putAttributeMapping (cacheAttributeMappings cache)
 
-decodeCache :: Decode Cache
+decodeCache :: ByteGet Cache
 decodeCache =
   Cache
     <$> decodeWord32le

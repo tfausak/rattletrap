@@ -18,5 +18,5 @@ putByteAttribute :: ByteAttribute -> BinaryBits.BitPut ()
 putByteAttribute byteAttribute =
   putWord8Bits (byteAttributeValue byteAttribute)
 
-decodeByteAttributeBits :: DecodeBits ByteAttribute
+decodeByteAttributeBits :: BitGet ByteAttribute
 decodeByteAttributeBits = ByteAttribute <$> decodeWord8leBits

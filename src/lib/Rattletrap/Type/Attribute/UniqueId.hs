@@ -24,7 +24,7 @@ putUniqueIdAttribute uniqueIdAttribute = do
   putRemoteId (uniqueIdAttributeRemoteId uniqueIdAttribute)
   putWord8Bits (uniqueIdAttributeLocalId uniqueIdAttribute)
 
-decodeUniqueIdAttributeBits :: (Int, Int, Int) -> DecodeBits UniqueIdAttribute
+decodeUniqueIdAttributeBits :: (Int, Int, Int) -> BitGet UniqueIdAttribute
 decodeUniqueIdAttributeBits version = do
   systemId <- decodeWord8leBits
   UniqueIdAttribute systemId

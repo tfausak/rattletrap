@@ -132,7 +132,7 @@ putAttributeValue value = case value of
   AttributeValueWeldedInfo x -> putWeldedInfoAttribute x
 
 decodeAttributeValueBits
-  :: (Int, Int, Int) -> Map Word32le Str -> Str -> DecodeBits AttributeValue
+  :: (Int, Int, Int) -> Map Word32le Str -> Str -> BitGet AttributeValue
 decodeAttributeValueBits version objectMap name = do
   constructor <- maybe
     (fail ("[RT04] don't know how to get attribute value " <> show name))

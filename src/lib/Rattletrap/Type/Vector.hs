@@ -43,7 +43,7 @@ putVector vector = do
   putCompressedWord (CompressedWord limit dy)
   putCompressedWord (CompressedWord limit dz)
 
-decodeVectorBits :: (Int, Int, Int) -> DecodeBits Vector
+decodeVectorBits :: (Int, Int, Int) -> BitGet Vector
 decodeVectorBits version = do
   size <- decodeCompressedWordBits (if version >= (868, 22, 7) then 21 else 19)
   let

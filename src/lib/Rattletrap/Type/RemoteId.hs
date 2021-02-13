@@ -52,7 +52,7 @@ putWord256 a b c d = do
   putWord64Bits c
   putWord64Bits d
 
-decodeRemoteIdBits :: (Int, Int, Int) -> Word8le -> DecodeBits RemoteId
+decodeRemoteIdBits :: (Int, Int, Int) -> Word8le -> BitGet RemoteId
 decodeRemoteIdBits version systemId = case word8leValue systemId of
   0 -> RemoteIdSplitscreen <$> getBitsLE 24
   1 -> RemoteIdSteam <$> decodeWord64leBits
@@ -67,16 +67,16 @@ decodeRemoteIdBits version systemId = case word8leValue systemId of
   11 -> RemoteIdEpic <$> decodeStrBits
   _ -> fail ("[RT09] unknown system id " <> show systemId)
 
-decodePsName :: DecodeBits Text.Text
+decodePsName :: BitGet Text.Text
 decodePsName = fmap
   (Text.dropWhileEnd (== '\x00') . Text.decodeLatin1 . reverseBytes)
   (getByteStringBits 16)
 
-decodePsBytes :: (Int, Int, Int) -> DecodeBits [Word.Word8]
+decodePsBytes :: (Int, Int, Int) -> BitGet [Word.Word8]
 decodePsBytes version = Bytes.unpack
   <$> getByteStringBits (if version >= (868, 20, 1) then 24 else 16)
 
-getWord256 :: DecodeBits (Word64le, Word64le, Word64le, Word64le)
+getWord256 :: BitGet (Word64le, Word64le, Word64le, Word64le)
 getWord256 = do
   a <- decodeWord64leBits
   b <- decodeWord64leBits

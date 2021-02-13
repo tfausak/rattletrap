@@ -18,6 +18,6 @@ putPlayerHistoryKeyAttribute
   :: PlayerHistoryKeyAttribute -> BinaryBits.BitPut ()
 putPlayerHistoryKeyAttribute = putBitsLE 14 . playerHistoryKeyAttributeUnknown
 
-decodePlayerHistoryKeyAttributeBits :: DecodeBits PlayerHistoryKeyAttribute
+decodePlayerHistoryKeyAttributeBits :: BitGet PlayerHistoryKeyAttribute
 decodePlayerHistoryKeyAttributeBits =
   PlayerHistoryKeyAttribute <$> getBitsLE 14

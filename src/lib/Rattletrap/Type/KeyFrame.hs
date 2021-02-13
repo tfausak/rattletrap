@@ -27,6 +27,6 @@ putKeyFrame keyFrame = do
   putWord32 (keyFrameFrame keyFrame)
   putWord32 (keyFramePosition keyFrame)
 
-decodeKeyFrame :: Decode KeyFrame
+decodeKeyFrame :: ByteGet KeyFrame
 decodeKeyFrame =
   KeyFrame <$> decodeFloat32le <*> decodeWord32le <*> decodeWord32le

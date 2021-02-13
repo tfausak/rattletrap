@@ -25,8 +25,8 @@ putFloat32Bits float32 = do
   let bytes = LazyBytes.toStrict (Binary.runPut (putFloat32 float32))
   BinaryBits.putByteString (reverseBytes bytes)
 
-decodeFloat32le :: Decode Float32le
+decodeFloat32le :: ByteGet Float32le
 decodeFloat32le = Float32le <$> getFloatle
 
-decodeFloat32leBits :: DecodeBits Float32le
+decodeFloat32leBits :: BitGet Float32le
 decodeFloat32leBits = toBits decodeFloat32le 4

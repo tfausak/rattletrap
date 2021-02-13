@@ -63,13 +63,13 @@ getTextEncoder size text =
 addNull :: Text.Text -> Text.Text
 addNull text = if Text.null text then text else Text.snoc text '\x00'
 
-decodeStr :: Decode Str
+decodeStr :: ByteGet Str
 decodeStr = do
   rawSize <- decodeInt32le
   bytes <- getByteString (normalizeTextSize rawSize)
   pure (Str (dropNull (getTextDecoder rawSize bytes)))
 
-decodeStrBits :: DecodeBits Str
+decodeStrBits :: BitGet Str
 decodeStrBits = do
   rawSize <- decodeInt32leBits
   bytes <- getByteStringBits (normalizeTextSize rawSize)

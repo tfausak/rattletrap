@@ -24,5 +24,5 @@ putMark mark = do
   putText (markValue mark)
   putWord32 (markFrame mark)
 
-decodeMark :: Decode Mark
+decodeMark :: ByteGet Mark
 decodeMark = Mark <$> decodeStr <*> decodeWord32le

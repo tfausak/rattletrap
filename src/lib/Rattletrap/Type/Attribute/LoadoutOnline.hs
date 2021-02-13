@@ -28,7 +28,7 @@ putLoadoutOnlineAttribute loadoutAttribute = do
 decodeLoadoutOnlineAttributeBits
   :: (Int, Int, Int)
   -> Map.Map Word32le Str
-  -> DecodeBits LoadoutOnlineAttribute
+  -> BitGet LoadoutOnlineAttribute
 decodeLoadoutOnlineAttributeBits version objectMap = do
   size <- decodeWord8leBits
   LoadoutOnlineAttribute <$> Monad.replicateM

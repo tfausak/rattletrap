@@ -37,7 +37,7 @@ putReservationAttribute reservationAttribute = do
     Just c -> BinaryBits.putWord8 6 c
 
 decodeReservationAttributeBits
-  :: (Int, Int, Int) -> DecodeBits ReservationAttribute
+  :: (Int, Int, Int) -> BitGet ReservationAttribute
 decodeReservationAttributeBits version = do
   number <- decodeCompressedWordBits 7
   uniqueId <- decodeUniqueIdAttributeBits version

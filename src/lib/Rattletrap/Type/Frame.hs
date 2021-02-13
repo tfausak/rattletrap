@@ -48,7 +48,7 @@ decodeFramesBits
   -> ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord Word32le)
-       DecodeBits
+       BitGet
        [Frame]
 decodeFramesBits version count limit classes = if count <= 0
   then pure []
@@ -61,7 +61,7 @@ decodeFrameBits
   :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
-  -> State.StateT (Map.Map CompressedWord Word32le) DecodeBits Frame
+  -> State.StateT (Map.Map CompressedWord Word32le) BitGet Frame
 decodeFrameBits version limit classes =
   Frame
     <$> Trans.lift decodeFloat32leBits

@@ -17,5 +17,5 @@ putBooleanAttribute :: BooleanAttribute -> BinaryBits.BitPut ()
 putBooleanAttribute booleanAttribute =
   BinaryBits.putBool (booleanAttributeValue booleanAttribute)
 
-decodeBooleanAttributeBits :: DecodeBits BooleanAttribute
+decodeBooleanAttributeBits :: BitGet BooleanAttribute
 decodeBooleanAttributeBits = BooleanAttribute <$> getBool

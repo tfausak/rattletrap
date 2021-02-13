@@ -21,6 +21,6 @@ putStatEventAttribute statEventAttribute = do
   BinaryBits.putBool (statEventAttributeUnknown statEventAttribute)
   putInt32Bits (statEventAttributeObjectId statEventAttribute)
 
-decodeStatEventAttributeBits :: DecodeBits StatEventAttribute
+decodeStatEventAttributeBits :: BitGet StatEventAttribute
 decodeStatEventAttributeBits =
   StatEventAttribute <$> getBool <*> decodeInt32leBits

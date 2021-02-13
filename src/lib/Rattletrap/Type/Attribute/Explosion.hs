@@ -25,7 +25,7 @@ putExplosionAttribute explosionAttribute = do
   putVector (explosionAttributeLocation explosionAttribute)
 
 decodeExplosionAttributeBits
-  :: (Int, Int, Int) -> DecodeBits ExplosionAttribute
+  :: (Int, Int, Int) -> BitGet ExplosionAttribute
 decodeExplosionAttributeBits version =
   ExplosionAttribute
     <$> getBool

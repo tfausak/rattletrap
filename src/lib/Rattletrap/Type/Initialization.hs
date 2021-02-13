@@ -31,7 +31,7 @@ putInitialization initialization = do
     Just rotation -> putInt8Vector rotation
 
 decodeInitializationBits
-  :: (Int, Int, Int) -> Bool -> Bool -> DecodeBits Initialization
+  :: (Int, Int, Int) -> Bool -> Bool -> BitGet Initialization
 decodeInitializationBits version hasLocation hasRotation =
   Initialization
     <$> decodeWhen hasLocation (decodeVectorBits version)

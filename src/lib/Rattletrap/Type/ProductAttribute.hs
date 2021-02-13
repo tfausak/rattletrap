@@ -36,7 +36,7 @@ putProductAttribute attribute = do
   putProductAttributeValue $ productAttributeValue attribute
 
 decodeProductAttributesBits
-  :: (Int, Int, Int) -> Map Word32le Str -> DecodeBits [ProductAttribute]
+  :: (Int, Int, Int) -> Map Word32le Str -> BitGet [ProductAttribute]
 decodeProductAttributesBits version objectMap = do
   size <- decodeWord8leBits
   Monad.replicateM
@@ -44,7 +44,7 @@ decodeProductAttributesBits version objectMap = do
     (decodeProductAttributeBits version objectMap)
 
 decodeProductAttributeBits
-  :: (Int, Int, Int) -> Map Word32le Str -> DecodeBits ProductAttribute
+  :: (Int, Int, Int) -> Map Word32le Str -> BitGet ProductAttribute
 decodeProductAttributeBits version objectMap = do
   flag <- getBool
   objectId <- decodeWord32leBits

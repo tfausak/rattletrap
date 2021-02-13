@@ -21,7 +21,7 @@ putRotation r = case r of
   RotationCompressedWordVector cwv -> putCompressedWordVector cwv
   RotationQuaternion q -> putQuaternion q
 
-decodeRotationBits :: (Int, Int, Int) -> DecodeBits Rotation
+decodeRotationBits :: (Int, Int, Int) -> BitGet Rotation
 decodeRotationBits version = if version >= (868, 22, 7)
   then RotationQuaternion <$> decodeQuaternionBits
   else RotationCompressedWordVector <$> decodeCompressedWordVectorBits

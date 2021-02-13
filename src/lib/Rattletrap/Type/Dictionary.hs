@@ -74,7 +74,7 @@ putDictionary f x = case x of
     putDictionary f y
   DictionaryEnd y -> putText y
 
-decodeDictionary :: Decode a -> Decode (Dictionary a)
+decodeDictionary :: ByteGet a -> ByteGet (Dictionary a)
 decodeDictionary decodeValue = do
   key <- decodeStr
   case filter (/= '\x00') (fromStr key) of

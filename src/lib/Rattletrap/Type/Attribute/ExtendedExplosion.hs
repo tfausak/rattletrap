@@ -24,7 +24,7 @@ putExtendedExplosionAttribute x = do
   putFlaggedIntAttribute (extendedExplosionAttributeUnknown x)
 
 decodeExtendedExplosionAttributeBits
-  :: (Int, Int, Int) -> DecodeBits ExtendedExplosionAttribute
+  :: (Int, Int, Int) -> BitGet ExtendedExplosionAttribute
 decodeExtendedExplosionAttributeBits version =
   ExtendedExplosionAttribute
     <$> decodeExplosionAttributeBits version

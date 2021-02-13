@@ -31,7 +31,7 @@ putWeldedInfoAttribute weldedInfoAttribute = do
   putInt8Vector (weldedInfoAttributeRotation weldedInfoAttribute)
 
 decodeWeldedInfoAttributeBits
-  :: (Int, Int, Int) -> DecodeBits WeldedInfoAttribute
+  :: (Int, Int, Int) -> BitGet WeldedInfoAttribute
 decodeWeldedInfoAttributeBits version =
   WeldedInfoAttribute
     <$> getBool

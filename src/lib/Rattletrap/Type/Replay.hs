@@ -39,7 +39,7 @@ putReplay replay = do
   putSection putHeader (replayHeader replay)
   putSection putContent (replayContent replay)
 
-decodeReplay :: Bool -> Decode FullReplay
+decodeReplay :: Bool -> ByteGet FullReplay
 decodeReplay fast = do
   header <- decodeSection decodeHeader
   content <- if fast

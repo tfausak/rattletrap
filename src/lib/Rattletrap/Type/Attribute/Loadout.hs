@@ -58,7 +58,7 @@ putOptional m f = case m of
   Just x -> f x
   Nothing -> pure ()
 
-decodeLoadoutAttributeBits :: DecodeBits LoadoutAttribute
+decodeLoadoutAttributeBits :: BitGet LoadoutAttribute
 decodeLoadoutAttributeBits = do
   version <- decodeWord8leBits
   LoadoutAttribute version
