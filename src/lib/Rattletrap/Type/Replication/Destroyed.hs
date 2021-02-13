@@ -9,13 +9,14 @@ import Rattletrap.Encode.Common
 -- | Destroyed replications don't actually contain any extra information. All
 -- you need to know is the actor's ID, which is given by the
 -- 'Rattletrap.Replication.Replication'.
-data DestroyedReplication = DestroyedReplication
+data Destroyed
+  = Destroyed
   deriving (Eq, Show)
 
-$(deriveJson ''DestroyedReplication)
+$(deriveJsonWith ''Destroyed jsonOptions)
 
-putDestroyedReplication :: DestroyedReplication -> BitPut ()
-putDestroyedReplication _ = pure ()
+bitPut :: Destroyed -> BitPut ()
+bitPut _ = pure ()
 
-decodeDestroyedReplicationBits :: BitGet DestroyedReplication
-decodeDestroyedReplicationBits = pure DestroyedReplication
+bitGet :: BitGet Destroyed
+bitGet = pure Destroyed

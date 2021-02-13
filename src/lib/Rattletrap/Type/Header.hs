@@ -4,7 +4,7 @@ module Rattletrap.Type.Header where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Dictionary
-import Rattletrap.Type.Property
+import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
@@ -20,7 +20,7 @@ data Header = Header
   -- ^ The "patch" ("net") version number.
   , headerLabel :: Str.Str
   -- ^ Always @TAGame.Replay_Soccar_TA@.
-  , headerProperties :: Dictionary Property
+  , headerProperties :: Dictionary Property.Property
   -- ^ These properties determine how a replay will look in the list of
   -- replays in-game. One element is required for the replay to show up:
   --
@@ -68,7 +68,7 @@ putHeader header = do
     Nothing -> pure ()
     Just patchVersion -> Word32le.bytePut patchVersion
   Str.bytePut (headerLabel header)
-  putDictionary putProperty (headerProperties header)
+  putDictionary Property.bytePut (headerProperties header)
 
 decodeHeader :: ByteGet Header
 decodeHeader = do
@@ -78,4 +78,4 @@ decodeHeader = do
           (Word32le.toWord32 major >= 868 && Word32le.toWord32 minor >= 18)
           Word32le.byteGet
     <*> Str.byteGet
-    <*> decodeDictionary decodeProperty
+    <*> decodeDictionary Property.byteGet

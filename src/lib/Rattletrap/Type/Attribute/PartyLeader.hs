@@ -3,14 +3,14 @@
 module Rattletrap.Type.Attribute.PartyLeader where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.RemoteId
+import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.Word8le as Word8le
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data PartyLeaderAttribute = PartyLeaderAttribute
   { partyLeaderAttributeSystemId :: Word8le.Word8le
-  , partyLeaderAttributeId :: Maybe (RemoteId, Word8le.Word8le)
+  , partyLeaderAttributeId :: Maybe (RemoteId.RemoteId, Word8le.Word8le)
   }
   deriving (Eq, Show)
 
@@ -22,7 +22,7 @@ putPartyLeaderAttribute partyLeaderAttribute = do
   case partyLeaderAttributeId partyLeaderAttribute of
     Nothing -> pure ()
     Just (remoteId, localId) -> do
-      putRemoteId remoteId
+      RemoteId.bitPut remoteId
       Word8le.bitPut localId
 
 decodePartyLeaderAttributeBits
@@ -31,4 +31,4 @@ decodePartyLeaderAttributeBits version = do
   systemId <- Word8le.bitGet
   PartyLeaderAttribute systemId <$> decodeWhen
     (systemId /= Word8le.fromWord8 0)
-    ((,) <$> decodeRemoteIdBits version systemId <*> Word8le.bitGet)
+    ((,) <$> RemoteId.bitGet version systemId <*> Word8le.bitGet)

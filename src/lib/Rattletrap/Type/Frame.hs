@@ -4,7 +4,7 @@ module Rattletrap.Type.Frame where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Float32le
-import Rattletrap.Type.Replication
+import qualified Rattletrap.Type.Replication as Replication
 import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
@@ -21,7 +21,7 @@ data Frame = Frame
   , frameDelta :: Float32le
   -- ^ Time in seconds since the last frame. Usually about 0.03 since there
   -- are 30 frames per second.
-  , frameReplications :: [Replication]
+  , frameReplications :: [Replication.Replication]
   }
   deriving (Eq, Show)
 
@@ -39,7 +39,7 @@ putFrame :: Frame -> BitPut ()
 putFrame frame = do
   putFloat32Bits (frameTime frame)
   putFloat32Bits (frameDelta frame)
-  putReplications (frameReplications frame)
+  Replication.putReplications (frameReplications frame)
 
 decodeFramesBits
   :: (Int, Int, Int)
@@ -66,4 +66,4 @@ decodeFrameBits version limit classes =
   Frame
     <$> Trans.lift decodeFloat32leBits
     <*> Trans.lift decodeFloat32leBits
-    <*> decodeReplicationsBits version limit classes
+    <*> Replication.decodeReplicationsBits version limit classes

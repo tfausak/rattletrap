@@ -18,53 +18,53 @@ import qualified Data.ByteString.Lazy as LazyBytes
 -- bunch of data (the body). This interface is provided so that you don't have
 -- to think about the size and CRC.
 data Section a = Section
-  { sectionSize :: Word32le.Word32le
+  { size :: Word32le.Word32le
   -- ^ read only
-  , sectionCrc :: Word32le.Word32le
+  , crc :: Word32le.Word32le
   -- ^ read only
-  , sectionBody :: a
+  , body :: a
   -- ^ The actual content in the section.
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Section)
+$(deriveJsonWith ''Section jsonOptions)
 
-toSection :: (a -> BytePut) -> a -> Section a
-toSection encode body =
-  let bytes = LazyBytes.toStrict . Binary.runPut $ encode body
+create :: (a -> BytePut) -> a -> Section a
+create encode body_ =
+  let bytes = LazyBytes.toStrict . Binary.runPut $ encode body_
   in
     Section
-      { sectionSize = Word32le.fromWord32 . fromIntegral $ Bytes.length bytes
-      , sectionCrc = Word32le.fromWord32 $ Crc.compute bytes
-      , sectionBody = body
+      { size = Word32le.fromWord32 . fromIntegral $ Bytes.length bytes
+      , crc = Word32le.fromWord32 $ Crc.compute bytes
+      , body = body_
       }
 
--- | Given a way to put the 'sectionBody', puts a section. This will also put
+-- | Given a way to put the 'body', puts a section. This will also put
 -- the size and CRC.
 --
 -- @
--- let bytes = 'Data.BytePut.runPut' ('putSection' 'Rattletrap.Content.putContent' content)
+-- let bytes = 'Data.BytePut.runPut' ('bytePut' 'Rattletrap.Content.putContent' content)
 -- @
-putSection :: (a -> BytePut) -> Section a -> BytePut
-putSection putBody section = do
+bytePut :: (a -> BytePut) -> Section a -> BytePut
+bytePut putBody section = do
   let
     rawBody =
-      LazyBytes.toStrict (Binary.runPut (putBody (sectionBody section)))
-  let size = Bytes.length rawBody
-  let crc = Crc.compute rawBody
-  Word32le.bytePut (Word32le.fromWord32 (fromIntegral size))
-  Word32le.bytePut (Word32le.fromWord32 crc)
+      LazyBytes.toStrict (Binary.runPut (putBody (body section)))
+  let size_ = Bytes.length rawBody
+  let crc_ = Crc.compute rawBody
+  Word32le.bytePut (Word32le.fromWord32 (fromIntegral size_))
+  Word32le.bytePut (Word32le.fromWord32 crc_)
   Binary.putByteString rawBody
 
-decodeSection :: ByteGet a -> ByteGet (Section a)
-decodeSection getBody = do
-  size <- Word32le.byteGet
-  crc <- Word32le.byteGet
-  rawBody <- getByteString (fromIntegral (Word32le.toWord32 size))
+byteGet :: ByteGet a -> ByteGet (Section a)
+byteGet getBody = do
+  size_ <- Word32le.byteGet
+  crc_ <- Word32le.byteGet
+  rawBody <- getByteString (fromIntegral (Word32le.toWord32 size_))
   let actualCrc = Word32le.fromWord32 (Crc.compute rawBody)
-  Monad.when (actualCrc /= crc) (fail (crcMessage actualCrc crc))
-  body <- either fail pure (runDecode getBody rawBody)
-  pure (Section size crc body)
+  Monad.when (actualCrc /= crc_) (fail (crcMessage actualCrc crc_))
+  body_ <- either fail pure (runDecode getBody rawBody)
+  pure (Section size_ crc_ body_)
 
 crcMessage :: Word32le.Word32le -> Word32le.Word32le -> String
 crcMessage actual expected = unwords

@@ -17,32 +17,32 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.ByteString as Bytes
 
 data RemoteId
-  = RemoteIdPlayStation Text [Word8]
-  | RemoteIdPsyNet (Either Word64le.Word64le (Word64le.Word64le, Word64le.Word64le, Word64le.Word64le, Word64le.Word64le))
-  | RemoteIdSplitscreen Word32
+  = PlayStation Text [Word8]
+  | PsyNet (Either Word64le.Word64le (Word64le.Word64le, Word64le.Word64le, Word64le.Word64le, Word64le.Word64le))
+  | Splitscreen Word32
   -- ^ Really only 24 bits.
-  | RemoteIdSteam Word64le.Word64le
-  | RemoteIdSwitch Word64le.Word64le Word64le.Word64le Word64le.Word64le Word64le.Word64le
-  | RemoteIdXbox Word64le.Word64le
-  | RemoteIdEpic Str.Str
+  | Steam Word64le.Word64le
+  | Switch Word64le.Word64le Word64le.Word64le Word64le.Word64le Word64le.Word64le
+  | Xbox Word64le.Word64le
+  | Epic Str.Str
   deriving (Eq, Show)
 
-$(deriveJson ''RemoteId)
+$(deriveJsonWith ''RemoteId jsonOptions)
 
-putRemoteId :: RemoteId -> BitPut ()
-putRemoteId remoteId = case remoteId of
-  RemoteIdPlayStation name bytes -> do
+bitPut :: RemoteId -> BitPut ()
+bitPut remoteId = case remoteId of
+  PlayStation name bytes -> do
     let rawName = reverseBytes (padBytes (16 :: Int) (encodeLatin1 name))
     BinaryBits.putByteString rawName
     BinaryBits.putByteString (Bytes.pack bytes)
-  RemoteIdPsyNet e -> case e of
+  PsyNet e -> case e of
     Left l -> Word64le.bitPut l
     Right (a, b, c, d) -> putWord256 a b c d
-  RemoteIdSplitscreen word24 -> putBitsLE 24 word24
-  RemoteIdSteam word64 -> Word64le.bitPut word64
-  RemoteIdSwitch a b c d -> putWord256 a b c d
-  RemoteIdXbox word64 -> Word64le.bitPut word64
-  RemoteIdEpic str -> Str.bitPut str
+  Splitscreen word24 -> putBitsLE 24 word24
+  Steam word64 -> Word64le.bitPut word64
+  Switch a b c d -> putWord256 a b c d
+  Xbox word64 -> Word64le.bitPut word64
+  Epic str -> Str.bitPut str
 
 putWord256
   :: Word64le.Word64le -> Word64le.Word64le -> Word64le.Word64le -> Word64le.Word64le -> BitPut ()
@@ -52,19 +52,19 @@ putWord256 a b c d = do
   Word64le.bitPut c
   Word64le.bitPut d
 
-decodeRemoteIdBits :: (Int, Int, Int) -> Word8le.Word8le -> BitGet RemoteId
-decodeRemoteIdBits version systemId = case Word8le.toWord8 systemId of
-  0 -> RemoteIdSplitscreen <$> getBitsLE 24
-  1 -> RemoteIdSteam <$> Word64le.bitGet
-  2 -> RemoteIdPlayStation <$> decodePsName <*> decodePsBytes version
-  4 -> RemoteIdXbox <$> Word64le.bitGet
+bitGet :: (Int, Int, Int) -> Word8le.Word8le -> BitGet RemoteId
+bitGet version systemId = case Word8le.toWord8 systemId of
+  0 -> Splitscreen <$> getBitsLE 24
+  1 -> Steam <$> Word64le.bitGet
+  2 -> PlayStation <$> decodePsName <*> decodePsBytes version
+  4 -> Xbox <$> Word64le.bitGet
   6 -> do
     (a, b, c, d) <- getWord256
-    pure $ RemoteIdSwitch a b c d
+    pure $ Switch a b c d
   7 -> if version >= (868, 24, 10)
-    then RemoteIdPsyNet . Left <$> Word64le.bitGet
-    else RemoteIdPsyNet . Right <$> getWord256
-  11 -> RemoteIdEpic <$> Str.bitGet
+    then PsyNet . Left <$> Word64le.bitGet
+    else PsyNet . Right <$> getWord256
+  11 -> Epic <$> Str.bitGet
   _ -> fail ("[RT09] unknown system id " <> show systemId)
 
 decodePsName :: BitGet Text.Text

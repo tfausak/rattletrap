@@ -3,24 +3,24 @@
 module Rattletrap.Type.Rotation where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWordVector
-import Rattletrap.Type.Quaternion
+import qualified Rattletrap.Type.CompressedWordVector as CompressedWordVector
+import qualified Rattletrap.Type.Quaternion as Quaternion
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data Rotation
-  = RotationCompressedWordVector CompressedWordVector
-  | RotationQuaternion Quaternion
+  = CompressedWordVector CompressedWordVector.CompressedWordVector
+  | Quaternion Quaternion.Quaternion
   deriving (Eq, Show)
 
-$(deriveJson ''Rotation)
+$(deriveJsonWith ''Rotation jsonOptions)
 
-putRotation :: Rotation -> BitPut ()
-putRotation r = case r of
-  RotationCompressedWordVector cwv -> putCompressedWordVector cwv
-  RotationQuaternion q -> putQuaternion q
+bitPut :: Rotation -> BitPut ()
+bitPut r = case r of
+  CompressedWordVector cwv -> CompressedWordVector.putCompressedWordVector cwv
+  Quaternion q -> Quaternion.putQuaternion q
 
-decodeRotationBits :: (Int, Int, Int) -> BitGet Rotation
-decodeRotationBits version = if version >= (868, 22, 7)
-  then RotationQuaternion <$> decodeQuaternionBits
-  else RotationCompressedWordVector <$> decodeCompressedWordVectorBits
+bitGet :: (Int, Int, Int) -> BitGet Rotation
+bitGet version = if version >= (868, 22, 7)
+  then Quaternion <$> Quaternion.decodeQuaternionBits
+  else CompressedWordVector <$> CompressedWordVector.decodeCompressedWordVectorBits

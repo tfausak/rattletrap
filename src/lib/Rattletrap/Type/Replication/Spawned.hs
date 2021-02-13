@@ -16,86 +16,86 @@ import qualified Control.Monad.Trans.State as State
 import qualified Data.Map as Map
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data SpawnedReplication = SpawnedReplication
-  { spawnedReplicationFlag :: Bool
+data Spawned = Spawned
+  { flag :: Bool
   -- ^ Unclear what this is.
-  , spawnedReplicationNameIndex :: Maybe Word32le.Word32le
-  , spawnedReplicationName :: Maybe Str.Str
+  , nameIndex :: Maybe Word32le.Word32le
+  , name :: Maybe Str.Str
   -- ^ Read-only! Changing a replication's name requires editing the
-  -- 'spawnedReplicationNameIndex' and maybe the class attribute map.
-  , spawnedReplicationObjectId :: Word32le.Word32le
-  , spawnedReplicationObjectName :: Str.Str
+  -- 'nameIndex' and maybe the class attribute map.
+  , objectId :: Word32le.Word32le
+  , objectName :: Str.Str
   -- ^ Read-only! Changing a replication's object requires editing the class
   -- attribute map.
-  , spawnedReplicationClassName :: Str.Str
+  , className :: Str.Str
   -- ^ Read-only! Changing a replication's class requires editing the class
   -- attribute map.
-  , spawnedReplicationInitialization :: Initialization
+  , initialization :: Initialization
   }
   deriving (Eq, Show)
 
-$(deriveJson ''SpawnedReplication)
+$(deriveJsonWith ''Spawned jsonOptions)
 
-putSpawnedReplication :: SpawnedReplication -> BitPut ()
-putSpawnedReplication spawnedReplication = do
-  BinaryBits.putBool (spawnedReplicationFlag spawnedReplication)
-  case spawnedReplicationNameIndex spawnedReplication of
+bitPut :: Spawned -> BitPut ()
+bitPut spawnedReplication = do
+  BinaryBits.putBool (flag spawnedReplication)
+  case nameIndex spawnedReplication of
     Nothing -> pure ()
-    Just nameIndex -> Word32le.bitPut nameIndex
-  Word32le.bitPut (spawnedReplicationObjectId spawnedReplication)
-  putInitialization (spawnedReplicationInitialization spawnedReplication)
+    Just nameIndex_ -> Word32le.bitPut nameIndex_
+  Word32le.bitPut (objectId spawnedReplication)
+  putInitialization (initialization spawnedReplication)
 
-decodeSpawnedReplicationBits
+bitGet
   :: (Int, Int, Int)
   -> ClassAttributeMap
   -> CompressedWord
   -> State.StateT
        (Map.Map CompressedWord Word32le.Word32le)
        BitGet
-       SpawnedReplication
-decodeSpawnedReplicationBits version classAttributeMap actorId = do
-  flag <- Trans.lift getBool
-  nameIndex <- decodeWhen
+       Spawned
+bitGet version classAttributeMap actorId = do
+  flag_ <- Trans.lift getBool
+  nameIndex_ <- decodeWhen
     (version >= (868, 14, 0))
     (Trans.lift Word32le.bitGet)
-  name <- either fail pure (lookupName classAttributeMap nameIndex)
-  objectId <- Trans.lift Word32le.bitGet
-  State.modify (Map.insert actorId objectId)
-  objectName <- either fail pure (lookupObjectName classAttributeMap objectId)
-  className <- either fail pure (lookupClassName objectName)
-  let hasLocation = classHasLocation className
-  let hasRotation = classHasRotation className
-  initialization <- Trans.lift
+  name_ <- either fail pure (lookupName classAttributeMap nameIndex_)
+  objectId_ <- Trans.lift Word32le.bitGet
+  State.modify (Map.insert actorId objectId_)
+  objectName_ <- either fail pure (lookupObjectName classAttributeMap objectId_)
+  className_ <- either fail pure (lookupClassName objectName_)
+  let hasLocation = classHasLocation className_
+  let hasRotation = classHasRotation className_
+  initialization_ <- Trans.lift
     (decodeInitializationBits version hasLocation hasRotation)
   pure
-    (SpawnedReplication
-      flag
-      nameIndex
-      name
-      objectId
-      objectName
-      className
-      initialization
+    (Spawned
+      flag_
+      nameIndex_
+      name_
+      objectId_
+      objectName_
+      className_
+      initialization_
     )
 
 lookupName :: ClassAttributeMap -> Maybe Word32le.Word32le -> Either String (Maybe Str.Str)
 lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
   Nothing -> Right Nothing
-  Just nameIndex ->
-    case getName (classAttributeMapNameMap classAttributeMap) nameIndex of
+  Just nameIndex_ ->
+    case getName (classAttributeMapNameMap classAttributeMap) nameIndex_ of
       Nothing ->
-        Left ("[RT11] could not get name for index " <> show nameIndex)
-      Just name -> Right (Just name)
+        Left ("[RT11] could not get name for index " <> show nameIndex_)
+      Just name_ -> Right (Just name_)
 
 lookupObjectName :: ClassAttributeMap -> Word32le.Word32le -> Either String Str.Str
-lookupObjectName classAttributeMap objectId =
-  case getObjectName (classAttributeMapObjectMap classAttributeMap) objectId of
+lookupObjectName classAttributeMap objectId_ =
+  case getObjectName (classAttributeMapObjectMap classAttributeMap) objectId_ of
     Nothing ->
-      Left ("[RT12] could not get object name for id " <> show objectId)
-    Just objectName -> Right objectName
+      Left ("[RT12] could not get object name for id " <> show objectId_)
+    Just objectName_ -> Right objectName_
 
 lookupClassName :: Str.Str -> Either String Str.Str
-lookupClassName objectName = case getClassName objectName of
+lookupClassName objectName_ = case getClassName objectName_ of
   Nothing ->
-    Left ("[RT13] could not get class name for object " <> show objectName)
-  Just className -> Right className
+    Left ("[RT13] could not get class name for object " <> show objectName_)
+  Just className_ -> Right className_

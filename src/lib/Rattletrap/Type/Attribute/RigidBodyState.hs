@@ -3,7 +3,7 @@
 module Rattletrap.Type.Attribute.RigidBodyState where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Rotation
+import qualified Rattletrap.Type.Rotation as Rotation
 import qualified Rattletrap.Type.Vector as Vector
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
@@ -13,7 +13,7 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 data RigidBodyStateAttribute = RigidBodyStateAttribute
   { rigidBodyStateAttributeSleeping :: Bool
   , rigidBodyStateAttributeLocation :: Vector.Vector
-  , rigidBodyStateAttributeRotation :: Rotation
+  , rigidBodyStateAttributeRotation :: Rotation.Rotation
   , rigidBodyStateAttributeLinearVelocity :: Maybe Vector.Vector
   , rigidBodyStateAttributeAngularVelocity :: Maybe Vector.Vector
   }
@@ -25,7 +25,7 @@ putRigidBodyStateAttribute :: RigidBodyStateAttribute -> BitPut ()
 putRigidBodyStateAttribute rigidBodyStateAttribute = do
   BinaryBits.putBool (rigidBodyStateAttributeSleeping rigidBodyStateAttribute)
   Vector.bitPut (rigidBodyStateAttributeLocation rigidBodyStateAttribute)
-  putRotation (rigidBodyStateAttributeRotation rigidBodyStateAttribute)
+  Rotation.bitPut (rigidBodyStateAttributeRotation rigidBodyStateAttribute)
   case rigidBodyStateAttributeLinearVelocity rigidBodyStateAttribute of
     Nothing -> pure ()
     Just linearVelocity -> Vector.bitPut linearVelocity
@@ -39,6 +39,6 @@ decodeRigidBodyStateAttributeBits version = do
   sleeping <- getBool
   RigidBodyStateAttribute sleeping
     <$> Vector.bitGet version
-    <*> decodeRotationBits version
+    <*> Rotation.bitGet version
     <*> decodeWhen (not sleeping) (Vector.bitGet version)
     <*> decodeWhen (not sleeping) (Vector.bitGet version)

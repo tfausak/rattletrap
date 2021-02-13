@@ -73,13 +73,13 @@ byteGet :: ByteGet Str
 byteGet = do
   rawSize <- decodeInt32le
   bytes <- getByteString (normalizeTextSize rawSize)
-  pure (Str (dropNull (getTextDecoder rawSize bytes)))
+  pure (fromText (dropNull (getTextDecoder rawSize bytes)))
 
 bitGet :: BitGet Str
 bitGet = do
   rawSize <- decodeInt32leBits
   bytes <- getByteStringBits (normalizeTextSize rawSize)
-  pure (Str (dropNull (getTextDecoder rawSize (reverseBytes bytes))))
+  pure (fromText (dropNull (getTextDecoder rawSize (reverseBytes bytes))))
 
 normalizeTextSize :: Integral a => Int32le -> a
 normalizeTextSize size = case int32leValue size of

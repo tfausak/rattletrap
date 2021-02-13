@@ -12,21 +12,21 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Map as Map
 
-newtype UpdatedReplication = UpdatedReplication
-  { updatedReplicationAttributes :: [Attribute]
+newtype Updated = Updated
+  { attributes :: [Attribute]
   } deriving (Eq, Show)
 
-$(deriveJson ''UpdatedReplication)
+$(deriveJsonWith ''Updated jsonOptions)
 
-putUpdatedReplication :: UpdatedReplication -> BitPut ()
-putUpdatedReplication updatedReplication =
-  putAttributes (updatedReplicationAttributes updatedReplication)
+bitPut :: Updated -> BitPut ()
+bitPut updatedReplication =
+  putAttributes (attributes updatedReplication)
 
-decodeUpdatedReplicationBits
+bitGet
   :: (Int, Int, Int)
   -> ClassAttributeMap
   -> Map.Map CompressedWord Word32le.Word32le
   -> CompressedWord
-  -> BitGet UpdatedReplication
-decodeUpdatedReplicationBits version classes actors actor =
-  UpdatedReplication <$> decodeAttributesBits version classes actors actor
+  -> BitGet Updated
+bitGet version classes actors actor =
+  Updated <$> decodeAttributesBits version classes actors actor
