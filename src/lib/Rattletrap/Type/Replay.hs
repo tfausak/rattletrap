@@ -25,7 +25,7 @@ data Replay content = Replay
   , replayContent :: Section content
   -- ^ This has most of the low-level game data.
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Replay)
 

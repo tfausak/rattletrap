@@ -15,7 +15,7 @@ data GameModeAttribute = GameModeAttribute
   -- There's no reason to do a bunch of conversions.
   , gameModeAttributeWord :: Word8
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''GameModeAttribute)
 

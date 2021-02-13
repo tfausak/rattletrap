@@ -14,7 +14,7 @@ import qualified Data.Text as Text
 data Dictionary a
   = DictionaryElement Str a (Dictionary a)
   | DictionaryEnd Str
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
   parseJSON = Json.withObject

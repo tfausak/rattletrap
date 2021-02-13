@@ -57,7 +57,7 @@ data Header = Header
   --   values like 99. To get an "unfair" team size like 1v4, you must set the
   --   bUnfairBots 'Rattletrap.PropertyValue.BoolProperty' to @True@.
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Header)
 
@@ -76,7 +76,7 @@ decodeHeader = do
   (major, minor) <- (,) <$> decodeWord32le <*> decodeWord32le
   Header major minor
     <$> decodeWhen
-          (major >= Word32le 868 && minor >= Word32le 18)
+          (word32leValue major >= 868 && word32leValue minor >= 18)
           decodeWord32le
     <*> decodeStr
     <*> decodeDictionary decodeProperty

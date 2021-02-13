@@ -17,7 +17,7 @@ data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
   , privateMatchSettingsAttributePassword :: Str
   , privateMatchSettingsAttributeFlag :: Bool
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''PrivateMatchSettingsAttribute)
 

@@ -15,7 +15,7 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 
 newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
   { loadoutAttributeValue :: [[ProductAttribute]]
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 $(deriveJson ''LoadoutOnlineAttribute)
 

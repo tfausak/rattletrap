@@ -16,7 +16,7 @@ data TeamPaintAttribute = TeamPaintAttribute
   , teamPaintAttributePrimaryFinish :: Word32le
   , teamPaintAttributeAccentFinish :: Word32le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''TeamPaintAttribute)
 

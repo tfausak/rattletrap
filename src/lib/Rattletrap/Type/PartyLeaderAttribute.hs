@@ -13,7 +13,7 @@ data PartyLeaderAttribute = PartyLeaderAttribute
   { partyLeaderAttributeSystemId :: Word8le
   , partyLeaderAttributeId :: Maybe (RemoteId, Word8le)
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''PartyLeaderAttribute)
 

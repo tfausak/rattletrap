@@ -14,7 +14,7 @@ data ClubColorsAttribute = ClubColorsAttribute
   , clubColorsAttributeOrangeFlag :: Bool
   , clubColorsAttributeOrangeColor :: Word8le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''ClubColorsAttribute)
 

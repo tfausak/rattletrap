@@ -14,7 +14,7 @@ data UniqueIdAttribute = UniqueIdAttribute
   , uniqueIdAttributeRemoteId :: RemoteId
   , uniqueIdAttributeLocalId :: Word8le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''UniqueIdAttribute)
 

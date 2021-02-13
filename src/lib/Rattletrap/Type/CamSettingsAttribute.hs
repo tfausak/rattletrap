@@ -17,7 +17,7 @@ data CamSettingsAttribute = CamSettingsAttribute
   , camSettingsAttributeSwivelSpeed :: Float32le
   , camSettingsAttributeTransitionSpeed :: Maybe Float32le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''CamSettingsAttribute)
 

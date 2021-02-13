@@ -12,7 +12,7 @@ data AttributeMapping = AttributeMapping
   { attributeMappingObjectId :: Word32le
   , attributeMappingStreamId :: Word32le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''AttributeMapping)
 

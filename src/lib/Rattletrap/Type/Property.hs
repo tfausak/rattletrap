@@ -16,7 +16,7 @@ data Property = Property
   -- ^ Not used.
   , propertyValue :: PropertyValue Property
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Property)
 

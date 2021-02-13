@@ -12,7 +12,7 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 data Rotation
   = RotationCompressedWordVector CompressedWordVector
   | RotationQuaternion Quaternion
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Rotation)
 

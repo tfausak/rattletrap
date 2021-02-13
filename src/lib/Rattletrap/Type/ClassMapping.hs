@@ -13,7 +13,7 @@ data ClassMapping = ClassMapping
   { classMappingName :: Str
   , classMappingStreamId :: Word32le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''ClassMapping)
 

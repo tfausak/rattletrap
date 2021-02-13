@@ -12,7 +12,7 @@ data FlaggedIntAttribute = FlaggedIntAttribute
   { flaggedIntAttributeFlag :: Bool
   , flaggedIntAttributeInt :: Int32le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''FlaggedIntAttribute)
 

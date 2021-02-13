@@ -13,7 +13,7 @@ data CompressedWordVector = CompressedWordVector
   , compressedWordVectorY :: CompressedWord
   , compressedWordVectorZ :: CompressedWord
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''CompressedWordVector)
 

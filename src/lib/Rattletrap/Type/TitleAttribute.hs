@@ -18,7 +18,7 @@ data TitleAttribute = TitleAttribute
   , titleAttributeUnknown7 :: Word32le
   , titleAttributeUnknown8 :: Bool
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''TitleAttribute)
 

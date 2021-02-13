@@ -12,7 +12,7 @@ data FlaggedByteAttribute = FlaggedByteAttribute
   { flaggedByteAttributeFlag :: Bool
   , flaggedByteAttributeByte :: Word8le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''FlaggedByteAttribute)
 

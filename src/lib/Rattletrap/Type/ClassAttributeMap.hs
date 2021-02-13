@@ -44,7 +44,7 @@ data ClassAttributeMap = ClassAttributeMap
   -- IDs.
   , classAttributeMapNameMap :: IntMap.IntMap Str
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 type Bimap l r = (Map l r, Map r l)
 

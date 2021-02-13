@@ -12,7 +12,7 @@ data StatEventAttribute = StatEventAttribute
   { statEventAttributeUnknown :: Bool
   , statEventAttributeObjectId :: Int32le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''StatEventAttribute)
 

@@ -44,6 +44,6 @@ data AttributeType
   | AttributeTypeTitle
   | AttributeTypeUniqueId
   | AttributeTypeWeldedInfo
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''AttributeType)

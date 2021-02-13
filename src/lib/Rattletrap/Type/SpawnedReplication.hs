@@ -31,7 +31,7 @@ data SpawnedReplication = SpawnedReplication
   -- attribute map.
   , spawnedReplicationInitialization :: Initialization
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''SpawnedReplication)
 

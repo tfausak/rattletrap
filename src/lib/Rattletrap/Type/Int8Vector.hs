@@ -13,7 +13,7 @@ data Int8Vector = Int8Vector
   , int8VectorY :: Maybe Int8le
   , int8VectorZ :: Maybe Int8le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Int8Vector)
 

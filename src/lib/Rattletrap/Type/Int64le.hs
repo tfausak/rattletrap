@@ -16,7 +16,7 @@ import qualified Text.Read as Read
 
 newtype Int64le = Int64le
   { int64leValue :: Int.Int64
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 instance Aeson.FromJSON Int64le where
   parseJSON value = case value of

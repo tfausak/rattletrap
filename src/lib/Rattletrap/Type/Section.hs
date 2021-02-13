@@ -25,7 +25,7 @@ data Section a = Section
   , sectionBody :: a
   -- ^ The actual content in the section.
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Section)
 

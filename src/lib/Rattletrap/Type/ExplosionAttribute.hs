@@ -14,7 +14,7 @@ data ExplosionAttribute = ExplosionAttribute
   , explosionAttributeActorId :: Int32le
   , explosionAttributeLocation :: Vector
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''ExplosionAttribute)
 

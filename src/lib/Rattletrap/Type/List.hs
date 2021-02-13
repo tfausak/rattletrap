@@ -11,7 +11,7 @@ import qualified Data.Binary as Binary
 
 newtype List a = List
   { listValue :: [a]
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 $(deriveJson ''List)
 

@@ -13,7 +13,7 @@ data PickupAttributeNew = PickupAttributeNew
   { pickupAttributeNewInstigatorId :: Maybe Word32le
   , pickupAttributeNewPickedUp :: Word8le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''PickupAttributeNew)
 

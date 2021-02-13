@@ -58,7 +58,7 @@ getTextSize text =
 
 getTextEncoder :: Int32le -> Text.Text -> Bytes.ByteString
 getTextEncoder size text =
-  if size < Int32le 0 then Text.encodeUtf16LE text else encodeLatin1 text
+  if int32leValue size < 0 then Text.encodeUtf16LE text else encodeLatin1 text
 
 addNull :: Text.Text -> Text.Text
 addNull text = if Text.null text then text else Text.snoc text '\x00'
@@ -83,7 +83,7 @@ normalizeTextSize size = case int32leValue size of
 getTextDecoder :: Int32le -> Bytes.ByteString -> Text.Text
 getTextDecoder size bytes =
   let
-    decode = if size < Int32le 0
+    decode = if int32leValue size < 0
       then Text.decodeUtf16LEWith $ \message input -> do
         Debug.traceM $ "WARNING: " <> show (Text.DecodeError message input)
         Text.lenientDecode message input

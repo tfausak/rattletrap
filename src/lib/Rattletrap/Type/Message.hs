@@ -17,7 +17,7 @@ data Message = Message
   , messageValue :: Str
   -- ^ The content of the message.
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Message)
 

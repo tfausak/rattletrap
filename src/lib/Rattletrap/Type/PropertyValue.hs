@@ -27,7 +27,7 @@ data PropertyValue a
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.
   | PropertyValueQWord Word64le
   | PropertyValueStr Str
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''PropertyValue)
 

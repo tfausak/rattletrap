@@ -13,7 +13,7 @@ data ExtendedExplosionAttribute = ExtendedExplosionAttribute
   { extendedExplosionAttributeExplosion :: ExplosionAttribute
   , extendedExplosionAttributeUnknown :: FlaggedIntAttribute
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''ExtendedExplosionAttribute)
 

@@ -19,7 +19,7 @@ data Attribute = Attribute
   -- attribute map.
   , attributeValue :: AttributeValue
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Attribute)
 

@@ -23,7 +23,7 @@ data Frame = Frame
   -- are 30 frames per second.
   , frameReplications :: [Replication]
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Frame)
 

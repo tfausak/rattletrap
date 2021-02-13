@@ -15,7 +15,7 @@ data Mark = Mark
   , markFrame :: Word32le
   -- ^ Which frame this mark belongs to, starting from 0.
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Mark)
 

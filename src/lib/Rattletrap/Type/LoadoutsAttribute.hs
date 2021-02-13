@@ -12,7 +12,7 @@ data LoadoutsAttribute = LoadoutsAttribute
   { loadoutsAttributeBlue :: LoadoutAttribute
   , loadoutsAttributeOrange :: LoadoutAttribute
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''LoadoutsAttribute)
 

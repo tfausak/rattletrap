@@ -22,7 +22,7 @@ data Vector = Vector
   , vectorZ :: Int
   -- ^ See 'vectorBias'.
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Vector)
 

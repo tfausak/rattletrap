@@ -17,7 +17,7 @@ data LoadoutsOnlineAttribute = LoadoutsOnlineAttribute
   , loadoutsOnlineAttributeUnknown1 :: Bool
   , loadoutsOnlineAttributeUnknown2 :: Bool
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''LoadoutsOnlineAttribute)
 

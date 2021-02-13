@@ -12,7 +12,7 @@ import qualified Data.ByteString.Lazy as LazyBytes
 
 newtype Int8le = Int8le
   { int8leValue :: Int8
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 $(deriveJson ''Int8le)
 
