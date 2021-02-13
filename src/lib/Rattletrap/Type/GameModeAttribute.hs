@@ -3,6 +3,7 @@
 module Rattletrap.Type.GameModeAttribute where
 
 import Rattletrap.Type.Common
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -20,6 +21,14 @@ $(deriveJson ''GameModeAttribute)
 
 putGameModeAttribute :: GameModeAttribute -> BinaryBits.BitPut ()
 putGameModeAttribute gameModeAttribute = do
-  let numBits = gameModeAttributeNumBits gameModeAttribute
+  let numBits_ = gameModeAttributeNumBits gameModeAttribute
   let word = gameModeAttributeWord gameModeAttribute
-  BinaryBits.putWord8 numBits word
+  BinaryBits.putWord8 numBits_ word
+
+decodeGameModeAttributeBits :: (Int, Int, Int) -> DecodeBits GameModeAttribute
+decodeGameModeAttributeBits version =
+  GameModeAttribute (numBits version) <$> getWord8Bits
+    (numBits version)
+
+numBits :: (Int, Int, Int) -> Int
+numBits version = if version >= (868, 12, 0) then 8 else 2

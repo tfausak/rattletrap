@@ -6,6 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.PropertyValue
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word64le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary as Binary
 
@@ -24,3 +25,8 @@ putProperty property = do
   putText (propertyKind property)
   putWord64 (propertySize property)
   putPropertyValue putProperty (propertyValue property)
+
+decodeProperty :: Decode Property
+decodeProperty = do
+  kind <- decodeStr
+  Property kind <$> decodeWord64le <*> decodePropertyValue decodeProperty kind

@@ -6,6 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Vector
 import Rattletrap.Type.Word8le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -25,3 +26,12 @@ putAppliedDamageAttribute appliedDamageAttribute = do
   putVector (appliedDamageAttributeLocation appliedDamageAttribute)
   putInt32Bits (appliedDamageAttributeUnknown3 appliedDamageAttribute)
   putInt32Bits (appliedDamageAttributeUnknown4 appliedDamageAttribute)
+
+decodeAppliedDamageAttributeBits
+  :: (Int, Int, Int) -> DecodeBits AppliedDamageAttribute
+decodeAppliedDamageAttributeBits version =
+  AppliedDamageAttribute
+    <$> decodeWord8leBits
+    <*> decodeVectorBits version
+    <*> decodeInt32leBits
+    <*> decodeInt32leBits

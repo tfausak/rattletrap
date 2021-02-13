@@ -5,6 +5,7 @@ module Rattletrap.Type.PrivateMatchSettingsAttribute where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -35,3 +36,14 @@ putPrivateMatchSettingsAttribute privateMatchSettingsAttribute = do
     (privateMatchSettingsAttributePassword privateMatchSettingsAttribute)
   BinaryBits.putBool
     (privateMatchSettingsAttributeFlag privateMatchSettingsAttribute)
+
+decodePrivateMatchSettingsAttributeBits
+  :: DecodeBits PrivateMatchSettingsAttribute
+decodePrivateMatchSettingsAttributeBits =
+  PrivateMatchSettingsAttribute
+    <$> decodeStrBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> decodeStrBits
+    <*> decodeStrBits
+    <*> getBool

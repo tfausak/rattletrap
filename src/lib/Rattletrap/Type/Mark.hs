@@ -5,6 +5,7 @@ module Rattletrap.Type.Mark where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary as Binary
 
@@ -22,3 +23,6 @@ putMark :: Mark -> Binary.Put
 putMark mark = do
   putText (markValue mark)
   putWord32 (markFrame mark)
+
+decodeMark :: Decode Mark
+decodeMark = Mark <$> decodeStr <*> decodeWord32le

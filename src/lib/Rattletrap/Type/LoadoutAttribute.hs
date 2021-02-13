@@ -5,6 +5,7 @@ module Rattletrap.Type.LoadoutAttribute where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -56,3 +57,24 @@ putOptional :: Maybe a -> (a -> BinaryBits.BitPut ()) -> BinaryBits.BitPut ()
 putOptional m f = case m of
   Just x -> f x
   Nothing -> pure ()
+
+decodeLoadoutAttributeBits :: DecodeBits LoadoutAttribute
+decodeLoadoutAttributeBits = do
+  version <- decodeWord8leBits
+  LoadoutAttribute version
+    <$> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> decodeWord32leBits
+    <*> decodeWhen (version >= Word8le 11) decodeWord32leBits
+    <*> decodeWhen (version >= Word8le 16) decodeWord32leBits
+    <*> decodeWhen (version >= Word8le 16) decodeWord32leBits
+    <*> decodeWhen (version >= Word8le 16) decodeWord32leBits
+    <*> decodeWhen (version >= Word8le 17) decodeWord32leBits
+    <*> decodeWhen (version >= Word8le 19) decodeWord32leBits
+    <*> decodeWhen (version >= Word8le 22) decodeWord32leBits
+    <*> decodeWhen (version >= Word8le 22) decodeWord32leBits
+    <*> decodeWhen (version >= Word8le 22) decodeWord32leBits

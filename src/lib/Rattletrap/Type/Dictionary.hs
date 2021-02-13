@@ -2,6 +2,7 @@ module Rattletrap.Type.Dictionary where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary as Binary
 import qualified Control.Monad as Monad
@@ -72,3 +73,11 @@ putDictionary f x = case x of
     f v
     putDictionary f y
   DictionaryEnd y -> putText y
+
+decodeDictionary :: Decode a -> Decode (Dictionary a)
+decodeDictionary decodeValue = do
+  key <- decodeStr
+  case filter (/= '\x00') (fromStr key) of
+    "None" -> pure (DictionaryEnd key)
+    _ ->
+      DictionaryElement key <$> decodeValue <*> decodeDictionary decodeValue

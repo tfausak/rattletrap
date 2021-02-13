@@ -4,6 +4,7 @@ module Rattletrap.Type.Word8le where
 
 import Rattletrap.Type.Common
 import Rattletrap.Utility.Bytes
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
@@ -23,3 +24,9 @@ putWord8Bits :: Word8le -> BinaryBits.BitPut ()
 putWord8Bits word8 = do
   let bytes = LazyBytes.toStrict (Binary.runPut (putWord8 word8))
   BinaryBits.putByteString (reverseBytes bytes)
+
+decodeWord8le :: Decode Word8le
+decodeWord8le = Word8le <$> getWord8
+
+decodeWord8leBits :: DecodeBits Word8le
+decodeWord8leBits = toBits decodeWord8le 1

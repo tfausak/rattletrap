@@ -4,6 +4,7 @@ module Rattletrap.Type.AttributeMapping where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary as Binary
 
@@ -19,3 +20,7 @@ putAttributeMapping :: AttributeMapping -> Binary.Put
 putAttributeMapping attributeMapping = do
   putWord32 (attributeMappingObjectId attributeMapping)
   putWord32 (attributeMappingStreamId attributeMapping)
+
+decodeAttributeMapping :: Decode AttributeMapping
+decodeAttributeMapping =
+  AttributeMapping <$> decodeWord32le <*> decodeWord32le

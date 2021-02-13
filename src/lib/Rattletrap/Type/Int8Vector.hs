@@ -4,6 +4,7 @@ module Rattletrap.Type.Int8Vector where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int8le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -28,3 +29,12 @@ putInt8VectorField maybeField = case maybeField of
   Just field -> do
     BinaryBits.putBool True
     putInt8Bits field
+
+decodeInt8VectorBits :: DecodeBits Int8Vector
+decodeInt8VectorBits =
+  Int8Vector <$> decodeFieldBits <*> decodeFieldBits <*> decodeFieldBits
+
+decodeFieldBits :: DecodeBits (Maybe Int8le)
+decodeFieldBits = do
+  hasField <- getBool
+  decodeWhen hasField decodeInt8leBits

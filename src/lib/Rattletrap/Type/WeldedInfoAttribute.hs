@@ -7,6 +7,7 @@ import Rattletrap.Type.Float32le
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Int8Vector
 import Rattletrap.Type.Vector
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -28,3 +29,13 @@ putWeldedInfoAttribute weldedInfoAttribute = do
   putVector (weldedInfoAttributeOffset weldedInfoAttribute)
   putFloat32Bits (weldedInfoAttributeMass weldedInfoAttribute)
   putInt8Vector (weldedInfoAttributeRotation weldedInfoAttribute)
+
+decodeWeldedInfoAttributeBits
+  :: (Int, Int, Int) -> DecodeBits WeldedInfoAttribute
+decodeWeldedInfoAttributeBits version =
+  WeldedInfoAttribute
+    <$> getBool
+    <*> decodeInt32leBits
+    <*> decodeVectorBits version
+    <*> decodeFloat32leBits
+    <*> decodeInt8VectorBits

@@ -10,6 +10,7 @@ import Rattletrap.Type.List
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word64le
 import Rattletrap.Type.Word8le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary as Binary
 
@@ -44,3 +45,19 @@ putPropertyValue putProperty value = case value of
   PropertyValueName text -> putText text
   PropertyValueQWord word64 -> putWord64 word64
   PropertyValueStr text -> putText text
+
+decodePropertyValue :: Decode a -> Str -> Decode (PropertyValue a)
+decodePropertyValue getProperty kind = case fromStr kind of
+  "ArrayProperty" ->
+    PropertyValueArray <$> decodeList (decodeDictionary getProperty)
+  "BoolProperty" -> PropertyValueBool <$> decodeWord8le
+  "ByteProperty" -> do
+    k <- decodeStr
+    PropertyValueByte k
+      <$> decodeWhen (fromStr k /= "OnlinePlatform_Steam") decodeStr
+  "FloatProperty" -> PropertyValueFloat <$> decodeFloat32le
+  "IntProperty" -> PropertyValueInt <$> decodeInt32le
+  "NameProperty" -> PropertyValueName <$> decodeStr
+  "QWordProperty" -> PropertyValueQWord <$> decodeWord64le
+  "StrProperty" -> PropertyValueStr <$> decodeStr
+  _ -> fail ("[RT07] don't know how to read property value " <> show kind)

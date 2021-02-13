@@ -6,6 +6,7 @@ import Rattletrap.Type.AttributeMapping
 import Rattletrap.Type.Common
 import Rattletrap.Type.List
 import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary as Binary
 
@@ -25,3 +26,11 @@ putCache cache = do
   putWord32 (cacheParentCacheId cache)
   putWord32 (cacheCacheId cache)
   putList putAttributeMapping (cacheAttributeMappings cache)
+
+decodeCache :: Decode Cache
+decodeCache =
+  Cache
+    <$> decodeWord32le
+    <*> decodeWord32le
+    <*> decodeWord32le
+    <*> decodeList decodeAttributeMapping

@@ -4,6 +4,7 @@ module Rattletrap.Type.Int32le where
 
 import Rattletrap.Type.Common
 import Rattletrap.Utility.Bytes
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
@@ -23,3 +24,9 @@ putInt32Bits :: Int32le -> BinaryBits.BitPut ()
 putInt32Bits int32 = do
   let bytes = LazyBytes.toStrict (Binary.runPut (putInt32 int32))
   BinaryBits.putByteString (reverseBytes bytes)
+
+decodeInt32le :: Decode Int32le
+decodeInt32le = Int32le <$> getInt32le
+
+decodeInt32leBits :: DecodeBits Int32le
+decodeInt32leBits = toBits decodeInt32le 4

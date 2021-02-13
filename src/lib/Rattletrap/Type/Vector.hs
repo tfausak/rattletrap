@@ -4,6 +4,7 @@ module Rattletrap.Type.Vector where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -41,3 +42,23 @@ putVector vector = do
   putCompressedWord (CompressedWord limit dx)
   putCompressedWord (CompressedWord limit dy)
   putCompressedWord (CompressedWord limit dz)
+
+decodeVectorBits :: (Int, Int, Int) -> DecodeBits Vector
+decodeVectorBits version = do
+  size <- decodeCompressedWordBits (if version >= (868, 22, 7) then 21 else 19)
+  let
+    limit = getLimit size
+    bias = getBias size
+  Vector size bias
+    <$> fmap (fromDelta bias) (decodeCompressedWordBits limit)
+    <*> fmap (fromDelta bias) (decodeCompressedWordBits limit)
+    <*> fmap (fromDelta bias) (decodeCompressedWordBits limit)
+
+getLimit :: CompressedWord -> Word
+getLimit = (2 ^) . (+ 2) . compressedWordValue
+
+getBias :: CompressedWord -> Word
+getBias = (2 ^) . (+ 1) . compressedWordValue
+
+fromDelta :: Word -> CompressedWord -> Int
+fromDelta bias x = fromIntegral (compressedWordValue x) - fromIntegral bias

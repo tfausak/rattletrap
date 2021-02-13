@@ -5,6 +5,7 @@ module Rattletrap.Type.PartyLeaderAttribute where
 import Rattletrap.Type.Common
 import Rattletrap.Type.RemoteId
 import Rattletrap.Type.Word8le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -24,3 +25,11 @@ putPartyLeaderAttribute partyLeaderAttribute = do
     Just (remoteId, localId) -> do
       putRemoteId remoteId
       putWord8Bits localId
+
+decodePartyLeaderAttributeBits
+  :: (Int, Int, Int) -> DecodeBits PartyLeaderAttribute
+decodePartyLeaderAttributeBits version = do
+  systemId <- decodeWord8leBits
+  PartyLeaderAttribute systemId <$> decodeWhen
+    (systemId /= Word8le 0)
+    ((,) <$> decodeRemoteIdBits version systemId <*> decodeWord8leBits)

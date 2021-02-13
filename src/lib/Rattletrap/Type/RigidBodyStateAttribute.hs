@@ -5,6 +5,7 @@ module Rattletrap.Type.RigidBodyStateAttribute where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Rotation
 import Rattletrap.Type.Vector
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -30,3 +31,13 @@ putRigidBodyStateAttribute rigidBodyStateAttribute = do
   case rigidBodyStateAttributeAngularVelocity rigidBodyStateAttribute of
     Nothing -> pure ()
     Just angularVelocity -> putVector angularVelocity
+
+decodeRigidBodyStateAttributeBits
+  :: (Int, Int, Int) -> DecodeBits RigidBodyStateAttribute
+decodeRigidBodyStateAttributeBits version = do
+  sleeping <- getBool
+  RigidBodyStateAttribute sleeping
+    <$> decodeVectorBits version
+    <*> decodeRotationBits version
+    <*> decodeWhen (not sleeping) (decodeVectorBits version)
+    <*> decodeWhen (not sleeping) (decodeVectorBits version)

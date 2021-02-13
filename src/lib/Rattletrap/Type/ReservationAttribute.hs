@@ -6,6 +6,8 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Str
 import Rattletrap.Type.UniqueIdAttribute
+import Rattletrap.Decode.Common
+import Rattletrap.Type.Word8le
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -33,3 +35,16 @@ putReservationAttribute reservationAttribute = do
   case reservationAttributeUnknown3 reservationAttribute of
     Nothing -> pure ()
     Just c -> BinaryBits.putWord8 6 c
+
+decodeReservationAttributeBits
+  :: (Int, Int, Int) -> DecodeBits ReservationAttribute
+decodeReservationAttributeBits version = do
+  number <- decodeCompressedWordBits 7
+  uniqueId <- decodeUniqueIdAttributeBits version
+  ReservationAttribute number uniqueId
+    <$> decodeWhen
+          (uniqueIdAttributeSystemId uniqueId /= Word8le 0)
+          decodeStrBits
+    <*> getBool
+    <*> getBool
+    <*> decodeWhen (version >= (868, 12, 0)) (getWord8Bits 6)

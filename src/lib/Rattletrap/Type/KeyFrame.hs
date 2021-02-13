@@ -5,6 +5,7 @@ module Rattletrap.Type.KeyFrame where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Float32le
 import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary as Binary
 
@@ -25,3 +26,7 @@ putKeyFrame keyFrame = do
   putFloat32 (keyFrameTime keyFrame)
   putWord32 (keyFrameFrame keyFrame)
   putWord32 (keyFramePosition keyFrame)
+
+decodeKeyFrame :: Decode KeyFrame
+decodeKeyFrame =
+  KeyFrame <$> decodeFloat32le <*> decodeWord32le <*> decodeWord32le

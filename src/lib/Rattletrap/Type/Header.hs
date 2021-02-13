@@ -7,6 +7,7 @@ import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Property
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary as Binary
 
@@ -69,3 +70,13 @@ putHeader header = do
     Just patchVersion -> putWord32 patchVersion
   putText (headerLabel header)
   putDictionary putProperty (headerProperties header)
+
+decodeHeader :: Decode Header
+decodeHeader = do
+  (major, minor) <- (,) <$> decodeWord32le <*> decodeWord32le
+  Header major minor
+    <$> decodeWhen
+          (major >= Word32le 868 && minor >= Word32le 18)
+          decodeWord32le
+    <*> decodeStr
+    <*> decodeDictionary decodeProperty

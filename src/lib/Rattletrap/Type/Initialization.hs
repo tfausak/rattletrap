@@ -5,6 +5,7 @@ module Rattletrap.Type.Initialization where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int8Vector
 import Rattletrap.Type.Vector
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -28,3 +29,10 @@ putInitialization initialization = do
   case initializationRotation initialization of
     Nothing -> pure ()
     Just rotation -> putInt8Vector rotation
+
+decodeInitializationBits
+  :: (Int, Int, Int) -> Bool -> Bool -> DecodeBits Initialization
+decodeInitializationBits version hasLocation hasRotation =
+  Initialization
+    <$> decodeWhen hasLocation (decodeVectorBits version)
+    <*> decodeWhen hasRotation decodeInt8VectorBits

@@ -4,6 +4,7 @@ module Rattletrap.Type.LoadoutsAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.LoadoutAttribute
+import Rattletrap.Decode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -19,3 +20,9 @@ putLoadoutsAttribute :: LoadoutsAttribute -> BinaryBits.BitPut ()
 putLoadoutsAttribute loadoutsAttribute = do
   putLoadoutAttribute (loadoutsAttributeBlue loadoutsAttribute)
   putLoadoutAttribute (loadoutsAttributeOrange loadoutsAttribute)
+
+decodeLoadoutsAttributeBits :: DecodeBits LoadoutsAttribute
+decodeLoadoutsAttributeBits =
+  LoadoutsAttribute
+    <$> decodeLoadoutAttributeBits
+    <*> decodeLoadoutAttributeBits
