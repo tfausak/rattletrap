@@ -1,13 +1,13 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.DamageStateAttribute
-  ( DamageStateAttribute(..)
-  ) where
+module Rattletrap.Type.DamageStateAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Vector
 import Rattletrap.Type.Word8le
+
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 data DamageStateAttribute = DamageStateAttribute
   { damageStateAttributeUnknown1 :: Word8le
@@ -20,3 +20,12 @@ data DamageStateAttribute = DamageStateAttribute
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''DamageStateAttribute)
+
+putDamageStateAttribute :: DamageStateAttribute -> BinaryBits.BitPut ()
+putDamageStateAttribute damageStateAttribute = do
+  putWord8Bits (damageStateAttributeUnknown1 damageStateAttribute)
+  BinaryBits.putBool (damageStateAttributeUnknown2 damageStateAttribute)
+  putInt32Bits (damageStateAttributeUnknown3 damageStateAttribute)
+  putVector (damageStateAttributeUnknown4 damageStateAttribute)
+  BinaryBits.putBool (damageStateAttributeUnknown5 damageStateAttribute)
+  BinaryBits.putBool (damageStateAttributeUnknown6 damageStateAttribute)

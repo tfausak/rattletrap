@@ -6,7 +6,6 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Content
 import Rattletrap.Type.Header
 import Rattletrap.Type.Section
-import Rattletrap.Encode.Content
 
 import qualified Data.Binary as Binary
 

@@ -4,7 +4,6 @@ module Rattletrap.Type.Quaternion where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
-import Rattletrap.Encode.CompressedWord
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.List as List

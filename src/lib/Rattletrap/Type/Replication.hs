@@ -5,7 +5,6 @@ module Rattletrap.Type.Replication where
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.ReplicationValue
-import Rattletrap.Encode.CompressedWord
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 

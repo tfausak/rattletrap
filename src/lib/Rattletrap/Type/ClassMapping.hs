@@ -1,12 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.ClassMapping
-  ( ClassMapping(..)
-  ) where
+module Rattletrap.Type.ClassMapping where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
+
+import qualified Data.Binary as Binary
 
 data ClassMapping = ClassMapping
   { classMappingName :: Str
@@ -15,3 +15,8 @@ data ClassMapping = ClassMapping
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''ClassMapping)
+
+putClassMapping :: ClassMapping -> Binary.Put
+putClassMapping classMapping = do
+  putText (classMappingName classMapping)
+  putWord32 (classMappingStreamId classMapping)

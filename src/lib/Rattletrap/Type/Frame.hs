@@ -1,12 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.Frame
-  ( Frame(..)
-  ) where
+module Rattletrap.Type.Frame where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Float32le
 import Rattletrap.Type.Replication
+
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Frame = Frame
   { frameTime :: Float32le
@@ -19,3 +19,17 @@ data Frame = Frame
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''Frame)
+
+putFrames :: [Frame] -> BinaryBits.BitPut ()
+putFrames frames = case frames of
+  [] -> pure ()
+  [frame] -> putFrame frame
+  first : rest -> do
+    putFrame first
+    putFrames rest
+
+putFrame :: Frame -> BinaryBits.BitPut ()
+putFrame frame = do
+  putFloat32Bits (frameTime frame)
+  putFloat32Bits (frameDelta frame)
+  putReplications (frameReplications frame)

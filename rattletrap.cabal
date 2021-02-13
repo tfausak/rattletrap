@@ -121,34 +121,7 @@ library
     Rattletrap.Decode.Word32le
     Rattletrap.Decode.Word64le
     Rattletrap.Decode.Word8le
-    Rattletrap.Encode.AppliedDamageAttribute
-    Rattletrap.Encode.Attribute
-    Rattletrap.Encode.AttributeMapping
-    Rattletrap.Encode.AttributeValue
-    Rattletrap.Encode.BooleanAttribute
-    Rattletrap.Encode.ByteAttribute
-    Rattletrap.Encode.Cache
-    Rattletrap.Encode.CamSettingsAttribute
-    Rattletrap.Encode.ClassMapping
-    Rattletrap.Encode.ClubColorsAttribute
     Rattletrap.Encode.Common
-    Rattletrap.Encode.CompressedWord
-    Rattletrap.Encode.CompressedWordVector
-    Rattletrap.Encode.Content
-    Rattletrap.Encode.CustomDemolishAttribute
-    Rattletrap.Encode.DamageStateAttribute
-    Rattletrap.Encode.DemolishAttribute
-    Rattletrap.Encode.DestroyedReplication
-    Rattletrap.Encode.Dictionary
-    Rattletrap.Encode.EnumAttribute
-    Rattletrap.Encode.ExplosionAttribute
-    Rattletrap.Encode.ExtendedExplosionAttribute
-    Rattletrap.Encode.FlaggedByteAttribute
-    Rattletrap.Encode.FlaggedIntAttribute
-    Rattletrap.Encode.Float32le
-    Rattletrap.Encode.FloatAttribute
-    Rattletrap.Encode.Frame
-    Rattletrap.Encode.GameModeAttribute
     Rattletrap.Type.AppliedDamageAttribute
     Rattletrap.Type.Attribute
     Rattletrap.Type.AttributeMapping

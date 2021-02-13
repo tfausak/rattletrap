@@ -10,8 +10,6 @@ import Rattletrap.Type.List
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word64le
 import Rattletrap.Type.Word8le
-import Rattletrap.Encode.Dictionary
-import Rattletrap.Encode.Float32le
 
 import qualified Data.Binary as Binary
 

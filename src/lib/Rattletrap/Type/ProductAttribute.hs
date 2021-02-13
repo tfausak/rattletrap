@@ -7,7 +7,6 @@ import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 import Rattletrap.Encode.Common
-import Rattletrap.Encode.CompressedWord
 import Rattletrap.Type.Word8le
 
 import qualified Data.Binary.Bits.Put as BinaryBits

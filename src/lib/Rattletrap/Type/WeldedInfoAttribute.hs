@@ -7,7 +7,6 @@ import Rattletrap.Type.Float32le
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Int8Vector
 import Rattletrap.Type.Vector
-import Rattletrap.Encode.Float32le
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 

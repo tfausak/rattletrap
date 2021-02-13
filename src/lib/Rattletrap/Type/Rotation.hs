@@ -5,7 +5,6 @@ module Rattletrap.Type.Rotation where
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWordVector
 import Rattletrap.Type.Quaternion
-import Rattletrap.Encode.CompressedWordVector
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 

@@ -6,7 +6,6 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.DestroyedReplication
 import Rattletrap.Type.SpawnedReplication
 import Rattletrap.Type.UpdatedReplication
-import Rattletrap.Encode.DestroyedReplication
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 

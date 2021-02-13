@@ -4,7 +4,6 @@ module Rattletrap.Type.ReservationAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
-import Rattletrap.Encode.CompressedWord
 import Rattletrap.Type.Str
 import Rattletrap.Type.UniqueIdAttribute
 

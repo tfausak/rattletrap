@@ -4,7 +4,6 @@ module Rattletrap.Type.UpdatedReplication where
 
 import Rattletrap.Type.Attribute
 import Rattletrap.Type.Common
-import Rattletrap.Encode.Attribute
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 

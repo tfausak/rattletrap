@@ -7,7 +7,6 @@ import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Property
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
-import Rattletrap.Encode.Dictionary
 
 import qualified Data.Binary as Binary
 

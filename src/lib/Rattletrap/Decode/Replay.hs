@@ -6,7 +6,6 @@ import Rattletrap.Decode.Common
 import Rattletrap.Decode.Content
 import Rattletrap.Decode.Header
 import Rattletrap.Decode.Section
-import Rattletrap.Encode.Content
 import Rattletrap.Type.Content
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Header
