@@ -4,12 +4,12 @@ module Rattletrap.Type.Attribute.Loadout where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
-import Rattletrap.Type.Word8le
+import qualified Rattletrap.Type.Word8le as Word8le
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data LoadoutAttribute = LoadoutAttribute
-  { loadoutAttributeVersion :: Word8le
+  { loadoutAttributeVersion :: Word8le.Word8le
   , loadoutAttributeBody :: Word32le
   , loadoutAttributeDecal :: Word32le
   , loadoutAttributeWheels :: Word32le
@@ -34,7 +34,7 @@ $(deriveJson ''LoadoutAttribute)
 
 putLoadoutAttribute :: LoadoutAttribute -> BitPut ()
 putLoadoutAttribute loadoutAttribute = do
-  putWord8Bits (loadoutAttributeVersion loadoutAttribute)
+  Word8le.bitPut (loadoutAttributeVersion loadoutAttribute)
   putWord32Bits (loadoutAttributeBody loadoutAttribute)
   putWord32Bits (loadoutAttributeDecal loadoutAttribute)
   putWord32Bits (loadoutAttributeWheels loadoutAttribute)
@@ -59,7 +59,7 @@ putOptional m f = case m of
 
 decodeLoadoutAttributeBits :: BitGet LoadoutAttribute
 decodeLoadoutAttributeBits = do
-  version <- decodeWord8leBits
+  version <- Word8le.bitGet
   LoadoutAttribute version
     <$> decodeWord32leBits
     <*> decodeWord32leBits
@@ -68,12 +68,12 @@ decodeLoadoutAttributeBits = do
     <*> decodeWord32leBits
     <*> decodeWord32leBits
     <*> decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 11) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 16) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 16) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 16) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 17) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 19) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 22) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 22) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 22) decodeWord32leBits
+    <*> decodeWhen (Word8le.toWord8 version >= 11) decodeWord32leBits
+    <*> decodeWhen (Word8le.toWord8 version >= 16) decodeWord32leBits
+    <*> decodeWhen (Word8le.toWord8 version >= 16) decodeWord32leBits
+    <*> decodeWhen (Word8le.toWord8 version >= 16) decodeWord32leBits
+    <*> decodeWhen (Word8le.toWord8 version >= 17) decodeWord32leBits
+    <*> decodeWhen (Word8le.toWord8 version >= 19) decodeWord32leBits
+    <*> decodeWhen (Word8le.toWord8 version >= 22) decodeWord32leBits
+    <*> decodeWhen (Word8le.toWord8 version >= 22) decodeWord32leBits
+    <*> decodeWhen (Word8le.toWord8 version >= 22) decodeWord32leBits

@@ -9,7 +9,7 @@ import Rattletrap.Type.Int32le
 import Rattletrap.Type.List
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word64le
-import Rattletrap.Type.Word8le
+import qualified Rattletrap.Type.Word8le as Word8le
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
@@ -17,7 +17,7 @@ data PropertyValue a
   = PropertyValueArray (List (Dictionary a))
   -- ^ Yes, a list of dictionaries. No, it doesn't make sense. These usually
   -- only have one element.
-  | PropertyValueBool Word8le
+  | PropertyValueBool Word8le.Word8le
   | PropertyValueByte Str (Maybe Str)
   -- ^ This is a strange name for essentially a key-value pair.
   | PropertyValueFloat Float32le
@@ -33,7 +33,7 @@ $(deriveJson ''PropertyValue)
 putPropertyValue :: (a -> BytePut) -> PropertyValue a -> BytePut
 putPropertyValue putProperty value = case value of
   PropertyValueArray list -> putList (putDictionary putProperty) list
-  PropertyValueBool word8 -> putWord8 word8
+  PropertyValueBool word8 -> Word8le.bytePut word8
   PropertyValueByte k mv -> do
     putText k
     case mv of
@@ -49,7 +49,7 @@ decodePropertyValue :: ByteGet a -> Str -> ByteGet (PropertyValue a)
 decodePropertyValue getProperty kind = case fromStr kind of
   "ArrayProperty" ->
     PropertyValueArray <$> decodeList (decodeDictionary getProperty)
-  "BoolProperty" -> PropertyValueBool <$> decodeWord8le
+  "BoolProperty" -> PropertyValueBool <$> Word8le.byteGet
   "ByteProperty" -> do
     k <- decodeStr
     PropertyValueByte k

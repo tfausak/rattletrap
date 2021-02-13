@@ -8,7 +8,7 @@ import Rattletrap.Type.Word64le
 import Rattletrap.Encode.Common
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
-import Rattletrap.Type.Word8le
+import qualified Rattletrap.Type.Word8le as Word8le
 
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -52,8 +52,8 @@ putWord256 a b c d = do
   putWord64Bits c
   putWord64Bits d
 
-decodeRemoteIdBits :: (Int, Int, Int) -> Word8le -> BitGet RemoteId
-decodeRemoteIdBits version systemId = case word8leValue systemId of
+decodeRemoteIdBits :: (Int, Int, Int) -> Word8le.Word8le -> BitGet RemoteId
+decodeRemoteIdBits version systemId = case Word8le.toWord8 systemId of
   0 -> RemoteIdSplitscreen <$> getBitsLE 24
   1 -> RemoteIdSteam <$> decodeWord64leBits
   2 -> RemoteIdPlayStation <$> decodePsName <*> decodePsBytes version

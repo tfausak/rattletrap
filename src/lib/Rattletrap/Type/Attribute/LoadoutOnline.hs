@@ -4,7 +4,7 @@ module Rattletrap.Type.Attribute.LoadoutOnline where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.ProductAttribute
-import Rattletrap.Type.Word8le
+import qualified Rattletrap.Type.Word8le as Word8le
 import Rattletrap.Decode.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
@@ -22,7 +22,7 @@ $(deriveJson ''LoadoutOnlineAttribute)
 putLoadoutOnlineAttribute :: LoadoutOnlineAttribute -> BitPut ()
 putLoadoutOnlineAttribute loadoutAttribute = do
   let attributes = loadoutAttributeValue loadoutAttribute
-  putWord8Bits (Word8le (fromIntegral (length attributes)))
+  Word8le.bitPut (Word8le.fromWord8 (fromIntegral (length attributes)))
   mapM_ putProductAttributes attributes
 
 decodeLoadoutOnlineAttributeBits
@@ -30,7 +30,7 @@ decodeLoadoutOnlineAttributeBits
   -> Map.Map Word32le Str
   -> BitGet LoadoutOnlineAttribute
 decodeLoadoutOnlineAttributeBits version objectMap = do
-  size <- decodeWord8leBits
+  size <- Word8le.bitGet
   LoadoutOnlineAttribute <$> Monad.replicateM
-    (fromIntegral (word8leValue size))
+    (fromIntegral (Word8le.toWord8 size))
     (decodeProductAttributesBits version objectMap)

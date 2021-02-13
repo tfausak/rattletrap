@@ -12,22 +12,26 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as LazyBytes
 
-newtype Word8le = Word8le
-  { word8leValue :: Word8
-  } deriving (Eq, Show)
+newtype Word8le
+  = Word8le Word8
+  deriving (Eq, Show)
 
 $(deriveJson ''Word8le)
 
-putWord8 :: Word8le -> BytePut
-putWord8 word8 = Binary.putWord8 (word8leValue word8)
+fromWord8 :: Word8 -> Word8le
+fromWord8 = Word8le
 
-putWord8Bits :: Word8le -> BitPut ()
-putWord8Bits word8 = do
-  let bytes = LazyBytes.toStrict (Binary.runPut (putWord8 word8))
-  BinaryBits.putByteString (reverseBytes bytes)
+toWord8 :: Word8le -> Word8
+toWord8 (Word8le x) = x
 
-decodeWord8le :: ByteGet Word8le
-decodeWord8le = Word8le <$> getWord8
+bytePut :: Word8le -> BytePut
+bytePut = Binary.putWord8 . toWord8
 
-decodeWord8leBits :: BitGet Word8le
-decodeWord8leBits = toBits decodeWord8le 1
+bitPut :: Word8le -> BitPut ()
+bitPut = BinaryBits.putByteString . reverseBytes . LazyBytes.toStrict . Binary.runPut . bytePut
+
+byteGet :: ByteGet Word8le
+byteGet = Word8le <$> getWord8
+
+bitGet :: BitGet Word8le
+bitGet = toBits byteGet 1

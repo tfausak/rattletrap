@@ -5,7 +5,7 @@ module Rattletrap.Type.ProductAttribute where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
-import Rattletrap.Type.Word8le
+import qualified Rattletrap.Type.Word8le as Word8le
 import Rattletrap.Type.ProductAttributeValue
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
@@ -27,7 +27,7 @@ $(deriveJson ''ProductAttribute)
 
 putProductAttributes :: [ProductAttribute] -> BitPut ()
 putProductAttributes attributes = do
-  putWord8Bits (Word8le (fromIntegral (length attributes)))
+  Word8le.bitPut . Word8le.fromWord8 . fromIntegral $ length attributes
   mapM_ putProductAttribute attributes
 
 putProductAttribute :: ProductAttribute -> BitPut ()
@@ -39,9 +39,9 @@ putProductAttribute attribute = do
 decodeProductAttributesBits
   :: (Int, Int, Int) -> Map Word32le Str -> BitGet [ProductAttribute]
 decodeProductAttributesBits version objectMap = do
-  size <- decodeWord8leBits
+  size <- Word8le.bitGet
   Monad.replicateM
-    (fromIntegral (word8leValue size))
+    (fromIntegral $ Word8le.toWord8 size)
     (decodeProductAttributeBits version objectMap)
 
 decodeProductAttributeBits
