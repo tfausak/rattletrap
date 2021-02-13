@@ -8,6 +8,7 @@ import Rattletrap.Type.ReplicationValue
 import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.Word32le
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -22,7 +23,7 @@ data Replication = Replication
 
 $(deriveJson ''Replication)
 
-putReplications :: [Replication] -> BinaryBits.BitPut ()
+putReplications :: [Replication] -> BitPut ()
 putReplications replications = case replications of
   [] -> BinaryBits.putBool False
   [replication] -> do
@@ -32,7 +33,7 @@ putReplications replications = case replications of
     putReplication first
     putReplications rest
 
-putReplication :: Replication -> BinaryBits.BitPut ()
+putReplication :: Replication -> BitPut ()
 putReplication replication = do
   BinaryBits.putBool True
   putCompressedWord (replicationActorId replication)

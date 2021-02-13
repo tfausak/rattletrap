@@ -6,6 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Text.Encoding.Error as Text
 import qualified Debug.Trace as Debug
@@ -36,7 +37,7 @@ putText text = do
   putInt32 size
   Binary.putByteString (encode (addNull (strValue text)))
 
-putTextBits :: Str -> BinaryBits.BitPut ()
+putTextBits :: Str -> BitPut ()
 putTextBits text = do
   let size = getTextSize text
   let encode = getTextEncoder size

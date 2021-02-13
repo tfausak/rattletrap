@@ -6,8 +6,6 @@ import Rattletrap.Type.Common
 import Rattletrap.Encode.Common
 import Rattletrap.Decode.Common
 
-import qualified Data.Binary.Bits.Put as BinaryBits
-
 newtype PlayerHistoryKeyAttribute = PlayerHistoryKeyAttribute
   { playerHistoryKeyAttributeUnknown :: Word16
   } deriving (Eq, Show)
@@ -15,7 +13,7 @@ newtype PlayerHistoryKeyAttribute = PlayerHistoryKeyAttribute
 $(deriveJson ''PlayerHistoryKeyAttribute)
 
 putPlayerHistoryKeyAttribute
-  :: PlayerHistoryKeyAttribute -> BinaryBits.BitPut ()
+  :: PlayerHistoryKeyAttribute -> BitPut ()
 putPlayerHistoryKeyAttribute = putBitsLE 14 . playerHistoryKeyAttributeUnknown
 
 decodePlayerHistoryKeyAttributeBits :: BitGet PlayerHistoryKeyAttribute

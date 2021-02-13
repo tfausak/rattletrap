@@ -9,6 +9,7 @@ import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -35,7 +36,7 @@ data SpawnedReplication = SpawnedReplication
 
 $(deriveJson ''SpawnedReplication)
 
-putSpawnedReplication :: SpawnedReplication -> BinaryBits.BitPut ()
+putSpawnedReplication :: SpawnedReplication -> BitPut ()
 putSpawnedReplication spawnedReplication = do
   BinaryBits.putBool (spawnedReplicationFlag spawnedReplication)
   case spawnedReplicationNameIndex spawnedReplication of

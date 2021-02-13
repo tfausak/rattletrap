@@ -6,6 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -17,7 +18,7 @@ data PickupAttributeNew = PickupAttributeNew
 
 $(deriveJson ''PickupAttributeNew)
 
-putPickupAttributeNew :: PickupAttributeNew -> BinaryBits.BitPut ()
+putPickupAttributeNew :: PickupAttributeNew -> BitPut ()
 putPickupAttributeNew pickupAttributeNew = do
   case pickupAttributeNewInstigatorId pickupAttributeNew of
     Nothing -> BinaryBits.putBool False

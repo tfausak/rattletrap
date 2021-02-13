@@ -4,6 +4,7 @@ module Rattletrap.Type.Attribute.GameMode where
 
 import Rattletrap.Type.Common
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -19,7 +20,7 @@ data GameModeAttribute = GameModeAttribute
 
 $(deriveJson ''GameModeAttribute)
 
-putGameModeAttribute :: GameModeAttribute -> BinaryBits.BitPut ()
+putGameModeAttribute :: GameModeAttribute -> BitPut ()
 putGameModeAttribute gameModeAttribute = do
   let numBits_ = gameModeAttributeNumBits gameModeAttribute
   let word = gameModeAttributeWord gameModeAttribute

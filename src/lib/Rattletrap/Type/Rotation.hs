@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWordVector
 import Rattletrap.Type.Quaternion
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data Rotation
   = RotationCompressedWordVector CompressedWordVector
@@ -16,7 +15,7 @@ data Rotation
 
 $(deriveJson ''Rotation)
 
-putRotation :: Rotation -> BinaryBits.BitPut ()
+putRotation :: Rotation -> BitPut ()
 putRotation r = case r of
   RotationCompressedWordVector cwv -> putCompressedWordVector cwv
   RotationQuaternion q -> putQuaternion q

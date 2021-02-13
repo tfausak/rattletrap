@@ -4,8 +4,7 @@ module Rattletrap.Type.Replication.Destroyed where
 
 import Rattletrap.Type.Common
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 -- | Destroyed replications don't actually contain any extra information. All
 -- you need to know is the actor's ID, which is given by the
@@ -15,7 +14,7 @@ data DestroyedReplication = DestroyedReplication
 
 $(deriveJson ''DestroyedReplication)
 
-putDestroyedReplication :: DestroyedReplication -> BinaryBits.BitPut ()
+putDestroyedReplication :: DestroyedReplication -> BitPut ()
 putDestroyedReplication _ = pure ()
 
 decodeDestroyedReplicationBits :: BitGet DestroyedReplication

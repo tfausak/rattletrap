@@ -5,8 +5,7 @@ module Rattletrap.Type.Attribute.CamSettings where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Float32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data CamSettingsAttribute = CamSettingsAttribute
   { camSettingsAttributeFov :: Float32le
@@ -21,7 +20,7 @@ data CamSettingsAttribute = CamSettingsAttribute
 
 $(deriveJson ''CamSettingsAttribute)
 
-putCamSettingsAttribute :: CamSettingsAttribute -> BinaryBits.BitPut ()
+putCamSettingsAttribute :: CamSettingsAttribute -> BitPut ()
 putCamSettingsAttribute camSettingsAttribute = do
   putFloat32Bits (camSettingsAttributeFov camSettingsAttribute)
   putFloat32Bits (camSettingsAttributeHeight camSettingsAttribute)

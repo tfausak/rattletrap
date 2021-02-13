@@ -6,6 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Vector
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -18,7 +19,7 @@ data ExplosionAttribute = ExplosionAttribute
 
 $(deriveJson ''ExplosionAttribute)
 
-putExplosionAttribute :: ExplosionAttribute -> BinaryBits.BitPut ()
+putExplosionAttribute :: ExplosionAttribute -> BitPut ()
 putExplosionAttribute explosionAttribute = do
   BinaryBits.putBool False
   putInt32Bits (explosionAttributeActorId explosionAttribute)

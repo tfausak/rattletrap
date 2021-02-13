@@ -11,6 +11,7 @@ import qualified Data.Aeson as Aeson
 import qualified Data.Text as Text
 import qualified Data.Word as Word
 import qualified Text.Read as Read
+import Rattletrap.Encode.Common
 
 newtype Word64le = Word64le
   { word64leValue :: Word.Word64
@@ -26,7 +27,7 @@ instance Aeson.ToJSON Word64le where
 putWord64 :: Word64le -> Binary.Put
 putWord64 word64 = Binary.putWord64le (word64leValue word64)
 
-putWord64Bits :: Word64le -> BinaryBits.BitPut ()
+putWord64Bits :: Word64le -> BitPut ()
 putWord64Bits word64 = do
   let bytes = LazyBytes.toStrict (Binary.runPut (putWord64 word64))
   BinaryBits.putByteString (reverseBytes bytes)

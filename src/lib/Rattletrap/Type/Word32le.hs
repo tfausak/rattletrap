@@ -5,6 +5,7 @@ module Rattletrap.Type.Word32le where
 import Rattletrap.Type.Common
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
@@ -20,7 +21,7 @@ $(deriveJson ''Word32le)
 putWord32 :: Word32le -> Binary.Put
 putWord32 word32 = Binary.putWord32le (word32leValue word32)
 
-putWord32Bits :: Word32le -> BinaryBits.BitPut ()
+putWord32Bits :: Word32le -> BitPut ()
 putWord32Bits word32 = do
   let bytes = LazyBytes.toStrict (Binary.runPut (putWord32 word32))
   BinaryBits.putByteString (reverseBytes bytes)

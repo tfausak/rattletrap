@@ -29,7 +29,7 @@ data RemoteId
 
 $(deriveJson ''RemoteId)
 
-putRemoteId :: RemoteId -> BinaryBits.BitPut ()
+putRemoteId :: RemoteId -> BitPut ()
 putRemoteId remoteId = case remoteId of
   RemoteIdPlayStation name bytes -> do
     let rawName = reverseBytes (padBytes (16 :: Int) (encodeLatin1 name))
@@ -45,7 +45,7 @@ putRemoteId remoteId = case remoteId of
   RemoteIdEpic str -> putTextBits str
 
 putWord256
-  :: Word64le -> Word64le -> Word64le -> Word64le -> BinaryBits.BitPut ()
+  :: Word64le -> Word64le -> Word64le -> Word64le -> BitPut ()
 putWord256 a b c d = do
   putWord64Bits a
   putWord64Bits b

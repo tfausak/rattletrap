@@ -8,6 +8,7 @@ import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
 import Rattletrap.Type.ProductAttributeValue
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad as Monad
 import qualified Data.Map as Map
@@ -24,12 +25,12 @@ data ProductAttribute = ProductAttribute
 
 $(deriveJson ''ProductAttribute)
 
-putProductAttributes :: [ProductAttribute] -> BinaryBits.BitPut ()
+putProductAttributes :: [ProductAttribute] -> BitPut ()
 putProductAttributes attributes = do
   putWord8Bits (Word8le (fromIntegral (length attributes)))
   mapM_ putProductAttribute attributes
 
-putProductAttribute :: ProductAttribute -> BinaryBits.BitPut ()
+putProductAttribute :: ProductAttribute -> BitPut ()
 putProductAttribute attribute = do
   BinaryBits.putBool (productAttributeUnknown attribute)
   putWord32Bits (productAttributeObjectId attribute)

@@ -6,6 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Rotation
 import Rattletrap.Type.Vector
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -20,7 +21,7 @@ data RigidBodyStateAttribute = RigidBodyStateAttribute
 
 $(deriveJson ''RigidBodyStateAttribute)
 
-putRigidBodyStateAttribute :: RigidBodyStateAttribute -> BinaryBits.BitPut ()
+putRigidBodyStateAttribute :: RigidBodyStateAttribute -> BitPut ()
 putRigidBodyStateAttribute rigidBodyStateAttribute = do
   BinaryBits.putBool (rigidBodyStateAttributeSleeping rigidBodyStateAttribute)
   putVector (rigidBodyStateAttributeLocation rigidBodyStateAttribute)

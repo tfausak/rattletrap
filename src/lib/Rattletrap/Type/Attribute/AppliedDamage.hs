@@ -7,8 +7,7 @@ import Rattletrap.Type.Int32le
 import Rattletrap.Type.Vector
 import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data AppliedDamageAttribute = AppliedDamageAttribute
   { appliedDamageAttributeUnknown1 :: Word8le
@@ -20,7 +19,7 @@ data AppliedDamageAttribute = AppliedDamageAttribute
 
 $(deriveJson ''AppliedDamageAttribute)
 
-putAppliedDamageAttribute :: AppliedDamageAttribute -> BinaryBits.BitPut ()
+putAppliedDamageAttribute :: AppliedDamageAttribute -> BitPut ()
 putAppliedDamageAttribute appliedDamageAttribute = do
   putWord8Bits (appliedDamageAttributeUnknown1 appliedDamageAttribute)
   putVector (appliedDamageAttributeLocation appliedDamageAttribute)

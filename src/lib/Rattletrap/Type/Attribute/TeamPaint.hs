@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data TeamPaintAttribute = TeamPaintAttribute
   { teamPaintAttributeTeam :: Word8le
@@ -20,7 +19,7 @@ data TeamPaintAttribute = TeamPaintAttribute
 
 $(deriveJson ''TeamPaintAttribute)
 
-putTeamPaintAttribute :: TeamPaintAttribute -> BinaryBits.BitPut ()
+putTeamPaintAttribute :: TeamPaintAttribute -> BitPut ()
 putTeamPaintAttribute teamPaintAttribute = do
   putWord8Bits (teamPaintAttributeTeam teamPaintAttribute)
   putWord8Bits (teamPaintAttributePrimaryColor teamPaintAttribute)

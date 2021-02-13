@@ -8,9 +8,9 @@ import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Word32le
+import Rattletrap.Encode.Common
 
 import qualified Data.Map as Map
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 newtype UpdatedReplication = UpdatedReplication
   { updatedReplicationAttributes :: [Attribute]
@@ -18,7 +18,7 @@ newtype UpdatedReplication = UpdatedReplication
 
 $(deriveJson ''UpdatedReplication)
 
-putUpdatedReplication :: UpdatedReplication -> BinaryBits.BitPut ()
+putUpdatedReplication :: UpdatedReplication -> BitPut ()
 putUpdatedReplication updatedReplication =
   putAttributes (updatedReplicationAttributes updatedReplication)
 

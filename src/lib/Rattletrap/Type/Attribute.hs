@@ -9,6 +9,7 @@ import Rattletrap.Type.Str
 import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.Word32le
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -23,7 +24,7 @@ data Attribute = Attribute
 
 $(deriveJson ''Attribute)
 
-putAttributes :: [Attribute] -> BinaryBits.BitPut ()
+putAttributes :: [Attribute] -> BitPut ()
 putAttributes attributes = case attributes of
   [] -> BinaryBits.putBool False
   [attribute] -> do
@@ -33,7 +34,7 @@ putAttributes attributes = case attributes of
     putAttribute first
     putAttributes rest
 
-putAttribute :: Attribute -> BinaryBits.BitPut ()
+putAttribute :: Attribute -> BitPut ()
 putAttribute attribute = do
   BinaryBits.putBool True
   putCompressedWord (attributeId attribute)

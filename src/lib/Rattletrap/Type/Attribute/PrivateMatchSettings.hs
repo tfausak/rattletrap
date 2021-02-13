@@ -6,6 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -22,7 +23,7 @@ data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
 $(deriveJson ''PrivateMatchSettingsAttribute)
 
 putPrivateMatchSettingsAttribute
-  :: PrivateMatchSettingsAttribute -> BinaryBits.BitPut ()
+  :: PrivateMatchSettingsAttribute -> BitPut ()
 putPrivateMatchSettingsAttribute privateMatchSettingsAttribute = do
   putTextBits
     (privateMatchSettingsAttributeMutators privateMatchSettingsAttribute)

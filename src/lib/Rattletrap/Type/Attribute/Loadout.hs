@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data LoadoutAttribute = LoadoutAttribute
   { loadoutAttributeVersion :: Word8le
@@ -33,7 +32,7 @@ data LoadoutAttribute = LoadoutAttribute
 
 $(deriveJson ''LoadoutAttribute)
 
-putLoadoutAttribute :: LoadoutAttribute -> BinaryBits.BitPut ()
+putLoadoutAttribute :: LoadoutAttribute -> BitPut ()
 putLoadoutAttribute loadoutAttribute = do
   putWord8Bits (loadoutAttributeVersion loadoutAttribute)
   putWord32Bits (loadoutAttributeBody loadoutAttribute)
@@ -53,7 +52,7 @@ putLoadoutAttribute loadoutAttribute = do
   putOptional (loadoutAttributeUnknown5 loadoutAttribute) putWord32Bits
   putOptional (loadoutAttributeUnknown6 loadoutAttribute) putWord32Bits
 
-putOptional :: Maybe a -> (a -> BinaryBits.BitPut ()) -> BinaryBits.BitPut ()
+putOptional :: Maybe a -> (a -> BitPut ()) -> BitPut ()
 putOptional m f = case m of
   Just x -> f x
   Nothing -> pure ()

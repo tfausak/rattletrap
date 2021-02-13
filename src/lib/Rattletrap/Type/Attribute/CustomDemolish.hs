@@ -6,6 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Attribute.Demolish
 import Rattletrap.Type.Int32le
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -18,7 +19,7 @@ data CustomDemolishAttribute = CustomDemolishAttribute
 
 $(deriveJson ''CustomDemolishAttribute)
 
-putCustomDemolishAttribute :: CustomDemolishAttribute -> BinaryBits.BitPut ()
+putCustomDemolishAttribute :: CustomDemolishAttribute -> BitPut ()
 putCustomDemolishAttribute x = do
   BinaryBits.putBool (customDemolishAttributeFlag x)
   putInt32Bits (customDemolishAttributeId x)

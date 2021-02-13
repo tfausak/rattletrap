@@ -6,6 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -18,7 +19,7 @@ data MusicStingerAttribute = MusicStingerAttribute
 
 $(deriveJson ''MusicStingerAttribute)
 
-putMusicStingerAttribute :: MusicStingerAttribute -> BinaryBits.BitPut ()
+putMusicStingerAttribute :: MusicStingerAttribute -> BitPut ()
 putMusicStingerAttribute musicStingerAttribute = do
   BinaryBits.putBool (musicStingerAttributeFlag musicStingerAttribute)
   putWord32Bits (musicStingerAttributeCue musicStingerAttribute)

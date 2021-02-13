@@ -7,6 +7,7 @@ import Rattletrap.Type.Attribute.LoadoutOnline
 import Rattletrap.Decode.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
+import Rattletrap.Encode.Common
 
 import qualified Data.Map as Map
 import qualified Data.Binary.Bits.Put as BinaryBits
@@ -21,7 +22,7 @@ data LoadoutsOnlineAttribute = LoadoutsOnlineAttribute
 
 $(deriveJson ''LoadoutsOnlineAttribute)
 
-putLoadoutsOnlineAttribute :: LoadoutsOnlineAttribute -> BinaryBits.BitPut ()
+putLoadoutsOnlineAttribute :: LoadoutsOnlineAttribute -> BitPut ()
 putLoadoutsOnlineAttribute loadoutsOnlineAttribute = do
   putLoadoutOnlineAttribute
     (loadoutsOnlineAttributeBlue loadoutsOnlineAttribute)

@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Attribute.Explosion
 import Rattletrap.Type.Attribute.FlaggedInt
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data ExtendedExplosionAttribute = ExtendedExplosionAttribute
   { extendedExplosionAttributeExplosion :: ExplosionAttribute
@@ -18,7 +17,7 @@ data ExtendedExplosionAttribute = ExtendedExplosionAttribute
 $(deriveJson ''ExtendedExplosionAttribute)
 
 putExtendedExplosionAttribute
-  :: ExtendedExplosionAttribute -> BinaryBits.BitPut ()
+  :: ExtendedExplosionAttribute -> BitPut ()
 putExtendedExplosionAttribute x = do
   putExplosionAttribute (extendedExplosionAttributeExplosion x)
   putFlaggedIntAttribute (extendedExplosionAttributeUnknown x)

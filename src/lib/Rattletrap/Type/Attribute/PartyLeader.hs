@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.RemoteId
 import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data PartyLeaderAttribute = PartyLeaderAttribute
   { partyLeaderAttributeSystemId :: Word8le
@@ -17,7 +16,7 @@ data PartyLeaderAttribute = PartyLeaderAttribute
 
 $(deriveJson ''PartyLeaderAttribute)
 
-putPartyLeaderAttribute :: PartyLeaderAttribute -> BinaryBits.BitPut ()
+putPartyLeaderAttribute :: PartyLeaderAttribute -> BitPut ()
 putPartyLeaderAttribute partyLeaderAttribute = do
   putWord8Bits (partyLeaderAttributeSystemId partyLeaderAttribute)
   case partyLeaderAttributeId partyLeaderAttribute of

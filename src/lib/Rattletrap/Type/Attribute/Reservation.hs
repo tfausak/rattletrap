@@ -8,6 +8,7 @@ import Rattletrap.Type.Str
 import Rattletrap.Type.Attribute.UniqueId
 import Rattletrap.Decode.Common
 import Rattletrap.Type.Word8le
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -23,7 +24,7 @@ data ReservationAttribute = ReservationAttribute
 
 $(deriveJson ''ReservationAttribute)
 
-putReservationAttribute :: ReservationAttribute -> BinaryBits.BitPut ()
+putReservationAttribute :: ReservationAttribute -> BitPut ()
 putReservationAttribute reservationAttribute = do
   putCompressedWord (reservationAttributeNumber reservationAttribute)
   putUniqueIdAttribute (reservationAttributeUniqueId reservationAttribute)

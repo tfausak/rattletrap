@@ -5,8 +5,7 @@ module Rattletrap.Type.Attribute.Byte where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 newtype ByteAttribute = ByteAttribute
   { byteAttributeValue :: Word8le
@@ -14,7 +13,7 @@ newtype ByteAttribute = ByteAttribute
 
 $(deriveJson ''ByteAttribute)
 
-putByteAttribute :: ByteAttribute -> BinaryBits.BitPut ()
+putByteAttribute :: ByteAttribute -> BitPut ()
 putByteAttribute byteAttribute =
   putWord8Bits (byteAttributeValue byteAttribute)
 

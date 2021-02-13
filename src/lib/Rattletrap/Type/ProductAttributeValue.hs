@@ -24,7 +24,7 @@ data ProductAttributeValue
 
 $(deriveJson ''ProductAttributeValue)
 
-putProductAttributeValue :: ProductAttributeValue -> BinaryBits.BitPut ()
+putProductAttributeValue :: ProductAttributeValue -> BitPut ()
 putProductAttributeValue val = case val of
   ProductAttributeValuePaintedOld x -> putCompressedWord x
   ProductAttributeValuePaintedNew x -> putBitsLE 31 x

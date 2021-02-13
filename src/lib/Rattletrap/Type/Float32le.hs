@@ -5,6 +5,7 @@ module Rattletrap.Type.Float32le where
 import Rattletrap.Type.Common
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
@@ -20,7 +21,7 @@ $(deriveJson ''Float32le)
 putFloat32 :: Float32le -> Binary.Put
 putFloat32 = Binary.putFloatle . float32leValue
 
-putFloat32Bits :: Float32le -> BinaryBits.BitPut ()
+putFloat32Bits :: Float32le -> BitPut ()
 putFloat32Bits float32 = do
   let bytes = LazyBytes.toStrict (Binary.runPut (putFloat32 float32))
   BinaryBits.putByteString (reverseBytes bytes)

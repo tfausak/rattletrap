@@ -8,10 +8,10 @@ import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad as Monad
 import qualified Data.Map as Map
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
   { loadoutAttributeValue :: [[ProductAttribute]]
@@ -19,7 +19,7 @@ newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
 
 $(deriveJson ''LoadoutOnlineAttribute)
 
-putLoadoutOnlineAttribute :: LoadoutOnlineAttribute -> BinaryBits.BitPut ()
+putLoadoutOnlineAttribute :: LoadoutOnlineAttribute -> BitPut ()
 putLoadoutOnlineAttribute loadoutAttribute = do
   let attributes = loadoutAttributeValue loadoutAttribute
   putWord8Bits (Word8le (fromIntegral (length attributes)))

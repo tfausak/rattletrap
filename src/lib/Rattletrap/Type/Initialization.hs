@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.Int8Vector
 import Rattletrap.Type.Vector
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data Initialization = Initialization
   { initializationLocation :: Maybe Vector
@@ -21,7 +20,7 @@ data Initialization = Initialization
 
 $(deriveJson ''Initialization)
 
-putInitialization :: Initialization -> BinaryBits.BitPut ()
+putInitialization :: Initialization -> BitPut ()
 putInitialization initialization = do
   case initializationLocation initialization of
     Nothing -> pure ()

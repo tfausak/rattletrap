@@ -10,6 +10,7 @@ import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Word32le
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -27,7 +28,7 @@ data ReplicationValue
 
 $(deriveJson ''ReplicationValue)
 
-putReplicationValue :: ReplicationValue -> BinaryBits.BitPut ()
+putReplicationValue :: ReplicationValue -> BitPut ()
 putReplicationValue value = case value of
   ReplicationValueSpawned x -> do
     BinaryBits.putBool True

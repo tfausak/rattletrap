@@ -5,6 +5,7 @@ module Rattletrap.Type.Attribute.Pickup where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
@@ -16,7 +17,7 @@ data PickupAttribute = PickupAttribute
 
 $(deriveJson ''PickupAttribute)
 
-putPickupAttribute :: PickupAttribute -> BinaryBits.BitPut ()
+putPickupAttribute :: PickupAttribute -> BitPut ()
 putPickupAttribute pickupAttribute = do
   case pickupAttributeInstigatorId pickupAttribute of
     Nothing -> BinaryBits.putBool False

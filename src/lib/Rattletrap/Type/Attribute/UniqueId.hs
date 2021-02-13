@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.RemoteId
 import Rattletrap.Type.Word8le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data UniqueIdAttribute = UniqueIdAttribute
   { uniqueIdAttributeSystemId :: Word8le
@@ -18,7 +17,7 @@ data UniqueIdAttribute = UniqueIdAttribute
 
 $(deriveJson ''UniqueIdAttribute)
 
-putUniqueIdAttribute :: UniqueIdAttribute -> BinaryBits.BitPut ()
+putUniqueIdAttribute :: UniqueIdAttribute -> BitPut ()
 putUniqueIdAttribute uniqueIdAttribute = do
   putWord8Bits (uniqueIdAttributeSystemId uniqueIdAttribute)
   putRemoteId (uniqueIdAttributeRemoteId uniqueIdAttribute)

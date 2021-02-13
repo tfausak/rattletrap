@@ -9,11 +9,11 @@ import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
 import Rattletrap.Type.Word32le
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
 import qualified Data.Map as Map
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Frame = Frame
   { frameTime :: Float32le
@@ -27,7 +27,7 @@ data Frame = Frame
 
 $(deriveJson ''Frame)
 
-putFrames :: [Frame] -> BinaryBits.BitPut ()
+putFrames :: [Frame] -> BitPut ()
 putFrames frames = case frames of
   [] -> pure ()
   [frame] -> putFrame frame
@@ -35,7 +35,7 @@ putFrames frames = case frames of
     putFrame first
     putFrames rest
 
-putFrame :: Frame -> BinaryBits.BitPut ()
+putFrame :: Frame -> BitPut ()
 putFrame frame = do
   putFloat32Bits (frameTime frame)
   putFloat32Bits (frameDelta frame)
