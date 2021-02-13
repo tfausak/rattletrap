@@ -51,10 +51,10 @@ parentClasses = Map.fromList $ fmap (Bifunctor.bimap Text.pack Text.pack)
   , ("TAGame.SpecialPickup_BallFreeze_TA", "TAGame.SpecialPickup_Targeted_TA")
   , ("TAGame.SpecialPickup_BallGravity_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.SpecialPickup_BallLasso_TA", "TAGame.SpecialPickup_GrapplingHook_TA")
-  , ("TAGame.SpecialPickup_Football_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.SpecialPickup_BallVelcro_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.SpecialPickup_Batarang_TA", "TAGame.SpecialPickup_BallLasso_TA")
   , ("TAGame.SpecialPickup_BoostOverride_TA", "TAGame.SpecialPickup_Targeted_TA")
+  , ("TAGame.SpecialPickup_Football_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.SpecialPickup_GrapplingHook_TA", "TAGame.SpecialPickup_Targeted_TA")
   , ("TAGame.SpecialPickup_HauntedBallBeam_TA", "TAGame.SpecialPickup_TA")
   , ("TAGame.SpecialPickup_HitForce_TA", "TAGame.SpecialPickup_TA")
@@ -106,8 +106,8 @@ classesWithLocation = Set.fromList $ fmap Text.pack
   , "TAGame.GameEvent_SoccarSplitscreen_TA"
   , "TAGame.GRI_TA"
   , "TAGame.MaxTimeWarningData_TA"
-  , "TAGame.RumblePickups_TA"
   , "TAGame.PRI_TA"
+  , "TAGame.RumblePickups_TA"
   , "TAGame.SpecialPickup_BallCarSpring_TA"
   , "TAGame.SpecialPickup_BallFreeze_TA"
   , "TAGame.SpecialPickup_BallGravity_TA"
@@ -216,8 +216,8 @@ objectClasses = Map.fromList $ fmap (Bifunctor.bimap Text.pack Text.pack)
   , ("ProjectX.Default__NetModeReplicator_X", "ProjectX.NetModeReplicator")
   , ("TAGame.Default__CameraSettingsActor_TA", "TAGame.CameraSettingsActor_TA")
   , ("TAGame.Default__MaxTimeWarningData_TA", "TAGame.MaxTimeWarningData_TA")
-  , ("TAGame.Default__RumblePickups_TA", "TAGame.RumblePickups_TA")
   , ("TAGame.Default__PRI_TA", "TAGame.PRI_TA")
+  , ("TAGame.Default__RumblePickups_TA", "TAGame.RumblePickups_TA")
   , ("TheWorld:PersistentLevel.BreakOutActor_Platform_TA", "TAGame.BreakOutActor_Platform_TA")
   , ("TheWorld:PersistentLevel.CrowdActor_TA", "TAGame.CrowdActor_TA")
   , ("TheWorld:PersistentLevel.CrowdManager_TA", "TAGame.CrowdManager_TA")
@@ -235,7 +235,6 @@ attributeTypes = Map.fromList $ fmap (Bifunctor.first Text.pack)
   , ("Engine.Actor:Role", AttributeTypeEnum)
   , ("Engine.GameReplicationInfo:bMatchIsOver", AttributeTypeBoolean)
   , ("Engine.GameReplicationInfo:GameClass", AttributeTypeFlaggedInt)
-  , ("TAGame.Car_TA:RumblePickups", AttributeTypeFlaggedInt)
   , ("Engine.GameReplicationInfo:ServerName", AttributeTypeString)
   , ("Engine.Pawn:PlayerReplicationInfo", AttributeTypeFlaggedInt)
   , ("Engine.PlayerReplicationInfo:bBot", AttributeTypeBoolean)
@@ -291,6 +290,7 @@ attributeTypes = Map.fromList $ fmap (Bifunctor.first Text.pack)
   , ("TAGame.Car_TA:ClubColors", AttributeTypeClubColors)
   , ("TAGame.Car_TA:ReplicatedDemolish_CustomFX", AttributeTypeCustomDemolish)
   , ("TAGame.Car_TA:ReplicatedDemolish", AttributeTypeDemolish)
+  , ("TAGame.Car_TA:RumblePickups", AttributeTypeFlaggedInt)
   , ("TAGame.Car_TA:TeamPaint", AttributeTypeTeamPaint)
   , ("TAGame.CarComponent_Boost_TA:bNoBoost", AttributeTypeBoolean)
   , ("TAGame.CarComponent_Boost_TA:BoostModifier", AttributeTypeFloat)
