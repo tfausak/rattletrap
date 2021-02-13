@@ -226,7 +226,7 @@ getParentClassByName
   -> [(Maybe Str, Word32le, Word32le, Word32le)]
   -> Maybe Word32le
 getParentClassByName className parentCacheId xs =
-  case Map.lookup className parentClasses of
+  case Map.lookup (strValue className) parentClasses of
     Nothing -> getParentClassById parentCacheId xs
     Just parentClassName -> Maybe.maybe
       (getParentClassById parentCacheId xs)
@@ -238,17 +238,13 @@ getParentClassByName className parentCacheId xs =
             (\(_, _, cacheId, _) -> cacheId <= parentCacheId)
             (filter
               (\(maybeClassName, _, _, _) ->
-                maybeClassName == Just parentClassName
+                fmap strValue maybeClassName == Just parentClassName
               )
               xs
             )
           )
         )
       )
-
-parentClasses :: Map Str Str
-parentClasses =
-  Map.map toStr (Map.mapKeys toStr (Map.fromList rawParentClasses))
 
 makeObjectMap :: List Str -> Map Word32le Str
 makeObjectMap objects =
