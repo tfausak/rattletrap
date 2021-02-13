@@ -1,49 +1,47 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.AttributeType
-  ( AttributeType(..)
-  ) where
+module Rattletrap.Type.AttributeType where
 
 import Rattletrap.Type.Common
 
 data AttributeType
-  = AttributeTypeAppliedDamage
-  | AttributeTypeBoolean
-  | AttributeTypeByte
-  | AttributeTypeCamSettings
-  | AttributeTypeClubColors
-  | AttributeTypeCustomDemolish
-  | AttributeTypeDamageState
-  | AttributeTypeDemolish
-  | AttributeTypeEnum
-  | AttributeTypeExplosion
-  | AttributeTypeExtendedExplosion
-  | AttributeTypeFlaggedInt
-  | AttributeTypeFlaggedByte
-  | AttributeTypeFloat
-  | AttributeTypeGameMode
-  | AttributeTypeInt
-  | AttributeTypeInt64
-  | AttributeTypeLoadout
-  | AttributeTypeLoadoutOnline
-  | AttributeTypeLoadouts
-  | AttributeTypeLoadoutsOnline
-  | AttributeTypeLocation
-  | AttributeTypeMusicStinger
-  | AttributeTypePartyLeader
-  | AttributeTypePickup
-  | AttributeTypePickupNew
-  | AttributeTypePlayerHistoryKey
-  | AttributeTypePrivateMatchSettings
-  | AttributeTypeQWord
-  | AttributeTypeReservation
-  | AttributeTypeRigidBodyState
-  | AttributeTypeStatEvent
-  | AttributeTypeString
-  | AttributeTypeTeamPaint
-  | AttributeTypeTitle
-  | AttributeTypeUniqueId
-  | AttributeTypeWeldedInfo
+  = AppliedDamage
+  | Boolean
+  | Byte
+  | CamSettings
+  | ClubColors
+  | CustomDemolish
+  | DamageState
+  | Demolish
+  | Enum
+  | Explosion
+  | ExtendedExplosion
+  | FlaggedInt
+  | FlaggedByte
+  | Float
+  | GameMode
+  | Int
+  | Int64
+  | Loadout
+  | LoadoutOnline
+  | Loadouts
+  | LoadoutsOnline
+  | Location
+  | MusicStinger
+  | PartyLeader
+  | Pickup
+  | PickupNew
+  | PlayerHistoryKey
+  | PrivateMatchSettings
+  | QWord
+  | Reservation
+  | RigidBodyState
+  | StatEvent
+  | String
+  | TeamPaint
+  | Title
+  | UniqueId
+  | WeldedInfo
   deriving (Eq, Show)
 
-$(deriveJson ''AttributeType)
+$(deriveJsonWith ''AttributeType jsonOptions)

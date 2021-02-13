@@ -8,18 +8,18 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data AttributeMapping = AttributeMapping
-  { attributeMappingObjectId :: Word32le.Word32le
-  , attributeMappingStreamId :: Word32le.Word32le
+  { objectId :: Word32le.Word32le
+  , streamId :: Word32le.Word32le
   }
   deriving (Eq, Show)
 
-$(deriveJson ''AttributeMapping)
+$(deriveJsonWith ''AttributeMapping jsonOptions)
 
-putAttributeMapping :: AttributeMapping -> BytePut
-putAttributeMapping attributeMapping = do
-  Word32le.bytePut (attributeMappingObjectId attributeMapping)
-  Word32le.bytePut (attributeMappingStreamId attributeMapping)
+bytePut :: AttributeMapping -> BytePut
+bytePut attributeMapping = do
+  Word32le.bytePut (objectId attributeMapping)
+  Word32le.bytePut (streamId attributeMapping)
 
-decodeAttributeMapping :: ByteGet AttributeMapping
-decodeAttributeMapping =
+byteGet :: ByteGet AttributeMapping
+byteGet =
   AttributeMapping <$> Word32le.byteGet <*> Word32le.byteGet

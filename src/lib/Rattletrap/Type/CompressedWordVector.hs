@@ -3,31 +3,31 @@
 module Rattletrap.Type.CompressedWordVector where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWord
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data CompressedWordVector = CompressedWordVector
-  { compressedWordVectorX :: CompressedWord
-  , compressedWordVectorY :: CompressedWord
-  , compressedWordVectorZ :: CompressedWord
+  { x :: CompressedWord.CompressedWord
+  , y :: CompressedWord.CompressedWord
+  , z :: CompressedWord.CompressedWord
   }
   deriving (Eq, Show)
 
-$(deriveJson ''CompressedWordVector)
+$(deriveJsonWith ''CompressedWordVector jsonOptions)
 
-putCompressedWordVector :: CompressedWordVector -> BitPut ()
-putCompressedWordVector compressedWordVector = do
-  putCompressedWord (compressedWordVectorX compressedWordVector)
-  putCompressedWord (compressedWordVectorY compressedWordVector)
-  putCompressedWord (compressedWordVectorZ compressedWordVector)
+bitPut :: CompressedWordVector -> BitPut ()
+bitPut compressedWordVector = do
+  CompressedWord.bitPut (x compressedWordVector)
+  CompressedWord.bitPut (y compressedWordVector)
+  CompressedWord.bitPut (z compressedWordVector)
 
-decodeCompressedWordVectorBits :: BitGet CompressedWordVector
-decodeCompressedWordVectorBits =
+bitGet :: BitGet CompressedWordVector
+bitGet =
   CompressedWordVector
-    <$> decodeCompressedWordBits limit
-    <*> decodeCompressedWordBits limit
-    <*> decodeCompressedWordBits limit
+    <$> CompressedWord.bitGet limit
+    <*> CompressedWord.bitGet limit
+    <*> CompressedWord.bitGet limit
 
 limit :: Word
 limit = 65536

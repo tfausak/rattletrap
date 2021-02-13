@@ -7,8 +7,8 @@ import qualified Rattletrap.Type.Replication.Destroyed as Destroyed
 import qualified Rattletrap.Type.Replication.Spawned as Spawned
 import qualified Rattletrap.Type.Replication.Updated as Updated
 import Rattletrap.Decode.Common
-import Rattletrap.Type.ClassAttributeMap
-import Rattletrap.Type.CompressedWord
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
 
@@ -44,10 +44,10 @@ bitPut value = case value of
 
 bitGet
   :: (Int, Int, Int)
-  -> ClassAttributeMap
-  -> CompressedWord
+  -> ClassAttributeMap.ClassAttributeMap
+  -> CompressedWord.CompressedWord
   -> State.StateT
-       (Map.Map CompressedWord Word32le.Word32le)
+       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
        BitGet
        ReplicationValue
 bitGet version classAttributeMap actorId = do

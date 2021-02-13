@@ -3,12 +3,12 @@
 module Rattletrap.Type.Replication.Spawned where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Initialization
+import qualified Rattletrap.Type.Initialization as Initialization
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
-import Rattletrap.Type.ClassAttributeMap
-import Rattletrap.Type.CompressedWord
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
@@ -30,7 +30,7 @@ data Spawned = Spawned
   , className :: Str.Str
   -- ^ Read-only! Changing a replication's class requires editing the class
   -- attribute map.
-  , initialization :: Initialization
+  , initialization :: Initialization.Initialization
   }
   deriving (Eq, Show)
 
@@ -43,14 +43,14 @@ bitPut spawnedReplication = do
     Nothing -> pure ()
     Just nameIndex_ -> Word32le.bitPut nameIndex_
   Word32le.bitPut (objectId spawnedReplication)
-  putInitialization (initialization spawnedReplication)
+  Initialization.bitPut (initialization spawnedReplication)
 
 bitGet
   :: (Int, Int, Int)
-  -> ClassAttributeMap
-  -> CompressedWord
+  -> ClassAttributeMap.ClassAttributeMap
+  -> CompressedWord.CompressedWord
   -> State.StateT
-       (Map.Map CompressedWord Word32le.Word32le)
+       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
        BitGet
        Spawned
 bitGet version classAttributeMap actorId = do
@@ -63,10 +63,10 @@ bitGet version classAttributeMap actorId = do
   State.modify (Map.insert actorId objectId_)
   objectName_ <- either fail pure (lookupObjectName classAttributeMap objectId_)
   className_ <- either fail pure (lookupClassName objectName_)
-  let hasLocation = classHasLocation className_
-  let hasRotation = classHasRotation className_
+  let hasLocation = ClassAttributeMap.classHasLocation className_
+  let hasRotation = ClassAttributeMap.classHasRotation className_
   initialization_ <- Trans.lift
-    (decodeInitializationBits version hasLocation hasRotation)
+    (Initialization.bitGet version hasLocation hasRotation)
   pure
     (Spawned
       flag_
@@ -78,24 +78,24 @@ bitGet version classAttributeMap actorId = do
       initialization_
     )
 
-lookupName :: ClassAttributeMap -> Maybe Word32le.Word32le -> Either String (Maybe Str.Str)
+lookupName :: ClassAttributeMap.ClassAttributeMap -> Maybe Word32le.Word32le -> Either String (Maybe Str.Str)
 lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
   Nothing -> Right Nothing
   Just nameIndex_ ->
-    case getName (classAttributeMapNameMap classAttributeMap) nameIndex_ of
+    case ClassAttributeMap.getName (ClassAttributeMap.nameMap classAttributeMap) nameIndex_ of
       Nothing ->
         Left ("[RT11] could not get name for index " <> show nameIndex_)
       Just name_ -> Right (Just name_)
 
-lookupObjectName :: ClassAttributeMap -> Word32le.Word32le -> Either String Str.Str
+lookupObjectName :: ClassAttributeMap.ClassAttributeMap -> Word32le.Word32le -> Either String Str.Str
 lookupObjectName classAttributeMap objectId_ =
-  case getObjectName (classAttributeMapObjectMap classAttributeMap) objectId_ of
+  case ClassAttributeMap.getObjectName (ClassAttributeMap.objectMap classAttributeMap) objectId_ of
     Nothing ->
       Left ("[RT12] could not get object name for id " <> show objectId_)
     Just objectName_ -> Right objectName_
 
 lookupClassName :: Str.Str -> Either String Str.Str
-lookupClassName objectName_ = case getClassName objectName_ of
+lookupClassName objectName_ = case ClassAttributeMap.getClassName objectName_ of
   Nothing ->
     Left ("[RT13] could not get class name for object " <> show objectName_)
   Just className_ -> Right className_

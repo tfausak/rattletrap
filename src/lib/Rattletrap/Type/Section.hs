@@ -43,7 +43,7 @@ create encode body_ =
 -- the size and CRC.
 --
 -- @
--- let bytes = 'Data.BytePut.runPut' ('bytePut' 'Rattletrap.Content.putContent' content)
+-- let bytes = 'Data.BytePut.runPut' ('bytePut' 'Rattletrap.Content.bytePut' content)
 -- @
 bytePut :: (a -> BytePut) -> Section a -> BytePut
 bytePut putBody section = do

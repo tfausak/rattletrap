@@ -23,16 +23,16 @@ instance Aeson.FromJSON Int64le where
 instance Aeson.ToJSON Int64le where
   toJSON = Aeson.toJSON . show . int64leValue
 
-putInt64 :: Int64le -> BytePut
-putInt64 int64 = Binary.putInt64le (int64leValue int64)
+bytePut :: Int64le -> BytePut
+bytePut int64 = Binary.putInt64le (int64leValue int64)
 
-putInt64Bits :: Int64le -> BitPut ()
-putInt64Bits int64 = do
-  let bytes = LazyBytes.toStrict (Binary.runPut (putInt64 int64))
+bitPut :: Int64le -> BitPut ()
+bitPut int64 = do
+  let bytes = LazyBytes.toStrict (Binary.runPut (bytePut int64))
   BinaryBits.putByteString (reverseBytes bytes)
 
-decodeInt64le :: ByteGet Int64le
-decodeInt64le = Int64le <$> getInt64le
+byteGet :: ByteGet Int64le
+byteGet = Int64le <$> getInt64le
 
-decodeInt64leBits :: BitGet Int64le
-decodeInt64leBits = toBits decodeInt64le 8
+bitGet :: BitGet Int64le
+bitGet = toBits byteGet 8

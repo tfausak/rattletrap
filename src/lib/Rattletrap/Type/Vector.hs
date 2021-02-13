@@ -3,12 +3,12 @@
 module Rattletrap.Type.Vector where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWord
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data Vector = Vector
-  { size :: CompressedWord
+  { size :: CompressedWord.CompressedWord
   , bias :: Word
   -- ^ This field is guaranteed to be small. In other words, it won't overflow.
   -- It's stored as a regular 'Word' rather than something more precise like a
@@ -37,27 +37,27 @@ bitPut vector = do
     dz =
       fromIntegral (z vector + fromIntegral (bias vector)) :: Word
     limit = 2 ^ (bitSize + 2) :: Word
-  putCompressedWord (size vector)
-  putCompressedWord (CompressedWord limit dx)
-  putCompressedWord (CompressedWord limit dy)
-  putCompressedWord (CompressedWord limit dz)
+  CompressedWord.bitPut (size vector)
+  CompressedWord.bitPut (CompressedWord.CompressedWord limit dx)
+  CompressedWord.bitPut (CompressedWord.CompressedWord limit dy)
+  CompressedWord.bitPut (CompressedWord.CompressedWord limit dz)
 
 bitGet :: (Int, Int, Int) -> BitGet Vector
 bitGet version = do
-  size_ <- decodeCompressedWordBits (if version >= (868, 22, 7) then 21 else 19)
+  size_ <- CompressedWord.bitGet (if version >= (868, 22, 7) then 21 else 19)
   let
     limit = getLimit size_
     bias_ = getBias size_
   Vector size_ bias_
-    <$> fmap (fromDelta bias_) (decodeCompressedWordBits limit)
-    <*> fmap (fromDelta bias_) (decodeCompressedWordBits limit)
-    <*> fmap (fromDelta bias_) (decodeCompressedWordBits limit)
+    <$> fmap (fromDelta bias_) (CompressedWord.bitGet limit)
+    <*> fmap (fromDelta bias_) (CompressedWord.bitGet limit)
+    <*> fmap (fromDelta bias_) (CompressedWord.bitGet limit)
 
-getLimit :: CompressedWord -> Word
-getLimit = (2 ^) . (+ 2) . compressedWordValue
+getLimit :: CompressedWord.CompressedWord -> Word
+getLimit = (2 ^) . (+ 2) . CompressedWord.value
 
-getBias :: CompressedWord -> Word
-getBias = (2 ^) . (+ 1) . compressedWordValue
+getBias :: CompressedWord.CompressedWord -> Word
+getBias = (2 ^) . (+ 1) . CompressedWord.value
 
-fromDelta :: Word -> CompressedWord -> Int
-fromDelta bias_ x_ = fromIntegral (compressedWordValue x_) - fromIntegral bias_
+fromDelta :: Word -> CompressedWord.CompressedWord -> Int
+fromDelta bias_ x_ = fromIntegral (CompressedWord.value x_) - fromIntegral bias_

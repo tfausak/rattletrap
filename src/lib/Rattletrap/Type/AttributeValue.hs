@@ -42,7 +42,7 @@ import Rattletrap.Type.Attribute.UniqueId
 import Rattletrap.Type.Attribute.WeldedInfo
 import qualified Rattletrap.Data as Data
 import Rattletrap.Decode.Common
-import Rattletrap.Type.AttributeType
+import qualified Rattletrap.Type.AttributeType as AttributeType
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
@@ -50,160 +50,129 @@ import Rattletrap.Encode.Common
 import qualified Data.Map as Map
 
 data AttributeValue
-  = AttributeValueAppliedDamage AppliedDamageAttribute
-  | AttributeValueBoolean BooleanAttribute
-  | AttributeValueByte ByteAttribute
-  | AttributeValueCamSettings CamSettingsAttribute
-  | AttributeValueClubColors ClubColorsAttribute
-  | AttributeValueCustomDemolish CustomDemolishAttribute
-  | AttributeValueDamageState DamageStateAttribute
-  | AttributeValueDemolish DemolishAttribute
-  | AttributeValueEnum EnumAttribute
-  | AttributeValueExplosion ExplosionAttribute
-  | AttributeValueExtendedExplosion ExtendedExplosionAttribute
-  | AttributeValueFlaggedInt FlaggedIntAttribute
-  | AttributeValueFlaggedByte FlaggedByteAttribute
-  | AttributeValueFloat FloatAttribute
-  | AttributeValueGameMode GameModeAttribute
-  | AttributeValueInt IntAttribute
-  | AttributeValueInt64 Int64Attribute
-  | AttributeValueLoadout LoadoutAttribute
-  | AttributeValueLoadoutOnline LoadoutOnlineAttribute
-  | AttributeValueLoadouts LoadoutsAttribute
-  | AttributeValueLoadoutsOnline LoadoutsOnlineAttribute
-  | AttributeValueLocation LocationAttribute
-  | AttributeValueMusicStinger MusicStingerAttribute
-  | AttributeValuePartyLeader PartyLeaderAttribute
-  | AttributeValuePickup PickupAttribute
-  | AttributeValuePickupNew PickupAttributeNew
-  | AttributeValuePlayerHistoryKey PlayerHistoryKeyAttribute
-  | AttributeValuePrivateMatchSettings PrivateMatchSettingsAttribute
-  | AttributeValueQWord QWordAttribute
-  | AttributeValueReservation ReservationAttribute
-  | AttributeValueRigidBodyState RigidBodyStateAttribute
-  | AttributeValueStatEvent StatEventAttribute
-  | AttributeValueString StringAttribute
-  | AttributeValueTeamPaint TeamPaintAttribute
-  | AttributeValueTitle TitleAttribute
-  | AttributeValueUniqueId UniqueIdAttribute
-  | AttributeValueWeldedInfo WeldedInfoAttribute
+  = AppliedDamage AppliedDamageAttribute
+  | Boolean BooleanAttribute
+  | Byte ByteAttribute
+  | CamSettings CamSettingsAttribute
+  | ClubColors ClubColorsAttribute
+  | CustomDemolish CustomDemolishAttribute
+  | DamageState DamageStateAttribute
+  | Demolish DemolishAttribute
+  | Enum EnumAttribute
+  | Explosion ExplosionAttribute
+  | ExtendedExplosion ExtendedExplosionAttribute
+  | FlaggedInt FlaggedIntAttribute
+  | FlaggedByte FlaggedByteAttribute
+  | Float FloatAttribute
+  | GameMode GameModeAttribute
+  | Int IntAttribute
+  | Int64 Int64Attribute
+  | Loadout LoadoutAttribute
+  | LoadoutOnline LoadoutOnlineAttribute
+  | Loadouts LoadoutsAttribute
+  | LoadoutsOnline LoadoutsOnlineAttribute
+  | Location LocationAttribute
+  | MusicStinger MusicStingerAttribute
+  | PartyLeader PartyLeaderAttribute
+  | Pickup PickupAttribute
+  | PickupNew PickupAttributeNew
+  | PlayerHistoryKey PlayerHistoryKeyAttribute
+  | PrivateMatchSettings PrivateMatchSettingsAttribute
+  | QWord QWordAttribute
+  | Reservation ReservationAttribute
+  | RigidBodyState RigidBodyStateAttribute
+  | StatEvent StatEventAttribute
+  | String StringAttribute
+  | TeamPaint TeamPaintAttribute
+  | Title TitleAttribute
+  | UniqueId UniqueIdAttribute
+  | WeldedInfo WeldedInfoAttribute
   deriving (Eq, Show)
 
-$(deriveJson ''AttributeValue)
+$(deriveJsonWith ''AttributeValue jsonOptions)
 
-putAttributeValue :: AttributeValue -> BitPut ()
-putAttributeValue value = case value of
-  AttributeValueAppliedDamage x -> putAppliedDamageAttribute x
-  AttributeValueBoolean x -> putBooleanAttribute x
-  AttributeValueByte x -> putByteAttribute x
-  AttributeValueCamSettings x -> putCamSettingsAttribute x
-  AttributeValueClubColors x -> putClubColorsAttribute x
-  AttributeValueCustomDemolish x -> putCustomDemolishAttribute x
-  AttributeValueDamageState x -> putDamageStateAttribute x
-  AttributeValueDemolish x -> putDemolishAttribute x
-  AttributeValueEnum x -> putEnumAttribute x
-  AttributeValueExplosion x -> putExplosionAttribute x
-  AttributeValueExtendedExplosion x -> putExtendedExplosionAttribute x
-  AttributeValueFlaggedInt x -> putFlaggedIntAttribute x
-  AttributeValueFlaggedByte x -> putFlaggedByteAttribute x
-  AttributeValueFloat x -> putFloatAttribute x
-  AttributeValueGameMode x -> putGameModeAttribute x
-  AttributeValueInt x -> putIntAttribute x
-  AttributeValueInt64 x -> putInt64Attribute x
-  AttributeValueLoadout x -> putLoadoutAttribute x
-  AttributeValueLoadoutOnline x -> putLoadoutOnlineAttribute x
-  AttributeValueLoadouts x -> putLoadoutsAttribute x
-  AttributeValueLoadoutsOnline x -> putLoadoutsOnlineAttribute x
-  AttributeValueLocation x -> putLocationAttribute x
-  AttributeValueMusicStinger x -> putMusicStingerAttribute x
-  AttributeValuePartyLeader x -> putPartyLeaderAttribute x
-  AttributeValuePickup x -> putPickupAttribute x
-  AttributeValuePickupNew x -> putPickupAttributeNew x
-  AttributeValuePlayerHistoryKey x -> putPlayerHistoryKeyAttribute x
-  AttributeValuePrivateMatchSettings x -> putPrivateMatchSettingsAttribute x
-  AttributeValueQWord x -> putQWordAttribute x
-  AttributeValueReservation x -> putReservationAttribute x
-  AttributeValueRigidBodyState x -> putRigidBodyStateAttribute x
-  AttributeValueStatEvent x -> putStatEventAttribute x
-  AttributeValueString x -> putStringAttribute x
-  AttributeValueTeamPaint x -> putTeamPaintAttribute x
-  AttributeValueTitle x -> putTitleAttribute x
-  AttributeValueUniqueId x -> putUniqueIdAttribute x
-  AttributeValueWeldedInfo x -> putWeldedInfoAttribute x
+bitPut :: AttributeValue -> BitPut ()
+bitPut value = case value of
+  AppliedDamage x -> putAppliedDamageAttribute x
+  Boolean x -> putBooleanAttribute x
+  Byte x -> putByteAttribute x
+  CamSettings x -> putCamSettingsAttribute x
+  ClubColors x -> putClubColorsAttribute x
+  CustomDemolish x -> putCustomDemolishAttribute x
+  DamageState x -> putDamageStateAttribute x
+  Demolish x -> putDemolishAttribute x
+  Enum x -> putEnumAttribute x
+  Explosion x -> putExplosionAttribute x
+  ExtendedExplosion x -> putExtendedExplosionAttribute x
+  FlaggedInt x -> putFlaggedIntAttribute x
+  FlaggedByte x -> putFlaggedByteAttribute x
+  Float x -> putFloatAttribute x
+  GameMode x -> putGameModeAttribute x
+  Int x -> putIntAttribute x
+  Int64 x -> putInt64Attribute x
+  Loadout x -> putLoadoutAttribute x
+  LoadoutOnline x -> putLoadoutOnlineAttribute x
+  Loadouts x -> putLoadoutsAttribute x
+  LoadoutsOnline x -> putLoadoutsOnlineAttribute x
+  Location x -> putLocationAttribute x
+  MusicStinger x -> putMusicStingerAttribute x
+  PartyLeader x -> putPartyLeaderAttribute x
+  Pickup x -> putPickupAttribute x
+  PickupNew x -> putPickupAttributeNew x
+  PlayerHistoryKey x -> putPlayerHistoryKeyAttribute x
+  PrivateMatchSettings x -> putPrivateMatchSettingsAttribute x
+  QWord x -> putQWordAttribute x
+  Reservation x -> putReservationAttribute x
+  RigidBodyState x -> putRigidBodyStateAttribute x
+  StatEvent x -> putStatEventAttribute x
+  String x -> putStringAttribute x
+  TeamPaint x -> putTeamPaintAttribute x
+  Title x -> putTitleAttribute x
+  UniqueId x -> putUniqueIdAttribute x
+  WeldedInfo x -> putWeldedInfoAttribute x
 
-decodeAttributeValueBits
+bitGet
   :: (Int, Int, Int) -> Map Word32le.Word32le Str.Str -> Str.Str -> BitGet AttributeValue
-decodeAttributeValueBits version objectMap name = do
+bitGet version objectMap name = do
   constructor <- maybe
     (fail ("[RT04] don't know how to get attribute value " <> show name))
     pure
     (Map.lookup (Str.toText name) Data.attributeTypes)
   case constructor of
-    AttributeTypeAppliedDamage ->
-      AttributeValueAppliedDamage <$> decodeAppliedDamageAttributeBits version
-    AttributeTypeBoolean ->
-      AttributeValueBoolean <$> decodeBooleanAttributeBits
-    AttributeTypeByte -> AttributeValueByte <$> decodeByteAttributeBits
-    AttributeTypeCamSettings ->
-      AttributeValueCamSettings <$> decodeCamSettingsAttributeBits version
-    AttributeTypeClubColors ->
-      AttributeValueClubColors <$> decodeClubColorsAttributeBits
-    AttributeTypeCustomDemolish -> AttributeValueCustomDemolish
-      <$> decodeCustomDemolishAttributeBits version
-    AttributeTypeDamageState ->
-      AttributeValueDamageState <$> decodeDamageStateAttributeBits version
-    AttributeTypeDemolish ->
-      AttributeValueDemolish <$> decodeDemolishAttributeBits version
-    AttributeTypeEnum -> AttributeValueEnum <$> decodeEnumAttributeBits
-    AttributeTypeExplosion ->
-      AttributeValueExplosion <$> decodeExplosionAttributeBits version
-    AttributeTypeExtendedExplosion -> AttributeValueExtendedExplosion
-      <$> decodeExtendedExplosionAttributeBits version
-    AttributeTypeFlaggedInt ->
-      AttributeValueFlaggedInt <$> decodeFlaggedIntAttributeBits
-    AttributeTypeFlaggedByte ->
-      AttributeValueFlaggedByte <$> decodeFlaggedByteAttributeBits
-    AttributeTypeFloat -> AttributeValueFloat <$> decodeFloatAttributeBits
-    AttributeTypeGameMode ->
-      AttributeValueGameMode <$> decodeGameModeAttributeBits version
-    AttributeTypeInt -> AttributeValueInt <$> decodeIntAttributeBits
-    AttributeTypeInt64 -> AttributeValueInt64 <$> decodeInt64AttributeBits
-    AttributeTypeLoadout ->
-      AttributeValueLoadout <$> decodeLoadoutAttributeBits
-    AttributeTypeLoadoutOnline ->
-      AttributeValueLoadoutOnline
-        <$> decodeLoadoutOnlineAttributeBits version objectMap
-    AttributeTypeLoadouts ->
-      AttributeValueLoadouts <$> decodeLoadoutsAttributeBits
-    AttributeTypeLoadoutsOnline ->
-      AttributeValueLoadoutsOnline
-        <$> decodeLoadoutsOnlineAttributeBits version objectMap
-    AttributeTypeLocation ->
-      AttributeValueLocation <$> decodeLocationAttributeBits version
-    AttributeTypeMusicStinger ->
-      AttributeValueMusicStinger <$> decodeMusicStingerAttributeBits
-    AttributeTypePartyLeader ->
-      AttributeValuePartyLeader <$> decodePartyLeaderAttributeBits version
-    AttributeTypePickup -> AttributeValuePickup <$> decodePickupAttributeBits
-    AttributeTypePickupNew ->
-      AttributeValuePickupNew <$> decodePickupAttributeNewBits
-    AttributeTypePlayerHistoryKey ->
-      AttributeValuePlayerHistoryKey <$> decodePlayerHistoryKeyAttributeBits
-    AttributeTypePrivateMatchSettings ->
-      AttributeValuePrivateMatchSettings
-        <$> decodePrivateMatchSettingsAttributeBits
-    AttributeTypeQWord -> AttributeValueQWord <$> decodeQWordAttributeBits
-    AttributeTypeReservation ->
-      AttributeValueReservation <$> decodeReservationAttributeBits version
-    AttributeTypeRigidBodyState -> AttributeValueRigidBodyState
-      <$> decodeRigidBodyStateAttributeBits version
-    AttributeTypeStatEvent ->
-      AttributeValueStatEvent <$> decodeStatEventAttributeBits
-    AttributeTypeString -> AttributeValueString <$> decodeStringAttributeBits
-    AttributeTypeTeamPaint ->
-      AttributeValueTeamPaint <$> decodeTeamPaintAttributeBits
-    AttributeTypeTitle -> AttributeValueTitle <$> decodeTitleAttributeBits
-    AttributeTypeUniqueId ->
-      AttributeValueUniqueId <$> decodeUniqueIdAttributeBits version
-    AttributeTypeWeldedInfo ->
-      AttributeValueWeldedInfo <$> decodeWeldedInfoAttributeBits version
+    AttributeType.AppliedDamage -> AppliedDamage <$> decodeAppliedDamageAttributeBits version
+    AttributeType.Boolean -> Boolean <$> decodeBooleanAttributeBits
+    AttributeType.Byte -> Byte <$> decodeByteAttributeBits
+    AttributeType.CamSettings -> CamSettings <$> decodeCamSettingsAttributeBits version
+    AttributeType.ClubColors -> ClubColors <$> decodeClubColorsAttributeBits
+    AttributeType.CustomDemolish -> CustomDemolish <$> decodeCustomDemolishAttributeBits version
+    AttributeType.DamageState -> DamageState <$> decodeDamageStateAttributeBits version
+    AttributeType.Demolish -> Demolish <$> decodeDemolishAttributeBits version
+    AttributeType.Enum -> Enum <$> decodeEnumAttributeBits
+    AttributeType.Explosion -> Explosion <$> decodeExplosionAttributeBits version
+    AttributeType.ExtendedExplosion -> ExtendedExplosion <$> decodeExtendedExplosionAttributeBits version
+    AttributeType.FlaggedInt -> FlaggedInt <$> decodeFlaggedIntAttributeBits
+    AttributeType.FlaggedByte -> FlaggedByte <$> decodeFlaggedByteAttributeBits
+    AttributeType.Float -> Float <$> decodeFloatAttributeBits
+    AttributeType.GameMode -> GameMode <$> decodeGameModeAttributeBits version
+    AttributeType.Int -> Int <$> decodeIntAttributeBits
+    AttributeType.Int64 -> Int64 <$> decodeInt64AttributeBits
+    AttributeType.Loadout -> Loadout <$> decodeLoadoutAttributeBits
+    AttributeType.LoadoutOnline -> LoadoutOnline <$> decodeLoadoutOnlineAttributeBits version objectMap
+    AttributeType.Loadouts -> Loadouts <$> decodeLoadoutsAttributeBits
+    AttributeType.LoadoutsOnline -> LoadoutsOnline <$> decodeLoadoutsOnlineAttributeBits version objectMap
+    AttributeType.Location -> Location <$> decodeLocationAttributeBits version
+    AttributeType.MusicStinger -> MusicStinger <$> decodeMusicStingerAttributeBits
+    AttributeType.PartyLeader -> PartyLeader <$> decodePartyLeaderAttributeBits version
+    AttributeType.Pickup -> Pickup <$> decodePickupAttributeBits
+    AttributeType.PickupNew -> PickupNew <$> decodePickupAttributeNewBits
+    AttributeType.PlayerHistoryKey -> PlayerHistoryKey <$> decodePlayerHistoryKeyAttributeBits
+    AttributeType.PrivateMatchSettings -> PrivateMatchSettings <$> decodePrivateMatchSettingsAttributeBits
+    AttributeType.QWord -> QWord <$> decodeQWordAttributeBits
+    AttributeType.Reservation -> Reservation <$> decodeReservationAttributeBits version
+    AttributeType.RigidBodyState -> RigidBodyState <$> decodeRigidBodyStateAttributeBits version
+    AttributeType.StatEvent -> StatEvent <$> decodeStatEventAttributeBits
+    AttributeType.String -> String <$> decodeStringAttributeBits
+    AttributeType.TeamPaint -> TeamPaint <$> decodeTeamPaintAttributeBits
+    AttributeType.Title -> Title <$> decodeTitleAttributeBits
+    AttributeType.UniqueId -> UniqueId <$> decodeUniqueIdAttributeBits version
+    AttributeType.WeldedInfo -> WeldedInfo <$> decodeWeldedInfoAttributeBits version

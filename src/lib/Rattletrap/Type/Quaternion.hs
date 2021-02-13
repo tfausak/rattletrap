@@ -3,7 +3,7 @@
 module Rattletrap.Type.Quaternion where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWord
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
@@ -41,23 +41,23 @@ toQuaternion component a b c =
 toPart :: Double -> Double -> Double -> Double
 toPart a b c = sqrt (1 - (a * a) - (b * b) - (c * c))
 
-compressPart :: Double -> CompressedWord
+compressPart :: Double -> CompressedWord.CompressedWord
 compressPart =
-  CompressedWord maxCompressedValue
+  CompressedWord.CompressedWord maxCompressedValue
     . round
     . (* wordToDouble maxCompressedValue)
     . (+ 0.5)
     . (/ 2.0)
     . (/ maxValue)
 
-decompressPart :: CompressedWord -> Double
+decompressPart :: CompressedWord.CompressedWord -> Double
 decompressPart x_ =
   (* maxValue)
     . (* 2.0)
     . subtract 0.5
-    . (/ wordToDouble (compressedWordLimit x_))
+    . (/ wordToDouble (CompressedWord.limit x_))
     . wordToDouble
-    $ compressedWordValue x_
+    $ CompressedWord.value x_
 
 maxComponent :: Quaternion -> Component
 maxComponent quaternion =
@@ -95,8 +95,8 @@ maxCompressedValue = (2 ^ numBits) - 1
 maxValue :: Double
 maxValue = 1.0 / sqrt 2.0
 
-putQuaternion :: Quaternion -> BitPut ()
-putQuaternion q = do
+bitPut :: Quaternion -> BitPut ()
+bitPut q = do
   let c = maxComponent q
   putComponent c
   case c of
@@ -106,8 +106,8 @@ putQuaternion q = do
     W -> putParts (x q) (y q) (z q)
 
 putComponent :: Component -> BitPut ()
-putComponent component = putCompressedWord
-  (CompressedWord
+putComponent component = CompressedWord.bitPut
+  (CompressedWord.CompressedWord
     3
     (case component of
       X -> 0
@@ -124,16 +124,16 @@ putParts a b c = do
   putPart c
 
 putPart :: Double -> BitPut ()
-putPart = putCompressedWord . compressPart
+putPart = CompressedWord.bitPut . compressPart
 
-decodeQuaternionBits :: BitGet Quaternion
-decodeQuaternionBits =
+bitGet :: BitGet Quaternion
+bitGet =
   toQuaternion <$> decodeComponent <*> decodePart <*> decodePart <*> decodePart
 
 decodeComponent :: BitGet Component
 decodeComponent = do
-  x_ <- decodeCompressedWordBits 3
-  case compressedWordValue x_ of
+  x_ <- CompressedWord.bitGet 3
+  case CompressedWord.value x_ of
     0 -> pure X
     1 -> pure Y
     2 -> pure Z
@@ -141,4 +141,4 @@ decodeComponent = do
     y_ -> fail ("[RT08] invalid component: " <> show y_)
 
 decodePart :: BitGet Double
-decodePart = decompressPart <$> decodeCompressedWordBits maxCompressedValue
+decodePart = decompressPart <$> CompressedWord.bitGet maxCompressedValue

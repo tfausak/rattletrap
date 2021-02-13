@@ -9,17 +9,17 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data ClassMapping = ClassMapping
-  { classMappingName :: Str.Str
-  , classMappingStreamId :: Word32le.Word32le
+  { name :: Str.Str
+  , streamId :: Word32le.Word32le
   }
   deriving (Eq, Show)
 
-$(deriveJson ''ClassMapping)
+$(deriveJsonWith ''ClassMapping jsonOptions)
 
-putClassMapping :: ClassMapping -> BytePut
-putClassMapping classMapping = do
-  Str.bytePut (classMappingName classMapping)
-  Word32le.bytePut (classMappingStreamId classMapping)
+bytePut :: ClassMapping -> BytePut
+bytePut classMapping = do
+  Str.bytePut (name classMapping)
+  Word32le.bytePut (streamId classMapping)
 
-decodeClassMapping :: ByteGet ClassMapping
-decodeClassMapping = ClassMapping <$> Str.byteGet <*> Word32le.byteGet
+byteGet :: ByteGet ClassMapping
+byteGet = ClassMapping <$> Str.byteGet <*> Word32le.byteGet

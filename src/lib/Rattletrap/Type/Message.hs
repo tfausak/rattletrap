@@ -9,22 +9,22 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data Message = Message
-  { messageFrame :: Word32le.Word32le
+  { frame :: Word32le.Word32le
   -- ^ Which frame this message belongs to, starting from 0.
-  , messageName :: Str.Str
+  , name :: Str.Str
   -- ^ The primary player's name.
-  , messageValue :: Str.Str
+  , value :: Str.Str
   -- ^ The content of the message.
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Message)
+$(deriveJsonWith ''Message jsonOptions)
 
-putMessage :: Message -> BytePut
-putMessage message = do
-  Word32le.bytePut (messageFrame message)
-  Str.bytePut (messageName message)
-  Str.bytePut (messageValue message)
+bytePut :: Message -> BytePut
+bytePut message = do
+  Word32le.bytePut (frame message)
+  Str.bytePut (name message)
+  Str.bytePut (value message)
 
-decodeMessage :: ByteGet Message
-decodeMessage = Message <$> Word32le.byteGet <*> Str.byteGet <*> Str.byteGet
+byteGet :: ByteGet Message
+byteGet = Message <$> Word32le.byteGet <*> Str.byteGet <*> Str.byteGet

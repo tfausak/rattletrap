@@ -3,10 +3,10 @@
 module Rattletrap.Type.Replication where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWord
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
 import Rattletrap.Decode.Common
-import Rattletrap.Type.ClassAttributeMap
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
 
@@ -16,7 +16,7 @@ import qualified Data.Map as Map
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Replication = Replication
-  { actorId :: CompressedWord
+  { actorId :: CompressedWord.CompressedWord
   , value :: ReplicationValue.ReplicationValue
   }
   deriving (Eq, Show)
@@ -36,15 +36,15 @@ putReplications replications = case replications of
 bitPut :: Replication -> BitPut ()
 bitPut replication = do
   BinaryBits.putBool True
-  putCompressedWord (actorId replication)
+  CompressedWord.bitPut (actorId replication)
   ReplicationValue.bitPut (value replication)
 
 decodeReplicationsBits
   :: (Int, Int, Int)
   -> Word
-  -> ClassAttributeMap
+  -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT
-       (Map.Map CompressedWord Word32le.Word32le)
+       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
        BitGet
        [Replication]
 decodeReplicationsBits version limit classes = do
@@ -59,11 +59,11 @@ decodeReplicationsBits version limit classes = do
 bitGet
   :: (Int, Int, Int)
   -> Word
-  -> ClassAttributeMap
+  -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT
-       (Map.Map CompressedWord Word32le.Word32le)
+       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
        BitGet
        Replication
 bitGet version limit classes = do
-  actor <- Trans.lift (decodeCompressedWordBits limit)
+  actor <- Trans.lift (CompressedWord.bitGet limit)
   Replication actor <$> ReplicationValue.bitGet version classes actor

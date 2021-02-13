@@ -3,7 +3,7 @@
 module Rattletrap.Type.ProductAttributeValue where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWord
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
@@ -12,36 +12,36 @@ import Rattletrap.Decode.Common
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ProductAttributeValue
-  = ProductAttributeValuePaintedOld CompressedWord
-  | ProductAttributeValuePaintedNew Word32
-  | ProductAttributeValueTeamEditionOld CompressedWord
-  | ProductAttributeValueTeamEditionNew Word32
-  | ProductAttributeValueSpecialEdition Word32
-  | ProductAttributeValueUserColorOld (Maybe Word32)
-  | ProductAttributeValueUserColorNew Word32le.Word32le
-  | ProductAttributeValueTitleId Str.Str
+  = PaintedOld CompressedWord.CompressedWord
+  | PaintedNew Word32
+  | TeamEditionOld CompressedWord.CompressedWord
+  | TeamEditionNew Word32
+  | SpecialEdition Word32
+  | UserColorOld (Maybe Word32)
+  | UserColorNew Word32le.Word32le
+  | TitleId Str.Str
   deriving (Eq, Show)
 
-$(deriveJson ''ProductAttributeValue)
+$(deriveJsonWith ''ProductAttributeValue jsonOptions)
 
-putProductAttributeValue :: ProductAttributeValue -> BitPut ()
-putProductAttributeValue val = case val of
-  ProductAttributeValuePaintedOld x -> putCompressedWord x
-  ProductAttributeValuePaintedNew x -> putBitsLE 31 x
-  ProductAttributeValueTeamEditionOld x -> putCompressedWord x
-  ProductAttributeValueTeamEditionNew x -> putBitsLE 31 x
-  ProductAttributeValueSpecialEdition x -> putBitsLE 31 x
-  ProductAttributeValueUserColorOld x -> case x of
+bitPut :: ProductAttributeValue -> BitPut ()
+bitPut val = case val of
+  PaintedOld x -> CompressedWord.bitPut x
+  PaintedNew x -> putBitsLE 31 x
+  TeamEditionOld x -> CompressedWord.bitPut x
+  TeamEditionNew x -> putBitsLE 31 x
+  SpecialEdition x -> putBitsLE 31 x
+  UserColorOld x -> case x of
     Nothing -> BinaryBits.putBool False
     Just y -> do
       BinaryBits.putBool True
       putBitsLE 31 y
-  ProductAttributeValueUserColorNew x -> Word32le.bitPut x
-  ProductAttributeValueTitleId x -> Str.bitPut x
+  UserColorNew x -> Word32le.bitPut x
+  TitleId x -> Str.bitPut x
 
-decodeProductAttributeValueBits
+bitGet
   :: (Int, Int, Int) -> Word32le.Word32le -> Maybe Str.Str -> BitGet ProductAttributeValue
-decodeProductAttributeValueBits version objectId maybeObjectName =
+bitGet version objectId maybeObjectName =
   case Str.toString <$> maybeObjectName of
     Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
     Just "TAGame.ProductAttribute_SpecialEdition_TA" -> decodeSpecialEdition
@@ -57,24 +57,24 @@ decodeProductAttributeValueBits version objectId maybeObjectName =
     Nothing -> fail ("[RT06] missing object name for ID " <> show objectId)
 
 decodeSpecialEdition :: BitGet ProductAttributeValue
-decodeSpecialEdition = ProductAttributeValueSpecialEdition <$> getBitsLE 31
+decodeSpecialEdition = SpecialEdition <$> getBitsLE 31
 
 decodePainted :: (Int, Int, Int) -> BitGet ProductAttributeValue
 decodePainted version = if version >= (868, 18, 0)
-  then ProductAttributeValuePaintedNew <$> getBitsLE 31
-  else ProductAttributeValuePaintedOld <$> decodeCompressedWordBits 13
+  then PaintedNew <$> getBitsLE 31
+  else PaintedOld <$> CompressedWord.bitGet 13
 
 decodeTeamEdition :: (Int, Int, Int) -> BitGet ProductAttributeValue
 decodeTeamEdition version = if version >= (868, 18, 0)
-  then ProductAttributeValueTeamEditionNew <$> getBitsLE 31
-  else ProductAttributeValueTeamEditionOld <$> decodeCompressedWordBits 13
+  then TeamEditionNew <$> getBitsLE 31
+  else TeamEditionOld <$> CompressedWord.bitGet 13
 
 decodeColor :: (Int, Int, Int) -> BitGet ProductAttributeValue
 decodeColor version = if version >= (868, 23, 8)
-  then ProductAttributeValueUserColorNew <$> Word32le.bitGet
+  then UserColorNew <$> Word32le.bitGet
   else do
     hasValue <- getBool
-    ProductAttributeValueUserColorOld <$> decodeWhen hasValue (getBitsLE 31)
+    UserColorOld <$> decodeWhen hasValue (getBitsLE 31)
 
 decodeTitle :: BitGet ProductAttributeValue
-decodeTitle = ProductAttributeValueTitleId <$> Str.bitGet
+decodeTitle = TitleId <$> Str.bitGet

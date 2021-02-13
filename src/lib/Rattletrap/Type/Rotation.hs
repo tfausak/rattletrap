@@ -17,10 +17,10 @@ $(deriveJsonWith ''Rotation jsonOptions)
 
 bitPut :: Rotation -> BitPut ()
 bitPut r = case r of
-  CompressedWordVector cwv -> CompressedWordVector.putCompressedWordVector cwv
-  Quaternion q -> Quaternion.putQuaternion q
+  CompressedWordVector cwv -> CompressedWordVector.bitPut cwv
+  Quaternion q -> Quaternion.bitPut q
 
 bitGet :: (Int, Int, Int) -> BitGet Rotation
 bitGet version = if version >= (868, 22, 7)
-  then Quaternion <$> Quaternion.decodeQuaternionBits
-  else CompressedWordVector <$> CompressedWordVector.decodeCompressedWordVectorBits
+  then Quaternion <$> Quaternion.bitGet
+  else CompressedWordVector <$> CompressedWordVector.bitGet

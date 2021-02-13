@@ -3,7 +3,7 @@
 module Rattletrap.Type.Header where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Dictionary
+import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.Word32le as Word32le
@@ -12,15 +12,15 @@ import Rattletrap.Encode.Common
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
-  { headerEngineVersion :: Word32le.Word32le
+  { engineVersion :: Word32le.Word32le
   -- ^ The "major" ("engine") version number.
-  , headerLicenseeVersion :: Word32le.Word32le
+  , licenseeVersion :: Word32le.Word32le
   -- ^ The "minor" ("licensee") version number.
-  , headerPatchVersion :: Maybe Word32le.Word32le
+  , patchVersion :: Maybe Word32le.Word32le
   -- ^ The "patch" ("net") version number.
-  , headerLabel :: Str.Str
+  , label :: Str.Str
   -- ^ Always @TAGame.Replay_Soccar_TA@.
-  , headerProperties :: Dictionary Property.Property
+  , properties :: Dictionary.Dictionary Property.Property
   -- ^ These properties determine how a replay will look in the list of
   -- replays in-game. One element is required for the replay to show up:
   --
@@ -58,17 +58,17 @@ data Header = Header
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Header)
+$(deriveJsonWith ''Header jsonOptions)
 
 putHeader :: Header -> BytePut
 putHeader header = do
-  Word32le.bytePut (headerEngineVersion header)
-  Word32le.bytePut (headerLicenseeVersion header)
-  case headerPatchVersion header of
+  Word32le.bytePut (engineVersion header)
+  Word32le.bytePut (licenseeVersion header)
+  case patchVersion header of
     Nothing -> pure ()
-    Just patchVersion -> Word32le.bytePut patchVersion
-  Str.bytePut (headerLabel header)
-  putDictionary Property.bytePut (headerProperties header)
+    Just x -> Word32le.bytePut x
+  Str.bytePut (label header)
+  Dictionary.bytePut Property.bytePut (properties header)
 
 decodeHeader :: ByteGet Header
 decodeHeader = do
@@ -78,4 +78,4 @@ decodeHeader = do
           (Word32le.toWord32 major >= 868 && Word32le.toWord32 minor >= 18)
           Word32le.byteGet
     <*> Str.byteGet
-    <*> decodeDictionary Property.byteGet
+    <*> Dictionary.byteGet Property.byteGet

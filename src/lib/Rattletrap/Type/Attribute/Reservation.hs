@@ -3,7 +3,7 @@
 module Rattletrap.Type.Attribute.Reservation where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWord
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import Rattletrap.Type.Attribute.UniqueId
 import Rattletrap.Decode.Common
@@ -13,7 +13,7 @@ import Rattletrap.Encode.Common
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ReservationAttribute = ReservationAttribute
-  { reservationAttributeNumber :: CompressedWord
+  { reservationAttributeNumber :: CompressedWord.CompressedWord
   , reservationAttributeUniqueId :: UniqueIdAttribute
   , reservationAttributeName :: Maybe Str.Str
   , reservationAttributeUnknown1 :: Bool
@@ -26,7 +26,7 @@ $(deriveJson ''ReservationAttribute)
 
 putReservationAttribute :: ReservationAttribute -> BitPut ()
 putReservationAttribute reservationAttribute = do
-  putCompressedWord (reservationAttributeNumber reservationAttribute)
+  CompressedWord.bitPut (reservationAttributeNumber reservationAttribute)
   putUniqueIdAttribute (reservationAttributeUniqueId reservationAttribute)
   case reservationAttributeName reservationAttribute of
     Nothing -> pure ()
@@ -40,7 +40,7 @@ putReservationAttribute reservationAttribute = do
 decodeReservationAttributeBits
   :: (Int, Int, Int) -> BitGet ReservationAttribute
 decodeReservationAttributeBits version = do
-  number <- decodeCompressedWordBits 7
+  number <- CompressedWord.bitGet 7
   uniqueId <- decodeUniqueIdAttributeBits version
   ReservationAttribute number uniqueId
     <$> decodeWhen

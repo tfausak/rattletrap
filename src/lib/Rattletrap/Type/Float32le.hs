@@ -11,22 +11,28 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as LazyBytes
 
-newtype Float32le = Float32le
-  { float32leValue :: Float
-  } deriving (Eq, Show)
+newtype Float32le
+  = Float32le Float
+  deriving (Eq, Show)
 
 $(deriveJson ''Float32le)
 
-putFloat32 :: Float32le -> BytePut
-putFloat32 = Binary.putFloatle . float32leValue
+fromFloat :: Float -> Float32le
+fromFloat = Float32le
 
-putFloat32Bits :: Float32le -> BitPut ()
-putFloat32Bits float32 = do
-  let bytes = LazyBytes.toStrict (Binary.runPut (putFloat32 float32))
+toFloat :: Float32le -> Float
+toFloat (Float32le x) = x
+
+bytePut :: Float32le -> BytePut
+bytePut = Binary.putFloatle . toFloat
+
+bitPut :: Float32le -> BitPut ()
+bitPut float32 = do
+  let bytes = LazyBytes.toStrict (Binary.runPut (bytePut float32))
   BinaryBits.putByteString (reverseBytes bytes)
 
-decodeFloat32le :: ByteGet Float32le
-decodeFloat32le = Float32le <$> getFloatle
+byteGet :: ByteGet Float32le
+byteGet = fromFloat <$> getFloatle
 
-decodeFloat32leBits :: BitGet Float32le
-decodeFloat32leBits = toBits decodeFloat32le 4
+bitGet :: BitGet Float32le
+bitGet = toBits byteGet 4

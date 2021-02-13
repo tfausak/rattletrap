@@ -12,8 +12,8 @@ import qualified Data.Map as Map
 import qualified Data.Text as Text
 
 data Dictionary a
-  = DictionaryElement Str.Str a (Dictionary a)
-  | DictionaryEnd Str.Str
+  = Element Str.Str a (Dictionary a)
+  | End Str.Str
   deriving (Eq, Show)
 
 instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
@@ -26,9 +26,9 @@ instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
       Monad.foldM
         (\d k -> case Map.lookup k value of
           Nothing -> fail (unwords ["missing key", show k])
-          Just v -> pure (DictionaryElement (Str.fromText k) v d)
+          Just v -> pure (Element (Str.fromText k) v d)
         )
-        (DictionaryEnd lastKey)
+        (End lastKey)
         (reverse keys)
     )
 
@@ -44,13 +44,13 @@ dictionaryKeys = fmap fst . toList
 
 dictionaryLastKey :: Dictionary a -> Str.Str
 dictionaryLastKey x = case x of
-  DictionaryElement _ _ y -> dictionaryLastKey y
-  DictionaryEnd y -> y
+  Element _ _ y -> dictionaryLastKey y
+  End y -> y
 
-dictionaryLookup :: Str.Str -> Dictionary a -> Maybe a
-dictionaryLookup k x = case x of
-  DictionaryElement j v y -> if k == j then Just v else dictionaryLookup k y
-  DictionaryEnd _ -> Nothing
+lookup :: Str.Str -> Dictionary a -> Maybe a
+lookup k x = case x of
+  Element j v y -> if k == j then Just v else Rattletrap.Type.Dictionary.lookup k y
+  End _ -> Nothing
 
 dictionaryValue :: Dictionary a -> Map Text a
 dictionaryValue = Map.mapKeys Str.toText . Map.fromList . toList
@@ -63,21 +63,21 @@ pair k v = (Text.pack k, Json.toJSON v)
 
 toList :: Dictionary a -> [(Str.Str, a)]
 toList x = case x of
-  DictionaryElement k v y -> (k, v) : toList y
-  DictionaryEnd _ -> []
+  Element k v y -> (k, v) : toList y
+  End _ -> []
 
-putDictionary :: (a -> BytePut) -> Dictionary a -> BytePut
-putDictionary f x = case x of
-  DictionaryElement k v y -> do
+bytePut :: (a -> BytePut) -> Dictionary a -> BytePut
+bytePut f x = case x of
+  Element k v y -> do
     Str.bytePut k
     f v
-    putDictionary f y
-  DictionaryEnd y -> Str.bytePut y
+    bytePut f y
+  End y -> Str.bytePut y
 
-decodeDictionary :: ByteGet a -> ByteGet (Dictionary a)
-decodeDictionary decodeValue = do
+byteGet :: ByteGet a -> ByteGet (Dictionary a)
+byteGet decodeValue = do
   key <- Str.byteGet
   case filter (/= '\x00') (Str.toString key) of
-    "None" -> pure (DictionaryEnd key)
+    "None" -> pure (End key)
     _ ->
-      DictionaryElement key <$> decodeValue <*> decodeDictionary decodeValue
+      Element key <$> decodeValue <*> byteGet decodeValue

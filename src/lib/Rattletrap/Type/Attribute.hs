@@ -2,99 +2,99 @@
 
 module Rattletrap.Type.Attribute where
 
-import Rattletrap.Type.AttributeValue
+import qualified Rattletrap.Type.AttributeValue as AttributeValue
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWord
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import Rattletrap.Decode.Common
-import Rattletrap.Type.ClassAttributeMap
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Attribute = Attribute
-  { attributeId :: CompressedWord
-  , attributeName :: Str.Str
+  { id :: CompressedWord.CompressedWord
+  , name :: Str.Str
   -- ^ Read-only! Changing an attribute's name requires editing the class
   -- attribute map.
-  , attributeValue :: AttributeValue
+  , value :: AttributeValue.AttributeValue
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Attribute)
+$(deriveJsonWith ''Attribute jsonOptions)
 
 putAttributes :: [Attribute] -> BitPut ()
 putAttributes attributes = case attributes of
   [] -> BinaryBits.putBool False
   [attribute] -> do
-    putAttribute attribute
+    bitPut attribute
     BinaryBits.putBool False
   first : rest -> do
-    putAttribute first
+    bitPut first
     putAttributes rest
 
-putAttribute :: Attribute -> BitPut ()
-putAttribute attribute = do
+bitPut :: Attribute -> BitPut ()
+bitPut attribute = do
   BinaryBits.putBool True
-  putCompressedWord (attributeId attribute)
-  putAttributeValue (attributeValue attribute)
+  CompressedWord.bitPut (Rattletrap.Type.Attribute.id attribute)
+  AttributeValue.bitPut (value attribute)
 
 decodeAttributesBits
   :: (Int, Int, Int)
-  -> ClassAttributeMap
-  -> Map CompressedWord Word32le.Word32le
-  -> CompressedWord
+  -> ClassAttributeMap.ClassAttributeMap
+  -> Map CompressedWord.CompressedWord Word32le.Word32le
+  -> CompressedWord.CompressedWord
   -> BitGet [Attribute]
 decodeAttributesBits version classes actors actor = do
   hasAttribute <- getBool
   if hasAttribute
     then
       (:)
-      <$> decodeAttributeBits version classes actors actor
+      <$> bitGet version classes actors actor
       <*> decodeAttributesBits version classes actors actor
     else pure []
 
-decodeAttributeBits
+bitGet
   :: (Int, Int, Int)
-  -> ClassAttributeMap
-  -> Map CompressedWord Word32le.Word32le
-  -> CompressedWord
+  -> ClassAttributeMap.ClassAttributeMap
+  -> Map CompressedWord.CompressedWord Word32le.Word32le
+  -> CompressedWord.CompressedWord
   -> BitGet Attribute
-decodeAttributeBits version classes actors actor = do
+bitGet version classes actors actor = do
   attributes <- lookupAttributeMap classes actors actor
   limit <- lookupAttributeIdLimit attributes actor
-  attribute <- decodeCompressedWordBits limit
-  name <- lookupAttributeName classes attributes attribute
-  Attribute attribute name
-    <$> decodeAttributeValueBits
+  attribute <- CompressedWord.bitGet limit
+  name_ <- lookupAttributeName classes attributes attribute
+  Attribute attribute name_
+    <$> AttributeValue.bitGet
           version
-          (classAttributeMapObjectMap classes)
-          name
+          (ClassAttributeMap.objectMap classes)
+          name_
 
 lookupAttributeMap
-  :: ClassAttributeMap
-  -> Map CompressedWord Word32le.Word32le
-  -> CompressedWord
+  :: ClassAttributeMap.ClassAttributeMap
+  -> Map CompressedWord.CompressedWord Word32le.Word32le
+  -> CompressedWord.CompressedWord
   -> BitGet (Map Word32le.Word32le Word32le.Word32le)
 lookupAttributeMap classes actors actor = fromMaybe
   ("[RT01] could not get attribute map for " <> show actor)
-  (getAttributeMap classes actors actor)
+  (ClassAttributeMap.getAttributeMap classes actors actor)
 
 lookupAttributeIdLimit
-  :: Map Word32le.Word32le Word32le.Word32le -> CompressedWord -> BitGet Word
+  :: Map Word32le.Word32le Word32le.Word32le -> CompressedWord.CompressedWord -> BitGet Word
 lookupAttributeIdLimit attributes actor = fromMaybe
   ("[RT02] could not get attribute ID limit for " <> show actor)
-  (getAttributeIdLimit attributes)
+  (ClassAttributeMap.getAttributeIdLimit attributes)
 
 lookupAttributeName
-  :: ClassAttributeMap
+  :: ClassAttributeMap.ClassAttributeMap
   -> Map Word32le.Word32le Word32le.Word32le
-  -> CompressedWord
+  -> CompressedWord.CompressedWord
   -> BitGet Str.Str
 lookupAttributeName classes attributes attribute = fromMaybe
   ("[RT03] could not get attribute name for " <> show attribute)
-  (getAttributeName classes attributes attribute)
+  (ClassAttributeMap.getAttributeName classes attributes attribute)
 
 fromMaybe :: String -> Maybe a -> BitGet a
 fromMaybe message = maybe (fail message) pure
