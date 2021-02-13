@@ -1,14 +1,14 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.Header
-  ( Header(..)
-  ) where
+module Rattletrap.Type.Header where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Property
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
+
+import qualified Data.Binary as Binary
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
@@ -59,3 +59,13 @@ data Header = Header
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''Header)
+
+putHeader :: Header -> Binary.Put
+putHeader header = do
+  putWord32 (headerEngineVersion header)
+  putWord32 (headerLicenseeVersion header)
+  case headerPatchVersion header of
+    Nothing -> pure ()
+    Just patchVersion -> putWord32 patchVersion
+  putText (headerLabel header)
+  putDictionary putProperty (headerProperties header)

@@ -1,14 +1,13 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.Replay
-  ( FullReplay
-  , Replay(..)
-  ) where
+module Rattletrap.Type.Replay where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Content
 import Rattletrap.Type.Header
 import Rattletrap.Type.Section
+
+import qualified Data.Binary as Binary
 
 type FullReplay = Replay Content
 
@@ -22,3 +21,13 @@ data Replay content = Replay
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''Replay)
+
+-- | Generates a raw replay. Use this with 'Data.Binary.Put.runPut'.
+--
+-- @
+-- let bytes = 'Data.Binary.Put.runPut' ('putReplay' replay)
+-- @
+putReplay :: FullReplay -> Binary.Put
+putReplay replay = do
+  putSection putHeader (replayHeader replay)
+  putSection putContent (replayContent replay)

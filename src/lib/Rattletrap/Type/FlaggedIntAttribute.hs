@@ -1,11 +1,11 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.FlaggedIntAttribute
-  ( FlaggedIntAttribute(..)
-  ) where
+module Rattletrap.Type.FlaggedIntAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le
+
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 data FlaggedIntAttribute = FlaggedIntAttribute
   { flaggedIntAttributeFlag :: Bool
@@ -14,3 +14,8 @@ data FlaggedIntAttribute = FlaggedIntAttribute
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''FlaggedIntAttribute)
+
+putFlaggedIntAttribute :: FlaggedIntAttribute -> BinaryBits.BitPut ()
+putFlaggedIntAttribute flaggedIntAttribute = do
+  BinaryBits.putBool (flaggedIntAttributeFlag flaggedIntAttribute)
+  putInt32Bits (flaggedIntAttributeInt flaggedIntAttribute)

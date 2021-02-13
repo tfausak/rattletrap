@@ -1,12 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.Mark
-  ( Mark(..)
-  ) where
+module Rattletrap.Type.Mark where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
+
+import qualified Data.Binary as Binary
 
 data Mark = Mark
   { markValue :: Str
@@ -17,3 +17,8 @@ data Mark = Mark
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''Mark)
+
+putMark :: Mark -> Binary.Put
+putMark mark = do
+  putText (markValue mark)
+  putWord32 (markFrame mark)

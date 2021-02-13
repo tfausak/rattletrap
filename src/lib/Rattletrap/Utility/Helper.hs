@@ -9,8 +9,6 @@ module Rattletrap.Utility.Helper
 
 import Rattletrap.Decode.Common
 import Rattletrap.Decode.Replay
-import Rattletrap.Encode.Content
-import Rattletrap.Encode.Replay
 import Rattletrap.Type.Content
 import Rattletrap.Type.Replay
 import Rattletrap.Type.Section

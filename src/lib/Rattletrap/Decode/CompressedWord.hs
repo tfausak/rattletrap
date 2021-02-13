@@ -3,7 +3,7 @@ module Rattletrap.Decode.CompressedWord
   ) where
 
 import Rattletrap.Decode.Common
-import Rattletrap.Type.CompressedWord
+import Rattletrap.Type.CompressedWord hiding (getMaxBits)
 
 import qualified Data.Bits as Bits
 

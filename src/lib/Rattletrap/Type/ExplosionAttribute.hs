@@ -1,12 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.ExplosionAttribute
-  ( ExplosionAttribute(..)
-  ) where
+module Rattletrap.Type.ExplosionAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le
 import Rattletrap.Type.Vector
+
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ExplosionAttribute = ExplosionAttribute
   { explosionAttributeFlag :: Bool
@@ -16,3 +16,9 @@ data ExplosionAttribute = ExplosionAttribute
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''ExplosionAttribute)
+
+putExplosionAttribute :: ExplosionAttribute -> BinaryBits.BitPut ()
+putExplosionAttribute explosionAttribute = do
+  BinaryBits.putBool False
+  putInt32Bits (explosionAttributeActorId explosionAttribute)
+  putVector (explosionAttributeLocation explosionAttribute)

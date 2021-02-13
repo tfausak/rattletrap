@@ -1,12 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.Initialization
-  ( Initialization(..)
-  ) where
+module Rattletrap.Type.Initialization where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int8Vector
 import Rattletrap.Type.Vector
+
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Initialization = Initialization
   { initializationLocation :: Maybe Vector
@@ -19,3 +19,12 @@ data Initialization = Initialization
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''Initialization)
+
+putInitialization :: Initialization -> BinaryBits.BitPut ()
+putInitialization initialization = do
+  case initializationLocation initialization of
+    Nothing -> pure ()
+    Just location -> putVector location
+  case initializationRotation initialization of
+    Nothing -> pure ()
+    Just rotation -> putInt8Vector rotation

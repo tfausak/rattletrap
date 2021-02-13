@@ -1,10 +1,10 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.DestroyedReplication
-  ( DestroyedReplication(..)
-  ) where
+module Rattletrap.Type.DestroyedReplication where
 
 import Rattletrap.Type.Common
+
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 -- | Destroyed replications don't actually contain any extra information. All
 -- you need to know is the actor's ID, which is given by the
@@ -13,3 +13,6 @@ data DestroyedReplication = DestroyedReplication
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''DestroyedReplication)
+
+putDestroyedReplication :: DestroyedReplication -> BinaryBits.BitPut ()
+putDestroyedReplication _ = pure ()

@@ -1,12 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.TeamPaintAttribute
-  ( TeamPaintAttribute(..)
-  ) where
+module Rattletrap.Type.TeamPaintAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Word32le
 import Rattletrap.Type.Word8le
+
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 data TeamPaintAttribute = TeamPaintAttribute
   { teamPaintAttributeTeam :: Word8le
@@ -18,3 +18,11 @@ data TeamPaintAttribute = TeamPaintAttribute
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''TeamPaintAttribute)
+
+putTeamPaintAttribute :: TeamPaintAttribute -> BinaryBits.BitPut ()
+putTeamPaintAttribute teamPaintAttribute = do
+  putWord8Bits (teamPaintAttributeTeam teamPaintAttribute)
+  putWord8Bits (teamPaintAttributePrimaryColor teamPaintAttribute)
+  putWord8Bits (teamPaintAttributeAccentColor teamPaintAttribute)
+  putWord32Bits (teamPaintAttributePrimaryFinish teamPaintAttribute)
+  putWord32Bits (teamPaintAttributeAccentFinish teamPaintAttribute)

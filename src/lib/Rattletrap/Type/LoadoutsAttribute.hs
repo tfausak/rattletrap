@@ -1,11 +1,11 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.LoadoutsAttribute
-  ( LoadoutsAttribute(..)
-  ) where
+module Rattletrap.Type.LoadoutsAttribute where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.LoadoutAttribute
+
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 data LoadoutsAttribute = LoadoutsAttribute
   { loadoutsAttributeBlue :: LoadoutAttribute
@@ -14,3 +14,8 @@ data LoadoutsAttribute = LoadoutsAttribute
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''LoadoutsAttribute)
+
+putLoadoutsAttribute :: LoadoutsAttribute -> BinaryBits.BitPut ()
+putLoadoutsAttribute loadoutsAttribute = do
+  putLoadoutAttribute (loadoutsAttributeBlue loadoutsAttribute)
+  putLoadoutAttribute (loadoutsAttributeOrange loadoutsAttribute)

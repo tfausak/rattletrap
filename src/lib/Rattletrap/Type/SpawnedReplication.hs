@@ -1,13 +1,13 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.SpawnedReplication
-  ( SpawnedReplication(..)
-  ) where
+module Rattletrap.Type.SpawnedReplication where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Initialization
 import Rattletrap.Type.Str
 import Rattletrap.Type.Word32le
+
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 data SpawnedReplication = SpawnedReplication
   { spawnedReplicationFlag :: Bool
@@ -28,3 +28,12 @@ data SpawnedReplication = SpawnedReplication
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''SpawnedReplication)
+
+putSpawnedReplication :: SpawnedReplication -> BinaryBits.BitPut ()
+putSpawnedReplication spawnedReplication = do
+  BinaryBits.putBool (spawnedReplicationFlag spawnedReplication)
+  case spawnedReplicationNameIndex spawnedReplication of
+    Nothing -> pure ()
+    Just nameIndex -> putWord32Bits nameIndex
+  putWord32Bits (spawnedReplicationObjectId spawnedReplication)
+  putInitialization (spawnedReplicationInitialization spawnedReplication)

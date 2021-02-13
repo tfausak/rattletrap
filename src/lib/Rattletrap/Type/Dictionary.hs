@@ -1,11 +1,9 @@
-module Rattletrap.Type.Dictionary
-  ( Dictionary(..)
-  , dictionaryLookup
-  ) where
+module Rattletrap.Type.Dictionary where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Str
 
+import qualified Data.Binary as Binary
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Json
 import qualified Data.Aeson.Types as Json
@@ -66,3 +64,11 @@ toList :: Dictionary a -> [(Str, a)]
 toList x = case x of
   DictionaryElement k v y -> (k, v) : toList y
   DictionaryEnd _ -> []
+
+putDictionary :: (a -> Binary.Put) -> Dictionary a -> Binary.Put
+putDictionary f x = case x of
+  DictionaryElement k v y -> do
+    putText k
+    f v
+    putDictionary f y
+  DictionaryEnd y -> putText y

@@ -1,10 +1,10 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Rattletrap.Type.GameModeAttribute
-  ( GameModeAttribute(..)
-  ) where
+module Rattletrap.Type.GameModeAttribute where
 
 import Rattletrap.Type.Common
+
+import qualified Data.Binary.Bits.Put as BinaryBits
 
 data GameModeAttribute = GameModeAttribute
   { gameModeAttributeNumBits :: Int
@@ -17,3 +17,9 @@ data GameModeAttribute = GameModeAttribute
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''GameModeAttribute)
+
+putGameModeAttribute :: GameModeAttribute -> BinaryBits.BitPut ()
+putGameModeAttribute gameModeAttribute = do
+  let numBits = gameModeAttributeNumBits gameModeAttribute
+  let word = gameModeAttributeWord gameModeAttribute
+  BinaryBits.putWord8 numBits word
