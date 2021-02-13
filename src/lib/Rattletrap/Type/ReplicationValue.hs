@@ -3,9 +3,9 @@
 module Rattletrap.Type.ReplicationValue where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.DestroyedReplication
-import Rattletrap.Type.SpawnedReplication
-import Rattletrap.Type.UpdatedReplication
+import Rattletrap.Type.Replication.Destroyed
+import Rattletrap.Type.Replication.Spawned
+import Rattletrap.Type.Replication.Updated
 import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
