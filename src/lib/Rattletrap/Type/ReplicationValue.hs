@@ -23,7 +23,7 @@ data ReplicationValue
   -- ^ Updates an existing actor.
   | ReplicationValueDestroyed DestroyedReplication
   -- ^ Destroys an existing actor.
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''ReplicationValue)
 

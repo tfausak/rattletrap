@@ -16,7 +16,7 @@ data Cache = Cache
   , cacheCacheId :: Word32le
   , cacheAttributeMappings :: List AttributeMapping
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Cache)
 

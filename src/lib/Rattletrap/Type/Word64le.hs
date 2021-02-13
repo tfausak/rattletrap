@@ -16,7 +16,7 @@ import qualified Text.Read as Read
 
 newtype Word64le = Word64le
   { word64leValue :: Word.Word64
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 instance Aeson.FromJSON Word64le where
   parseJSON value = case value of

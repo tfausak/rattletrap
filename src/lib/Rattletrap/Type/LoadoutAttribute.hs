@@ -29,7 +29,7 @@ data LoadoutAttribute = LoadoutAttribute
   , loadoutAttributeUnknown5 :: Maybe Word32le
   , loadoutAttributeUnknown6 :: Maybe Word32le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''LoadoutAttribute)
 
@@ -69,12 +69,12 @@ decodeLoadoutAttributeBits = do
     <*> decodeWord32leBits
     <*> decodeWord32leBits
     <*> decodeWord32leBits
-    <*> decodeWhen (version >= Word8le 11) decodeWord32leBits
-    <*> decodeWhen (version >= Word8le 16) decodeWord32leBits
-    <*> decodeWhen (version >= Word8le 16) decodeWord32leBits
-    <*> decodeWhen (version >= Word8le 16) decodeWord32leBits
-    <*> decodeWhen (version >= Word8le 17) decodeWord32leBits
-    <*> decodeWhen (version >= Word8le 19) decodeWord32leBits
-    <*> decodeWhen (version >= Word8le 22) decodeWord32leBits
-    <*> decodeWhen (version >= Word8le 22) decodeWord32leBits
-    <*> decodeWhen (version >= Word8le 22) decodeWord32leBits
+    <*> decodeWhen (word8leValue version >= 11) decodeWord32leBits
+    <*> decodeWhen (word8leValue version >= 16) decodeWord32leBits
+    <*> decodeWhen (word8leValue version >= 16) decodeWord32leBits
+    <*> decodeWhen (word8leValue version >= 16) decodeWord32leBits
+    <*> decodeWhen (word8leValue version >= 17) decodeWord32leBits
+    <*> decodeWhen (word8leValue version >= 19) decodeWord32leBits
+    <*> decodeWhen (word8leValue version >= 22) decodeWord32leBits
+    <*> decodeWhen (word8leValue version >= 22) decodeWord32leBits
+    <*> decodeWhen (word8leValue version >= 22) decodeWord32leBits

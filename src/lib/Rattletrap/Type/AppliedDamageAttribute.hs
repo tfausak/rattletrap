@@ -16,7 +16,7 @@ data AppliedDamageAttribute = AppliedDamageAttribute
   , appliedDamageAttributeUnknown3 :: Int32le
   , appliedDamageAttributeUnknown4 :: Int32le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''AppliedDamageAttribute)
 

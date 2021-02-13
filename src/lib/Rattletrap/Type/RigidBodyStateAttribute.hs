@@ -16,7 +16,7 @@ data RigidBodyStateAttribute = RigidBodyStateAttribute
   , rigidBodyStateAttributeLinearVelocity :: Maybe Vector
   , rigidBodyStateAttributeAngularVelocity :: Maybe Vector
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''RigidBodyStateAttribute)
 

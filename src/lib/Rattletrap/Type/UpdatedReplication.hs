@@ -14,7 +14,7 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 
 newtype UpdatedReplication = UpdatedReplication
   { updatedReplicationAttributes :: [Attribute]
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 $(deriveJson ''UpdatedReplication)
 

@@ -58,7 +58,7 @@ data Content = Content
   -- for the 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
   , contentUnknown :: [Word8]
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Content)
 

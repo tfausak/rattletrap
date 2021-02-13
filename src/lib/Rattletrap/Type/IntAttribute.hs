@@ -10,7 +10,7 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 
 newtype IntAttribute = IntAttribute
   { intAttributeValue :: Int32le
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 $(deriveJson ''IntAttribute)
 

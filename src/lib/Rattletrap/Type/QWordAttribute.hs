@@ -10,7 +10,7 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 
 newtype QWordAttribute = QWordAttribute
   { qWordAttributeValue :: Word64le
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 $(deriveJson ''QWordAttribute)
 

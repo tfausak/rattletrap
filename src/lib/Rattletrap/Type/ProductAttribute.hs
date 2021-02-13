@@ -23,7 +23,7 @@ data ProductAttributeValue
   | ProductAttributeValueUserColorOld (Maybe Word32)
   | ProductAttributeValueUserColorNew Word32le
   | ProductAttributeValueTitleId Str
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''ProductAttributeValue)
 
@@ -34,7 +34,7 @@ data ProductAttribute = ProductAttribute
   -- ^ read-only
   , productAttributeValue :: ProductAttributeValue
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''ProductAttribute)
 

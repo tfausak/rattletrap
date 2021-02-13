@@ -17,7 +17,7 @@ data DemolishAttribute = DemolishAttribute
   , demolishAttributeAttackerVelocity :: Vector
   , demolishAttributeVictimVelocity :: Vector
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''DemolishAttribute)
 

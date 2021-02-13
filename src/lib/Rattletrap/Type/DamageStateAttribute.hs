@@ -18,7 +18,7 @@ data DamageStateAttribute = DamageStateAttribute
   , damageStateAttributeUnknown5 :: Bool
   , damageStateAttributeUnknown6 :: Bool
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''DamageStateAttribute)
 

@@ -14,7 +14,7 @@ data MusicStingerAttribute = MusicStingerAttribute
   , musicStingerAttributeCue :: Word32le
   , musicStingerAttributeTrigger :: Word8le
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''MusicStingerAttribute)
 

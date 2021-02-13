@@ -10,7 +10,7 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 
 newtype LocationAttribute = LocationAttribute
   { locationAttributeValue :: Vector
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 $(deriveJson ''LocationAttribute)
 

@@ -10,7 +10,7 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 
 newtype PlayerHistoryKeyAttribute = PlayerHistoryKeyAttribute
   { playerHistoryKeyAttributeUnknown :: Word16
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 $(deriveJson ''PlayerHistoryKeyAttribute)
 

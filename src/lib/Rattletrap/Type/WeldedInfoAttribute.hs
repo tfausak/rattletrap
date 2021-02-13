@@ -18,7 +18,7 @@ data WeldedInfoAttribute = WeldedInfoAttribute
   , weldedInfoAttributeMass :: Float32le
   , weldedInfoAttributeRotation :: Int8Vector
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''WeldedInfoAttribute)
 

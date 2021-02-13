@@ -9,6 +9,7 @@ import Rattletrap.Decode.Common
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.List as List
 import qualified Data.Maybe as Maybe
+import qualified Data.Ord as Ord
 
 data Quaternion = Quaternion
   { quaternionX :: Double
@@ -16,7 +17,7 @@ data Quaternion = Quaternion
   , quaternionZ :: Double
   , quaternionW :: Double
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''Quaternion)
 
@@ -25,7 +26,7 @@ data Component
   | ComponentY
   | ComponentZ
   | ComponentW
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 toQuaternion :: Component -> Double -> Double -> Double -> Quaternion
 toQuaternion component a b c =
@@ -67,7 +68,7 @@ maxComponent quaternion =
     w = quaternionW quaternion
     parts =
       [(x, ComponentX), (y, ComponentY), (z, ComponentZ), (w, ComponentW)]
-    biggestPart = maximum parts
+    biggestPart = maximumOn fst parts
     roundTrip = decompressPart . compressPart
     computedPart = Maybe.fromMaybe
       biggestPart
@@ -78,6 +79,9 @@ maxComponent quaternion =
       then biggestPart
       else computedPart
     )
+
+maximumOn :: (Foldable t, Ord b) => (a -> b) -> t a -> a
+maximumOn f = List.maximumBy (Ord.comparing f)
 
 numBits :: Word
 numBits = 18

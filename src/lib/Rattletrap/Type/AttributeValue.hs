@@ -87,7 +87,7 @@ data AttributeValue
   | AttributeValueTitle TitleAttribute
   | AttributeValueUniqueId UniqueIdAttribute
   | AttributeValueWeldedInfo WeldedInfoAttribute
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''AttributeValue)
 

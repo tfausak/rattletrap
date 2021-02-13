@@ -14,7 +14,7 @@ data CustomDemolishAttribute = CustomDemolishAttribute
   , customDemolishAttributeId :: Int32le
   , customDemolishAttributeDemolish :: DemolishAttribute
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''CustomDemolishAttribute)
 

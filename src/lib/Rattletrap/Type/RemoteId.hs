@@ -25,7 +25,7 @@ data RemoteId
   | RemoteIdSwitch Word64le Word64le Word64le Word64le
   | RemoteIdXbox Word64le
   | RemoteIdEpic Str
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''RemoteId)
 

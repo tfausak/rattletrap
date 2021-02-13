@@ -19,7 +19,7 @@ data ReservationAttribute = ReservationAttribute
   , reservationAttributeUnknown2 :: Bool
   , reservationAttributeUnknown3 :: Maybe Word8
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''ReservationAttribute)
 

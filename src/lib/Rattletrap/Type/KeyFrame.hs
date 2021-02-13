@@ -17,7 +17,7 @@ data KeyFrame = KeyFrame
   , keyFramePosition :: Word32le
   -- ^ The bit position of this key frame in the stream.
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Show)
 
 $(deriveJson ''KeyFrame)
 

@@ -10,7 +10,7 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 
 newtype FloatAttribute = FloatAttribute
   { floatAttributeValue :: Float32le
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 $(deriveJson ''FloatAttribute)
 

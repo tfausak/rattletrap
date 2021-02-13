@@ -9,7 +9,7 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 
 newtype BooleanAttribute = BooleanAttribute
   { booleanAttributeValue :: Bool
-  } deriving (Eq, Ord, Show)
+  } deriving (Eq, Show)
 
 $(deriveJson ''BooleanAttribute)
 
