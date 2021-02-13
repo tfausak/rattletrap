@@ -9,6 +9,8 @@ module Rattletrap.Type.Common
   , Word.Word32
   , Word.Word64
   , deriveJson
+  , deriveJsonWith
+  , jsonOptions
   ) where
 
 import qualified Data.Aeson as Json
@@ -22,13 +24,25 @@ import qualified Data.Word as Word
 import qualified Language.Haskell.TH as TH
 
 deriveJson :: TH.Name -> TH.Q [TH.Dec]
-deriveJson name = Json.deriveJSON (jsonOptions (TH.nameBase name)) name
+deriveJson name = Json.deriveJSON (oldJsonOptions (TH.nameBase name)) name
 
-jsonOptions :: String -> Json.Options
-jsonOptions prefix = Json.defaultOptions
+deriveJsonWith :: TH.Name -> Json.Options -> TH.Q [TH.Dec]
+deriveJsonWith name options = Json.deriveJSON options name
+
+oldJsonOptions :: String -> Json.Options
+oldJsonOptions prefix = Json.defaultOptions
   { Json.constructorTagModifier = toSnakeCase . partialDropPrefix prefix
   , Json.fieldLabelModifier = toSnakeCase
     . partialDropPrefix (lowerFirst prefix)
+  , Json.omitNothingFields = True
+  , Json.sumEncoding = Json.ObjectWithSingleField
+  , Json.unwrapUnaryRecords = True
+  }
+
+jsonOptions :: Json.Options
+jsonOptions = Json.defaultOptions
+  { Json.constructorTagModifier = toSnakeCase
+  , Json.fieldLabelModifier = toSnakeCase
   , Json.omitNothingFields = True
   , Json.sumEncoding = Json.ObjectWithSingleField
   , Json.unwrapUnaryRecords = True

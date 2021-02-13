@@ -3,14 +3,14 @@
 module Rattletrap.Type.Attribute.Pickup where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data PickupAttribute = PickupAttribute
-  { pickupAttributeInstigatorId :: Maybe Word32le
+  { pickupAttributeInstigatorId :: Maybe Word32le.Word32le
   , pickupAttributePickedUp :: Bool
   }
   deriving (Eq, Show)
@@ -23,10 +23,10 @@ putPickupAttribute pickupAttribute = do
     Nothing -> BinaryBits.putBool False
     Just instigatorId -> do
       BinaryBits.putBool True
-      putWord32Bits instigatorId
+      Word32le.bitPut instigatorId
   BinaryBits.putBool (pickupAttributePickedUp pickupAttribute)
 
 decodePickupAttributeBits :: BitGet PickupAttribute
 decodePickupAttributeBits = do
   instigator <- getBool
-  PickupAttribute <$> decodeWhen instigator decodeWord32leBits <*> getBool
+  PickupAttribute <$> decodeWhen instigator Word32le.bitGet <*> getBool

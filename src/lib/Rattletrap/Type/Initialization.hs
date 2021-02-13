@@ -4,12 +4,12 @@ module Rattletrap.Type.Initialization where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int8Vector
-import Rattletrap.Type.Vector
+import qualified Rattletrap.Type.Vector as Vector
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data Initialization = Initialization
-  { initializationLocation :: Maybe Vector
+  { initializationLocation :: Maybe Vector.Vector
   -- ^ Not every class has an initial location. See
   -- 'Rattletrap.Data.classesWithLocation'.
   , initializationRotation :: Maybe Int8Vector
@@ -24,7 +24,7 @@ putInitialization :: Initialization -> BitPut ()
 putInitialization initialization = do
   case initializationLocation initialization of
     Nothing -> pure ()
-    Just location -> putVector location
+    Just location -> Vector.bitPut location
   case initializationRotation initialization of
     Nothing -> pure ()
     Just rotation -> putInt8Vector rotation
@@ -33,5 +33,5 @@ decodeInitializationBits
   :: (Int, Int, Int) -> Bool -> Bool -> BitGet Initialization
 decodeInitializationBits version hasLocation hasRotation =
   Initialization
-    <$> decodeWhen hasLocation (decodeVectorBits version)
+    <$> decodeWhen hasLocation (Vector.bitGet version)
     <*> decodeWhen hasRotation decodeInt8VectorBits

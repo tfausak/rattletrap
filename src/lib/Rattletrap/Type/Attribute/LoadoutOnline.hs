@@ -6,8 +6,8 @@ import Rattletrap.Type.Common
 import Rattletrap.Type.ProductAttribute
 import qualified Rattletrap.Type.Word8le as Word8le
 import Rattletrap.Decode.Common
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
 
 import qualified Control.Monad as Monad
@@ -27,7 +27,7 @@ putLoadoutOnlineAttribute loadoutAttribute = do
 
 decodeLoadoutOnlineAttributeBits
   :: (Int, Int, Int)
-  -> Map.Map Word32le Str
+  -> Map.Map Word32le.Word32le Str.Str
   -> BitGet LoadoutOnlineAttribute
 decodeLoadoutOnlineAttributeBits version objectMap = do
   size <- Word8le.bitGet

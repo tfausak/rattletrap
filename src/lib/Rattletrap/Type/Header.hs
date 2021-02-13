@@ -5,20 +5,20 @@ module Rattletrap.Type.Header where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Dictionary
 import Rattletrap.Type.Property
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
-  { headerEngineVersion :: Word32le
+  { headerEngineVersion :: Word32le.Word32le
   -- ^ The "major" ("engine") version number.
-  , headerLicenseeVersion :: Word32le
+  , headerLicenseeVersion :: Word32le.Word32le
   -- ^ The "minor" ("licensee") version number.
-  , headerPatchVersion :: Maybe Word32le
+  , headerPatchVersion :: Maybe Word32le.Word32le
   -- ^ The "patch" ("net") version number.
-  , headerLabel :: Str
+  , headerLabel :: Str.Str
   -- ^ Always @TAGame.Replay_Soccar_TA@.
   , headerProperties :: Dictionary Property
   -- ^ These properties determine how a replay will look in the list of
@@ -62,20 +62,20 @@ $(deriveJson ''Header)
 
 putHeader :: Header -> BytePut
 putHeader header = do
-  putWord32 (headerEngineVersion header)
-  putWord32 (headerLicenseeVersion header)
+  Word32le.bytePut (headerEngineVersion header)
+  Word32le.bytePut (headerLicenseeVersion header)
   case headerPatchVersion header of
     Nothing -> pure ()
-    Just patchVersion -> putWord32 patchVersion
-  putText (headerLabel header)
+    Just patchVersion -> Word32le.bytePut patchVersion
+  Str.bytePut (headerLabel header)
   putDictionary putProperty (headerProperties header)
 
 decodeHeader :: ByteGet Header
 decodeHeader = do
-  (major, minor) <- (,) <$> decodeWord32le <*> decodeWord32le
+  (major, minor) <- (,) <$> Word32le.byteGet <*> Word32le.byteGet
   Header major minor
     <$> decodeWhen
-          (word32leValue major >= 868 && word32leValue minor >= 18)
-          decodeWord32le
-    <*> decodeStr
+          (Word32le.toWord32 major >= 868 && Word32le.toWord32 minor >= 18)
+          Word32le.byteGet
+    <*> Str.byteGet
     <*> decodeDictionary decodeProperty

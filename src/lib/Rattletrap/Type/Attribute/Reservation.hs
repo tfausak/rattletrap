@@ -4,7 +4,7 @@ module Rattletrap.Type.Attribute.Reservation where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
-import Rattletrap.Type.Str
+import qualified Rattletrap.Type.Str as Str
 import Rattletrap.Type.Attribute.UniqueId
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.Word8le as Word8le
@@ -15,7 +15,7 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 data ReservationAttribute = ReservationAttribute
   { reservationAttributeNumber :: CompressedWord
   , reservationAttributeUniqueId :: UniqueIdAttribute
-  , reservationAttributeName :: Maybe Str
+  , reservationAttributeName :: Maybe Str.Str
   , reservationAttributeUnknown1 :: Bool
   , reservationAttributeUnknown2 :: Bool
   , reservationAttributeUnknown3 :: Maybe Word8
@@ -30,7 +30,7 @@ putReservationAttribute reservationAttribute = do
   putUniqueIdAttribute (reservationAttributeUniqueId reservationAttribute)
   case reservationAttributeName reservationAttribute of
     Nothing -> pure ()
-    Just name -> putTextBits name
+    Just name -> Str.bitPut name
   BinaryBits.putBool (reservationAttributeUnknown1 reservationAttribute)
   BinaryBits.putBool (reservationAttributeUnknown2 reservationAttribute)
   case reservationAttributeUnknown3 reservationAttribute of
@@ -45,7 +45,7 @@ decodeReservationAttributeBits version = do
   ReservationAttribute number uniqueId
     <$> decodeWhen
           (uniqueIdAttributeSystemId uniqueId /= Word8le.fromWord8 0)
-          decodeStrBits
+          Str.bitGet
     <*> getBool
     <*> getBool
     <*> decodeWhen (version >= (868, 12, 0)) (getWord8Bits 6)

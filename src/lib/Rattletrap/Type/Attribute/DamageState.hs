@@ -4,7 +4,7 @@ module Rattletrap.Type.Attribute.DamageState where
 
 import Rattletrap.Type.Common
 import Rattletrap.Type.Int32le
-import Rattletrap.Type.Vector
+import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Word8le as Word8le
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
@@ -15,7 +15,7 @@ data DamageStateAttribute = DamageStateAttribute
   { damageStateAttributeUnknown1 :: Word8le.Word8le
   , damageStateAttributeUnknown2 :: Bool
   , damageStateAttributeUnknown3 :: Int32le
-  , damageStateAttributeUnknown4 :: Vector
+  , damageStateAttributeUnknown4 :: Vector.Vector
   , damageStateAttributeUnknown5 :: Bool
   , damageStateAttributeUnknown6 :: Bool
   }
@@ -28,7 +28,7 @@ putDamageStateAttribute damageStateAttribute = do
   Word8le.bitPut (damageStateAttributeUnknown1 damageStateAttribute)
   BinaryBits.putBool (damageStateAttributeUnknown2 damageStateAttribute)
   putInt32Bits (damageStateAttributeUnknown3 damageStateAttribute)
-  putVector (damageStateAttributeUnknown4 damageStateAttribute)
+  Vector.bitPut (damageStateAttributeUnknown4 damageStateAttribute)
   BinaryBits.putBool (damageStateAttributeUnknown5 damageStateAttribute)
   BinaryBits.putBool (damageStateAttributeUnknown6 damageStateAttribute)
 
@@ -39,6 +39,6 @@ decodeDamageStateAttributeBits version =
     <$> Word8le.bitGet
     <*> getBool
     <*> decodeInt32leBits
-    <*> decodeVectorBits version
+    <*> Vector.bitGet version
     <*> getBool
     <*> getBool

@@ -9,7 +9,7 @@ import Rattletrap.Type.Replication.Updated
 import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
@@ -47,7 +47,7 @@ decodeReplicationValueBits
   -> ClassAttributeMap
   -> CompressedWord
   -> State.StateT
-       (Map.Map CompressedWord Word32le)
+       (Map.Map CompressedWord Word32le.Word32le)
        BitGet
        ReplicationValue
 decodeReplicationValueBits version classAttributeMap actorId = do

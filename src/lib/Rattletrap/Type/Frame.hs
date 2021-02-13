@@ -8,7 +8,7 @@ import Rattletrap.Type.Replication
 import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
@@ -47,7 +47,7 @@ decodeFramesBits
   -> Word
   -> ClassAttributeMap
   -> State.StateT
-       (Map.Map CompressedWord Word32le)
+       (Map.Map CompressedWord Word32le.Word32le)
        BitGet
        [Frame]
 decodeFramesBits version count limit classes = if count <= 0
@@ -61,7 +61,7 @@ decodeFrameBits
   :: (Int, Int, Int)
   -> Word
   -> ClassAttributeMap
-  -> State.StateT (Map.Map CompressedWord Word32le) BitGet Frame
+  -> State.StateT (Map.Map CompressedWord Word32le.Word32le) BitGet Frame
 decodeFrameBits version limit classes =
   Frame
     <$> Trans.lift decodeFloat32leBits

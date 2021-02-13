@@ -7,7 +7,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
 import Rattletrap.Type.CompressedWord
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
 
 import qualified Data.Map as Map
@@ -25,7 +25,7 @@ putUpdatedReplication updatedReplication =
 decodeUpdatedReplicationBits
   :: (Int, Int, Int)
   -> ClassAttributeMap
-  -> Map.Map CompressedWord Word32le
+  -> Map.Map CompressedWord Word32le.Word32le
   -> CompressedWord
   -> BitGet UpdatedReplication
 decodeUpdatedReplicationBits version classes actors actor =

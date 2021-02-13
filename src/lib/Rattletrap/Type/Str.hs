@@ -17,36 +17,42 @@ import qualified Data.Char as Char
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 
-newtype Str = Str
-  { strValue :: Text
-  } deriving (Eq, Ord, Show)
+newtype Str
+  = Str Text
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Str)
 
-toStr :: String -> Str
-toStr string = Str (Text.pack string)
+fromText :: Text -> Str
+fromText = Str
 
-fromStr :: Str -> String
-fromStr text = Text.unpack (strValue text)
+toText :: Str -> Text
+toText (Str x) = x
 
-putText :: Str -> BytePut
-putText text = do
+fromString :: String -> Str
+fromString = fromText . Text.pack
+
+toString :: Str -> String
+toString = Text.unpack . toText
+
+bytePut :: Str -> BytePut
+bytePut text = do
   let size = getTextSize text
   let encode = getTextEncoder size
   putInt32 size
-  Binary.putByteString (encode (addNull (strValue text)))
+  Binary.putByteString (encode (addNull (toText text)))
 
-putTextBits :: Str -> BitPut ()
-putTextBits text = do
+bitPut :: Str -> BitPut ()
+bitPut text = do
   let size = getTextSize text
   let encode = getTextEncoder size
   putInt32Bits size
-  BinaryBits.putByteString (reverseBytes (encode (addNull (strValue text))))
+  BinaryBits.putByteString (reverseBytes (encode (addNull (toText text))))
 
 getTextSize :: Str -> Int32le
 getTextSize text =
   let
-    value = strValue text
+    value = toText text
     scale = if Text.all Char.isLatin1 value then 1 else -1 :: Int32
     rawSize = if Text.null value
       then 0
@@ -63,14 +69,14 @@ getTextEncoder size text =
 addNull :: Text.Text -> Text.Text
 addNull text = if Text.null text then text else Text.snoc text '\x00'
 
-decodeStr :: ByteGet Str
-decodeStr = do
+byteGet :: ByteGet Str
+byteGet = do
   rawSize <- decodeInt32le
   bytes <- getByteString (normalizeTextSize rawSize)
   pure (Str (dropNull (getTextDecoder rawSize bytes)))
 
-decodeStrBits :: BitGet Str
-decodeStrBits = do
+bitGet :: BitGet Str
+bitGet = do
   rawSize <- decodeInt32leBits
   bytes <- getByteStringBits (normalizeTextSize rawSize)
   pure (Str (dropNull (getTextDecoder rawSize (reverseBytes bytes))))

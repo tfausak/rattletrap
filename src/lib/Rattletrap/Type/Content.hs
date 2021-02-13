@@ -10,8 +10,8 @@ import Rattletrap.Type.KeyFrame
 import Rattletrap.Type.List
 import Rattletrap.Type.Mark
 import Rattletrap.Type.Message
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
@@ -27,13 +27,13 @@ import qualified Data.ByteString.Lazy as LazyBytes
 
 -- | Contains low-level game data about a 'Rattletrap.Replay.Replay'.
 data Content = Content
-  { contentLevels :: List Str
+  { contentLevels :: List Str.Str
   -- ^ This typically only has one element, like @stadium_oob_audio_map@.
   , contentKeyFrames :: List KeyFrame
   -- ^ A list of which frames are key frames. Although they aren't necessary
   -- for replay, key frames are frames that replicate every actor. They
   -- typically happen once every 10 seconds.
-  , contentStreamSize :: Word32le
+  , contentStreamSize :: Word32le.Word32le
   -- ^ The size of the stream in bytes. This is only really necessary because
   -- the stream has some arbitrary amount of padding at the end.
   , contentFrames :: [Frame]
@@ -42,13 +42,13 @@ data Content = Content
   -- ^ Debugging messages. In newer replays, this is always empty.
   , contentMarks :: List Mark
   -- ^ Tick marks shown on the scrubber when watching a replay.
-  , contentPackages :: List Str
+  , contentPackages :: List Str.Str
   -- ^ A list of @.upk@ files to load, like
   -- @..\\..\\TAGame\\CookedPCConsole\\Stadium_P.upk@.
-  , contentObjects :: List Str
+  , contentObjects :: List Str.Str
   -- ^ Objects in the stream. Used for the
   -- 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-  , contentNames :: List Str
+  , contentNames :: List Str.Str
   -- ^ It's not clear what these are used for. This list is usually not empty,
   -- but appears unused otherwise.
   , contentClassMappings :: List ClassMapping
@@ -67,7 +67,7 @@ defaultContent :: Content
 defaultContent = Content
   { contentLevels = List []
   , contentKeyFrames = List []
-  , contentStreamSize = Word32le 0
+  , contentStreamSize = Word32le.fromWord32 0
   , contentFrames = []
   , contentMessages = List []
   , contentMarks = List []
@@ -81,7 +81,7 @@ defaultContent = Content
 
 putContent :: Content -> BytePut
 putContent content = do
-  putList putText (contentLevels content)
+  putList Str.bytePut (contentLevels content)
   putList putKeyFrame (contentKeyFrames content)
   let
     stream = LazyBytes.toStrict
@@ -98,18 +98,18 @@ putContent content = do
     -- Unforunately that isn't currently known. See this issue for details:
     -- <https://github.com/tfausak/rattletrap/issues/171>.
     expectedStreamSize = contentStreamSize content
-    actualStreamSize = Word32le . fromIntegral $ Bytes.length stream
-    streamSize = Word32le $ max
-      (word32leValue expectedStreamSize)
-      (word32leValue actualStreamSize)
-  putWord32 streamSize
+    actualStreamSize = Word32le.fromWord32 . fromIntegral $ Bytes.length stream
+    streamSize = Word32le.fromWord32 $ max
+      (Word32le.toWord32 expectedStreamSize)
+      (Word32le.toWord32 actualStreamSize)
+  Word32le.bytePut streamSize
   Binary.putByteString
-    (reverseBytes (padBytes (word32leValue streamSize) stream))
+    (reverseBytes (padBytes (Word32le.toWord32 streamSize) stream))
   putList putMessage (contentMessages content)
   putList putMark (contentMarks content)
-  putList putText (contentPackages content)
-  putList putText (contentObjects content)
-  putList putText (contentNames content)
+  putList Str.bytePut (contentPackages content)
+  putList Str.bytePut (contentObjects content)
+  putList Str.bytePut (contentNames content)
   putList putClassMapping (contentClassMappings content)
   putList putCache (contentCaches content)
   mapM_ Binary.putWord8 (contentUnknown content)
@@ -127,17 +127,17 @@ decodeContent
 decodeContent version numFrames maxChannels = do
   (levels, keyFrames, streamSize) <-
     (,,)
-    <$> decodeList decodeStr
+    <$> decodeList Str.byteGet
     <*> decodeList decodeKeyFrame
-    <*> decodeWord32le
+    <*> Word32le.byteGet
   (stream, messages, marks, packages, objects, names, classMappings, caches) <-
     (,,,,,,,)
-    <$> getByteString (fromIntegral (word32leValue streamSize))
+    <$> getByteString (fromIntegral (Word32le.toWord32 streamSize))
     <*> decodeList decodeMessage
     <*> decodeList decodeMark
-    <*> decodeList decodeStr
-    <*> decodeList decodeStr
-    <*> decodeList decodeStr
+    <*> decodeList Str.byteGet
+    <*> decodeList Str.byteGet
+    <*> decodeList Str.byteGet
     <*> decodeList decodeClassMapping
     <*> decodeList decodeCache
   let

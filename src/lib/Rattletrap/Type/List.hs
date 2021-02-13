@@ -3,7 +3,7 @@
 module Rattletrap.Type.List where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
@@ -18,10 +18,10 @@ $(deriveJson ''List)
 putList :: (a -> BytePut) -> List a -> BytePut
 putList putElement list = do
   let elements = listValue list
-  putWord32 (Word32le (fromIntegral (length elements)))
+  Word32le.bytePut (Word32le.fromWord32 (fromIntegral (length elements)))
   mapM_ putElement elements
 
 decodeList :: ByteGet a -> ByteGet (List a)
 decodeList decodeElement = do
-  size <- decodeWord32le
-  List <$> Monad.replicateM (fromIntegral (word32leValue size)) decodeElement
+  size <- Word32le.byteGet
+  List <$> Monad.replicateM (fromIntegral (Word32le.toWord32 size)) decodeElement

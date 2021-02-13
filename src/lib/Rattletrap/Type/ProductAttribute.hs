@@ -3,8 +3,8 @@
 module Rattletrap.Type.ProductAttribute where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 import qualified Rattletrap.Type.Word8le as Word8le
 import Rattletrap.Type.ProductAttributeValue
 import Rattletrap.Decode.Common
@@ -16,8 +16,8 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ProductAttribute = ProductAttribute
   { productAttributeUnknown :: Bool
-  , productAttributeObjectId :: Word32le
-  , productAttributeObjectName :: Maybe Str
+  , productAttributeObjectId :: Word32le.Word32le
+  , productAttributeObjectName :: Maybe Str.Str
   -- ^ read-only
   , productAttributeValue :: ProductAttributeValue
   }
@@ -33,11 +33,11 @@ putProductAttributes attributes = do
 putProductAttribute :: ProductAttribute -> BitPut ()
 putProductAttribute attribute = do
   BinaryBits.putBool (productAttributeUnknown attribute)
-  putWord32Bits (productAttributeObjectId attribute)
+  Word32le.bitPut (productAttributeObjectId attribute)
   putProductAttributeValue $ productAttributeValue attribute
 
 decodeProductAttributesBits
-  :: (Int, Int, Int) -> Map Word32le Str -> BitGet [ProductAttribute]
+  :: (Int, Int, Int) -> Map Word32le.Word32le Str.Str -> BitGet [ProductAttribute]
 decodeProductAttributesBits version objectMap = do
   size <- Word8le.bitGet
   Monad.replicateM
@@ -45,10 +45,10 @@ decodeProductAttributesBits version objectMap = do
     (decodeProductAttributeBits version objectMap)
 
 decodeProductAttributeBits
-  :: (Int, Int, Int) -> Map Word32le Str -> BitGet ProductAttribute
+  :: (Int, Int, Int) -> Map Word32le.Word32le Str.Str -> BitGet ProductAttribute
 decodeProductAttributeBits version objectMap = do
   flag <- getBool
-  objectId <- decodeWord32leBits
+  objectId <- Word32le.bitGet
   let maybeObjectName = Map.lookup objectId objectMap
   value <- decodeProductAttributeValueBits version objectId maybeObjectName
   pure (ProductAttribute flag objectId maybeObjectName value)

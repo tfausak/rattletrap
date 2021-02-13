@@ -3,7 +3,7 @@
 module Rattletrap.Type.Section where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Word32le as Word32le
 import qualified Rattletrap.Utility.Crc as Crc
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
@@ -18,9 +18,9 @@ import qualified Data.ByteString.Lazy as LazyBytes
 -- bunch of data (the body). This interface is provided so that you don't have
 -- to think about the size and CRC.
 data Section a = Section
-  { sectionSize :: Word32le
+  { sectionSize :: Word32le.Word32le
   -- ^ read only
-  , sectionCrc :: Word32le
+  , sectionCrc :: Word32le.Word32le
   -- ^ read only
   , sectionBody :: a
   -- ^ The actual content in the section.
@@ -34,8 +34,8 @@ toSection encode body =
   let bytes = LazyBytes.toStrict . Binary.runPut $ encode body
   in
     Section
-      { sectionSize = Word32le . fromIntegral $ Bytes.length bytes
-      , sectionCrc = Word32le $ Crc.compute bytes
+      { sectionSize = Word32le.fromWord32 . fromIntegral $ Bytes.length bytes
+      , sectionCrc = Word32le.fromWord32 $ Crc.compute bytes
       , sectionBody = body
       }
 
@@ -52,21 +52,21 @@ putSection putBody section = do
       LazyBytes.toStrict (Binary.runPut (putBody (sectionBody section)))
   let size = Bytes.length rawBody
   let crc = Crc.compute rawBody
-  putWord32 (Word32le (fromIntegral size))
-  putWord32 (Word32le crc)
+  Word32le.bytePut (Word32le.fromWord32 (fromIntegral size))
+  Word32le.bytePut (Word32le.fromWord32 crc)
   Binary.putByteString rawBody
 
 decodeSection :: ByteGet a -> ByteGet (Section a)
 decodeSection getBody = do
-  size <- decodeWord32le
-  crc <- decodeWord32le
-  rawBody <- getByteString (fromIntegral (word32leValue size))
-  let actualCrc = Word32le (Crc.compute rawBody)
+  size <- Word32le.byteGet
+  crc <- Word32le.byteGet
+  rawBody <- getByteString (fromIntegral (Word32le.toWord32 size))
+  let actualCrc = Word32le.fromWord32 (Crc.compute rawBody)
   Monad.when (actualCrc /= crc) (fail (crcMessage actualCrc crc))
   body <- either fail pure (runDecode getBody rawBody)
   pure (Section size crc body)
 
-crcMessage :: Word32le -> Word32le -> String
+crcMessage :: Word32le.Word32le -> Word32le.Word32le -> String
 crcMessage actual expected = unwords
   [ "[RT10] actual CRC"
   , show actual

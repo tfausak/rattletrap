@@ -5,17 +5,17 @@ module Rattletrap.Type.Attribute where
 import Rattletrap.Type.AttributeValue
 import Rattletrap.Type.Common
 import Rattletrap.Type.CompressedWord
-import Rattletrap.Type.Str
+import qualified Rattletrap.Type.Str as Str
 import Rattletrap.Decode.Common
 import Rattletrap.Type.ClassAttributeMap
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Attribute = Attribute
   { attributeId :: CompressedWord
-  , attributeName :: Str
+  , attributeName :: Str.Str
   -- ^ Read-only! Changing an attribute's name requires editing the class
   -- attribute map.
   , attributeValue :: AttributeValue
@@ -43,7 +43,7 @@ putAttribute attribute = do
 decodeAttributesBits
   :: (Int, Int, Int)
   -> ClassAttributeMap
-  -> Map CompressedWord Word32le
+  -> Map CompressedWord Word32le.Word32le
   -> CompressedWord
   -> BitGet [Attribute]
 decodeAttributesBits version classes actors actor = do
@@ -58,7 +58,7 @@ decodeAttributesBits version classes actors actor = do
 decodeAttributeBits
   :: (Int, Int, Int)
   -> ClassAttributeMap
-  -> Map CompressedWord Word32le
+  -> Map CompressedWord Word32le.Word32le
   -> CompressedWord
   -> BitGet Attribute
 decodeAttributeBits version classes actors actor = do
@@ -74,24 +74,24 @@ decodeAttributeBits version classes actors actor = do
 
 lookupAttributeMap
   :: ClassAttributeMap
-  -> Map CompressedWord Word32le
+  -> Map CompressedWord Word32le.Word32le
   -> CompressedWord
-  -> BitGet (Map Word32le Word32le)
+  -> BitGet (Map Word32le.Word32le Word32le.Word32le)
 lookupAttributeMap classes actors actor = fromMaybe
   ("[RT01] could not get attribute map for " <> show actor)
   (getAttributeMap classes actors actor)
 
 lookupAttributeIdLimit
-  :: Map Word32le Word32le -> CompressedWord -> BitGet Word
+  :: Map Word32le.Word32le Word32le.Word32le -> CompressedWord -> BitGet Word
 lookupAttributeIdLimit attributes actor = fromMaybe
   ("[RT02] could not get attribute ID limit for " <> show actor)
   (getAttributeIdLimit attributes)
 
 lookupAttributeName
   :: ClassAttributeMap
-  -> Map Word32le Word32le
+  -> Map Word32le.Word32le Word32le.Word32le
   -> CompressedWord
-  -> BitGet Str
+  -> BitGet Str.Str
 lookupAttributeName classes attributes attribute = fromMaybe
   ("[RT03] could not get attribute name for " <> show attribute)
   (getAttributeName classes attributes attribute)

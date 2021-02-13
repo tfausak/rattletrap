@@ -43,8 +43,8 @@ import Rattletrap.Type.Attribute.WeldedInfo
 import qualified Rattletrap.Data as Data
 import Rattletrap.Decode.Common
 import Rattletrap.Type.AttributeType
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
 
 import qualified Data.Map as Map
@@ -132,12 +132,12 @@ putAttributeValue value = case value of
   AttributeValueWeldedInfo x -> putWeldedInfoAttribute x
 
 decodeAttributeValueBits
-  :: (Int, Int, Int) -> Map Word32le Str -> Str -> BitGet AttributeValue
+  :: (Int, Int, Int) -> Map Word32le.Word32le Str.Str -> Str.Str -> BitGet AttributeValue
 decodeAttributeValueBits version objectMap name = do
   constructor <- maybe
     (fail ("[RT04] don't know how to get attribute value " <> show name))
     pure
-    (Map.lookup (strValue name) Data.attributeTypes)
+    (Map.lookup (Str.toText name) Data.attributeTypes)
   case constructor of
     AttributeTypeAppliedDamage ->
       AttributeValueAppliedDamage <$> decodeAppliedDamageAttributeBits version

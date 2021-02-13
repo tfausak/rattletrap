@@ -5,8 +5,8 @@ module Rattletrap.Type.Attribute.LoadoutsOnline where
 import Rattletrap.Type.Common
 import Rattletrap.Type.Attribute.LoadoutOnline
 import Rattletrap.Decode.Common
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Encode.Common
 
 import qualified Data.Map as Map
@@ -33,7 +33,7 @@ putLoadoutsOnlineAttribute loadoutsOnlineAttribute = do
 
 decodeLoadoutsOnlineAttributeBits
   :: (Int, Int, Int)
-  -> Map.Map Word32le Str
+  -> Map.Map Word32le.Word32le Str.Str
   -> BitGet LoadoutsOnlineAttribute
 decodeLoadoutsOnlineAttributeBits version objectMap =
   LoadoutsOnlineAttribute

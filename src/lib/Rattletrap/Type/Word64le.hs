@@ -12,27 +12,31 @@ import qualified Data.Word as Word
 import qualified Text.Read as Read
 import Rattletrap.Encode.Common
 
-newtype Word64le = Word64le
-  { word64leValue :: Word.Word64
-  } deriving (Eq, Show)
+newtype Word64le
+  = Word64le Word.Word64
+  deriving (Eq, Show)
 
 instance Aeson.FromJSON Word64le where
   parseJSON = Aeson.withText "Word64le" $
-    either fail (pure . Word64le) . Read.readEither . Text.unpack
+    either fail (pure . fromWord64) . Read.readEither . Text.unpack
 
 instance Aeson.ToJSON Word64le where
-  toJSON = Aeson.toJSON . show . word64leValue
+  toJSON = Aeson.toJSON . show . toWord64
 
-putWord64 :: Word64le -> BytePut
-putWord64 word64 = Binary.putWord64le (word64leValue word64)
+fromWord64 :: Word.Word64 -> Word64le
+fromWord64 = Word64le
 
-putWord64Bits :: Word64le -> BitPut ()
-putWord64Bits word64 = do
-  let bytes = LazyBytes.toStrict (Binary.runPut (putWord64 word64))
-  BinaryBits.putByteString (reverseBytes bytes)
+toWord64 :: Word64le -> Word.Word64
+toWord64 (Word64le x) = x
 
-decodeWord64le :: ByteGet Word64le
-decodeWord64le = Word64le <$> getWord64le
+bytePut :: Word64le -> BytePut
+bytePut = Binary.putWord64le . toWord64
 
-decodeWord64leBits :: BitGet Word64le
-decodeWord64leBits = toBits decodeWord64le 8
+bitPut :: Word64le -> BitPut ()
+bitPut = BinaryBits.putByteString . reverseBytes . LazyBytes.toStrict . Binary.runPut . bytePut
+
+byteGet :: ByteGet Word64le
+byteGet = fromWord64 <$> getWord64le
+
+bitGet :: BitGet Word64le
+bitGet = toBits byteGet 8

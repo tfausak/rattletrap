@@ -31,7 +31,7 @@ bitPut :: Word8le -> BitPut ()
 bitPut = BinaryBits.putByteString . reverseBytes . LazyBytes.toStrict . Binary.runPut . bytePut
 
 byteGet :: ByteGet Word8le
-byteGet = Word8le <$> getWord8
+byteGet = fromWord8 <$> getWord8
 
 bitGet :: BitGet Word8le
 bitGet = toBits byteGet 1
