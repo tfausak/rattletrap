@@ -11,7 +11,7 @@ module Rattletrap.Type.ClassAttributeMap
   , makeClassAttributeMap
   ) where
 
-import Rattletrap.Data
+import qualified Rattletrap.Data as Data
 import Rattletrap.Type.AttributeMapping
 import Rattletrap.Type.Cache
 import Rattletrap.Type.ClassMapping
@@ -226,7 +226,7 @@ getParentClassByName
   -> [(Maybe Str, Word32le, Word32le, Word32le)]
   -> Maybe Word32le
 getParentClassByName className parentCacheId xs =
-  case Map.lookup (strValue className) parentClasses of
+  case Map.lookup (strValue className) Data.parentClasses of
     Nothing -> getParentClassById parentCacheId xs
     Just parentClassName -> Maybe.maybe
       (getParentClassById parentCacheId xs)
@@ -255,7 +255,7 @@ getObjectName objectMap objectId = Map.lookup objectId objectMap
 
 getClassName :: Str -> Maybe Str
 getClassName rawObjectName =
-  Str <$> Map.lookup (strValue $ normalizeObjectName rawObjectName) objectClasses
+  Str <$> Map.lookup (strValue $ normalizeObjectName rawObjectName) Data.objectClasses
 
 normalizeObjectName :: Str -> Str
 normalizeObjectName objectName =
@@ -279,10 +279,10 @@ normalizeObjectName objectName =
             else objectName
 
 classHasLocation :: Str -> Bool
-classHasLocation className = Set.member (strValue className) classesWithLocation
+classHasLocation className = Set.member (strValue className) Data.classesWithLocation
 
 classHasRotation :: Str -> Bool
-classHasRotation className = Set.member (strValue className) classesWithRotation
+classHasRotation className = Set.member (strValue className) Data.classesWithRotation
 
 getAttributeIdLimit :: Map Word32le Word32le -> Maybe Word
 getAttributeIdLimit attributeMap = do

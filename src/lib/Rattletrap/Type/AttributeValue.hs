@@ -40,7 +40,7 @@ import Rattletrap.Type.Attribute.TeamPaint
 import Rattletrap.Type.Attribute.Title
 import Rattletrap.Type.Attribute.UniqueId
 import Rattletrap.Type.Attribute.WeldedInfo
-import Rattletrap.Data
+import qualified Rattletrap.Data as Data
 import Rattletrap.Decode.Common
 import Rattletrap.Type.AttributeType
 import Rattletrap.Type.Str
@@ -137,7 +137,7 @@ decodeAttributeValueBits version objectMap name = do
   constructor <- maybe
     (fail ("[RT04] don't know how to get attribute value " <> show name))
     pure
-    (Map.lookup (strValue name) attributeTypes)
+    (Map.lookup (strValue name) Data.attributeTypes)
   case constructor of
     AttributeTypeAppliedDamage ->
       AttributeValueAppliedDamage <$> decodeAppliedDamageAttributeBits version

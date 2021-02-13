@@ -1,11 +1,5 @@
 -- brittany --columns 120
-module Rattletrap.Data
-  ( parentClasses
-  , classesWithLocation
-  , classesWithRotation
-  , objectClasses
-  , attributeTypes
-  ) where
+module Rattletrap.Data where
 
 import Rattletrap.Type.AttributeType
 
