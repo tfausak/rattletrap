@@ -3,7 +3,7 @@
 module Rattletrap.Type.Attribute.LoadoutOnline where
 
 import Rattletrap.Type.Common
-import qualified Rattletrap.Type.ProductAttribute as ProductAttribute
+import qualified Rattletrap.Type.Attribute.Product as Product
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.Str as Str
@@ -14,7 +14,7 @@ import qualified Control.Monad as Monad
 import qualified Data.Map as Map
 
 newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
-  { value :: [[ProductAttribute.ProductAttribute]]
+  { value :: [[Product.Product]]
   } deriving (Eq, Show)
 
 $(deriveJson ''LoadoutOnlineAttribute)
@@ -23,7 +23,7 @@ bitPut :: LoadoutOnlineAttribute -> BitPut ()
 bitPut loadoutAttribute = do
   let attributes = value loadoutAttribute
   U8.bitPut (U8.fromWord8 (fromIntegral (length attributes)))
-  mapM_ ProductAttribute.putProductAttributes attributes
+  mapM_ Product.putProductAttributes attributes
 
 bitGet
   :: (Int, Int, Int)
@@ -33,4 +33,4 @@ bitGet version objectMap = do
   size <- U8.bitGet
   LoadoutOnlineAttribute <$> Monad.replicateM
     (fromIntegral (U8.toWord8 size))
-    (ProductAttribute.decodeProductAttributesBits version objectMap)
+    (Product.decodeProductAttributesBits version objectMap)

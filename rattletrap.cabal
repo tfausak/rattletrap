@@ -106,8 +106,8 @@ library
     Rattletrap.Type.List
     Rattletrap.Type.Mark
     Rattletrap.Type.Message
-    Rattletrap.Type.ProductAttribute
-    Rattletrap.Type.ProductAttributeValue
+    Rattletrap.Type.Attribute.Product
+    Rattletrap.Type.Attribute.ProductValue
     Rattletrap.Type.Property
     Rattletrap.Type.PropertyValue
     Rattletrap.Type.Quaternion
