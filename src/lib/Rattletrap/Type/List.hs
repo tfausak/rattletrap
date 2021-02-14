@@ -1,41 +1,34 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Rattletrap.Type.List where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
+import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 
-import qualified Data.Aeson as Aeson
-import qualified Data.Array as Array
-import qualified Data.Foldable as Foldable
+import qualified Control.Monad as Monad
 
 newtype List a
-  = List (Array.Array Int a)
+  = List [a]
   deriving (Eq, Show)
 
-instance Aeson.FromJSON a => Aeson.FromJSON (List a) where
-  parseJSON = Aeson.withArray "List" $ \ xs -> do
-    ys <- traverse Aeson.parseJSON xs
-    pure . fromArray . Array.listArray (0, length ys - 1) $ Foldable.toList ys
+$(deriveJson ''List)
 
-instance Aeson.ToJSON a => Aeson.ToJSON (List a) where
-  toJSON = Aeson.toJSON . toList
-
-fromArray :: Array.Array Int a -> List a
-fromArray = List
+fromList :: [a] -> List a
+fromList = List
 
 empty :: List a
-empty = fromArray $ Array.listArray (0, -1) []
-
-toArray :: List a -> Array.Array Int a
-toArray (List x) = x
+empty = fromList []
 
 toList :: List a -> [a]
-toList = Array.elems . toArray
+toList (List x) = x
 
 bytePut :: (a -> BytePut) -> List a -> BytePut
 bytePut f x = do
-  U32.bytePut . U32.fromWord32 . fromIntegral . length $ toArray x
-  mapM_ f $ toArray x
+  let v = toList x
+  U32.bytePut . U32.fromWord32 . fromIntegral $ length v
+  mapM_ f v
 
 byteGet :: ByteGet a -> ByteGet (List a)
 byteGet f = do
@@ -43,25 +36,25 @@ byteGet f = do
   replicateM (fromIntegral $ U32.toWord32 size) f
 
 replicateM :: Monad m => Int -> m a -> m (List a)
-replicateM n = generateM n . const
+replicateM n = fmap fromList . Monad.replicateM n
 
-generateM :: Monad m => Int -> (Int -> m a) -> m (List a)
-generateM = generateMWith 0 []
+-- generateM :: Monad m => Int -> (Int -> m a) -> m (List a)
+-- generateM n f = generateMWith n f 0 []
 
-generateMWith
-  :: Monad m => Int -> [(Int, a)] -> Int -> (Int -> m a) -> m (List a)
-generateMWith i xs n f = if i >= n
-  then pure . fromArray $ Array.array (0, n - 1) xs
-  else do
-    x <- f i
-    generateMWith (i + 1) ((i, x) : xs) n f
+-- generateMWith
+--   :: Monad m => Int -> (Int -> m a) -> Int -> [(Int, a)] -> m (List a)
+-- generateMWith n f i xs = if i >= n
+--   then pure . fromList $ Array.array (0, n - 1) xs
+--   else do
+--     x <- f i
+--     generateMWith n f (i + 1) ((i, x) : xs)
 
 untilM :: Monad m => m (Maybe a) -> m (List a)
-untilM = untilMWith 0 []
+untilM f = untilMWith f 0 []
 
-untilMWith :: Monad m => Int -> [(Int, a)] -> m (Maybe a) -> m (List a)
-untilMWith i xs f = do
+untilMWith :: Monad m => m (Maybe a) -> Int -> [(Int, a)] -> m (List a)
+untilMWith f i xs = do
   m <- f
   case m of
-    Nothing -> pure . fromArray $ Array.array (0, i - 1) xs
-    Just x -> untilMWith (i + 1) ((i, x) : xs) f
+    Nothing -> pure . fromList . reverse $ fmap snd xs
+    Just x -> untilMWith f (i + 1) ((i, x) : xs)

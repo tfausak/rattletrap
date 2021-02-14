@@ -28,18 +28,10 @@ $(deriveJson ''Replication)
 
 putReplications :: List.List Replication -> BitPut ()
 putReplications xs = do
-  Monad.forM_ (List.toArray xs) $ \ x -> do
+  Monad.forM_ (List.toList xs) $ \ x -> do
     BinaryBits.putBool True
     bitPut x
   BinaryBits.putBool False
--- putReplications replications = case replications of
---   [] -> BinaryBits.putBool False
---   [replication] -> do
---     bitPut replication
---     BinaryBits.putBool False
---   first : rest -> do
---     bitPut first
---     putReplications rest
 
 bitPut :: Replication -> BitPut ()
 bitPut replication = do
@@ -59,13 +51,6 @@ decodeReplicationsBits version limit classes = List.untilM $ do
   if p
     then Just <$> bitGet version limit classes
     else pure Nothing
-  -- hasReplication <- Trans.lift getBool
-  -- if hasReplication
-  --   then
-  --     (:)
-  --     <$> bitGet version limit classes
-  --     <*> decodeReplicationsBits version limit classes
-  --   else pure []
 
 bitGet
   :: (Int, Int, Int)

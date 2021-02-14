@@ -21,7 +21,7 @@ $(deriveJson ''LoadoutOnline)
 
 bitPut :: LoadoutOnline -> BitPut ()
 bitPut loadoutAttribute = do
-  let attributes = List.toArray $ value loadoutAttribute
+  let attributes = List.toList $ value loadoutAttribute
   U8.bitPut . U8.fromWord8 . fromIntegral $ length attributes
   mapM_ Product.putProductAttributes attributes
 

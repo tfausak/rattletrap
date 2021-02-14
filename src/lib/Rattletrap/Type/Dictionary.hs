@@ -2,18 +2,18 @@ module Rattletrap.Type.Dictionary where
 
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
+import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
-import qualified Data.Array as Array
 import qualified Data.Bifunctor as Bifunctor
 import qualified Data.Map as Map
 import qualified Data.Text as Text
 
 data Dictionary a = Dictionary
-  { elements :: Array.Array Int (Str.Str, a)
+  { elements :: List.List (Str.Str, a)
   , lastKey :: Str.Str
   } deriving (Eq, Show)
 
@@ -32,9 +32,9 @@ instance Aeson.FromJSON a => Aeson.FromJSON (Dictionary a) where
         -> Int
         -> [(Int, (Str.Str, a))]
         -> [Text.Text]
-        -> m (Array.Array Int (Str.Str, a))
+        -> m (List.List (Str.Str, a))
       build m i xs ks = case ks of
-        [] -> pure $ Array.array (0, i - 1) xs
+        [] -> pure . List.fromList . reverse $ fmap snd xs
         k : t -> case Map.lookup k m of
           Nothing -> fail $ "missing required key " <> show k
           Just v -> build m (i + 1) ((i, (Str.fromText k, v)) : xs) t
@@ -47,17 +47,17 @@ instance Aeson.ToJSON a => Aeson.ToJSON (Dictionary a) where
       pair :: (Aeson.ToJSON v, Aeson.KeyValue kv) => String -> v -> kv
       pair k v = Text.pack k Aeson..= v
     in Aeson.object
-      [ pair "keys" . fmap fst . Array.elems $ elements x
+      [ pair "keys" . fmap fst . List.toList $ elements x
       , pair "last_key" $ lastKey x
-      , pair "value" . Map.fromList . fmap (Bifunctor.first Str.toText) . Array.elems $ elements x
+      , pair "value" . Map.fromList . fmap (Bifunctor.first Str.toText) . List.toList $ elements x
       ]
 
 lookup :: Str.Str -> Dictionary a -> Maybe a
-lookup k = Prelude.lookup k . Array.elems . elements
+lookup k = Prelude.lookup k . List.toList . elements
 
 bytePut :: (a -> BytePut) -> Dictionary a -> BytePut
 bytePut f x = do
-  Monad.forM_ (elements x) $ \ (k, v) -> do
+  Monad.forM_ (List.toList $ elements x) $ \ (k, v) -> do
     Str.bytePut k
     f v
   Str.bytePut $ lastKey x
@@ -69,7 +69,7 @@ byteGetWith :: Int -> [(Int, (Str.Str, a))] -> ByteGet a -> ByteGet (Dictionary 
 byteGetWith i xs f = do
   k <- Str.byteGet
   if isNone k
-    then pure Dictionary { elements = Array.array (0, i - 1) xs, lastKey = k }
+    then pure Dictionary { elements = List.fromList . reverse $ fmap snd xs, lastKey = k }
     else do
       v <- f
       byteGetWith (i + 1) ((i, (k, v)) : xs) f

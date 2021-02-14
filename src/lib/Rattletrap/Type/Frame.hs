@@ -29,7 +29,7 @@ data Frame = Frame
 $(deriveJson ''Frame)
 
 putFrames :: List.List Frame -> BitPut ()
-putFrames = mapM_ bitPut . List.toArray
+putFrames = mapM_ bitPut . List.toList
 
 bitPut :: Frame -> BitPut ()
 bitPut frame = do

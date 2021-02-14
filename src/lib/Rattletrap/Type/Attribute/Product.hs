@@ -27,8 +27,9 @@ $(deriveJson ''Product)
 
 putProductAttributes :: List.List Product -> BitPut ()
 putProductAttributes attributes = do
-  U8.bitPut . U8.fromWord8 . fromIntegral . length $ List.toArray attributes
-  mapM_ bitPut $ List.toArray attributes
+  let v = List.toList attributes
+  U8.bitPut . U8.fromWord8 . fromIntegral $ length v
+  mapM_ bitPut v
 
 bitPut :: Product -> BitPut ()
 bitPut attribute = do

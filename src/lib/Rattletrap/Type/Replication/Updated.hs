@@ -24,7 +24,7 @@ $(deriveJson ''Updated)
 
 bitPut :: Updated -> BitPut ()
 bitPut x = do
-  Monad.forM_ (List.toArray $ attributes x) $ \ y -> do
+  Monad.forM_ (List.toList $ attributes x) $ \ y -> do
     BinaryBits.putBool True
     Attribute.bitPut y
   BinaryBits.putBool False
