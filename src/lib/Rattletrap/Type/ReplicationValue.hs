@@ -29,17 +29,17 @@ $(deriveJson ''ReplicationValue)
 
 bitPut :: ReplicationValue -> BitPut.BitPut
 bitPut value = case value of
-  Spawned x -> do
+  Spawned x ->
     BitPut.bool True
+    <> BitPut.bool True
+    <> Spawned.bitPut x
+  Updated x ->
     BitPut.bool True
-    Spawned.bitPut x
-  Updated x -> do
-    BitPut.bool True
+    <> BitPut.bool False
+    <> Updated.bitPut x
+  Destroyed x ->
     BitPut.bool False
-    Updated.bitPut x
-  Destroyed x -> do
-    BitPut.bool False
-    Destroyed.bitPut x
+    <> Destroyed.bitPut x
 
 bitGet
   :: (Int, Int, Int)

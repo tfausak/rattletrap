@@ -23,14 +23,14 @@ instance Applicative BitPutM where
 
   x <*> y = fromBinaryBits $ toBinaryBits x <*> toBinaryBits y
 
-instance Monad BitPutM where
-  x >>= f = fromBinaryBits $ toBinaryBits x >>= toBinaryBits . f
+-- instance Monad BitPutM where
+--   x >>= f = fromBinaryBits $ toBinaryBits x >>= toBinaryBits . f
 
 instance Semigroup (BitPutM a) where
-  (<>) = (*>)
+  x <> y = fromBinaryBits $ toBinaryBits x *> toBinaryBits y
 
 instance Monoid (BitPutM ()) where
-  mempty = pure ()
+  mempty = fromBinaryBits $ pure ()
 
 fromBinaryBits :: BinaryBits.BitPut a -> BitPutM a
 fromBinaryBits = BitPutM
@@ -49,7 +49,7 @@ fromBytePut =
   . BytePut.toByteString
 
 bits :: Bits.Bits a => Int -> a -> BitPut
-bits n x = mapM_ (bool . Bits.testBit x) [0 .. n - 1]
+bits n x = foldMap (bool . Bits.testBit x) [0 .. n - 1]
 
 bool :: Bool -> BitPut
 bool = fromBinaryBits . BinaryBits.putBool

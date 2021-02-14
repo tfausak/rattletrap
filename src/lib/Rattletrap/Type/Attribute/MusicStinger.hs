@@ -18,10 +18,10 @@ data MusicStinger = MusicStinger
 $(deriveJson ''MusicStinger)
 
 bitPut :: MusicStinger -> BitPut.BitPut
-bitPut musicStingerAttribute = do
+bitPut musicStingerAttribute =
   BitPut.bool (flag musicStingerAttribute)
-  U32.bitPut (cue musicStingerAttribute)
-  U8.bitPut (trigger musicStingerAttribute)
+  <> U32.bitPut (cue musicStingerAttribute)
+  <> U8.bitPut (trigger musicStingerAttribute)
 
 bitGet :: BitGet.BitGet MusicStinger
 bitGet =

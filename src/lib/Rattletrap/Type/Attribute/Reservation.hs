@@ -24,17 +24,13 @@ data Reservation = Reservation
 $(deriveJson ''Reservation)
 
 bitPut :: Reservation -> BitPut.BitPut
-bitPut reservationAttribute = do
+bitPut reservationAttribute =
   CompressedWord.bitPut (number reservationAttribute)
-  UniqueId.bitPut (uniqueId reservationAttribute)
-  case name reservationAttribute of
-    Nothing -> pure ()
-    Just name_ -> Str.bitPut name_
-  BitPut.bool (unknown1 reservationAttribute)
-  BitPut.bool (unknown2 reservationAttribute)
-  case unknown3 reservationAttribute of
-    Nothing -> pure ()
-    Just c -> BitPut.word8 6 c
+  <> UniqueId.bitPut (uniqueId reservationAttribute)
+  <> maybe mempty Str.bitPut (name reservationAttribute)
+  <> BitPut.bool (unknown1 reservationAttribute)
+  <> BitPut.bool (unknown2 reservationAttribute)
+  <> maybe mempty (BitPut.word8 6) (unknown3 reservationAttribute)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet Reservation

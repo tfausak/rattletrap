@@ -17,13 +17,9 @@ data Pickup = Pickup
 $(deriveJson ''Pickup)
 
 bitPut :: Pickup -> BitPut.BitPut
-bitPut pickupAttribute = do
-  case instigatorId pickupAttribute of
-    Nothing -> BitPut.bool False
-    Just instigatorId_ -> do
-      BitPut.bool True
-      U32.bitPut instigatorId_
-  BitPut.bool (pickedUp pickupAttribute)
+bitPut x =
+  maybe (BitPut.bool False) (\ y -> BitPut.bool True <> U32.bitPut y) (instigatorId x)
+  <> BitPut.bool (pickedUp x)
 
 bitGet :: BitGet.BitGet Pickup
 bitGet = do

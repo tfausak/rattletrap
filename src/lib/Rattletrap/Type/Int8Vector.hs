@@ -18,17 +18,17 @@ data Int8Vector = Int8Vector
 $(deriveJson ''Int8Vector)
 
 bitPut :: Int8Vector -> BitPut.BitPut
-bitPut int8Vector = do
+bitPut int8Vector =
   putInt8VectorField (x int8Vector)
-  putInt8VectorField (y int8Vector)
-  putInt8VectorField (z int8Vector)
+  <> putInt8VectorField (y int8Vector)
+  <> putInt8VectorField (z int8Vector)
 
 putInt8VectorField :: Maybe I8.I8 -> BitPut.BitPut
 putInt8VectorField maybeField = case maybeField of
   Nothing -> BitPut.bool False
-  Just field -> do
+  Just field ->
     BitPut.bool True
-    I8.bitPut field
+    <> I8.bitPut field
 
 bitGet :: BitGet.BitGet Int8Vector
 bitGet =

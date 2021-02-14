@@ -16,7 +16,7 @@ data Destroyed
 $(deriveJson ''Destroyed)
 
 bitPut :: Destroyed -> BitPut.BitPut
-bitPut _ = pure ()
+bitPut _ = mempty
 
 bitGet :: BitGet.BitGet Destroyed
 bitGet = pure Destroyed

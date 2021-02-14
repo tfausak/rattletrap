@@ -22,12 +22,12 @@ data WeldedInfo = WeldedInfo
 $(deriveJson ''WeldedInfo)
 
 bitPut :: WeldedInfo -> BitPut.BitPut
-bitPut weldedInfoAttribute = do
+bitPut weldedInfoAttribute =
   BitPut.bool (active weldedInfoAttribute)
-  I32.bitPut (actorId weldedInfoAttribute)
-  Vector.bitPut (offset weldedInfoAttribute)
-  F32.bitPut (mass weldedInfoAttribute)
-  Int8Vector.bitPut (rotation weldedInfoAttribute)
+  <> I32.bitPut (actorId weldedInfoAttribute)
+  <> Vector.bitPut (offset weldedInfoAttribute)
+  <> F32.bitPut (mass weldedInfoAttribute)
+  <> Int8Vector.bitPut (rotation weldedInfoAttribute)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet WeldedInfo

@@ -37,13 +37,11 @@ data Spawned = Spawned
 $(deriveJson ''Spawned)
 
 bitPut :: Spawned -> BitPut.BitPut
-bitPut spawnedReplication = do
+bitPut spawnedReplication =
   BitPut.bool (flag spawnedReplication)
-  case nameIndex spawnedReplication of
-    Nothing -> pure ()
-    Just nameIndex_ -> U32.bitPut nameIndex_
-  U32.bitPut (objectId spawnedReplication)
-  Initialization.bitPut (initialization spawnedReplication)
+  <> maybe mempty U32.bitPut (nameIndex spawnedReplication)
+  <> U32.bitPut (objectId spawnedReplication)
+  <> Initialization.bitPut (initialization spawnedReplication)
 
 bitGet
   :: (Int, Int, Int)

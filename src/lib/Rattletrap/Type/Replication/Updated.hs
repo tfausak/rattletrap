@@ -11,7 +11,6 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.BitGet as BitGet
 
-import qualified Control.Monad as Monad
 import qualified Data.Map as Map
 
 newtype Updated = Updated
@@ -21,11 +20,11 @@ newtype Updated = Updated
 $(deriveJson ''Updated)
 
 bitPut :: Updated -> BitPut.BitPut
-bitPut x = do
-  Monad.forM_ (List.toList $ attributes x) $ \ y -> do
-    BitPut.bool True
-    Attribute.bitPut y
-  BitPut.bool False
+bitPut x =
+  foldMap
+    (\ y -> BitPut.bool True <> Attribute.bitPut y)
+    (List.toList $ attributes x)
+  <> BitPut.bool False
 
 bitGet
   :: (Int, Int, Int)

@@ -21,13 +21,13 @@ data Demolish = Demolish
 $(deriveJson ''Demolish)
 
 bitPut :: Demolish -> BitPut.BitPut
-bitPut demolishAttribute = do
+bitPut demolishAttribute =
   BitPut.bool (attackerFlag demolishAttribute)
-  U32.bitPut (attackerActorId demolishAttribute)
-  BitPut.bool (victimFlag demolishAttribute)
-  U32.bitPut (victimActorId demolishAttribute)
-  Vector.bitPut (attackerVelocity demolishAttribute)
-  Vector.bitPut (victimVelocity demolishAttribute)
+  <> U32.bitPut (attackerActorId demolishAttribute)
+  <> BitPut.bool (victimFlag demolishAttribute)
+  <> U32.bitPut (victimActorId demolishAttribute)
+  <> Vector.bitPut (attackerVelocity demolishAttribute)
+  <> Vector.bitPut (victimVelocity demolishAttribute)
 
 bitGet :: (Int, Int, Int) -> BitGet.BitGet Demolish
 bitGet version =

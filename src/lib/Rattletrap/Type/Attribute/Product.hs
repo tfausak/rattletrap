@@ -25,16 +25,16 @@ data Product = Product
 $(deriveJson ''Product)
 
 putProductAttributes :: List.List Product -> BitPut.BitPut
-putProductAttributes attributes = do
+putProductAttributes attributes =
   let v = List.toList attributes
-  U8.bitPut . U8.fromWord8 . fromIntegral $ length v
-  mapM_ bitPut v
+  in (U8.bitPut . U8.fromWord8 . fromIntegral $ length v)
+  <> foldMap bitPut v
 
 bitPut :: Product -> BitPut.BitPut
-bitPut attribute = do
+bitPut attribute =
   BitPut.bool (unknown attribute)
-  U32.bitPut (objectId attribute)
-  ProductValue.bitPut $ value attribute
+  <> U32.bitPut (objectId attribute)
+  <> ProductValue.bitPut (value attribute)
 
 decodeProductAttributesBits
   :: (Int, Int, Int) -> Map U32.U32 Str.Str -> BitGet.BitGet (List.List Product)

@@ -18,10 +18,10 @@ data CustomDemolish = CustomDemolish
 $(deriveJson ''CustomDemolish)
 
 bitPut :: CustomDemolish -> BitPut.BitPut
-bitPut x = do
+bitPut x =
   BitPut.bool (flag x)
-  I32.bitPut (Rattletrap.Type.Attribute.CustomDemolish.id x)
-  Demolish.bitPut (demolish x)
+  <> I32.bitPut (Rattletrap.Type.Attribute.CustomDemolish.id x)
+  <> Demolish.bitPut (demolish x)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet CustomDemolish

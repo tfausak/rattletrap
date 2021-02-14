@@ -34,29 +34,27 @@ data Loadout = Loadout
 $(deriveJson ''Loadout)
 
 bitPut :: Loadout -> BitPut.BitPut
-bitPut loadoutAttribute = do
+bitPut loadoutAttribute =
   U8.bitPut (version loadoutAttribute)
-  U32.bitPut (body loadoutAttribute)
-  U32.bitPut (decal loadoutAttribute)
-  U32.bitPut (wheels loadoutAttribute)
-  U32.bitPut (rocketTrail loadoutAttribute)
-  U32.bitPut (antenna loadoutAttribute)
-  U32.bitPut (topper loadoutAttribute)
-  U32.bitPut (unknown1 loadoutAttribute)
-  putOptional (unknown2 loadoutAttribute) U32.bitPut
-  putOptional (engineAudio loadoutAttribute) U32.bitPut
-  putOptional (trail loadoutAttribute) U32.bitPut
-  putOptional (goalExplosion loadoutAttribute) U32.bitPut
-  putOptional (banner loadoutAttribute) U32.bitPut
-  putOptional (unknown3 loadoutAttribute) U32.bitPut
-  putOptional (unknown4 loadoutAttribute) U32.bitPut
-  putOptional (unknown5 loadoutAttribute) U32.bitPut
-  putOptional (unknown6 loadoutAttribute) U32.bitPut
+  <> U32.bitPut (body loadoutAttribute)
+  <> U32.bitPut (decal loadoutAttribute)
+  <> U32.bitPut (wheels loadoutAttribute)
+  <> U32.bitPut (rocketTrail loadoutAttribute)
+  <> U32.bitPut (antenna loadoutAttribute)
+  <> U32.bitPut (topper loadoutAttribute)
+  <> U32.bitPut (unknown1 loadoutAttribute)
+  <> putOptional (unknown2 loadoutAttribute) U32.bitPut
+  <> putOptional (engineAudio loadoutAttribute) U32.bitPut
+  <> putOptional (trail loadoutAttribute) U32.bitPut
+  <> putOptional (goalExplosion loadoutAttribute) U32.bitPut
+  <> putOptional (banner loadoutAttribute) U32.bitPut
+  <> putOptional (unknown3 loadoutAttribute) U32.bitPut
+  <> putOptional (unknown4 loadoutAttribute) U32.bitPut
+  <> putOptional (unknown5 loadoutAttribute) U32.bitPut
+  <> putOptional (unknown6 loadoutAttribute) U32.bitPut
 
 putOptional :: Maybe a -> (a -> BitPut.BitPut) -> BitPut.BitPut
-putOptional m f = case m of
-  Just x -> f x
-  Nothing -> pure ()
+putOptional m f = maybe mempty f m
 
 bitGet :: BitGet.BitGet Loadout
 bitGet = do

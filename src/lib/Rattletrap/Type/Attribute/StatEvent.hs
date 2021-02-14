@@ -16,9 +16,9 @@ data StatEvent = StatEvent
 $(deriveJson ''StatEvent)
 
 bitPut :: StatEvent -> BitPut.BitPut
-bitPut statEventAttribute = do
+bitPut statEventAttribute =
   BitPut.bool (unknown statEventAttribute)
-  I32.bitPut (objectId statEventAttribute)
+  <> I32.bitPut (objectId statEventAttribute)
 
 bitGet :: BitGet.BitGet StatEvent
 bitGet =

@@ -18,11 +18,11 @@ data ClubColors = ClubColors
 $(deriveJson ''ClubColors)
 
 bitPut :: ClubColors -> BitPut.BitPut
-bitPut clubColorsAttribute = do
+bitPut clubColorsAttribute =
   BitPut.bool (blueFlag clubColorsAttribute)
-  U8.bitPut (blueColor clubColorsAttribute)
-  BitPut.bool (orangeFlag clubColorsAttribute)
-  U8.bitPut (orangeColor clubColorsAttribute)
+  <> U8.bitPut (blueColor clubColorsAttribute)
+  <> BitPut.bool (orangeFlag clubColorsAttribute)
+  <> U8.bitPut (orangeColor clubColorsAttribute)
 
 bitGet :: BitGet.BitGet ClubColors
 bitGet =

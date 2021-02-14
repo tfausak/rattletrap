@@ -22,13 +22,13 @@ data DamageState = DamageState
 $(deriveJson ''DamageState)
 
 bitPut :: DamageState -> BitPut.BitPut
-bitPut damageStateAttribute = do
+bitPut damageStateAttribute =
   U8.bitPut (unknown1 damageStateAttribute)
-  BitPut.bool (unknown2 damageStateAttribute)
-  I32.bitPut (unknown3 damageStateAttribute)
-  Vector.bitPut (unknown4 damageStateAttribute)
-  BitPut.bool (unknown5 damageStateAttribute)
-  BitPut.bool (unknown6 damageStateAttribute)
+  <> BitPut.bool (unknown2 damageStateAttribute)
+  <> I32.bitPut (unknown3 damageStateAttribute)
+  <> Vector.bitPut (unknown4 damageStateAttribute)
+  <> BitPut.bool (unknown5 damageStateAttribute)
+  <> BitPut.bool (unknown6 damageStateAttribute)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet DamageState

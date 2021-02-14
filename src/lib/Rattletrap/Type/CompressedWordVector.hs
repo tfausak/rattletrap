@@ -17,10 +17,10 @@ data CompressedWordVector = CompressedWordVector
 $(deriveJson ''CompressedWordVector)
 
 bitPut :: CompressedWordVector -> BitPut.BitPut
-bitPut compressedWordVector = do
+bitPut compressedWordVector =
   CompressedWord.bitPut (x compressedWordVector)
-  CompressedWord.bitPut (y compressedWordVector)
-  CompressedWord.bitPut (z compressedWordVector)
+  <> CompressedWord.bitPut (y compressedWordVector)
+  <> CompressedWord.bitPut (z compressedWordVector)
 
 bitGet :: BitGet.BitGet CompressedWordVector
 bitGet =

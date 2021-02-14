@@ -20,10 +20,10 @@ newtype LoadoutOnline = LoadoutOnline
 $(deriveJson ''LoadoutOnline)
 
 bitPut :: LoadoutOnline -> BitPut.BitPut
-bitPut loadoutAttribute = do
+bitPut loadoutAttribute =
   let attributes = List.toList $ value loadoutAttribute
-  U8.bitPut . U8.fromWord8 . fromIntegral $ length attributes
-  mapM_ Product.putProductAttributes attributes
+  in (U8.bitPut . U8.fromWord8 . fromIntegral $ length attributes)
+  <> foldMap Product.putProductAttributes attributes
 
 bitGet
   :: (Int, Int, Int)

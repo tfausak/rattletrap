@@ -11,7 +11,6 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.BitGet as BitGet
 
-import qualified Control.Monad as Monad
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
 import qualified Data.Map as Map
@@ -25,16 +24,16 @@ data Replication = Replication
 $(deriveJson ''Replication)
 
 putReplications :: List.List Replication -> BitPut.BitPut
-putReplications xs = do
-  Monad.forM_ (List.toList xs) $ \ x -> do
-    BitPut.bool True
-    bitPut x
-  BitPut.bool False
+putReplications xs =
+  foldMap
+    (\ x -> BitPut.bool True <> bitPut x)
+    (List.toList xs)
+  <> BitPut.bool False
 
 bitPut :: Replication -> BitPut.BitPut
-bitPut replication = do
+bitPut replication =
   CompressedWord.bitPut (actorId replication)
-  ReplicationValue.bitPut (value replication)
+  <> ReplicationValue.bitPut (value replication)
 
 decodeReplicationsBits
   :: (Int, Int, Int)

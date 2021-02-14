@@ -32,9 +32,9 @@ bitPut val = case val of
   SpecialEdition x -> BitPut.bits 31 x
   UserColorOld x -> case x of
     Nothing -> BitPut.bool False
-    Just y -> do
+    Just y ->
       BitPut.bool True
-      BitPut.bits 31 y
+      <> BitPut.bits 31 y
   UserColorNew x -> U32.bitPut x
   TitleId x -> Str.bitPut x
 

@@ -23,9 +23,9 @@ data Attribute = Attribute
 $(deriveJson ''Attribute)
 
 bitPut :: Attribute -> BitPut.BitPut
-bitPut attribute = do
+bitPut attribute =
   CompressedWord.bitPut (Rattletrap.Type.Attribute.id attribute)
-  AttributeValue.bitPut (value attribute)
+  <> AttributeValue.bitPut (value attribute)
 
 bitGet
   :: (Int, Int, Int)

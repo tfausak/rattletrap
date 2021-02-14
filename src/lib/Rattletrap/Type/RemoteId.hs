@@ -30,10 +30,10 @@ $(deriveJson ''RemoteId)
 
 bitPut :: RemoteId -> BitPut.BitPut
 bitPut remoteId = case remoteId of
-  PlayStation name bytes -> do
+  PlayStation name bytes ->
     let rawName = reverseBytes (padBytes (16 :: Int) (encodeLatin1 name))
-    BitPut.byteString rawName
-    BitPut.byteString (Bytes.pack bytes)
+    in BitPut.byteString rawName
+    <> BitPut.byteString (Bytes.pack bytes)
   PsyNet e -> case e of
     Left l -> U64.bitPut l
     Right (a, b, c, d) -> putWord256 a b c d
@@ -45,11 +45,11 @@ bitPut remoteId = case remoteId of
 
 putWord256
   :: U64.U64 -> U64.U64 -> U64.U64 -> U64.U64 -> BitPut.BitPut
-putWord256 a b c d = do
+putWord256 a b c d =
   U64.bitPut a
-  U64.bitPut b
-  U64.bitPut c
-  U64.bitPut d
+  <> U64.bitPut b
+  <> U64.bitPut c
+  <> U64.bitPut d
 
 bitGet :: (Int, Int, Int) -> U8.U8 -> BitGet.BitGet RemoteId
 bitGet version systemId = case U8.toWord8 systemId of

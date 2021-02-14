@@ -22,13 +22,9 @@ data Initialization = Initialization
 $(deriveJson ''Initialization)
 
 bitPut :: Initialization -> BitPut.BitPut
-bitPut initialization = do
-  case location initialization of
-    Nothing -> pure ()
-    Just x -> Vector.bitPut x
-  case rotation initialization of
-    Nothing -> pure ()
-    Just x -> Int8Vector.bitPut x
+bitPut initialization =
+  maybe mempty Vector.bitPut (location initialization)
+  <> maybe mempty Int8Vector.bitPut (rotation initialization)
 
 bitGet
   :: (Int, Int, Int) -> Bool -> Bool -> BitGet.BitGet Initialization

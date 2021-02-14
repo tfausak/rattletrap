@@ -22,15 +22,15 @@ data Title = Title
 $(deriveJson ''Title)
 
 bitPut :: Title -> BitPut.BitPut
-bitPut titleAttribute = do
+bitPut titleAttribute =
   BitPut.bool (unknown1 titleAttribute)
-  BitPut.bool (unknown2 titleAttribute)
-  U32.bitPut (unknown3 titleAttribute)
-  U32.bitPut (unknown4 titleAttribute)
-  U32.bitPut (unknown5 titleAttribute)
-  U32.bitPut (unknown6 titleAttribute)
-  U32.bitPut (unknown7 titleAttribute)
-  BitPut.bool (unknown8 titleAttribute)
+  <> BitPut.bool (unknown2 titleAttribute)
+  <> U32.bitPut (unknown3 titleAttribute)
+  <> U32.bitPut (unknown4 titleAttribute)
+  <> U32.bitPut (unknown5 titleAttribute)
+  <> U32.bitPut (unknown6 titleAttribute)
+  <> U32.bitPut (unknown7 titleAttribute)
+  <> BitPut.bool (unknown8 titleAttribute)
 
 bitGet :: BitGet.BitGet Title
 bitGet =

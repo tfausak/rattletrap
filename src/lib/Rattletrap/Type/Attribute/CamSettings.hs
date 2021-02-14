@@ -22,16 +22,14 @@ data CamSettings = CamSettings
 $(deriveJson ''CamSettings)
 
 bitPut :: CamSettings -> BitPut.BitPut
-bitPut camSettingsAttribute = do
+bitPut camSettingsAttribute =
   F32.bitPut (fov camSettingsAttribute)
-  F32.bitPut (height camSettingsAttribute)
-  F32.bitPut (angle camSettingsAttribute)
-  F32.bitPut (distance camSettingsAttribute)
-  F32.bitPut (stiffness camSettingsAttribute)
-  F32.bitPut (swivelSpeed camSettingsAttribute)
-  case transitionSpeed camSettingsAttribute of
-    Nothing -> pure ()
-    Just transitionSpeed_ -> F32.bitPut transitionSpeed_
+  <> F32.bitPut (height camSettingsAttribute)
+  <> F32.bitPut (angle camSettingsAttribute)
+  <> F32.bitPut (distance camSettingsAttribute)
+  <> F32.bitPut (stiffness camSettingsAttribute)
+  <> F32.bitPut (swivelSpeed camSettingsAttribute)
+  <> maybe mempty F32.bitPut (transitionSpeed camSettingsAttribute)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet CamSettings

@@ -16,9 +16,9 @@ data FlaggedInt = FlaggedInt
 $(deriveJson ''FlaggedInt)
 
 bitPut :: FlaggedInt -> BitPut.BitPut
-bitPut flaggedIntAttribute = do
+bitPut flaggedIntAttribute =
   BitPut.bool (flag flaggedIntAttribute)
-  I32.bitPut (int flaggedIntAttribute)
+  <> I32.bitPut (int flaggedIntAttribute)
 
 bitGet :: BitGet.BitGet FlaggedInt
 bitGet =

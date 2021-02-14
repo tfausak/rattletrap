@@ -20,11 +20,11 @@ data AppliedDamage = AppliedDamage
 $(deriveJson ''AppliedDamage)
 
 bitPut :: AppliedDamage -> BitPut.BitPut
-bitPut appliedDamageAttribute = do
+bitPut appliedDamageAttribute =
   U8.bitPut (unknown1 appliedDamageAttribute)
-  Vector.bitPut (location appliedDamageAttribute)
-  I32.bitPut (unknown3 appliedDamageAttribute)
-  I32.bitPut (unknown4 appliedDamageAttribute)
+  <> Vector.bitPut (location appliedDamageAttribute)
+  <> I32.bitPut (unknown3 appliedDamageAttribute)
+  <> I32.bitPut (unknown4 appliedDamageAttribute)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet AppliedDamage

@@ -26,7 +26,7 @@ data Vector = Vector
 $(deriveJson ''Vector)
 
 bitPut :: Vector -> BitPut.BitPut
-bitPut vector = do
+bitPut vector =
   let
     bitSize =
       round (logBase (2 :: Float) (fromIntegral (bias vector))) - 1 :: Word
@@ -37,10 +37,10 @@ bitPut vector = do
     dz =
       fromIntegral (z vector + fromIntegral (bias vector)) :: Word
     limit = 2 ^ (bitSize + 2) :: Word
-  CompressedWord.bitPut (size vector)
-  CompressedWord.bitPut (CompressedWord.CompressedWord limit dx)
-  CompressedWord.bitPut (CompressedWord.CompressedWord limit dy)
-  CompressedWord.bitPut (CompressedWord.CompressedWord limit dz)
+  in CompressedWord.bitPut (size vector)
+  <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dx)
+  <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dy)
+  <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dz)
 
 bitGet :: (Int, Int, Int) -> BitGet.BitGet Vector
 bitGet version = do

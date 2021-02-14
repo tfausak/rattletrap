@@ -22,13 +22,11 @@ data LoadoutsOnline = LoadoutsOnline
 $(deriveJson ''LoadoutsOnline)
 
 bitPut :: LoadoutsOnline -> BitPut.BitPut
-bitPut loadoutsOnlineAttribute = do
-  LoadoutOnline.bitPut
-    (blue loadoutsOnlineAttribute)
-  LoadoutOnline.bitPut
-    (orange loadoutsOnlineAttribute)
-  BitPut.bool (unknown1 loadoutsOnlineAttribute)
-  BitPut.bool (unknown2 loadoutsOnlineAttribute)
+bitPut loadoutsOnlineAttribute =
+  LoadoutOnline.bitPut (blue loadoutsOnlineAttribute)
+  <> LoadoutOnline.bitPut (orange loadoutsOnlineAttribute)
+  <> BitPut.bool (unknown1 loadoutsOnlineAttribute)
+  <> BitPut.bool (unknown2 loadoutsOnlineAttribute)
 
 bitGet
   :: (Int, Int, Int)

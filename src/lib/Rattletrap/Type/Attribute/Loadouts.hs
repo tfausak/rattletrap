@@ -16,9 +16,9 @@ data Loadouts = Loadouts
 $(deriveJson ''Loadouts)
 
 bitPut :: Loadouts -> BitPut.BitPut
-bitPut loadoutsAttribute = do
+bitPut loadoutsAttribute =
   Loadout.bitPut (blue loadoutsAttribute)
-  Loadout.bitPut (orange loadoutsAttribute)
+  <> Loadout.bitPut (orange loadoutsAttribute)
 
 bitGet :: BitGet.BitGet Loadouts
 bitGet =

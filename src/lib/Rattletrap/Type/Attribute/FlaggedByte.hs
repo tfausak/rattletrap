@@ -16,9 +16,9 @@ data FlaggedByte = FlaggedByte
 $(deriveJson ''FlaggedByte)
 
 bitPut :: FlaggedByte -> BitPut.BitPut
-bitPut flaggedByteAttribute = do
+bitPut flaggedByteAttribute =
   BitPut.bool (flag flaggedByteAttribute)
-  U8.bitPut (byte flaggedByteAttribute)
+  <> U8.bitPut (byte flaggedByteAttribute)
 
 bitGet :: BitGet.BitGet FlaggedByte
 bitGet =

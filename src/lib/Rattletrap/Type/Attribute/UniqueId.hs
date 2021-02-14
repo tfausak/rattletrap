@@ -18,10 +18,10 @@ data UniqueId = UniqueId
 $(deriveJson ''UniqueId)
 
 bitPut :: UniqueId -> BitPut.BitPut
-bitPut uniqueIdAttribute = do
-  U8.bitPut $ systemId uniqueIdAttribute
-  RemoteId.bitPut (remoteId uniqueIdAttribute)
-  U8.bitPut $ localId uniqueIdAttribute
+bitPut uniqueIdAttribute =
+  U8.bitPut (systemId uniqueIdAttribute)
+  <> RemoteId.bitPut (remoteId uniqueIdAttribute)
+  <> U8.bitPut (localId uniqueIdAttribute)
 
 bitGet :: (Int, Int, Int) -> BitGet.BitGet UniqueId
 bitGet version = do

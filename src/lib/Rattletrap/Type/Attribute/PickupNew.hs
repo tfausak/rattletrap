@@ -18,13 +18,9 @@ data PickupNew = PickupNew
 $(deriveJson ''PickupNew)
 
 bitPut :: PickupNew -> BitPut.BitPut
-bitPut pickupAttributeNew = do
-  case instigatorId pickupAttributeNew of
-    Nothing -> BitPut.bool False
-    Just instigatorId_ -> do
-      BitPut.bool True
-      U32.bitPut instigatorId_
-  U8.bitPut (pickedUp pickupAttributeNew)
+bitPut x =
+  maybe (BitPut.bool False) (\ y -> BitPut.bool True <> U32.bitPut y) (instigatorId x)
+  <> U8.bitPut (pickedUp x)
 
 bitGet :: BitGet.BitGet PickupNew
 bitGet = do

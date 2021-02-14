@@ -96,10 +96,10 @@ maxValue :: Double
 maxValue = 1.0 / sqrt 2.0
 
 bitPut :: Quaternion -> BitPut.BitPut
-bitPut q = do
+bitPut q =
   let c = maxComponent q
-  putComponent c
-  case c of
+  in putComponent c
+  <> case c of
     X -> putParts (y q) (z q) (w q)
     Y -> putParts (x q) (z q) (w q)
     Z -> putParts (x q) (y q) (w q)
@@ -118,10 +118,10 @@ putComponent component = CompressedWord.bitPut
   )
 
 putParts :: Double -> Double -> Double -> BitPut.BitPut
-putParts a b c = do
+putParts a b c =
   putPart a
-  putPart b
-  putPart c
+  <> putPart b
+  <> putPart c
 
 putPart :: Double -> BitPut.BitPut
 putPart = CompressedWord.bitPut . compressPart

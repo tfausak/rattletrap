@@ -21,16 +21,12 @@ data RigidBodyState = RigidBodyState
 $(deriveJson ''RigidBodyState)
 
 bitPut :: RigidBodyState -> BitPut.BitPut
-bitPut rigidBodyStateAttribute = do
+bitPut rigidBodyStateAttribute =
   BitPut.bool (sleeping rigidBodyStateAttribute)
-  Vector.bitPut (location rigidBodyStateAttribute)
-  Rotation.bitPut (rotation rigidBodyStateAttribute)
-  case linearVelocity rigidBodyStateAttribute of
-    Nothing -> pure ()
-    Just x -> Vector.bitPut x
-  case angularVelocity rigidBodyStateAttribute of
-    Nothing -> pure ()
-    Just x -> Vector.bitPut x
+  <> Vector.bitPut (location rigidBodyStateAttribute)
+  <> Rotation.bitPut (rotation rigidBodyStateAttribute)
+  <> maybe mempty Vector.bitPut (linearVelocity rigidBodyStateAttribute)
+  <> maybe mempty Vector.bitPut (angularVelocity rigidBodyStateAttribute)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet RigidBodyState

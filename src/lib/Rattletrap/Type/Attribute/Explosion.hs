@@ -18,10 +18,10 @@ data Explosion = Explosion
 $(deriveJson ''Explosion)
 
 bitPut :: Explosion -> BitPut.BitPut
-bitPut explosionAttribute = do
+bitPut explosionAttribute =
   BitPut.bool (flag explosionAttribute)
-  I32.bitPut (actorId explosionAttribute)
-  Vector.bitPut (location explosionAttribute)
+  <> I32.bitPut (actorId explosionAttribute)
+  <> Vector.bitPut (location explosionAttribute)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet Explosion

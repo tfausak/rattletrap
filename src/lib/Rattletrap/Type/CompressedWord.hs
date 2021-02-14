@@ -33,18 +33,19 @@ putCompressedWordStep limit_ value_ maxBits position soFar =
     then do
       let x = Bits.shiftL 1 position :: Word
       if maxBits > 1 && position == maxBits - 1 && soFar + x > limit_
-        then pure ()
-        else do
-          let bit = Bits.testBit value_ position
-          BitPut.bool bit
-          let delta = if bit then x else 0
-          putCompressedWordStep
+        then mempty
+        else
+          let
+            bit = Bits.testBit value_ position
+            delta = if bit then x else 0
+          in BitPut.bool bit
+          <> putCompressedWordStep
             limit_
             value_
             maxBits
             (position + 1)
             (soFar + delta)
-    else pure ()
+    else mempty
 
 getMaxBits :: Word -> Int
 getMaxBits x =

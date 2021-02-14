@@ -22,19 +22,13 @@ $(deriveJson ''PrivateMatchSettings)
 
 bitPut
   :: PrivateMatchSettings -> BitPut.BitPut
-bitPut privateMatchSettingsAttribute = do
-  Str.bitPut
-    (mutators privateMatchSettingsAttribute)
-  U32.bitPut
-    (joinableBy privateMatchSettingsAttribute)
-  U32.bitPut
-    (maxPlayers privateMatchSettingsAttribute)
-  Str.bitPut
-    (gameName privateMatchSettingsAttribute)
-  Str.bitPut
-    (password privateMatchSettingsAttribute)
-  BitPut.bool
-    (flag privateMatchSettingsAttribute)
+bitPut privateMatchSettingsAttribute =
+  Str.bitPut (mutators privateMatchSettingsAttribute)
+  <> U32.bitPut (joinableBy privateMatchSettingsAttribute)
+  <> U32.bitPut (maxPlayers privateMatchSettingsAttribute)
+  <> Str.bitPut (gameName privateMatchSettingsAttribute)
+  <> Str.bitPut (password privateMatchSettingsAttribute)
+  <> BitPut.bool (flag privateMatchSettingsAttribute)
 
 bitGet
   :: BitGet.BitGet PrivateMatchSettings

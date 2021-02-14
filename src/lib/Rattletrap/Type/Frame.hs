@@ -29,13 +29,13 @@ data Frame = Frame
 $(deriveJson ''Frame)
 
 putFrames :: List.List Frame -> BitPut.BitPut
-putFrames = mapM_ bitPut . List.toList
+putFrames = foldMap bitPut . List.toList
 
 bitPut :: Frame -> BitPut.BitPut
-bitPut frame = do
+bitPut frame =
   F32.bitPut (time frame)
-  F32.bitPut (delta frame)
-  Replication.putReplications (replications frame)
+  <> F32.bitPut (delta frame)
+  <> Replication.putReplications (replications frame)
 
 decodeFramesBits
   :: (Int, Int, Int)

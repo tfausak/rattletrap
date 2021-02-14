@@ -18,9 +18,9 @@ $(deriveJson ''ExtendedExplosion)
 
 bitPut
   :: ExtendedExplosion -> BitPut.BitPut
-bitPut x = do
+bitPut x =
   Explosion.bitPut (explosion x)
-  FlaggedInt.bitPut (unknown x)
+  <> FlaggedInt.bitPut (unknown x)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet ExtendedExplosion
