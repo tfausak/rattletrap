@@ -4,7 +4,7 @@ module Rattletrap.Type.Attribute.Pickup where
 
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
+import Rattletrap.Utility.Monad
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.BitGet as BitGet
 
@@ -28,4 +28,4 @@ bitPut pickupAttribute = do
 bitGet :: BitGet.BitGet Pickup
 bitGet = do
   instigator <- BitGet.bool
-  Pickup <$> decodeWhen instigator U32.bitGet <*> BitGet.bool
+  Pickup <$> whenMaybe instigator U32.bitGet <*> BitGet.bool

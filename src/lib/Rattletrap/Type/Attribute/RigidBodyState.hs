@@ -5,7 +5,7 @@ module Rattletrap.Type.Attribute.RigidBodyState where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Rotation as Rotation
 import qualified Rattletrap.Type.Vector as Vector
-import Rattletrap.Decode.Common
+import Rattletrap.Utility.Monad
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.BitGet as BitGet
 
@@ -39,5 +39,5 @@ bitGet version = do
   RigidBodyState sleeping_
     <$> Vector.bitGet version
     <*> Rotation.bitGet version
-    <*> decodeWhen (not sleeping_) (Vector.bitGet version)
-    <*> decodeWhen (not sleeping_) (Vector.bitGet version)
+    <*> whenMaybe (not sleeping_) (Vector.bitGet version)
+    <*> whenMaybe (not sleeping_) (Vector.bitGet version)

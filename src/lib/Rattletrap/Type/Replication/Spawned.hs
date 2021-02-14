@@ -6,7 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Initialization as Initialization
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
+import Rattletrap.Utility.Monad
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.BitPut as BitPut
@@ -55,7 +55,7 @@ bitGet
        Spawned
 bitGet version classAttributeMap actorId = do
   flag_ <- Trans.lift BitGet.bool
-  nameIndex_ <- decodeWhen
+  nameIndex_ <- whenMaybe
     (version >= (868, 14, 0))
     (Trans.lift U32.bitGet)
   name_ <- either fail pure (lookupName classAttributeMap nameIndex_)

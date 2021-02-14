@@ -4,7 +4,7 @@ module Rattletrap.Type.Int8Vector where
 
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I8 as I8
-import Rattletrap.Decode.Common
+import Rattletrap.Utility.Monad
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.BitGet as BitGet
 
@@ -37,4 +37,4 @@ bitGet =
 decodeFieldBits :: BitGet.BitGet (Maybe I8.I8)
 decodeFieldBits = do
   hasField <- BitGet.bool
-  decodeWhen hasField I8.bitGet
+  whenMaybe hasField I8.bitGet

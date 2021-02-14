@@ -4,7 +4,7 @@ module Rattletrap.Type.Attribute.CamSettings where
 
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
-import Rattletrap.Decode.Common
+import Rattletrap.Utility.Monad
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.BitGet as BitGet
 
@@ -43,4 +43,4 @@ bitGet version =
     <*> F32.bitGet
     <*> F32.bitGet
     <*> F32.bitGet
-    <*> decodeWhen (version >= (868, 20, 0)) F32.bitGet
+    <*> whenMaybe (version >= (868, 20, 0)) F32.bitGet

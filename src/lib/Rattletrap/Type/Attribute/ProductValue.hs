@@ -6,7 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
+import Rattletrap.Utility.Monad
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.BitGet as BitGet
 
@@ -73,7 +73,7 @@ decodeColor version = if version >= (868, 23, 8)
   then UserColorNew <$> U32.bitGet
   else do
     hasValue <- BitGet.bool
-    UserColorOld <$> decodeWhen hasValue (BitGet.bits 31)
+    UserColorOld <$> whenMaybe hasValue (BitGet.bits 31)
 
 decodeTitle :: BitGet.BitGet ProductValue
 decodeTitle = TitleId <$> Str.bitGet

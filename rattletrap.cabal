@@ -47,7 +47,7 @@ library
     Rattletrap.BytePut
     Rattletrap.Console.Main
     Rattletrap.Data
-    Rattletrap.Decode.Common
+    Rattletrap.Utility.Monad
     Rattletrap.Type.Attribute
     Rattletrap.Type.Attribute.AppliedDamage
     Rattletrap.Type.Attribute.Boolean

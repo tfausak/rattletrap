@@ -5,7 +5,7 @@ module Rattletrap.Type.Attribute.Loadout where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
-import Rattletrap.Decode.Common
+import Rattletrap.Utility.Monad
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.BitGet as BitGet
 
@@ -69,12 +69,12 @@ bitGet = do
     <*> U32.bitGet
     <*> U32.bitGet
     <*> U32.bitGet
-    <*> decodeWhen (U8.toWord8 version_ >= 11) U32.bitGet
-    <*> decodeWhen (U8.toWord8 version_ >= 16) U32.bitGet
-    <*> decodeWhen (U8.toWord8 version_ >= 16) U32.bitGet
-    <*> decodeWhen (U8.toWord8 version_ >= 16) U32.bitGet
-    <*> decodeWhen (U8.toWord8 version_ >= 17) U32.bitGet
-    <*> decodeWhen (U8.toWord8 version_ >= 19) U32.bitGet
-    <*> decodeWhen (U8.toWord8 version_ >= 22) U32.bitGet
-    <*> decodeWhen (U8.toWord8 version_ >= 22) U32.bitGet
-    <*> decodeWhen (U8.toWord8 version_ >= 22) U32.bitGet
+    <*> whenMaybe (U8.toWord8 version_ >= 11) U32.bitGet
+    <*> whenMaybe (U8.toWord8 version_ >= 16) U32.bitGet
+    <*> whenMaybe (U8.toWord8 version_ >= 16) U32.bitGet
+    <*> whenMaybe (U8.toWord8 version_ >= 16) U32.bitGet
+    <*> whenMaybe (U8.toWord8 version_ >= 17) U32.bitGet
+    <*> whenMaybe (U8.toWord8 version_ >= 19) U32.bitGet
+    <*> whenMaybe (U8.toWord8 version_ >= 22) U32.bitGet
+    <*> whenMaybe (U8.toWord8 version_ >= 22) U32.bitGet
+    <*> whenMaybe (U8.toWord8 version_ >= 22) U32.bitGet

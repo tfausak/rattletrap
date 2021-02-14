@@ -10,7 +10,7 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
-import Rattletrap.Decode.Common
+import Rattletrap.Utility.Monad
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.ByteGet as ByteGet
 
@@ -54,7 +54,7 @@ byteGet getProperty kind = case Str.toString kind of
   "ByteProperty" -> do
     k <- Str.byteGet
     Byte k
-      <$> decodeWhen (Str.toString k /= "OnlinePlatform_Steam") Str.byteGet
+      <$> whenMaybe (Str.toString k /= "OnlinePlatform_Steam") Str.byteGet
   "FloatProperty" -> Float <$> F32.byteGet
   "IntProperty" -> Int <$> I32.byteGet
   "NameProperty" -> Name <$> Str.byteGet
