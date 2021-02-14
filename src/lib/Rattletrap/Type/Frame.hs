@@ -8,6 +8,7 @@ import qualified Rattletrap.Type.Replication as Replication
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
+import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Encode.Common
 
@@ -27,13 +28,8 @@ data Frame = Frame
 
 $(deriveJson ''Frame)
 
-putFrames :: [Frame] -> BitPut ()
-putFrames frames = case frames of
-  [] -> pure ()
-  [frame] -> bitPut frame
-  first : rest -> do
-    bitPut first
-    putFrames rest
+putFrames :: List.List Frame -> BitPut ()
+putFrames = mapM_ bitPut . List.toArray
 
 bitPut :: Frame -> BitPut ()
 bitPut frame = do
@@ -49,13 +45,9 @@ decodeFramesBits
   -> State.StateT
        (Map.Map CompressedWord.CompressedWord U32.U32)
        BitGet
-       [Frame]
-decodeFramesBits version count limit classes = if count <= 0
-  then pure []
-  else
-    (:)
-    <$> bitGet version limit classes
-    <*> decodeFramesBits version (count - 1) limit classes
+       (List.List Frame)
+decodeFramesBits version count limit classes =
+  List.replicateM count $ bitGet version limit classes
 
 bitGet
   :: (Int, Int, Int)

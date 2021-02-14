@@ -36,7 +36,7 @@ data Content = Content
   , streamSize :: U32.U32
   -- ^ The size of the stream in bytes. This is only really necessary because
   -- the stream has some arbitrary amount of padding at the end.
-  , frames :: [Frame.Frame]
+  , frames :: List.List Frame.Frame
   -- ^ The actual game data. This is where all the interesting information is.
   , messages :: List.List Message.Message
   -- ^ Debugging messages. In newer replays, this is always empty.
@@ -68,7 +68,7 @@ empty = Content
   { levels = List.empty
   , keyFrames = List.empty
   , streamSize = U32.fromWord32 0
-  , frames = []
+  , frames = List.empty
   , messages = List.empty
   , marks = List.empty
   , packages = List.empty
