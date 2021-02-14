@@ -3,43 +3,43 @@
 module Rattletrap.Type.Attribute.CamSettings where
 
 import Rattletrap.Type.Common
-import qualified Rattletrap.Type.Float32le as Float32le
+import qualified Rattletrap.Type.F32 as F32
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-data CamSettingsAttribute = CamSettingsAttribute
-  { fov :: Float32le.Float32le
-  , height :: Float32le.Float32le
-  , angle :: Float32le.Float32le
-  , distance :: Float32le.Float32le
-  , stiffness :: Float32le.Float32le
-  , swivelSpeed :: Float32le.Float32le
-  , transitionSpeed :: Maybe Float32le.Float32le
+data CamSettings = CamSettings
+  { fov :: F32.F32
+  , height :: F32.F32
+  , angle :: F32.F32
+  , distance :: F32.F32
+  , stiffness :: F32.F32
+  , swivelSpeed :: F32.F32
+  , transitionSpeed :: Maybe F32.F32
   }
   deriving (Eq, Show)
 
-$(deriveJson ''CamSettingsAttribute)
+$(deriveJson ''CamSettings)
 
-bitPut :: CamSettingsAttribute -> BitPut ()
+bitPut :: CamSettings -> BitPut ()
 bitPut camSettingsAttribute = do
-  Float32le.bitPut (fov camSettingsAttribute)
-  Float32le.bitPut (height camSettingsAttribute)
-  Float32le.bitPut (angle camSettingsAttribute)
-  Float32le.bitPut (distance camSettingsAttribute)
-  Float32le.bitPut (stiffness camSettingsAttribute)
-  Float32le.bitPut (swivelSpeed camSettingsAttribute)
+  F32.bitPut (fov camSettingsAttribute)
+  F32.bitPut (height camSettingsAttribute)
+  F32.bitPut (angle camSettingsAttribute)
+  F32.bitPut (distance camSettingsAttribute)
+  F32.bitPut (stiffness camSettingsAttribute)
+  F32.bitPut (swivelSpeed camSettingsAttribute)
   case transitionSpeed camSettingsAttribute of
     Nothing -> pure ()
-    Just transitionSpeed_ -> Float32le.bitPut transitionSpeed_
+    Just transitionSpeed_ -> F32.bitPut transitionSpeed_
 
 bitGet
-  :: (Int, Int, Int) -> BitGet CamSettingsAttribute
+  :: (Int, Int, Int) -> BitGet CamSettings
 bitGet version =
-  CamSettingsAttribute
-    <$> Float32le.bitGet
-    <*> Float32le.bitGet
-    <*> Float32le.bitGet
-    <*> Float32le.bitGet
-    <*> Float32le.bitGet
-    <*> Float32le.bitGet
-    <*> decodeWhen (version >= (868, 20, 0)) Float32le.bitGet
+  CamSettings
+    <$> F32.bitGet
+    <*> F32.bitGet
+    <*> F32.bitGet
+    <*> F32.bitGet
+    <*> F32.bitGet
+    <*> F32.bitGet
+    <*> decodeWhen (version >= (868, 20, 0)) F32.bitGet

@@ -3,45 +3,45 @@
 module Rattletrap.Type.Attribute.Title where
 
 import Rattletrap.Type.Common
-import qualified Rattletrap.Type.Word32le as Word32le
+import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data TitleAttribute = TitleAttribute
+data Title = Title
   { unknown1 :: Bool
   , unknown2 :: Bool
-  , unknown3 :: Word32le.Word32le
-  , unknown4 :: Word32le.Word32le
-  , unknown5 :: Word32le.Word32le
-  , unknown6 :: Word32le.Word32le
-  , unknown7 :: Word32le.Word32le
+  , unknown3 :: U32.U32
+  , unknown4 :: U32.U32
+  , unknown5 :: U32.U32
+  , unknown6 :: U32.U32
+  , unknown7 :: U32.U32
   , unknown8 :: Bool
   }
   deriving (Eq, Show)
 
-$(deriveJson ''TitleAttribute)
+$(deriveJson ''Title)
 
-bitPut :: TitleAttribute -> BitPut ()
+bitPut :: Title -> BitPut ()
 bitPut titleAttribute = do
   BinaryBits.putBool (unknown1 titleAttribute)
   BinaryBits.putBool (unknown2 titleAttribute)
-  Word32le.bitPut (unknown3 titleAttribute)
-  Word32le.bitPut (unknown4 titleAttribute)
-  Word32le.bitPut (unknown5 titleAttribute)
-  Word32le.bitPut (unknown6 titleAttribute)
-  Word32le.bitPut (unknown7 titleAttribute)
+  U32.bitPut (unknown3 titleAttribute)
+  U32.bitPut (unknown4 titleAttribute)
+  U32.bitPut (unknown5 titleAttribute)
+  U32.bitPut (unknown6 titleAttribute)
+  U32.bitPut (unknown7 titleAttribute)
   BinaryBits.putBool (unknown8 titleAttribute)
 
-bitGet :: BitGet TitleAttribute
+bitGet :: BitGet Title
 bitGet =
-  TitleAttribute
+  Title
     <$> getBool
     <*> getBool
-    <*> Word32le.bitGet
-    <*> Word32le.bitGet
-    <*> Word32le.bitGet
-    <*> Word32le.bitGet
-    <*> Word32le.bitGet
+    <*> U32.bitGet
+    <*> U32.bitGet
+    <*> U32.bitGet
+    <*> U32.bitGet
+    <*> U32.bitGet
     <*> getBool

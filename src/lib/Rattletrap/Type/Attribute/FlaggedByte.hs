@@ -3,25 +3,25 @@
 module Rattletrap.Type.Attribute.FlaggedByte where
 
 import Rattletrap.Type.Common
-import qualified Rattletrap.Type.Word8le as Word8le
+import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data FlaggedByteAttribute = FlaggedByteAttribute
+data FlaggedByte = FlaggedByte
   { flag :: Bool
-  , byte :: Word8le.Word8le
+  , byte :: U8.U8
   }
   deriving (Eq, Show)
 
-$(deriveJson ''FlaggedByteAttribute)
+$(deriveJson ''FlaggedByte)
 
-bitPut :: FlaggedByteAttribute -> BitPut ()
+bitPut :: FlaggedByte -> BitPut ()
 bitPut flaggedByteAttribute = do
   BinaryBits.putBool (flag flaggedByteAttribute)
-  Word8le.bitPut (byte flaggedByteAttribute)
+  U8.bitPut (byte flaggedByteAttribute)
 
-bitGet :: BitGet FlaggedByteAttribute
+bitGet :: BitGet FlaggedByte
 bitGet =
-  FlaggedByteAttribute <$> getBool <*> Word8le.bitGet
+  FlaggedByte <$> getBool <*> U8.bitGet

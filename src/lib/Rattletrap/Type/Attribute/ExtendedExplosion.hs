@@ -8,23 +8,23 @@ import qualified Rattletrap.Type.Attribute.FlaggedInt as FlaggedInt
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-data ExtendedExplosionAttribute = ExtendedExplosionAttribute
-  { explosion :: Explosion.ExplosionAttribute
-  , unknown :: FlaggedInt.FlaggedIntAttribute
+data ExtendedExplosion = ExtendedExplosion
+  { explosion :: Explosion.Explosion
+  , unknown :: FlaggedInt.FlaggedInt
   }
   deriving (Eq, Show)
 
-$(deriveJson ''ExtendedExplosionAttribute)
+$(deriveJson ''ExtendedExplosion)
 
 bitPut
-  :: ExtendedExplosionAttribute -> BitPut ()
+  :: ExtendedExplosion -> BitPut ()
 bitPut x = do
   Explosion.bitPut (explosion x)
   FlaggedInt.bitPut (unknown x)
 
 bitGet
-  :: (Int, Int, Int) -> BitGet ExtendedExplosionAttribute
+  :: (Int, Int, Int) -> BitGet ExtendedExplosion
 bitGet version =
-  ExtendedExplosionAttribute
+  ExtendedExplosion
     <$> Explosion.bitGet version
     <*> FlaggedInt.bitGet

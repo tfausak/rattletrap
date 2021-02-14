@@ -2,19 +2,20 @@
 
 module Rattletrap.Type.Attribute.Enum where
 
+import Prelude hiding (Enum)
 import Rattletrap.Type.Common
 import Rattletrap.Encode.Common
 import Rattletrap.Decode.Common
 
-newtype EnumAttribute = EnumAttribute
+newtype Enum = Enum
   { value :: Word16
   } deriving (Eq, Show)
 
-$(deriveJson ''EnumAttribute)
+$(deriveJson ''Enum)
 
-bitPut :: EnumAttribute -> BitPut ()
+bitPut :: Enum -> BitPut ()
 bitPut enumAttribute =
   putBitsLE 11 (value enumAttribute)
 
-bitGet :: BitGet EnumAttribute
-bitGet = EnumAttribute <$> getBitsLE 11
+bitGet :: BitGet Enum
+bitGet = Enum <$> getBitsLE 11

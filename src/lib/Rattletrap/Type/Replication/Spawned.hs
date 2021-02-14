@@ -5,7 +5,7 @@ module Rattletrap.Type.Replication.Spawned where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Initialization as Initialization
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Type.Word32le as Word32le
+import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
@@ -19,11 +19,11 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 data Spawned = Spawned
   { flag :: Bool
   -- ^ Unclear what this is.
-  , nameIndex :: Maybe Word32le.Word32le
+  , nameIndex :: Maybe U32.U32
   , name :: Maybe Str.Str
   -- ^ Read-only! Changing a replication's name requires editing the
   -- 'nameIndex' and maybe the class attribute map.
-  , objectId :: Word32le.Word32le
+  , objectId :: U32.U32
   , objectName :: Str.Str
   -- ^ Read-only! Changing a replication's object requires editing the class
   -- attribute map.
@@ -41,8 +41,8 @@ bitPut spawnedReplication = do
   BinaryBits.putBool (flag spawnedReplication)
   case nameIndex spawnedReplication of
     Nothing -> pure ()
-    Just nameIndex_ -> Word32le.bitPut nameIndex_
-  Word32le.bitPut (objectId spawnedReplication)
+    Just nameIndex_ -> U32.bitPut nameIndex_
+  U32.bitPut (objectId spawnedReplication)
   Initialization.bitPut (initialization spawnedReplication)
 
 bitGet
@@ -50,16 +50,16 @@ bitGet
   -> ClassAttributeMap.ClassAttributeMap
   -> CompressedWord.CompressedWord
   -> State.StateT
-       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
+       (Map.Map CompressedWord.CompressedWord U32.U32)
        BitGet
        Spawned
 bitGet version classAttributeMap actorId = do
   flag_ <- Trans.lift getBool
   nameIndex_ <- decodeWhen
     (version >= (868, 14, 0))
-    (Trans.lift Word32le.bitGet)
+    (Trans.lift U32.bitGet)
   name_ <- either fail pure (lookupName classAttributeMap nameIndex_)
-  objectId_ <- Trans.lift Word32le.bitGet
+  objectId_ <- Trans.lift U32.bitGet
   State.modify (Map.insert actorId objectId_)
   objectName_ <- either fail pure (lookupObjectName classAttributeMap objectId_)
   className_ <- either fail pure (lookupClassName objectName_)
@@ -78,7 +78,7 @@ bitGet version classAttributeMap actorId = do
       initialization_
     )
 
-lookupName :: ClassAttributeMap.ClassAttributeMap -> Maybe Word32le.Word32le -> Either String (Maybe Str.Str)
+lookupName :: ClassAttributeMap.ClassAttributeMap -> Maybe U32.U32 -> Either String (Maybe Str.Str)
 lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
   Nothing -> Right Nothing
   Just nameIndex_ ->
@@ -87,7 +87,7 @@ lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
         Left ("[RT11] could not get name for index " <> show nameIndex_)
       Just name_ -> Right (Just name_)
 
-lookupObjectName :: ClassAttributeMap.ClassAttributeMap -> Word32le.Word32le -> Either String Str.Str
+lookupObjectName :: ClassAttributeMap.ClassAttributeMap -> U32.U32 -> Either String Str.Str
 lookupObjectName classAttributeMap objectId_ =
   case ClassAttributeMap.getObjectName (ClassAttributeMap.objectMap classAttributeMap) objectId_ of
     Nothing ->

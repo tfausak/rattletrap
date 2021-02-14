@@ -7,14 +7,14 @@ import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.Attribute.UniqueId as UniqueId
 import Rattletrap.Decode.Common
-import qualified Rattletrap.Type.Word8le as Word8le
+import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data ReservationAttribute = ReservationAttribute
+data Reservation = Reservation
   { number :: CompressedWord.CompressedWord
-  , uniqueId :: UniqueId.UniqueIdAttribute
+  , uniqueId :: UniqueId.UniqueId
   , name :: Maybe Str.Str
   , unknown1 :: Bool
   , unknown2 :: Bool
@@ -22,9 +22,9 @@ data ReservationAttribute = ReservationAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''ReservationAttribute)
+$(deriveJson ''Reservation)
 
-bitPut :: ReservationAttribute -> BitPut ()
+bitPut :: Reservation -> BitPut ()
 bitPut reservationAttribute = do
   CompressedWord.bitPut (number reservationAttribute)
   UniqueId.bitPut (uniqueId reservationAttribute)
@@ -38,13 +38,13 @@ bitPut reservationAttribute = do
     Just c -> BinaryBits.putWord8 6 c
 
 bitGet
-  :: (Int, Int, Int) -> BitGet ReservationAttribute
+  :: (Int, Int, Int) -> BitGet Reservation
 bitGet version = do
   number_ <- CompressedWord.bitGet 7
   uniqueId_ <- UniqueId.bitGet version
-  ReservationAttribute number_ uniqueId_
+  Reservation number_ uniqueId_
     <$> decodeWhen
-          (UniqueId.systemId uniqueId_ /= Word8le.fromWord8 0)
+          (UniqueId.systemId uniqueId_ /= U8.fromWord8 0)
           Str.bitGet
     <*> getBool
     <*> getBool

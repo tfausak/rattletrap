@@ -8,15 +8,15 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-newtype BooleanAttribute = BooleanAttribute
+newtype Boolean = Boolean
   { value :: Bool
   } deriving (Eq, Show)
 
-$(deriveJson ''BooleanAttribute)
+$(deriveJson ''Boolean)
 
-bitPut :: BooleanAttribute -> BitPut ()
+bitPut :: Boolean -> BitPut ()
 bitPut booleanAttribute =
   BinaryBits.putBool (value booleanAttribute)
 
-bitGet :: BitGet BooleanAttribute
-bitGet = BooleanAttribute <$> getBool
+bitGet :: BitGet Boolean
+bitGet = Boolean <$> getBool

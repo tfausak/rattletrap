@@ -94,20 +94,20 @@ library
     Rattletrap.Type.CompressedWordVector
     Rattletrap.Type.Content
     Rattletrap.Type.Dictionary
-    Rattletrap.Type.Float32le
+    Rattletrap.Type.F32
     Rattletrap.Type.Frame
     Rattletrap.Type.Header
     Rattletrap.Type.Initialization
-    Rattletrap.Type.Int32le
-    Rattletrap.Type.Int64le
-    Rattletrap.Type.Int8le
+    Rattletrap.Type.I32
+    Rattletrap.Type.I64
+    Rattletrap.Type.I8
     Rattletrap.Type.Int8Vector
     Rattletrap.Type.KeyFrame
     Rattletrap.Type.List
     Rattletrap.Type.Mark
     Rattletrap.Type.Message
-    Rattletrap.Type.ProductAttribute
-    Rattletrap.Type.ProductAttributeValue
+    Rattletrap.Type.Attribute.Product
+    Rattletrap.Type.Attribute.ProductValue
     Rattletrap.Type.Property
     Rattletrap.Type.PropertyValue
     Rattletrap.Type.Quaternion
@@ -122,9 +122,9 @@ library
     Rattletrap.Type.Section
     Rattletrap.Type.Str
     Rattletrap.Type.Vector
-    Rattletrap.Type.Word32le
-    Rattletrap.Type.Word64le
-    Rattletrap.Type.Word8le
+    Rattletrap.Type.U32
+    Rattletrap.Type.U64
+    Rattletrap.Type.U8
     Rattletrap.Utility.Bytes
     Rattletrap.Utility.Crc
     Rattletrap.Utility.Helper
