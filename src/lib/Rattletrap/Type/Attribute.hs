@@ -11,8 +11,6 @@ import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Encode.Common
 
-import qualified Data.Binary.Bits.Put as BinaryBits
-
 data Attribute = Attribute
   { id :: CompressedWord.CompressedWord
   , name :: Str.Str
@@ -24,36 +22,10 @@ data Attribute = Attribute
 
 $(deriveJson ''Attribute)
 
-putAttributes :: [Attribute] -> BitPut ()
-putAttributes attributes = case attributes of
-  [] -> BinaryBits.putBool False
-  [attribute] -> do
-    bitPut attribute
-    BinaryBits.putBool False
-  first : rest -> do
-    bitPut first
-    putAttributes rest
-
 bitPut :: Attribute -> BitPut ()
 bitPut attribute = do
-  BinaryBits.putBool True
   CompressedWord.bitPut (Rattletrap.Type.Attribute.id attribute)
   AttributeValue.bitPut (value attribute)
-
-decodeAttributesBits
-  :: (Int, Int, Int)
-  -> ClassAttributeMap.ClassAttributeMap
-  -> Map CompressedWord.CompressedWord U32.U32
-  -> CompressedWord.CompressedWord
-  -> BitGet [Attribute]
-decodeAttributesBits version classes actors actor = do
-  hasAttribute <- getBool
-  if hasAttribute
-    then
-      (:)
-      <$> bitGet version classes actors actor
-      <*> decodeAttributesBits version classes actors actor
-    else pure []
 
 bitGet
   :: (Int, Int, Int)

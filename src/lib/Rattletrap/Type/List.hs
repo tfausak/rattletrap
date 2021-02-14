@@ -40,19 +40,28 @@ bytePut f x = do
 byteGet :: ByteGet a -> ByteGet (List a)
 byteGet f = do
   size <- U32.byteGet
-  fromArray <$> replicateM (fromIntegral $ U32.toWord32 size) f
+  replicateM (fromIntegral $ U32.toWord32 size) f
 
-replicateM :: Monad m => Int -> m a -> m (Array.Array Int a)
+replicateM :: Monad m => Int -> m a -> m (List a)
 replicateM n = generateM n . const
 
-generateM :: Monad m => Int -> (Int -> m a) -> m (Array.Array Int a)
+generateM :: Monad m => Int -> (Int -> m a) -> m (List a)
 generateM = generateMWith 0 []
 
 generateMWith
-  :: Monad m
-  => Int -> [(Int, a)] -> Int -> (Int -> m a) -> m (Array.Array Int a)
+  :: Monad m => Int -> [(Int, a)] -> Int -> (Int -> m a) -> m (List a)
 generateMWith i xs n f = if i >= n
-  then pure $ Array.array (0, n - 1) xs
+  then pure . fromArray $ Array.array (0, n - 1) xs
   else do
     x <- f i
     generateMWith (i + 1) ((i, x) : xs) n f
+
+untilM :: Monad m => m (Maybe a) -> m (List a)
+untilM = untilMWith 0 []
+
+untilMWith :: Monad m => Int -> [(Int, a)] -> m (Maybe a) -> m (List a)
+untilMWith i xs f = do
+  m <- f
+  case m of
+    Nothing -> pure . fromArray $ Array.array (0, i - 1) xs
+    Just x -> untilMWith (i + 1) ((i, x) : xs) f
