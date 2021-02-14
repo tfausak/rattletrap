@@ -8,23 +8,45 @@ import qualified Data.Word as Word
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Utility.Bytes as Utility
 
-type BitPut = BinaryBits.BitPut ()
+type BitPut = BitPutM ()
+
+newtype BitPutM a = BitPutM (BinaryBits.BitPut a)
+
+instance Functor BitPutM where
+  fmap f = fromBinaryBits . fmap f . toBinaryBits
+
+instance Applicative BitPutM where
+  pure = fromBinaryBits . pure
+
+  x <*> y = fromBinaryBits $ toBinaryBits x <*> toBinaryBits y
+
+instance Monad BitPutM where
+  x >>= f = fromBinaryBits $ toBinaryBits x >>= toBinaryBits . f
+
+fromBinaryBits :: BinaryBits.BitPut a -> BitPutM a
+fromBinaryBits = BitPutM
+
+toBinaryBits :: BitPutM a -> BinaryBits.BitPut a
+toBinaryBits (BitPutM x) = x
 
 toBytePut :: BitPut -> BytePut.BytePut
-toBytePut = Binary.execPut . BinaryBits.runBitPut
+toBytePut = Binary.execPut . BinaryBits.runBitPut . toBinaryBits
 
 fromBytePut :: BytePut.BytePut -> BitPut
 fromBytePut =
-  BinaryBits.putByteString . Utility.reverseBytes . BytePut.toByteString
+  fromBinaryBits
+  . BinaryBits.putByteString
+  . Utility.reverseBytes
+  . BytePut.toByteString
 
 bits :: Bits.Bits a => Int -> a -> BitPut
 bits n x = mapM_ (bool . Bits.testBit x) [0 .. n - 1]
 
 bool :: Bool -> BitPut
-bool = BinaryBits.putBool
+bool = fromBinaryBits . BinaryBits.putBool
 
 byteString :: ByteString.ByteString -> BitPut
-byteString = BinaryBits.putByteString
+byteString = fromBinaryBits . BinaryBits.putByteString
 
 word8 :: Int -> Word.Word8 -> BitPut
-word8 = BinaryBits.putWord8
+word8 n = fromBinaryBits . BinaryBits.putWord8 n
