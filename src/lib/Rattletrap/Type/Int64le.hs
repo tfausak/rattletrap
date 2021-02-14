@@ -12,19 +12,25 @@ import qualified Data.Int as Int
 import qualified Data.Text as Text
 import qualified Text.Read as Read
 
-newtype Int64le = Int64le
-  { int64leValue :: Int.Int64
-  } deriving (Eq, Show)
+newtype Int64le
+  = Int64le Int.Int64
+  deriving (Eq, Show)
 
 instance Aeson.FromJSON Int64le where
   parseJSON = Aeson.withText "Int64le" $
-    either fail (pure . Int64le) . Read.readEither . Text.unpack
+    either fail (pure . fromInt64) . Read.readEither . Text.unpack
 
 instance Aeson.ToJSON Int64le where
-  toJSON = Aeson.toJSON . show . int64leValue
+  toJSON = Aeson.toJSON . show . toInt64
+
+fromInt64 :: Int.Int64 -> Int64le
+fromInt64 = Int64le
+
+toInt64 :: Int64le -> Int.Int64
+toInt64 (Int64le x) = x
 
 bytePut :: Int64le -> BytePut
-bytePut int64 = Binary.putInt64le (int64leValue int64)
+bytePut int64 = Binary.putInt64le (toInt64 int64)
 
 bitPut :: Int64le -> BitPut ()
 bitPut int64 = do
@@ -32,7 +38,7 @@ bitPut int64 = do
   BinaryBits.putByteString (reverseBytes bytes)
 
 byteGet :: ByteGet Int64le
-byteGet = Int64le <$> getInt64le
+byteGet = fromInt64 <$> getInt64le
 
 bitGet :: BitGet Int64le
 bitGet = toBits byteGet 8

@@ -15,11 +15,11 @@ import qualified Data.Map as Map
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ProductAttribute = ProductAttribute
-  { productAttributeUnknown :: Bool
-  , productAttributeObjectId :: Word32le.Word32le
-  , productAttributeObjectName :: Maybe Str.Str
+  { unknown :: Bool
+  , objectId :: Word32le.Word32le
+  , objectName :: Maybe Str.Str
   -- ^ read-only
-  , productAttributeValue :: ProductAttributeValue.ProductAttributeValue
+  , value :: ProductAttributeValue.ProductAttributeValue
   }
   deriving (Eq, Show)
 
@@ -32,9 +32,9 @@ putProductAttributes attributes = do
 
 bitPut :: ProductAttribute -> BitPut ()
 bitPut attribute = do
-  BinaryBits.putBool (productAttributeUnknown attribute)
-  Word32le.bitPut (productAttributeObjectId attribute)
-  ProductAttributeValue.bitPut $ productAttributeValue attribute
+  BinaryBits.putBool (unknown attribute)
+  Word32le.bitPut (objectId attribute)
+  ProductAttributeValue.bitPut $ value attribute
 
 decodeProductAttributesBits
   :: (Int, Int, Int) -> Map Word32le.Word32le Str.Str -> BitGet [ProductAttribute]
@@ -48,7 +48,7 @@ bitGet
   :: (Int, Int, Int) -> Map Word32le.Word32le Str.Str -> BitGet ProductAttribute
 bitGet version objectMap = do
   flag <- getBool
-  objectId <- Word32le.bitGet
-  let maybeObjectName = Map.lookup objectId objectMap
-  value <- ProductAttributeValue.bitGet version objectId maybeObjectName
-  pure (ProductAttribute flag objectId maybeObjectName value)
+  objectId_ <- Word32le.bitGet
+  let maybeObjectName = Map.lookup objectId_ objectMap
+  value_ <- ProductAttributeValue.bitGet version objectId_ maybeObjectName
+  pure (ProductAttribute flag objectId_ maybeObjectName value_)
