@@ -7,7 +7,7 @@ module Rattletrap.Decode.Common
   , getWord8Bits
   , runDecode
   , runDecodeBits
-  , toBits
+  , byteGetToBitGet
   , Binary.getFloatle
   , Binary.getByteString
   , Binary.getInt8
@@ -53,8 +53,8 @@ runDecode decode bytes =
 runDecodeBits :: BitGet a -> Bytes.ByteString -> Either String a
 runDecodeBits = runDecode . BinaryBits.runBitGet
 
-toBits :: ByteGet a -> Int -> BitGet a
-toBits decode size = do
+byteGetToBitGet :: ByteGet a -> Int -> BitGet a
+byteGetToBitGet decode size = do
   bytes <- BinaryBits.getByteString size
   case runDecode decode (Utility.reverseBytes bytes) of
     Left problem -> fail problem

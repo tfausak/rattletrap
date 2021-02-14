@@ -36,4 +36,4 @@ byteGet :: ByteGet Word64le
 byteGet = fromWord64 <$> getWord64le
 
 bitGet :: BitGet Word64le
-bitGet = toBits byteGet 8
+bitGet = byteGetToBitGet byteGet 8

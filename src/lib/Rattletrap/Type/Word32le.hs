@@ -30,4 +30,4 @@ byteGet :: ByteGet Word32le
 byteGet = fromWord32 <$> getWord32le
 
 bitGet :: BitGet Word32le
-bitGet = toBits byteGet 4
+bitGet = byteGetToBitGet byteGet 4
