@@ -65,17 +65,17 @@ $(deriveJson ''Content)
 
 empty :: Content
 empty = Content
-  { levels = List.List []
-  , keyFrames = List.List []
+  { levels = List.empty
+  , keyFrames = List.empty
   , streamSize = U32.fromWord32 0
   , frames = []
-  , messages = List.List []
-  , marks = List.List []
-  , packages = List.List []
-  , objects = List.List []
-  , names = List.List []
-  , classMappings = List.List []
-  , caches = List.List []
+  , messages = List.empty
+  , marks = List.empty
+  , packages = List.empty
+  , objects = List.empty
+  , names = List.empty
+  , classMappings = List.empty
+  , caches = List.empty
   , unknown = []
   }
 
