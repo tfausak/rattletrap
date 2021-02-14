@@ -38,17 +38,6 @@ byteGet f = do
 replicateM :: Monad m => Int -> m a -> m (List a)
 replicateM n = fmap fromList . Monad.replicateM n
 
--- generateM :: Monad m => Int -> (Int -> m a) -> m (List a)
--- generateM n f = generateMWith n f 0 []
-
--- generateMWith
---   :: Monad m => Int -> (Int -> m a) -> Int -> [(Int, a)] -> m (List a)
--- generateMWith n f i xs = if i >= n
---   then pure . fromList $ Array.array (0, n - 1) xs
---   else do
---     x <- f i
---     generateMWith n f (i + 1) ((i, x) : xs)
-
 untilM :: Monad m => m (Maybe a) -> m (List a)
 untilM f = untilMWith f 0 []
 
