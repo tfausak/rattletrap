@@ -78,11 +78,23 @@ empty = Content
   }
 
 bytePut :: Content -> BytePut.BytePut
-bytePut content = do
-  List.bytePut Str.bytePut (levels content)
-  List.bytePut KeyFrame.bytePut (keyFrames content)
+bytePut x =
+  List.bytePut Str.bytePut (levels x)
+  <> List.bytePut KeyFrame.bytePut (keyFrames x)
+  <> putFrames x
+  <> List.bytePut Message.bytePut (messages x)
+  <> List.bytePut Mark.bytePut (marks x)
+  <> List.bytePut Str.bytePut (packages x)
+  <> List.bytePut Str.bytePut (objects x)
+  <> List.bytePut Str.bytePut (names x)
+  <> List.bytePut ClassMapping.bytePut (classMappings x)
+  <> List.bytePut Cache.bytePut (caches x)
+  <> foldMap BytePut.word8 (unknown x)
+
+putFrames :: Content -> BytePut.BytePut
+putFrames x =
   let
-    stream = BytePut.toByteString . BitPut.toBytePut . Frame.putFrames $ frames content
+    stream = BytePut.toByteString . BitPut.toBytePut . Frame.putFrames $ frames x
     -- This is a little strange. When parsing a binary replay, the stream size
     -- is given before the stream itself. When generating the JSON, the stream
     -- size is included. That allows a bit-for-bit identical binary replay to
@@ -93,22 +105,13 @@ bytePut content = do
     -- carrying it along as extra data on the side, this logic could go away.
     -- Unforunately that isn't currently known. See this issue for details:
     -- <https://github.com/tfausak/rattletrap/issues/171>.
-    expectedStreamSize = streamSize content
+    expectedStreamSize = streamSize x
     actualStreamSize = U32.fromWord32 . fromIntegral $ Bytes.length stream
     streamSize_ = U32.fromWord32 $ max
       (U32.toWord32 expectedStreamSize)
       (U32.toWord32 actualStreamSize)
-  U32.bytePut streamSize_
-  BytePut.byteString
-    (reverseBytes (padBytes (U32.toWord32 streamSize_) stream))
-  List.bytePut Message.bytePut (messages content)
-  List.bytePut Mark.bytePut (marks content)
-  List.bytePut Str.bytePut (packages content)
-  List.bytePut Str.bytePut (objects content)
-  List.bytePut Str.bytePut (names content)
-  List.bytePut ClassMapping.bytePut (classMappings content)
-  List.bytePut Cache.bytePut (caches content)
-  mapM_ BytePut.word8 (unknown content)
+  in U32.bytePut streamSize_
+  <> BytePut.byteString (reverseBytes (padBytes (U32.toWord32 streamSize_) stream))
 
 byteGet
   :: (Int, Int, Int)

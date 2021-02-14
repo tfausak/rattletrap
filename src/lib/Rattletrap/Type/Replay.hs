@@ -29,9 +29,9 @@ data Replay content = Replay
 $(deriveJson ''Replay)
 
 bytePut :: FullReplay -> BytePut.BytePut
-bytePut replay = do
-  Section.bytePut Header.putHeader (header replay)
-  Section.bytePut Content.bytePut (content replay)
+bytePut x = do
+  Section.bytePut Header.putHeader (header x)
+  <> Section.bytePut Content.bytePut (content x)
 
 byteGet :: Bool -> ByteGet.ByteGet FullReplay
 byteGet fast = do

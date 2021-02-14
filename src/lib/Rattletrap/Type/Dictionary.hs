@@ -5,7 +5,6 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.ByteGet as ByteGet
 
-import qualified Control.Monad as Monad
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.Bifunctor as Bifunctor
@@ -56,11 +55,9 @@ lookup :: Str.Str -> Dictionary a -> Maybe a
 lookup k = Prelude.lookup k . List.toList . elements
 
 bytePut :: (a -> BytePut.BytePut) -> Dictionary a -> BytePut.BytePut
-bytePut f x = do
-  Monad.forM_ (List.toList $ elements x) $ \ (k, v) -> do
-    Str.bytePut k
-    f v
-  Str.bytePut $ lastKey x
+bytePut f x =
+  foldMap (\ (k, v) -> Str.bytePut k <> f v) (List.toList $ elements x)
+  <> Str.bytePut (lastKey x)
 
 byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (Dictionary a)
 byteGet = byteGetWith 0 []

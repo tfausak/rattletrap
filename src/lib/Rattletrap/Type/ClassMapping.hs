@@ -17,9 +17,9 @@ data ClassMapping = ClassMapping
 $(deriveJson ''ClassMapping)
 
 bytePut :: ClassMapping -> BytePut.BytePut
-bytePut classMapping = do
-  Str.bytePut (name classMapping)
-  U32.bytePut (streamId classMapping)
+bytePut x =
+  Str.bytePut (name x)
+  <> U32.bytePut (streamId x)
 
 byteGet :: ByteGet.ByteGet ClassMapping
 byteGet = ClassMapping <$> Str.byteGet <*> U32.byteGet

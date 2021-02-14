@@ -2,6 +2,7 @@ module Rattletrap.BytePut where
 
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString as ByteString
+import qualified Data.ByteString.Builder as Builder
 import qualified Data.ByteString.Lazy as LazyByteString
 import qualified Data.Int as Int
 import qualified Data.Word as Word
@@ -12,7 +13,10 @@ toByteString :: BytePut -> ByteString.ByteString
 toByteString = LazyByteString.toStrict . toLazyByteString
 
 toLazyByteString :: BytePut -> LazyByteString.ByteString
-toLazyByteString = Binary.runPut
+toLazyByteString = Builder.toLazyByteString . toBuilder
+
+toBuilder :: BytePut -> Builder.Builder
+toBuilder = Binary.execPut
 
 byteString :: ByteString.ByteString -> BytePut
 byteString = Binary.putByteString

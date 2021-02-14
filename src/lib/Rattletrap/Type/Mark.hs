@@ -19,9 +19,9 @@ data Mark = Mark
 $(deriveJson ''Mark)
 
 bytePut :: Mark -> BytePut.BytePut
-bytePut mark = do
-  Str.bytePut (value mark)
-  U32.bytePut (frame mark)
+bytePut x =
+  Str.bytePut (value x)
+  <> U32.bytePut (frame x)
 
 byteGet :: ByteGet.ByteGet Mark
 byteGet = Mark <$> Str.byteGet <*> U32.byteGet

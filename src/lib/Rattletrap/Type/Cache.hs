@@ -20,11 +20,11 @@ data Cache = Cache
 $(deriveJson ''Cache)
 
 bytePut :: Cache -> BytePut.BytePut
-bytePut cache = do
-  U32.bytePut (classId cache)
-  U32.bytePut (parentCacheId cache)
-  U32.bytePut (cacheId cache)
-  List.bytePut AttributeMapping.bytePut (attributeMappings cache)
+bytePut x =
+  U32.bytePut (classId x)
+  <> U32.bytePut (parentCacheId x)
+  <> U32.bytePut (cacheId x)
+  <> List.bytePut AttributeMapping.bytePut (attributeMappings x)
 
 byteGet :: ByteGet.ByteGet Cache
 byteGet =

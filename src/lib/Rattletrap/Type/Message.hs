@@ -21,10 +21,10 @@ data Message = Message
 $(deriveJson ''Message)
 
 bytePut :: Message -> BytePut.BytePut
-bytePut message = do
-  U32.bytePut (frame message)
-  Str.bytePut (name message)
-  Str.bytePut (value message)
+bytePut x = do
+  U32.bytePut (frame x)
+  <> Str.bytePut (name x)
+  <> Str.bytePut (value x)
 
 byteGet :: ByteGet.ByteGet Message
 byteGet = Message <$> U32.byteGet <*> Str.byteGet <*> Str.byteGet

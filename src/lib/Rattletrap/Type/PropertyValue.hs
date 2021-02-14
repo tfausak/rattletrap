@@ -33,18 +33,14 @@ $(deriveJson ''PropertyValue)
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
 bytePut putProperty value = case value of
-  Array list -> List.bytePut (Dictionary.bytePut putProperty) list
-  Bool word8 -> U8.bytePut word8
-  Byte k mv -> do
-    Str.bytePut k
-    case mv of
-      Nothing -> pure ()
-      Just v -> Str.bytePut v
-  Float float32 -> F32.bytePut float32
-  Int int32 -> I32.bytePut int32
-  Name text -> Str.bytePut text
-  QWord word64 -> U64.bytePut word64
-  Str text -> Str.bytePut text
+  Array x -> List.bytePut (Dictionary.bytePut putProperty) x
+  Bool x -> U8.bytePut x
+  Byte k mv -> Str.bytePut k <> maybe mempty Str.bytePut mv
+  Float x -> F32.bytePut x
+  Int x -> I32.bytePut x
+  Name x -> Str.bytePut x
+  QWord x -> U64.bytePut x
+  Str x -> Str.bytePut x
 
 byteGet :: ByteGet.ByteGet a -> Str.Str -> ByteGet.ByteGet (PropertyValue a)
 byteGet getProperty kind = case Str.toString kind of

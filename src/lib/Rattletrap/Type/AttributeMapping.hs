@@ -16,9 +16,9 @@ data AttributeMapping = AttributeMapping
 $(deriveJson ''AttributeMapping)
 
 bytePut :: AttributeMapping -> BytePut.BytePut
-bytePut attributeMapping = do
-  U32.bytePut (objectId attributeMapping)
-  U32.bytePut (streamId attributeMapping)
+bytePut x =
+  U32.bytePut (objectId x)
+  <> U32.bytePut (streamId x)
 
 byteGet :: ByteGet.ByteGet AttributeMapping
 byteGet =

@@ -21,10 +21,10 @@ data KeyFrame = KeyFrame
 $(deriveJson ''KeyFrame)
 
 bytePut :: KeyFrame -> BytePut.BytePut
-bytePut keyFrame = do
-  F32.bytePut (time keyFrame)
-  U32.bytePut (frame keyFrame)
-  U32.bytePut (position keyFrame)
+bytePut x =
+  F32.bytePut (time x)
+  <> U32.bytePut (frame x)
+  <> U32.bytePut (position x)
 
 byteGet :: ByteGet.ByteGet KeyFrame
 byteGet =

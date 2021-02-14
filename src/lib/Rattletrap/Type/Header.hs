@@ -62,14 +62,12 @@ data Header = Header
 $(deriveJson ''Header)
 
 putHeader :: Header -> BytePut.BytePut
-putHeader header = do
-  U32.bytePut (engineVersion header)
-  U32.bytePut (licenseeVersion header)
-  case patchVersion header of
-    Nothing -> pure ()
-    Just x -> U32.bytePut x
-  Str.bytePut (label header)
-  Dictionary.bytePut Property.bytePut (properties header)
+putHeader x =
+  U32.bytePut (engineVersion x)
+  <> U32.bytePut (licenseeVersion x)
+  <> maybe mempty U32.bytePut (patchVersion x)
+  <> Str.bytePut (label x)
+  <> Dictionary.bytePut Property.bytePut (properties x)
 
 decodeHeader :: ByteGet.ByteGet Header
 decodeHeader = do

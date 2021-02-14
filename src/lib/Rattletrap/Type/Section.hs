@@ -40,13 +40,14 @@ create encode body_ =
 -- | Given a way to put the 'body', puts a section. This will also put
 -- the size and CRC.
 bytePut :: (a -> BytePut.BytePut) -> Section a -> BytePut.BytePut
-bytePut putBody section = do
-  let rawBody = BytePut.toByteString . putBody $ body section
-  let size_ = Bytes.length rawBody
-  let crc_ = Crc.compute rawBody
-  U32.bytePut (U32.fromWord32 (fromIntegral size_))
-  U32.bytePut (U32.fromWord32 crc_)
-  BytePut.byteString rawBody
+bytePut putBody section =
+  let
+    rawBody = BytePut.toByteString . putBody $ body section
+    size_ = Bytes.length rawBody
+    crc_ = Crc.compute rawBody
+  in U32.bytePut (U32.fromWord32 (fromIntegral size_))
+  <> U32.bytePut (U32.fromWord32 crc_)
+  <> BytePut.byteString rawBody
 
 byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (Section a)
 byteGet getBody = do

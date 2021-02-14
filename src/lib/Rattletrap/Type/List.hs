@@ -25,10 +25,10 @@ toList :: List a -> [a]
 toList (List x) = x
 
 bytePut :: (a -> BytePut.BytePut) -> List a -> BytePut.BytePut
-bytePut f x = do
+bytePut f x =
   let v = toList x
-  U32.bytePut . U32.fromWord32 . fromIntegral $ length v
-  mapM_ f v
+  in (U32.bytePut . U32.fromWord32 . fromIntegral $ length v)
+  <> foldMap f v
 
 byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (List a)
 byteGet f = do

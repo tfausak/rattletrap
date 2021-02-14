@@ -36,11 +36,12 @@ toString :: Str -> String
 toString = Text.unpack . toText
 
 bytePut :: Str -> BytePut.BytePut
-bytePut text = do
-  let size = getTextSize text
-  let encode = getTextEncoder size
-  I32.bytePut size
-  BytePut.byteString . encode . addNull $ toText text
+bytePut text =
+  let
+    size = getTextSize text
+    encode = getTextEncoder size
+  in I32.bytePut size
+  <> (BytePut.byteString . encode . addNull $ toText text)
 
 bitPut :: Str -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut

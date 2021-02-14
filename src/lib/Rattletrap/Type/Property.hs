@@ -20,10 +20,10 @@ data Property = Property
 $(deriveJson ''Property)
 
 bytePut :: Property -> BytePut.BytePut
-bytePut property = do
-  Str.bytePut (kind property)
-  U64.bytePut (size property)
-  PropertyValue.bytePut bytePut (value property)
+bytePut x = do
+  Str.bytePut (kind x)
+  <> U64.bytePut (size x)
+  <> PropertyValue.bytePut bytePut (value x)
 
 byteGet :: ByteGet.ByteGet Property
 byteGet = do
