@@ -1,3 +1,6 @@
+{- hlint ignore "Avoid restricted extensions" -}
+{-# LANGUAGE FlexibleInstances #-}
+
 module Rattletrap.BitPut where
 
 import qualified Data.Binary.Put as Binary
@@ -22,6 +25,12 @@ instance Applicative BitPutM where
 
 instance Monad BitPutM where
   x >>= f = fromBinaryBits $ toBinaryBits x >>= toBinaryBits . f
+
+instance Semigroup (BitPutM a) where
+  (<>) = (*>)
+
+instance Monoid (BitPutM ()) where
+  mempty = pure ()
 
 fromBinaryBits :: BinaryBits.BitPut a -> BitPutM a
 fromBinaryBits = BitPutM
