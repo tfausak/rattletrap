@@ -1,11 +1,8 @@
 module Rattletrap.Type.Word64le where
 
-import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 
-import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Aeson as Aeson
 import qualified Data.Text as Text
 import qualified Data.Word as Word
@@ -33,7 +30,7 @@ bytePut :: Word64le -> BytePut
 bytePut = Binary.putWord64le . toWord64
 
 bitPut :: Word64le -> BitPut ()
-bitPut = BinaryBits.putByteString . reverseBytes . LazyBytes.toStrict . Binary.runPut . bytePut
+bitPut = bytePutToBitPut bytePut
 
 byteGet :: ByteGet Word64le
 byteGet = fromWord64 <$> getWord64le

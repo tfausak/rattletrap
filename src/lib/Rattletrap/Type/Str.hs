@@ -10,7 +10,6 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Text.Encoding.Error as Text
 import qualified Debug.Trace as Debug
-import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString as Bytes
 import qualified Data.Char as Char
@@ -43,11 +42,7 @@ bytePut text = do
   Binary.putByteString (encode (addNull (toText text)))
 
 bitPut :: Str -> BitPut ()
-bitPut text = do
-  let size = getTextSize text
-  let encode = getTextEncoder size
-  Int32le.bitPut size
-  BinaryBits.putByteString (reverseBytes (encode (addNull (toText text))))
+bitPut = bytePutToBitPut bytePut
 
 getTextSize :: Str -> Int32le.Int32le
 getTextSize text =

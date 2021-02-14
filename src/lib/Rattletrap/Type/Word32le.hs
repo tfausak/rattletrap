@@ -3,13 +3,10 @@
 module Rattletrap.Type.Word32le where
 
 import Rattletrap.Type.Common
-import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as LazyBytes
 
 newtype Word32le
   = Word32le Word32
@@ -27,7 +24,7 @@ bytePut :: Word32le -> BytePut
 bytePut = Binary.putWord32le . toWord32
 
 bitPut :: Word32le -> BitPut ()
-bitPut = BinaryBits.putByteString . reverseBytes . LazyBytes.toStrict . Binary.runPut . bytePut
+bitPut = bytePutToBitPut bytePut
 
 byteGet :: ByteGet Word32le
 byteGet = fromWord32 <$> getWord32le

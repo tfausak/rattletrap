@@ -1,12 +1,9 @@
 module Rattletrap.Type.Int64le where
 
-import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Aeson as Aeson
 import qualified Data.Int as Int
 import qualified Data.Text as Text
@@ -33,9 +30,7 @@ bytePut :: Int64le -> BytePut
 bytePut int64 = Binary.putInt64le (toInt64 int64)
 
 bitPut :: Int64le -> BitPut ()
-bitPut int64 = do
-  let bytes = LazyBytes.toStrict (Binary.runPut (bytePut int64))
-  BinaryBits.putByteString (reverseBytes bytes)
+bitPut = bytePutToBitPut bytePut
 
 byteGet :: ByteGet Int64le
 byteGet = fromInt64 <$> getInt64le

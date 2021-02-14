@@ -3,13 +3,10 @@
 module Rattletrap.Type.Int8le where
 
 import Rattletrap.Type.Common
-import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as LazyBytes
 
 newtype Int8le
   = Int8le Int8
@@ -27,9 +24,7 @@ bytePut :: Int8le -> BytePut
 bytePut int8 = Binary.putInt8 (toInt8 int8)
 
 bitPut :: Int8le -> BitPut ()
-bitPut int8 = do
-  let bytes = LazyBytes.toStrict (Binary.runPut (bytePut int8))
-  BinaryBits.putByteString (reverseBytes bytes)
+bitPut = bytePutToBitPut bytePut
 
 byteGet :: ByteGet Int8le
 byteGet = fromInt8 <$> getInt8

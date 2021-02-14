@@ -3,13 +3,10 @@
 module Rattletrap.Type.Float32le where
 
 import Rattletrap.Type.Common
-import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
-import qualified Data.ByteString.Lazy as LazyBytes
 
 newtype Float32le
   = Float32le Float
@@ -27,9 +24,7 @@ bytePut :: Float32le -> BytePut
 bytePut = Binary.putFloatle . toFloat
 
 bitPut :: Float32le -> BitPut ()
-bitPut float32 = do
-  let bytes = LazyBytes.toStrict (Binary.runPut (bytePut float32))
-  BinaryBits.putByteString (reverseBytes bytes)
+bitPut = bytePutToBitPut bytePut
 
 byteGet :: ByteGet Float32le
 byteGet = fromFloat <$> getFloatle
