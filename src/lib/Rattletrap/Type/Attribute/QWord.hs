@@ -3,20 +3,19 @@
 module Rattletrap.Type.Attribute.QWord where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word64le
+import qualified Rattletrap.Type.Word64le as Word64le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 newtype QWordAttribute = QWordAttribute
-  { qWordAttributeValue :: Word64le
+  { value :: Word64le.Word64le
   } deriving (Eq, Show)
 
 $(deriveJson ''QWordAttribute)
 
-putQWordAttribute :: QWordAttribute -> BinaryBits.BitPut ()
-putQWordAttribute qWordAttribute =
-  putWord64Bits (qWordAttributeValue qWordAttribute)
+bitPut :: QWordAttribute -> BitPut ()
+bitPut qWordAttribute =
+  Word64le.bitPut (value qWordAttribute)
 
-decodeQWordAttributeBits :: DecodeBits QWordAttribute
-decodeQWordAttributeBits = QWordAttribute <$> decodeWord64leBits
+bitGet :: BitGet QWordAttribute
+bitGet = QWordAttribute <$> Word64le.bitGet

@@ -3,26 +3,25 @@
 module Rattletrap.Type.Attribute.Loadouts where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Attribute.Loadout
+import qualified Rattletrap.Type.Attribute.Loadout as Loadout
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data LoadoutsAttribute = LoadoutsAttribute
-  { loadoutsAttributeBlue :: LoadoutAttribute
-  , loadoutsAttributeOrange :: LoadoutAttribute
+  { blue :: Loadout.LoadoutAttribute
+  , orange :: Loadout.LoadoutAttribute
   }
   deriving (Eq, Show)
 
 $(deriveJson ''LoadoutsAttribute)
 
-putLoadoutsAttribute :: LoadoutsAttribute -> BinaryBits.BitPut ()
-putLoadoutsAttribute loadoutsAttribute = do
-  putLoadoutAttribute (loadoutsAttributeBlue loadoutsAttribute)
-  putLoadoutAttribute (loadoutsAttributeOrange loadoutsAttribute)
+bitPut :: LoadoutsAttribute -> BitPut ()
+bitPut loadoutsAttribute = do
+  Loadout.bitPut (blue loadoutsAttribute)
+  Loadout.bitPut (orange loadoutsAttribute)
 
-decodeLoadoutsAttributeBits :: DecodeBits LoadoutsAttribute
-decodeLoadoutsAttributeBits =
+bitGet :: BitGet LoadoutsAttribute
+bitGet =
   LoadoutsAttribute
-    <$> decodeLoadoutAttributeBits
-    <*> decodeLoadoutAttributeBits
+    <$> Loadout.bitGet
+    <*> Loadout.bitGet

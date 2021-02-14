@@ -3,67 +3,67 @@
 module Rattletrap.Type.Frame where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Float32le
-import Rattletrap.Type.Replication
+import qualified Rattletrap.Type.Float32le as Float32le
+import qualified Rattletrap.Type.Replication as Replication
 import Rattletrap.Decode.Common
-import Rattletrap.Type.ClassAttributeMap
-import Rattletrap.Type.CompressedWord
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
+import qualified Rattletrap.Type.Word32le as Word32le
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
 import qualified Data.Map as Map
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Frame = Frame
-  { frameTime :: Float32le
+  { time :: Float32le.Float32le
   -- ^ Time in seconds since the beginning of the match.
-  , frameDelta :: Float32le
+  , delta :: Float32le.Float32le
   -- ^ Time in seconds since the last frame. Usually about 0.03 since there
   -- are 30 frames per second.
-  , frameReplications :: [Replication]
+  , replications :: [Replication.Replication]
   }
   deriving (Eq, Show)
 
 $(deriveJson ''Frame)
 
-putFrames :: [Frame] -> BinaryBits.BitPut ()
+putFrames :: [Frame] -> BitPut ()
 putFrames frames = case frames of
   [] -> pure ()
-  [frame] -> putFrame frame
+  [frame] -> bitPut frame
   first : rest -> do
-    putFrame first
+    bitPut first
     putFrames rest
 
-putFrame :: Frame -> BinaryBits.BitPut ()
-putFrame frame = do
-  putFloat32Bits (frameTime frame)
-  putFloat32Bits (frameDelta frame)
-  putReplications (frameReplications frame)
+bitPut :: Frame -> BitPut ()
+bitPut frame = do
+  Float32le.bitPut (time frame)
+  Float32le.bitPut (delta frame)
+  Replication.putReplications (replications frame)
 
 decodeFramesBits
   :: (Int, Int, Int)
   -> Int
   -> Word
-  -> ClassAttributeMap
+  -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT
-       (Map.Map CompressedWord Word32le)
-       DecodeBits
+       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
+       BitGet
        [Frame]
 decodeFramesBits version count limit classes = if count <= 0
   then pure []
   else
     (:)
-    <$> decodeFrameBits version limit classes
+    <$> bitGet version limit classes
     <*> decodeFramesBits version (count - 1) limit classes
 
-decodeFrameBits
+bitGet
   :: (Int, Int, Int)
   -> Word
-  -> ClassAttributeMap
-  -> State.StateT (Map.Map CompressedWord Word32le) DecodeBits Frame
-decodeFrameBits version limit classes =
+  -> ClassAttributeMap.ClassAttributeMap
+  -> State.StateT (Map.Map CompressedWord.CompressedWord Word32le.Word32le) BitGet Frame
+bitGet version limit classes =
   Frame
-    <$> Trans.lift decodeFloat32leBits
-    <*> Trans.lift decodeFloat32leBits
-    <*> decodeReplicationsBits version limit classes
+    <$> Trans.lift Float32le.bitGet
+    <*> Trans.lift Float32le.bitGet
+    <*> Replication.decodeReplicationsBits version limit classes

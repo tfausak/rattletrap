@@ -2,19 +2,20 @@
 
 module Rattletrap.Type.Content where
 
-import Rattletrap.Type.Cache
-import Rattletrap.Type.ClassMapping
+import qualified Rattletrap.Type.Cache as Cache
+import qualified Rattletrap.Type.ClassMapping as ClassMapping
 import Rattletrap.Type.Common
-import Rattletrap.Type.Frame
-import Rattletrap.Type.KeyFrame
-import Rattletrap.Type.List
-import Rattletrap.Type.Mark
-import Rattletrap.Type.Message
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Frame as Frame
+import qualified Rattletrap.Type.KeyFrame as KeyFrame
+import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.Mark as Mark
+import qualified Rattletrap.Type.Message as Message
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
-import Rattletrap.Type.ClassAttributeMap
+import Rattletrap.Encode.Common
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 
 import qualified Control.Monad.Trans.State as State
 import qualified Data.Binary.Get as Binary
@@ -26,65 +27,65 @@ import qualified Data.ByteString.Lazy as LazyBytes
 
 -- | Contains low-level game data about a 'Rattletrap.Replay.Replay'.
 data Content = Content
-  { contentLevels :: List Str
+  { levels :: List.List Str.Str
   -- ^ This typically only has one element, like @stadium_oob_audio_map@.
-  , contentKeyFrames :: List KeyFrame
+  , keyFrames :: List.List KeyFrame.KeyFrame
   -- ^ A list of which frames are key frames. Although they aren't necessary
   -- for replay, key frames are frames that replicate every actor. They
   -- typically happen once every 10 seconds.
-  , contentStreamSize :: Word32le
+  , streamSize :: Word32le.Word32le
   -- ^ The size of the stream in bytes. This is only really necessary because
   -- the stream has some arbitrary amount of padding at the end.
-  , contentFrames :: [Frame]
+  , frames :: [Frame.Frame]
   -- ^ The actual game data. This is where all the interesting information is.
-  , contentMessages :: List Message
+  , messages :: List.List Message.Message
   -- ^ Debugging messages. In newer replays, this is always empty.
-  , contentMarks :: List Mark
+  , marks :: List.List Mark.Mark
   -- ^ Tick marks shown on the scrubber when watching a replay.
-  , contentPackages :: List Str
+  , packages :: List.List Str.Str
   -- ^ A list of @.upk@ files to load, like
   -- @..\\..\\TAGame\\CookedPCConsole\\Stadium_P.upk@.
-  , contentObjects :: List Str
+  , objects :: List.List Str.Str
   -- ^ Objects in the stream. Used for the
   -- 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-  , contentNames :: List Str
+  , names :: List.List Str.Str
   -- ^ It's not clear what these are used for. This list is usually not empty,
   -- but appears unused otherwise.
-  , contentClassMappings :: List ClassMapping
+  , classMappings :: List.List ClassMapping.ClassMapping
   -- ^ A mapping between classes and their ID in the stream. Used for the
   -- 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-  , contentCaches :: List Cache
+  , caches :: List.List Cache.Cache
   -- ^ A list of classes along with their parent classes and attributes. Used
   -- for the 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-  , contentUnknown :: [Word8]
+  , unknown :: [Word8]
   }
   deriving (Eq, Show)
 
 $(deriveJson ''Content)
 
-defaultContent :: Content
-defaultContent = Content
-  { contentLevels = List []
-  , contentKeyFrames = List []
-  , contentStreamSize = Word32le 0
-  , contentFrames = []
-  , contentMessages = List []
-  , contentMarks = List []
-  , contentPackages = List []
-  , contentObjects = List []
-  , contentNames = List []
-  , contentClassMappings = List []
-  , contentCaches = List []
-  , contentUnknown = []
+empty :: Content
+empty = Content
+  { levels = List.List []
+  , keyFrames = List.List []
+  , streamSize = Word32le.fromWord32 0
+  , frames = []
+  , messages = List.List []
+  , marks = List.List []
+  , packages = List.List []
+  , objects = List.List []
+  , names = List.List []
+  , classMappings = List.List []
+  , caches = List.List []
+  , unknown = []
   }
 
-putContent :: Content -> Binary.Put
-putContent content = do
-  putList putText (contentLevels content)
-  putList putKeyFrame (contentKeyFrames content)
+bytePut :: Content -> BytePut
+bytePut content = do
+  List.bytePut Str.bytePut (levels content)
+  List.bytePut KeyFrame.bytePut (keyFrames content)
   let
     stream = LazyBytes.toStrict
-      (Binary.runPut (BinaryBits.runBitPut (putFrames (contentFrames content)))
+      (Binary.runPut (BinaryBits.runBitPut (Frame.putFrames (frames content)))
       )
     -- This is a little strange. When parsing a binary replay, the stream size
     -- is given before the stream itself. When generating the JSON, the stream
@@ -96,24 +97,24 @@ putContent content = do
     -- carrying it along as extra data on the side, this logic could go away.
     -- Unforunately that isn't currently known. See this issue for details:
     -- <https://github.com/tfausak/rattletrap/issues/171>.
-    expectedStreamSize = contentStreamSize content
-    actualStreamSize = Word32le . fromIntegral $ Bytes.length stream
-    streamSize = Word32le $ max
-      (word32leValue expectedStreamSize)
-      (word32leValue actualStreamSize)
-  putWord32 streamSize
+    expectedStreamSize = streamSize content
+    actualStreamSize = Word32le.fromWord32 . fromIntegral $ Bytes.length stream
+    streamSize_ = Word32le.fromWord32 $ max
+      (Word32le.toWord32 expectedStreamSize)
+      (Word32le.toWord32 actualStreamSize)
+  Word32le.bytePut streamSize_
   Binary.putByteString
-    (reverseBytes (padBytes (word32leValue streamSize) stream))
-  putList putMessage (contentMessages content)
-  putList putMark (contentMarks content)
-  putList putText (contentPackages content)
-  putList putText (contentObjects content)
-  putList putText (contentNames content)
-  putList putClassMapping (contentClassMappings content)
-  putList putCache (contentCaches content)
-  mapM_ Binary.putWord8 (contentUnknown content)
+    (reverseBytes (padBytes (Word32le.toWord32 streamSize_) stream))
+  List.bytePut Message.bytePut (messages content)
+  List.bytePut Mark.bytePut (marks content)
+  List.bytePut Str.bytePut (packages content)
+  List.bytePut Str.bytePut (objects content)
+  List.bytePut Str.bytePut (names content)
+  List.bytePut ClassMapping.bytePut (classMappings content)
+  List.bytePut Cache.bytePut (caches content)
+  mapM_ Binary.putWord8 (unknown content)
 
-decodeContent
+byteGet
   :: (Int, Int, Int)
   -- ^ Version numbers, usually from 'Rattletrap.Header.getVersion'.
   -> Int
@@ -122,41 +123,41 @@ decodeContent
   -> Word
   -- ^ The maximum number of channels in the stream, usually from
   -- 'Rattletrap.Header.getMaxChannels'.
-  -> Decode Content
-decodeContent version numFrames maxChannels = do
-  (levels, keyFrames, streamSize) <-
+  -> ByteGet Content
+byteGet version numFrames maxChannels = do
+  (levels_, keyFrames_, streamSize_) <-
     (,,)
-    <$> decodeList decodeStr
-    <*> decodeList decodeKeyFrame
-    <*> decodeWord32le
-  (stream, messages, marks, packages, objects, names, classMappings, caches) <-
+    <$> List.byteGet Str.byteGet
+    <*> List.byteGet KeyFrame.byteGet
+    <*> Word32le.byteGet
+  (stream, messages_, marks_, packages_, objects_, names_, classMappings_, caches_) <-
     (,,,,,,,)
-    <$> getByteString (fromIntegral (word32leValue streamSize))
-    <*> decodeList decodeMessage
-    <*> decodeList decodeMark
-    <*> decodeList decodeStr
-    <*> decodeList decodeStr
-    <*> decodeList decodeStr
-    <*> decodeList decodeClassMapping
-    <*> decodeList decodeCache
+    <$> getByteString (fromIntegral (Word32le.toWord32 streamSize_))
+    <*> List.byteGet Message.byteGet
+    <*> List.byteGet Mark.byteGet
+    <*> List.byteGet Str.byteGet
+    <*> List.byteGet Str.byteGet
+    <*> List.byteGet Str.byteGet
+    <*> List.byteGet ClassMapping.byteGet
+    <*> List.byteGet Cache.byteGet
   let
     classAttributeMap =
-      makeClassAttributeMap objects classMappings caches names
+      ClassAttributeMap.make objects_ classMappings_ caches_ names_
     bitGet = State.evalStateT
-      (decodeFramesBits version numFrames maxChannels classAttributeMap)
+      (Frame.decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
-  frames <- either fail pure (runDecodeBits bitGet (reverseBytes stream))
+  frames_ <- either fail pure (runDecodeBits bitGet (reverseBytes stream))
   Content
-      levels
-      keyFrames
-      streamSize
-      frames
-      messages
-      marks
-      packages
-      objects
-      names
-      classMappings
-      caches
+      levels_
+      keyFrames_
+      streamSize_
+      frames_
+      messages_
+      marks_
+      packages_
+      objects_
+      names_
+      classMappings_
+      caches_
     . LazyBytes.unpack
     <$> Binary.getRemainingLazyByteString

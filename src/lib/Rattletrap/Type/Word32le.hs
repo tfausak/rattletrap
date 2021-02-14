@@ -5,28 +5,32 @@ module Rattletrap.Type.Word32le where
 import Rattletrap.Type.Common
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
-import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as LazyBytes
 
-newtype Word32le = Word32le
-  { word32leValue :: Word32
-  } deriving (Eq, Ord, Show)
+newtype Word32le
+  = Word32le Word32
+  deriving (Eq, Ord, Show)
 
 $(deriveJson ''Word32le)
 
-putWord32 :: Word32le -> Binary.Put
-putWord32 word32 = Binary.putWord32le (word32leValue word32)
+fromWord32 :: Word32 -> Word32le
+fromWord32 = Word32le
 
-putWord32Bits :: Word32le -> BinaryBits.BitPut ()
-putWord32Bits word32 = do
-  let bytes = LazyBytes.toStrict (Binary.runPut (putWord32 word32))
-  BinaryBits.putByteString (reverseBytes bytes)
+toWord32 :: Word32le -> Word32
+toWord32 (Word32le x) = x
 
-decodeWord32le :: Decode Word32le
-decodeWord32le = Word32le <$> getWord32le
+bytePut :: Word32le -> BytePut
+bytePut = Binary.putWord32le . toWord32
 
-decodeWord32leBits :: DecodeBits Word32le
-decodeWord32leBits = toBits decodeWord32le 4
+bitPut :: Word32le -> BitPut ()
+bitPut = BinaryBits.putByteString . reverseBytes . LazyBytes.toStrict . Binary.runPut . bytePut
+
+byteGet :: ByteGet Word32le
+byteGet = fromWord32 <$> getWord32le
+
+bitGet :: BitGet Word32le
+bitGet = toBits byteGet 4

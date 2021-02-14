@@ -3,51 +3,52 @@
 module Rattletrap.Type.ProductAttribute where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
-import Rattletrap.Type.Word8le
-import Rattletrap.Type.ProductAttributeValue
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
+import qualified Rattletrap.Type.Word8le as Word8le
+import qualified Rattletrap.Type.ProductAttributeValue as ProductAttributeValue
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad as Monad
 import qualified Data.Map as Map
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ProductAttribute = ProductAttribute
-  { productAttributeUnknown :: Bool
-  , productAttributeObjectId :: Word32le
-  , productAttributeObjectName :: Maybe Str
+  { unknown :: Bool
+  , objectId :: Word32le.Word32le
+  , objectName :: Maybe Str.Str
   -- ^ read-only
-  , productAttributeValue :: ProductAttributeValue
+  , value :: ProductAttributeValue.ProductAttributeValue
   }
   deriving (Eq, Show)
 
 $(deriveJson ''ProductAttribute)
 
-putProductAttributes :: [ProductAttribute] -> BinaryBits.BitPut ()
+putProductAttributes :: [ProductAttribute] -> BitPut ()
 putProductAttributes attributes = do
-  putWord8Bits (Word8le (fromIntegral (length attributes)))
-  mapM_ putProductAttribute attributes
+  Word8le.bitPut . Word8le.fromWord8 . fromIntegral $ length attributes
+  mapM_ bitPut attributes
 
-putProductAttribute :: ProductAttribute -> BinaryBits.BitPut ()
-putProductAttribute attribute = do
-  BinaryBits.putBool (productAttributeUnknown attribute)
-  putWord32Bits (productAttributeObjectId attribute)
-  putProductAttributeValue $ productAttributeValue attribute
+bitPut :: ProductAttribute -> BitPut ()
+bitPut attribute = do
+  BinaryBits.putBool (unknown attribute)
+  Word32le.bitPut (objectId attribute)
+  ProductAttributeValue.bitPut $ value attribute
 
 decodeProductAttributesBits
-  :: (Int, Int, Int) -> Map Word32le Str -> DecodeBits [ProductAttribute]
+  :: (Int, Int, Int) -> Map Word32le.Word32le Str.Str -> BitGet [ProductAttribute]
 decodeProductAttributesBits version objectMap = do
-  size <- decodeWord8leBits
+  size <- Word8le.bitGet
   Monad.replicateM
-    (fromIntegral (word8leValue size))
-    (decodeProductAttributeBits version objectMap)
+    (fromIntegral $ Word8le.toWord8 size)
+    (bitGet version objectMap)
 
-decodeProductAttributeBits
-  :: (Int, Int, Int) -> Map Word32le Str -> DecodeBits ProductAttribute
-decodeProductAttributeBits version objectMap = do
+bitGet
+  :: (Int, Int, Int) -> Map Word32le.Word32le Str.Str -> BitGet ProductAttribute
+bitGet version objectMap = do
   flag <- getBool
-  objectId <- decodeWord32leBits
-  let maybeObjectName = Map.lookup objectId objectMap
-  value <- decodeProductAttributeValueBits version objectId maybeObjectName
-  pure (ProductAttribute flag objectId maybeObjectName value)
+  objectId_ <- Word32le.bitGet
+  let maybeObjectName = Map.lookup objectId_ objectMap
+  value_ <- ProductAttributeValue.bitGet version objectId_ maybeObjectName
+  pure (ProductAttribute flag objectId_ maybeObjectName value_)

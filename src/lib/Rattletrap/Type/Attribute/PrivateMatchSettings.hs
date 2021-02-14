@@ -3,47 +3,48 @@
 module Rattletrap.Type.Attribute.PrivateMatchSettings where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
-  { privateMatchSettingsAttributeMutators :: Str
-  , privateMatchSettingsAttributeJoinableBy :: Word32le
-  , privateMatchSettingsAttributeMaxPlayers :: Word32le
-  , privateMatchSettingsAttributeGameName :: Str
-  , privateMatchSettingsAttributePassword :: Str
-  , privateMatchSettingsAttributeFlag :: Bool
+  { mutators :: Str.Str
+  , joinableBy :: Word32le.Word32le
+  , maxPlayers :: Word32le.Word32le
+  , gameName :: Str.Str
+  , password :: Str.Str
+  , flag :: Bool
   }
   deriving (Eq, Show)
 
 $(deriveJson ''PrivateMatchSettingsAttribute)
 
-putPrivateMatchSettingsAttribute
-  :: PrivateMatchSettingsAttribute -> BinaryBits.BitPut ()
-putPrivateMatchSettingsAttribute privateMatchSettingsAttribute = do
-  putTextBits
-    (privateMatchSettingsAttributeMutators privateMatchSettingsAttribute)
-  putWord32Bits
-    (privateMatchSettingsAttributeJoinableBy privateMatchSettingsAttribute)
-  putWord32Bits
-    (privateMatchSettingsAttributeMaxPlayers privateMatchSettingsAttribute)
-  putTextBits
-    (privateMatchSettingsAttributeGameName privateMatchSettingsAttribute)
-  putTextBits
-    (privateMatchSettingsAttributePassword privateMatchSettingsAttribute)
+bitPut
+  :: PrivateMatchSettingsAttribute -> BitPut ()
+bitPut privateMatchSettingsAttribute = do
+  Str.bitPut
+    (mutators privateMatchSettingsAttribute)
+  Word32le.bitPut
+    (joinableBy privateMatchSettingsAttribute)
+  Word32le.bitPut
+    (maxPlayers privateMatchSettingsAttribute)
+  Str.bitPut
+    (gameName privateMatchSettingsAttribute)
+  Str.bitPut
+    (password privateMatchSettingsAttribute)
   BinaryBits.putBool
-    (privateMatchSettingsAttributeFlag privateMatchSettingsAttribute)
+    (flag privateMatchSettingsAttribute)
 
-decodePrivateMatchSettingsAttributeBits
-  :: DecodeBits PrivateMatchSettingsAttribute
-decodePrivateMatchSettingsAttributeBits =
+bitGet
+  :: BitGet PrivateMatchSettingsAttribute
+bitGet =
   PrivateMatchSettingsAttribute
-    <$> decodeStrBits
-    <*> decodeWord32leBits
-    <*> decodeWord32leBits
-    <*> decodeStrBits
-    <*> decodeStrBits
+    <$> Str.bitGet
+    <*> Word32le.bitGet
+    <*> Word32le.bitGet
+    <*> Str.bitGet
+    <*> Str.bitGet
     <*> getBool

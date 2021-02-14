@@ -3,29 +3,28 @@
 module Rattletrap.Type.Attribute.ExtendedExplosion where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Attribute.Explosion
-import Rattletrap.Type.Attribute.FlaggedInt
+import qualified Rattletrap.Type.Attribute.Explosion as Explosion
+import qualified Rattletrap.Type.Attribute.FlaggedInt as FlaggedInt
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data ExtendedExplosionAttribute = ExtendedExplosionAttribute
-  { extendedExplosionAttributeExplosion :: ExplosionAttribute
-  , extendedExplosionAttributeUnknown :: FlaggedIntAttribute
+  { explosion :: Explosion.ExplosionAttribute
+  , unknown :: FlaggedInt.FlaggedIntAttribute
   }
   deriving (Eq, Show)
 
 $(deriveJson ''ExtendedExplosionAttribute)
 
-putExtendedExplosionAttribute
-  :: ExtendedExplosionAttribute -> BinaryBits.BitPut ()
-putExtendedExplosionAttribute x = do
-  putExplosionAttribute (extendedExplosionAttributeExplosion x)
-  putFlaggedIntAttribute (extendedExplosionAttributeUnknown x)
+bitPut
+  :: ExtendedExplosionAttribute -> BitPut ()
+bitPut x = do
+  Explosion.bitPut (explosion x)
+  FlaggedInt.bitPut (unknown x)
 
-decodeExtendedExplosionAttributeBits
-  :: (Int, Int, Int) -> DecodeBits ExtendedExplosionAttribute
-decodeExtendedExplosionAttributeBits version =
+bitGet
+  :: (Int, Int, Int) -> BitGet ExtendedExplosionAttribute
+bitGet version =
   ExtendedExplosionAttribute
-    <$> decodeExplosionAttributeBits version
-    <*> decodeFlaggedIntAttributeBits
+    <$> Explosion.bitGet version
+    <*> FlaggedInt.bitGet

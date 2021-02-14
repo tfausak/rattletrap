@@ -3,39 +3,40 @@
 module Rattletrap.Type.Attribute.Demolish where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Vector
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Vector as Vector
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data DemolishAttribute = DemolishAttribute
-  { demolishAttributeAttackerFlag :: Bool
-  , demolishAttributeAttackerActorId :: Word32le
-  , demolishAttributeVictimFlag :: Bool
-  , demolishAttributeVictimActorId :: Word32le
-  , demolishAttributeAttackerVelocity :: Vector
-  , demolishAttributeVictimVelocity :: Vector
+  { attackerFlag :: Bool
+  , attackerActorId :: Word32le.Word32le
+  , victimFlag :: Bool
+  , victimActorId :: Word32le.Word32le
+  , attackerVelocity :: Vector.Vector
+  , victimVelocity :: Vector.Vector
   }
   deriving (Eq, Show)
 
 $(deriveJson ''DemolishAttribute)
 
-putDemolishAttribute :: DemolishAttribute -> BinaryBits.BitPut ()
-putDemolishAttribute demolishAttribute = do
-  BinaryBits.putBool (demolishAttributeAttackerFlag demolishAttribute)
-  putWord32Bits (demolishAttributeAttackerActorId demolishAttribute)
-  BinaryBits.putBool (demolishAttributeVictimFlag demolishAttribute)
-  putWord32Bits (demolishAttributeVictimActorId demolishAttribute)
-  putVector (demolishAttributeAttackerVelocity demolishAttribute)
-  putVector (demolishAttributeVictimVelocity demolishAttribute)
+bitPut :: DemolishAttribute -> BitPut ()
+bitPut demolishAttribute = do
+  BinaryBits.putBool (attackerFlag demolishAttribute)
+  Word32le.bitPut (attackerActorId demolishAttribute)
+  BinaryBits.putBool (victimFlag demolishAttribute)
+  Word32le.bitPut (victimActorId demolishAttribute)
+  Vector.bitPut (attackerVelocity demolishAttribute)
+  Vector.bitPut (victimVelocity demolishAttribute)
 
-decodeDemolishAttributeBits :: (Int, Int, Int) -> DecodeBits DemolishAttribute
-decodeDemolishAttributeBits version =
+bitGet :: (Int, Int, Int) -> BitGet DemolishAttribute
+bitGet version =
   DemolishAttribute
     <$> getBool
-    <*> decodeWord32leBits
+    <*> Word32le.bitGet
     <*> getBool
-    <*> decodeWord32leBits
-    <*> decodeVectorBits version
-    <*> decodeVectorBits version
+    <*> Word32le.bitGet
+    <*> Vector.bitGet version
+    <*> Vector.bitGet version

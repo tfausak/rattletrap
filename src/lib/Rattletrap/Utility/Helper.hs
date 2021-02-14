@@ -8,9 +8,9 @@ module Rattletrap.Utility.Helper
   ) where
 
 import Rattletrap.Decode.Common
-import Rattletrap.Type.Content
-import Rattletrap.Type.Replay
-import Rattletrap.Type.Section
+import qualified Rattletrap.Type.Content as Content
+import qualified Rattletrap.Type.Replay as Replay
+import qualified Rattletrap.Type.Section as Section
 
 import qualified Data.Aeson as Json
 import qualified Data.Aeson.Encode.Pretty as Json
@@ -19,11 +19,11 @@ import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
 
 -- | Parses a raw replay.
-decodeReplayFile :: Bool -> Bytes.ByteString -> Either String FullReplay
-decodeReplayFile fast = runDecode $ decodeReplay fast
+decodeReplayFile :: Bool -> Bytes.ByteString -> Either String Replay.FullReplay
+decodeReplayFile fast = runDecode $ Replay.byteGet fast
 
 -- | Encodes a replay as JSON.
-encodeReplayJson :: FullReplay -> Bytes.ByteString
+encodeReplayJson :: Replay.FullReplay -> Bytes.ByteString
 encodeReplayJson = LazyBytes.toStrict . Json.encodePretty' Json.defConfig
   { Json.confCompare = compare
   , Json.confIndent = Json.Spaces 2
@@ -31,12 +31,12 @@ encodeReplayJson = LazyBytes.toStrict . Json.encodePretty' Json.defConfig
   }
 
 -- | Parses a JSON replay.
-decodeReplayJson :: Bytes.ByteString -> Either String FullReplay
+decodeReplayJson :: Bytes.ByteString -> Either String Replay.FullReplay
 decodeReplayJson = Json.eitherDecodeStrict'
 
 -- | Encodes a raw replay.
-encodeReplayFile :: Bool -> FullReplay -> Bytes.ByteString
+encodeReplayFile :: Bool -> Replay.FullReplay -> Bytes.ByteString
 encodeReplayFile fast replay =
-  LazyBytes.toStrict . Binary.runPut . putReplay $ if fast
-    then replay { replayContent = toSection putContent defaultContent }
+  LazyBytes.toStrict . Binary.runPut . Replay.bytePut $ if fast
+    then replay { Replay.content = Section.create Content.bytePut Content.empty }
     else replay

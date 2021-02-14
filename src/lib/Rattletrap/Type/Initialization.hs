@@ -3,36 +3,35 @@
 module Rattletrap.Type.Initialization where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Int8Vector
-import Rattletrap.Type.Vector
+import qualified Rattletrap.Type.Int8Vector as Int8Vector
+import qualified Rattletrap.Type.Vector as Vector
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data Initialization = Initialization
-  { initializationLocation :: Maybe Vector
+  { location :: Maybe Vector.Vector
   -- ^ Not every class has an initial location. See
-  -- 'Rattletrap.Data.rawClassesWithLocation'.
-  , initializationRotation :: Maybe Int8Vector
+  -- 'Rattletrap.Data.classesWithLocation'.
+  , rotation :: Maybe Int8Vector.Int8Vector
   -- ^ Only classes with location can have rotation, but not every one does.
-  -- See 'Rattletrap.Data.rawClassesWithRotation'.
+  -- See 'Rattletrap.Data.classesWithRotation'.
   }
   deriving (Eq, Show)
 
 $(deriveJson ''Initialization)
 
-putInitialization :: Initialization -> BinaryBits.BitPut ()
-putInitialization initialization = do
-  case initializationLocation initialization of
+bitPut :: Initialization -> BitPut ()
+bitPut initialization = do
+  case location initialization of
     Nothing -> pure ()
-    Just location -> putVector location
-  case initializationRotation initialization of
+    Just x -> Vector.bitPut x
+  case rotation initialization of
     Nothing -> pure ()
-    Just rotation -> putInt8Vector rotation
+    Just x -> Int8Vector.bitPut x
 
-decodeInitializationBits
-  :: (Int, Int, Int) -> Bool -> Bool -> DecodeBits Initialization
-decodeInitializationBits version hasLocation hasRotation =
+bitGet
+  :: (Int, Int, Int) -> Bool -> Bool -> BitGet Initialization
+bitGet version hasLocation hasRotation =
   Initialization
-    <$> decodeWhen hasLocation (decodeVectorBits version)
-    <*> decodeWhen hasRotation decodeInt8VectorBits
+    <$> decodeWhen hasLocation (Vector.bitGet version)
+    <*> decodeWhen hasRotation Int8Vector.bitGet

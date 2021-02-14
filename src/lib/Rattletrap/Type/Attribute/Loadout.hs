@@ -3,78 +3,77 @@
 module Rattletrap.Type.Attribute.Loadout where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32le
-import Rattletrap.Type.Word8le
+import qualified Rattletrap.Type.Word32le as Word32le
+import qualified Rattletrap.Type.Word8le as Word8le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data LoadoutAttribute = LoadoutAttribute
-  { loadoutAttributeVersion :: Word8le
-  , loadoutAttributeBody :: Word32le
-  , loadoutAttributeDecal :: Word32le
-  , loadoutAttributeWheels :: Word32le
-  , loadoutAttributeRocketTrail :: Word32le
+  { version :: Word8le.Word8le
+  , body :: Word32le.Word32le
+  , decal :: Word32le.Word32le
+  , wheels :: Word32le.Word32le
+  , rocketTrail :: Word32le.Word32le
   -- ^ Now known as "rocket boost".
-  , loadoutAttributeAntenna :: Word32le
-  , loadoutAttributeTopper :: Word32le
-  , loadoutAttributeUnknown1 :: Word32le
-  , loadoutAttributeUnknown2 :: Maybe Word32le
-  , loadoutAttributeEngineAudio :: Maybe Word32le
-  , loadoutAttributeTrail :: Maybe Word32le
-  , loadoutAttributeGoalExplosion :: Maybe Word32le
-  , loadoutAttributeBanner :: Maybe Word32le
-  , loadoutAttributeUnknown3 :: Maybe Word32le
-  , loadoutAttributeUnknown4 :: Maybe Word32le
-  , loadoutAttributeUnknown5 :: Maybe Word32le
-  , loadoutAttributeUnknown6 :: Maybe Word32le
+  , antenna :: Word32le.Word32le
+  , topper :: Word32le.Word32le
+  , unknown1 :: Word32le.Word32le
+  , unknown2 :: Maybe Word32le.Word32le
+  , engineAudio :: Maybe Word32le.Word32le
+  , trail :: Maybe Word32le.Word32le
+  , goalExplosion :: Maybe Word32le.Word32le
+  , banner :: Maybe Word32le.Word32le
+  , unknown3 :: Maybe Word32le.Word32le
+  , unknown4 :: Maybe Word32le.Word32le
+  , unknown5 :: Maybe Word32le.Word32le
+  , unknown6 :: Maybe Word32le.Word32le
   }
   deriving (Eq, Show)
 
 $(deriveJson ''LoadoutAttribute)
 
-putLoadoutAttribute :: LoadoutAttribute -> BinaryBits.BitPut ()
-putLoadoutAttribute loadoutAttribute = do
-  putWord8Bits (loadoutAttributeVersion loadoutAttribute)
-  putWord32Bits (loadoutAttributeBody loadoutAttribute)
-  putWord32Bits (loadoutAttributeDecal loadoutAttribute)
-  putWord32Bits (loadoutAttributeWheels loadoutAttribute)
-  putWord32Bits (loadoutAttributeRocketTrail loadoutAttribute)
-  putWord32Bits (loadoutAttributeAntenna loadoutAttribute)
-  putWord32Bits (loadoutAttributeTopper loadoutAttribute)
-  putWord32Bits (loadoutAttributeUnknown1 loadoutAttribute)
-  putOptional (loadoutAttributeUnknown2 loadoutAttribute) putWord32Bits
-  putOptional (loadoutAttributeEngineAudio loadoutAttribute) putWord32Bits
-  putOptional (loadoutAttributeTrail loadoutAttribute) putWord32Bits
-  putOptional (loadoutAttributeGoalExplosion loadoutAttribute) putWord32Bits
-  putOptional (loadoutAttributeBanner loadoutAttribute) putWord32Bits
-  putOptional (loadoutAttributeUnknown3 loadoutAttribute) putWord32Bits
-  putOptional (loadoutAttributeUnknown4 loadoutAttribute) putWord32Bits
-  putOptional (loadoutAttributeUnknown5 loadoutAttribute) putWord32Bits
-  putOptional (loadoutAttributeUnknown6 loadoutAttribute) putWord32Bits
+bitPut :: LoadoutAttribute -> BitPut ()
+bitPut loadoutAttribute = do
+  Word8le.bitPut (version loadoutAttribute)
+  Word32le.bitPut (body loadoutAttribute)
+  Word32le.bitPut (decal loadoutAttribute)
+  Word32le.bitPut (wheels loadoutAttribute)
+  Word32le.bitPut (rocketTrail loadoutAttribute)
+  Word32le.bitPut (antenna loadoutAttribute)
+  Word32le.bitPut (topper loadoutAttribute)
+  Word32le.bitPut (unknown1 loadoutAttribute)
+  putOptional (unknown2 loadoutAttribute) Word32le.bitPut
+  putOptional (engineAudio loadoutAttribute) Word32le.bitPut
+  putOptional (trail loadoutAttribute) Word32le.bitPut
+  putOptional (goalExplosion loadoutAttribute) Word32le.bitPut
+  putOptional (banner loadoutAttribute) Word32le.bitPut
+  putOptional (unknown3 loadoutAttribute) Word32le.bitPut
+  putOptional (unknown4 loadoutAttribute) Word32le.bitPut
+  putOptional (unknown5 loadoutAttribute) Word32le.bitPut
+  putOptional (unknown6 loadoutAttribute) Word32le.bitPut
 
-putOptional :: Maybe a -> (a -> BinaryBits.BitPut ()) -> BinaryBits.BitPut ()
+putOptional :: Maybe a -> (a -> BitPut ()) -> BitPut ()
 putOptional m f = case m of
   Just x -> f x
   Nothing -> pure ()
 
-decodeLoadoutAttributeBits :: DecodeBits LoadoutAttribute
-decodeLoadoutAttributeBits = do
-  version <- decodeWord8leBits
-  LoadoutAttribute version
-    <$> decodeWord32leBits
-    <*> decodeWord32leBits
-    <*> decodeWord32leBits
-    <*> decodeWord32leBits
-    <*> decodeWord32leBits
-    <*> decodeWord32leBits
-    <*> decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 11) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 16) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 16) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 16) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 17) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 19) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 22) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 22) decodeWord32leBits
-    <*> decodeWhen (word8leValue version >= 22) decodeWord32leBits
+bitGet :: BitGet LoadoutAttribute
+bitGet = do
+  version_ <- Word8le.bitGet
+  LoadoutAttribute version_
+    <$> Word32le.bitGet
+    <*> Word32le.bitGet
+    <*> Word32le.bitGet
+    <*> Word32le.bitGet
+    <*> Word32le.bitGet
+    <*> Word32le.bitGet
+    <*> Word32le.bitGet
+    <*> decodeWhen (Word8le.toWord8 version_ >= 11) Word32le.bitGet
+    <*> decodeWhen (Word8le.toWord8 version_ >= 16) Word32le.bitGet
+    <*> decodeWhen (Word8le.toWord8 version_ >= 16) Word32le.bitGet
+    <*> decodeWhen (Word8le.toWord8 version_ >= 16) Word32le.bitGet
+    <*> decodeWhen (Word8le.toWord8 version_ >= 17) Word32le.bitGet
+    <*> decodeWhen (Word8le.toWord8 version_ >= 19) Word32le.bitGet
+    <*> decodeWhen (Word8le.toWord8 version_ >= 22) Word32le.bitGet
+    <*> decodeWhen (Word8le.toWord8 version_ >= 22) Word32le.bitGet
+    <*> decodeWhen (Word8le.toWord8 version_ >= 22) Word32le.bitGet

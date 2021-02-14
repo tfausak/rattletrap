@@ -11,7 +11,7 @@ import qualified Data.Version as Version
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified Paths_rattletrap as This
-import qualified Rattletrap.Type.Replay as Rattletrap
+import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Utility.Helper as Rattletrap
 import qualified System.Console.GetOpt as Console
 import qualified System.Environment as Environment
@@ -38,12 +38,12 @@ rattletrap name arguments = do
   putOutput config (encode replay)
 
 getDecoder
-  :: Config -> Bytes.ByteString -> Either String Rattletrap.FullReplay
+  :: Config -> Bytes.ByteString -> Either String Replay.FullReplay
 getDecoder config = case getMode config of
   ModeDecode -> Rattletrap.decodeReplayFile $ configFast config
   ModeEncode -> Rattletrap.decodeReplayJson
 
-getEncoder :: Config -> Rattletrap.FullReplay -> Bytes.ByteString
+getEncoder :: Config -> Replay.FullReplay -> Bytes.ByteString
 getEncoder config = case getMode config of
   ModeDecode -> if configCompact config
     then LazyBytes.toStrict . Json.encode

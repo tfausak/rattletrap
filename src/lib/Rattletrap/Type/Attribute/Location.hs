@@ -3,21 +3,20 @@
 module Rattletrap.Type.Attribute.Location where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Vector
+import qualified Rattletrap.Type.Vector as Vector
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 newtype LocationAttribute = LocationAttribute
-  { locationAttributeValue :: Vector
+  { value :: Vector.Vector
   } deriving (Eq, Show)
 
 $(deriveJson ''LocationAttribute)
 
-putLocationAttribute :: LocationAttribute -> BinaryBits.BitPut ()
-putLocationAttribute locationAttribute =
-  putVector (locationAttributeValue locationAttribute)
+bitPut :: LocationAttribute -> BitPut ()
+bitPut locationAttribute =
+  Vector.bitPut (value locationAttribute)
 
-decodeLocationAttributeBits :: (Int, Int, Int) -> DecodeBits LocationAttribute
-decodeLocationAttributeBits version =
-  LocationAttribute <$> decodeVectorBits version
+bitGet :: (Int, Int, Int) -> BitGet LocationAttribute
+bitGet version =
+  LocationAttribute <$> Vector.bitGet version

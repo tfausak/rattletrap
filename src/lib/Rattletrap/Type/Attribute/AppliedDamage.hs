@@ -3,35 +3,34 @@
 module Rattletrap.Type.Attribute.AppliedDamage where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Int32le
-import Rattletrap.Type.Vector
-import Rattletrap.Type.Word8le
+import qualified Rattletrap.Type.Int32le as Int32le
+import qualified Rattletrap.Type.Vector as Vector
+import qualified Rattletrap.Type.Word8le as Word8le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 data AppliedDamageAttribute = AppliedDamageAttribute
-  { appliedDamageAttributeUnknown1 :: Word8le
-  , appliedDamageAttributeLocation :: Vector
-  , appliedDamageAttributeUnknown3 :: Int32le
-  , appliedDamageAttributeUnknown4 :: Int32le
+  { unknown1 :: Word8le.Word8le
+  , location :: Vector.Vector
+  , unknown3 :: Int32le.Int32le
+  , unknown4 :: Int32le.Int32le
   }
   deriving (Eq, Show)
 
 $(deriveJson ''AppliedDamageAttribute)
 
-putAppliedDamageAttribute :: AppliedDamageAttribute -> BinaryBits.BitPut ()
-putAppliedDamageAttribute appliedDamageAttribute = do
-  putWord8Bits (appliedDamageAttributeUnknown1 appliedDamageAttribute)
-  putVector (appliedDamageAttributeLocation appliedDamageAttribute)
-  putInt32Bits (appliedDamageAttributeUnknown3 appliedDamageAttribute)
-  putInt32Bits (appliedDamageAttributeUnknown4 appliedDamageAttribute)
+bitPut :: AppliedDamageAttribute -> BitPut ()
+bitPut appliedDamageAttribute = do
+  Word8le.bitPut (unknown1 appliedDamageAttribute)
+  Vector.bitPut (location appliedDamageAttribute)
+  Int32le.bitPut (unknown3 appliedDamageAttribute)
+  Int32le.bitPut (unknown4 appliedDamageAttribute)
 
-decodeAppliedDamageAttributeBits
-  :: (Int, Int, Int) -> DecodeBits AppliedDamageAttribute
-decodeAppliedDamageAttributeBits version =
+bitGet
+  :: (Int, Int, Int) -> BitGet AppliedDamageAttribute
+bitGet version =
   AppliedDamageAttribute
-    <$> decodeWord8leBits
-    <*> decodeVectorBits version
-    <*> decodeInt32leBits
-    <*> decodeInt32leBits
+    <$> Word8le.bitGet
+    <*> Vector.bitGet version
+    <*> Int32le.bitGet
+    <*> Int32le.bitGet

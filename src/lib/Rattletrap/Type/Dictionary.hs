@@ -1,10 +1,10 @@
 module Rattletrap.Type.Dictionary where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Str
+import qualified Rattletrap.Type.Str as Str
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
-import qualified Data.Binary as Binary
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Json
 import qualified Data.Aeson.Types as Json
@@ -12,8 +12,8 @@ import qualified Data.Map as Map
 import qualified Data.Text as Text
 
 data Dictionary a
-  = DictionaryElement Str a (Dictionary a)
-  | DictionaryEnd Str
+  = Element Str.Str a (Dictionary a)
+  | End Str.Str
   deriving (Eq, Show)
 
 instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
@@ -26,9 +26,9 @@ instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
       Monad.foldM
         (\d k -> case Map.lookup k value of
           Nothing -> fail (unwords ["missing key", show k])
-          Just v -> pure (DictionaryElement (Str k) v d)
+          Just v -> pure (Element (Str.fromText k) v d)
         )
-        (DictionaryEnd lastKey)
+        (End lastKey)
         (reverse keys)
     )
 
@@ -39,21 +39,21 @@ instance Json.ToJSON a => Json.ToJSON (Dictionary a) where
     , pair "value" (dictionaryValue d)
     ]
 
-dictionaryKeys :: Dictionary a -> [Str]
+dictionaryKeys :: Dictionary a -> [Str.Str]
 dictionaryKeys = fmap fst . toList
 
-dictionaryLastKey :: Dictionary a -> Str
+dictionaryLastKey :: Dictionary a -> Str.Str
 dictionaryLastKey x = case x of
-  DictionaryElement _ _ y -> dictionaryLastKey y
-  DictionaryEnd y -> y
+  Element _ _ y -> dictionaryLastKey y
+  End y -> y
 
-dictionaryLookup :: Str -> Dictionary a -> Maybe a
-dictionaryLookup k x = case x of
-  DictionaryElement j v y -> if k == j then Just v else dictionaryLookup k y
-  DictionaryEnd _ -> Nothing
+lookup :: Str.Str -> Dictionary a -> Maybe a
+lookup k x = case x of
+  Element j v y -> if k == j then Just v else Rattletrap.Type.Dictionary.lookup k y
+  End _ -> Nothing
 
 dictionaryValue :: Dictionary a -> Map Text a
-dictionaryValue = Map.mapKeys strValue . Map.fromList . toList
+dictionaryValue = Map.mapKeys Str.toText . Map.fromList . toList
 
 get :: Json.FromJSON a => Json.Object -> String -> Json.Parser a
 get o k = o Json..: Text.pack k
@@ -61,23 +61,23 @@ get o k = o Json..: Text.pack k
 pair :: Json.ToJSON a => String -> a -> (Text, Json.Value)
 pair k v = (Text.pack k, Json.toJSON v)
 
-toList :: Dictionary a -> [(Str, a)]
+toList :: Dictionary a -> [(Str.Str, a)]
 toList x = case x of
-  DictionaryElement k v y -> (k, v) : toList y
-  DictionaryEnd _ -> []
+  Element k v y -> (k, v) : toList y
+  End _ -> []
 
-putDictionary :: (a -> Binary.Put) -> Dictionary a -> Binary.Put
-putDictionary f x = case x of
-  DictionaryElement k v y -> do
-    putText k
+bytePut :: (a -> BytePut) -> Dictionary a -> BytePut
+bytePut f x = case x of
+  Element k v y -> do
+    Str.bytePut k
     f v
-    putDictionary f y
-  DictionaryEnd y -> putText y
+    bytePut f y
+  End y -> Str.bytePut y
 
-decodeDictionary :: Decode a -> Decode (Dictionary a)
-decodeDictionary decodeValue = do
-  key <- decodeStr
-  case filter (/= '\x00') (fromStr key) of
-    "None" -> pure (DictionaryEnd key)
+byteGet :: ByteGet a -> ByteGet (Dictionary a)
+byteGet decodeValue = do
+  key <- Str.byteGet
+  case filter (/= '\x00') (Str.toString key) of
+    "None" -> pure (End key)
     _ ->
-      DictionaryElement key <$> decodeValue <*> decodeDictionary decodeValue
+      Element key <$> decodeValue <*> byteGet decodeValue

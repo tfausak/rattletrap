@@ -3,31 +3,32 @@
 module Rattletrap.Type.Attribute.CustomDemolish where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Attribute.Demolish
-import Rattletrap.Type.Int32le
+import qualified Rattletrap.Type.Attribute.Demolish as Demolish
+import qualified Rattletrap.Type.Int32le as Int32le
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data CustomDemolishAttribute = CustomDemolishAttribute
-  { customDemolishAttributeFlag :: Bool
-  , customDemolishAttributeId :: Int32le
-  , customDemolishAttributeDemolish :: DemolishAttribute
+  { flag :: Bool
+  , id :: Int32le.Int32le
+  , demolish :: Demolish.DemolishAttribute
   }
   deriving (Eq, Show)
 
 $(deriveJson ''CustomDemolishAttribute)
 
-putCustomDemolishAttribute :: CustomDemolishAttribute -> BinaryBits.BitPut ()
-putCustomDemolishAttribute x = do
-  BinaryBits.putBool (customDemolishAttributeFlag x)
-  putInt32Bits (customDemolishAttributeId x)
-  putDemolishAttribute (customDemolishAttributeDemolish x)
+bitPut :: CustomDemolishAttribute -> BitPut ()
+bitPut x = do
+  BinaryBits.putBool (flag x)
+  Int32le.bitPut (Rattletrap.Type.Attribute.CustomDemolish.id x)
+  Demolish.bitPut (demolish x)
 
-decodeCustomDemolishAttributeBits
-  :: (Int, Int, Int) -> DecodeBits CustomDemolishAttribute
-decodeCustomDemolishAttributeBits version =
+bitGet
+  :: (Int, Int, Int) -> BitGet CustomDemolishAttribute
+bitGet version =
   CustomDemolishAttribute
     <$> getBool
-    <*> decodeInt32leBits
-    <*> decodeDemolishAttributeBits version
+    <*> Int32le.bitGet
+    <*> Demolish.bitGet version

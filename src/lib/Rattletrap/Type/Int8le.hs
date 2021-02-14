@@ -5,27 +5,34 @@ module Rattletrap.Type.Int8le where
 import Rattletrap.Type.Common
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString.Lazy as LazyBytes
 
-newtype Int8le = Int8le
-  { int8leValue :: Int8
-  } deriving (Eq, Show)
+newtype Int8le
+  = Int8le Int8
+  deriving (Eq, Show)
 
 $(deriveJson ''Int8le)
 
-putInt8 :: Int8le -> Binary.Put
-putInt8 int8 = Binary.putInt8 (int8leValue int8)
+fromInt8 :: Int8 -> Int8le
+fromInt8 = Int8le
 
-putInt8Bits :: Int8le -> BinaryBits.BitPut ()
-putInt8Bits int8 = do
-  let bytes = LazyBytes.toStrict (Binary.runPut (putInt8 int8))
+toInt8 :: Int8le -> Int8
+toInt8 (Int8le x) = x
+
+bytePut :: Int8le -> BytePut
+bytePut int8 = Binary.putInt8 (toInt8 int8)
+
+bitPut :: Int8le -> BitPut ()
+bitPut int8 = do
+  let bytes = LazyBytes.toStrict (Binary.runPut (bytePut int8))
   BinaryBits.putByteString (reverseBytes bytes)
 
-decodeInt8le :: Decode Int8le
-decodeInt8le = Int8le <$> getInt8
+byteGet :: ByteGet Int8le
+byteGet = fromInt8 <$> getInt8
 
-decodeInt8leBits :: DecodeBits Int8le
-decodeInt8leBits = toBits decodeInt8le 1
+bitGet :: BitGet Int8le
+bitGet = toBits byteGet 1

@@ -4,6 +4,7 @@ module Rattletrap.Type.CompressedWord where
 
 import Rattletrap.Type.Common
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Bits as Bits
@@ -11,36 +12,36 @@ import qualified Data.Bits as Bits
 -- | Although there's no guarantee that these values will not overflow, it's
 -- exceptionally unlikely. Most 'CompressedWord's are very small.
 data CompressedWord = CompressedWord
-  { compressedWordLimit :: Word
-  , compressedWordValue :: Word
+  { limit :: Word
+  , value :: Word
   }
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''CompressedWord)
 
-putCompressedWord :: CompressedWord -> BinaryBits.BitPut ()
-putCompressedWord compressedWord =
+bitPut :: CompressedWord -> BitPut ()
+bitPut compressedWord =
   let
-    limit = compressedWordLimit compressedWord
-    value = compressedWordValue compressedWord
-    maxBits = getMaxBits limit
-  in putCompressedWordStep limit value maxBits 0 0
+    limit_ = limit compressedWord
+    value_ = value compressedWord
+    maxBits = getMaxBits limit_
+  in putCompressedWordStep limit_ value_ maxBits 0 0
 
 putCompressedWordStep
-  :: Word -> Word -> Int -> Int -> Word -> BinaryBits.BitPut ()
-putCompressedWordStep limit value maxBits position soFar =
+  :: Word -> Word -> Int -> Int -> Word -> BitPut ()
+putCompressedWordStep limit_ value_ maxBits position soFar =
   if position < maxBits
     then do
       let x = Bits.shiftL 1 position :: Word
-      if maxBits > 1 && position == maxBits - 1 && soFar + x > limit
+      if maxBits > 1 && position == maxBits - 1 && soFar + x > limit_
         then pure ()
         else do
-          let bit = Bits.testBit value position
+          let bit = Bits.testBit value_ position
           BinaryBits.putBool bit
           let delta = if bit then x else 0
           putCompressedWordStep
-            limit
-            value
+            limit_
+            value_
             maxBits
             (position + 1)
             (soFar + delta)
@@ -53,9 +54,9 @@ getMaxBits x =
     n = max 1 (ceiling (logBase (2 :: Double) (fromIntegral (max 1 x))))
   in if x < 1024 && x == 2 ^ n then n + 1 else n
 
-decodeCompressedWordBits :: Word -> DecodeBits CompressedWord
-decodeCompressedWordBits limit =
-  CompressedWord limit <$> step limit (getMaxBits_ limit) 0 0
+bitGet :: Word -> BitGet CompressedWord
+bitGet limit_ =
+  CompressedWord limit_ <$> step limit_ (getMaxBits_ limit_) 0 0
 
 getMaxBits_ :: Word -> Word
 getMaxBits_ x = do
@@ -64,12 +65,12 @@ getMaxBits_ x = do
     n = max 1 (ceiling (logBase (2 :: Double) (fromIntegral (max 1 x))))
   if x < 1024 && x == 2 ^ n then n + 1 else n
 
-step :: Word -> Word -> Word -> Word -> DecodeBits Word
-step limit maxBits position value = do
+step :: Word -> Word -> Word -> Word -> BitGet Word
+step limit_ maxBits position value_ = do
   let x = Bits.shiftL 1 (fromIntegral position) :: Word
-  if position < maxBits && value + x <= limit
+  if position < maxBits && value_ + x <= limit_
     then do
       bit <- getBool
-      let newValue = if bit then value + x else value
-      step limit maxBits (position + 1) newValue
-    else pure value
+      let newValue = if bit then value_ + x else value_
+      step limit_ maxBits (position + 1) newValue
+    else pure value_

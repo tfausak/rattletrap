@@ -6,17 +6,15 @@ import Rattletrap.Type.Common
 import Rattletrap.Encode.Common
 import Rattletrap.Decode.Common
 
-import qualified Data.Binary.Bits.Put as BinaryBits
-
 newtype EnumAttribute = EnumAttribute
-  { enumAttributeValue :: Word16
+  { value :: Word16
   } deriving (Eq, Show)
 
 $(deriveJson ''EnumAttribute)
 
-putEnumAttribute :: EnumAttribute -> BinaryBits.BitPut ()
-putEnumAttribute enumAttribute =
-  putBitsLE 11 (enumAttributeValue enumAttribute)
+bitPut :: EnumAttribute -> BitPut ()
+bitPut enumAttribute =
+  putBitsLE 11 (value enumAttribute)
 
-decodeEnumAttributeBits :: DecodeBits EnumAttribute
-decodeEnumAttributeBits = EnumAttribute <$> getBitsLE 11
+bitGet :: BitGet EnumAttribute
+bitGet = EnumAttribute <$> getBitsLE 11

@@ -3,29 +3,28 @@
 module Rattletrap.Type.Message where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data Message = Message
-  { messageFrame :: Word32le
+  { frame :: Word32le.Word32le
   -- ^ Which frame this message belongs to, starting from 0.
-  , messageName :: Str
+  , name :: Str.Str
   -- ^ The primary player's name.
-  , messageValue :: Str
+  , value :: Str.Str
   -- ^ The content of the message.
   }
   deriving (Eq, Show)
 
 $(deriveJson ''Message)
 
-putMessage :: Message -> Binary.Put
-putMessage message = do
-  putWord32 (messageFrame message)
-  putText (messageName message)
-  putText (messageValue message)
+bytePut :: Message -> BytePut
+bytePut message = do
+  Word32le.bytePut (frame message)
+  Str.bytePut (name message)
+  Str.bytePut (value message)
 
-decodeMessage :: Decode Message
-decodeMessage = Message <$> decodeWord32le <*> decodeStr <*> decodeStr
+byteGet :: ByteGet Message
+byteGet = Message <$> Word32le.byteGet <*> Str.byteGet <*> Str.byteGet

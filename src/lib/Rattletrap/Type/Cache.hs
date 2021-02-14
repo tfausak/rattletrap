@@ -2,35 +2,34 @@
 
 module Rattletrap.Type.Cache where
 
-import Rattletrap.Type.AttributeMapping
+import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
 import Rattletrap.Type.Common
-import Rattletrap.Type.List
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data Cache = Cache
-  { cacheClassId :: Word32le
-  , cacheParentCacheId :: Word32le
-  , cacheCacheId :: Word32le
-  , cacheAttributeMappings :: List AttributeMapping
+  { classId :: Word32le.Word32le
+  , parentCacheId :: Word32le.Word32le
+  , cacheId :: Word32le.Word32le
+  , attributeMappings :: List.List AttributeMapping.AttributeMapping
   }
   deriving (Eq, Show)
 
 $(deriveJson ''Cache)
 
-putCache :: Cache -> Binary.Put
-putCache cache = do
-  putWord32 (cacheClassId cache)
-  putWord32 (cacheParentCacheId cache)
-  putWord32 (cacheCacheId cache)
-  putList putAttributeMapping (cacheAttributeMappings cache)
+bytePut :: Cache -> BytePut
+bytePut cache = do
+  Word32le.bytePut (classId cache)
+  Word32le.bytePut (parentCacheId cache)
+  Word32le.bytePut (cacheId cache)
+  List.bytePut AttributeMapping.bytePut (attributeMappings cache)
 
-decodeCache :: Decode Cache
-decodeCache =
+byteGet :: ByteGet Cache
+byteGet =
   Cache
-    <$> decodeWord32le
-    <*> decodeWord32le
-    <*> decodeWord32le
-    <*> decodeList decodeAttributeMapping
+    <$> Word32le.byteGet
+    <*> Word32le.byteGet
+    <*> Word32le.byteGet
+    <*> List.byteGet AttributeMapping.byteGet

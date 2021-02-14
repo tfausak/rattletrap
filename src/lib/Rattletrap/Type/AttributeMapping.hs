@@ -3,24 +3,23 @@
 module Rattletrap.Type.AttributeMapping where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data AttributeMapping = AttributeMapping
-  { attributeMappingObjectId :: Word32le
-  , attributeMappingStreamId :: Word32le
+  { objectId :: Word32le.Word32le
+  , streamId :: Word32le.Word32le
   }
   deriving (Eq, Show)
 
 $(deriveJson ''AttributeMapping)
 
-putAttributeMapping :: AttributeMapping -> Binary.Put
-putAttributeMapping attributeMapping = do
-  putWord32 (attributeMappingObjectId attributeMapping)
-  putWord32 (attributeMappingStreamId attributeMapping)
+bytePut :: AttributeMapping -> BytePut
+bytePut attributeMapping = do
+  Word32le.bytePut (objectId attributeMapping)
+  Word32le.bytePut (streamId attributeMapping)
 
-decodeAttributeMapping :: Decode AttributeMapping
-decodeAttributeMapping =
-  AttributeMapping <$> decodeWord32le <*> decodeWord32le
+byteGet :: ByteGet AttributeMapping
+byteGet =
+  AttributeMapping <$> Word32le.byteGet <*> Word32le.byteGet

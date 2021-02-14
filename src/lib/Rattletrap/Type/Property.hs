@@ -3,30 +3,29 @@
 module Rattletrap.Type.Property where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.PropertyValue
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word64le
+import qualified Rattletrap.Type.PropertyValue as PropertyValue
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word64le as Word64le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data Property = Property
-  { propertyKind :: Str
-  , propertySize :: Word64le
+  { kind :: Str.Str
+  , size :: Word64le.Word64le
   -- ^ Not used.
-  , propertyValue :: PropertyValue Property
+  , value :: PropertyValue.PropertyValue Property
   }
   deriving (Eq, Show)
 
 $(deriveJson ''Property)
 
-putProperty :: Property -> Binary.Put
-putProperty property = do
-  putText (propertyKind property)
-  putWord64 (propertySize property)
-  putPropertyValue putProperty (propertyValue property)
+bytePut :: Property -> BytePut
+bytePut property = do
+  Str.bytePut (kind property)
+  Word64le.bytePut (size property)
+  PropertyValue.bytePut bytePut (value property)
 
-decodeProperty :: Decode Property
-decodeProperty = do
-  kind <- decodeStr
-  Property kind <$> decodeWord64le <*> decodePropertyValue decodeProperty kind
+byteGet :: ByteGet Property
+byteGet = do
+  kind_ <- Str.byteGet
+  Property kind_ <$> Word64le.byteGet <*> PropertyValue.byteGet byteGet kind_

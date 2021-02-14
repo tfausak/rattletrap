@@ -3,20 +3,19 @@
 module Rattletrap.Type.Attribute.String where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Str
+import qualified Rattletrap.Type.Str as Str
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Encode.Common
 
 newtype StringAttribute = StringAttribute
-  { stringAttributeValue :: Str
+  { value :: Str.Str
   } deriving (Eq, Show)
 
 $(deriveJson ''StringAttribute)
 
-putStringAttribute :: StringAttribute -> BinaryBits.BitPut ()
-putStringAttribute stringAttribute =
-  putTextBits (stringAttributeValue stringAttribute)
+bitPut :: StringAttribute -> BitPut ()
+bitPut stringAttribute =
+  Str.bitPut (value stringAttribute)
 
-decodeStringAttributeBits :: DecodeBits StringAttribute
-decodeStringAttributeBits = StringAttribute <$> decodeStrBits
+bitGet :: BitGet StringAttribute
+bitGet = StringAttribute <$> Str.bitGet

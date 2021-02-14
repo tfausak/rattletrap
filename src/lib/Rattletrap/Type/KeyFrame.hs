@@ -3,30 +3,29 @@
 module Rattletrap.Type.KeyFrame where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Float32le
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Float32le as Float32le
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data KeyFrame = KeyFrame
-  { keyFrameTime :: Float32le
+  { time :: Float32le.Float32le
   -- ^ When this key frame occurs, in seconds.
-  , keyFrameFrame :: Word32le
+  , frame :: Word32le.Word32le
   -- ^ The frame number of this key frame, starting from 0.
-  , keyFramePosition :: Word32le
+  , position :: Word32le.Word32le
   -- ^ The bit position of this key frame in the stream.
   }
   deriving (Eq, Show)
 
 $(deriveJson ''KeyFrame)
 
-putKeyFrame :: KeyFrame -> Binary.Put
-putKeyFrame keyFrame = do
-  putFloat32 (keyFrameTime keyFrame)
-  putWord32 (keyFrameFrame keyFrame)
-  putWord32 (keyFramePosition keyFrame)
+bytePut :: KeyFrame -> BytePut
+bytePut keyFrame = do
+  Float32le.bytePut (time keyFrame)
+  Word32le.bytePut (frame keyFrame)
+  Word32le.bytePut (position keyFrame)
 
-decodeKeyFrame :: Decode KeyFrame
-decodeKeyFrame =
-  KeyFrame <$> decodeFloat32le <*> decodeWord32le <*> decodeWord32le
+byteGet :: ByteGet KeyFrame
+byteGet =
+  KeyFrame <$> Float32le.byteGet <*> Word32le.byteGet <*> Word32le.byteGet

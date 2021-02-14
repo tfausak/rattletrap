@@ -3,41 +3,42 @@
 module Rattletrap.Type.Attribute.RigidBodyState where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Rotation
-import Rattletrap.Type.Vector
+import qualified Rattletrap.Type.Rotation as Rotation
+import qualified Rattletrap.Type.Vector as Vector
 import Rattletrap.Decode.Common
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data RigidBodyStateAttribute = RigidBodyStateAttribute
-  { rigidBodyStateAttributeSleeping :: Bool
-  , rigidBodyStateAttributeLocation :: Vector
-  , rigidBodyStateAttributeRotation :: Rotation
-  , rigidBodyStateAttributeLinearVelocity :: Maybe Vector
-  , rigidBodyStateAttributeAngularVelocity :: Maybe Vector
+  { sleeping :: Bool
+  , location :: Vector.Vector
+  , rotation :: Rotation.Rotation
+  , linearVelocity :: Maybe Vector.Vector
+  , angularVelocity :: Maybe Vector.Vector
   }
   deriving (Eq, Show)
 
 $(deriveJson ''RigidBodyStateAttribute)
 
-putRigidBodyStateAttribute :: RigidBodyStateAttribute -> BinaryBits.BitPut ()
-putRigidBodyStateAttribute rigidBodyStateAttribute = do
-  BinaryBits.putBool (rigidBodyStateAttributeSleeping rigidBodyStateAttribute)
-  putVector (rigidBodyStateAttributeLocation rigidBodyStateAttribute)
-  putRotation (rigidBodyStateAttributeRotation rigidBodyStateAttribute)
-  case rigidBodyStateAttributeLinearVelocity rigidBodyStateAttribute of
+bitPut :: RigidBodyStateAttribute -> BitPut ()
+bitPut rigidBodyStateAttribute = do
+  BinaryBits.putBool (sleeping rigidBodyStateAttribute)
+  Vector.bitPut (location rigidBodyStateAttribute)
+  Rotation.bitPut (rotation rigidBodyStateAttribute)
+  case linearVelocity rigidBodyStateAttribute of
     Nothing -> pure ()
-    Just linearVelocity -> putVector linearVelocity
-  case rigidBodyStateAttributeAngularVelocity rigidBodyStateAttribute of
+    Just x -> Vector.bitPut x
+  case angularVelocity rigidBodyStateAttribute of
     Nothing -> pure ()
-    Just angularVelocity -> putVector angularVelocity
+    Just x -> Vector.bitPut x
 
-decodeRigidBodyStateAttributeBits
-  :: (Int, Int, Int) -> DecodeBits RigidBodyStateAttribute
-decodeRigidBodyStateAttributeBits version = do
-  sleeping <- getBool
-  RigidBodyStateAttribute sleeping
-    <$> decodeVectorBits version
-    <*> decodeRotationBits version
-    <*> decodeWhen (not sleeping) (decodeVectorBits version)
-    <*> decodeWhen (not sleeping) (decodeVectorBits version)
+bitGet
+  :: (Int, Int, Int) -> BitGet RigidBodyStateAttribute
+bitGet version = do
+  sleeping_ <- getBool
+  RigidBodyStateAttribute sleeping_
+    <$> Vector.bitGet version
+    <*> Rotation.bitGet version
+    <*> decodeWhen (not sleeping_) (Vector.bitGet version)
+    <*> decodeWhen (not sleeping_) (Vector.bitGet version)

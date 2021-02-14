@@ -3,98 +3,99 @@
 module Rattletrap.Type.Replication.Spawned where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Initialization
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Initialization as Initialization
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
-import Rattletrap.Type.ClassAttributeMap
-import Rattletrap.Type.CompressedWord
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
 import qualified Data.Map as Map
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data SpawnedReplication = SpawnedReplication
-  { spawnedReplicationFlag :: Bool
+data Spawned = Spawned
+  { flag :: Bool
   -- ^ Unclear what this is.
-  , spawnedReplicationNameIndex :: Maybe Word32le
-  , spawnedReplicationName :: Maybe Str
+  , nameIndex :: Maybe Word32le.Word32le
+  , name :: Maybe Str.Str
   -- ^ Read-only! Changing a replication's name requires editing the
-  -- 'spawnedReplicationNameIndex' and maybe the class attribute map.
-  , spawnedReplicationObjectId :: Word32le
-  , spawnedReplicationObjectName :: Str
+  -- 'nameIndex' and maybe the class attribute map.
+  , objectId :: Word32le.Word32le
+  , objectName :: Str.Str
   -- ^ Read-only! Changing a replication's object requires editing the class
   -- attribute map.
-  , spawnedReplicationClassName :: Str
+  , className :: Str.Str
   -- ^ Read-only! Changing a replication's class requires editing the class
   -- attribute map.
-  , spawnedReplicationInitialization :: Initialization
+  , initialization :: Initialization.Initialization
   }
   deriving (Eq, Show)
 
-$(deriveJson ''SpawnedReplication)
+$(deriveJson ''Spawned)
 
-putSpawnedReplication :: SpawnedReplication -> BinaryBits.BitPut ()
-putSpawnedReplication spawnedReplication = do
-  BinaryBits.putBool (spawnedReplicationFlag spawnedReplication)
-  case spawnedReplicationNameIndex spawnedReplication of
+bitPut :: Spawned -> BitPut ()
+bitPut spawnedReplication = do
+  BinaryBits.putBool (flag spawnedReplication)
+  case nameIndex spawnedReplication of
     Nothing -> pure ()
-    Just nameIndex -> putWord32Bits nameIndex
-  putWord32Bits (spawnedReplicationObjectId spawnedReplication)
-  putInitialization (spawnedReplicationInitialization spawnedReplication)
+    Just nameIndex_ -> Word32le.bitPut nameIndex_
+  Word32le.bitPut (objectId spawnedReplication)
+  Initialization.bitPut (initialization spawnedReplication)
 
-decodeSpawnedReplicationBits
+bitGet
   :: (Int, Int, Int)
-  -> ClassAttributeMap
-  -> CompressedWord
+  -> ClassAttributeMap.ClassAttributeMap
+  -> CompressedWord.CompressedWord
   -> State.StateT
-       (Map.Map CompressedWord Word32le)
-       DecodeBits
-       SpawnedReplication
-decodeSpawnedReplicationBits version classAttributeMap actorId = do
-  flag <- Trans.lift getBool
-  nameIndex <- decodeWhen
+       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
+       BitGet
+       Spawned
+bitGet version classAttributeMap actorId = do
+  flag_ <- Trans.lift getBool
+  nameIndex_ <- decodeWhen
     (version >= (868, 14, 0))
-    (Trans.lift decodeWord32leBits)
-  name <- either fail pure (lookupName classAttributeMap nameIndex)
-  objectId <- Trans.lift decodeWord32leBits
-  State.modify (Map.insert actorId objectId)
-  objectName <- either fail pure (lookupObjectName classAttributeMap objectId)
-  className <- either fail pure (lookupClassName objectName)
-  let hasLocation = classHasLocation className
-  let hasRotation = classHasRotation className
-  initialization <- Trans.lift
-    (decodeInitializationBits version hasLocation hasRotation)
+    (Trans.lift Word32le.bitGet)
+  name_ <- either fail pure (lookupName classAttributeMap nameIndex_)
+  objectId_ <- Trans.lift Word32le.bitGet
+  State.modify (Map.insert actorId objectId_)
+  objectName_ <- either fail pure (lookupObjectName classAttributeMap objectId_)
+  className_ <- either fail pure (lookupClassName objectName_)
+  let hasLocation = ClassAttributeMap.classHasLocation className_
+  let hasRotation = ClassAttributeMap.classHasRotation className_
+  initialization_ <- Trans.lift
+    (Initialization.bitGet version hasLocation hasRotation)
   pure
-    (SpawnedReplication
-      flag
-      nameIndex
-      name
-      objectId
-      objectName
-      className
-      initialization
+    (Spawned
+      flag_
+      nameIndex_
+      name_
+      objectId_
+      objectName_
+      className_
+      initialization_
     )
 
-lookupName :: ClassAttributeMap -> Maybe Word32le -> Either String (Maybe Str)
+lookupName :: ClassAttributeMap.ClassAttributeMap -> Maybe Word32le.Word32le -> Either String (Maybe Str.Str)
 lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
   Nothing -> Right Nothing
-  Just nameIndex ->
-    case getName (classAttributeMapNameMap classAttributeMap) nameIndex of
+  Just nameIndex_ ->
+    case ClassAttributeMap.getName (ClassAttributeMap.nameMap classAttributeMap) nameIndex_ of
       Nothing ->
-        Left ("[RT11] could not get name for index " <> show nameIndex)
-      Just name -> Right (Just name)
+        Left ("[RT11] could not get name for index " <> show nameIndex_)
+      Just name_ -> Right (Just name_)
 
-lookupObjectName :: ClassAttributeMap -> Word32le -> Either String Str
-lookupObjectName classAttributeMap objectId =
-  case getObjectName (classAttributeMapObjectMap classAttributeMap) objectId of
+lookupObjectName :: ClassAttributeMap.ClassAttributeMap -> Word32le.Word32le -> Either String Str.Str
+lookupObjectName classAttributeMap objectId_ =
+  case ClassAttributeMap.getObjectName (ClassAttributeMap.objectMap classAttributeMap) objectId_ of
     Nothing ->
-      Left ("[RT12] could not get object name for id " <> show objectId)
-    Just objectName -> Right objectName
+      Left ("[RT12] could not get object name for id " <> show objectId_)
+    Just objectName_ -> Right objectName_
 
-lookupClassName :: Str -> Either String Str
-lookupClassName objectName = case getClassName objectName of
+lookupClassName :: Str.Str -> Either String Str.Str
+lookupClassName objectName_ = case ClassAttributeMap.getClassName objectName_ of
   Nothing ->
-    Left ("[RT13] could not get class name for object " <> show objectName)
-  Just className -> Right className
+    Left ("[RT13] could not get class name for object " <> show objectName_)
+  Just className_ -> Right className_

@@ -1,6 +1,6 @@
 module Rattletrap.Decode.Common
-  ( Decode
-  , DecodeBits
+  ( ByteGet
+  , BitGet
   , decodeWhen
   , getBitsLE
   , getByteStringBits
@@ -30,30 +30,30 @@ import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Word as Word
 import qualified Rattletrap.Utility.Bytes as Utility
 
-type Decode = Binary.Get
+type ByteGet = Binary.Get
 
-type DecodeBits = BinaryBits.BitGet
+type BitGet = BinaryBits.BitGet
 
 decodeWhen
   :: (Applicative m, Applicative.Alternative f) => Bool -> m a -> m (f a)
 decodeWhen p f = if p then fmap pure f else pure Applicative.empty
 
-getByteStringBits :: Int -> DecodeBits Bytes.ByteString
+getByteStringBits :: Int -> BitGet Bytes.ByteString
 getByteStringBits = BinaryBits.getByteString
 
-getWord8Bits :: Int -> DecodeBits Word.Word8
+getWord8Bits :: Int -> BitGet Word.Word8
 getWord8Bits = BinaryBits.getWord8
 
-runDecode :: Decode a -> Bytes.ByteString -> Either String a
+runDecode :: ByteGet a -> Bytes.ByteString -> Either String a
 runDecode decode bytes =
   case Binary.runGetOrFail decode (LazyBytes.fromStrict bytes) of
     Left (_, _, x) -> Left x
     Right (_, _, x) -> Right x
 
-runDecodeBits :: DecodeBits a -> Bytes.ByteString -> Either String a
+runDecodeBits :: BitGet a -> Bytes.ByteString -> Either String a
 runDecodeBits = runDecode . BinaryBits.runBitGet
 
-toBits :: Decode a -> Int -> DecodeBits a
+toBits :: ByteGet a -> Int -> BitGet a
 toBits decode size = do
   bytes <- BinaryBits.getByteString size
   case runDecode decode (Utility.reverseBytes bytes) of

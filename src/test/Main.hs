@@ -3,7 +3,7 @@ module Main
   ) where
 
 import qualified Control.Monad as Monad
-import qualified Data.ByteString.Lazy as Bytes
+import qualified Data.ByteString as Bytes
 import qualified GHC.Clock as Clock
 import qualified Rattletrap
 import qualified System.Exit as Exit

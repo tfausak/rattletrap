@@ -3,84 +3,83 @@
 module Rattletrap.Type.Replay where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Content
-import Rattletrap.Type.Header
-import Rattletrap.Type.Section
+import qualified Rattletrap.Type.Content as Content
+import qualified Rattletrap.Type.Header as Header
+import qualified Rattletrap.Type.Section as Section
 import Rattletrap.Decode.Common
-import Rattletrap.Type.Dictionary
-import Rattletrap.Type.Int32le
-import Rattletrap.Type.Property
-import Rattletrap.Type.PropertyValue
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import Rattletrap.Encode.Common
+import qualified Rattletrap.Type.Dictionary as Dictionary
+import qualified Rattletrap.Type.Int32le as Int32le
+import qualified Rattletrap.Type.Property as Property
+import qualified Rattletrap.Type.PropertyValue as PropertyValue
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 
-import qualified Data.Binary as Binary
-
-type FullReplay = Replay Content
+type FullReplay = Replay Content.Content
 
 -- | A Rocket League replay.
 data Replay content = Replay
-  { replayHeader :: Section Header
+  { header :: Section.Section Header.Header
   -- ^ This has most of the high-level metadata.
-  , replayContent :: Section content
+  , content :: Section.Section content
   -- ^ This has most of the low-level game data.
   }
   deriving (Eq, Show)
 
 $(deriveJson ''Replay)
 
--- | Generates a raw replay. Use this with 'Data.Binary.Put.runPut'.
+-- | Generates a raw replay. Use this with 'Data.BytePut.runPut'.
 --
 -- @
--- let bytes = 'Data.Binary.Put.runPut' ('putReplay' replay)
+-- let bytes = 'Data.BytePut.runPut' ('bytePut' replay)
 -- @
-putReplay :: FullReplay -> Binary.Put
-putReplay replay = do
-  putSection putHeader (replayHeader replay)
-  putSection putContent (replayContent replay)
+bytePut :: FullReplay -> BytePut
+bytePut replay = do
+  Section.bytePut Header.putHeader (header replay)
+  Section.bytePut Content.bytePut (content replay)
 
-decodeReplay :: Bool -> Decode FullReplay
-decodeReplay fast = do
-  header <- decodeSection decodeHeader
-  content <- if fast
-    then pure $ toSection putContent defaultContent
+byteGet :: Bool -> ByteGet FullReplay
+byteGet fast = do
+  header_ <- Section.byteGet Header.decodeHeader
+  content_ <- if fast
+    then pure $ Section.create Content.bytePut Content.empty
     else
-      let body = sectionBody header
+      let body = Section.body header_
       in
-        decodeSection $ decodeContent
+        Section.byteGet $ Content.byteGet
           (getVersion body)
           (getNumFrames body)
           (getMaxChannels body)
-  pure $ Replay header content
+  pure $ Replay header_ content_
 
-getVersion :: Header -> (Int, Int, Int)
-getVersion header =
-  ( fromIntegral (word32leValue (headerEngineVersion header))
-  , fromIntegral (word32leValue (headerLicenseeVersion header))
-  , getPatchVersion header
+getVersion :: Header.Header -> (Int, Int, Int)
+getVersion header_ =
+  ( fromIntegral (Word32le.toWord32 (Header.engineVersion header_))
+  , fromIntegral (Word32le.toWord32 (Header.licenseeVersion header_))
+  , getPatchVersion header_
   )
 
-getPatchVersion :: Header -> Int
-getPatchVersion header = case headerPatchVersion header of
-  Just version -> fromIntegral (word32leValue version)
+getPatchVersion :: Header.Header -> Int
+getPatchVersion header_ = case Header.patchVersion header_ of
+  Just version -> fromIntegral (Word32le.toWord32 version)
   Nothing ->
-    case dictionaryLookup (toStr "MatchType") (headerProperties header) of
+    case Dictionary.lookup (Str.fromString "MatchType") (Header.properties header_) of
       -- This is an ugly, ugly hack to handle replays from season 2 of RLCS.
       -- See `decodeSpawnedReplicationBits` and #85.
-      Just Property { propertyValue = PropertyValueName str }
-        | fromStr str == "Lan" -> -1
+      Just Property.Property { Property.value = PropertyValue.Name str }
+        | Str.toString str == "Lan" -> -1
       _ -> 0
 
-getNumFrames :: Header -> Int
-getNumFrames header =
-  case dictionaryLookup (toStr "NumFrames") (headerProperties header) of
-    Just (Property _ _ (PropertyValueInt numFrames)) ->
-      fromIntegral (int32leValue numFrames)
+getNumFrames :: Header.Header -> Int
+getNumFrames header_ =
+  case Dictionary.lookup (Str.fromString "NumFrames") (Header.properties header_) of
+    Just (Property.Property _ _ (PropertyValue.Int numFrames)) ->
+      fromIntegral (Int32le.toInt32 numFrames)
     _ -> 0
 
-getMaxChannels :: Header -> Word
-getMaxChannels header =
-  case dictionaryLookup (toStr "MaxChannels") (headerProperties header) of
-    Just (Property _ _ (PropertyValueInt numFrames)) ->
-      fromIntegral (int32leValue numFrames)
+getMaxChannels :: Header.Header -> Word
+getMaxChannels header_ =
+  case Dictionary.lookup (Str.fromString "MaxChannels") (Header.properties header_) of
+    Just (Property.Property _ _ (PropertyValue.Int numFrames)) ->
+      fromIntegral (Int32le.toInt32 numFrames)
     _ -> 1023

@@ -3,26 +3,25 @@
 module Rattletrap.Type.Mark where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word32le as Word32le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data Mark = Mark
-  { markValue :: Str
+  { value :: Str.Str
   -- ^ Which type of mark this is, like @Team0Goal@.
-  , markFrame :: Word32le
+  , frame :: Word32le.Word32le
   -- ^ Which frame this mark belongs to, starting from 0.
   }
   deriving (Eq, Show)
 
 $(deriveJson ''Mark)
 
-putMark :: Mark -> Binary.Put
-putMark mark = do
-  putText (markValue mark)
-  putWord32 (markFrame mark)
+bytePut :: Mark -> BytePut
+bytePut mark = do
+  Str.bytePut (value mark)
+  Word32le.bytePut (frame mark)
 
-decodeMark :: Decode Mark
-decodeMark = Mark <$> decodeStr <*> decodeWord32le
+byteGet :: ByteGet Mark
+byteGet = Mark <$> Str.byteGet <*> Word32le.byteGet

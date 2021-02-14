@@ -3,13 +3,14 @@
 module Rattletrap.Type.ReplicationValue where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Replication.Destroyed
-import Rattletrap.Type.Replication.Spawned
-import Rattletrap.Type.Replication.Updated
+import qualified Rattletrap.Type.Replication.Destroyed as Destroyed
+import qualified Rattletrap.Type.Replication.Spawned as Spawned
+import qualified Rattletrap.Type.Replication.Updated as Updated
 import Rattletrap.Decode.Common
-import Rattletrap.Type.ClassAttributeMap
-import Rattletrap.Type.CompressedWord
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
+import qualified Rattletrap.Type.Word32le as Word32le
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -17,39 +18,39 @@ import qualified Data.Map as Map
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ReplicationValue
-  = ReplicationValueSpawned SpawnedReplication
+  = Spawned Spawned.Spawned
   -- ^ Creates a new actor.
-  | ReplicationValueUpdated UpdatedReplication
+  | Updated Updated.Updated
   -- ^ Updates an existing actor.
-  | ReplicationValueDestroyed DestroyedReplication
+  | Destroyed Destroyed.Destroyed
   -- ^ Destroys an existing actor.
   deriving (Eq, Show)
 
 $(deriveJson ''ReplicationValue)
 
-putReplicationValue :: ReplicationValue -> BinaryBits.BitPut ()
-putReplicationValue value = case value of
-  ReplicationValueSpawned x -> do
+bitPut :: ReplicationValue -> BitPut ()
+bitPut value = case value of
+  Spawned x -> do
     BinaryBits.putBool True
     BinaryBits.putBool True
-    putSpawnedReplication x
-  ReplicationValueUpdated x -> do
+    Spawned.bitPut x
+  Updated x -> do
     BinaryBits.putBool True
     BinaryBits.putBool False
-    putUpdatedReplication x
-  ReplicationValueDestroyed x -> do
+    Updated.bitPut x
+  Destroyed x -> do
     BinaryBits.putBool False
-    putDestroyedReplication x
+    Destroyed.bitPut x
 
-decodeReplicationValueBits
+bitGet
   :: (Int, Int, Int)
-  -> ClassAttributeMap
-  -> CompressedWord
+  -> ClassAttributeMap.ClassAttributeMap
+  -> CompressedWord.CompressedWord
   -> State.StateT
-       (Map.Map CompressedWord Word32le)
-       DecodeBits
+       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
+       BitGet
        ReplicationValue
-decodeReplicationValueBits version classAttributeMap actorId = do
+bitGet version classAttributeMap actorId = do
   actorMap <- State.get
   isOpen <- Trans.lift getBool
   if isOpen
@@ -57,14 +58,14 @@ decodeReplicationValueBits version classAttributeMap actorId = do
       isNew <- Trans.lift getBool
       if isNew
         then
-          ReplicationValueSpawned
-            <$> decodeSpawnedReplicationBits version classAttributeMap actorId
-        else ReplicationValueUpdated <$> Trans.lift
-          (decodeUpdatedReplicationBits
+          Spawned
+            <$> Spawned.bitGet version classAttributeMap actorId
+        else Updated <$> Trans.lift
+          (Updated.bitGet
             version
             classAttributeMap
             actorMap
             actorId
           )
-    else ReplicationValueDestroyed
-      <$> Trans.lift decodeDestroyedReplicationBits
+    else Destroyed
+      <$> Trans.lift Destroyed.bitGet

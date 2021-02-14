@@ -3,61 +3,60 @@
 module Rattletrap.Type.PropertyValue where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Dictionary
-import Rattletrap.Type.Float32le
-import Rattletrap.Type.Int32le
-import Rattletrap.Type.List
-import Rattletrap.Type.Str
-import Rattletrap.Type.Word64le
-import Rattletrap.Type.Word8le
+import qualified Rattletrap.Type.Dictionary as Dictionary
+import qualified Rattletrap.Type.Float32le as Float32le
+import qualified Rattletrap.Type.Int32le as Int32le
+import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Word64le as Word64le
+import qualified Rattletrap.Type.Word8le as Word8le
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary as Binary
+import Rattletrap.Encode.Common
 
 data PropertyValue a
-  = PropertyValueArray (List (Dictionary a))
+  = Array (List.List (Dictionary.Dictionary a))
   -- ^ Yes, a list of dictionaries. No, it doesn't make sense. These usually
   -- only have one element.
-  | PropertyValueBool Word8le
-  | PropertyValueByte Str (Maybe Str)
+  | Bool Word8le.Word8le
+  | Byte Str.Str (Maybe Str.Str)
   -- ^ This is a strange name for essentially a key-value pair.
-  | PropertyValueFloat Float32le
-  | PropertyValueInt Int32le
-  | PropertyValueName Str
+  | Float Float32le.Float32le
+  | Int Int32le.Int32le
+  | Name Str.Str
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.
-  | PropertyValueQWord Word64le
-  | PropertyValueStr Str
+  | QWord Word64le.Word64le
+  | Str Str.Str
   deriving (Eq, Show)
 
 $(deriveJson ''PropertyValue)
 
-putPropertyValue :: (a -> Binary.Put) -> PropertyValue a -> Binary.Put
-putPropertyValue putProperty value = case value of
-  PropertyValueArray list -> putList (putDictionary putProperty) list
-  PropertyValueBool word8 -> putWord8 word8
-  PropertyValueByte k mv -> do
-    putText k
+bytePut :: (a -> BytePut) -> PropertyValue a -> BytePut
+bytePut putProperty value = case value of
+  Array list -> List.bytePut (Dictionary.bytePut putProperty) list
+  Bool word8 -> Word8le.bytePut word8
+  Byte k mv -> do
+    Str.bytePut k
     case mv of
       Nothing -> pure ()
-      Just v -> putText v
-  PropertyValueFloat float32 -> putFloat32 float32
-  PropertyValueInt int32 -> putInt32 int32
-  PropertyValueName text -> putText text
-  PropertyValueQWord word64 -> putWord64 word64
-  PropertyValueStr text -> putText text
+      Just v -> Str.bytePut v
+  Float float32 -> Float32le.bytePut float32
+  Int int32 -> Int32le.bytePut int32
+  Name text -> Str.bytePut text
+  QWord word64 -> Word64le.bytePut word64
+  Str text -> Str.bytePut text
 
-decodePropertyValue :: Decode a -> Str -> Decode (PropertyValue a)
-decodePropertyValue getProperty kind = case fromStr kind of
+byteGet :: ByteGet a -> Str.Str -> ByteGet (PropertyValue a)
+byteGet getProperty kind = case Str.toString kind of
   "ArrayProperty" ->
-    PropertyValueArray <$> decodeList (decodeDictionary getProperty)
-  "BoolProperty" -> PropertyValueBool <$> decodeWord8le
+    Array <$> List.byteGet (Dictionary.byteGet getProperty)
+  "BoolProperty" -> Bool <$> Word8le.byteGet
   "ByteProperty" -> do
-    k <- decodeStr
-    PropertyValueByte k
-      <$> decodeWhen (fromStr k /= "OnlinePlatform_Steam") decodeStr
-  "FloatProperty" -> PropertyValueFloat <$> decodeFloat32le
-  "IntProperty" -> PropertyValueInt <$> decodeInt32le
-  "NameProperty" -> PropertyValueName <$> decodeStr
-  "QWordProperty" -> PropertyValueQWord <$> decodeWord64le
-  "StrProperty" -> PropertyValueStr <$> decodeStr
+    k <- Str.byteGet
+    Byte k
+      <$> decodeWhen (Str.toString k /= "OnlinePlatform_Steam") Str.byteGet
+  "FloatProperty" -> Float <$> Float32le.byteGet
+  "IntProperty" -> Int <$> Int32le.byteGet
+  "NameProperty" -> Name <$> Str.byteGet
+  "QWordProperty" -> QWord <$> Word64le.byteGet
+  "StrProperty" -> Str <$> Str.byteGet
   _ -> fail ("[RT07] don't know how to read property value " <> show kind)

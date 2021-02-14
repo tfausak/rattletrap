@@ -3,11 +3,12 @@
 module Rattletrap.Type.Replication where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWord
-import Rattletrap.Type.ReplicationValue
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
+import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
 import Rattletrap.Decode.Common
-import Rattletrap.Type.ClassAttributeMap
-import Rattletrap.Type.Word32le
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
+import qualified Rattletrap.Type.Word32le as Word32le
+import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -15,54 +16,54 @@ import qualified Data.Map as Map
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Replication = Replication
-  { replicationActorId :: CompressedWord
-  , replicationValue :: ReplicationValue
+  { actorId :: CompressedWord.CompressedWord
+  , value :: ReplicationValue.ReplicationValue
   }
   deriving (Eq, Show)
 
 $(deriveJson ''Replication)
 
-putReplications :: [Replication] -> BinaryBits.BitPut ()
+putReplications :: [Replication] -> BitPut ()
 putReplications replications = case replications of
   [] -> BinaryBits.putBool False
   [replication] -> do
-    putReplication replication
+    bitPut replication
     BinaryBits.putBool False
   first : rest -> do
-    putReplication first
+    bitPut first
     putReplications rest
 
-putReplication :: Replication -> BinaryBits.BitPut ()
-putReplication replication = do
+bitPut :: Replication -> BitPut ()
+bitPut replication = do
   BinaryBits.putBool True
-  putCompressedWord (replicationActorId replication)
-  putReplicationValue (replicationValue replication)
+  CompressedWord.bitPut (actorId replication)
+  ReplicationValue.bitPut (value replication)
 
 decodeReplicationsBits
   :: (Int, Int, Int)
   -> Word
-  -> ClassAttributeMap
+  -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT
-       (Map.Map CompressedWord Word32le)
-       DecodeBits
+       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
+       BitGet
        [Replication]
 decodeReplicationsBits version limit classes = do
   hasReplication <- Trans.lift getBool
   if hasReplication
     then
       (:)
-      <$> decodeReplicationBits version limit classes
+      <$> bitGet version limit classes
       <*> decodeReplicationsBits version limit classes
     else pure []
 
-decodeReplicationBits
+bitGet
   :: (Int, Int, Int)
   -> Word
-  -> ClassAttributeMap
+  -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT
-       (Map.Map CompressedWord Word32le)
-       DecodeBits
+       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
+       BitGet
        Replication
-decodeReplicationBits version limit classes = do
-  actor <- Trans.lift (decodeCompressedWordBits limit)
-  Replication actor <$> decodeReplicationValueBits version classes actor
+bitGet version limit classes = do
+  actor <- Trans.lift (CompressedWord.bitGet limit)
+  Replication actor <$> ReplicationValue.bitGet version classes actor

@@ -3,48 +3,49 @@
 module Rattletrap.Type.Attribute.Reservation where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.CompressedWord
-import Rattletrap.Type.Str
-import Rattletrap.Type.Attribute.UniqueId
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
+import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.Attribute.UniqueId as UniqueId
 import Rattletrap.Decode.Common
-import Rattletrap.Type.Word8le
+import qualified Rattletrap.Type.Word8le as Word8le
+import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ReservationAttribute = ReservationAttribute
-  { reservationAttributeNumber :: CompressedWord
-  , reservationAttributeUniqueId :: UniqueIdAttribute
-  , reservationAttributeName :: Maybe Str
-  , reservationAttributeUnknown1 :: Bool
-  , reservationAttributeUnknown2 :: Bool
-  , reservationAttributeUnknown3 :: Maybe Word8
+  { number :: CompressedWord.CompressedWord
+  , uniqueId :: UniqueId.UniqueIdAttribute
+  , name :: Maybe Str.Str
+  , unknown1 :: Bool
+  , unknown2 :: Bool
+  , unknown3 :: Maybe Word8
   }
   deriving (Eq, Show)
 
 $(deriveJson ''ReservationAttribute)
 
-putReservationAttribute :: ReservationAttribute -> BinaryBits.BitPut ()
-putReservationAttribute reservationAttribute = do
-  putCompressedWord (reservationAttributeNumber reservationAttribute)
-  putUniqueIdAttribute (reservationAttributeUniqueId reservationAttribute)
-  case reservationAttributeName reservationAttribute of
+bitPut :: ReservationAttribute -> BitPut ()
+bitPut reservationAttribute = do
+  CompressedWord.bitPut (number reservationAttribute)
+  UniqueId.bitPut (uniqueId reservationAttribute)
+  case name reservationAttribute of
     Nothing -> pure ()
-    Just name -> putTextBits name
-  BinaryBits.putBool (reservationAttributeUnknown1 reservationAttribute)
-  BinaryBits.putBool (reservationAttributeUnknown2 reservationAttribute)
-  case reservationAttributeUnknown3 reservationAttribute of
+    Just name_ -> Str.bitPut name_
+  BinaryBits.putBool (unknown1 reservationAttribute)
+  BinaryBits.putBool (unknown2 reservationAttribute)
+  case unknown3 reservationAttribute of
     Nothing -> pure ()
     Just c -> BinaryBits.putWord8 6 c
 
-decodeReservationAttributeBits
-  :: (Int, Int, Int) -> DecodeBits ReservationAttribute
-decodeReservationAttributeBits version = do
-  number <- decodeCompressedWordBits 7
-  uniqueId <- decodeUniqueIdAttributeBits version
-  ReservationAttribute number uniqueId
+bitGet
+  :: (Int, Int, Int) -> BitGet ReservationAttribute
+bitGet version = do
+  number_ <- CompressedWord.bitGet 7
+  uniqueId_ <- UniqueId.bitGet version
+  ReservationAttribute number_ uniqueId_
     <$> decodeWhen
-          (uniqueIdAttributeSystemId uniqueId /= Word8le 0)
-          decodeStrBits
+          (UniqueId.systemId uniqueId_ /= Word8le.fromWord8 0)
+          Str.bitGet
     <*> getBool
     <*> getBool
     <*> decodeWhen (version >= (868, 12, 0)) (getWord8Bits 6)
