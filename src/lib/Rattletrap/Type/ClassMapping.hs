@@ -6,7 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 data ClassMapping = ClassMapping
   { name :: Str.Str
@@ -16,7 +16,7 @@ data ClassMapping = ClassMapping
 
 $(deriveJson ''ClassMapping)
 
-bytePut :: ClassMapping -> BytePut
+bytePut :: ClassMapping -> BytePut.BytePut
 bytePut classMapping = do
   Str.bytePut (name classMapping)
   U32.bytePut (streamId classMapping)

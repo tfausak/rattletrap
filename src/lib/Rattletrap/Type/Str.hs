@@ -7,10 +7,10 @@ import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 import qualified Data.Text.Encoding.Error as Text
 import qualified Debug.Trace as Debug
-import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString as Bytes
 import qualified Data.Char as Char
 import qualified Data.Text as Text
@@ -34,12 +34,12 @@ fromString = fromText . Text.pack
 toString :: Str -> String
 toString = Text.unpack . toText
 
-bytePut :: Str -> BytePut
+bytePut :: Str -> BytePut.BytePut
 bytePut text = do
   let size = getTextSize text
   let encode = getTextEncoder size
   I32.bytePut size
-  Binary.putByteString (encode (addNull (toText text)))
+  BytePut.byteString . encode . addNull $ toText text
 
 bitPut :: Str -> BitPut ()
 bitPut = bytePutToBitPut bytePut

@@ -8,7 +8,7 @@ import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
@@ -60,7 +60,7 @@ data Header = Header
 
 $(deriveJson ''Header)
 
-putHeader :: Header -> BytePut
+putHeader :: Header -> BytePut.BytePut
 putHeader header = do
   U32.bytePut (engineVersion header)
   U32.bytePut (licenseeVersion header)

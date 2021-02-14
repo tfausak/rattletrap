@@ -6,7 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 data Mark = Mark
   { value :: Str.Str
@@ -18,7 +18,7 @@ data Mark = Mark
 
 $(deriveJson ''Mark)
 
-bytePut :: Mark -> BytePut
+bytePut :: Mark -> BytePut.BytePut
 bytePut mark = do
   Str.bytePut (value mark)
   U32.bytePut (frame mark)

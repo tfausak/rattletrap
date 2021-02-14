@@ -5,6 +5,7 @@ module Rattletrap.Type.U8 where
 import Rattletrap.Type.Common
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 import qualified Data.Binary as Binary
 
@@ -20,7 +21,7 @@ fromWord8 = U8
 toWord8 :: U8 -> Word8
 toWord8 (U8 x) = x
 
-bytePut :: U8 -> BytePut
+bytePut :: U8 -> BytePut.BytePut
 bytePut = Binary.putWord8 . toWord8
 
 bitPut :: U8 -> BitPut ()

@@ -5,9 +5,9 @@ module Rattletrap.Type.I8 where
 import Rattletrap.Type.Common
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 import qualified Data.Binary.Get as Binary
-import qualified Data.Binary.Put as Binary
 
 newtype I8
   = I8 Int8
@@ -21,8 +21,8 @@ fromInt8 = I8
 toInt8 :: I8 -> Int8
 toInt8 (I8 x) = x
 
-bytePut :: I8 -> BytePut
-bytePut int8 = Binary.putInt8 (toInt8 int8)
+bytePut :: I8 -> BytePut.BytePut
+bytePut = BytePut.int8 . toInt8
 
 bitPut :: I8 -> BitPut ()
 bitPut = bytePutToBitPut bytePut

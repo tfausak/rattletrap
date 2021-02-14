@@ -6,7 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 data Message = Message
   { frame :: U32.U32
@@ -20,7 +20,7 @@ data Message = Message
 
 $(deriveJson ''Message)
 
-bytePut :: Message -> BytePut
+bytePut :: Message -> BytePut.BytePut
 bytePut message = do
   U32.bytePut (frame message)
   Str.bytePut (name message)

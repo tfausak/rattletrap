@@ -7,7 +7,7 @@ import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 data Property = Property
   { kind :: Str.Str
@@ -19,7 +19,7 @@ data Property = Property
 
 $(deriveJson ''Property)
 
-bytePut :: Property -> BytePut
+bytePut :: Property -> BytePut.BytePut
 bytePut property = do
   Str.bytePut (kind property)
   U64.bytePut (size property)

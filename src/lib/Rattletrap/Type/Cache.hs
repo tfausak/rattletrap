@@ -7,7 +7,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 data Cache = Cache
   { classId :: U32.U32
@@ -19,7 +19,7 @@ data Cache = Cache
 
 $(deriveJson ''Cache)
 
-bytePut :: Cache -> BytePut
+bytePut :: Cache -> BytePut.BytePut
 bytePut cache = do
   U32.bytePut (classId cache)
   U32.bytePut (parentCacheId cache)

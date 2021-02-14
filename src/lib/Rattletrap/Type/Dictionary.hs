@@ -1,9 +1,9 @@
 module Rattletrap.Type.Dictionary where
 
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.BytePut as BytePut
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Aeson
@@ -55,7 +55,7 @@ instance Aeson.ToJSON a => Aeson.ToJSON (Dictionary a) where
 lookup :: Str.Str -> Dictionary a -> Maybe a
 lookup k = Prelude.lookup k . List.toList . elements
 
-bytePut :: (a -> BytePut) -> Dictionary a -> BytePut
+bytePut :: (a -> BytePut.BytePut) -> Dictionary a -> BytePut.BytePut
 bytePut f x = do
   Monad.forM_ (List.toList $ elements x) $ \ (k, v) -> do
     Str.bytePut k

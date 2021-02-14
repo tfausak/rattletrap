@@ -41,6 +41,7 @@ library
   exposed-modules:
     Paths_rattletrap
     Rattletrap
+    Rattletrap.BytePut
     Rattletrap.Console.Main
     Rattletrap.Data
     Rattletrap.Decode.Common

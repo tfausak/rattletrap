@@ -14,14 +14,12 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
+import qualified Rattletrap.BytePut as BytePut
 
 import qualified Control.Monad.Trans.State as State
 import qualified Data.Binary.Get as Binary
-import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
-import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
 
@@ -79,14 +77,12 @@ empty = Content
   , unknown = []
   }
 
-bytePut :: Content -> BytePut
+bytePut :: Content -> BytePut.BytePut
 bytePut content = do
   List.bytePut Str.bytePut (levels content)
   List.bytePut KeyFrame.bytePut (keyFrames content)
   let
-    stream = LazyBytes.toStrict
-      (Binary.runPut (BinaryBits.runBitPut (Frame.putFrames (frames content)))
-      )
+    stream = BytePut.toByteString . BinaryBits.runBitPut . Frame.putFrames $ frames content
     -- This is a little strange. When parsing a binary replay, the stream size
     -- is given before the stream itself. When generating the JSON, the stream
     -- size is included. That allows a bit-for-bit identical binary replay to
@@ -103,7 +99,7 @@ bytePut content = do
       (U32.toWord32 expectedStreamSize)
       (U32.toWord32 actualStreamSize)
   U32.bytePut streamSize_
-  Binary.putByteString
+  BytePut.byteString
     (reverseBytes (padBytes (U32.toWord32 streamSize_) stream))
   List.bytePut Message.bytePut (messages content)
   List.bytePut Mark.bytePut (marks content)
@@ -112,7 +108,7 @@ bytePut content = do
   List.bytePut Str.bytePut (names content)
   List.bytePut ClassMapping.bytePut (classMappings content)
   List.bytePut Cache.bytePut (caches content)
-  mapM_ Binary.putWord8 (unknown content)
+  mapM_ BytePut.word8 (unknown content)
 
 byteGet
   :: (Int, Int, Int)

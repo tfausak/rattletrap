@@ -11,7 +11,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 data PropertyValue a
   = Array (List.List (Dictionary.Dictionary a))
@@ -30,7 +30,7 @@ data PropertyValue a
 
 $(deriveJson ''PropertyValue)
 
-bytePut :: (a -> BytePut) -> PropertyValue a -> BytePut
+bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
 bytePut putProperty value = case value of
   Array list -> List.bytePut (Dictionary.bytePut putProperty) list
   Bool word8 -> U8.bytePut word8

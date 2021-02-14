@@ -9,12 +9,12 @@ module Rattletrap.Utility.Helper
 
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.Content as Content
+import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Section as Section
 
 import qualified Data.Aeson as Json
 import qualified Data.Aeson.Encode.Pretty as Json
-import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
 
@@ -37,6 +37,6 @@ decodeReplayJson = Json.eitherDecodeStrict'
 -- | Encodes a raw replay.
 encodeReplayFile :: Bool -> Replay.FullReplay -> Bytes.ByteString
 encodeReplayFile fast replay =
-  LazyBytes.toStrict . Binary.runPut . Replay.bytePut $ if fast
+  BytePut.toByteString . Replay.bytePut $ if fast
     then replay { Replay.content = Section.create Content.bytePut Content.empty }
     else replay

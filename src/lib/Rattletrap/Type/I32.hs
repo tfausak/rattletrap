@@ -5,9 +5,9 @@ module Rattletrap.Type.I32 where
 import Rattletrap.Type.Common
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 import qualified Data.Binary.Get as Binary
-import qualified Data.Binary.Put as Binary
 
 newtype I32
   = I32 Int32
@@ -21,8 +21,8 @@ fromInt32 = I32
 toInt32 :: I32 -> Int32
 toInt32 (I32 x) = x
 
-bytePut :: I32 -> BytePut
-bytePut int32 = Binary.putInt32le (toInt32 int32)
+bytePut :: I32 -> BytePut.BytePut
+bytePut = BytePut.int32 . toInt32
 
 bitPut :: I32 -> BitPut ()
 bitPut = bytePutToBitPut bytePut

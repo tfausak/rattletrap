@@ -3,9 +3,9 @@
 module Rattletrap.Type.List where
 
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.BytePut as BytePut
 
 import qualified Control.Monad as Monad
 
@@ -24,7 +24,7 @@ empty = fromList []
 toList :: List a -> [a]
 toList (List x) = x
 
-bytePut :: (a -> BytePut) -> List a -> BytePut
+bytePut :: (a -> BytePut.BytePut) -> List a -> BytePut.BytePut
 bytePut f x = do
   let v = toList x
   U32.bytePut . U32.fromWord32 . fromIntegral $ length v

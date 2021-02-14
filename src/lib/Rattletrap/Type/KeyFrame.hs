@@ -6,7 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BytePut as BytePut
 
 data KeyFrame = KeyFrame
   { time :: F32.F32
@@ -20,7 +20,7 @@ data KeyFrame = KeyFrame
 
 $(deriveJson ''KeyFrame)
 
-bytePut :: KeyFrame -> BytePut
+bytePut :: KeyFrame -> BytePut.BytePut
 bytePut keyFrame = do
   F32.bytePut (time keyFrame)
   U32.bytePut (frame keyFrame)
