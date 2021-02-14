@@ -3,17 +3,17 @@
 module Rattletrap.Type.Attribute.TeamPaint where
 
 import Rattletrap.Type.Common
-import qualified Rattletrap.Type.Word32le as Word32le
-import qualified Rattletrap.Type.Word8le as Word8le
+import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data TeamPaintAttribute = TeamPaintAttribute
-  { team :: Word8le.Word8le
-  , primaryColor :: Word8le.Word8le
-  , accentColor :: Word8le.Word8le
-  , primaryFinish :: Word32le.Word32le
-  , accentFinish :: Word32le.Word32le
+  { team :: U8.U8
+  , primaryColor :: U8.U8
+  , accentColor :: U8.U8
+  , primaryFinish :: U32.U32
+  , accentFinish :: U32.U32
   }
   deriving (Eq, Show)
 
@@ -21,17 +21,17 @@ $(deriveJson ''TeamPaintAttribute)
 
 bitPut :: TeamPaintAttribute -> BitPut ()
 bitPut teamPaintAttribute = do
-  Word8le.bitPut (team teamPaintAttribute)
-  Word8le.bitPut (primaryColor teamPaintAttribute)
-  Word8le.bitPut (accentColor teamPaintAttribute)
-  Word32le.bitPut (primaryFinish teamPaintAttribute)
-  Word32le.bitPut (accentFinish teamPaintAttribute)
+  U8.bitPut (team teamPaintAttribute)
+  U8.bitPut (primaryColor teamPaintAttribute)
+  U8.bitPut (accentColor teamPaintAttribute)
+  U32.bitPut (primaryFinish teamPaintAttribute)
+  U32.bitPut (accentFinish teamPaintAttribute)
 
 bitGet :: BitGet TeamPaintAttribute
 bitGet =
   TeamPaintAttribute
-    <$> Word8le.bitGet
-    <*> Word8le.bitGet
-    <*> Word8le.bitGet
-    <*> Word32le.bitGet
-    <*> Word32le.bitGet
+    <$> U8.bitGet
+    <*> U8.bitGet
+    <*> U8.bitGet
+    <*> U32.bitGet
+    <*> U32.bitGet

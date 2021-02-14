@@ -3,7 +3,7 @@
 module Rattletrap.Type.Str where
 
 import Rattletrap.Type.Common
-import qualified Rattletrap.Type.Int32le as Int32le
+import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
@@ -38,13 +38,13 @@ bytePut :: Str -> BytePut
 bytePut text = do
   let size = getTextSize text
   let encode = getTextEncoder size
-  Int32le.bytePut size
+  I32.bytePut size
   Binary.putByteString (encode (addNull (toText text)))
 
 bitPut :: Str -> BitPut ()
 bitPut = bytePutToBitPut bytePut
 
-getTextSize :: Str -> Int32le.Int32le
+getTextSize :: Str -> I32.I32
 getTextSize text =
   let
     value = toText text
@@ -55,36 +55,36 @@ getTextSize text =
     size = if value == Text.pack "\x00\x00\x00None"
       then 0x05000000
       else scale * rawSize :: Int32
-  in Int32le.fromInt32 size
+  in I32.fromInt32 size
 
-getTextEncoder :: Int32le.Int32le -> Text.Text -> Bytes.ByteString
+getTextEncoder :: I32.I32 -> Text.Text -> Bytes.ByteString
 getTextEncoder size text =
-  if Int32le.toInt32 size < 0 then Text.encodeUtf16LE text else encodeLatin1 text
+  if I32.toInt32 size < 0 then Text.encodeUtf16LE text else encodeLatin1 text
 
 addNull :: Text.Text -> Text.Text
 addNull text = if Text.null text then text else Text.snoc text '\x00'
 
 byteGet :: ByteGet Str
 byteGet = do
-  rawSize <- Int32le.byteGet
+  rawSize <- I32.byteGet
   bytes <- getByteString (normalizeTextSize rawSize)
   pure (fromText (dropNull (getTextDecoder rawSize bytes)))
 
 bitGet :: BitGet Str
 bitGet = do
-  rawSize <- Int32le.bitGet
+  rawSize <- I32.bitGet
   bytes <- getByteStringBits (normalizeTextSize rawSize)
   pure (fromText (dropNull (getTextDecoder rawSize (reverseBytes bytes))))
 
-normalizeTextSize :: Integral a => Int32le.Int32le -> a
-normalizeTextSize size = case Int32le.toInt32 size of
+normalizeTextSize :: Integral a => I32.I32 -> a
+normalizeTextSize size = case I32.toInt32 size of
   0x05000000 -> 8
   x -> if x < 0 then (-2 * fromIntegral x) else fromIntegral x
 
-getTextDecoder :: Int32le.Int32le -> Bytes.ByteString -> Text.Text
+getTextDecoder :: I32.I32 -> Bytes.ByteString -> Text.Text
 getTextDecoder size bytes =
   let
-    decode = if Int32le.toInt32 size < 0
+    decode = if I32.toInt32 size < 0
       then Text.decodeUtf16LEWith $ \message input -> do
         Debug.traceM $ "WARNING: " <> show (Text.DecodeError message input)
         Text.lenientDecode message input

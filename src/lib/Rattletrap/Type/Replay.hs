@@ -9,11 +9,11 @@ import qualified Rattletrap.Type.Section as Section
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 import qualified Rattletrap.Type.Dictionary as Dictionary
-import qualified Rattletrap.Type.Int32le as Int32le
+import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Type.Word32le as Word32le
+import qualified Rattletrap.Type.U32 as U32
 
 type FullReplay = Replay Content.Content
 
@@ -54,14 +54,14 @@ byteGet fast = do
 
 getVersion :: Header.Header -> (Int, Int, Int)
 getVersion header_ =
-  ( fromIntegral (Word32le.toWord32 (Header.engineVersion header_))
-  , fromIntegral (Word32le.toWord32 (Header.licenseeVersion header_))
+  ( fromIntegral (U32.toWord32 (Header.engineVersion header_))
+  , fromIntegral (U32.toWord32 (Header.licenseeVersion header_))
   , getPatchVersion header_
   )
 
 getPatchVersion :: Header.Header -> Int
 getPatchVersion header_ = case Header.patchVersion header_ of
-  Just version -> fromIntegral (Word32le.toWord32 version)
+  Just version -> fromIntegral (U32.toWord32 version)
   Nothing ->
     case Dictionary.lookup (Str.fromString "MatchType") (Header.properties header_) of
       -- This is an ugly, ugly hack to handle replays from season 2 of RLCS.
@@ -74,12 +74,12 @@ getNumFrames :: Header.Header -> Int
 getNumFrames header_ =
   case Dictionary.lookup (Str.fromString "NumFrames") (Header.properties header_) of
     Just (Property.Property _ _ (PropertyValue.Int numFrames)) ->
-      fromIntegral (Int32le.toInt32 numFrames)
+      fromIntegral (I32.toInt32 numFrames)
     _ -> 0
 
 getMaxChannels :: Header.Header -> Word
 getMaxChannels header_ =
   case Dictionary.lookup (Str.fromString "MaxChannels") (Header.properties header_) of
     Just (Property.Property _ _ (PropertyValue.Int numFrames)) ->
-      fromIntegral (Int32le.toInt32 numFrames)
+      fromIntegral (I32.toInt32 numFrames)
     _ -> 1023

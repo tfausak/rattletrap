@@ -7,7 +7,7 @@ import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
-import qualified Rattletrap.Type.Word32le as Word32le
+import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Encode.Common
 
 import qualified Control.Monad.Trans.Class as Trans
@@ -44,7 +44,7 @@ decodeReplicationsBits
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT
-       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
+       (Map.Map CompressedWord.CompressedWord U32.U32)
        BitGet
        [Replication]
 decodeReplicationsBits version limit classes = do
@@ -61,7 +61,7 @@ bitGet
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT
-       (Map.Map CompressedWord.CompressedWord Word32le.Word32le)
+       (Map.Map CompressedWord.CompressedWord U32.U32)
        BitGet
        Replication
 bitGet version limit classes = do

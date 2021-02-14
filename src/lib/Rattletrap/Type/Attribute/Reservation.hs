@@ -7,7 +7,7 @@ import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.Attribute.UniqueId as UniqueId
 import Rattletrap.Decode.Common
-import qualified Rattletrap.Type.Word8le as Word8le
+import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
@@ -44,7 +44,7 @@ bitGet version = do
   uniqueId_ <- UniqueId.bitGet version
   ReservationAttribute number_ uniqueId_
     <$> decodeWhen
-          (UniqueId.systemId uniqueId_ /= Word8le.fromWord8 0)
+          (UniqueId.systemId uniqueId_ /= U8.fromWord8 0)
           Str.bitGet
     <*> getBool
     <*> getBool

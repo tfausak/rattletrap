@@ -3,30 +3,30 @@
 module Rattletrap.Type.Attribute.Loadout where
 
 import Rattletrap.Type.Common
-import qualified Rattletrap.Type.Word32le as Word32le
-import qualified Rattletrap.Type.Word8le as Word8le
+import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data LoadoutAttribute = LoadoutAttribute
-  { version :: Word8le.Word8le
-  , body :: Word32le.Word32le
-  , decal :: Word32le.Word32le
-  , wheels :: Word32le.Word32le
-  , rocketTrail :: Word32le.Word32le
+  { version :: U8.U8
+  , body :: U32.U32
+  , decal :: U32.U32
+  , wheels :: U32.U32
+  , rocketTrail :: U32.U32
   -- ^ Now known as "rocket boost".
-  , antenna :: Word32le.Word32le
-  , topper :: Word32le.Word32le
-  , unknown1 :: Word32le.Word32le
-  , unknown2 :: Maybe Word32le.Word32le
-  , engineAudio :: Maybe Word32le.Word32le
-  , trail :: Maybe Word32le.Word32le
-  , goalExplosion :: Maybe Word32le.Word32le
-  , banner :: Maybe Word32le.Word32le
-  , unknown3 :: Maybe Word32le.Word32le
-  , unknown4 :: Maybe Word32le.Word32le
-  , unknown5 :: Maybe Word32le.Word32le
-  , unknown6 :: Maybe Word32le.Word32le
+  , antenna :: U32.U32
+  , topper :: U32.U32
+  , unknown1 :: U32.U32
+  , unknown2 :: Maybe U32.U32
+  , engineAudio :: Maybe U32.U32
+  , trail :: Maybe U32.U32
+  , goalExplosion :: Maybe U32.U32
+  , banner :: Maybe U32.U32
+  , unknown3 :: Maybe U32.U32
+  , unknown4 :: Maybe U32.U32
+  , unknown5 :: Maybe U32.U32
+  , unknown6 :: Maybe U32.U32
   }
   deriving (Eq, Show)
 
@@ -34,23 +34,23 @@ $(deriveJson ''LoadoutAttribute)
 
 bitPut :: LoadoutAttribute -> BitPut ()
 bitPut loadoutAttribute = do
-  Word8le.bitPut (version loadoutAttribute)
-  Word32le.bitPut (body loadoutAttribute)
-  Word32le.bitPut (decal loadoutAttribute)
-  Word32le.bitPut (wheels loadoutAttribute)
-  Word32le.bitPut (rocketTrail loadoutAttribute)
-  Word32le.bitPut (antenna loadoutAttribute)
-  Word32le.bitPut (topper loadoutAttribute)
-  Word32le.bitPut (unknown1 loadoutAttribute)
-  putOptional (unknown2 loadoutAttribute) Word32le.bitPut
-  putOptional (engineAudio loadoutAttribute) Word32le.bitPut
-  putOptional (trail loadoutAttribute) Word32le.bitPut
-  putOptional (goalExplosion loadoutAttribute) Word32le.bitPut
-  putOptional (banner loadoutAttribute) Word32le.bitPut
-  putOptional (unknown3 loadoutAttribute) Word32le.bitPut
-  putOptional (unknown4 loadoutAttribute) Word32le.bitPut
-  putOptional (unknown5 loadoutAttribute) Word32le.bitPut
-  putOptional (unknown6 loadoutAttribute) Word32le.bitPut
+  U8.bitPut (version loadoutAttribute)
+  U32.bitPut (body loadoutAttribute)
+  U32.bitPut (decal loadoutAttribute)
+  U32.bitPut (wheels loadoutAttribute)
+  U32.bitPut (rocketTrail loadoutAttribute)
+  U32.bitPut (antenna loadoutAttribute)
+  U32.bitPut (topper loadoutAttribute)
+  U32.bitPut (unknown1 loadoutAttribute)
+  putOptional (unknown2 loadoutAttribute) U32.bitPut
+  putOptional (engineAudio loadoutAttribute) U32.bitPut
+  putOptional (trail loadoutAttribute) U32.bitPut
+  putOptional (goalExplosion loadoutAttribute) U32.bitPut
+  putOptional (banner loadoutAttribute) U32.bitPut
+  putOptional (unknown3 loadoutAttribute) U32.bitPut
+  putOptional (unknown4 loadoutAttribute) U32.bitPut
+  putOptional (unknown5 loadoutAttribute) U32.bitPut
+  putOptional (unknown6 loadoutAttribute) U32.bitPut
 
 putOptional :: Maybe a -> (a -> BitPut ()) -> BitPut ()
 putOptional m f = case m of
@@ -59,21 +59,21 @@ putOptional m f = case m of
 
 bitGet :: BitGet LoadoutAttribute
 bitGet = do
-  version_ <- Word8le.bitGet
+  version_ <- U8.bitGet
   LoadoutAttribute version_
-    <$> Word32le.bitGet
-    <*> Word32le.bitGet
-    <*> Word32le.bitGet
-    <*> Word32le.bitGet
-    <*> Word32le.bitGet
-    <*> Word32le.bitGet
-    <*> Word32le.bitGet
-    <*> decodeWhen (Word8le.toWord8 version_ >= 11) Word32le.bitGet
-    <*> decodeWhen (Word8le.toWord8 version_ >= 16) Word32le.bitGet
-    <*> decodeWhen (Word8le.toWord8 version_ >= 16) Word32le.bitGet
-    <*> decodeWhen (Word8le.toWord8 version_ >= 16) Word32le.bitGet
-    <*> decodeWhen (Word8le.toWord8 version_ >= 17) Word32le.bitGet
-    <*> decodeWhen (Word8le.toWord8 version_ >= 19) Word32le.bitGet
-    <*> decodeWhen (Word8le.toWord8 version_ >= 22) Word32le.bitGet
-    <*> decodeWhen (Word8le.toWord8 version_ >= 22) Word32le.bitGet
-    <*> decodeWhen (Word8le.toWord8 version_ >= 22) Word32le.bitGet
+    <$> U32.bitGet
+    <*> U32.bitGet
+    <*> U32.bitGet
+    <*> U32.bitGet
+    <*> U32.bitGet
+    <*> U32.bitGet
+    <*> U32.bitGet
+    <*> decodeWhen (U8.toWord8 version_ >= 11) U32.bitGet
+    <*> decodeWhen (U8.toWord8 version_ >= 16) U32.bitGet
+    <*> decodeWhen (U8.toWord8 version_ >= 16) U32.bitGet
+    <*> decodeWhen (U8.toWord8 version_ >= 16) U32.bitGet
+    <*> decodeWhen (U8.toWord8 version_ >= 17) U32.bitGet
+    <*> decodeWhen (U8.toWord8 version_ >= 19) U32.bitGet
+    <*> decodeWhen (U8.toWord8 version_ >= 22) U32.bitGet
+    <*> decodeWhen (U8.toWord8 version_ >= 22) U32.bitGet
+    <*> decodeWhen (U8.toWord8 version_ >= 22) U32.bitGet

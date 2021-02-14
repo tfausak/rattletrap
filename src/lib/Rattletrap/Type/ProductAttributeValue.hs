@@ -5,7 +5,7 @@ module Rattletrap.Type.ProductAttributeValue where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Type.Word32le as Word32le
+import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Encode.Common
 import Rattletrap.Decode.Common
 
@@ -18,7 +18,7 @@ data ProductAttributeValue
   | TeamEditionNew Word32
   | SpecialEdition Word32
   | UserColorOld (Maybe Word32)
-  | UserColorNew Word32le.Word32le
+  | UserColorNew U32.U32
   | TitleId Str.Str
   deriving (Eq, Show)
 
@@ -36,11 +36,11 @@ bitPut val = case val of
     Just y -> do
       BinaryBits.putBool True
       putBitsLE 31 y
-  UserColorNew x -> Word32le.bitPut x
+  UserColorNew x -> U32.bitPut x
   TitleId x -> Str.bitPut x
 
 bitGet
-  :: (Int, Int, Int) -> Word32le.Word32le -> Maybe Str.Str -> BitGet ProductAttributeValue
+  :: (Int, Int, Int) -> U32.U32 -> Maybe Str.Str -> BitGet ProductAttributeValue
 bitGet version objectId maybeObjectName =
   case Str.toString <$> maybeObjectName of
     Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
@@ -71,7 +71,7 @@ decodeTeamEdition version = if version >= (868, 18, 0)
 
 decodeColor :: (Int, Int, Int) -> BitGet ProductAttributeValue
 decodeColor version = if version >= (868, 23, 8)
-  then UserColorNew <$> Word32le.bitGet
+  then UserColorNew <$> U32.bitGet
   else do
     hasValue <- getBool
     UserColorOld <$> decodeWhen hasValue (getBitsLE 31)

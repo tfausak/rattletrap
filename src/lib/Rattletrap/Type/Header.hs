@@ -6,17 +6,17 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Type.Word32le as Word32le
+import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
-  { engineVersion :: Word32le.Word32le
+  { engineVersion :: U32.U32
   -- ^ The "major" ("engine") version number.
-  , licenseeVersion :: Word32le.Word32le
+  , licenseeVersion :: U32.U32
   -- ^ The "minor" ("licensee") version number.
-  , patchVersion :: Maybe Word32le.Word32le
+  , patchVersion :: Maybe U32.U32
   -- ^ The "patch" ("net") version number.
   , label :: Str.Str
   -- ^ Always @TAGame.Replay_Soccar_TA@.
@@ -62,20 +62,20 @@ $(deriveJson ''Header)
 
 putHeader :: Header -> BytePut
 putHeader header = do
-  Word32le.bytePut (engineVersion header)
-  Word32le.bytePut (licenseeVersion header)
+  U32.bytePut (engineVersion header)
+  U32.bytePut (licenseeVersion header)
   case patchVersion header of
     Nothing -> pure ()
-    Just x -> Word32le.bytePut x
+    Just x -> U32.bytePut x
   Str.bytePut (label header)
   Dictionary.bytePut Property.bytePut (properties header)
 
 decodeHeader :: ByteGet Header
 decodeHeader = do
-  (major, minor) <- (,) <$> Word32le.byteGet <*> Word32le.byteGet
+  (major, minor) <- (,) <$> U32.byteGet <*> U32.byteGet
   Header major minor
     <$> decodeWhen
-          (Word32le.toWord32 major >= 868 && Word32le.toWord32 minor >= 18)
-          Word32le.byteGet
+          (U32.toWord32 major >= 868 && U32.toWord32 minor >= 18)
+          U32.byteGet
     <*> Str.byteGet
     <*> Dictionary.byteGet Property.byteGet

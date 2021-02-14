@@ -8,14 +8,7 @@ module Rattletrap.Decode.Common
   , runDecode
   , runDecodeBits
   , byteGetToBitGet
-  , Binary.getFloatle
   , Binary.getByteString
-  , Binary.getInt8
-  , Binary.getInt32le
-  , Binary.getInt64le
-  , Binary.getWord8
-  , Binary.getWord32le
-  , Binary.getWord64le
   , BinaryBits.getBool
   ) where
 

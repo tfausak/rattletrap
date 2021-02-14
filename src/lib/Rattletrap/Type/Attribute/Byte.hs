@@ -3,19 +3,19 @@
 module Rattletrap.Type.Attribute.Byte where
 
 import Rattletrap.Type.Common
-import qualified Rattletrap.Type.Word8le as Word8le
+import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 newtype ByteAttribute = ByteAttribute
-  { value :: Word8le.Word8le
+  { value :: U8.U8
   } deriving (Eq, Show)
 
 $(deriveJson ''ByteAttribute)
 
 bitPut :: ByteAttribute -> BitPut ()
 bitPut byteAttribute =
-  Word8le.bitPut (value byteAttribute)
+  U8.bitPut (value byteAttribute)
 
 bitGet :: BitGet ByteAttribute
-bitGet = ByteAttribute <$> Word8le.bitGet
+bitGet = ByteAttribute <$> U8.bitGet

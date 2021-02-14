@@ -11,7 +11,7 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Type.Word32le as Word32le
+import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
@@ -33,7 +33,7 @@ data Content = Content
   -- ^ A list of which frames are key frames. Although they aren't necessary
   -- for replay, key frames are frames that replicate every actor. They
   -- typically happen once every 10 seconds.
-  , streamSize :: Word32le.Word32le
+  , streamSize :: U32.U32
   -- ^ The size of the stream in bytes. This is only really necessary because
   -- the stream has some arbitrary amount of padding at the end.
   , frames :: [Frame.Frame]
@@ -67,7 +67,7 @@ empty :: Content
 empty = Content
   { levels = List.List []
   , keyFrames = List.List []
-  , streamSize = Word32le.fromWord32 0
+  , streamSize = U32.fromWord32 0
   , frames = []
   , messages = List.List []
   , marks = List.List []
@@ -98,13 +98,13 @@ bytePut content = do
     -- Unforunately that isn't currently known. See this issue for details:
     -- <https://github.com/tfausak/rattletrap/issues/171>.
     expectedStreamSize = streamSize content
-    actualStreamSize = Word32le.fromWord32 . fromIntegral $ Bytes.length stream
-    streamSize_ = Word32le.fromWord32 $ max
-      (Word32le.toWord32 expectedStreamSize)
-      (Word32le.toWord32 actualStreamSize)
-  Word32le.bytePut streamSize_
+    actualStreamSize = U32.fromWord32 . fromIntegral $ Bytes.length stream
+    streamSize_ = U32.fromWord32 $ max
+      (U32.toWord32 expectedStreamSize)
+      (U32.toWord32 actualStreamSize)
+  U32.bytePut streamSize_
   Binary.putByteString
-    (reverseBytes (padBytes (Word32le.toWord32 streamSize_) stream))
+    (reverseBytes (padBytes (U32.toWord32 streamSize_) stream))
   List.bytePut Message.bytePut (messages content)
   List.bytePut Mark.bytePut (marks content)
   List.bytePut Str.bytePut (packages content)
@@ -129,10 +129,10 @@ byteGet version numFrames maxChannels = do
     (,,)
     <$> List.byteGet Str.byteGet
     <*> List.byteGet KeyFrame.byteGet
-    <*> Word32le.byteGet
+    <*> U32.byteGet
   (stream, messages_, marks_, packages_, objects_, names_, classMappings_, caches_) <-
     (,,,,,,,)
-    <$> getByteString (fromIntegral (Word32le.toWord32 streamSize_))
+    <$> getByteString (fromIntegral (U32.toWord32 streamSize_))
     <*> List.byteGet Message.byteGet
     <*> List.byteGet Mark.byteGet
     <*> List.byteGet Str.byteGet
