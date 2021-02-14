@@ -1,5 +1,6 @@
 module Rattletrap.BitPut where
 
+import qualified Data.Binary.Put as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as ByteString
@@ -10,7 +11,7 @@ import qualified Rattletrap.Utility.Bytes as Utility
 type BitPut = BinaryBits.BitPut ()
 
 toBytePut :: BitPut -> BytePut.BytePut
-toBytePut = BinaryBits.runBitPut
+toBytePut = Binary.execPut . BinaryBits.runBitPut
 
 fromBytePut :: BytePut.BytePut -> BitPut
 fromBytePut =
