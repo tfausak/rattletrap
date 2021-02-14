@@ -26,7 +26,7 @@ data ReplicationValue
   -- ^ Destroys an existing actor.
   deriving (Eq, Show)
 
-$(deriveJsonWith ''ReplicationValue jsonOptions)
+$(deriveJson ''ReplicationValue)
 
 bitPut :: ReplicationValue -> BitPut ()
 bitPut value = case value of

@@ -14,7 +14,7 @@ data ClassMapping = ClassMapping
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''ClassMapping jsonOptions)
+$(deriveJson ''ClassMapping)
 
 bytePut :: ClassMapping -> BytePut
 bytePut classMapping = do

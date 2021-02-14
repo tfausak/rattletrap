@@ -18,7 +18,7 @@ data CamSettingsAttribute = CamSettingsAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''CamSettingsAttribute jsonOptions)
+$(deriveJson ''CamSettingsAttribute)
 
 bitPut :: CamSettingsAttribute -> BitPut ()
 bitPut camSettingsAttribute = do

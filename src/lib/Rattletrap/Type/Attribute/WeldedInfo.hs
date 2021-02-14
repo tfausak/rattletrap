@@ -21,7 +21,7 @@ data WeldedInfoAttribute = WeldedInfoAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''WeldedInfoAttribute jsonOptions)
+$(deriveJson ''WeldedInfoAttribute)
 
 bitPut :: WeldedInfoAttribute -> BitPut ()
 bitPut weldedInfoAttribute = do

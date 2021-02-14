@@ -13,7 +13,7 @@ data AttributeMapping = AttributeMapping
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''AttributeMapping jsonOptions)
+$(deriveJson ''AttributeMapping)
 
 bytePut :: AttributeMapping -> BytePut
 bytePut attributeMapping = do

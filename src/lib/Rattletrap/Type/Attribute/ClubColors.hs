@@ -17,7 +17,7 @@ data ClubColorsAttribute = ClubColorsAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''ClubColorsAttribute jsonOptions)
+$(deriveJson ''ClubColorsAttribute)
 
 bitPut :: ClubColorsAttribute -> BitPut ()
 bitPut clubColorsAttribute = do

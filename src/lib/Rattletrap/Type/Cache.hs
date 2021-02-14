@@ -17,7 +17,7 @@ data Cache = Cache
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Cache jsonOptions)
+$(deriveJson ''Cache)
 
 bytePut :: Cache -> BytePut
 bytePut cache = do

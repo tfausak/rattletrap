@@ -15,7 +15,7 @@ data FlaggedByteAttribute = FlaggedByteAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''FlaggedByteAttribute jsonOptions)
+$(deriveJson ''FlaggedByteAttribute)
 
 bitPut :: FlaggedByteAttribute -> BitPut ()
 bitPut flaggedByteAttribute = do

@@ -17,7 +17,7 @@ data CustomDemolishAttribute = CustomDemolishAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''CustomDemolishAttribute jsonOptions)
+$(deriveJson ''CustomDemolishAttribute)
 
 bitPut :: CustomDemolishAttribute -> BitPut ()
 bitPut x = do

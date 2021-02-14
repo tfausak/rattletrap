@@ -17,7 +17,7 @@ data AppliedDamageAttribute = AppliedDamageAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''AppliedDamageAttribute jsonOptions)
+$(deriveJson ''AppliedDamageAttribute)
 
 bitPut :: AppliedDamageAttribute -> BitPut ()
 bitPut appliedDamageAttribute = do

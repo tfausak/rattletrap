@@ -89,7 +89,7 @@ data AttributeValue
   | WeldedInfo WeldedInfo.WeldedInfoAttribute
   deriving (Eq, Show)
 
-$(deriveJsonWith ''AttributeValue jsonOptions)
+$(deriveJson ''AttributeValue)
 
 bitPut :: AttributeValue -> BitPut ()
 bitPut value = case value of

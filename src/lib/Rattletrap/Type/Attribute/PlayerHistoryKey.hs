@@ -10,7 +10,7 @@ newtype PlayerHistoryKeyAttribute = PlayerHistoryKeyAttribute
   { unknown :: Word16
   } deriving (Eq, Show)
 
-$(deriveJsonWith ''PlayerHistoryKeyAttribute jsonOptions)
+$(deriveJson ''PlayerHistoryKeyAttribute)
 
 bitPut
   :: PlayerHistoryKeyAttribute -> BitPut ()

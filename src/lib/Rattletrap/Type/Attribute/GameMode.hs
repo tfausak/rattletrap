@@ -18,7 +18,7 @@ data GameModeAttribute = GameModeAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''GameModeAttribute jsonOptions)
+$(deriveJson ''GameModeAttribute)
 
 bitPut :: GameModeAttribute -> BitPut ()
 bitPut gameModeAttribute = do

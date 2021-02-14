@@ -15,7 +15,7 @@ data PickupAttribute = PickupAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''PickupAttribute jsonOptions)
+$(deriveJson ''PickupAttribute)
 
 bitPut :: PickupAttribute -> BitPut ()
 bitPut pickupAttribute = do

@@ -13,7 +13,7 @@ data Rotation
   | Quaternion Quaternion.Quaternion
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Rotation jsonOptions)
+$(deriveJson ''Rotation)
 
 bitPut :: Rotation -> BitPut ()
 bitPut r = case r of

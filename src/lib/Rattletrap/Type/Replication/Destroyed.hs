@@ -13,7 +13,7 @@ data Destroyed
   = Destroyed
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Destroyed jsonOptions)
+$(deriveJson ''Destroyed)
 
 bitPut :: Destroyed -> BitPut ()
 bitPut _ = pure ()

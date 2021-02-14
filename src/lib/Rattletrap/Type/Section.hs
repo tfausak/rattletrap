@@ -27,7 +27,7 @@ data Section a = Section
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Section jsonOptions)
+$(deriveJson ''Section)
 
 create :: (a -> BytePut) -> a -> Section a
 create encode body_ =

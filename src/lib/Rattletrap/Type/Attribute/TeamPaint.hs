@@ -17,7 +17,7 @@ data TeamPaintAttribute = TeamPaintAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''TeamPaintAttribute jsonOptions)
+$(deriveJson ''TeamPaintAttribute)
 
 bitPut :: TeamPaintAttribute -> BitPut ()
 bitPut teamPaintAttribute = do

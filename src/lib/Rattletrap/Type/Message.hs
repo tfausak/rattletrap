@@ -18,7 +18,7 @@ data Message = Message
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Message jsonOptions)
+$(deriveJson ''Message)
 
 bytePut :: Message -> BytePut
 bytePut message = do

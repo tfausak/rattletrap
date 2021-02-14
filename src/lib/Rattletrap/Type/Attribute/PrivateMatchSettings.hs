@@ -20,7 +20,7 @@ data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''PrivateMatchSettingsAttribute jsonOptions)
+$(deriveJson ''PrivateMatchSettingsAttribute)
 
 bitPut
   :: PrivateMatchSettingsAttribute -> BitPut ()

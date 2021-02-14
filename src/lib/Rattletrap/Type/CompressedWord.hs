@@ -17,7 +17,7 @@ data CompressedWord = CompressedWord
   }
   deriving (Eq, Ord, Show)
 
-$(deriveJsonWith ''CompressedWord jsonOptions)
+$(deriveJson ''CompressedWord)
 
 bitPut :: CompressedWord -> BitPut ()
 bitPut compressedWord =

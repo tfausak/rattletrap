@@ -58,7 +58,7 @@ data Header = Header
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Header jsonOptions)
+$(deriveJson ''Header)
 
 putHeader :: Header -> BytePut
 putHeader header = do

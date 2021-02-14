@@ -14,7 +14,7 @@ data ExtendedExplosionAttribute = ExtendedExplosionAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''ExtendedExplosionAttribute jsonOptions)
+$(deriveJson ''ExtendedExplosionAttribute)
 
 bitPut
   :: ExtendedExplosionAttribute -> BitPut ()

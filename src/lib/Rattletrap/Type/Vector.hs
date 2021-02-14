@@ -23,7 +23,7 @@ data Vector = Vector
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Vector jsonOptions)
+$(deriveJson ''Vector)
 
 bitPut :: Vector -> BitPut ()
 bitPut vector = do

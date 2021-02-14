@@ -21,7 +21,7 @@ data Replication = Replication
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Replication jsonOptions)
+$(deriveJson ''Replication)
 
 putReplications :: [Replication] -> BitPut ()
 putReplications replications = case replications of

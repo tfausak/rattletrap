@@ -27,7 +27,7 @@ data RemoteId
   | Epic Str.Str
   deriving (Eq, Show)
 
-$(deriveJsonWith ''RemoteId jsonOptions)
+$(deriveJson ''RemoteId)
 
 bitPut :: RemoteId -> BitPut ()
 bitPut remoteId = case remoteId of

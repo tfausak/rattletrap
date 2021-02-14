@@ -21,7 +21,7 @@ data DamageStateAttribute = DamageStateAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''DamageStateAttribute jsonOptions)
+$(deriveJson ''DamageStateAttribute)
 
 bitPut :: DamageStateAttribute -> BitPut ()
 bitPut damageStateAttribute = do

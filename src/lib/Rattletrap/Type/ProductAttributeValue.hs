@@ -22,7 +22,7 @@ data ProductAttributeValue
   | TitleId Str.Str
   deriving (Eq, Show)
 
-$(deriveJsonWith ''ProductAttributeValue jsonOptions)
+$(deriveJson ''ProductAttributeValue)
 
 bitPut :: ProductAttributeValue -> BitPut ()
 bitPut val = case val of

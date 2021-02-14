@@ -16,7 +16,7 @@ newtype Updated = Updated
   { attributes :: [Attribute.Attribute]
   } deriving (Eq, Show)
 
-$(deriveJsonWith ''Updated jsonOptions)
+$(deriveJson ''Updated)
 
 bitPut :: Updated -> BitPut ()
 bitPut updatedReplication =

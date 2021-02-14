@@ -12,7 +12,7 @@ newtype BooleanAttribute = BooleanAttribute
   { value :: Bool
   } deriving (Eq, Show)
 
-$(deriveJsonWith ''BooleanAttribute jsonOptions)
+$(deriveJson ''BooleanAttribute)
 
 bitPut :: BooleanAttribute -> BitPut ()
 bitPut booleanAttribute =

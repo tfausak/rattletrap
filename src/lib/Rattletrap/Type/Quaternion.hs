@@ -19,7 +19,7 @@ data Quaternion = Quaternion
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Quaternion jsonOptions)
+$(deriveJson ''Quaternion)
 
 data Component
   = X

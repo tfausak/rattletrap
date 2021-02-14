@@ -17,7 +17,7 @@ data MusicStingerAttribute = MusicStingerAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''MusicStingerAttribute jsonOptions)
+$(deriveJson ''MusicStingerAttribute)
 
 bitPut :: MusicStingerAttribute -> BitPut ()
 bitPut musicStingerAttribute = do

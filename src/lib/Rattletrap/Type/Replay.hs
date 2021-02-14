@@ -26,7 +26,7 @@ data Replay content = Replay
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Replay jsonOptions)
+$(deriveJson ''Replay)
 
 -- | Generates a raw replay. Use this with 'Data.BytePut.runPut'.
 --

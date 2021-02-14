@@ -13,7 +13,7 @@ data LoadoutsAttribute = LoadoutsAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''LoadoutsAttribute jsonOptions)
+$(deriveJson ''LoadoutsAttribute)
 
 bitPut :: LoadoutsAttribute -> BitPut ()
 bitPut loadoutsAttribute = do

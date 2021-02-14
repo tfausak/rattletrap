@@ -15,7 +15,7 @@ data StatEventAttribute = StatEventAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''StatEventAttribute jsonOptions)
+$(deriveJson ''StatEventAttribute)
 
 bitPut :: StatEventAttribute -> BitPut ()
 bitPut statEventAttribute = do

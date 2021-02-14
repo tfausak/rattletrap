@@ -16,7 +16,7 @@ data Mark = Mark
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Mark jsonOptions)
+$(deriveJson ''Mark)
 
 bytePut :: Mark -> BytePut
 bytePut mark = do

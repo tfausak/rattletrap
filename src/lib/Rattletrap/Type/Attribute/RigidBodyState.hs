@@ -19,7 +19,7 @@ data RigidBodyStateAttribute = RigidBodyStateAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''RigidBodyStateAttribute jsonOptions)
+$(deriveJson ''RigidBodyStateAttribute)
 
 bitPut :: RigidBodyStateAttribute -> BitPut ()
 bitPut rigidBodyStateAttribute = do

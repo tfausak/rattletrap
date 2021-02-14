@@ -18,7 +18,7 @@ data Initialization = Initialization
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Initialization jsonOptions)
+$(deriveJson ''Initialization)
 
 bitPut :: Initialization -> BitPut ()
 bitPut initialization = do

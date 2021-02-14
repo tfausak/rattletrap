@@ -61,7 +61,7 @@ data Content = Content
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Content jsonOptions)
+$(deriveJson ''Content)
 
 empty :: Content
 empty = Content

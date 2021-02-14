@@ -22,7 +22,7 @@ data ReservationAttribute = ReservationAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''ReservationAttribute jsonOptions)
+$(deriveJson ''ReservationAttribute)
 
 bitPut :: ReservationAttribute -> BitPut ()
 bitPut reservationAttribute = do

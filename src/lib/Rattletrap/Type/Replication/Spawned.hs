@@ -34,7 +34,7 @@ data Spawned = Spawned
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Spawned jsonOptions)
+$(deriveJson ''Spawned)
 
 bitPut :: Spawned -> BitPut ()
 bitPut spawnedReplication = do

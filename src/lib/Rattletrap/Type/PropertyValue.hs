@@ -28,7 +28,7 @@ data PropertyValue a
   | Str Str.Str
   deriving (Eq, Show)
 
-$(deriveJsonWith ''PropertyValue jsonOptions)
+$(deriveJson ''PropertyValue)
 
 bytePut :: (a -> BytePut) -> PropertyValue a -> BytePut
 bytePut putProperty value = case value of

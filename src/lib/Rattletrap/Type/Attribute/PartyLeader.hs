@@ -14,7 +14,7 @@ data PartyLeaderAttribute = PartyLeaderAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''PartyLeaderAttribute jsonOptions)
+$(deriveJson ''PartyLeaderAttribute)
 
 bitPut :: PartyLeaderAttribute -> BitPut ()
 bitPut partyLeaderAttribute = do

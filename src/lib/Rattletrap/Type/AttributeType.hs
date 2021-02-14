@@ -44,4 +44,4 @@ data AttributeType
   | WeldedInfo
   deriving (Eq, Show)
 
-$(deriveJsonWith ''AttributeType jsonOptions)
+$(deriveJson ''AttributeType)

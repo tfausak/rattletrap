@@ -17,7 +17,7 @@ data Property = Property
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Property jsonOptions)
+$(deriveJson ''Property)
 
 bytePut :: Property -> BytePut
 bytePut property = do

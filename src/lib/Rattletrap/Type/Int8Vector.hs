@@ -16,7 +16,7 @@ data Int8Vector = Int8Vector
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Int8Vector jsonOptions)
+$(deriveJson ''Int8Vector)
 
 bitPut :: Int8Vector -> BitPut ()
 bitPut int8Vector = do

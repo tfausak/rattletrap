@@ -20,7 +20,7 @@ data DemolishAttribute = DemolishAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''DemolishAttribute jsonOptions)
+$(deriveJson ''DemolishAttribute)
 
 bitPut :: DemolishAttribute -> BitPut ()
 bitPut demolishAttribute = do

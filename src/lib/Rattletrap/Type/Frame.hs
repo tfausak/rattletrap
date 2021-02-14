@@ -25,7 +25,7 @@ data Frame = Frame
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Frame jsonOptions)
+$(deriveJson ''Frame)
 
 putFrames :: [Frame] -> BitPut ()
 putFrames frames = case frames of

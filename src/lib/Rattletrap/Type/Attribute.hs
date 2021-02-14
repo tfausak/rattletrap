@@ -22,7 +22,7 @@ data Attribute = Attribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''Attribute jsonOptions)
+$(deriveJson ''Attribute)
 
 putAttributes :: [Attribute] -> BitPut ()
 putAttributes attributes = case attributes of

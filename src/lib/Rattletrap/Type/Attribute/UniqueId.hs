@@ -15,7 +15,7 @@ data UniqueIdAttribute = UniqueIdAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''UniqueIdAttribute jsonOptions)
+$(deriveJson ''UniqueIdAttribute)
 
 bitPut :: UniqueIdAttribute -> BitPut ()
 bitPut uniqueIdAttribute = do

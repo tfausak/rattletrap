@@ -20,7 +20,7 @@ data LoadoutsOnlineAttribute = LoadoutsOnlineAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''LoadoutsOnlineAttribute jsonOptions)
+$(deriveJson ''LoadoutsOnlineAttribute)
 
 bitPut :: LoadoutsOnlineAttribute -> BitPut ()
 bitPut loadoutsOnlineAttribute = do

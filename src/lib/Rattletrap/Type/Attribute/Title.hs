@@ -21,7 +21,7 @@ data TitleAttribute = TitleAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJsonWith ''TitleAttribute jsonOptions)
+$(deriveJson ''TitleAttribute)
 
 bitPut :: TitleAttribute -> BitPut ()
 bitPut titleAttribute = do
