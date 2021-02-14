@@ -11,23 +11,23 @@ import Rattletrap.Encode.Common
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ExplosionAttribute = ExplosionAttribute
-  { explosionAttributeFlag :: Bool
-  , explosionAttributeActorId :: Int32le.Int32le
-  , explosionAttributeLocation :: Vector.Vector
+  { flag :: Bool
+  , actorId :: Int32le.Int32le
+  , location :: Vector.Vector
   }
   deriving (Eq, Show)
 
-$(deriveJson ''ExplosionAttribute)
+$(deriveJsonWith ''ExplosionAttribute jsonOptions)
 
-putExplosionAttribute :: ExplosionAttribute -> BitPut ()
-putExplosionAttribute explosionAttribute = do
-  BinaryBits.putBool False
-  Int32le.bitPut (explosionAttributeActorId explosionAttribute)
-  Vector.bitPut (explosionAttributeLocation explosionAttribute)
+bitPut :: ExplosionAttribute -> BitPut ()
+bitPut explosionAttribute = do
+  BinaryBits.putBool (flag explosionAttribute)
+  Int32le.bitPut (actorId explosionAttribute)
+  Vector.bitPut (location explosionAttribute)
 
-decodeExplosionAttributeBits
+bitGet
   :: (Int, Int, Int) -> BitGet ExplosionAttribute
-decodeExplosionAttributeBits version =
+bitGet version =
   ExplosionAttribute
     <$> getBool
     <*> Int32le.bitGet

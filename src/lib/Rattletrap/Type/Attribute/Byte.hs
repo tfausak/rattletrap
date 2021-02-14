@@ -8,14 +8,14 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 newtype ByteAttribute = ByteAttribute
-  { byteAttributeValue :: Word8le.Word8le
+  { value :: Word8le.Word8le
   } deriving (Eq, Show)
 
 $(deriveJson ''ByteAttribute)
 
-putByteAttribute :: ByteAttribute -> BitPut ()
-putByteAttribute byteAttribute =
-  Word8le.bitPut (byteAttributeValue byteAttribute)
+bitPut :: ByteAttribute -> BitPut ()
+bitPut byteAttribute =
+  Word8le.bitPut (value byteAttribute)
 
-decodeByteAttributeBits :: BitGet ByteAttribute
-decodeByteAttributeBits = ByteAttribute <$> Word8le.bitGet
+bitGet :: BitGet ByteAttribute
+bitGet = ByteAttribute <$> Word8le.bitGet

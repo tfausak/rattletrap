@@ -8,14 +8,14 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 newtype QWordAttribute = QWordAttribute
-  { qWordAttributeValue :: Word64le.Word64le
+  { value :: Word64le.Word64le
   } deriving (Eq, Show)
 
 $(deriveJson ''QWordAttribute)
 
-putQWordAttribute :: QWordAttribute -> BitPut ()
-putQWordAttribute qWordAttribute =
-  Word64le.bitPut (qWordAttributeValue qWordAttribute)
+bitPut :: QWordAttribute -> BitPut ()
+bitPut qWordAttribute =
+  Word64le.bitPut (value qWordAttribute)
 
-decodeQWordAttributeBits :: BitGet QWordAttribute
-decodeQWordAttributeBits = QWordAttribute <$> Word64le.bitGet
+bitGet :: BitGet QWordAttribute
+bitGet = QWordAttribute <$> Word64le.bitGet

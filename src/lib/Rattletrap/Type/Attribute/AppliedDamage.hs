@@ -10,25 +10,25 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data AppliedDamageAttribute = AppliedDamageAttribute
-  { appliedDamageAttributeUnknown1 :: Word8le.Word8le
-  , appliedDamageAttributeLocation :: Vector.Vector
-  , appliedDamageAttributeUnknown3 :: Int32le.Int32le
-  , appliedDamageAttributeUnknown4 :: Int32le.Int32le
+  { unknown1 :: Word8le.Word8le
+  , location :: Vector.Vector
+  , unknown3 :: Int32le.Int32le
+  , unknown4 :: Int32le.Int32le
   }
   deriving (Eq, Show)
 
-$(deriveJson ''AppliedDamageAttribute)
+$(deriveJsonWith ''AppliedDamageAttribute jsonOptions)
 
-putAppliedDamageAttribute :: AppliedDamageAttribute -> BitPut ()
-putAppliedDamageAttribute appliedDamageAttribute = do
-  Word8le.bitPut (appliedDamageAttributeUnknown1 appliedDamageAttribute)
-  Vector.bitPut (appliedDamageAttributeLocation appliedDamageAttribute)
-  Int32le.bitPut (appliedDamageAttributeUnknown3 appliedDamageAttribute)
-  Int32le.bitPut (appliedDamageAttributeUnknown4 appliedDamageAttribute)
+bitPut :: AppliedDamageAttribute -> BitPut ()
+bitPut appliedDamageAttribute = do
+  Word8le.bitPut (unknown1 appliedDamageAttribute)
+  Vector.bitPut (location appliedDamageAttribute)
+  Int32le.bitPut (unknown3 appliedDamageAttribute)
+  Int32le.bitPut (unknown4 appliedDamageAttribute)
 
-decodeAppliedDamageAttributeBits
+bitGet
   :: (Int, Int, Int) -> BitGet AppliedDamageAttribute
-decodeAppliedDamageAttributeBits version =
+bitGet version =
   AppliedDamageAttribute
     <$> Word8le.bitGet
     <*> Vector.bitGet version

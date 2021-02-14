@@ -9,23 +9,23 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data UniqueIdAttribute = UniqueIdAttribute
-  { uniqueIdAttributeSystemId :: Word8le.Word8le
-  , uniqueIdAttributeRemoteId :: RemoteId.RemoteId
-  , uniqueIdAttributeLocalId :: Word8le.Word8le
+  { systemId :: Word8le.Word8le
+  , remoteId :: RemoteId.RemoteId
+  , localId :: Word8le.Word8le
   }
   deriving (Eq, Show)
 
-$(deriveJson ''UniqueIdAttribute)
+$(deriveJsonWith ''UniqueIdAttribute jsonOptions)
 
-putUniqueIdAttribute :: UniqueIdAttribute -> BitPut ()
-putUniqueIdAttribute uniqueIdAttribute = do
-  Word8le.bitPut $ uniqueIdAttributeSystemId uniqueIdAttribute
-  RemoteId.bitPut (uniqueIdAttributeRemoteId uniqueIdAttribute)
-  Word8le.bitPut $ uniqueIdAttributeLocalId uniqueIdAttribute
+bitPut :: UniqueIdAttribute -> BitPut ()
+bitPut uniqueIdAttribute = do
+  Word8le.bitPut $ systemId uniqueIdAttribute
+  RemoteId.bitPut (remoteId uniqueIdAttribute)
+  Word8le.bitPut $ localId uniqueIdAttribute
 
-decodeUniqueIdAttributeBits :: (Int, Int, Int) -> BitGet UniqueIdAttribute
-decodeUniqueIdAttributeBits version = do
-  systemId <- Word8le.bitGet
-  UniqueIdAttribute systemId
-    <$> RemoteId.bitGet version systemId
+bitGet :: (Int, Int, Int) -> BitGet UniqueIdAttribute
+bitGet version = do
+  systemId_ <- Word8le.bitGet
+  UniqueIdAttribute systemId_
+    <$> RemoteId.bitGet version systemId_
     <*> Word8le.bitGet

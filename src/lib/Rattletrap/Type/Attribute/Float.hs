@@ -8,14 +8,14 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 newtype FloatAttribute = FloatAttribute
-  { floatAttributeValue :: Float32le.Float32le
+  { value :: Float32le.Float32le
   } deriving (Eq, Show)
 
 $(deriveJson ''FloatAttribute)
 
-putFloatAttribute :: FloatAttribute -> BitPut ()
-putFloatAttribute floatAttribute =
-  Float32le.bitPut (floatAttributeValue floatAttribute)
+bitPut :: FloatAttribute -> BitPut ()
+bitPut floatAttribute =
+  Float32le.bitPut (value floatAttribute)
 
-decodeFloatAttributeBits :: BitGet FloatAttribute
-decodeFloatAttributeBits = FloatAttribute <$> Float32le.bitGet
+bitGet :: BitGet FloatAttribute
+bitGet = FloatAttribute <$> Float32le.bitGet

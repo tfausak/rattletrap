@@ -14,22 +14,22 @@ import qualified Control.Monad as Monad
 import qualified Data.Map as Map
 
 newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
-  { loadoutAttributeValue :: [[ProductAttribute.ProductAttribute]]
+  { value :: [[ProductAttribute.ProductAttribute]]
   } deriving (Eq, Show)
 
 $(deriveJson ''LoadoutOnlineAttribute)
 
-putLoadoutOnlineAttribute :: LoadoutOnlineAttribute -> BitPut ()
-putLoadoutOnlineAttribute loadoutAttribute = do
-  let attributes = loadoutAttributeValue loadoutAttribute
+bitPut :: LoadoutOnlineAttribute -> BitPut ()
+bitPut loadoutAttribute = do
+  let attributes = value loadoutAttribute
   Word8le.bitPut (Word8le.fromWord8 (fromIntegral (length attributes)))
   mapM_ ProductAttribute.putProductAttributes attributes
 
-decodeLoadoutOnlineAttributeBits
+bitGet
   :: (Int, Int, Int)
   -> Map.Map Word32le.Word32le Str.Str
   -> BitGet LoadoutOnlineAttribute
-decodeLoadoutOnlineAttributeBits version objectMap = do
+bitGet version objectMap = do
   size <- Word8le.bitGet
   LoadoutOnlineAttribute <$> Monad.replicateM
     (fromIntegral (Word8le.toWord8 size))

@@ -11,22 +11,22 @@ import Rattletrap.Encode.Common
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data MusicStingerAttribute = MusicStingerAttribute
-  { musicStingerAttributeFlag :: Bool
-  , musicStingerAttributeCue :: Word32le.Word32le
-  , musicStingerAttributeTrigger :: Word8le.Word8le
+  { flag :: Bool
+  , cue :: Word32le.Word32le
+  , trigger :: Word8le.Word8le
   }
   deriving (Eq, Show)
 
-$(deriveJson ''MusicStingerAttribute)
+$(deriveJsonWith ''MusicStingerAttribute jsonOptions)
 
-putMusicStingerAttribute :: MusicStingerAttribute -> BitPut ()
-putMusicStingerAttribute musicStingerAttribute = do
-  BinaryBits.putBool (musicStingerAttributeFlag musicStingerAttribute)
-  Word32le.bitPut (musicStingerAttributeCue musicStingerAttribute)
-  Word8le.bitPut (musicStingerAttributeTrigger musicStingerAttribute)
+bitPut :: MusicStingerAttribute -> BitPut ()
+bitPut musicStingerAttribute = do
+  BinaryBits.putBool (flag musicStingerAttribute)
+  Word32le.bitPut (cue musicStingerAttribute)
+  Word8le.bitPut (trigger musicStingerAttribute)
 
-decodeMusicStingerAttributeBits :: BitGet MusicStingerAttribute
-decodeMusicStingerAttributeBits =
+bitGet :: BitGet MusicStingerAttribute
+bitGet =
   MusicStingerAttribute
     <$> getBool
     <*> Word32le.bitGet

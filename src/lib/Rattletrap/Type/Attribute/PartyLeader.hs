@@ -9,26 +9,26 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data PartyLeaderAttribute = PartyLeaderAttribute
-  { partyLeaderAttributeSystemId :: Word8le.Word8le
-  , partyLeaderAttributeId :: Maybe (RemoteId.RemoteId, Word8le.Word8le)
+  { systemId :: Word8le.Word8le
+  , id :: Maybe (RemoteId.RemoteId, Word8le.Word8le)
   }
   deriving (Eq, Show)
 
-$(deriveJson ''PartyLeaderAttribute)
+$(deriveJsonWith ''PartyLeaderAttribute jsonOptions)
 
-putPartyLeaderAttribute :: PartyLeaderAttribute -> BitPut ()
-putPartyLeaderAttribute partyLeaderAttribute = do
-  Word8le.bitPut (partyLeaderAttributeSystemId partyLeaderAttribute)
-  case partyLeaderAttributeId partyLeaderAttribute of
+bitPut :: PartyLeaderAttribute -> BitPut ()
+bitPut partyLeaderAttribute = do
+  Word8le.bitPut (systemId partyLeaderAttribute)
+  case Rattletrap.Type.Attribute.PartyLeader.id partyLeaderAttribute of
     Nothing -> pure ()
     Just (remoteId, localId) -> do
       RemoteId.bitPut remoteId
       Word8le.bitPut localId
 
-decodePartyLeaderAttributeBits
+bitGet
   :: (Int, Int, Int) -> BitGet PartyLeaderAttribute
-decodePartyLeaderAttributeBits version = do
-  systemId <- Word8le.bitGet
-  PartyLeaderAttribute systemId <$> decodeWhen
-    (systemId /= Word8le.fromWord8 0)
-    ((,) <$> RemoteId.bitGet version systemId <*> Word8le.bitGet)
+bitGet version = do
+  systemId_ <- Word8le.bitGet
+  PartyLeaderAttribute systemId_ <$> decodeWhen
+    (systemId_ /= Word8le.fromWord8 0)
+    ((,) <$> RemoteId.bitGet version systemId_ <*> Word8le.bitGet)

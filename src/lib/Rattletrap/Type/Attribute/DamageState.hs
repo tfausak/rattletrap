@@ -12,29 +12,29 @@ import Rattletrap.Encode.Common
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data DamageStateAttribute = DamageStateAttribute
-  { damageStateAttributeUnknown1 :: Word8le.Word8le
-  , damageStateAttributeUnknown2 :: Bool
-  , damageStateAttributeUnknown3 :: Int32le.Int32le
-  , damageStateAttributeUnknown4 :: Vector.Vector
-  , damageStateAttributeUnknown5 :: Bool
-  , damageStateAttributeUnknown6 :: Bool
+  { unknown1 :: Word8le.Word8le
+  , unknown2 :: Bool
+  , unknown3 :: Int32le.Int32le
+  , unknown4 :: Vector.Vector
+  , unknown5 :: Bool
+  , unknown6 :: Bool
   }
   deriving (Eq, Show)
 
-$(deriveJson ''DamageStateAttribute)
+$(deriveJsonWith ''DamageStateAttribute jsonOptions)
 
-putDamageStateAttribute :: DamageStateAttribute -> BitPut ()
-putDamageStateAttribute damageStateAttribute = do
-  Word8le.bitPut (damageStateAttributeUnknown1 damageStateAttribute)
-  BinaryBits.putBool (damageStateAttributeUnknown2 damageStateAttribute)
-  Int32le.bitPut (damageStateAttributeUnknown3 damageStateAttribute)
-  Vector.bitPut (damageStateAttributeUnknown4 damageStateAttribute)
-  BinaryBits.putBool (damageStateAttributeUnknown5 damageStateAttribute)
-  BinaryBits.putBool (damageStateAttributeUnknown6 damageStateAttribute)
+bitPut :: DamageStateAttribute -> BitPut ()
+bitPut damageStateAttribute = do
+  Word8le.bitPut (unknown1 damageStateAttribute)
+  BinaryBits.putBool (unknown2 damageStateAttribute)
+  Int32le.bitPut (unknown3 damageStateAttribute)
+  Vector.bitPut (unknown4 damageStateAttribute)
+  BinaryBits.putBool (unknown5 damageStateAttribute)
+  BinaryBits.putBool (unknown6 damageStateAttribute)
 
-decodeDamageStateAttributeBits
+bitGet
   :: (Int, Int, Int) -> BitGet DamageStateAttribute
-decodeDamageStateAttributeBits version =
+bitGet version =
   DamageStateAttribute
     <$> Word8le.bitGet
     <*> getBool

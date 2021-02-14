@@ -9,26 +9,26 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data TeamPaintAttribute = TeamPaintAttribute
-  { teamPaintAttributeTeam :: Word8le.Word8le
-  , teamPaintAttributePrimaryColor :: Word8le.Word8le
-  , teamPaintAttributeAccentColor :: Word8le.Word8le
-  , teamPaintAttributePrimaryFinish :: Word32le.Word32le
-  , teamPaintAttributeAccentFinish :: Word32le.Word32le
+  { team :: Word8le.Word8le
+  , primaryColor :: Word8le.Word8le
+  , accentColor :: Word8le.Word8le
+  , primaryFinish :: Word32le.Word32le
+  , accentFinish :: Word32le.Word32le
   }
   deriving (Eq, Show)
 
-$(deriveJson ''TeamPaintAttribute)
+$(deriveJsonWith ''TeamPaintAttribute jsonOptions)
 
-putTeamPaintAttribute :: TeamPaintAttribute -> BitPut ()
-putTeamPaintAttribute teamPaintAttribute = do
-  Word8le.bitPut (teamPaintAttributeTeam teamPaintAttribute)
-  Word8le.bitPut (teamPaintAttributePrimaryColor teamPaintAttribute)
-  Word8le.bitPut (teamPaintAttributeAccentColor teamPaintAttribute)
-  Word32le.bitPut (teamPaintAttributePrimaryFinish teamPaintAttribute)
-  Word32le.bitPut (teamPaintAttributeAccentFinish teamPaintAttribute)
+bitPut :: TeamPaintAttribute -> BitPut ()
+bitPut teamPaintAttribute = do
+  Word8le.bitPut (team teamPaintAttribute)
+  Word8le.bitPut (primaryColor teamPaintAttribute)
+  Word8le.bitPut (accentColor teamPaintAttribute)
+  Word32le.bitPut (primaryFinish teamPaintAttribute)
+  Word32le.bitPut (accentFinish teamPaintAttribute)
 
-decodeTeamPaintAttributeBits :: BitGet TeamPaintAttribute
-decodeTeamPaintAttributeBits =
+bitGet :: BitGet TeamPaintAttribute
+bitGet =
   TeamPaintAttribute
     <$> Word8le.bitGet
     <*> Word8le.bitGet

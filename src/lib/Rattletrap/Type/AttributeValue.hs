@@ -3,43 +3,43 @@
 module Rattletrap.Type.AttributeValue where
 
 import Rattletrap.Type.Common
-import Rattletrap.Type.Attribute.AppliedDamage
-import Rattletrap.Type.Attribute.Boolean
-import Rattletrap.Type.Attribute.Byte
-import Rattletrap.Type.Attribute.CamSettings
-import Rattletrap.Type.Attribute.ClubColors
-import Rattletrap.Type.Attribute.CustomDemolish
-import Rattletrap.Type.Attribute.DamageState
-import Rattletrap.Type.Attribute.Demolish
-import Rattletrap.Type.Attribute.Enum
-import Rattletrap.Type.Attribute.Explosion
-import Rattletrap.Type.Attribute.ExtendedExplosion
-import Rattletrap.Type.Attribute.FlaggedByte
-import Rattletrap.Type.Attribute.FlaggedInt
-import Rattletrap.Type.Attribute.Float
-import Rattletrap.Type.Attribute.GameMode
-import Rattletrap.Type.Attribute.Int64
-import Rattletrap.Type.Attribute.Int
-import Rattletrap.Type.Attribute.Loadout
-import Rattletrap.Type.Attribute.LoadoutOnline
-import Rattletrap.Type.Attribute.Loadouts
-import Rattletrap.Type.Attribute.LoadoutsOnline
-import Rattletrap.Type.Attribute.Location
-import Rattletrap.Type.Attribute.MusicStinger
-import Rattletrap.Type.Attribute.PartyLeader
-import Rattletrap.Type.Attribute.Pickup
-import Rattletrap.Type.Attribute.PickupNew
-import Rattletrap.Type.Attribute.PlayerHistoryKey
-import Rattletrap.Type.Attribute.PrivateMatchSettings
-import Rattletrap.Type.Attribute.QWord
-import Rattletrap.Type.Attribute.Reservation
-import Rattletrap.Type.Attribute.RigidBodyState
-import Rattletrap.Type.Attribute.StatEvent
-import Rattletrap.Type.Attribute.String
-import Rattletrap.Type.Attribute.TeamPaint
-import Rattletrap.Type.Attribute.Title
-import Rattletrap.Type.Attribute.UniqueId
-import Rattletrap.Type.Attribute.WeldedInfo
+import qualified Rattletrap.Type.Attribute.AppliedDamage as AppliedDamage
+import qualified Rattletrap.Type.Attribute.Boolean as Boolean
+import qualified Rattletrap.Type.Attribute.Byte as Byte
+import qualified Rattletrap.Type.Attribute.CamSettings as CamSettings
+import qualified Rattletrap.Type.Attribute.ClubColors as ClubColors
+import qualified Rattletrap.Type.Attribute.CustomDemolish as CustomDemolish
+import qualified Rattletrap.Type.Attribute.DamageState as DamageState
+import qualified Rattletrap.Type.Attribute.Demolish as Demolish
+import qualified Rattletrap.Type.Attribute.Enum as Enum
+import qualified Rattletrap.Type.Attribute.Explosion as Explosion
+import qualified Rattletrap.Type.Attribute.ExtendedExplosion as ExtendedExplosion
+import qualified Rattletrap.Type.Attribute.FlaggedByte as FlaggedByte
+import qualified Rattletrap.Type.Attribute.FlaggedInt as FlaggedInt
+import qualified Rattletrap.Type.Attribute.Float as Float
+import qualified Rattletrap.Type.Attribute.GameMode as GameMode
+import qualified Rattletrap.Type.Attribute.Int64 as Int64
+import qualified Rattletrap.Type.Attribute.Int as Int
+import qualified Rattletrap.Type.Attribute.Loadout as Loadout
+import qualified Rattletrap.Type.Attribute.LoadoutOnline as LoadoutOnline
+import qualified Rattletrap.Type.Attribute.Loadouts as Loadouts
+import qualified Rattletrap.Type.Attribute.LoadoutsOnline as LoadoutsOnline
+import qualified Rattletrap.Type.Attribute.Location as Location
+import qualified Rattletrap.Type.Attribute.MusicStinger as MusicStinger
+import qualified Rattletrap.Type.Attribute.PartyLeader as PartyLeader
+import qualified Rattletrap.Type.Attribute.Pickup as Pickup
+import qualified Rattletrap.Type.Attribute.PickupNew as PickupNew
+import qualified Rattletrap.Type.Attribute.PlayerHistoryKey as PlayerHistoryKey
+import qualified Rattletrap.Type.Attribute.PrivateMatchSettings as PrivateMatchSettings
+import qualified Rattletrap.Type.Attribute.QWord as QWord
+import qualified Rattletrap.Type.Attribute.Reservation as Reservation
+import qualified Rattletrap.Type.Attribute.RigidBodyState as RigidBodyState
+import qualified Rattletrap.Type.Attribute.StatEvent as StatEvent
+import qualified Rattletrap.Type.Attribute.String as String
+import qualified Rattletrap.Type.Attribute.TeamPaint as TeamPaint
+import qualified Rattletrap.Type.Attribute.Title as Title
+import qualified Rattletrap.Type.Attribute.UniqueId as UniqueId
+import qualified Rattletrap.Type.Attribute.WeldedInfo as WeldedInfo
 import qualified Rattletrap.Data as Data
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.AttributeType as AttributeType
@@ -50,86 +50,86 @@ import Rattletrap.Encode.Common
 import qualified Data.Map as Map
 
 data AttributeValue
-  = AppliedDamage AppliedDamageAttribute
-  | Boolean BooleanAttribute
-  | Byte ByteAttribute
-  | CamSettings CamSettingsAttribute
-  | ClubColors ClubColorsAttribute
-  | CustomDemolish CustomDemolishAttribute
-  | DamageState DamageStateAttribute
-  | Demolish DemolishAttribute
-  | Enum EnumAttribute
-  | Explosion ExplosionAttribute
-  | ExtendedExplosion ExtendedExplosionAttribute
-  | FlaggedInt FlaggedIntAttribute
-  | FlaggedByte FlaggedByteAttribute
-  | Float FloatAttribute
-  | GameMode GameModeAttribute
-  | Int IntAttribute
-  | Int64 Int64Attribute
-  | Loadout LoadoutAttribute
-  | LoadoutOnline LoadoutOnlineAttribute
-  | Loadouts LoadoutsAttribute
-  | LoadoutsOnline LoadoutsOnlineAttribute
-  | Location LocationAttribute
-  | MusicStinger MusicStingerAttribute
-  | PartyLeader PartyLeaderAttribute
-  | Pickup PickupAttribute
-  | PickupNew PickupAttributeNew
-  | PlayerHistoryKey PlayerHistoryKeyAttribute
-  | PrivateMatchSettings PrivateMatchSettingsAttribute
-  | QWord QWordAttribute
-  | Reservation ReservationAttribute
-  | RigidBodyState RigidBodyStateAttribute
-  | StatEvent StatEventAttribute
-  | String StringAttribute
-  | TeamPaint TeamPaintAttribute
-  | Title TitleAttribute
-  | UniqueId UniqueIdAttribute
-  | WeldedInfo WeldedInfoAttribute
+  = AppliedDamage AppliedDamage.AppliedDamageAttribute
+  | Boolean Boolean.BooleanAttribute
+  | Byte Byte.ByteAttribute
+  | CamSettings CamSettings.CamSettingsAttribute
+  | ClubColors ClubColors.ClubColorsAttribute
+  | CustomDemolish CustomDemolish.CustomDemolishAttribute
+  | DamageState DamageState.DamageStateAttribute
+  | Demolish Demolish.DemolishAttribute
+  | Enum Enum.EnumAttribute
+  | Explosion Explosion.ExplosionAttribute
+  | ExtendedExplosion ExtendedExplosion.ExtendedExplosionAttribute
+  | FlaggedInt FlaggedInt.FlaggedIntAttribute
+  | FlaggedByte FlaggedByte.FlaggedByteAttribute
+  | Float Float.FloatAttribute
+  | GameMode GameMode.GameModeAttribute
+  | Int Int.IntAttribute
+  | Int64 Int64.Int64Attribute
+  | Loadout Loadout.LoadoutAttribute
+  | LoadoutOnline LoadoutOnline.LoadoutOnlineAttribute
+  | Loadouts Loadouts.LoadoutsAttribute
+  | LoadoutsOnline LoadoutsOnline.LoadoutsOnlineAttribute
+  | Location Location.LocationAttribute
+  | MusicStinger MusicStinger.MusicStingerAttribute
+  | PartyLeader PartyLeader.PartyLeaderAttribute
+  | Pickup Pickup.PickupAttribute
+  | PickupNew PickupNew.PickupNewAttribute
+  | PlayerHistoryKey PlayerHistoryKey.PlayerHistoryKeyAttribute
+  | PrivateMatchSettings PrivateMatchSettings.PrivateMatchSettingsAttribute
+  | QWord QWord.QWordAttribute
+  | Reservation Reservation.ReservationAttribute
+  | RigidBodyState RigidBodyState.RigidBodyStateAttribute
+  | StatEvent StatEvent.StatEventAttribute
+  | String String.StringAttribute
+  | TeamPaint TeamPaint.TeamPaintAttribute
+  | Title Title.TitleAttribute
+  | UniqueId UniqueId.UniqueIdAttribute
+  | WeldedInfo WeldedInfo.WeldedInfoAttribute
   deriving (Eq, Show)
 
 $(deriveJsonWith ''AttributeValue jsonOptions)
 
 bitPut :: AttributeValue -> BitPut ()
 bitPut value = case value of
-  AppliedDamage x -> putAppliedDamageAttribute x
-  Boolean x -> putBooleanAttribute x
-  Byte x -> putByteAttribute x
-  CamSettings x -> putCamSettingsAttribute x
-  ClubColors x -> putClubColorsAttribute x
-  CustomDemolish x -> putCustomDemolishAttribute x
-  DamageState x -> putDamageStateAttribute x
-  Demolish x -> putDemolishAttribute x
-  Enum x -> putEnumAttribute x
-  Explosion x -> putExplosionAttribute x
-  ExtendedExplosion x -> putExtendedExplosionAttribute x
-  FlaggedInt x -> putFlaggedIntAttribute x
-  FlaggedByte x -> putFlaggedByteAttribute x
-  Float x -> putFloatAttribute x
-  GameMode x -> putGameModeAttribute x
-  Int x -> putIntAttribute x
-  Int64 x -> putInt64Attribute x
-  Loadout x -> putLoadoutAttribute x
-  LoadoutOnline x -> putLoadoutOnlineAttribute x
-  Loadouts x -> putLoadoutsAttribute x
-  LoadoutsOnline x -> putLoadoutsOnlineAttribute x
-  Location x -> putLocationAttribute x
-  MusicStinger x -> putMusicStingerAttribute x
-  PartyLeader x -> putPartyLeaderAttribute x
-  Pickup x -> putPickupAttribute x
-  PickupNew x -> putPickupAttributeNew x
-  PlayerHistoryKey x -> putPlayerHistoryKeyAttribute x
-  PrivateMatchSettings x -> putPrivateMatchSettingsAttribute x
-  QWord x -> putQWordAttribute x
-  Reservation x -> putReservationAttribute x
-  RigidBodyState x -> putRigidBodyStateAttribute x
-  StatEvent x -> putStatEventAttribute x
-  String x -> putStringAttribute x
-  TeamPaint x -> putTeamPaintAttribute x
-  Title x -> putTitleAttribute x
-  UniqueId x -> putUniqueIdAttribute x
-  WeldedInfo x -> putWeldedInfoAttribute x
+  AppliedDamage x -> AppliedDamage.bitPut x
+  Boolean x -> Boolean.bitPut x
+  Byte x -> Byte.bitPut x
+  CamSettings x -> CamSettings.bitPut x
+  ClubColors x -> ClubColors.bitPut x
+  CustomDemolish x -> CustomDemolish.bitPut x
+  DamageState x -> DamageState.bitPut x
+  Demolish x -> Demolish.bitPut x
+  Enum x -> Enum.bitPut x
+  Explosion x -> Explosion.bitPut x
+  ExtendedExplosion x -> ExtendedExplosion.bitPut x
+  FlaggedInt x -> FlaggedInt.bitPut x
+  FlaggedByte x -> FlaggedByte.bitPut x
+  Float x -> Float.bitPut x
+  GameMode x -> GameMode.bitPut x
+  Int x -> Int.bitPut x
+  Int64 x -> Int64.putInt64Attribute x
+  Loadout x -> Loadout.bitPut x
+  LoadoutOnline x -> LoadoutOnline.bitPut x
+  Loadouts x -> Loadouts.bitPut x
+  LoadoutsOnline x -> LoadoutsOnline.bitPut x
+  Location x -> Location.bitPut x
+  MusicStinger x -> MusicStinger.bitPut x
+  PartyLeader x -> PartyLeader.bitPut x
+  Pickup x -> Pickup.bitPut x
+  PickupNew x -> PickupNew.bitPut x
+  PlayerHistoryKey x -> PlayerHistoryKey.bitPut x
+  PrivateMatchSettings x -> PrivateMatchSettings.bitPut x
+  QWord x -> QWord.bitPut x
+  Reservation x -> Reservation.bitPut x
+  RigidBodyState x -> RigidBodyState.bitPut x
+  StatEvent x -> StatEvent.bitPut x
+  String x -> String.bitPut x
+  TeamPaint x -> TeamPaint.bitPut x
+  Title x -> Title.bitPut x
+  UniqueId x -> UniqueId.bitPut x
+  WeldedInfo x -> WeldedInfo.bitPut x
 
 bitGet
   :: (Int, Int, Int) -> Map Word32le.Word32le Str.Str -> Str.Str -> BitGet AttributeValue
@@ -139,40 +139,40 @@ bitGet version objectMap name = do
     pure
     (Map.lookup (Str.toText name) Data.attributeTypes)
   case constructor of
-    AttributeType.AppliedDamage -> AppliedDamage <$> decodeAppliedDamageAttributeBits version
-    AttributeType.Boolean -> Boolean <$> decodeBooleanAttributeBits
-    AttributeType.Byte -> Byte <$> decodeByteAttributeBits
-    AttributeType.CamSettings -> CamSettings <$> decodeCamSettingsAttributeBits version
-    AttributeType.ClubColors -> ClubColors <$> decodeClubColorsAttributeBits
-    AttributeType.CustomDemolish -> CustomDemolish <$> decodeCustomDemolishAttributeBits version
-    AttributeType.DamageState -> DamageState <$> decodeDamageStateAttributeBits version
-    AttributeType.Demolish -> Demolish <$> decodeDemolishAttributeBits version
-    AttributeType.Enum -> Enum <$> decodeEnumAttributeBits
-    AttributeType.Explosion -> Explosion <$> decodeExplosionAttributeBits version
-    AttributeType.ExtendedExplosion -> ExtendedExplosion <$> decodeExtendedExplosionAttributeBits version
-    AttributeType.FlaggedInt -> FlaggedInt <$> decodeFlaggedIntAttributeBits
-    AttributeType.FlaggedByte -> FlaggedByte <$> decodeFlaggedByteAttributeBits
-    AttributeType.Float -> Float <$> decodeFloatAttributeBits
-    AttributeType.GameMode -> GameMode <$> decodeGameModeAttributeBits version
-    AttributeType.Int -> Int <$> decodeIntAttributeBits
-    AttributeType.Int64 -> Int64 <$> decodeInt64AttributeBits
-    AttributeType.Loadout -> Loadout <$> decodeLoadoutAttributeBits
-    AttributeType.LoadoutOnline -> LoadoutOnline <$> decodeLoadoutOnlineAttributeBits version objectMap
-    AttributeType.Loadouts -> Loadouts <$> decodeLoadoutsAttributeBits
-    AttributeType.LoadoutsOnline -> LoadoutsOnline <$> decodeLoadoutsOnlineAttributeBits version objectMap
-    AttributeType.Location -> Location <$> decodeLocationAttributeBits version
-    AttributeType.MusicStinger -> MusicStinger <$> decodeMusicStingerAttributeBits
-    AttributeType.PartyLeader -> PartyLeader <$> decodePartyLeaderAttributeBits version
-    AttributeType.Pickup -> Pickup <$> decodePickupAttributeBits
-    AttributeType.PickupNew -> PickupNew <$> decodePickupAttributeNewBits
-    AttributeType.PlayerHistoryKey -> PlayerHistoryKey <$> decodePlayerHistoryKeyAttributeBits
-    AttributeType.PrivateMatchSettings -> PrivateMatchSettings <$> decodePrivateMatchSettingsAttributeBits
-    AttributeType.QWord -> QWord <$> decodeQWordAttributeBits
-    AttributeType.Reservation -> Reservation <$> decodeReservationAttributeBits version
-    AttributeType.RigidBodyState -> RigidBodyState <$> decodeRigidBodyStateAttributeBits version
-    AttributeType.StatEvent -> StatEvent <$> decodeStatEventAttributeBits
-    AttributeType.String -> String <$> decodeStringAttributeBits
-    AttributeType.TeamPaint -> TeamPaint <$> decodeTeamPaintAttributeBits
-    AttributeType.Title -> Title <$> decodeTitleAttributeBits
-    AttributeType.UniqueId -> UniqueId <$> decodeUniqueIdAttributeBits version
-    AttributeType.WeldedInfo -> WeldedInfo <$> decodeWeldedInfoAttributeBits version
+    AttributeType.AppliedDamage -> AppliedDamage <$> AppliedDamage.bitGet version
+    AttributeType.Boolean -> Boolean <$> Boolean.bitGet
+    AttributeType.Byte -> Byte <$> Byte.bitGet
+    AttributeType.CamSettings -> CamSettings <$> CamSettings.bitGet version
+    AttributeType.ClubColors -> ClubColors <$> ClubColors.bitGet
+    AttributeType.CustomDemolish -> CustomDemolish <$> CustomDemolish.bitGet version
+    AttributeType.DamageState -> DamageState <$> DamageState.bitGet version
+    AttributeType.Demolish -> Demolish <$> Demolish.bitGet version
+    AttributeType.Enum -> Enum <$> Enum.bitGet
+    AttributeType.Explosion -> Explosion <$> Explosion.bitGet version
+    AttributeType.ExtendedExplosion -> ExtendedExplosion <$> ExtendedExplosion.bitGet version
+    AttributeType.FlaggedInt -> FlaggedInt <$> FlaggedInt.bitGet
+    AttributeType.FlaggedByte -> FlaggedByte <$> FlaggedByte.bitGet
+    AttributeType.Float -> Float <$> Float.bitGet
+    AttributeType.GameMode -> GameMode <$> GameMode.bitGet version
+    AttributeType.Int -> Int <$> Int.bitGet
+    AttributeType.Int64 -> Int64 <$> Int64.bitGet
+    AttributeType.Loadout -> Loadout <$> Loadout.bitGet
+    AttributeType.LoadoutOnline -> LoadoutOnline <$> LoadoutOnline.bitGet version objectMap
+    AttributeType.Loadouts -> Loadouts <$> Loadouts.bitGet
+    AttributeType.LoadoutsOnline -> LoadoutsOnline <$> LoadoutsOnline.bitGet version objectMap
+    AttributeType.Location -> Location <$> Location.bitGet version
+    AttributeType.MusicStinger -> MusicStinger <$> MusicStinger.bitGet
+    AttributeType.PartyLeader -> PartyLeader <$> PartyLeader.bitGet version
+    AttributeType.Pickup -> Pickup <$> Pickup.bitGet
+    AttributeType.PickupNew -> PickupNew <$> PickupNew.bitGet
+    AttributeType.PlayerHistoryKey -> PlayerHistoryKey <$> PlayerHistoryKey.bitGet
+    AttributeType.PrivateMatchSettings -> PrivateMatchSettings <$> PrivateMatchSettings.bitGet
+    AttributeType.QWord -> QWord <$> QWord.bitGet
+    AttributeType.Reservation -> Reservation <$> Reservation.bitGet version
+    AttributeType.RigidBodyState -> RigidBodyState <$> RigidBodyState.bitGet version
+    AttributeType.StatEvent -> StatEvent <$> StatEvent.bitGet
+    AttributeType.String -> String <$> String.bitGet
+    AttributeType.TeamPaint -> TeamPaint <$> TeamPaint.bitGet
+    AttributeType.Title -> Title <$> Title.bitGet
+    AttributeType.UniqueId -> UniqueId <$> UniqueId.bitGet version
+    AttributeType.WeldedInfo -> WeldedInfo <$> WeldedInfo.bitGet version

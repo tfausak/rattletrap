@@ -13,27 +13,27 @@ import Rattletrap.Encode.Common
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data WeldedInfoAttribute = WeldedInfoAttribute
-  { weldedInfoAttributeActive :: Bool
-  , weldedInfoAttributeActorId :: Int32le.Int32le
-  , weldedInfoAttributeOffset :: Vector.Vector
-  , weldedInfoAttributeMass :: Float32le.Float32le
-  , weldedInfoAttributeRotation :: Int8Vector.Int8Vector
+  { active :: Bool
+  , actorId :: Int32le.Int32le
+  , offset :: Vector.Vector
+  , mass :: Float32le.Float32le
+  , rotation :: Int8Vector.Int8Vector
   }
   deriving (Eq, Show)
 
-$(deriveJson ''WeldedInfoAttribute)
+$(deriveJsonWith ''WeldedInfoAttribute jsonOptions)
 
-putWeldedInfoAttribute :: WeldedInfoAttribute -> BitPut ()
-putWeldedInfoAttribute weldedInfoAttribute = do
-  BinaryBits.putBool (weldedInfoAttributeActive weldedInfoAttribute)
-  Int32le.bitPut (weldedInfoAttributeActorId weldedInfoAttribute)
-  Vector.bitPut (weldedInfoAttributeOffset weldedInfoAttribute)
-  Float32le.bitPut (weldedInfoAttributeMass weldedInfoAttribute)
-  Int8Vector.bitPut (weldedInfoAttributeRotation weldedInfoAttribute)
+bitPut :: WeldedInfoAttribute -> BitPut ()
+bitPut weldedInfoAttribute = do
+  BinaryBits.putBool (active weldedInfoAttribute)
+  Int32le.bitPut (actorId weldedInfoAttribute)
+  Vector.bitPut (offset weldedInfoAttribute)
+  Float32le.bitPut (mass weldedInfoAttribute)
+  Int8Vector.bitPut (rotation weldedInfoAttribute)
 
-decodeWeldedInfoAttributeBits
+bitGet
   :: (Int, Int, Int) -> BitGet WeldedInfoAttribute
-decodeWeldedInfoAttributeBits version =
+bitGet version =
   WeldedInfoAttribute
     <$> getBool
     <*> Int32le.bitGet

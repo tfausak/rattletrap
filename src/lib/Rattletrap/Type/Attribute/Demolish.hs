@@ -11,28 +11,28 @@ import Rattletrap.Encode.Common
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data DemolishAttribute = DemolishAttribute
-  { demolishAttributeAttackerFlag :: Bool
-  , demolishAttributeAttackerActorId :: Word32le.Word32le
-  , demolishAttributeVictimFlag :: Bool
-  , demolishAttributeVictimActorId :: Word32le.Word32le
-  , demolishAttributeAttackerVelocity :: Vector.Vector
-  , demolishAttributeVictimVelocity :: Vector.Vector
+  { attackerFlag :: Bool
+  , attackerActorId :: Word32le.Word32le
+  , victimFlag :: Bool
+  , victimActorId :: Word32le.Word32le
+  , attackerVelocity :: Vector.Vector
+  , victimVelocity :: Vector.Vector
   }
   deriving (Eq, Show)
 
-$(deriveJson ''DemolishAttribute)
+$(deriveJsonWith ''DemolishAttribute jsonOptions)
 
-putDemolishAttribute :: DemolishAttribute -> BitPut ()
-putDemolishAttribute demolishAttribute = do
-  BinaryBits.putBool (demolishAttributeAttackerFlag demolishAttribute)
-  Word32le.bitPut (demolishAttributeAttackerActorId demolishAttribute)
-  BinaryBits.putBool (demolishAttributeVictimFlag demolishAttribute)
-  Word32le.bitPut (demolishAttributeVictimActorId demolishAttribute)
-  Vector.bitPut (demolishAttributeAttackerVelocity demolishAttribute)
-  Vector.bitPut (demolishAttributeVictimVelocity demolishAttribute)
+bitPut :: DemolishAttribute -> BitPut ()
+bitPut demolishAttribute = do
+  BinaryBits.putBool (attackerFlag demolishAttribute)
+  Word32le.bitPut (attackerActorId demolishAttribute)
+  BinaryBits.putBool (victimFlag demolishAttribute)
+  Word32le.bitPut (victimActorId demolishAttribute)
+  Vector.bitPut (attackerVelocity demolishAttribute)
+  Vector.bitPut (victimVelocity demolishAttribute)
 
-decodeDemolishAttributeBits :: (Int, Int, Int) -> BitGet DemolishAttribute
-decodeDemolishAttributeBits version =
+bitGet :: (Int, Int, Int) -> BitGet DemolishAttribute
+bitGet version =
   DemolishAttribute
     <$> getBool
     <*> Word32le.bitGet

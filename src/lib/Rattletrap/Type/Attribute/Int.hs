@@ -8,13 +8,13 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 newtype IntAttribute = IntAttribute
-  { intAttributeValue :: Int32le.Int32le
+  { value :: Int32le.Int32le
   } deriving (Eq, Show)
 
 $(deriveJson ''IntAttribute)
 
-putIntAttribute :: IntAttribute -> BitPut ()
-putIntAttribute intAttribute = Int32le.bitPut (intAttributeValue intAttribute)
+bitPut :: IntAttribute -> BitPut ()
+bitPut intAttribute = Int32le.bitPut (value intAttribute)
 
-decodeIntAttributeBits :: BitGet IntAttribute
-decodeIntAttributeBits = IntAttribute <$> Int32le.bitGet
+bitGet :: BitGet IntAttribute
+bitGet = IntAttribute <$> Int32le.bitGet

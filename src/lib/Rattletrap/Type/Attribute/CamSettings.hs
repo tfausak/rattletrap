@@ -8,33 +8,33 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 data CamSettingsAttribute = CamSettingsAttribute
-  { camSettingsAttributeFov :: Float32le.Float32le
-  , camSettingsAttributeHeight :: Float32le.Float32le
-  , camSettingsAttributeAngle :: Float32le.Float32le
-  , camSettingsAttributeDistance :: Float32le.Float32le
-  , camSettingsAttributeStiffness :: Float32le.Float32le
-  , camSettingsAttributeSwivelSpeed :: Float32le.Float32le
-  , camSettingsAttributeTransitionSpeed :: Maybe Float32le.Float32le
+  { fov :: Float32le.Float32le
+  , height :: Float32le.Float32le
+  , angle :: Float32le.Float32le
+  , distance :: Float32le.Float32le
+  , stiffness :: Float32le.Float32le
+  , swivelSpeed :: Float32le.Float32le
+  , transitionSpeed :: Maybe Float32le.Float32le
   }
   deriving (Eq, Show)
 
-$(deriveJson ''CamSettingsAttribute)
+$(deriveJsonWith ''CamSettingsAttribute jsonOptions)
 
-putCamSettingsAttribute :: CamSettingsAttribute -> BitPut ()
-putCamSettingsAttribute camSettingsAttribute = do
-  Float32le.bitPut (camSettingsAttributeFov camSettingsAttribute)
-  Float32le.bitPut (camSettingsAttributeHeight camSettingsAttribute)
-  Float32le.bitPut (camSettingsAttributeAngle camSettingsAttribute)
-  Float32le.bitPut (camSettingsAttributeDistance camSettingsAttribute)
-  Float32le.bitPut (camSettingsAttributeStiffness camSettingsAttribute)
-  Float32le.bitPut (camSettingsAttributeSwivelSpeed camSettingsAttribute)
-  case camSettingsAttributeTransitionSpeed camSettingsAttribute of
+bitPut :: CamSettingsAttribute -> BitPut ()
+bitPut camSettingsAttribute = do
+  Float32le.bitPut (fov camSettingsAttribute)
+  Float32le.bitPut (height camSettingsAttribute)
+  Float32le.bitPut (angle camSettingsAttribute)
+  Float32le.bitPut (distance camSettingsAttribute)
+  Float32le.bitPut (stiffness camSettingsAttribute)
+  Float32le.bitPut (swivelSpeed camSettingsAttribute)
+  case transitionSpeed camSettingsAttribute of
     Nothing -> pure ()
-    Just transitionSpeed -> Float32le.bitPut transitionSpeed
+    Just transitionSpeed_ -> Float32le.bitPut transitionSpeed_
 
-decodeCamSettingsAttributeBits
+bitGet
   :: (Int, Int, Int) -> BitGet CamSettingsAttribute
-decodeCamSettingsAttributeBits version =
+bitGet version =
   CamSettingsAttribute
     <$> Float32le.bitGet
     <*> Float32le.bitGet

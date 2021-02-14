@@ -10,24 +10,24 @@ import Rattletrap.Encode.Common
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ClubColorsAttribute = ClubColorsAttribute
-  { clubColorsAttributeBlueFlag :: Bool
-  , clubColorsAttributeBlueColor :: Word8le.Word8le
-  , clubColorsAttributeOrangeFlag :: Bool
-  , clubColorsAttributeOrangeColor :: Word8le.Word8le
+  { blueFlag :: Bool
+  , blueColor :: Word8le.Word8le
+  , orangeFlag :: Bool
+  , orangeColor :: Word8le.Word8le
   }
   deriving (Eq, Show)
 
-$(deriveJson ''ClubColorsAttribute)
+$(deriveJsonWith ''ClubColorsAttribute jsonOptions)
 
-putClubColorsAttribute :: ClubColorsAttribute -> BitPut ()
-putClubColorsAttribute clubColorsAttribute = do
-  BinaryBits.putBool (clubColorsAttributeBlueFlag clubColorsAttribute)
-  Word8le.bitPut (clubColorsAttributeBlueColor clubColorsAttribute)
-  BinaryBits.putBool (clubColorsAttributeOrangeFlag clubColorsAttribute)
-  Word8le.bitPut (clubColorsAttributeOrangeColor clubColorsAttribute)
+bitPut :: ClubColorsAttribute -> BitPut ()
+bitPut clubColorsAttribute = do
+  BinaryBits.putBool (blueFlag clubColorsAttribute)
+  Word8le.bitPut (blueColor clubColorsAttribute)
+  BinaryBits.putBool (orangeFlag clubColorsAttribute)
+  Word8le.bitPut (orangeColor clubColorsAttribute)
 
-decodeClubColorsAttributeBits :: BitGet ClubColorsAttribute
-decodeClubColorsAttributeBits =
+bitGet :: BitGet ClubColorsAttribute
+bitGet =
   ClubColorsAttribute
     <$> getBool
     <*> Word8le.bitGet

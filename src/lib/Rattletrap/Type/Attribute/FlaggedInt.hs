@@ -10,18 +10,18 @@ import Rattletrap.Encode.Common
 import qualified Data.Binary.Bits.Put as BinaryBits
 
 data FlaggedIntAttribute = FlaggedIntAttribute
-  { flaggedIntAttributeFlag :: Bool
-  , flaggedIntAttributeInt :: Int32le.Int32le
+  { flag :: Bool
+  , int :: Int32le.Int32le
   }
   deriving (Eq, Show)
 
-$(deriveJson ''FlaggedIntAttribute)
+$(deriveJsonWith ''FlaggedIntAttribute jsonOptions)
 
-putFlaggedIntAttribute :: FlaggedIntAttribute -> BitPut ()
-putFlaggedIntAttribute flaggedIntAttribute = do
-  BinaryBits.putBool (flaggedIntAttributeFlag flaggedIntAttribute)
-  Int32le.bitPut (flaggedIntAttributeInt flaggedIntAttribute)
+bitPut :: FlaggedIntAttribute -> BitPut ()
+bitPut flaggedIntAttribute = do
+  BinaryBits.putBool (flag flaggedIntAttribute)
+  Int32le.bitPut (int flaggedIntAttribute)
 
-decodeFlaggedIntAttributeBits :: BitGet FlaggedIntAttribute
-decodeFlaggedIntAttributeBits =
+bitGet :: BitGet FlaggedIntAttribute
+bitGet =
   FlaggedIntAttribute <$> getBool <*> Int32le.bitGet

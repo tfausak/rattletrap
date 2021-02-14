@@ -7,15 +7,15 @@ import Rattletrap.Encode.Common
 import Rattletrap.Decode.Common
 
 newtype PlayerHistoryKeyAttribute = PlayerHistoryKeyAttribute
-  { playerHistoryKeyAttributeUnknown :: Word16
+  { unknown :: Word16
   } deriving (Eq, Show)
 
-$(deriveJson ''PlayerHistoryKeyAttribute)
+$(deriveJsonWith ''PlayerHistoryKeyAttribute jsonOptions)
 
-putPlayerHistoryKeyAttribute
+bitPut
   :: PlayerHistoryKeyAttribute -> BitPut ()
-putPlayerHistoryKeyAttribute = putBitsLE 14 . playerHistoryKeyAttributeUnknown
+bitPut = putBitsLE 14 . unknown
 
-decodePlayerHistoryKeyAttributeBits :: BitGet PlayerHistoryKeyAttribute
-decodePlayerHistoryKeyAttributeBits =
+bitGet :: BitGet PlayerHistoryKeyAttribute
+bitGet =
   PlayerHistoryKeyAttribute <$> getBitsLE 14

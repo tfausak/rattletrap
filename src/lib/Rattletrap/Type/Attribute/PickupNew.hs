@@ -10,26 +10,26 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data PickupAttributeNew = PickupAttributeNew
-  { pickupAttributeNewInstigatorId :: Maybe Word32le.Word32le
-  , pickupAttributeNewPickedUp :: Word8le.Word8le
+data PickupNewAttribute = PickupNewAttribute
+  { instigatorId :: Maybe Word32le.Word32le
+  , pickedUp :: Word8le.Word8le
   }
   deriving (Eq, Show)
 
-$(deriveJson ''PickupAttributeNew)
+$(deriveJsonWith ''PickupNewAttribute jsonOptions)
 
-putPickupAttributeNew :: PickupAttributeNew -> BitPut ()
-putPickupAttributeNew pickupAttributeNew = do
-  case pickupAttributeNewInstigatorId pickupAttributeNew of
+bitPut :: PickupNewAttribute -> BitPut ()
+bitPut pickupAttributeNew = do
+  case instigatorId pickupAttributeNew of
     Nothing -> BinaryBits.putBool False
-    Just instigatorId -> do
+    Just instigatorId_ -> do
       BinaryBits.putBool True
-      Word32le.bitPut instigatorId
-  Word8le.bitPut (pickupAttributeNewPickedUp pickupAttributeNew)
+      Word32le.bitPut instigatorId_
+  Word8le.bitPut (pickedUp pickupAttributeNew)
 
-decodePickupAttributeNewBits :: BitGet PickupAttributeNew
-decodePickupAttributeNewBits = do
+bitGet :: BitGet PickupNewAttribute
+bitGet = do
   instigator <- getBool
-  PickupAttributeNew
+  PickupNewAttribute
     <$> decodeWhen instigator Word32le.bitGet
     <*> Word8le.bitGet

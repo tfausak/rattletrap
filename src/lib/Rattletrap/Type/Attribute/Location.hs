@@ -8,15 +8,15 @@ import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
 newtype LocationAttribute = LocationAttribute
-  { locationAttributeValue :: Vector.Vector
+  { value :: Vector.Vector
   } deriving (Eq, Show)
 
 $(deriveJson ''LocationAttribute)
 
-putLocationAttribute :: LocationAttribute -> BitPut ()
-putLocationAttribute locationAttribute =
-  Vector.bitPut (locationAttributeValue locationAttribute)
+bitPut :: LocationAttribute -> BitPut ()
+bitPut locationAttribute =
+  Vector.bitPut (value locationAttribute)
 
-decodeLocationAttributeBits :: (Int, Int, Int) -> BitGet LocationAttribute
-decodeLocationAttributeBits version =
+bitGet :: (Int, Int, Int) -> BitGet LocationAttribute
+bitGet version =
   LocationAttribute <$> Vector.bitGet version
