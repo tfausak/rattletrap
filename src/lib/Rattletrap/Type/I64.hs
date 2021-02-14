@@ -3,8 +3,8 @@ module Rattletrap.Type.I64 where
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.ByteGet as ByteGet
 
-import qualified Data.Binary.Get as Binary
 import qualified Data.Aeson as Aeson
 import qualified Data.Int as Int
 import qualified Data.Text as Text
@@ -33,8 +33,8 @@ bytePut = BytePut.int64 . toInt64
 bitPut :: I64 -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut
 
-byteGet :: ByteGet I64
-byteGet = fromInt64 <$> Binary.getInt64le
+byteGet :: ByteGet.ByteGet I64
+byteGet = fromInt64 <$> ByteGet.int64
 
 bitGet :: BitGet I64
 bitGet = byteGetToBitGet byteGet 8

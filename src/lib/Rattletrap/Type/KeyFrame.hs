@@ -5,8 +5,8 @@ module Rattletrap.Type.KeyFrame where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.ByteGet as ByteGet
 
 data KeyFrame = KeyFrame
   { time :: F32.F32
@@ -26,6 +26,6 @@ bytePut keyFrame = do
   U32.bytePut (frame keyFrame)
   U32.bytePut (position keyFrame)
 
-byteGet :: ByteGet KeyFrame
+byteGet :: ByteGet.ByteGet KeyFrame
 byteGet =
   KeyFrame <$> F32.byteGet <*> U32.byteGet <*> U32.byteGet

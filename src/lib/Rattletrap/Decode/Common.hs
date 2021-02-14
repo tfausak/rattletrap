@@ -1,29 +1,22 @@
 module Rattletrap.Decode.Common
-  ( ByteGet
-  , BitGet
+  ( BitGet
   , decodeWhen
   , getBitsLE
   , getByteStringBits
   , getWord8Bits
-  , runDecode
   , runDecodeBits
   , byteGetToBitGet
-  , Binary.getByteString
   , BinaryBits.getBool
   ) where
 
 import qualified Control.Applicative as Applicative
 import qualified Control.Monad as Monad
-import qualified Data.Binary as Binary
 import qualified Data.Binary.Bits.Get as BinaryBits
-import qualified Data.Binary.Get as Binary
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as Bytes
-import qualified Data.ByteString.Lazy as LazyBytes
 import qualified Data.Word as Word
+import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.Utility.Bytes as Utility
-
-type ByteGet = Binary.Get
 
 type BitGet = BinaryBits.BitGet
 
@@ -37,19 +30,13 @@ getByteStringBits = BinaryBits.getByteString
 getWord8Bits :: Int -> BitGet Word.Word8
 getWord8Bits = BinaryBits.getWord8
 
-runDecode :: ByteGet a -> Bytes.ByteString -> Either String a
-runDecode decode bytes =
-  case Binary.runGetOrFail decode (LazyBytes.fromStrict bytes) of
-    Left (_, _, x) -> Left x
-    Right (_, _, x) -> Right x
-
 runDecodeBits :: BitGet a -> Bytes.ByteString -> Either String a
-runDecodeBits = runDecode . BinaryBits.runBitGet
+runDecodeBits = ByteGet.run . BinaryBits.runBitGet
 
-byteGetToBitGet :: ByteGet a -> Int -> BitGet a
+byteGetToBitGet :: ByteGet.ByteGet a -> Int -> BitGet a
 byteGetToBitGet decode size = do
   bytes <- BinaryBits.getByteString size
-  case runDecode decode (Utility.reverseBytes bytes) of
+  case ByteGet.run decode (Utility.reverseBytes bytes) of
     Left problem -> fail problem
     Right result -> pure result
 

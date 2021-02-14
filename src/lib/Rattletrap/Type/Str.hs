@@ -8,6 +8,7 @@ import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.ByteGet as ByteGet
 
 import qualified Data.Text.Encoding.Error as Text
 import qualified Debug.Trace as Debug
@@ -64,10 +65,10 @@ getTextEncoder size text =
 addNull :: Text.Text -> Text.Text
 addNull text = if Text.null text then text else Text.snoc text '\x00'
 
-byteGet :: ByteGet Str
+byteGet :: ByteGet.ByteGet Str
 byteGet = do
   rawSize <- I32.byteGet
-  bytes <- getByteString (normalizeTextSize rawSize)
+  bytes <- ByteGet.byteString (normalizeTextSize rawSize)
   pure (fromText (dropNull (getTextDecoder rawSize bytes)))
 
 bitGet :: BitGet Str

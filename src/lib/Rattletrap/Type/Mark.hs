@@ -5,8 +5,8 @@ module Rattletrap.Type.Mark where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.ByteGet as ByteGet
 
 data Mark = Mark
   { value :: Str.Str
@@ -23,5 +23,5 @@ bytePut mark = do
   Str.bytePut (value mark)
   U32.bytePut (frame mark)
 
-byteGet :: ByteGet Mark
+byteGet :: ByteGet.ByteGet Mark
 byteGet = Mark <$> Str.byteGet <*> U32.byteGet

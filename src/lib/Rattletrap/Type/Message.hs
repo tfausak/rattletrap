@@ -5,8 +5,8 @@ module Rattletrap.Type.Message where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.ByteGet as ByteGet
 
 data Message = Message
   { frame :: U32.U32
@@ -26,5 +26,5 @@ bytePut message = do
   Str.bytePut (name message)
   Str.bytePut (value message)
 
-byteGet :: ByteGet Message
+byteGet :: ByteGet.ByteGet Message
 byteGet = Message <$> U32.byteGet <*> Str.byteGet <*> Str.byteGet

@@ -1,9 +1,9 @@
 module Rattletrap.Type.Dictionary where
 
-import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.ByteGet as ByteGet
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Aeson
@@ -62,10 +62,10 @@ bytePut f x = do
     f v
   Str.bytePut $ lastKey x
 
-byteGet :: ByteGet a -> ByteGet (Dictionary a)
+byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (Dictionary a)
 byteGet = byteGetWith 0 []
 
-byteGetWith :: Int -> [(Int, (Str.Str, a))] -> ByteGet a -> ByteGet (Dictionary a)
+byteGetWith :: Int -> [(Int, (Str.Str, a))] -> ByteGet.ByteGet a -> ByteGet.ByteGet (Dictionary a)
 byteGetWith i xs f = do
   k <- Str.byteGet
   if isNone k

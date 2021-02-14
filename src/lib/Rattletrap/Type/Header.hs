@@ -9,6 +9,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.ByteGet as ByteGet
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
@@ -70,7 +71,7 @@ putHeader header = do
   Str.bytePut (label header)
   Dictionary.bytePut Property.bytePut (properties header)
 
-decodeHeader :: ByteGet Header
+decodeHeader :: ByteGet.ByteGet Header
 decodeHeader = do
   (major, minor) <- (,) <$> U32.byteGet <*> U32.byteGet
   Header major minor

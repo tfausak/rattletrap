@@ -12,6 +12,7 @@ import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.ByteGet as ByteGet
 
 data PropertyValue a
   = Array (List.List (Dictionary.Dictionary a))
@@ -45,7 +46,7 @@ bytePut putProperty value = case value of
   QWord word64 -> U64.bytePut word64
   Str text -> Str.bytePut text
 
-byteGet :: ByteGet a -> Str.Str -> ByteGet (PropertyValue a)
+byteGet :: ByteGet.ByteGet a -> Str.Str -> ByteGet.ByteGet (PropertyValue a)
 byteGet getProperty kind = case Str.toString kind of
   "ArrayProperty" ->
     Array <$> List.byteGet (Dictionary.byteGet getProperty)

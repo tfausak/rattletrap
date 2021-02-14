@@ -17,9 +17,9 @@ import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.ByteGet as ByteGet
 
 import qualified Control.Monad.Trans.State as State
-import qualified Data.Binary.Get as Binary
 import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
 
@@ -119,7 +119,7 @@ byteGet
   -> Word
   -- ^ The maximum number of channels in the stream, usually from
   -- 'Rattletrap.Header.getMaxChannels'.
-  -> ByteGet Content
+  -> ByteGet.ByteGet Content
 byteGet version numFrames maxChannels = do
   (levels_, keyFrames_, streamSize_) <-
     (,,)
@@ -128,7 +128,7 @@ byteGet version numFrames maxChannels = do
     <*> U32.byteGet
   (stream, messages_, marks_, packages_, objects_, names_, classMappings_, caches_) <-
     (,,,,,,,)
-    <$> getByteString (fromIntegral (U32.toWord32 streamSize_))
+    <$> ByteGet.byteString (fromIntegral (U32.toWord32 streamSize_))
     <*> List.byteGet Message.byteGet
     <*> List.byteGet Mark.byteGet
     <*> List.byteGet Str.byteGet
@@ -156,4 +156,4 @@ byteGet version numFrames maxChannels = do
       classMappings_
       caches_
     . LazyBytes.unpack
-    <$> Binary.getRemainingLazyByteString
+    <$> ByteGet.remaining

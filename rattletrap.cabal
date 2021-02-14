@@ -42,6 +42,7 @@ library
     Paths_rattletrap
     Rattletrap
     Rattletrap.BitPut
+    Rattletrap.ByteGet
     Rattletrap.BytePut
     Rattletrap.Console.Main
     Rattletrap.Data

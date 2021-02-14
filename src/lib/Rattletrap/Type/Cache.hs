@@ -6,8 +6,8 @@ import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.ByteGet as ByteGet
 
 data Cache = Cache
   { classId :: U32.U32
@@ -26,7 +26,7 @@ bytePut cache = do
   U32.bytePut (cacheId cache)
   List.bytePut AttributeMapping.bytePut (attributeMappings cache)
 
-byteGet :: ByteGet Cache
+byteGet :: ByteGet.ByteGet Cache
 byteGet =
   Cache
     <$> U32.byteGet

@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.BitPut as BitPut
-
-import qualified Data.Binary.Get as Binary
+import qualified Rattletrap.ByteGet as ByteGet
 
 newtype F32
   = F32 Float
@@ -27,8 +26,8 @@ bytePut = BytePut.float . toFloat
 bitPut :: F32 -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut
 
-byteGet :: ByteGet F32
-byteGet = fromFloat <$> Binary.getFloatle
+byteGet :: ByteGet.ByteGet F32
+byteGet = fromFloat <$> ByteGet.float
 
 bitGet :: BitGet F32
 bitGet = byteGetToBitGet byteGet 4

@@ -6,8 +6,7 @@ import Rattletrap.Type.Common
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.BitPut as BitPut
-
-import qualified Data.Binary.Get as Binary
+import qualified Rattletrap.ByteGet as ByteGet
 
 newtype U32
   = U32 Word32
@@ -27,8 +26,8 @@ bytePut = BytePut.word32 . toWord32
 bitPut :: U32 -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut
 
-byteGet :: ByteGet U32
-byteGet = fromWord32 <$> Binary.getWord32le
+byteGet :: ByteGet.ByteGet U32
+byteGet = fromWord32 <$> ByteGet.word32
 
 bitGet :: BitGet U32
 bitGet = byteGetToBitGet byteGet 4
