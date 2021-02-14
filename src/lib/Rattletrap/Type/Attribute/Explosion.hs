@@ -5,8 +5,8 @@ module Rattletrap.Type.Attribute.Explosion where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Vector as Vector
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data Explosion = Explosion
   { flag :: Bool
@@ -24,9 +24,9 @@ bitPut explosionAttribute = do
   Vector.bitPut (location explosionAttribute)
 
 bitGet
-  :: (Int, Int, Int) -> BitGet Explosion
+  :: (Int, Int, Int) -> BitGet.BitGet Explosion
 bitGet version =
   Explosion
-    <$> getBool
+    <$> BitGet.bool
     <*> I32.bitGet
     <*> Vector.bitGet version

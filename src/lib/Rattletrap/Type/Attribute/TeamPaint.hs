@@ -5,8 +5,8 @@ module Rattletrap.Type.Attribute.TeamPaint where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data TeamPaint = TeamPaint
   { team :: U8.U8
@@ -27,7 +27,7 @@ bitPut teamPaintAttribute = do
   U32.bitPut (primaryFinish teamPaintAttribute)
   U32.bitPut (accentFinish teamPaintAttribute)
 
-bitGet :: BitGet TeamPaint
+bitGet :: BitGet.BitGet TeamPaint
 bitGet =
   TeamPaint
     <$> U8.bitGet

@@ -1,9 +1,9 @@
 module Rattletrap.Type.I64 where
 
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BitGet as BitGet
 
 import qualified Data.Aeson as Aeson
 import qualified Data.Int as Int
@@ -36,5 +36,5 @@ bitPut = BitPut.fromBytePut . bytePut
 byteGet :: ByteGet.ByteGet I64
 byteGet = fromInt64 <$> ByteGet.int64
 
-bitGet :: BitGet I64
-bitGet = byteGetToBitGet byteGet 8
+bitGet :: BitGet.BitGet I64
+bitGet = BitGet.fromByteGet byteGet 8

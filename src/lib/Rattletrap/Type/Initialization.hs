@@ -7,6 +7,7 @@ import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Vector as Vector
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data Initialization = Initialization
   { location :: Maybe Vector.Vector
@@ -30,7 +31,7 @@ bitPut initialization = do
     Just x -> Int8Vector.bitPut x
 
 bitGet
-  :: (Int, Int, Int) -> Bool -> Bool -> BitGet Initialization
+  :: (Int, Int, Int) -> Bool -> Bool -> BitGet.BitGet Initialization
 bitGet version hasLocation hasRotation =
   Initialization
     <$> decodeWhen hasLocation (Vector.bitGet version)

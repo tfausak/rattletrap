@@ -6,11 +6,11 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Replication.Destroyed as Destroyed
 import qualified Rattletrap.Type.Replication.Spawned as Spawned
 import qualified Rattletrap.Type.Replication.Updated as Updated
-import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -47,14 +47,14 @@ bitGet
   -> CompressedWord.CompressedWord
   -> State.StateT
        (Map.Map CompressedWord.CompressedWord U32.U32)
-       BitGet
+       BitGet.BitGet
        ReplicationValue
 bitGet version classAttributeMap actorId = do
   actorMap <- State.get
-  isOpen <- Trans.lift getBool
+  isOpen <- Trans.lift BitGet.bool
   if isOpen
     then do
-      isNew <- Trans.lift getBool
+      isNew <- Trans.lift BitGet.bool
       if isNew
         then
           Spawned

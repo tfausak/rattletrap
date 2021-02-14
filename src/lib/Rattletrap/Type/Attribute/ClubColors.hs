@@ -4,8 +4,8 @@ module Rattletrap.Type.Attribute.ClubColors where
 
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U8 as U8
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data ClubColors = ClubColors
   { blueFlag :: Bool
@@ -24,10 +24,10 @@ bitPut clubColorsAttribute = do
   BitPut.bool (orangeFlag clubColorsAttribute)
   U8.bitPut (orangeColor clubColorsAttribute)
 
-bitGet :: BitGet ClubColors
+bitGet :: BitGet.BitGet ClubColors
 bitGet =
   ClubColors
-    <$> getBool
+    <$> BitGet.bool
     <*> U8.bitGet
-    <*> getBool
+    <*> BitGet.bool
     <*> U8.bitGet

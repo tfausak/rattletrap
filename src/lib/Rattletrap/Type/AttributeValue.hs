@@ -41,11 +41,11 @@ import qualified Rattletrap.Type.Attribute.Title as Title
 import qualified Rattletrap.Type.Attribute.UniqueId as UniqueId
 import qualified Rattletrap.Type.Attribute.WeldedInfo as WeldedInfo
 import qualified Rattletrap.Data as Data
-import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.AttributeType as AttributeType
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 import qualified Data.Map as Map
 
@@ -132,7 +132,7 @@ bitPut value = case value of
   WeldedInfo x -> WeldedInfo.bitPut x
 
 bitGet
-  :: (Int, Int, Int) -> Map U32.U32 Str.Str -> Str.Str -> BitGet AttributeValue
+  :: (Int, Int, Int) -> Map U32.U32 Str.Str -> Str.Str -> BitGet.BitGet AttributeValue
 bitGet version objectMap name = do
   constructor <- maybe
     (fail ("[RT04] don't know how to get attribute value " <> show name))

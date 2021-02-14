@@ -4,8 +4,8 @@ module Rattletrap.Type.CompressedWordVector where
 
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data CompressedWordVector = CompressedWordVector
   { x :: CompressedWord.CompressedWord
@@ -22,7 +22,7 @@ bitPut compressedWordVector = do
   CompressedWord.bitPut (y compressedWordVector)
   CompressedWord.bitPut (z compressedWordVector)
 
-bitGet :: BitGet CompressedWordVector
+bitGet :: BitGet.BitGet CompressedWordVector
 bitGet =
   CompressedWordVector
     <$> CompressedWord.bitGet limit

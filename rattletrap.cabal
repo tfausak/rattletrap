@@ -41,6 +41,7 @@ library
   exposed-modules:
     Paths_rattletrap
     Rattletrap
+    Rattletrap.BitGet
     Rattletrap.BitPut
     Rattletrap.ByteGet
     Rattletrap.BytePut
@@ -76,6 +77,8 @@ library
     Rattletrap.Type.Attribute.PickupNew
     Rattletrap.Type.Attribute.PlayerHistoryKey
     Rattletrap.Type.Attribute.PrivateMatchSettings
+    Rattletrap.Type.Attribute.Product
+    Rattletrap.Type.Attribute.ProductValue
     Rattletrap.Type.Attribute.QWord
     Rattletrap.Type.Attribute.Reservation
     Rattletrap.Type.Attribute.RigidBodyState
@@ -99,17 +102,15 @@ library
     Rattletrap.Type.F32
     Rattletrap.Type.Frame
     Rattletrap.Type.Header
-    Rattletrap.Type.Initialization
     Rattletrap.Type.I32
     Rattletrap.Type.I64
     Rattletrap.Type.I8
+    Rattletrap.Type.Initialization
     Rattletrap.Type.Int8Vector
     Rattletrap.Type.KeyFrame
     Rattletrap.Type.List
     Rattletrap.Type.Mark
     Rattletrap.Type.Message
-    Rattletrap.Type.Attribute.Product
-    Rattletrap.Type.Attribute.ProductValue
     Rattletrap.Type.Property
     Rattletrap.Type.PropertyValue
     Rattletrap.Type.Quaternion
@@ -123,10 +124,10 @@ library
     Rattletrap.Type.Rotation
     Rattletrap.Type.Section
     Rattletrap.Type.Str
-    Rattletrap.Type.Vector
     Rattletrap.Type.U32
     Rattletrap.Type.U64
     Rattletrap.Type.U8
+    Rattletrap.Type.Vector
     Rattletrap.Utility.Bytes
     Rattletrap.Utility.Crc
     Rattletrap.Utility.Helper

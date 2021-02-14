@@ -3,8 +3,8 @@
 module Rattletrap.Type.Attribute.GameMode where
 
 import Rattletrap.Type.Common
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data GameMode = GameMode
   { numBits :: Int
@@ -22,9 +22,9 @@ bitPut :: GameMode -> BitPut.BitPut
 bitPut gameModeAttribute = do
   BitPut.word8 (numBits gameModeAttribute) (word gameModeAttribute)
 
-bitGet :: (Int, Int, Int) -> BitGet GameMode
+bitGet :: (Int, Int, Int) -> BitGet.BitGet GameMode
 bitGet version =
-  GameMode (numBits_ version) <$> getWord8Bits
+  GameMode (numBits_ version) <$> BitGet.word8
     (numBits_ version)
 
 numBits_ :: (Int, Int, Int) -> Int

@@ -3,10 +3,10 @@
 module Rattletrap.Type.U32 where
 
 import Rattletrap.Type.Common
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BitGet as BitGet
 
 newtype U32
   = U32 Word32
@@ -29,5 +29,5 @@ bitPut = BitPut.fromBytePut . bytePut
 byteGet :: ByteGet.ByteGet U32
 byteGet = fromWord32 <$> ByteGet.word32
 
-bitGet :: BitGet U32
-bitGet = byteGetToBitGet byteGet 4
+bitGet :: BitGet.BitGet U32
+bitGet = BitGet.fromByteGet byteGet 4

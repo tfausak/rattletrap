@@ -5,8 +5,8 @@ module Rattletrap.Type.Attribute.ExtendedExplosion where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Attribute.Explosion as Explosion
 import qualified Rattletrap.Type.Attribute.FlaggedInt as FlaggedInt
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data ExtendedExplosion = ExtendedExplosion
   { explosion :: Explosion.Explosion
@@ -23,7 +23,7 @@ bitPut x = do
   FlaggedInt.bitPut (unknown x)
 
 bitGet
-  :: (Int, Int, Int) -> BitGet ExtendedExplosion
+  :: (Int, Int, Int) -> BitGet.BitGet ExtendedExplosion
 bitGet version =
   ExtendedExplosion
     <$> Explosion.bitGet version

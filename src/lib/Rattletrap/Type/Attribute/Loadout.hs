@@ -7,6 +7,7 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data Loadout = Loadout
   { version :: U8.U8
@@ -57,7 +58,7 @@ putOptional m f = case m of
   Just x -> f x
   Nothing -> pure ()
 
-bitGet :: BitGet Loadout
+bitGet :: BitGet.BitGet Loadout
 bitGet = do
   version_ <- U8.bitGet
   Loadout version_

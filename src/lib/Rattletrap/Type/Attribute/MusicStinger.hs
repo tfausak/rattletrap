@@ -5,8 +5,8 @@ module Rattletrap.Type.Attribute.MusicStinger where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data MusicStinger = MusicStinger
   { flag :: Bool
@@ -23,9 +23,9 @@ bitPut musicStingerAttribute = do
   U32.bitPut (cue musicStingerAttribute)
   U8.bitPut (trigger musicStingerAttribute)
 
-bitGet :: BitGet MusicStinger
+bitGet :: BitGet.BitGet MusicStinger
 bitGet =
   MusicStinger
-    <$> getBool
+    <$> BitGet.bool
     <*> U32.bitGet
     <*> U8.bitGet

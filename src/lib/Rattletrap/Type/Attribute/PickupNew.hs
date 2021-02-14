@@ -7,6 +7,7 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data PickupNew = PickupNew
   { instigatorId :: Maybe U32.U32
@@ -25,9 +26,9 @@ bitPut pickupAttributeNew = do
       U32.bitPut instigatorId_
   U8.bitPut (pickedUp pickupAttributeNew)
 
-bitGet :: BitGet PickupNew
+bitGet :: BitGet.BitGet PickupNew
 bitGet = do
-  instigator <- getBool
+  instigator <- BitGet.bool
   PickupNew
     <$> decodeWhen instigator U32.bitGet
     <*> U8.bitGet

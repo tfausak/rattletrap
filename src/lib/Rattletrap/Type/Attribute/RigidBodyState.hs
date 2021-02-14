@@ -7,6 +7,7 @@ import qualified Rattletrap.Type.Rotation as Rotation
 import qualified Rattletrap.Type.Vector as Vector
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data RigidBodyState = RigidBodyState
   { sleeping :: Bool
@@ -32,9 +33,9 @@ bitPut rigidBodyStateAttribute = do
     Just x -> Vector.bitPut x
 
 bitGet
-  :: (Int, Int, Int) -> BitGet RigidBodyState
+  :: (Int, Int, Int) -> BitGet.BitGet RigidBodyState
 bitGet version = do
-  sleeping_ <- getBool
+  sleeping_ <- BitGet.bool
   RigidBodyState sleeping_
     <$> Vector.bitGet version
     <*> Rotation.bitGet version

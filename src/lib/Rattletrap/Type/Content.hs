@@ -13,11 +13,11 @@ import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Utility.Bytes
-import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BitGet as BitGet
 
 import qualified Control.Monad.Trans.State as State
 import qualified Data.ByteString as Bytes
@@ -142,7 +142,9 @@ byteGet version numFrames maxChannels = do
     bitGet = State.evalStateT
       (Frame.decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
-  frames_ <- either fail pure (runDecodeBits bitGet (reverseBytes stream))
+  frames_ <- either fail pure
+    . ByteGet.run (BitGet.toByteGet bitGet)
+    $ reverseBytes stream
   Content
       levels_
       keyFrames_

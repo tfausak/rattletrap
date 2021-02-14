@@ -5,8 +5,8 @@ module Rattletrap.Type.Attribute.CustomDemolish where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Attribute.Demolish as Demolish
 import qualified Rattletrap.Type.I32 as I32
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data CustomDemolish = CustomDemolish
   { flag :: Bool
@@ -24,9 +24,9 @@ bitPut x = do
   Demolish.bitPut (demolish x)
 
 bitGet
-  :: (Int, Int, Int) -> BitGet CustomDemolish
+  :: (Int, Int, Int) -> BitGet.BitGet CustomDemolish
 bitGet version =
   CustomDemolish
-    <$> getBool
+    <$> BitGet.bool
     <*> I32.bitGet
     <*> Demolish.bitGet version

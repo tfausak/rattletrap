@@ -4,8 +4,8 @@ module Rattletrap.Type.Quaternion where
 
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 import qualified Data.List as List
 import qualified Data.Maybe as Maybe
@@ -126,11 +126,11 @@ putParts a b c = do
 putPart :: Double -> BitPut.BitPut
 putPart = CompressedWord.bitPut . compressPart
 
-bitGet :: BitGet Quaternion
+bitGet :: BitGet.BitGet Quaternion
 bitGet =
   toQuaternion <$> decodeComponent <*> decodePart <*> decodePart <*> decodePart
 
-decodeComponent :: BitGet Component
+decodeComponent :: BitGet.BitGet Component
 decodeComponent = do
   x_ <- CompressedWord.bitGet 3
   case CompressedWord.value x_ of
@@ -140,5 +140,5 @@ decodeComponent = do
     3 -> pure W
     y_ -> fail ("[RT08] invalid component: " <> show y_)
 
-decodePart :: BitGet Double
+decodePart :: BitGet.BitGet Double
 decodePart = decompressPart <$> CompressedWord.bitGet maxCompressedValue

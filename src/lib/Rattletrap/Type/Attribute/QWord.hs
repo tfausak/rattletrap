@@ -4,8 +4,8 @@ module Rattletrap.Type.Attribute.QWord where
 
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U64 as U64
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 newtype QWord = QWord
   { value :: U64.U64
@@ -17,5 +17,5 @@ bitPut :: QWord -> BitPut.BitPut
 bitPut qWordAttribute =
   U64.bitPut (value qWordAttribute)
 
-bitGet :: BitGet QWord
+bitGet :: BitGet.BitGet QWord
 bitGet = QWord <$> U64.bitGet

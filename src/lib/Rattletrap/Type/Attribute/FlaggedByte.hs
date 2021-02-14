@@ -4,8 +4,8 @@ module Rattletrap.Type.Attribute.FlaggedByte where
 
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U8 as U8
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data FlaggedByte = FlaggedByte
   { flag :: Bool
@@ -20,6 +20,6 @@ bitPut flaggedByteAttribute = do
   BitPut.bool (flag flaggedByteAttribute)
   U8.bitPut (byte flaggedByteAttribute)
 
-bitGet :: BitGet FlaggedByte
+bitGet :: BitGet.BitGet FlaggedByte
 bitGet =
-  FlaggedByte <$> getBool <*> U8.bitGet
+  FlaggedByte <$> BitGet.bool <*> U8.bitGet

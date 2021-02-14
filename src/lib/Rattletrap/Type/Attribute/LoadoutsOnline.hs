@@ -4,10 +4,10 @@ module Rattletrap.Type.Attribute.LoadoutsOnline where
 
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Attribute.LoadoutOnline as LoadoutOnline
-import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 import qualified Data.Map as Map
 
@@ -33,10 +33,10 @@ bitPut loadoutsOnlineAttribute = do
 bitGet
   :: (Int, Int, Int)
   -> Map.Map U32.U32 Str.Str
-  -> BitGet LoadoutsOnline
+  -> BitGet.BitGet LoadoutsOnline
 bitGet version objectMap =
   LoadoutsOnline
     <$> LoadoutOnline.bitGet version objectMap
     <*> LoadoutOnline.bitGet version objectMap
-    <*> getBool
-    <*> getBool
+    <*> BitGet.bool
+    <*> BitGet.bool

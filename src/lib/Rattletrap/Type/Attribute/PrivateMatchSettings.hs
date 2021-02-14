@@ -5,8 +5,8 @@ module Rattletrap.Type.Attribute.PrivateMatchSettings where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data PrivateMatchSettings = PrivateMatchSettings
   { mutators :: Str.Str
@@ -37,7 +37,7 @@ bitPut privateMatchSettingsAttribute = do
     (flag privateMatchSettingsAttribute)
 
 bitGet
-  :: BitGet PrivateMatchSettings
+  :: BitGet.BitGet PrivateMatchSettings
 bitGet =
   PrivateMatchSettings
     <$> Str.bitGet
@@ -45,4 +45,4 @@ bitGet =
     <*> U32.bitGet
     <*> Str.bitGet
     <*> Str.bitGet
-    <*> getBool
+    <*> BitGet.bool

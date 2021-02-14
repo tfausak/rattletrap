@@ -4,8 +4,8 @@ module Rattletrap.Type.Attribute.Title where
 
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data Title = Title
   { unknown1 :: Bool
@@ -32,14 +32,14 @@ bitPut titleAttribute = do
   U32.bitPut (unknown7 titleAttribute)
   BitPut.bool (unknown8 titleAttribute)
 
-bitGet :: BitGet Title
+bitGet :: BitGet.BitGet Title
 bitGet =
   Title
-    <$> getBool
-    <*> getBool
+    <$> BitGet.bool
+    <*> BitGet.bool
     <*> U32.bitGet
     <*> U32.bitGet
     <*> U32.bitGet
     <*> U32.bitGet
     <*> U32.bitGet
-    <*> getBool
+    <*> BitGet.bool

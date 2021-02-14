@@ -7,6 +7,7 @@ import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data PartyLeader = PartyLeader
   { systemId :: U8.U8
@@ -26,7 +27,7 @@ bitPut partyLeaderAttribute = do
       U8.bitPut localId
 
 bitGet
-  :: (Int, Int, Int) -> BitGet PartyLeader
+  :: (Int, Int, Int) -> BitGet.BitGet PartyLeader
 bitGet version = do
   systemId_ <- U8.bitGet
   PartyLeader systemId_ <$> decodeWhen

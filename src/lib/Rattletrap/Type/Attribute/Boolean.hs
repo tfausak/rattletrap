@@ -3,8 +3,8 @@
 module Rattletrap.Type.Attribute.Boolean where
 
 import Rattletrap.Type.Common
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 newtype Boolean = Boolean
   { value :: Bool
@@ -16,5 +16,5 @@ bitPut :: Boolean -> BitPut.BitPut
 bitPut booleanAttribute =
   BitPut.bool (value booleanAttribute)
 
-bitGet :: BitGet Boolean
-bitGet = Boolean <$> getBool
+bitGet :: BitGet.BitGet Boolean
+bitGet = Boolean <$> BitGet.bool

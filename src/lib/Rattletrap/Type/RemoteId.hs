@@ -6,9 +6,9 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
 import Rattletrap.Utility.Bytes
-import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -51,9 +51,9 @@ putWord256 a b c d = do
   U64.bitPut c
   U64.bitPut d
 
-bitGet :: (Int, Int, Int) -> U8.U8 -> BitGet RemoteId
+bitGet :: (Int, Int, Int) -> U8.U8 -> BitGet.BitGet RemoteId
 bitGet version systemId = case U8.toWord8 systemId of
-  0 -> Splitscreen <$> getBitsLE 24
+  0 -> Splitscreen <$> BitGet.bits 24
   1 -> Steam <$> U64.bitGet
   2 -> PlayStation <$> decodePsName <*> decodePsBytes version
   4 -> Xbox <$> U64.bitGet
@@ -66,16 +66,16 @@ bitGet version systemId = case U8.toWord8 systemId of
   11 -> Epic <$> Str.bitGet
   _ -> fail ("[RT09] unknown system id " <> show systemId)
 
-decodePsName :: BitGet Text.Text
+decodePsName :: BitGet.BitGet Text.Text
 decodePsName = fmap
   (Text.dropWhileEnd (== '\x00') . Text.decodeLatin1 . reverseBytes)
-  (getByteStringBits 16)
+  (BitGet.byteString 16)
 
-decodePsBytes :: (Int, Int, Int) -> BitGet [Word.Word8]
+decodePsBytes :: (Int, Int, Int) -> BitGet.BitGet [Word.Word8]
 decodePsBytes version = Bytes.unpack
-  <$> getByteStringBits (if version >= (868, 20, 1) then 24 else 16)
+  <$> BitGet.byteString (if version >= (868, 20, 1) then 24 else 16)
 
-getWord256 :: BitGet (U64.U64, U64.U64, U64.U64, U64.U64)
+getWord256 :: BitGet.BitGet (U64.U64, U64.U64, U64.U64, U64.U64)
 getWord256 = do
   a <- U64.bitGet
   b <- U64.bitGet

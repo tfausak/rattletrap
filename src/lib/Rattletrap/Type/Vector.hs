@@ -4,8 +4,8 @@ module Rattletrap.Type.Vector where
 
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data Vector = Vector
   { size :: CompressedWord.CompressedWord
@@ -42,7 +42,7 @@ bitPut vector = do
   CompressedWord.bitPut (CompressedWord.CompressedWord limit dy)
   CompressedWord.bitPut (CompressedWord.CompressedWord limit dz)
 
-bitGet :: (Int, Int, Int) -> BitGet Vector
+bitGet :: (Int, Int, Int) -> BitGet.BitGet Vector
 bitGet version = do
   size_ <- CompressedWord.bitGet (if version >= (868, 22, 7) then 21 else 19)
   let

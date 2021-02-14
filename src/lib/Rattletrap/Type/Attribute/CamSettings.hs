@@ -6,6 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data CamSettings = CamSettings
   { fov :: F32.F32
@@ -33,7 +34,7 @@ bitPut camSettingsAttribute = do
     Just transitionSpeed_ -> F32.bitPut transitionSpeed_
 
 bitGet
-  :: (Int, Int, Int) -> BitGet CamSettings
+  :: (Int, Int, Int) -> BitGet.BitGet CamSettings
 bitGet version =
   CamSettings
     <$> F32.bitGet

@@ -3,10 +3,10 @@
 module Rattletrap.Type.I8 where
 
 import Rattletrap.Type.Common
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BitGet as BitGet
 
 newtype I8
   = I8 Int8
@@ -29,5 +29,5 @@ bitPut = BitPut.fromBytePut . bytePut
 byteGet :: ByteGet.ByteGet I8
 byteGet = fromInt8 <$> ByteGet.int8
 
-bitGet :: BitGet I8
-bitGet = byteGetToBitGet byteGet 1
+bitGet :: BitGet.BitGet I8
+bitGet = BitGet.fromByteGet byteGet 1

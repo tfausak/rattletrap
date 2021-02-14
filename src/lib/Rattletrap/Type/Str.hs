@@ -5,10 +5,10 @@ module Rattletrap.Type.Str where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Utility.Bytes
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BitGet as BitGet
 
 import qualified Data.Text.Encoding.Error as Text
 import qualified Debug.Trace as Debug
@@ -71,10 +71,10 @@ byteGet = do
   bytes <- ByteGet.byteString (normalizeTextSize rawSize)
   pure (fromText (dropNull (getTextDecoder rawSize bytes)))
 
-bitGet :: BitGet Str
+bitGet :: BitGet.BitGet Str
 bitGet = do
   rawSize <- I32.bitGet
-  bytes <- getByteStringBits (normalizeTextSize rawSize)
+  bytes <- BitGet.byteString (normalizeTextSize rawSize)
   pure (fromText (dropNull (getTextDecoder rawSize (reverseBytes bytes))))
 
 normalizeTextSize :: Integral a => I32.I32 -> a

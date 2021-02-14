@@ -9,6 +9,7 @@ import qualified Rattletrap.Type.Attribute.UniqueId as UniqueId
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data Reservation = Reservation
   { number :: CompressedWord.CompressedWord
@@ -36,7 +37,7 @@ bitPut reservationAttribute = do
     Just c -> BitPut.word8 6 c
 
 bitGet
-  :: (Int, Int, Int) -> BitGet Reservation
+  :: (Int, Int, Int) -> BitGet.BitGet Reservation
 bitGet version = do
   number_ <- CompressedWord.bitGet 7
   uniqueId_ <- UniqueId.bitGet version
@@ -44,6 +45,6 @@ bitGet version = do
     <$> decodeWhen
           (UniqueId.systemId uniqueId_ /= U8.fromWord8 0)
           Str.bitGet
-    <*> getBool
-    <*> getBool
-    <*> decodeWhen (version >= (868, 12, 0)) (getWord8Bits 6)
+    <*> BitGet.bool
+    <*> BitGet.bool
+    <*> decodeWhen (version >= (868, 12, 0)) (BitGet.word8 6)

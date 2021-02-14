@@ -8,6 +8,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data ProductValue
   = PaintedOld CompressedWord.CompressedWord
@@ -38,7 +39,7 @@ bitPut val = case val of
   TitleId x -> Str.bitPut x
 
 bitGet
-  :: (Int, Int, Int) -> U32.U32 -> Maybe Str.Str -> BitGet ProductValue
+  :: (Int, Int, Int) -> U32.U32 -> Maybe Str.Str -> BitGet.BitGet ProductValue
 bitGet version objectId maybeObjectName =
   case Str.toString <$> maybeObjectName of
     Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
@@ -54,25 +55,25 @@ bitGet version objectId maybeObjectName =
       )
     Nothing -> fail ("[RT06] missing object name for ID " <> show objectId)
 
-decodeSpecialEdition :: BitGet ProductValue
-decodeSpecialEdition = SpecialEdition <$> getBitsLE 31
+decodeSpecialEdition :: BitGet.BitGet ProductValue
+decodeSpecialEdition = SpecialEdition <$> BitGet.bits 31
 
-decodePainted :: (Int, Int, Int) -> BitGet ProductValue
+decodePainted :: (Int, Int, Int) -> BitGet.BitGet ProductValue
 decodePainted version = if version >= (868, 18, 0)
-  then PaintedNew <$> getBitsLE 31
+  then PaintedNew <$> BitGet.bits 31
   else PaintedOld <$> CompressedWord.bitGet 13
 
-decodeTeamEdition :: (Int, Int, Int) -> BitGet ProductValue
+decodeTeamEdition :: (Int, Int, Int) -> BitGet.BitGet ProductValue
 decodeTeamEdition version = if version >= (868, 18, 0)
-  then TeamEditionNew <$> getBitsLE 31
+  then TeamEditionNew <$> BitGet.bits 31
   else TeamEditionOld <$> CompressedWord.bitGet 13
 
-decodeColor :: (Int, Int, Int) -> BitGet ProductValue
+decodeColor :: (Int, Int, Int) -> BitGet.BitGet ProductValue
 decodeColor version = if version >= (868, 23, 8)
   then UserColorNew <$> U32.bitGet
   else do
-    hasValue <- getBool
-    UserColorOld <$> decodeWhen hasValue (getBitsLE 31)
+    hasValue <- BitGet.bool
+    UserColorOld <$> decodeWhen hasValue (BitGet.bits 31)
 
-decodeTitle :: BitGet ProductValue
+decodeTitle :: BitGet.BitGet ProductValue
 decodeTitle = TitleId <$> Str.bitGet

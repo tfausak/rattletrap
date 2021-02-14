@@ -10,6 +10,7 @@ import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -50,10 +51,10 @@ bitGet
   -> CompressedWord.CompressedWord
   -> State.StateT
        (Map.Map CompressedWord.CompressedWord U32.U32)
-       BitGet
+       BitGet.BitGet
        Spawned
 bitGet version classAttributeMap actorId = do
-  flag_ <- Trans.lift getBool
+  flag_ <- Trans.lift BitGet.bool
   nameIndex_ <- decodeWhen
     (version >= (868, 14, 0))
     (Trans.lift U32.bitGet)

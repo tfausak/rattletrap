@@ -3,10 +3,10 @@
 module Rattletrap.Type.F32 where
 
 import Rattletrap.Type.Common
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BitGet as BitGet
 
 newtype F32
   = F32 Float
@@ -29,5 +29,5 @@ bitPut = BitPut.fromBytePut . bytePut
 byteGet :: ByteGet.ByteGet F32
 byteGet = fromFloat <$> ByteGet.float
 
-bitGet :: BitGet F32
-bitGet = byteGetToBitGet byteGet 4
+bitGet :: BitGet.BitGet F32
+bitGet = BitGet.fromByteGet byteGet 4

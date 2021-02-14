@@ -7,8 +7,8 @@ import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Vector as Vector
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data WeldedInfo = WeldedInfo
   { active :: Bool
@@ -30,10 +30,10 @@ bitPut weldedInfoAttribute = do
   Int8Vector.bitPut (rotation weldedInfoAttribute)
 
 bitGet
-  :: (Int, Int, Int) -> BitGet WeldedInfo
+  :: (Int, Int, Int) -> BitGet.BitGet WeldedInfo
 bitGet version =
   WeldedInfo
-    <$> getBool
+    <$> BitGet.bool
     <*> I32.bitGet
     <*> Vector.bitGet version
     <*> F32.bitGet

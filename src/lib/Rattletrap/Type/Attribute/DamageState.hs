@@ -6,8 +6,8 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.U8 as U8
-import Rattletrap.Decode.Common
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.BitGet as BitGet
 
 data DamageState = DamageState
   { unknown1 :: U8.U8
@@ -31,12 +31,12 @@ bitPut damageStateAttribute = do
   BitPut.bool (unknown6 damageStateAttribute)
 
 bitGet
-  :: (Int, Int, Int) -> BitGet DamageState
+  :: (Int, Int, Int) -> BitGet.BitGet DamageState
 bitGet version =
   DamageState
     <$> U8.bitGet
-    <*> getBool
+    <*> BitGet.bool
     <*> I32.bitGet
     <*> Vector.bitGet version
-    <*> getBool
-    <*> getBool
+    <*> BitGet.bool
+    <*> BitGet.bool
