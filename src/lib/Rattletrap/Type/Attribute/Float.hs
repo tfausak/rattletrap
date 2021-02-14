@@ -2,20 +2,21 @@
 
 module Rattletrap.Type.Attribute.Float where
 
+import Prelude hiding (Float)
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-newtype FloatAttribute = FloatAttribute
+newtype Float = Float
   { value :: F32.F32
   } deriving (Eq, Show)
 
-$(deriveJson ''FloatAttribute)
+$(deriveJson ''Float)
 
-bitPut :: FloatAttribute -> BitPut ()
+bitPut :: Float -> BitPut ()
 bitPut floatAttribute =
   F32.bitPut (value floatAttribute)
 
-bitGet :: BitGet FloatAttribute
-bitGet = FloatAttribute <$> F32.bitGet
+bitGet :: BitGet Float
+bitGet = Float <$> F32.bitGet

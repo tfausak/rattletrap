@@ -9,15 +9,15 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data PickupAttribute = PickupAttribute
+data Pickup = Pickup
   { instigatorId :: Maybe U32.U32
   , pickedUp :: Bool
   }
   deriving (Eq, Show)
 
-$(deriveJson ''PickupAttribute)
+$(deriveJson ''Pickup)
 
-bitPut :: PickupAttribute -> BitPut ()
+bitPut :: Pickup -> BitPut ()
 bitPut pickupAttribute = do
   case instigatorId pickupAttribute of
     Nothing -> BinaryBits.putBool False
@@ -26,7 +26,7 @@ bitPut pickupAttribute = do
       U32.bitPut instigatorId_
   BinaryBits.putBool (pickedUp pickupAttribute)
 
-bitGet :: BitGet PickupAttribute
+bitGet :: BitGet Pickup
 bitGet = do
   instigator <- getBool
-  PickupAttribute <$> decodeWhen instigator U32.bitGet <*> getBool
+  Pickup <$> decodeWhen instigator U32.bitGet <*> getBool

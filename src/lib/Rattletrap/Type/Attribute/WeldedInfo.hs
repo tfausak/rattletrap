@@ -12,7 +12,7 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data WeldedInfoAttribute = WeldedInfoAttribute
+data WeldedInfo = WeldedInfo
   { active :: Bool
   , actorId :: I32.I32
   , offset :: Vector.Vector
@@ -21,9 +21,9 @@ data WeldedInfoAttribute = WeldedInfoAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''WeldedInfoAttribute)
+$(deriveJson ''WeldedInfo)
 
-bitPut :: WeldedInfoAttribute -> BitPut ()
+bitPut :: WeldedInfo -> BitPut ()
 bitPut weldedInfoAttribute = do
   BinaryBits.putBool (active weldedInfoAttribute)
   I32.bitPut (actorId weldedInfoAttribute)
@@ -32,9 +32,9 @@ bitPut weldedInfoAttribute = do
   Int8Vector.bitPut (rotation weldedInfoAttribute)
 
 bitGet
-  :: (Int, Int, Int) -> BitGet WeldedInfoAttribute
+  :: (Int, Int, Int) -> BitGet WeldedInfo
 bitGet version =
-  WeldedInfoAttribute
+  WeldedInfo
     <$> getBool
     <*> I32.bitGet
     <*> Vector.bitGet version

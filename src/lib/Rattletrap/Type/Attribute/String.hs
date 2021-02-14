@@ -2,20 +2,21 @@
 
 module Rattletrap.Type.Attribute.String where
 
+import Prelude hiding (String)
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-newtype StringAttribute = StringAttribute
+newtype String = String
   { value :: Str.Str
   } deriving (Eq, Show)
 
-$(deriveJson ''StringAttribute)
+$(deriveJson ''String)
 
-bitPut :: StringAttribute -> BitPut ()
+bitPut :: String -> BitPut ()
 bitPut stringAttribute =
   Str.bitPut (value stringAttribute)
 
-bitGet :: BitGet StringAttribute
-bitGet = StringAttribute <$> Str.bitGet
+bitGet :: BitGet String
+bitGet = String <$> Str.bitGet

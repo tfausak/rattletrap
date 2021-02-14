@@ -9,19 +9,19 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data FlaggedByteAttribute = FlaggedByteAttribute
+data FlaggedByte = FlaggedByte
   { flag :: Bool
   , byte :: U8.U8
   }
   deriving (Eq, Show)
 
-$(deriveJson ''FlaggedByteAttribute)
+$(deriveJson ''FlaggedByte)
 
-bitPut :: FlaggedByteAttribute -> BitPut ()
+bitPut :: FlaggedByte -> BitPut ()
 bitPut flaggedByteAttribute = do
   BinaryBits.putBool (flag flaggedByteAttribute)
   U8.bitPut (byte flaggedByteAttribute)
 
-bitGet :: BitGet FlaggedByteAttribute
+bitGet :: BitGet FlaggedByte
 bitGet =
-  FlaggedByteAttribute <$> getBool <*> U8.bitGet
+  FlaggedByte <$> getBool <*> U8.bitGet

@@ -10,7 +10,7 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data RigidBodyStateAttribute = RigidBodyStateAttribute
+data RigidBodyState = RigidBodyState
   { sleeping :: Bool
   , location :: Vector.Vector
   , rotation :: Rotation.Rotation
@@ -19,9 +19,9 @@ data RigidBodyStateAttribute = RigidBodyStateAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''RigidBodyStateAttribute)
+$(deriveJson ''RigidBodyState)
 
-bitPut :: RigidBodyStateAttribute -> BitPut ()
+bitPut :: RigidBodyState -> BitPut ()
 bitPut rigidBodyStateAttribute = do
   BinaryBits.putBool (sleeping rigidBodyStateAttribute)
   Vector.bitPut (location rigidBodyStateAttribute)
@@ -34,10 +34,10 @@ bitPut rigidBodyStateAttribute = do
     Just x -> Vector.bitPut x
 
 bitGet
-  :: (Int, Int, Int) -> BitGet RigidBodyStateAttribute
+  :: (Int, Int, Int) -> BitGet RigidBodyState
 bitGet version = do
   sleeping_ <- getBool
-  RigidBodyStateAttribute sleeping_
+  RigidBodyState sleeping_
     <$> Vector.bitGet version
     <*> Rotation.bitGet version
     <*> decodeWhen (not sleeping_) (Vector.bitGet version)

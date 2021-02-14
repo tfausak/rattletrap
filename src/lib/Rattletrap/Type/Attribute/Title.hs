@@ -9,7 +9,7 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data TitleAttribute = TitleAttribute
+data Title = Title
   { unknown1 :: Bool
   , unknown2 :: Bool
   , unknown3 :: U32.U32
@@ -21,9 +21,9 @@ data TitleAttribute = TitleAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''TitleAttribute)
+$(deriveJson ''Title)
 
-bitPut :: TitleAttribute -> BitPut ()
+bitPut :: Title -> BitPut ()
 bitPut titleAttribute = do
   BinaryBits.putBool (unknown1 titleAttribute)
   BinaryBits.putBool (unknown2 titleAttribute)
@@ -34,9 +34,9 @@ bitPut titleAttribute = do
   U32.bitPut (unknown7 titleAttribute)
   BinaryBits.putBool (unknown8 titleAttribute)
 
-bitGet :: BitGet TitleAttribute
+bitGet :: BitGet Title
 bitGet =
-  TitleAttribute
+  Title
     <$> getBool
     <*> getBool
     <*> U32.bitGet

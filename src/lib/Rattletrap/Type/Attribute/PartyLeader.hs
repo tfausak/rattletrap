@@ -8,15 +8,15 @@ import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-data PartyLeaderAttribute = PartyLeaderAttribute
+data PartyLeader = PartyLeader
   { systemId :: U8.U8
   , id :: Maybe (RemoteId.RemoteId, U8.U8)
   }
   deriving (Eq, Show)
 
-$(deriveJson ''PartyLeaderAttribute)
+$(deriveJson ''PartyLeader)
 
-bitPut :: PartyLeaderAttribute -> BitPut ()
+bitPut :: PartyLeader -> BitPut ()
 bitPut partyLeaderAttribute = do
   U8.bitPut (systemId partyLeaderAttribute)
   case Rattletrap.Type.Attribute.PartyLeader.id partyLeaderAttribute of
@@ -26,9 +26,9 @@ bitPut partyLeaderAttribute = do
       U8.bitPut localId
 
 bitGet
-  :: (Int, Int, Int) -> BitGet PartyLeaderAttribute
+  :: (Int, Int, Int) -> BitGet PartyLeader
 bitGet version = do
   systemId_ <- U8.bitGet
-  PartyLeaderAttribute systemId_ <$> decodeWhen
+  PartyLeader systemId_ <$> decodeWhen
     (systemId_ /= U8.fromWord8 0)
     ((,) <$> RemoteId.bitGet version systemId_ <*> U8.bitGet)

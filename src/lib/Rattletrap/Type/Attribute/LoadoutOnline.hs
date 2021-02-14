@@ -13,13 +13,13 @@ import Rattletrap.Encode.Common
 import qualified Control.Monad as Monad
 import qualified Data.Map as Map
 
-newtype LoadoutOnlineAttribute = LoadoutOnlineAttribute
+newtype LoadoutOnline = LoadoutOnline
   { value :: [[Product.Product]]
   } deriving (Eq, Show)
 
-$(deriveJson ''LoadoutOnlineAttribute)
+$(deriveJson ''LoadoutOnline)
 
-bitPut :: LoadoutOnlineAttribute -> BitPut ()
+bitPut :: LoadoutOnline -> BitPut ()
 bitPut loadoutAttribute = do
   let attributes = value loadoutAttribute
   U8.bitPut (U8.fromWord8 (fromIntegral (length attributes)))
@@ -28,9 +28,9 @@ bitPut loadoutAttribute = do
 bitGet
   :: (Int, Int, Int)
   -> Map.Map U32.U32 Str.Str
-  -> BitGet LoadoutOnlineAttribute
+  -> BitGet LoadoutOnline
 bitGet version objectMap = do
   size <- U8.bitGet
-  LoadoutOnlineAttribute <$> Monad.replicateM
+  LoadoutOnline <$> Monad.replicateM
     (fromIntegral (U8.toWord8 size))
     (Product.decodeProductAttributesBits version objectMap)

@@ -12,17 +12,17 @@ import Rattletrap.Encode.Common
 import qualified Data.Map as Map
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data LoadoutsOnlineAttribute = LoadoutsOnlineAttribute
-  { blue :: LoadoutOnline.LoadoutOnlineAttribute
-  , orange :: LoadoutOnline.LoadoutOnlineAttribute
+data LoadoutsOnline = LoadoutsOnline
+  { blue :: LoadoutOnline.LoadoutOnline
+  , orange :: LoadoutOnline.LoadoutOnline
   , unknown1 :: Bool
   , unknown2 :: Bool
   }
   deriving (Eq, Show)
 
-$(deriveJson ''LoadoutsOnlineAttribute)
+$(deriveJson ''LoadoutsOnline)
 
-bitPut :: LoadoutsOnlineAttribute -> BitPut ()
+bitPut :: LoadoutsOnline -> BitPut ()
 bitPut loadoutsOnlineAttribute = do
   LoadoutOnline.bitPut
     (blue loadoutsOnlineAttribute)
@@ -34,9 +34,9 @@ bitPut loadoutsOnlineAttribute = do
 bitGet
   :: (Int, Int, Int)
   -> Map.Map U32.U32 Str.Str
-  -> BitGet LoadoutsOnlineAttribute
+  -> BitGet LoadoutsOnline
 bitGet version objectMap =
-  LoadoutsOnlineAttribute
+  LoadoutsOnline
     <$> LoadoutOnline.bitGet version objectMap
     <*> LoadoutOnline.bitGet version objectMap
     <*> getBool

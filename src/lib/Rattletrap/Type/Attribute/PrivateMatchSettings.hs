@@ -10,7 +10,7 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
+data PrivateMatchSettings = PrivateMatchSettings
   { mutators :: Str.Str
   , joinableBy :: U32.U32
   , maxPlayers :: U32.U32
@@ -20,10 +20,10 @@ data PrivateMatchSettingsAttribute = PrivateMatchSettingsAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''PrivateMatchSettingsAttribute)
+$(deriveJson ''PrivateMatchSettings)
 
 bitPut
-  :: PrivateMatchSettingsAttribute -> BitPut ()
+  :: PrivateMatchSettings -> BitPut ()
 bitPut privateMatchSettingsAttribute = do
   Str.bitPut
     (mutators privateMatchSettingsAttribute)
@@ -39,9 +39,9 @@ bitPut privateMatchSettingsAttribute = do
     (flag privateMatchSettingsAttribute)
 
 bitGet
-  :: BitGet PrivateMatchSettingsAttribute
+  :: BitGet PrivateMatchSettings
 bitGet =
-  PrivateMatchSettingsAttribute
+  PrivateMatchSettings
     <$> Str.bitGet
     <*> U32.bitGet
     <*> U32.bitGet

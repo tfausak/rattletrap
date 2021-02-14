@@ -7,15 +7,15 @@ import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-newtype ByteAttribute = ByteAttribute
+newtype Byte = Byte
   { value :: U8.U8
   } deriving (Eq, Show)
 
-$(deriveJson ''ByteAttribute)
+$(deriveJson ''Byte)
 
-bitPut :: ByteAttribute -> BitPut ()
+bitPut :: Byte -> BitPut ()
 bitPut byteAttribute =
   U8.bitPut (value byteAttribute)
 
-bitGet :: BitGet ByteAttribute
-bitGet = ByteAttribute <$> U8.bitGet
+bitGet :: BitGet Byte
+bitGet = Byte <$> U8.bitGet

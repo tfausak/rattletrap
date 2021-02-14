@@ -11,7 +11,7 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data DamageStateAttribute = DamageStateAttribute
+data DamageState = DamageState
   { unknown1 :: U8.U8
   , unknown2 :: Bool
   , unknown3 :: I32.I32
@@ -21,9 +21,9 @@ data DamageStateAttribute = DamageStateAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''DamageStateAttribute)
+$(deriveJson ''DamageState)
 
-bitPut :: DamageStateAttribute -> BitPut ()
+bitPut :: DamageState -> BitPut ()
 bitPut damageStateAttribute = do
   U8.bitPut (unknown1 damageStateAttribute)
   BinaryBits.putBool (unknown2 damageStateAttribute)
@@ -33,9 +33,9 @@ bitPut damageStateAttribute = do
   BinaryBits.putBool (unknown6 damageStateAttribute)
 
 bitGet
-  :: (Int, Int, Int) -> BitGet DamageStateAttribute
+  :: (Int, Int, Int) -> BitGet DamageState
 bitGet version =
-  DamageStateAttribute
+  DamageState
     <$> U8.bitGet
     <*> getBool
     <*> I32.bitGet

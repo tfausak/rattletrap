@@ -7,21 +7,21 @@ import qualified Rattletrap.Type.Attribute.Loadout as Loadout
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-data LoadoutsAttribute = LoadoutsAttribute
-  { blue :: Loadout.LoadoutAttribute
-  , orange :: Loadout.LoadoutAttribute
+data Loadouts = Loadouts
+  { blue :: Loadout.Loadout
+  , orange :: Loadout.Loadout
   }
   deriving (Eq, Show)
 
-$(deriveJson ''LoadoutsAttribute)
+$(deriveJson ''Loadouts)
 
-bitPut :: LoadoutsAttribute -> BitPut ()
+bitPut :: Loadouts -> BitPut ()
 bitPut loadoutsAttribute = do
   Loadout.bitPut (blue loadoutsAttribute)
   Loadout.bitPut (orange loadoutsAttribute)
 
-bitGet :: BitGet LoadoutsAttribute
+bitGet :: BitGet Loadouts
 bitGet =
-  LoadoutsAttribute
+  Loadouts
     <$> Loadout.bitGet
     <*> Loadout.bitGet

@@ -7,15 +7,15 @@ import qualified Rattletrap.Type.U64 as U64
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-newtype QWordAttribute = QWordAttribute
+newtype QWord = QWord
   { value :: U64.U64
   } deriving (Eq, Show)
 
-$(deriveJson ''QWordAttribute)
+$(deriveJson ''QWord)
 
-bitPut :: QWordAttribute -> BitPut ()
+bitPut :: QWord -> BitPut ()
 bitPut qWordAttribute =
   U64.bitPut (value qWordAttribute)
 
-bitGet :: BitGet QWordAttribute
-bitGet = QWordAttribute <$> U64.bitGet
+bitGet :: BitGet QWord
+bitGet = QWord <$> U64.bitGet

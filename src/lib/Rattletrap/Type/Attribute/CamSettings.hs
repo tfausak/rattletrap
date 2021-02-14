@@ -7,7 +7,7 @@ import qualified Rattletrap.Type.F32 as F32
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-data CamSettingsAttribute = CamSettingsAttribute
+data CamSettings = CamSettings
   { fov :: F32.F32
   , height :: F32.F32
   , angle :: F32.F32
@@ -18,9 +18,9 @@ data CamSettingsAttribute = CamSettingsAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''CamSettingsAttribute)
+$(deriveJson ''CamSettings)
 
-bitPut :: CamSettingsAttribute -> BitPut ()
+bitPut :: CamSettings -> BitPut ()
 bitPut camSettingsAttribute = do
   F32.bitPut (fov camSettingsAttribute)
   F32.bitPut (height camSettingsAttribute)
@@ -33,9 +33,9 @@ bitPut camSettingsAttribute = do
     Just transitionSpeed_ -> F32.bitPut transitionSpeed_
 
 bitGet
-  :: (Int, Int, Int) -> BitGet CamSettingsAttribute
+  :: (Int, Int, Int) -> BitGet CamSettings
 bitGet version =
-  CamSettingsAttribute
+  CamSettings
     <$> F32.bitGet
     <*> F32.bitGet
     <*> F32.bitGet

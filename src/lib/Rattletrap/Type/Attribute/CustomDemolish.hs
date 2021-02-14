@@ -10,25 +10,25 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data CustomDemolishAttribute = CustomDemolishAttribute
+data CustomDemolish = CustomDemolish
   { flag :: Bool
   , id :: I32.I32
-  , demolish :: Demolish.DemolishAttribute
+  , demolish :: Demolish.Demolish
   }
   deriving (Eq, Show)
 
-$(deriveJson ''CustomDemolishAttribute)
+$(deriveJson ''CustomDemolish)
 
-bitPut :: CustomDemolishAttribute -> BitPut ()
+bitPut :: CustomDemolish -> BitPut ()
 bitPut x = do
   BinaryBits.putBool (flag x)
   I32.bitPut (Rattletrap.Type.Attribute.CustomDemolish.id x)
   Demolish.bitPut (demolish x)
 
 bitGet
-  :: (Int, Int, Int) -> BitGet CustomDemolishAttribute
+  :: (Int, Int, Int) -> BitGet CustomDemolish
 bitGet version =
-  CustomDemolishAttribute
+  CustomDemolish
     <$> getBool
     <*> I32.bitGet
     <*> Demolish.bitGet version

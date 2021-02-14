@@ -9,7 +9,7 @@ import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-data AppliedDamageAttribute = AppliedDamageAttribute
+data AppliedDamage = AppliedDamage
   { unknown1 :: U8.U8
   , location :: Vector.Vector
   , unknown3 :: I32.I32
@@ -17,9 +17,9 @@ data AppliedDamageAttribute = AppliedDamageAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''AppliedDamageAttribute)
+$(deriveJson ''AppliedDamage)
 
-bitPut :: AppliedDamageAttribute -> BitPut ()
+bitPut :: AppliedDamage -> BitPut ()
 bitPut appliedDamageAttribute = do
   U8.bitPut (unknown1 appliedDamageAttribute)
   Vector.bitPut (location appliedDamageAttribute)
@@ -27,9 +27,9 @@ bitPut appliedDamageAttribute = do
   I32.bitPut (unknown4 appliedDamageAttribute)
 
 bitGet
-  :: (Int, Int, Int) -> BitGet AppliedDamageAttribute
+  :: (Int, Int, Int) -> BitGet AppliedDamage
 bitGet version =
-  AppliedDamageAttribute
+  AppliedDamage
     <$> U8.bitGet
     <*> Vector.bitGet version
     <*> I32.bitGet

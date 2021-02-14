@@ -9,19 +9,19 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data StatEventAttribute = StatEventAttribute
+data StatEvent = StatEvent
   { unknown :: Bool
   , objectId :: I32.I32
   }
   deriving (Eq, Show)
 
-$(deriveJson ''StatEventAttribute)
+$(deriveJson ''StatEvent)
 
-bitPut :: StatEventAttribute -> BitPut ()
+bitPut :: StatEvent -> BitPut ()
 bitPut statEventAttribute = do
   BinaryBits.putBool (unknown statEventAttribute)
   I32.bitPut (objectId statEventAttribute)
 
-bitGet :: BitGet StatEventAttribute
+bitGet :: BitGet StatEvent
 bitGet =
-  StatEventAttribute <$> getBool <*> I32.bitGet
+  StatEvent <$> getBool <*> I32.bitGet

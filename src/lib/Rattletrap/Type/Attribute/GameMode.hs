@@ -8,7 +8,7 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data GameModeAttribute = GameModeAttribute
+data GameMode = GameMode
   { numBits :: Int
   -- ^ This field is guaranteed to be small. In other words, it won't overflow.
   -- It's stored as a regular 'Int' rather than something more precise like an
@@ -18,15 +18,15 @@ data GameModeAttribute = GameModeAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''GameModeAttribute)
+$(deriveJson ''GameMode)
 
-bitPut :: GameModeAttribute -> BitPut ()
+bitPut :: GameMode -> BitPut ()
 bitPut gameModeAttribute = do
   BinaryBits.putWord8 (numBits gameModeAttribute) (word gameModeAttribute)
 
-bitGet :: (Int, Int, Int) -> BitGet GameModeAttribute
+bitGet :: (Int, Int, Int) -> BitGet GameMode
 bitGet version =
-  GameModeAttribute (numBits_ version) <$> getWord8Bits
+  GameMode (numBits_ version) <$> getWord8Bits
     (numBits_ version)
 
 numBits_ :: (Int, Int, Int) -> Int

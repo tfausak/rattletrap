@@ -10,7 +10,7 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data DemolishAttribute = DemolishAttribute
+data Demolish = Demolish
   { attackerFlag :: Bool
   , attackerActorId :: U32.U32
   , victimFlag :: Bool
@@ -20,9 +20,9 @@ data DemolishAttribute = DemolishAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''DemolishAttribute)
+$(deriveJson ''Demolish)
 
-bitPut :: DemolishAttribute -> BitPut ()
+bitPut :: Demolish -> BitPut ()
 bitPut demolishAttribute = do
   BinaryBits.putBool (attackerFlag demolishAttribute)
   U32.bitPut (attackerActorId demolishAttribute)
@@ -31,9 +31,9 @@ bitPut demolishAttribute = do
   Vector.bitPut (attackerVelocity demolishAttribute)
   Vector.bitPut (victimVelocity demolishAttribute)
 
-bitGet :: (Int, Int, Int) -> BitGet DemolishAttribute
+bitGet :: (Int, Int, Int) -> BitGet Demolish
 bitGet version =
-  DemolishAttribute
+  Demolish
     <$> getBool
     <*> U32.bitGet
     <*> getBool

@@ -10,25 +10,25 @@ import Rattletrap.Encode.Common
 
 import qualified Data.Binary.Bits.Put as BinaryBits
 
-data ExplosionAttribute = ExplosionAttribute
+data Explosion = Explosion
   { flag :: Bool
   , actorId :: I32.I32
   , location :: Vector.Vector
   }
   deriving (Eq, Show)
 
-$(deriveJson ''ExplosionAttribute)
+$(deriveJson ''Explosion)
 
-bitPut :: ExplosionAttribute -> BitPut ()
+bitPut :: Explosion -> BitPut ()
 bitPut explosionAttribute = do
   BinaryBits.putBool (flag explosionAttribute)
   I32.bitPut (actorId explosionAttribute)
   Vector.bitPut (location explosionAttribute)
 
 bitGet
-  :: (Int, Int, Int) -> BitGet ExplosionAttribute
+  :: (Int, Int, Int) -> BitGet Explosion
 bitGet version =
-  ExplosionAttribute
+  Explosion
     <$> getBool
     <*> I32.bitGet
     <*> Vector.bitGet version

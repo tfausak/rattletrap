@@ -8,7 +8,7 @@ import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import Rattletrap.Encode.Common
 
-data LoadoutAttribute = LoadoutAttribute
+data Loadout = Loadout
   { version :: U8.U8
   , body :: U32.U32
   , decal :: U32.U32
@@ -30,9 +30,9 @@ data LoadoutAttribute = LoadoutAttribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''LoadoutAttribute)
+$(deriveJson ''Loadout)
 
-bitPut :: LoadoutAttribute -> BitPut ()
+bitPut :: Loadout -> BitPut ()
 bitPut loadoutAttribute = do
   U8.bitPut (version loadoutAttribute)
   U32.bitPut (body loadoutAttribute)
@@ -57,10 +57,10 @@ putOptional m f = case m of
   Just x -> f x
   Nothing -> pure ()
 
-bitGet :: BitGet LoadoutAttribute
+bitGet :: BitGet Loadout
 bitGet = do
   version_ <- U8.bitGet
-  LoadoutAttribute version_
+  Loadout version_
     <$> U32.bitGet
     <*> U32.bitGet
     <*> U32.bitGet
