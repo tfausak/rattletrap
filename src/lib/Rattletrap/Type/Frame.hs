@@ -22,7 +22,7 @@ data Frame = Frame
   , delta :: F32.F32
   -- ^ Time in seconds since the last frame. Usually about 0.03 since there
   -- are 30 frames per second.
-  , replications :: [Replication.Replication]
+  , replications :: List.List Replication.Replication
   }
   deriving (Eq, Show)
 
