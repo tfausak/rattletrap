@@ -47,7 +47,7 @@ library
     Rattletrap.BytePut
     Rattletrap.Console.Main
     Rattletrap.Data
-    Rattletrap.Utility.Monad
+    Rattletrap.Get
     Rattletrap.Type.Attribute
     Rattletrap.Type.Attribute.AppliedDamage
     Rattletrap.Type.Attribute.Boolean
@@ -131,6 +131,7 @@ library
     Rattletrap.Utility.Bytes
     Rattletrap.Utility.Crc
     Rattletrap.Utility.Helper
+    Rattletrap.Utility.Monad
   ghc-options:
     -Weverything
     -Wno-all-missed-specialisations

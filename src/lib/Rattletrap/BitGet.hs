@@ -1,17 +1,29 @@
 module Rattletrap.BitGet where
 
 import qualified Control.Monad as Monad
+import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Bits.Get as BinaryBits
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as ByteString
+import qualified Data.ByteString.Lazy as LazyByteString
 import qualified Data.Word as Word
 import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.Get as Get
 import qualified Rattletrap.Utility.Bytes as Utility
 
 type BitGet = BinaryBits.BitGet
 
 toByteGet :: BitGet a -> ByteGet.ByteGet a
-toByteGet = BinaryBits.runBitGet
+toByteGet = binaryGetToByteGet . BinaryBits.runBitGet
+
+binaryGetToByteGet :: Binary.Get a -> ByteGet.ByteGet a
+binaryGetToByteGet g = do
+  s1 <- Get.get
+  case Binary.runGetOrFail g $ LazyByteString.fromStrict s1 of
+    Left (_, _, x) -> fail x
+    Right (s2, _, x) -> do
+      Get.put $ LazyByteString.toStrict s2
+      pure x
 
 fromByteGet :: ByteGet.ByteGet a -> Int -> BitGet a
 fromByteGet f n = do
