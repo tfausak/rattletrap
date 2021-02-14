@@ -6,7 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 data UniqueId = UniqueId
   { systemId :: U8.U8
@@ -17,7 +17,7 @@ data UniqueId = UniqueId
 
 $(deriveJson ''UniqueId)
 
-bitPut :: UniqueId -> BitPut ()
+bitPut :: UniqueId -> BitPut.BitPut
 bitPut uniqueIdAttribute = do
   U8.bitPut $ systemId uniqueIdAttribute
   RemoteId.bitPut (remoteId uniqueIdAttribute)

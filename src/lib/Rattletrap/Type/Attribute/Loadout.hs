@@ -6,7 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 data Loadout = Loadout
   { version :: U8.U8
@@ -32,7 +32,7 @@ data Loadout = Loadout
 
 $(deriveJson ''Loadout)
 
-bitPut :: Loadout -> BitPut ()
+bitPut :: Loadout -> BitPut.BitPut
 bitPut loadoutAttribute = do
   U8.bitPut (version loadoutAttribute)
   U32.bitPut (body loadoutAttribute)
@@ -52,7 +52,7 @@ bitPut loadoutAttribute = do
   putOptional (unknown5 loadoutAttribute) U32.bitPut
   putOptional (unknown6 loadoutAttribute) U32.bitPut
 
-putOptional :: Maybe a -> (a -> BitPut ()) -> BitPut ()
+putOptional :: Maybe a -> (a -> BitPut.BitPut) -> BitPut.BitPut
 putOptional m f = case m of
   Just x -> f x
   Nothing -> pure ()

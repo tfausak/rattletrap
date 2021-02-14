@@ -9,11 +9,10 @@ import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 import qualified Control.Monad as Monad
 import qualified Data.Binary.Bits.Get as BinaryBits
-import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Map as Map
 
 newtype Updated = Updated
@@ -22,12 +21,12 @@ newtype Updated = Updated
 
 $(deriveJson ''Updated)
 
-bitPut :: Updated -> BitPut ()
+bitPut :: Updated -> BitPut.BitPut
 bitPut x = do
   Monad.forM_ (List.toList $ attributes x) $ \ y -> do
-    BinaryBits.putBool True
+    BitPut.bool True
     Attribute.bitPut y
-  BinaryBits.putBool False
+  BitPut.bool False
 
 bitGet
   :: (Int, Int, Int)

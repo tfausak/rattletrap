@@ -9,12 +9,11 @@ import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
 import qualified Data.Map as Map
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Spawned = Spawned
   { flag :: Bool
@@ -36,9 +35,9 @@ data Spawned = Spawned
 
 $(deriveJson ''Spawned)
 
-bitPut :: Spawned -> BitPut ()
+bitPut :: Spawned -> BitPut.BitPut
 bitPut spawnedReplication = do
-  BinaryBits.putBool (flag spawnedReplication)
+  BitPut.bool (flag spawnedReplication)
   case nameIndex spawnedReplication of
     Nothing -> pure ()
     Just nameIndex_ -> U32.bitPut nameIndex_

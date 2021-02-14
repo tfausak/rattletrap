@@ -6,7 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 data TeamPaint = TeamPaint
   { team :: U8.U8
@@ -19,7 +19,7 @@ data TeamPaint = TeamPaint
 
 $(deriveJson ''TeamPaint)
 
-bitPut :: TeamPaint -> BitPut ()
+bitPut :: TeamPaint -> BitPut.BitPut
 bitPut teamPaintAttribute = do
   U8.bitPut (team teamPaintAttribute)
   U8.bitPut (primaryColor teamPaintAttribute)

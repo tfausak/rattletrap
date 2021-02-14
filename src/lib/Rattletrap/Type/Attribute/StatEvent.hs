@@ -5,9 +5,7 @@ module Rattletrap.Type.Attribute.StatEvent where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Rattletrap.BitPut as BitPut
 
 data StatEvent = StatEvent
   { unknown :: Bool
@@ -17,9 +15,9 @@ data StatEvent = StatEvent
 
 $(deriveJson ''StatEvent)
 
-bitPut :: StatEvent -> BitPut ()
+bitPut :: StatEvent -> BitPut.BitPut
 bitPut statEventAttribute = do
-  BinaryBits.putBool (unknown statEventAttribute)
+  BitPut.bool (unknown statEventAttribute)
   I32.bitPut (objectId statEventAttribute)
 
 bitGet :: BitGet StatEvent

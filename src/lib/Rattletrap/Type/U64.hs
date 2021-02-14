@@ -1,8 +1,8 @@
 module Rattletrap.Type.U64 where
 
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.BitPut as BitPut
 
 import qualified Data.Binary.Get as Binary
 import qualified Data.Aeson as Aeson
@@ -30,8 +30,8 @@ toWord64 (U64 x) = x
 bytePut :: U64 -> BytePut.BytePut
 bytePut = BytePut.word64 . toWord64
 
-bitPut :: U64 -> BitPut ()
-bitPut = bytePutToBitPut bytePut
+bitPut :: U64 -> BitPut.BitPut
+bitPut = BitPut.fromBytePut . bytePut
 
 byteGet :: ByteGet U64
 byteGet = fromWord64 <$> Binary.getWord64le

@@ -5,7 +5,7 @@ module Rattletrap.Type.Vector where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 data Vector = Vector
   { size :: CompressedWord.CompressedWord
@@ -25,7 +25,7 @@ data Vector = Vector
 
 $(deriveJson ''Vector)
 
-bitPut :: Vector -> BitPut ()
+bitPut :: Vector -> BitPut.BitPut
 bitPut vector = do
   let
     bitSize =

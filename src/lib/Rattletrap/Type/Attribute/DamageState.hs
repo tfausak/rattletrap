@@ -7,9 +7,7 @@ import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Rattletrap.BitPut as BitPut
 
 data DamageState = DamageState
   { unknown1 :: U8.U8
@@ -23,14 +21,14 @@ data DamageState = DamageState
 
 $(deriveJson ''DamageState)
 
-bitPut :: DamageState -> BitPut ()
+bitPut :: DamageState -> BitPut.BitPut
 bitPut damageStateAttribute = do
   U8.bitPut (unknown1 damageStateAttribute)
-  BinaryBits.putBool (unknown2 damageStateAttribute)
+  BitPut.bool (unknown2 damageStateAttribute)
   I32.bitPut (unknown3 damageStateAttribute)
   Vector.bitPut (unknown4 damageStateAttribute)
-  BinaryBits.putBool (unknown5 damageStateAttribute)
-  BinaryBits.putBool (unknown6 damageStateAttribute)
+  BitPut.bool (unknown5 damageStateAttribute)
+  BitPut.bool (unknown6 damageStateAttribute)
 
 bitGet
   :: (Int, Int, Int) -> BitGet DamageState

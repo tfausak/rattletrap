@@ -6,7 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Attribute.Explosion as Explosion
 import qualified Rattletrap.Type.Attribute.FlaggedInt as FlaggedInt
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 data ExtendedExplosion = ExtendedExplosion
   { explosion :: Explosion.Explosion
@@ -17,7 +17,7 @@ data ExtendedExplosion = ExtendedExplosion
 $(deriveJson ''ExtendedExplosion)
 
 bitPut
-  :: ExtendedExplosion -> BitPut ()
+  :: ExtendedExplosion -> BitPut.BitPut
 bitPut x = do
   Explosion.bitPut (explosion x)
   FlaggedInt.bitPut (unknown x)

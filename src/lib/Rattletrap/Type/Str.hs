@@ -6,8 +6,8 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.BitPut as BitPut
 
 import qualified Data.Text.Encoding.Error as Text
 import qualified Debug.Trace as Debug
@@ -41,8 +41,8 @@ bytePut text = do
   I32.bytePut size
   BytePut.byteString . encode . addNull $ toText text
 
-bitPut :: Str -> BitPut ()
-bitPut = bytePutToBitPut bytePut
+bitPut :: Str -> BitPut.BitPut
+bitPut = BitPut.fromBytePut . bytePut
 
 getTextSize :: Str -> I32.I32
 getTextSize text =

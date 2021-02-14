@@ -9,7 +9,7 @@ import qualified Rattletrap.Type.Str as Str
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 data Attribute = Attribute
   { id :: CompressedWord.CompressedWord
@@ -22,7 +22,7 @@ data Attribute = Attribute
 
 $(deriveJson ''Attribute)
 
-bitPut :: Attribute -> BitPut ()
+bitPut :: Attribute -> BitPut.BitPut
 bitPut attribute = do
   CompressedWord.bitPut (Rattletrap.Type.Attribute.id attribute)
   AttributeValue.bitPut (value attribute)

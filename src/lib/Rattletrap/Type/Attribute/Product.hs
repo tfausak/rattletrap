@@ -9,10 +9,9 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Attribute.ProductValue as ProductValue
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 import qualified Data.Map as Map
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Product = Product
   { unknown :: Bool
@@ -25,15 +24,15 @@ data Product = Product
 
 $(deriveJson ''Product)
 
-putProductAttributes :: List.List Product -> BitPut ()
+putProductAttributes :: List.List Product -> BitPut.BitPut
 putProductAttributes attributes = do
   let v = List.toList attributes
   U8.bitPut . U8.fromWord8 . fromIntegral $ length v
   mapM_ bitPut v
 
-bitPut :: Product -> BitPut ()
+bitPut :: Product -> BitPut.BitPut
 bitPut attribute = do
-  BinaryBits.putBool (unknown attribute)
+  BitPut.bool (unknown attribute)
   U32.bitPut (objectId attribute)
   ProductValue.bitPut $ value attribute
 

@@ -5,9 +5,7 @@ module Rattletrap.Type.Attribute.Pickup where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Rattletrap.BitPut as BitPut
 
 data Pickup = Pickup
   { instigatorId :: Maybe U32.U32
@@ -17,14 +15,14 @@ data Pickup = Pickup
 
 $(deriveJson ''Pickup)
 
-bitPut :: Pickup -> BitPut ()
+bitPut :: Pickup -> BitPut.BitPut
 bitPut pickupAttribute = do
   case instigatorId pickupAttribute of
-    Nothing -> BinaryBits.putBool False
+    Nothing -> BitPut.bool False
     Just instigatorId_ -> do
-      BinaryBits.putBool True
+      BitPut.bool True
       U32.bitPut instigatorId_
-  BinaryBits.putBool (pickedUp pickupAttribute)
+  BitPut.bool (pickedUp pickupAttribute)
 
 bitGet :: BitGet Pickup
 bitGet = do

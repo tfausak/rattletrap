@@ -9,7 +9,7 @@ import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 import qualified Data.Map as Map
 
@@ -19,7 +19,7 @@ newtype LoadoutOnline = LoadoutOnline
 
 $(deriveJson ''LoadoutOnline)
 
-bitPut :: LoadoutOnline -> BitPut ()
+bitPut :: LoadoutOnline -> BitPut.BitPut
 bitPut loadoutAttribute = do
   let attributes = List.toList $ value loadoutAttribute
   U8.bitPut . U8.fromWord8 . fromIntegral $ length attributes

@@ -6,10 +6,8 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Encode.Common
 import Rattletrap.Decode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Rattletrap.BitPut as BitPut
 
 data ProductValue
   = PaintedOld CompressedWord.CompressedWord
@@ -24,18 +22,18 @@ data ProductValue
 
 $(deriveJson ''ProductValue)
 
-bitPut :: ProductValue -> BitPut ()
+bitPut :: ProductValue -> BitPut.BitPut
 bitPut val = case val of
   PaintedOld x -> CompressedWord.bitPut x
-  PaintedNew x -> putBitsLE 31 x
+  PaintedNew x -> BitPut.bits 31 x
   TeamEditionOld x -> CompressedWord.bitPut x
-  TeamEditionNew x -> putBitsLE 31 x
-  SpecialEdition x -> putBitsLE 31 x
+  TeamEditionNew x -> BitPut.bits 31 x
+  SpecialEdition x -> BitPut.bits 31 x
   UserColorOld x -> case x of
-    Nothing -> BinaryBits.putBool False
+    Nothing -> BitPut.bool False
     Just y -> do
-      BinaryBits.putBool True
-      putBitsLE 31 y
+      BitPut.bool True
+      BitPut.bits 31 y
   UserColorNew x -> U32.bitPut x
   TitleId x -> Str.bitPut x
 

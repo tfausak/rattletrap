@@ -10,7 +10,7 @@ import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -28,10 +28,10 @@ data Frame = Frame
 
 $(deriveJson ''Frame)
 
-putFrames :: List.List Frame -> BitPut ()
+putFrames :: List.List Frame -> BitPut.BitPut
 putFrames = mapM_ bitPut . List.toList
 
-bitPut :: Frame -> BitPut ()
+bitPut :: Frame -> BitPut.BitPut
 bitPut frame = do
   F32.bitPut (time frame)
   F32.bitPut (delta frame)

@@ -5,15 +5,14 @@ module Rattletrap.Type.RemoteId where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
-import Rattletrap.Encode.Common
 import Rattletrap.Utility.Bytes
 import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.U8 as U8
+import qualified Rattletrap.BitPut as BitPut
 
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Word as Word
-import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.ByteString as Bytes
 
 data RemoteId
@@ -29,23 +28,23 @@ data RemoteId
 
 $(deriveJson ''RemoteId)
 
-bitPut :: RemoteId -> BitPut ()
+bitPut :: RemoteId -> BitPut.BitPut
 bitPut remoteId = case remoteId of
   PlayStation name bytes -> do
     let rawName = reverseBytes (padBytes (16 :: Int) (encodeLatin1 name))
-    BinaryBits.putByteString rawName
-    BinaryBits.putByteString (Bytes.pack bytes)
+    BitPut.byteString rawName
+    BitPut.byteString (Bytes.pack bytes)
   PsyNet e -> case e of
     Left l -> U64.bitPut l
     Right (a, b, c, d) -> putWord256 a b c d
-  Splitscreen word24 -> putBitsLE 24 word24
+  Splitscreen word24 -> BitPut.bits 24 word24
   Steam word64 -> U64.bitPut word64
   Switch a b c d -> putWord256 a b c d
   Xbox word64 -> U64.bitPut word64
   Epic str -> Str.bitPut str
 
 putWord256
-  :: U64.U64 -> U64.U64 -> U64.U64 -> U64.U64 -> BitPut ()
+  :: U64.U64 -> U64.U64 -> U64.U64 -> U64.U64 -> BitPut.BitPut
 putWord256 a b c d = do
   U64.bitPut a
   U64.bitPut b

@@ -8,9 +8,7 @@ import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Vector as Vector
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Rattletrap.BitPut as BitPut
 
 data WeldedInfo = WeldedInfo
   { active :: Bool
@@ -23,9 +21,9 @@ data WeldedInfo = WeldedInfo
 
 $(deriveJson ''WeldedInfo)
 
-bitPut :: WeldedInfo -> BitPut ()
+bitPut :: WeldedInfo -> BitPut.BitPut
 bitPut weldedInfoAttribute = do
-  BinaryBits.putBool (active weldedInfoAttribute)
+  BitPut.bool (active weldedInfoAttribute)
   I32.bitPut (actorId weldedInfoAttribute)
   Vector.bitPut (offset weldedInfoAttribute)
   F32.bitPut (mass weldedInfoAttribute)

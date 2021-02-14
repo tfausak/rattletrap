@@ -5,7 +5,7 @@ module Rattletrap.Type.Attribute.Location where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Vector as Vector
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 newtype Location = Location
   { value :: Vector.Vector
@@ -13,7 +13,7 @@ newtype Location = Location
 
 $(deriveJson ''Location)
 
-bitPut :: Location -> BitPut ()
+bitPut :: Location -> BitPut.BitPut
 bitPut locationAttribute =
   Vector.bitPut (value locationAttribute)
 

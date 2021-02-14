@@ -6,7 +6,7 @@ import Prelude hiding (Float)
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 newtype Float = Float
   { value :: F32.F32
@@ -14,7 +14,7 @@ newtype Float = Float
 
 $(deriveJson ''Float)
 
-bitPut :: Float -> BitPut ()
+bitPut :: Float -> BitPut.BitPut
 bitPut floatAttribute =
   F32.bitPut (value floatAttribute)
 

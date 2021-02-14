@@ -6,9 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Attribute.Demolish as Demolish
 import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Rattletrap.BitPut as BitPut
 
 data CustomDemolish = CustomDemolish
   { flag :: Bool
@@ -19,9 +17,9 @@ data CustomDemolish = CustomDemolish
 
 $(deriveJson ''CustomDemolish)
 
-bitPut :: CustomDemolish -> BitPut ()
+bitPut :: CustomDemolish -> BitPut.BitPut
 bitPut x = do
-  BinaryBits.putBool (flag x)
+  BitPut.bool (flag x)
   I32.bitPut (Rattletrap.Type.Attribute.CustomDemolish.id x)
   Demolish.bitPut (demolish x)
 

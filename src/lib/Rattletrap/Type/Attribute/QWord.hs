@@ -5,7 +5,7 @@ module Rattletrap.Type.Attribute.QWord where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U64 as U64
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 newtype QWord = QWord
   { value :: U64.U64
@@ -13,7 +13,7 @@ newtype QWord = QWord
 
 $(deriveJson ''QWord)
 
-bitPut :: QWord -> BitPut ()
+bitPut :: QWord -> BitPut.BitPut
 bitPut qWordAttribute =
   U64.bitPut (value qWordAttribute)
 

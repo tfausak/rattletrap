@@ -5,9 +5,7 @@ module Rattletrap.Type.Attribute.ClubColors where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Rattletrap.BitPut as BitPut
 
 data ClubColors = ClubColors
   { blueFlag :: Bool
@@ -19,11 +17,11 @@ data ClubColors = ClubColors
 
 $(deriveJson ''ClubColors)
 
-bitPut :: ClubColors -> BitPut ()
+bitPut :: ClubColors -> BitPut.BitPut
 bitPut clubColorsAttribute = do
-  BinaryBits.putBool (blueFlag clubColorsAttribute)
+  BitPut.bool (blueFlag clubColorsAttribute)
   U8.bitPut (blueColor clubColorsAttribute)
-  BinaryBits.putBool (orangeFlag clubColorsAttribute)
+  BitPut.bool (orangeFlag clubColorsAttribute)
   U8.bitPut (orangeColor clubColorsAttribute)
 
 bitGet :: BitGet ClubColors

@@ -45,7 +45,7 @@ import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.AttributeType as AttributeType
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 import qualified Data.Map as Map
 
@@ -91,7 +91,7 @@ data AttributeValue
 
 $(deriveJson ''AttributeValue)
 
-bitPut :: AttributeValue -> BitPut ()
+bitPut :: AttributeValue -> BitPut.BitPut
 bitPut value = case value of
   AppliedDamage x -> AppliedDamage.bitPut x
   Boolean x -> Boolean.bitPut x

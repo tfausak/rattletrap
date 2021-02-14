@@ -5,9 +5,7 @@ module Rattletrap.Type.Attribute.FlaggedByte where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Rattletrap.BitPut as BitPut
 
 data FlaggedByte = FlaggedByte
   { flag :: Bool
@@ -17,9 +15,9 @@ data FlaggedByte = FlaggedByte
 
 $(deriveJson ''FlaggedByte)
 
-bitPut :: FlaggedByte -> BitPut ()
+bitPut :: FlaggedByte -> BitPut.BitPut
 bitPut flaggedByteAttribute = do
-  BinaryBits.putBool (flag flaggedByteAttribute)
+  BitPut.bool (flag flaggedByteAttribute)
   U8.bitPut (byte flaggedByteAttribute)
 
 bitGet :: BitGet FlaggedByte

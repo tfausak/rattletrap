@@ -6,9 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Rattletrap.BitPut as BitPut
 
 data MusicStinger = MusicStinger
   { flag :: Bool
@@ -19,9 +17,9 @@ data MusicStinger = MusicStinger
 
 $(deriveJson ''MusicStinger)
 
-bitPut :: MusicStinger -> BitPut ()
+bitPut :: MusicStinger -> BitPut.BitPut
 bitPut musicStingerAttribute = do
-  BinaryBits.putBool (flag musicStingerAttribute)
+  BitPut.bool (flag musicStingerAttribute)
   U32.bitPut (cue musicStingerAttribute)
   U8.bitPut (trigger musicStingerAttribute)
 

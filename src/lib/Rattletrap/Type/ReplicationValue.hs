@@ -10,12 +10,11 @@ import Rattletrap.Decode.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
 import qualified Data.Map as Map
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data ReplicationValue
   = Spawned Spawned.Spawned
@@ -28,18 +27,18 @@ data ReplicationValue
 
 $(deriveJson ''ReplicationValue)
 
-bitPut :: ReplicationValue -> BitPut ()
+bitPut :: ReplicationValue -> BitPut.BitPut
 bitPut value = case value of
   Spawned x -> do
-    BinaryBits.putBool True
-    BinaryBits.putBool True
+    BitPut.bool True
+    BitPut.bool True
     Spawned.bitPut x
   Updated x -> do
-    BinaryBits.putBool True
-    BinaryBits.putBool False
+    BitPut.bool True
+    BitPut.bool False
     Updated.bitPut x
   Destroyed x -> do
-    BinaryBits.putBool False
+    BitPut.bool False
     Destroyed.bitPut x
 
 bitGet

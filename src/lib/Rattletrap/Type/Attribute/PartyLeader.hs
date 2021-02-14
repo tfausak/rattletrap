@@ -6,7 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 data PartyLeader = PartyLeader
   { systemId :: U8.U8
@@ -16,7 +16,7 @@ data PartyLeader = PartyLeader
 
 $(deriveJson ''PartyLeader)
 
-bitPut :: PartyLeader -> BitPut ()
+bitPut :: PartyLeader -> BitPut.BitPut
 bitPut partyLeaderAttribute = do
   U8.bitPut (systemId partyLeaderAttribute)
   case Rattletrap.Type.Attribute.PartyLeader.id partyLeaderAttribute of

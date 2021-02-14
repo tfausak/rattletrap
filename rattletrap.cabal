@@ -41,11 +41,11 @@ library
   exposed-modules:
     Paths_rattletrap
     Rattletrap
+    Rattletrap.BitPut
     Rattletrap.BytePut
     Rattletrap.Console.Main
     Rattletrap.Data
     Rattletrap.Decode.Common
-    Rattletrap.Encode.Common
     Rattletrap.Type.Attribute
     Rattletrap.Type.Attribute.AppliedDamage
     Rattletrap.Type.Attribute.Boolean

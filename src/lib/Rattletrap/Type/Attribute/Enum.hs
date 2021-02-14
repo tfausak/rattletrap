@@ -4,8 +4,8 @@ module Rattletrap.Type.Attribute.Enum where
 
 import Prelude hiding (Enum)
 import Rattletrap.Type.Common
-import Rattletrap.Encode.Common
 import Rattletrap.Decode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 newtype Enum = Enum
   { value :: Word16
@@ -13,9 +13,9 @@ newtype Enum = Enum
 
 $(deriveJson ''Enum)
 
-bitPut :: Enum -> BitPut ()
+bitPut :: Enum -> BitPut.BitPut
 bitPut enumAttribute =
-  putBitsLE 11 (value enumAttribute)
+  BitPut.bits 11 (value enumAttribute)
 
 bitGet :: BitGet Enum
 bitGet = Enum <$> getBitsLE 11

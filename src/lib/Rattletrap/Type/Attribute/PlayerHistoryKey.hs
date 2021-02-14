@@ -3,8 +3,8 @@
 module Rattletrap.Type.Attribute.PlayerHistoryKey where
 
 import Rattletrap.Type.Common
-import Rattletrap.Encode.Common
 import Rattletrap.Decode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 newtype PlayerHistoryKey = PlayerHistoryKey
   { unknown :: Word16
@@ -13,8 +13,8 @@ newtype PlayerHistoryKey = PlayerHistoryKey
 $(deriveJson ''PlayerHistoryKey)
 
 bitPut
-  :: PlayerHistoryKey -> BitPut ()
-bitPut = putBitsLE 14 . unknown
+  :: PlayerHistoryKey -> BitPut.BitPut
+bitPut = BitPut.bits 14 . unknown
 
 bitGet :: BitGet PlayerHistoryKey
 bitGet =

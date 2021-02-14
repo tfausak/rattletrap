@@ -5,7 +5,7 @@ module Rattletrap.Type.Quaternion where
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 import qualified Data.List as List
 import qualified Data.Maybe as Maybe
@@ -95,7 +95,7 @@ maxCompressedValue = (2 ^ numBits) - 1
 maxValue :: Double
 maxValue = 1.0 / sqrt 2.0
 
-bitPut :: Quaternion -> BitPut ()
+bitPut :: Quaternion -> BitPut.BitPut
 bitPut q = do
   let c = maxComponent q
   putComponent c
@@ -105,7 +105,7 @@ bitPut q = do
     Z -> putParts (x q) (y q) (w q)
     W -> putParts (x q) (y q) (z q)
 
-putComponent :: Component -> BitPut ()
+putComponent :: Component -> BitPut.BitPut
 putComponent component = CompressedWord.bitPut
   (CompressedWord.CompressedWord
     3
@@ -117,13 +117,13 @@ putComponent component = CompressedWord.bitPut
     )
   )
 
-putParts :: Double -> Double -> Double -> BitPut ()
+putParts :: Double -> Double -> Double -> BitPut.BitPut
 putParts a b c = do
   putPart a
   putPart b
   putPart c
 
-putPart :: Double -> BitPut ()
+putPart :: Double -> BitPut.BitPut
 putPart = CompressedWord.bitPut . compressPart
 
 bitGet :: BitGet Quaternion

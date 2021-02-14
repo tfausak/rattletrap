@@ -6,7 +6,7 @@ import Prelude hiding (String)
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
 newtype String = String
   { value :: Str.Str
@@ -14,7 +14,7 @@ newtype String = String
 
 $(deriveJson ''String)
 
-bitPut :: String -> BitPut ()
+bitPut :: String -> BitPut.BitPut
 bitPut stringAttribute =
   Str.bitPut (value stringAttribute)
 

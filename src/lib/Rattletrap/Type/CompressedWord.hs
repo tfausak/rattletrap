@@ -4,9 +4,8 @@ module Rattletrap.Type.CompressedWord where
 
 import Rattletrap.Type.Common
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.BitPut as BitPut
 
-import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Bits as Bits
 
 -- | Although there's no guarantee that these values will not overflow, it's
@@ -19,7 +18,7 @@ data CompressedWord = CompressedWord
 
 $(deriveJson ''CompressedWord)
 
-bitPut :: CompressedWord -> BitPut ()
+bitPut :: CompressedWord -> BitPut.BitPut
 bitPut compressedWord =
   let
     limit_ = limit compressedWord
@@ -28,7 +27,7 @@ bitPut compressedWord =
   in putCompressedWordStep limit_ value_ maxBits 0 0
 
 putCompressedWordStep
-  :: Word -> Word -> Int -> Int -> Word -> BitPut ()
+  :: Word -> Word -> Int -> Int -> Word -> BitPut.BitPut
 putCompressedWordStep limit_ value_ maxBits position soFar =
   if position < maxBits
     then do
@@ -37,7 +36,7 @@ putCompressedWordStep limit_ value_ maxBits position soFar =
         then pure ()
         else do
           let bit = Bits.testBit value_ position
-          BinaryBits.putBool bit
+          BitPut.bool bit
           let delta = if bit then x else 0
           putCompressedWordStep
             limit_

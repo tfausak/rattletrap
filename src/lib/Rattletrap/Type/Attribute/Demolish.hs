@@ -6,9 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Rattletrap.BitPut as BitPut
 
 data Demolish = Demolish
   { attackerFlag :: Bool
@@ -22,11 +20,11 @@ data Demolish = Demolish
 
 $(deriveJson ''Demolish)
 
-bitPut :: Demolish -> BitPut ()
+bitPut :: Demolish -> BitPut.BitPut
 bitPut demolishAttribute = do
-  BinaryBits.putBool (attackerFlag demolishAttribute)
+  BitPut.bool (attackerFlag demolishAttribute)
   U32.bitPut (attackerActorId demolishAttribute)
-  BinaryBits.putBool (victimFlag demolishAttribute)
+  BitPut.bool (victimFlag demolishAttribute)
   U32.bitPut (victimActorId demolishAttribute)
   Vector.bitPut (attackerVelocity demolishAttribute)
   Vector.bitPut (victimVelocity demolishAttribute)
