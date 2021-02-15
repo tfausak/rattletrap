@@ -1,6 +1,3 @@
-{- hlint ignore "Avoid restricted extensions" -}
-{-# LANGUAGE FlexibleInstances #-}
-
 module Rattletrap.BitPut where
 
 import qualified Data.Binary.Put as Binary
@@ -11,21 +8,19 @@ import qualified Data.Word as Word
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Utility.Bytes as Utility
 
-type BitPut = BitPutM ()
+newtype BitPut = BitPut (BinaryBits.BitPut ())
 
-newtype BitPutM a = BitPutM (BinaryBits.BitPut a)
-
-instance Semigroup (BitPutM a) where
+instance Semigroup BitPut where
   x <> y = fromBinaryBits $ toBinaryBits x >> toBinaryBits y
 
-instance Monoid (BitPutM ()) where
+instance Monoid BitPut where
   mempty = fromBinaryBits $ pure ()
 
-fromBinaryBits :: BinaryBits.BitPut a -> BitPutM a
-fromBinaryBits = BitPutM
+fromBinaryBits :: BinaryBits.BitPut () -> BitPut
+fromBinaryBits = BitPut
 
-toBinaryBits :: BitPutM a -> BinaryBits.BitPut a
-toBinaryBits (BitPutM x) = x
+toBinaryBits :: BitPut -> BinaryBits.BitPut ()
+toBinaryBits (BitPut x) = x
 
 toBytePut :: BitPut -> BytePut.BytePut
 toBytePut = Binary.execPut . BinaryBits.runBitPut . toBinaryBits
