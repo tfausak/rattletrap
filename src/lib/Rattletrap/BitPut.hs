@@ -26,11 +26,7 @@ toBytePut :: BitPut -> BytePut.BytePut
 toBytePut = Binary.execPut . BinaryBits.runBitPut . toBinaryBits
 
 fromBytePut :: BytePut.BytePut -> BitPut
-fromBytePut =
-  fromBinaryBits
-  . BinaryBits.putByteString
-  . Utility.reverseBytes
-  . BytePut.toByteString
+fromBytePut = byteString . Utility.reverseBytes . BytePut.toByteString
 
 bits :: Bits.Bits a => Int -> a -> BitPut
 bits n x = foldMap (bool . Bits.testBit x) [0 .. n - 1]

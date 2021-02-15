@@ -25,8 +25,8 @@ bitPut rigidBodyStateAttribute =
   BitPut.bool (sleeping rigidBodyStateAttribute)
   <> Vector.bitPut (location rigidBodyStateAttribute)
   <> Rotation.bitPut (rotation rigidBodyStateAttribute)
-  <> maybe mempty Vector.bitPut (linearVelocity rigidBodyStateAttribute)
-  <> maybe mempty Vector.bitPut (angularVelocity rigidBodyStateAttribute)
+  <> foldMap Vector.bitPut (linearVelocity rigidBodyStateAttribute)
+  <> foldMap Vector.bitPut (angularVelocity rigidBodyStateAttribute)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet RigidBodyState

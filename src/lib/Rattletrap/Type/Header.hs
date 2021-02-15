@@ -65,7 +65,7 @@ putHeader :: Header -> BytePut.BytePut
 putHeader x =
   U32.bytePut (engineVersion x)
   <> U32.bytePut (licenseeVersion x)
-  <> maybe mempty U32.bytePut (patchVersion x)
+  <> foldMap U32.bytePut (patchVersion x)
   <> Str.bytePut (label x)
   <> Dictionary.bytePut Property.bytePut (properties x)
 

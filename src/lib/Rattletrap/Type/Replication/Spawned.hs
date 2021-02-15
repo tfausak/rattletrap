@@ -39,7 +39,7 @@ $(deriveJson ''Spawned)
 bitPut :: Spawned -> BitPut.BitPut
 bitPut spawnedReplication =
   BitPut.bool (flag spawnedReplication)
-  <> maybe mempty U32.bitPut (nameIndex spawnedReplication)
+  <> foldMap U32.bitPut (nameIndex spawnedReplication)
   <> U32.bitPut (objectId spawnedReplication)
   <> Initialization.bitPut (initialization spawnedReplication)
 

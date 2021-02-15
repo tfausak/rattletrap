@@ -43,18 +43,15 @@ bitPut loadoutAttribute =
   <> U32.bitPut (antenna loadoutAttribute)
   <> U32.bitPut (topper loadoutAttribute)
   <> U32.bitPut (unknown1 loadoutAttribute)
-  <> putOptional (unknown2 loadoutAttribute) U32.bitPut
-  <> putOptional (engineAudio loadoutAttribute) U32.bitPut
-  <> putOptional (trail loadoutAttribute) U32.bitPut
-  <> putOptional (goalExplosion loadoutAttribute) U32.bitPut
-  <> putOptional (banner loadoutAttribute) U32.bitPut
-  <> putOptional (unknown3 loadoutAttribute) U32.bitPut
-  <> putOptional (unknown4 loadoutAttribute) U32.bitPut
-  <> putOptional (unknown5 loadoutAttribute) U32.bitPut
-  <> putOptional (unknown6 loadoutAttribute) U32.bitPut
-
-putOptional :: Maybe a -> (a -> BitPut.BitPut) -> BitPut.BitPut
-putOptional m f = maybe mempty f m
+  <> foldMap U32.bitPut (unknown2 loadoutAttribute)
+  <> foldMap U32.bitPut (engineAudio loadoutAttribute)
+  <> foldMap U32.bitPut (trail loadoutAttribute)
+  <> foldMap U32.bitPut (goalExplosion loadoutAttribute)
+  <> foldMap U32.bitPut (banner loadoutAttribute)
+  <> foldMap U32.bitPut (unknown3 loadoutAttribute)
+  <> foldMap U32.bitPut (unknown4 loadoutAttribute)
+  <> foldMap U32.bitPut (unknown5 loadoutAttribute)
+  <> foldMap U32.bitPut (unknown6 loadoutAttribute)
 
 bitGet :: BitGet.BitGet Loadout
 bitGet = do

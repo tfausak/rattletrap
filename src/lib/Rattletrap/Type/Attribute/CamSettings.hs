@@ -29,7 +29,7 @@ bitPut camSettingsAttribute =
   <> F32.bitPut (distance camSettingsAttribute)
   <> F32.bitPut (stiffness camSettingsAttribute)
   <> F32.bitPut (swivelSpeed camSettingsAttribute)
-  <> maybe mempty F32.bitPut (transitionSpeed camSettingsAttribute)
+  <> foldMap F32.bitPut (transitionSpeed camSettingsAttribute)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet CamSettings

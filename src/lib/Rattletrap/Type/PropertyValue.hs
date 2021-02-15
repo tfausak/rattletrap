@@ -35,7 +35,7 @@ bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
 bytePut putProperty value = case value of
   Array x -> List.bytePut (Dictionary.bytePut putProperty) x
   Bool x -> U8.bytePut x
-  Byte k mv -> Str.bytePut k <> maybe mempty Str.bytePut mv
+  Byte k mv -> Str.bytePut k <> foldMap Str.bytePut mv
   Float x -> F32.bytePut x
   Int x -> I32.bytePut x
   Name x -> Str.bytePut x

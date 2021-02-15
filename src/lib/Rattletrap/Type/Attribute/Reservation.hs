@@ -27,10 +27,10 @@ bitPut :: Reservation -> BitPut.BitPut
 bitPut reservationAttribute =
   CompressedWord.bitPut (number reservationAttribute)
   <> UniqueId.bitPut (uniqueId reservationAttribute)
-  <> maybe mempty Str.bitPut (name reservationAttribute)
+  <> foldMap Str.bitPut (name reservationAttribute)
   <> BitPut.bool (unknown1 reservationAttribute)
   <> BitPut.bool (unknown2 reservationAttribute)
-  <> maybe mempty (BitPut.word8 6) (unknown3 reservationAttribute)
+  <> foldMap (BitPut.word8 6) (unknown3 reservationAttribute)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet Reservation

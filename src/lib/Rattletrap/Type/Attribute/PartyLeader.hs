@@ -20,7 +20,7 @@ $(deriveJson ''PartyLeader)
 bitPut :: PartyLeader -> BitPut.BitPut
 bitPut x =
   U8.bitPut (systemId x)
-  <> maybe mempty (\ (y, z) -> RemoteId.bitPut y <> U8.bitPut z) (Rattletrap.Type.Attribute.PartyLeader.id x)
+  <> foldMap (\ (y, z) -> RemoteId.bitPut y <> U8.bitPut z) (Rattletrap.Type.Attribute.PartyLeader.id x)
 
 bitGet
   :: (Int, Int, Int) -> BitGet.BitGet PartyLeader
