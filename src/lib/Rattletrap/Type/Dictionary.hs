@@ -1,11 +1,10 @@
 module Rattletrap.Type.Dictionary where
 
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 
-import qualified Control.Monad as Monad
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.Bifunctor as Bifunctor
@@ -15,10 +14,11 @@ import qualified Data.Text as Text
 data Dictionary a = Dictionary
   { elements :: List.List (Str.Str, a)
   , lastKey :: Str.Str
-  } deriving (Eq, Show)
+  }
+  deriving (Eq, Show)
 
 instance Aeson.FromJSON a => Aeson.FromJSON (Dictionary a) where
-  parseJSON = Aeson.withObject "Dictionary" $ \ o -> do
+  parseJSON = Aeson.withObject "Dictionary" $ \o -> do
     let
       required :: Aeson.FromJSON a => String -> Aeson.Parser a
       required k = o Aeson..: Text.pack k
@@ -49,27 +49,36 @@ instance Aeson.ToJSON a => Aeson.ToJSON (Dictionary a) where
     in Aeson.object
       [ pair "keys" . fmap fst . List.toList $ elements x
       , pair "last_key" $ lastKey x
-      , pair "value" . Map.fromList . fmap (Bifunctor.first Str.toText) . List.toList $ elements x
+      , pair "value"
+      . Map.fromList
+      . fmap (Bifunctor.first Str.toText)
+      . List.toList
+      $ elements x
       ]
 
 lookup :: Str.Str -> Dictionary a -> Maybe a
 lookup k = Prelude.lookup k . List.toList . elements
 
-bytePut :: (a -> BytePut) -> Dictionary a -> BytePut
-bytePut f x = do
-  Monad.forM_ (List.toList $ elements x) $ \ (k, v) -> do
-    Str.bytePut k
-    f v
-  Str.bytePut $ lastKey x
+bytePut :: (a -> BytePut.BytePut) -> Dictionary a -> BytePut.BytePut
+bytePut f x =
+  foldMap (\(k, v) -> Str.bytePut k <> f v) (List.toList $ elements x)
+    <> Str.bytePut (lastKey x)
 
-byteGet :: ByteGet a -> ByteGet (Dictionary a)
+byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (Dictionary a)
 byteGet = byteGetWith 0 []
 
-byteGetWith :: Int -> [(Int, (Str.Str, a))] -> ByteGet a -> ByteGet (Dictionary a)
+byteGetWith
+  :: Int
+  -> [(Int, (Str.Str, a))]
+  -> ByteGet.ByteGet a
+  -> ByteGet.ByteGet (Dictionary a)
 byteGetWith i xs f = do
   k <- Str.byteGet
   if isNone k
-    then pure Dictionary { elements = List.fromList . reverse $ fmap snd xs, lastKey = k }
+    then pure Dictionary
+      { elements = List.fromList . reverse $ fmap snd xs
+      , lastKey = k
+      }
     else do
       v <- f
       byteGetWith (i + 1) ((i, (k, v)) : xs) f

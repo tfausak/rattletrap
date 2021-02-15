@@ -2,17 +2,16 @@
 
 module Rattletrap.Type.Attribute.Product where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Type.Attribute.ProductValue as ProductValue
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
-import qualified Rattletrap.Type.Attribute.ProductValue as ProductValue
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 
 import qualified Data.Map as Map
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Product = Product
   { unknown :: Bool
@@ -25,28 +24,28 @@ data Product = Product
 
 $(deriveJson ''Product)
 
-putProductAttributes :: List.List Product -> BitPut ()
-putProductAttributes attributes = do
+putProductAttributes :: List.List Product -> BitPut.BitPut
+putProductAttributes attributes =
   let v = List.toList attributes
-  U8.bitPut . U8.fromWord8 . fromIntegral $ length v
-  mapM_ bitPut v
+  in (U8.bitPut . U8.fromWord8 . fromIntegral $ length v) <> foldMap bitPut v
 
-bitPut :: Product -> BitPut ()
-bitPut attribute = do
-  BinaryBits.putBool (unknown attribute)
-  U32.bitPut (objectId attribute)
-  ProductValue.bitPut $ value attribute
+bitPut :: Product -> BitPut.BitPut
+bitPut attribute =
+  BitPut.bool (unknown attribute)
+    <> U32.bitPut (objectId attribute)
+    <> ProductValue.bitPut (value attribute)
 
 decodeProductAttributesBits
-  :: (Int, Int, Int) -> Map U32.U32 Str.Str -> BitGet (List.List Product)
+  :: (Int, Int, Int)
+  -> Map U32.U32 Str.Str
+  -> BitGet.BitGet (List.List Product)
 decodeProductAttributesBits version objectMap = do
   size <- U8.bitGet
   List.replicateM (fromIntegral $ U8.toWord8 size) $ bitGet version objectMap
 
-bitGet
-  :: (Int, Int, Int) -> Map U32.U32 Str.Str -> BitGet Product
+bitGet :: (Int, Int, Int) -> Map U32.U32 Str.Str -> BitGet.BitGet Product
 bitGet version objectMap = do
-  flag <- getBool
+  flag <- BitGet.bool
   objectId_ <- U32.bitGet
   let maybeObjectName = Map.lookup objectId_ objectMap
   value_ <- ProductValue.bitGet version objectId_ maybeObjectName

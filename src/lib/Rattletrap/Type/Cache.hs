@@ -2,12 +2,12 @@
 
 module Rattletrap.Type.Cache where
 
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 
 data Cache = Cache
   { classId :: U32.U32
@@ -19,14 +19,14 @@ data Cache = Cache
 
 $(deriveJson ''Cache)
 
-bytePut :: Cache -> BytePut
-bytePut cache = do
-  U32.bytePut (classId cache)
-  U32.bytePut (parentCacheId cache)
-  U32.bytePut (cacheId cache)
-  List.bytePut AttributeMapping.bytePut (attributeMappings cache)
+bytePut :: Cache -> BytePut.BytePut
+bytePut x =
+  U32.bytePut (classId x)
+    <> U32.bytePut (parentCacheId x)
+    <> U32.bytePut (cacheId x)
+    <> List.bytePut AttributeMapping.bytePut (attributeMappings x)
 
-byteGet :: ByteGet Cache
+byteGet :: ByteGet.ByteGet Cache
 byteGet =
   Cache
     <$> U32.byteGet

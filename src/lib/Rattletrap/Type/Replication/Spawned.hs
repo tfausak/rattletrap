@@ -2,19 +2,19 @@
 
 module Rattletrap.Type.Replication.Spawned where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import Rattletrap.Type.Common
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Initialization as Initialization
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
-import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
-import qualified Rattletrap.Type.CompressedWord as CompressedWord
-import Rattletrap.Encode.Common
+import Rattletrap.Utility.Monad
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
 import qualified Data.Map as Map
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data Spawned = Spawned
   { flag :: Bool
@@ -36,14 +36,12 @@ data Spawned = Spawned
 
 $(deriveJson ''Spawned)
 
-bitPut :: Spawned -> BitPut ()
-bitPut spawnedReplication = do
-  BinaryBits.putBool (flag spawnedReplication)
-  case nameIndex spawnedReplication of
-    Nothing -> pure ()
-    Just nameIndex_ -> U32.bitPut nameIndex_
-  U32.bitPut (objectId spawnedReplication)
-  Initialization.bitPut (initialization spawnedReplication)
+bitPut :: Spawned -> BitPut.BitPut
+bitPut spawnedReplication =
+  BitPut.bool (flag spawnedReplication)
+    <> foldMap U32.bitPut (nameIndex spawnedReplication)
+    <> U32.bitPut (objectId spawnedReplication)
+    <> Initialization.bitPut (initialization spawnedReplication)
 
 bitGet
   :: (Int, Int, Int)
@@ -51,17 +49,18 @@ bitGet
   -> CompressedWord.CompressedWord
   -> State.StateT
        (Map.Map CompressedWord.CompressedWord U32.U32)
-       BitGet
+       BitGet.BitGet
        Spawned
 bitGet version classAttributeMap actorId = do
-  flag_ <- Trans.lift getBool
-  nameIndex_ <- decodeWhen
-    (version >= (868, 14, 0))
-    (Trans.lift U32.bitGet)
+  flag_ <- Trans.lift BitGet.bool
+  nameIndex_ <- whenMaybe (version >= (868, 14, 0)) (Trans.lift U32.bitGet)
   name_ <- either fail pure (lookupName classAttributeMap nameIndex_)
   objectId_ <- Trans.lift U32.bitGet
   State.modify (Map.insert actorId objectId_)
-  objectName_ <- either fail pure (lookupObjectName classAttributeMap objectId_)
+  objectName_ <- either
+    fail
+    pure
+    (lookupObjectName classAttributeMap objectId_)
   className_ <- either fail pure (lookupClassName objectName_)
   let hasLocation = ClassAttributeMap.classHasLocation className_
   let hasRotation = ClassAttributeMap.classHasRotation className_
@@ -78,24 +77,37 @@ bitGet version classAttributeMap actorId = do
       initialization_
     )
 
-lookupName :: ClassAttributeMap.ClassAttributeMap -> Maybe U32.U32 -> Either String (Maybe Str.Str)
+lookupName
+  :: ClassAttributeMap.ClassAttributeMap
+  -> Maybe U32.U32
+  -> Either String (Maybe Str.Str)
 lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
   Nothing -> Right Nothing
   Just nameIndex_ ->
-    case ClassAttributeMap.getName (ClassAttributeMap.nameMap classAttributeMap) nameIndex_ of
-      Nothing ->
-        Left ("[RT11] could not get name for index " <> show nameIndex_)
-      Just name_ -> Right (Just name_)
+    case
+        ClassAttributeMap.getName
+          (ClassAttributeMap.nameMap classAttributeMap)
+          nameIndex_
+      of
+        Nothing ->
+          Left ("[RT11] could not get name for index " <> show nameIndex_)
+        Just name_ -> Right (Just name_)
 
-lookupObjectName :: ClassAttributeMap.ClassAttributeMap -> U32.U32 -> Either String Str.Str
+lookupObjectName
+  :: ClassAttributeMap.ClassAttributeMap -> U32.U32 -> Either String Str.Str
 lookupObjectName classAttributeMap objectId_ =
-  case ClassAttributeMap.getObjectName (ClassAttributeMap.objectMap classAttributeMap) objectId_ of
-    Nothing ->
-      Left ("[RT12] could not get object name for id " <> show objectId_)
-    Just objectName_ -> Right objectName_
+  case
+      ClassAttributeMap.getObjectName
+        (ClassAttributeMap.objectMap classAttributeMap)
+        objectId_
+    of
+      Nothing ->
+        Left ("[RT12] could not get object name for id " <> show objectId_)
+      Just objectName_ -> Right objectName_
 
 lookupClassName :: Str.Str -> Either String Str.Str
-lookupClassName objectName_ = case ClassAttributeMap.getClassName objectName_ of
-  Nothing ->
-    Left ("[RT13] could not get class name for object " <> show objectName_)
-  Just className_ -> Right className_
+lookupClassName objectName_ =
+  case ClassAttributeMap.getClassName objectName_ of
+    Nothing ->
+      Left ("[RT13] could not get class name for object " <> show objectName_)
+    Just className_ -> Right className_

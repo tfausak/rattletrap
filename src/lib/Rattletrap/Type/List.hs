@@ -2,8 +2,8 @@
 
 module Rattletrap.Type.List where
 
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 
@@ -24,13 +24,12 @@ empty = fromList []
 toList :: List a -> [a]
 toList (List x) = x
 
-bytePut :: (a -> BytePut) -> List a -> BytePut
-bytePut f x = do
+bytePut :: (a -> BytePut.BytePut) -> List a -> BytePut.BytePut
+bytePut f x =
   let v = toList x
-  U32.bytePut . U32.fromWord32 . fromIntegral $ length v
-  mapM_ f v
+  in (U32.bytePut . U32.fromWord32 . fromIntegral $ length v) <> foldMap f v
 
-byteGet :: ByteGet a -> ByteGet (List a)
+byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (List a)
 byteGet f = do
   size <- U32.byteGet
   replicateM (fromIntegral $ U32.toWord32 size) f

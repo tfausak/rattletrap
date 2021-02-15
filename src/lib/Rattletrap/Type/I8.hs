@@ -2,12 +2,11 @@
 
 module Rattletrap.Type.I8 where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Get as Binary
-import qualified Data.Binary.Put as Binary
 
 newtype I8
   = I8 Int8
@@ -21,14 +20,14 @@ fromInt8 = I8
 toInt8 :: I8 -> Int8
 toInt8 (I8 x) = x
 
-bytePut :: I8 -> BytePut
-bytePut int8 = Binary.putInt8 (toInt8 int8)
+bytePut :: I8 -> BytePut.BytePut
+bytePut = BytePut.int8 . toInt8
 
-bitPut :: I8 -> BitPut ()
-bitPut = bytePutToBitPut bytePut
+bitPut :: I8 -> BitPut.BitPut
+bitPut = BitPut.fromBytePut . bytePut
 
-byteGet :: ByteGet I8
-byteGet = fromInt8 <$> Binary.getInt8
+byteGet :: ByteGet.ByteGet I8
+byteGet = fromInt8 <$> ByteGet.int8
 
-bitGet :: BitGet I8
-bitGet = byteGetToBitGet byteGet 1
+bitGet :: BitGet.BitGet I8
+bitGet = BitGet.fromByteGet byteGet 1

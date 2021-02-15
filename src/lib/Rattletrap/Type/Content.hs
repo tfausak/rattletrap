@@ -2,7 +2,12 @@
 
 module Rattletrap.Type.Content where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.Cache as Cache
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.ClassMapping as ClassMapping
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Frame as Frame
@@ -13,15 +18,8 @@ import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Utility.Bytes
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 
 import qualified Control.Monad.Trans.State as State
-import qualified Data.Binary.Get as Binary
-import qualified Data.Binary as Binary
-import qualified Data.Binary.Bits.Put as BinaryBits
-import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
 
@@ -79,14 +77,25 @@ empty = Content
   , unknown = []
   }
 
-bytePut :: Content -> BytePut
-bytePut content = do
-  List.bytePut Str.bytePut (levels content)
-  List.bytePut KeyFrame.bytePut (keyFrames content)
+bytePut :: Content -> BytePut.BytePut
+bytePut x =
+  List.bytePut Str.bytePut (levels x)
+    <> List.bytePut KeyFrame.bytePut (keyFrames x)
+    <> putFrames x
+    <> List.bytePut Message.bytePut (messages x)
+    <> List.bytePut Mark.bytePut (marks x)
+    <> List.bytePut Str.bytePut (packages x)
+    <> List.bytePut Str.bytePut (objects x)
+    <> List.bytePut Str.bytePut (names x)
+    <> List.bytePut ClassMapping.bytePut (classMappings x)
+    <> List.bytePut Cache.bytePut (caches x)
+    <> foldMap BytePut.word8 (unknown x)
+
+putFrames :: Content -> BytePut.BytePut
+putFrames x =
   let
-    stream = LazyBytes.toStrict
-      (Binary.runPut (BinaryBits.runBitPut (Frame.putFrames (frames content)))
-      )
+    stream =
+      BytePut.toByteString . BitPut.toBytePut . Frame.putFrames $ frames x
     -- This is a little strange. When parsing a binary replay, the stream size
     -- is given before the stream itself. When generating the JSON, the stream
     -- size is included. That allows a bit-for-bit identical binary replay to
@@ -97,22 +106,12 @@ bytePut content = do
     -- carrying it along as extra data on the side, this logic could go away.
     -- Unforunately that isn't currently known. See this issue for details:
     -- <https://github.com/tfausak/rattletrap/issues/171>.
-    expectedStreamSize = streamSize content
+    expectedStreamSize = streamSize x
     actualStreamSize = U32.fromWord32 . fromIntegral $ Bytes.length stream
-    streamSize_ = U32.fromWord32 $ max
-      (U32.toWord32 expectedStreamSize)
-      (U32.toWord32 actualStreamSize)
-  U32.bytePut streamSize_
-  Binary.putByteString
+    streamSize_ = U32.fromWord32
+      $ max (U32.toWord32 expectedStreamSize) (U32.toWord32 actualStreamSize)
+  in U32.bytePut streamSize_ <> BytePut.byteString
     (reverseBytes (padBytes (U32.toWord32 streamSize_) stream))
-  List.bytePut Message.bytePut (messages content)
-  List.bytePut Mark.bytePut (marks content)
-  List.bytePut Str.bytePut (packages content)
-  List.bytePut Str.bytePut (objects content)
-  List.bytePut Str.bytePut (names content)
-  List.bytePut ClassMapping.bytePut (classMappings content)
-  List.bytePut Cache.bytePut (caches content)
-  mapM_ Binary.putWord8 (unknown content)
 
 byteGet
   :: (Int, Int, Int)
@@ -123,7 +122,7 @@ byteGet
   -> Word
   -- ^ The maximum number of channels in the stream, usually from
   -- 'Rattletrap.Header.getMaxChannels'.
-  -> ByteGet Content
+  -> ByteGet.ByteGet Content
 byteGet version numFrames maxChannels = do
   (levels_, keyFrames_, streamSize_) <-
     (,,)
@@ -132,7 +131,7 @@ byteGet version numFrames maxChannels = do
     <*> U32.byteGet
   (stream, messages_, marks_, packages_, objects_, names_, classMappings_, caches_) <-
     (,,,,,,,)
-    <$> getByteString (fromIntegral (U32.toWord32 streamSize_))
+    <$> ByteGet.byteString (fromIntegral (U32.toWord32 streamSize_))
     <*> List.byteGet Message.byteGet
     <*> List.byteGet Mark.byteGet
     <*> List.byteGet Str.byteGet
@@ -146,7 +145,9 @@ byteGet version numFrames maxChannels = do
     bitGet = State.evalStateT
       (Frame.decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
-  frames_ <- either fail pure (runDecodeBits bitGet (reverseBytes stream))
+  frames_ <-
+    either fail pure . ByteGet.run (BitGet.toByteGet bitGet) $ reverseBytes
+      stream
   Content
       levels_
       keyFrames_
@@ -160,4 +161,4 @@ byteGet version numFrames maxChannels = do
       classMappings_
       caches_
     . LazyBytes.unpack
-    <$> Binary.getRemainingLazyByteString
+    <$> ByteGet.remaining

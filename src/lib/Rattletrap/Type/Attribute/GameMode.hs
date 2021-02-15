@@ -2,11 +2,9 @@
 
 module Rattletrap.Type.Attribute.GameMode where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data GameMode = GameMode
   { numBits :: Int
@@ -20,14 +18,13 @@ data GameMode = GameMode
 
 $(deriveJson ''GameMode)
 
-bitPut :: GameMode -> BitPut ()
+bitPut :: GameMode -> BitPut.BitPut
 bitPut gameModeAttribute = do
-  BinaryBits.putWord8 (numBits gameModeAttribute) (word gameModeAttribute)
+  BitPut.word8 (numBits gameModeAttribute) (word gameModeAttribute)
 
-bitGet :: (Int, Int, Int) -> BitGet GameMode
+bitGet :: (Int, Int, Int) -> BitGet.BitGet GameMode
 bitGet version =
-  GameMode (numBits_ version) <$> getWord8Bits
-    (numBits_ version)
+  GameMode (numBits_ version) <$> BitGet.word8 (numBits_ version)
 
 numBits_ :: (Int, Int, Int) -> Int
 numBits_ version = if version >= (868, 12, 0) then 8 else 2

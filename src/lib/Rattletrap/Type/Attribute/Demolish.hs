@@ -2,13 +2,11 @@
 
 module Rattletrap.Type.Attribute.Demolish where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
-import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Rattletrap.Type.Vector as Vector
 
 data Demolish = Demolish
   { attackerFlag :: Bool
@@ -22,21 +20,21 @@ data Demolish = Demolish
 
 $(deriveJson ''Demolish)
 
-bitPut :: Demolish -> BitPut ()
-bitPut demolishAttribute = do
-  BinaryBits.putBool (attackerFlag demolishAttribute)
-  U32.bitPut (attackerActorId demolishAttribute)
-  BinaryBits.putBool (victimFlag demolishAttribute)
-  U32.bitPut (victimActorId demolishAttribute)
-  Vector.bitPut (attackerVelocity demolishAttribute)
-  Vector.bitPut (victimVelocity demolishAttribute)
+bitPut :: Demolish -> BitPut.BitPut
+bitPut demolishAttribute =
+  BitPut.bool (attackerFlag demolishAttribute)
+    <> U32.bitPut (attackerActorId demolishAttribute)
+    <> BitPut.bool (victimFlag demolishAttribute)
+    <> U32.bitPut (victimActorId demolishAttribute)
+    <> Vector.bitPut (attackerVelocity demolishAttribute)
+    <> Vector.bitPut (victimVelocity demolishAttribute)
 
-bitGet :: (Int, Int, Int) -> BitGet Demolish
+bitGet :: (Int, Int, Int) -> BitGet.BitGet Demolish
 bitGet version =
   Demolish
-    <$> getBool
+    <$> BitGet.bool
     <*> U32.bitGet
-    <*> getBool
+    <*> BitGet.bool
     <*> U32.bitGet
     <*> Vector.bitGet version
     <*> Vector.bitGet version

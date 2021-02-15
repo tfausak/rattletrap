@@ -2,11 +2,9 @@
 
 module Rattletrap.Type.Attribute.Boolean where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 newtype Boolean = Boolean
   { value :: Bool
@@ -14,9 +12,8 @@ newtype Boolean = Boolean
 
 $(deriveJson ''Boolean)
 
-bitPut :: Boolean -> BitPut ()
-bitPut booleanAttribute =
-  BinaryBits.putBool (value booleanAttribute)
+bitPut :: Boolean -> BitPut.BitPut
+bitPut booleanAttribute = BitPut.bool (value booleanAttribute)
 
-bitGet :: BitGet Boolean
-bitGet = Boolean <$> getBool
+bitGet :: BitGet.BitGet Boolean
+bitGet = Boolean <$> BitGet.bool

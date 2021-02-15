@@ -2,13 +2,11 @@
 
 module Rattletrap.Type.Attribute.CustomDemolish where
 
-import Rattletrap.Type.Common
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Type.Attribute.Demolish as Demolish
+import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data CustomDemolish = CustomDemolish
   { flag :: Bool
@@ -19,16 +17,12 @@ data CustomDemolish = CustomDemolish
 
 $(deriveJson ''CustomDemolish)
 
-bitPut :: CustomDemolish -> BitPut ()
-bitPut x = do
-  BinaryBits.putBool (flag x)
-  I32.bitPut (Rattletrap.Type.Attribute.CustomDemolish.id x)
-  Demolish.bitPut (demolish x)
+bitPut :: CustomDemolish -> BitPut.BitPut
+bitPut x =
+  BitPut.bool (flag x)
+    <> I32.bitPut (Rattletrap.Type.Attribute.CustomDemolish.id x)
+    <> Demolish.bitPut (demolish x)
 
-bitGet
-  :: (Int, Int, Int) -> BitGet CustomDemolish
+bitGet :: (Int, Int, Int) -> BitGet.BitGet CustomDemolish
 bitGet version =
-  CustomDemolish
-    <$> getBool
-    <*> I32.bitGet
-    <*> Demolish.bitGet version
+  CustomDemolish <$> BitGet.bool <*> I32.bitGet <*> Demolish.bitGet version

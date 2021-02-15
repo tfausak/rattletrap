@@ -2,12 +2,11 @@
 
 module Rattletrap.Type.Int8Vector where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I8 as I8
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
+import Rattletrap.Utility.Monad
 
 data Int8Vector = Int8Vector
   { x :: Maybe I8.I8
@@ -18,24 +17,22 @@ data Int8Vector = Int8Vector
 
 $(deriveJson ''Int8Vector)
 
-bitPut :: Int8Vector -> BitPut ()
-bitPut int8Vector = do
+bitPut :: Int8Vector -> BitPut.BitPut
+bitPut int8Vector =
   putInt8VectorField (x int8Vector)
-  putInt8VectorField (y int8Vector)
-  putInt8VectorField (z int8Vector)
+    <> putInt8VectorField (y int8Vector)
+    <> putInt8VectorField (z int8Vector)
 
-putInt8VectorField :: Maybe I8.I8 -> BitPut ()
+putInt8VectorField :: Maybe I8.I8 -> BitPut.BitPut
 putInt8VectorField maybeField = case maybeField of
-  Nothing -> BinaryBits.putBool False
-  Just field -> do
-    BinaryBits.putBool True
-    I8.bitPut field
+  Nothing -> BitPut.bool False
+  Just field -> BitPut.bool True <> I8.bitPut field
 
-bitGet :: BitGet Int8Vector
+bitGet :: BitGet.BitGet Int8Vector
 bitGet =
   Int8Vector <$> decodeFieldBits <*> decodeFieldBits <*> decodeFieldBits
 
-decodeFieldBits :: BitGet (Maybe I8.I8)
+decodeFieldBits :: BitGet.BitGet (Maybe I8.I8)
 decodeFieldBits = do
-  hasField <- getBool
-  decodeWhen hasField I8.bitGet
+  hasField <- BitGet.bool
+  whenMaybe hasField I8.bitGet

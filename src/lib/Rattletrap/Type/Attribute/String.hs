@@ -3,10 +3,10 @@
 module Rattletrap.Type.Attribute.String where
 
 import Prelude hiding (String)
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 
 newtype String = String
   { value :: Str.Str
@@ -14,9 +14,8 @@ newtype String = String
 
 $(deriveJson ''String)
 
-bitPut :: String -> BitPut ()
-bitPut stringAttribute =
-  Str.bitPut (value stringAttribute)
+bitPut :: String -> BitPut.BitPut
+bitPut stringAttribute = Str.bitPut (value stringAttribute)
 
-bitGet :: BitGet String
+bitGet :: BitGet.BitGet String
 bitGet = String <$> Str.bitGet

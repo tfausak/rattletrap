@@ -2,13 +2,11 @@
 
 module Rattletrap.Type.Attribute.MusicStinger where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data MusicStinger = MusicStinger
   { flag :: Bool
@@ -19,15 +17,11 @@ data MusicStinger = MusicStinger
 
 $(deriveJson ''MusicStinger)
 
-bitPut :: MusicStinger -> BitPut ()
-bitPut musicStingerAttribute = do
-  BinaryBits.putBool (flag musicStingerAttribute)
-  U32.bitPut (cue musicStingerAttribute)
-  U8.bitPut (trigger musicStingerAttribute)
+bitPut :: MusicStinger -> BitPut.BitPut
+bitPut musicStingerAttribute =
+  BitPut.bool (flag musicStingerAttribute)
+    <> U32.bitPut (cue musicStingerAttribute)
+    <> U8.bitPut (trigger musicStingerAttribute)
 
-bitGet :: BitGet MusicStinger
-bitGet =
-  MusicStinger
-    <$> getBool
-    <*> U32.bitGet
-    <*> U8.bitGet
+bitGet :: BitGet.BitGet MusicStinger
+bitGet = MusicStinger <$> BitGet.bool <*> U32.bitGet <*> U8.bitGet

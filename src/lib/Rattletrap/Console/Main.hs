@@ -37,8 +37,7 @@ rattletrap name arguments = do
   let encode = getEncoder config
   putOutput config (encode replay)
 
-getDecoder
-  :: Config -> Bytes.ByteString -> Either String Replay.FullReplay
+getDecoder :: Config -> Bytes.ByteString -> Either String Replay.FullReplay
 getDecoder config = case getMode config of
   ModeDecode -> Rattletrap.decodeReplayFile $ configFast config
   ModeEncode -> Rattletrap.decodeReplayJson

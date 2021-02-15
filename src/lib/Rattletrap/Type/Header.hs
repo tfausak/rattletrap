@@ -2,13 +2,14 @@
 
 module Rattletrap.Type.Header where
 
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import Rattletrap.Utility.Monad
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
@@ -60,21 +61,19 @@ data Header = Header
 
 $(deriveJson ''Header)
 
-putHeader :: Header -> BytePut
-putHeader header = do
-  U32.bytePut (engineVersion header)
-  U32.bytePut (licenseeVersion header)
-  case patchVersion header of
-    Nothing -> pure ()
-    Just x -> U32.bytePut x
-  Str.bytePut (label header)
-  Dictionary.bytePut Property.bytePut (properties header)
+putHeader :: Header -> BytePut.BytePut
+putHeader x =
+  U32.bytePut (engineVersion x)
+    <> U32.bytePut (licenseeVersion x)
+    <> foldMap U32.bytePut (patchVersion x)
+    <> Str.bytePut (label x)
+    <> Dictionary.bytePut Property.bytePut (properties x)
 
-decodeHeader :: ByteGet Header
+decodeHeader :: ByteGet.ByteGet Header
 decodeHeader = do
   (major, minor) <- (,) <$> U32.byteGet <*> U32.byteGet
   Header major minor
-    <$> decodeWhen
+    <$> whenMaybe
           (U32.toWord32 major >= 868 && U32.toWord32 minor >= 18)
           U32.byteGet
     <*> Str.byteGet

@@ -2,11 +2,11 @@
 
 module Rattletrap.Type.Attribute.ExtendedExplosion where
 
-import Rattletrap.Type.Common
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Type.Attribute.Explosion as Explosion
 import qualified Rattletrap.Type.Attribute.FlaggedInt as FlaggedInt
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import Rattletrap.Type.Common
 
 data ExtendedExplosion = ExtendedExplosion
   { explosion :: Explosion.Explosion
@@ -16,15 +16,9 @@ data ExtendedExplosion = ExtendedExplosion
 
 $(deriveJson ''ExtendedExplosion)
 
-bitPut
-  :: ExtendedExplosion -> BitPut ()
-bitPut x = do
-  Explosion.bitPut (explosion x)
-  FlaggedInt.bitPut (unknown x)
+bitPut :: ExtendedExplosion -> BitPut.BitPut
+bitPut x = Explosion.bitPut (explosion x) <> FlaggedInt.bitPut (unknown x)
 
-bitGet
-  :: (Int, Int, Int) -> BitGet ExtendedExplosion
+bitGet :: (Int, Int, Int) -> BitGet.BitGet ExtendedExplosion
 bitGet version =
-  ExtendedExplosion
-    <$> Explosion.bitGet version
-    <*> FlaggedInt.bitGet
+  ExtendedExplosion <$> Explosion.bitGet version <*> FlaggedInt.bitGet

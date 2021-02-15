@@ -3,10 +3,10 @@
 module Rattletrap.Type.Attribute.Int where
 
 import Prelude hiding (Int)
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 
 newtype Int = Int
   { value :: I32.I32
@@ -14,8 +14,8 @@ newtype Int = Int
 
 $(deriveJson ''Int)
 
-bitPut :: Int -> BitPut ()
+bitPut :: Int -> BitPut.BitPut
 bitPut intAttribute = I32.bitPut (value intAttribute)
 
-bitGet :: BitGet Int
+bitGet :: BitGet.BitGet Int
 bitGet = Int <$> I32.bitGet

@@ -2,19 +2,20 @@
 
 module Rattletrap.Type.Str where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Utility.Bytes
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 
-import qualified Data.Text.Encoding.Error as Text
-import qualified Debug.Trace as Debug
-import qualified Data.Binary.Put as Binary
 import qualified Data.ByteString as Bytes
 import qualified Data.Char as Char
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
+import qualified Data.Text.Encoding.Error as Text
+import qualified Debug.Trace as Debug
 
 newtype Str
   = Str Text
@@ -34,15 +35,15 @@ fromString = fromText . Text.pack
 toString :: Str -> String
 toString = Text.unpack . toText
 
-bytePut :: Str -> BytePut
-bytePut text = do
-  let size = getTextSize text
-  let encode = getTextEncoder size
-  I32.bytePut size
-  Binary.putByteString (encode (addNull (toText text)))
+bytePut :: Str -> BytePut.BytePut
+bytePut text =
+  let
+    size = getTextSize text
+    encode = getTextEncoder size
+  in I32.bytePut size <> (BytePut.byteString . encode . addNull $ toText text)
 
-bitPut :: Str -> BitPut ()
-bitPut = bytePutToBitPut bytePut
+bitPut :: Str -> BitPut.BitPut
+bitPut = BitPut.fromBytePut . bytePut
 
 getTextSize :: Str -> I32.I32
 getTextSize text =
@@ -64,16 +65,16 @@ getTextEncoder size text =
 addNull :: Text.Text -> Text.Text
 addNull text = if Text.null text then text else Text.snoc text '\x00'
 
-byteGet :: ByteGet Str
+byteGet :: ByteGet.ByteGet Str
 byteGet = do
   rawSize <- I32.byteGet
-  bytes <- getByteString (normalizeTextSize rawSize)
+  bytes <- ByteGet.byteString (normalizeTextSize rawSize)
   pure (fromText (dropNull (getTextDecoder rawSize bytes)))
 
-bitGet :: BitGet Str
+bitGet :: BitGet.BitGet Str
 bitGet = do
   rawSize <- I32.bitGet
-  bytes <- getByteStringBits (normalizeTextSize rawSize)
+  bytes <- BitGet.byteString (normalizeTextSize rawSize)
   pure (fromText (dropNull (getTextDecoder rawSize (reverseBytes bytes))))
 
 normalizeTextSize :: Integral a => I32.I32 -> a

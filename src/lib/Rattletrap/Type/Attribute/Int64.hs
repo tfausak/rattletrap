@@ -2,10 +2,10 @@
 
 module Rattletrap.Type.Attribute.Int64 where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common hiding (Int64)
 import qualified Rattletrap.Type.I64 as I64
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 
 newtype Int64 = Int64
   { value :: I64.I64
@@ -13,9 +13,8 @@ newtype Int64 = Int64
 
 $(deriveJson ''Int64)
 
-putInt64Attribute :: Int64 -> BitPut ()
-putInt64Attribute int64Attribute =
-  I64.bitPut (value int64Attribute)
+putInt64Attribute :: Int64 -> BitPut.BitPut
+putInt64Attribute int64Attribute = I64.bitPut (value int64Attribute)
 
-bitGet :: BitGet Int64
+bitGet :: BitGet.BitGet Int64
 bitGet = Int64 <$> I64.bitGet

@@ -2,10 +2,10 @@
 
 module Rattletrap.Type.AttributeMapping where
 
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
 
 data AttributeMapping = AttributeMapping
   { objectId :: U32.U32
@@ -15,11 +15,8 @@ data AttributeMapping = AttributeMapping
 
 $(deriveJson ''AttributeMapping)
 
-bytePut :: AttributeMapping -> BytePut
-bytePut attributeMapping = do
-  U32.bytePut (objectId attributeMapping)
-  U32.bytePut (streamId attributeMapping)
+bytePut :: AttributeMapping -> BytePut.BytePut
+bytePut x = U32.bytePut (objectId x) <> U32.bytePut (streamId x)
 
-byteGet :: ByteGet AttributeMapping
-byteGet =
-  AttributeMapping <$> U32.byteGet <*> U32.byteGet
+byteGet :: ByteGet.ByteGet AttributeMapping
+byteGet = AttributeMapping <$> U32.byteGet <*> U32.byteGet

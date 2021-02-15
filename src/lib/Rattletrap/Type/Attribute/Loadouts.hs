@@ -2,10 +2,10 @@
 
 module Rattletrap.Type.Attribute.Loadouts where
 
-import Rattletrap.Type.Common
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Type.Attribute.Loadout as Loadout
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import Rattletrap.Type.Common
 
 data Loadouts = Loadouts
   { blue :: Loadout.Loadout
@@ -15,13 +15,9 @@ data Loadouts = Loadouts
 
 $(deriveJson ''Loadouts)
 
-bitPut :: Loadouts -> BitPut ()
-bitPut loadoutsAttribute = do
-  Loadout.bitPut (blue loadoutsAttribute)
-  Loadout.bitPut (orange loadoutsAttribute)
+bitPut :: Loadouts -> BitPut.BitPut
+bitPut loadoutsAttribute = Loadout.bitPut (blue loadoutsAttribute)
+  <> Loadout.bitPut (orange loadoutsAttribute)
 
-bitGet :: BitGet Loadouts
-bitGet =
-  Loadouts
-    <$> Loadout.bitGet
-    <*> Loadout.bitGet
+bitGet :: BitGet.BitGet Loadouts
+bitGet = Loadouts <$> Loadout.bitGet <*> Loadout.bitGet

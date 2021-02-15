@@ -2,12 +2,11 @@
 
 module Rattletrap.Type.U32 where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Get as Binary
-import qualified Data.Binary.Put as Binary
 
 newtype U32
   = U32 Word32
@@ -21,14 +20,14 @@ fromWord32 = U32
 toWord32 :: U32 -> Word32
 toWord32 (U32 x) = x
 
-bytePut :: U32 -> BytePut
-bytePut = Binary.putWord32le . toWord32
+bytePut :: U32 -> BytePut.BytePut
+bytePut = BytePut.word32 . toWord32
 
-bitPut :: U32 -> BitPut ()
-bitPut = bytePutToBitPut bytePut
+bitPut :: U32 -> BitPut.BitPut
+bitPut = BitPut.fromBytePut . bytePut
 
-byteGet :: ByteGet U32
-byteGet = fromWord32 <$> Binary.getWord32le
+byteGet :: ByteGet.ByteGet U32
+byteGet = fromWord32 <$> ByteGet.word32
 
-bitGet :: BitGet U32
-bitGet = byteGetToBitGet byteGet 4
+bitGet :: BitGet.BitGet U32
+bitGet = BitGet.fromByteGet byteGet 4

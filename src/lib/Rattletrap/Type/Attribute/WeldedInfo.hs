@@ -2,15 +2,13 @@
 
 module Rattletrap.Type.Attribute.WeldedInfo where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Vector as Vector
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data WeldedInfo = WeldedInfo
   { active :: Bool
@@ -23,19 +21,18 @@ data WeldedInfo = WeldedInfo
 
 $(deriveJson ''WeldedInfo)
 
-bitPut :: WeldedInfo -> BitPut ()
-bitPut weldedInfoAttribute = do
-  BinaryBits.putBool (active weldedInfoAttribute)
-  I32.bitPut (actorId weldedInfoAttribute)
-  Vector.bitPut (offset weldedInfoAttribute)
-  F32.bitPut (mass weldedInfoAttribute)
-  Int8Vector.bitPut (rotation weldedInfoAttribute)
+bitPut :: WeldedInfo -> BitPut.BitPut
+bitPut weldedInfoAttribute =
+  BitPut.bool (active weldedInfoAttribute)
+    <> I32.bitPut (actorId weldedInfoAttribute)
+    <> Vector.bitPut (offset weldedInfoAttribute)
+    <> F32.bitPut (mass weldedInfoAttribute)
+    <> Int8Vector.bitPut (rotation weldedInfoAttribute)
 
-bitGet
-  :: (Int, Int, Int) -> BitGet WeldedInfo
+bitGet :: (Int, Int, Int) -> BitGet.BitGet WeldedInfo
 bitGet version =
   WeldedInfo
-    <$> getBool
+    <$> BitGet.bool
     <*> I32.bitGet
     <*> Vector.bitGet version
     <*> F32.bitGet

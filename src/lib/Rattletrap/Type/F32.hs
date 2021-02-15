@@ -2,12 +2,11 @@
 
 module Rattletrap.Type.F32 where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Get as Binary
-import qualified Data.Binary.Put as Binary
 
 newtype F32
   = F32 Float
@@ -21,14 +20,14 @@ fromFloat = F32
 toFloat :: F32 -> Float
 toFloat (F32 x) = x
 
-bytePut :: F32 -> BytePut
-bytePut = Binary.putFloatle . toFloat
+bytePut :: F32 -> BytePut.BytePut
+bytePut = BytePut.float . toFloat
 
-bitPut :: F32 -> BitPut ()
-bitPut = bytePutToBitPut bytePut
+bitPut :: F32 -> BitPut.BitPut
+bitPut = BitPut.fromBytePut . bytePut
 
-byteGet :: ByteGet F32
-byteGet = fromFloat <$> Binary.getFloatle
+byteGet :: ByteGet.ByteGet F32
+byteGet = fromFloat <$> ByteGet.float
 
-bitGet :: BitGet F32
-bitGet = byteGetToBitGet byteGet 4
+bitGet :: BitGet.BitGet F32
+bitGet = BitGet.fromByteGet byteGet 4

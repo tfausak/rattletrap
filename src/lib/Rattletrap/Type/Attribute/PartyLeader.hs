@@ -2,11 +2,12 @@
 
 module Rattletrap.Type.Attribute.PartyLeader where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.U8 as U8
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
+import Rattletrap.Utility.Monad
 
 data PartyLeader = PartyLeader
   { systemId :: U8.U8
@@ -16,19 +17,14 @@ data PartyLeader = PartyLeader
 
 $(deriveJson ''PartyLeader)
 
-bitPut :: PartyLeader -> BitPut ()
-bitPut partyLeaderAttribute = do
-  U8.bitPut (systemId partyLeaderAttribute)
-  case Rattletrap.Type.Attribute.PartyLeader.id partyLeaderAttribute of
-    Nothing -> pure ()
-    Just (remoteId, localId) -> do
-      RemoteId.bitPut remoteId
-      U8.bitPut localId
+bitPut :: PartyLeader -> BitPut.BitPut
+bitPut x = U8.bitPut (systemId x) <> foldMap
+  (\(y, z) -> RemoteId.bitPut y <> U8.bitPut z)
+  (Rattletrap.Type.Attribute.PartyLeader.id x)
 
-bitGet
-  :: (Int, Int, Int) -> BitGet PartyLeader
+bitGet :: (Int, Int, Int) -> BitGet.BitGet PartyLeader
 bitGet version = do
   systemId_ <- U8.bitGet
-  PartyLeader systemId_ <$> decodeWhen
+  PartyLeader systemId_ <$> whenMaybe
     (systemId_ /= U8.fromWord8 0)
     ((,) <$> RemoteId.bitGet version systemId_ <*> U8.bitGet)

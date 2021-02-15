@@ -2,13 +2,11 @@
 
 module Rattletrap.Type.Attribute.PrivateMatchSettings where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Bits.Put as BinaryBits
 
 data PrivateMatchSettings = PrivateMatchSettings
   { mutators :: Str.Str
@@ -22,24 +20,16 @@ data PrivateMatchSettings = PrivateMatchSettings
 
 $(deriveJson ''PrivateMatchSettings)
 
-bitPut
-  :: PrivateMatchSettings -> BitPut ()
-bitPut privateMatchSettingsAttribute = do
-  Str.bitPut
-    (mutators privateMatchSettingsAttribute)
-  U32.bitPut
-    (joinableBy privateMatchSettingsAttribute)
-  U32.bitPut
-    (maxPlayers privateMatchSettingsAttribute)
-  Str.bitPut
-    (gameName privateMatchSettingsAttribute)
-  Str.bitPut
-    (password privateMatchSettingsAttribute)
-  BinaryBits.putBool
-    (flag privateMatchSettingsAttribute)
+bitPut :: PrivateMatchSettings -> BitPut.BitPut
+bitPut privateMatchSettingsAttribute =
+  Str.bitPut (mutators privateMatchSettingsAttribute)
+    <> U32.bitPut (joinableBy privateMatchSettingsAttribute)
+    <> U32.bitPut (maxPlayers privateMatchSettingsAttribute)
+    <> Str.bitPut (gameName privateMatchSettingsAttribute)
+    <> Str.bitPut (password privateMatchSettingsAttribute)
+    <> BitPut.bool (flag privateMatchSettingsAttribute)
 
-bitGet
-  :: BitGet PrivateMatchSettings
+bitGet :: BitGet.BitGet PrivateMatchSettings
 bitGet =
   PrivateMatchSettings
     <$> Str.bitGet
@@ -47,4 +37,4 @@ bitGet =
     <*> U32.bitGet
     <*> Str.bitGet
     <*> Str.bitGet
-    <*> getBool
+    <*> BitGet.bool

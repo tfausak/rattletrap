@@ -9,7 +9,8 @@ import qualified Data.Set as Set
 import qualified Data.Text as Text
 
 parentClasses :: Map.Map Text.Text Text.Text
-parentClasses = Map.fromList $ fmap (Bifunctor.bimap Text.pack Text.pack)
+parentClasses = Map.fromList $ fmap
+  (Bifunctor.bimap Text.pack Text.pack)
   [ ("Engine.Actor", "Core.Object")
   , ("Engine.GameReplicationInfo", "Engine.ReplicationInfo")
   , ("Engine.Info", "Engine.Actor")
@@ -72,7 +73,8 @@ parentClasses = Map.fromList $ fmap (Bifunctor.bimap Text.pack Text.pack)
   ]
 
 classesWithLocation :: Set.Set Text.Text
-classesWithLocation = Set.fromList $ fmap Text.pack
+classesWithLocation = Set.fromList $ fmap
+  Text.pack
   [ "Archetypes.Ball.Ball_BasketBall_Mutator"
   , "Archetypes.Ball.Ball_Basketball"
   , "Archetypes.Ball.Ball_BasketBall"
@@ -131,7 +133,8 @@ classesWithLocation = Set.fromList $ fmap Text.pack
   ]
 
 classesWithRotation :: Set.Set Text.Text
-classesWithRotation = Set.fromList $ fmap Text.pack
+classesWithRotation = Set.fromList $ fmap
+  Text.pack
   [ "Archetypes.Ball.Ball_BasketBall_Mutator"
   , "Archetypes.Ball.Ball_Basketball"
   , "Archetypes.Ball.Ball_BasketBall"
@@ -151,7 +154,8 @@ classesWithRotation = Set.fromList $ fmap Text.pack
   ]
 
 objectClasses :: Map.Map Text.Text Text.Text
-objectClasses = Map.fromList $ fmap (Bifunctor.bimap Text.pack Text.pack)
+objectClasses = Map.fromList $ fmap
+  (Bifunctor.bimap Text.pack Text.pack)
   [ ("Archetypes.Ball.Ball_Anniversary", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_BasketBall_Mutator", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Basketball", "TAGame.Ball_TA")
@@ -226,7 +230,8 @@ objectClasses = Map.fromList $ fmap (Bifunctor.bimap Text.pack Text.pack)
   ]
 
 attributeTypes :: Map.Map Text.Text AttributeType.AttributeType
-attributeTypes = Map.fromList $ fmap (Bifunctor.first Text.pack)
+attributeTypes = Map.fromList $ fmap
+  (Bifunctor.first Text.pack)
   [ ("Engine.Actor:bBlockActors", AttributeType.Boolean)
   , ("Engine.Actor:bCollideActors", AttributeType.Boolean)
   , ("Engine.Actor:bHidden", AttributeType.Boolean)

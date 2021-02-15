@@ -2,12 +2,11 @@
 
 module Rattletrap.Type.I32 where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
-import Rattletrap.Decode.Common
-import Rattletrap.Encode.Common
-
-import qualified Data.Binary.Get as Binary
-import qualified Data.Binary.Put as Binary
 
 newtype I32
   = I32 Int32
@@ -21,14 +20,14 @@ fromInt32 = I32
 toInt32 :: I32 -> Int32
 toInt32 (I32 x) = x
 
-bytePut :: I32 -> BytePut
-bytePut int32 = Binary.putInt32le (toInt32 int32)
+bytePut :: I32 -> BytePut.BytePut
+bytePut = BytePut.int32 . toInt32
 
-bitPut :: I32 -> BitPut ()
-bitPut = bytePutToBitPut bytePut
+bitPut :: I32 -> BitPut.BitPut
+bitPut = BitPut.fromBytePut . bytePut
 
-byteGet :: ByteGet I32
-byteGet = fromInt32 <$> Binary.getInt32le
+byteGet :: ByteGet.ByteGet I32
+byteGet = fromInt32 <$> ByteGet.int32
 
-bitGet :: BitGet I32
-bitGet = byteGetToBitGet byteGet 4
+bitGet :: BitGet.BitGet I32
+bitGet = BitGet.fromByteGet byteGet 4
