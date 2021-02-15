@@ -2,11 +2,11 @@
 
 module Rattletrap.Type.Int8Vector where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I8 as I8
 import Rattletrap.Utility.Monad
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 data Int8Vector = Int8Vector
   { x :: Maybe I8.I8
@@ -20,15 +20,13 @@ $(deriveJson ''Int8Vector)
 bitPut :: Int8Vector -> BitPut.BitPut
 bitPut int8Vector =
   putInt8VectorField (x int8Vector)
-  <> putInt8VectorField (y int8Vector)
-  <> putInt8VectorField (z int8Vector)
+    <> putInt8VectorField (y int8Vector)
+    <> putInt8VectorField (z int8Vector)
 
 putInt8VectorField :: Maybe I8.I8 -> BitPut.BitPut
 putInt8VectorField maybeField = case maybeField of
   Nothing -> BitPut.bool False
-  Just field ->
-    BitPut.bool True
-    <> I8.bitPut field
+  Just field -> BitPut.bool True <> I8.bitPut field
 
 bitGet :: BitGet.BitGet Int8Vector
 bitGet =

@@ -2,11 +2,11 @@
 
 module Rattletrap.Type.Attribute.TeamPaint where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 data TeamPaint = TeamPaint
   { team :: U8.U8
@@ -22,10 +22,10 @@ $(deriveJson ''TeamPaint)
 bitPut :: TeamPaint -> BitPut.BitPut
 bitPut teamPaintAttribute =
   U8.bitPut (team teamPaintAttribute)
-  <> U8.bitPut (primaryColor teamPaintAttribute)
-  <> U8.bitPut (accentColor teamPaintAttribute)
-  <> U32.bitPut (primaryFinish teamPaintAttribute)
-  <> U32.bitPut (accentFinish teamPaintAttribute)
+    <> U8.bitPut (primaryColor teamPaintAttribute)
+    <> U8.bitPut (accentColor teamPaintAttribute)
+    <> U32.bitPut (primaryFinish teamPaintAttribute)
+    <> U32.bitPut (accentFinish teamPaintAttribute)
 
 bitGet :: BitGet.BitGet TeamPaint
 bitGet =

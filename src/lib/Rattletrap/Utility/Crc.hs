@@ -19,8 +19,7 @@ import qualified Data.Word as Word
 compute :: Bytes.ByteString -> Word.Word32
 compute = Bits.complement . Bytes.foldl' update initial
 
-update
-  :: Word.Word32 -> Word.Word8 -> Word.Word32
+update :: Word.Word32 -> Word.Word8 -> Word.Word32
 update crc byte =
   let
     index = Bits.xor byte . unsafeWord32ToWord8 $ Bits.shiftR crc 24
@@ -35,7 +34,8 @@ initial :: Word.Word32
 initial = Bits.complement 0xefcbf201
 
 table :: Array.Array Word.Word8 Word.Word32
-table = Array.listArray (0, 255)
+table = Array.listArray
+  (0, 255)
   [ 0x00000000
   , 0x04c11db7
   , 0x09823b6e

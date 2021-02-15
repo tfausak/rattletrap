@@ -2,10 +2,10 @@
 
 module Rattletrap.Type.List where
 
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.ByteGet as ByteGet
 
 import qualified Control.Monad as Monad
 
@@ -27,8 +27,7 @@ toList (List x) = x
 bytePut :: (a -> BytePut.BytePut) -> List a -> BytePut.BytePut
 bytePut f x =
   let v = toList x
-  in (U32.bytePut . U32.fromWord32 . fromIntegral $ length v)
-  <> foldMap f v
+  in (U32.bytePut . U32.fromWord32 . fromIntegral $ length v) <> foldMap f v
 
 byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (List a)
 byteGet f = do

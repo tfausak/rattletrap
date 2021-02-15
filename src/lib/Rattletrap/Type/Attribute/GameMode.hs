@@ -2,9 +2,9 @@
 
 module Rattletrap.Type.Attribute.GameMode where
 
-import Rattletrap.Type.Common
-import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import Rattletrap.Type.Common
 
 data GameMode = GameMode
   { numBits :: Int
@@ -24,8 +24,7 @@ bitPut gameModeAttribute = do
 
 bitGet :: (Int, Int, Int) -> BitGet.BitGet GameMode
 bitGet version =
-  GameMode (numBits_ version) <$> BitGet.word8
-    (numBits_ version)
+  GameMode (numBits_ version) <$> BitGet.word8 (numBits_ version)
 
 numBits_ :: (Int, Int, Int) -> Int
 numBits_ version = if version >= (868, 12, 0) then 8 else 2

@@ -2,11 +2,11 @@
 
 module Rattletrap.Type.Rotation where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWordVector as CompressedWordVector
 import qualified Rattletrap.Type.Quaternion as Quaternion
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 data Rotation
   = CompressedWordVector CompressedWordVector.CompressedWordVector

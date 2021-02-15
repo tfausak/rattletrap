@@ -2,12 +2,12 @@
 
 module Rattletrap.Type.Attribute.Loadout where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Utility.Monad
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 data Loadout = Loadout
   { version :: U8.U8
@@ -36,22 +36,22 @@ $(deriveJson ''Loadout)
 bitPut :: Loadout -> BitPut.BitPut
 bitPut loadoutAttribute =
   U8.bitPut (version loadoutAttribute)
-  <> U32.bitPut (body loadoutAttribute)
-  <> U32.bitPut (decal loadoutAttribute)
-  <> U32.bitPut (wheels loadoutAttribute)
-  <> U32.bitPut (rocketTrail loadoutAttribute)
-  <> U32.bitPut (antenna loadoutAttribute)
-  <> U32.bitPut (topper loadoutAttribute)
-  <> U32.bitPut (unknown1 loadoutAttribute)
-  <> foldMap U32.bitPut (unknown2 loadoutAttribute)
-  <> foldMap U32.bitPut (engineAudio loadoutAttribute)
-  <> foldMap U32.bitPut (trail loadoutAttribute)
-  <> foldMap U32.bitPut (goalExplosion loadoutAttribute)
-  <> foldMap U32.bitPut (banner loadoutAttribute)
-  <> foldMap U32.bitPut (unknown3 loadoutAttribute)
-  <> foldMap U32.bitPut (unknown4 loadoutAttribute)
-  <> foldMap U32.bitPut (unknown5 loadoutAttribute)
-  <> foldMap U32.bitPut (unknown6 loadoutAttribute)
+    <> U32.bitPut (body loadoutAttribute)
+    <> U32.bitPut (decal loadoutAttribute)
+    <> U32.bitPut (wheels loadoutAttribute)
+    <> U32.bitPut (rocketTrail loadoutAttribute)
+    <> U32.bitPut (antenna loadoutAttribute)
+    <> U32.bitPut (topper loadoutAttribute)
+    <> U32.bitPut (unknown1 loadoutAttribute)
+    <> foldMap U32.bitPut (unknown2 loadoutAttribute)
+    <> foldMap U32.bitPut (engineAudio loadoutAttribute)
+    <> foldMap U32.bitPut (trail loadoutAttribute)
+    <> foldMap U32.bitPut (goalExplosion loadoutAttribute)
+    <> foldMap U32.bitPut (banner loadoutAttribute)
+    <> foldMap U32.bitPut (unknown3 loadoutAttribute)
+    <> foldMap U32.bitPut (unknown4 loadoutAttribute)
+    <> foldMap U32.bitPut (unknown5 loadoutAttribute)
+    <> foldMap U32.bitPut (unknown6 loadoutAttribute)
 
 bitGet :: BitGet.BitGet Loadout
 bitGet = do

@@ -101,7 +101,8 @@ make objects classMappings caches names =
   in ClassAttributeMap objectMap_ objectClassMap_ value_ nameMap_
 
 makeNameMap :: List.List Str.Str -> IntMap.IntMap Str.Str
-makeNameMap names = IntMap.fromDistinctAscList (zip [0 ..] (List.toList names))
+makeNameMap names =
+  IntMap.fromDistinctAscList (zip [0 ..] (List.toList names))
 
 getName :: IntMap.IntMap Str.Str -> U32.U32 -> Maybe Str.Str
 getName nameMap_ nameIndex =
@@ -217,7 +218,9 @@ getParentClassById parentCacheId xs =
   case dropWhile (\(_, _, cacheId, _) -> cacheId /= parentCacheId) xs of
     [] -> if parentCacheId == U32.fromWord32 0
       then Nothing
-      else getParentClassById (U32.fromWord32 (U32.toWord32 parentCacheId - 1)) xs
+      else getParentClassById
+        (U32.fromWord32 (U32.toWord32 parentCacheId - 1))
+        xs
     (_, parentClassId, _, _) : _ -> Just parentClassId
 
 getParentClassByName
@@ -255,7 +258,10 @@ getObjectName objectMap_ objectId = Map.lookup objectId objectMap_
 
 getClassName :: Str.Str -> Maybe Str.Str
 getClassName rawObjectName =
-  Str.fromText <$> Map.lookup (Str.toText $ normalizeObjectName rawObjectName) Data.objectClasses
+  Str.fromText
+    <$> Map.lookup
+          (Str.toText $ normalizeObjectName rawObjectName)
+          Data.objectClasses
 
 normalizeObjectName :: Str.Str -> Str.Str
 normalizeObjectName objectName =
@@ -279,10 +285,12 @@ normalizeObjectName objectName =
             else objectName
 
 classHasLocation :: Str.Str -> Bool
-classHasLocation className = Set.member (Str.toText className) Data.classesWithLocation
+classHasLocation className =
+  Set.member (Str.toText className) Data.classesWithLocation
 
 classHasRotation :: Str.Str -> Bool
-classHasRotation className = Set.member (Str.toText className) Data.classesWithRotation
+classHasRotation className =
+  Set.member (Str.toText className) Data.classesWithRotation
 
 getAttributeIdLimit :: Map U32.U32 U32.U32 -> Maybe Word
 getAttributeIdLimit attributeMap = do
@@ -290,7 +298,10 @@ getAttributeIdLimit attributeMap = do
   pure (fromIntegral (U32.toWord32 streamId))
 
 getAttributeName
-  :: ClassAttributeMap -> Map U32.U32 U32.U32 -> CompressedWord.CompressedWord -> Maybe Str.Str
+  :: ClassAttributeMap
+  -> Map U32.U32 U32.U32
+  -> CompressedWord.CompressedWord
+  -> Maybe Str.Str
 getAttributeName classAttributeMap attributeMap streamId = do
   let key = U32.fromWord32 (fromIntegral (CompressedWord.value streamId))
   attributeId <- Map.lookup key attributeMap

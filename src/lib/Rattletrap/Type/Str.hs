@@ -2,20 +2,20 @@
 
 module Rattletrap.Type.Str where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Utility.Bytes
-import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.ByteGet as ByteGet
-import qualified Rattletrap.BitGet as BitGet
 
-import qualified Data.Text.Encoding.Error as Text
-import qualified Debug.Trace as Debug
 import qualified Data.ByteString as Bytes
 import qualified Data.Char as Char
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
+import qualified Data.Text.Encoding.Error as Text
+import qualified Debug.Trace as Debug
 
 newtype Str
   = Str Text
@@ -40,8 +40,7 @@ bytePut text =
   let
     size = getTextSize text
     encode = getTextEncoder size
-  in I32.bytePut size
-  <> (BytePut.byteString . encode . addNull $ toText text)
+  in I32.bytePut size <> (BytePut.byteString . encode . addNull $ toText text)
 
 bitPut :: Str -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut

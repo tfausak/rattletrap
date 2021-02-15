@@ -1,9 +1,9 @@
 module Rattletrap.Type.U64 where
 
-import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
-import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BytePut as BytePut
 
 import qualified Data.Aeson as Aeson
 import qualified Data.Text as Text
@@ -15,8 +15,11 @@ newtype U64
   deriving (Eq, Show)
 
 instance Aeson.FromJSON U64 where
-  parseJSON = Aeson.withText "U64" $
-    either fail (pure . fromWord64) . Read.readEither . Text.unpack
+  parseJSON =
+    Aeson.withText "U64"
+      $ either fail (pure . fromWord64)
+      . Read.readEither
+      . Text.unpack
 
 instance Aeson.ToJSON U64 where
   toJSON = Aeson.toJSON . show . toWord64

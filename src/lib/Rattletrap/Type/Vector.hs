@@ -2,10 +2,10 @@
 
 module Rattletrap.Type.Vector where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 data Vector = Vector
   { size :: CompressedWord.CompressedWord
@@ -30,17 +30,15 @@ bitPut vector =
   let
     bitSize =
       round (logBase (2 :: Float) (fromIntegral (bias vector))) - 1 :: Word
-    dx =
-      fromIntegral (x vector + fromIntegral (bias vector)) :: Word
-    dy =
-      fromIntegral (y vector + fromIntegral (bias vector)) :: Word
-    dz =
-      fromIntegral (z vector + fromIntegral (bias vector)) :: Word
+    dx = fromIntegral (x vector + fromIntegral (bias vector)) :: Word
+    dy = fromIntegral (y vector + fromIntegral (bias vector)) :: Word
+    dz = fromIntegral (z vector + fromIntegral (bias vector)) :: Word
     limit = 2 ^ (bitSize + 2) :: Word
-  in CompressedWord.bitPut (size vector)
-  <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dx)
-  <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dy)
-  <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dz)
+  in
+    CompressedWord.bitPut (size vector)
+    <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dx)
+    <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dy)
+    <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dz)
 
 bitGet :: (Int, Int, Int) -> BitGet.BitGet Vector
 bitGet version = do
@@ -60,4 +58,5 @@ getBias :: CompressedWord.CompressedWord -> Word
 getBias = (2 ^) . (+ 1) . CompressedWord.value
 
 fromDelta :: Word -> CompressedWord.CompressedWord -> Int
-fromDelta bias_ x_ = fromIntegral (CompressedWord.value x_) - fromIntegral bias_
+fromDelta bias_ x_ =
+  fromIntegral (CompressedWord.value x_) - fromIntegral bias_

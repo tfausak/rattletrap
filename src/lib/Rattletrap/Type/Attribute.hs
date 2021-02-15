@@ -2,14 +2,14 @@
 
 module Rattletrap.Type.Attribute where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Type.AttributeValue as AttributeValue
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 data Attribute = Attribute
   { id :: CompressedWord.CompressedWord
@@ -25,7 +25,7 @@ $(deriveJson ''Attribute)
 bitPut :: Attribute -> BitPut.BitPut
 bitPut attribute =
   CompressedWord.bitPut (Rattletrap.Type.Attribute.id attribute)
-  <> AttributeValue.bitPut (value attribute)
+    <> AttributeValue.bitPut (value attribute)
 
 bitGet
   :: (Int, Int, Int)

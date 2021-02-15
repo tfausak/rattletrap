@@ -2,11 +2,11 @@
 
 module Rattletrap.Type.I8 where
 
-import Rattletrap.Type.Common
-import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
-import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BytePut as BytePut
+import Rattletrap.Type.Common
 
 newtype I8
   = I8 Int8

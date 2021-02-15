@@ -2,11 +2,11 @@
 
 module Rattletrap.Type.Section where
 
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Crc as Crc
-import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.ByteGet as ByteGet
 
 import qualified Control.Monad as Monad
 import qualified Data.ByteString as Bytes
@@ -45,9 +45,10 @@ bytePut putBody section =
     rawBody = BytePut.toByteString . putBody $ body section
     size_ = Bytes.length rawBody
     crc_ = Crc.compute rawBody
-  in U32.bytePut (U32.fromWord32 (fromIntegral size_))
-  <> U32.bytePut (U32.fromWord32 crc_)
-  <> BytePut.byteString rawBody
+  in
+    U32.bytePut (U32.fromWord32 (fromIntegral size_))
+    <> U32.bytePut (U32.fromWord32 crc_)
+    <> BytePut.byteString rawBody
 
 byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (Section a)
 byteGet getBody = do

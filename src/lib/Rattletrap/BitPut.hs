@@ -1,7 +1,7 @@
 module Rattletrap.BitPut where
 
-import qualified Data.Binary.Put as Binary
 import qualified Data.Binary.Bits.Put as BinaryBits
+import qualified Data.Binary.Put as Binary
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as ByteString
 import qualified Data.Word as Word

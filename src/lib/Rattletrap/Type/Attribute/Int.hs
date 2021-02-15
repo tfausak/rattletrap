@@ -3,10 +3,10 @@
 module Rattletrap.Type.Attribute.Int where
 
 import Prelude hiding (Int)
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 newtype Int = Int
   { value :: I32.I32

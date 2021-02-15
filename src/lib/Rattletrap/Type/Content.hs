@@ -2,7 +2,12 @@
 
 module Rattletrap.Type.Content where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.Cache as Cache
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.ClassMapping as ClassMapping
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Frame as Frame
@@ -13,11 +18,6 @@ import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Utility.Bytes
-import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
-import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.ByteGet as ByteGet
-import qualified Rattletrap.BitGet as BitGet
 
 import qualified Control.Monad.Trans.State as State
 import qualified Data.ByteString as Bytes
@@ -80,21 +80,22 @@ empty = Content
 bytePut :: Content -> BytePut.BytePut
 bytePut x =
   List.bytePut Str.bytePut (levels x)
-  <> List.bytePut KeyFrame.bytePut (keyFrames x)
-  <> putFrames x
-  <> List.bytePut Message.bytePut (messages x)
-  <> List.bytePut Mark.bytePut (marks x)
-  <> List.bytePut Str.bytePut (packages x)
-  <> List.bytePut Str.bytePut (objects x)
-  <> List.bytePut Str.bytePut (names x)
-  <> List.bytePut ClassMapping.bytePut (classMappings x)
-  <> List.bytePut Cache.bytePut (caches x)
-  <> foldMap BytePut.word8 (unknown x)
+    <> List.bytePut KeyFrame.bytePut (keyFrames x)
+    <> putFrames x
+    <> List.bytePut Message.bytePut (messages x)
+    <> List.bytePut Mark.bytePut (marks x)
+    <> List.bytePut Str.bytePut (packages x)
+    <> List.bytePut Str.bytePut (objects x)
+    <> List.bytePut Str.bytePut (names x)
+    <> List.bytePut ClassMapping.bytePut (classMappings x)
+    <> List.bytePut Cache.bytePut (caches x)
+    <> foldMap BytePut.word8 (unknown x)
 
 putFrames :: Content -> BytePut.BytePut
 putFrames x =
   let
-    stream = BytePut.toByteString . BitPut.toBytePut . Frame.putFrames $ frames x
+    stream =
+      BytePut.toByteString . BitPut.toBytePut . Frame.putFrames $ frames x
     -- This is a little strange. When parsing a binary replay, the stream size
     -- is given before the stream itself. When generating the JSON, the stream
     -- size is included. That allows a bit-for-bit identical binary replay to
@@ -107,11 +108,10 @@ putFrames x =
     -- <https://github.com/tfausak/rattletrap/issues/171>.
     expectedStreamSize = streamSize x
     actualStreamSize = U32.fromWord32 . fromIntegral $ Bytes.length stream
-    streamSize_ = U32.fromWord32 $ max
-      (U32.toWord32 expectedStreamSize)
-      (U32.toWord32 actualStreamSize)
-  in U32.bytePut streamSize_
-  <> BytePut.byteString (reverseBytes (padBytes (U32.toWord32 streamSize_) stream))
+    streamSize_ = U32.fromWord32
+      $ max (U32.toWord32 expectedStreamSize) (U32.toWord32 actualStreamSize)
+  in U32.bytePut streamSize_ <> BytePut.byteString
+    (reverseBytes (padBytes (U32.toWord32 streamSize_) stream))
 
 byteGet
   :: (Int, Int, Int)
@@ -145,9 +145,9 @@ byteGet version numFrames maxChannels = do
     bitGet = State.evalStateT
       (Frame.decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
-  frames_ <- either fail pure
-    . ByteGet.run (BitGet.toByteGet bitGet)
-    $ reverseBytes stream
+  frames_ <-
+    either fail pure . ByteGet.run (BitGet.toByteGet bitGet) $ reverseBytes
+      stream
   Content
       levels_
       keyFrames_

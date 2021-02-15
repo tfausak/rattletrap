@@ -2,7 +2,9 @@
 
 module Rattletrap.Type.AttributeValue where
 
-import Rattletrap.Type.Common
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Data as Data
 import qualified Rattletrap.Type.Attribute.AppliedDamage as AppliedDamage
 import qualified Rattletrap.Type.Attribute.Boolean as Boolean
 import qualified Rattletrap.Type.Attribute.Byte as Byte
@@ -18,8 +20,8 @@ import qualified Rattletrap.Type.Attribute.FlaggedByte as FlaggedByte
 import qualified Rattletrap.Type.Attribute.FlaggedInt as FlaggedInt
 import qualified Rattletrap.Type.Attribute.Float as Float
 import qualified Rattletrap.Type.Attribute.GameMode as GameMode
-import qualified Rattletrap.Type.Attribute.Int64 as Int64
 import qualified Rattletrap.Type.Attribute.Int as Int
+import qualified Rattletrap.Type.Attribute.Int64 as Int64
 import qualified Rattletrap.Type.Attribute.Loadout as Loadout
 import qualified Rattletrap.Type.Attribute.LoadoutOnline as LoadoutOnline
 import qualified Rattletrap.Type.Attribute.Loadouts as Loadouts
@@ -40,12 +42,10 @@ import qualified Rattletrap.Type.Attribute.TeamPaint as TeamPaint
 import qualified Rattletrap.Type.Attribute.Title as Title
 import qualified Rattletrap.Type.Attribute.UniqueId as UniqueId
 import qualified Rattletrap.Type.Attribute.WeldedInfo as WeldedInfo
-import qualified Rattletrap.Data as Data
 import qualified Rattletrap.Type.AttributeType as AttributeType
+import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 import qualified Data.Map as Map
 
@@ -132,24 +132,30 @@ bitPut value = case value of
   WeldedInfo x -> WeldedInfo.bitPut x
 
 bitGet
-  :: (Int, Int, Int) -> Map U32.U32 Str.Str -> Str.Str -> BitGet.BitGet AttributeValue
+  :: (Int, Int, Int)
+  -> Map U32.U32 Str.Str
+  -> Str.Str
+  -> BitGet.BitGet AttributeValue
 bitGet version objectMap name = do
   constructor <- maybe
     (fail ("[RT04] don't know how to get attribute value " <> show name))
     pure
     (Map.lookup (Str.toText name) Data.attributeTypes)
   case constructor of
-    AttributeType.AppliedDamage -> AppliedDamage <$> AppliedDamage.bitGet version
+    AttributeType.AppliedDamage ->
+      AppliedDamage <$> AppliedDamage.bitGet version
     AttributeType.Boolean -> Boolean <$> Boolean.bitGet
     AttributeType.Byte -> Byte <$> Byte.bitGet
     AttributeType.CamSettings -> CamSettings <$> CamSettings.bitGet version
     AttributeType.ClubColors -> ClubColors <$> ClubColors.bitGet
-    AttributeType.CustomDemolish -> CustomDemolish <$> CustomDemolish.bitGet version
+    AttributeType.CustomDemolish ->
+      CustomDemolish <$> CustomDemolish.bitGet version
     AttributeType.DamageState -> DamageState <$> DamageState.bitGet version
     AttributeType.Demolish -> Demolish <$> Demolish.bitGet version
     AttributeType.Enum -> Enum <$> Enum.bitGet
     AttributeType.Explosion -> Explosion <$> Explosion.bitGet version
-    AttributeType.ExtendedExplosion -> ExtendedExplosion <$> ExtendedExplosion.bitGet version
+    AttributeType.ExtendedExplosion ->
+      ExtendedExplosion <$> ExtendedExplosion.bitGet version
     AttributeType.FlaggedInt -> FlaggedInt <$> FlaggedInt.bitGet
     AttributeType.FlaggedByte -> FlaggedByte <$> FlaggedByte.bitGet
     AttributeType.Float -> Float <$> Float.bitGet
@@ -157,19 +163,24 @@ bitGet version objectMap name = do
     AttributeType.Int -> Int <$> Int.bitGet
     AttributeType.Int64 -> Int64 <$> Int64.bitGet
     AttributeType.Loadout -> Loadout <$> Loadout.bitGet
-    AttributeType.LoadoutOnline -> LoadoutOnline <$> LoadoutOnline.bitGet version objectMap
+    AttributeType.LoadoutOnline ->
+      LoadoutOnline <$> LoadoutOnline.bitGet version objectMap
     AttributeType.Loadouts -> Loadouts <$> Loadouts.bitGet
-    AttributeType.LoadoutsOnline -> LoadoutsOnline <$> LoadoutsOnline.bitGet version objectMap
+    AttributeType.LoadoutsOnline ->
+      LoadoutsOnline <$> LoadoutsOnline.bitGet version objectMap
     AttributeType.Location -> Location <$> Location.bitGet version
     AttributeType.MusicStinger -> MusicStinger <$> MusicStinger.bitGet
     AttributeType.PartyLeader -> PartyLeader <$> PartyLeader.bitGet version
     AttributeType.Pickup -> Pickup <$> Pickup.bitGet
     AttributeType.PickupNew -> PickupNew <$> PickupNew.bitGet
-    AttributeType.PlayerHistoryKey -> PlayerHistoryKey <$> PlayerHistoryKey.bitGet
-    AttributeType.PrivateMatchSettings -> PrivateMatchSettings <$> PrivateMatchSettings.bitGet
+    AttributeType.PlayerHistoryKey ->
+      PlayerHistoryKey <$> PlayerHistoryKey.bitGet
+    AttributeType.PrivateMatchSettings ->
+      PrivateMatchSettings <$> PrivateMatchSettings.bitGet
     AttributeType.QWord -> QWord <$> QWord.bitGet
     AttributeType.Reservation -> Reservation <$> Reservation.bitGet version
-    AttributeType.RigidBodyState -> RigidBodyState <$> RigidBodyState.bitGet version
+    AttributeType.RigidBodyState ->
+      RigidBodyState <$> RigidBodyState.bitGet version
     AttributeType.StatEvent -> StatEvent <$> StatEvent.bitGet
     AttributeType.String -> String <$> String.bitGet
     AttributeType.TeamPaint -> TeamPaint <$> TeamPaint.bitGet

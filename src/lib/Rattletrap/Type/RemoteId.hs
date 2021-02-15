@@ -2,18 +2,18 @@
 
 module Rattletrap.Type.RemoteId where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
-import Rattletrap.Utility.Bytes
 import qualified Rattletrap.Type.U8 as U8
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
+import Rattletrap.Utility.Bytes
 
+import qualified Data.ByteString as Bytes
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Word as Word
-import qualified Data.ByteString as Bytes
 
 data RemoteId
   = PlayStation Text [Word8]
@@ -32,8 +32,7 @@ bitPut :: RemoteId -> BitPut.BitPut
 bitPut remoteId = case remoteId of
   PlayStation name bytes ->
     let rawName = reverseBytes (padBytes (16 :: Int) (encodeLatin1 name))
-    in BitPut.byteString rawName
-    <> BitPut.byteString (Bytes.pack bytes)
+    in BitPut.byteString rawName <> BitPut.byteString (Bytes.pack bytes)
   PsyNet e -> case e of
     Left l -> U64.bitPut l
     Right (a, b, c, d) -> putWord256 a b c d
@@ -43,13 +42,9 @@ bitPut remoteId = case remoteId of
   Xbox word64 -> U64.bitPut word64
   Epic str -> Str.bitPut str
 
-putWord256
-  :: U64.U64 -> U64.U64 -> U64.U64 -> U64.U64 -> BitPut.BitPut
+putWord256 :: U64.U64 -> U64.U64 -> U64.U64 -> U64.U64 -> BitPut.BitPut
 putWord256 a b c d =
-  U64.bitPut a
-  <> U64.bitPut b
-  <> U64.bitPut c
-  <> U64.bitPut d
+  U64.bitPut a <> U64.bitPut b <> U64.bitPut c <> U64.bitPut d
 
 bitGet :: (Int, Int, Int) -> U8.U8 -> BitGet.BitGet RemoteId
 bitGet version systemId = case U8.toWord8 systemId of

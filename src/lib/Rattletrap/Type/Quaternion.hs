@@ -2,10 +2,10 @@
 
 module Rattletrap.Type.Quaternion where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 import qualified Data.List as List
 import qualified Data.Maybe as Maybe
@@ -66,8 +66,7 @@ maxComponent quaternion =
     y_ = y quaternion
     z_ = z quaternion
     w_ = w quaternion
-    parts =
-      [(x_, X), (y_, Y), (z_, Z), (w_, W)]
+    parts = [(x_, X), (y_, Y), (z_, Z), (w_, W)]
     biggestPart = maximumOn fst parts
     roundTrip = decompressPart . compressPart
     computedPart = Maybe.fromMaybe
@@ -98,12 +97,12 @@ maxValue = 1.0 / sqrt 2.0
 bitPut :: Quaternion -> BitPut.BitPut
 bitPut q =
   let c = maxComponent q
-  in putComponent c
-  <> case c of
-    X -> putParts (y q) (z q) (w q)
-    Y -> putParts (x q) (z q) (w q)
-    Z -> putParts (x q) (y q) (w q)
-    W -> putParts (x q) (y q) (z q)
+  in
+    putComponent c <> case c of
+      X -> putParts (y q) (z q) (w q)
+      Y -> putParts (x q) (z q) (w q)
+      Z -> putParts (x q) (y q) (w q)
+      W -> putParts (x q) (y q) (z q)
 
 putComponent :: Component -> BitPut.BitPut
 putComponent component = CompressedWord.bitPut
@@ -118,10 +117,7 @@ putComponent component = CompressedWord.bitPut
   )
 
 putParts :: Double -> Double -> Double -> BitPut.BitPut
-putParts a b c =
-  putPart a
-  <> putPart b
-  <> putPart c
+putParts a b c = putPart a <> putPart b <> putPart c
 
 putPart :: Double -> BitPut.BitPut
 putPart = CompressedWord.bitPut . compressPart

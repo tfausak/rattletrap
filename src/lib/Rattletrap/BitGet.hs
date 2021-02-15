@@ -1,8 +1,8 @@
 module Rattletrap.BitGet where
 
 import qualified Control.Monad as Monad
-import qualified Data.Binary.Get as Binary
 import qualified Data.Binary.Bits.Get as BinaryBits
+import qualified Data.Binary.Get as Binary
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
@@ -33,8 +33,10 @@ fromByteGet f n = do
 bits :: Bits.Bits a => Int -> BitGet a
 bits n =
   foldr
-    (\bit x -> let y = Bits.shiftL x 1 in if bit then Bits.setBit y 0 else y)
-    Bits.zeroBits <$> Monad.replicateM n bool
+      (\bit x -> let y = Bits.shiftL x 1 in if bit then Bits.setBit y 0 else y
+      )
+      Bits.zeroBits
+    <$> Monad.replicateM n bool
 
 bool :: BitGet Bool
 bool = BinaryBits.getBool

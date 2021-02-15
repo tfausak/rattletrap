@@ -2,9 +2,9 @@
 
 module Rattletrap.Type.CompressedWord where
 
-import Rattletrap.Type.Common
-import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import Rattletrap.Type.Common
 
 import qualified Data.Bits as Bits
 
@@ -26,8 +26,7 @@ bitPut compressedWord =
     maxBits = getMaxBits limit_
   in putCompressedWordStep limit_ value_ maxBits 0 0
 
-putCompressedWordStep
-  :: Word -> Word -> Int -> Int -> Word -> BitPut.BitPut
+putCompressedWordStep :: Word -> Word -> Int -> Int -> Word -> BitPut.BitPut
 putCompressedWordStep limit_ value_ maxBits position soFar =
   if position < maxBits
     then do
@@ -38,8 +37,7 @@ putCompressedWordStep limit_ value_ maxBits position soFar =
           let
             bit = Bits.testBit value_ position
             delta = if bit then x else 0
-          in BitPut.bool bit
-          <> putCompressedWordStep
+          in BitPut.bool bit <> putCompressedWordStep
             limit_
             value_
             maxBits
@@ -55,8 +53,7 @@ getMaxBits x =
   in if x < 1024 && x == 2 ^ n then n + 1 else n
 
 bitGet :: Word -> BitGet.BitGet CompressedWord
-bitGet limit_ =
-  CompressedWord limit_ <$> step limit_ (getMaxBits_ limit_) 0 0
+bitGet limit_ = CompressedWord limit_ <$> step limit_ (getMaxBits_ limit_) 0 0
 
 getMaxBits_ :: Word -> Word
 getMaxBits_ x = do

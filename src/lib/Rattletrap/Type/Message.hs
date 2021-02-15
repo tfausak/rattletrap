@@ -2,11 +2,11 @@
 
 module Rattletrap.Type.Message where
 
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.ByteGet as ByteGet
 
 data Message = Message
   { frame :: U32.U32
@@ -21,10 +21,11 @@ data Message = Message
 $(deriveJson ''Message)
 
 bytePut :: Message -> BytePut.BytePut
-bytePut x = do
-  U32.bytePut (frame x)
-  <> Str.bytePut (name x)
-  <> Str.bytePut (value x)
+bytePut x =
+  do
+      U32.bytePut (frame x)
+    <> Str.bytePut (name x)
+    <> Str.bytePut (value x)
 
 byteGet :: ByteGet.ByteGet Message
 byteGet = Message <$> U32.byteGet <*> Str.byteGet <*> Str.byteGet

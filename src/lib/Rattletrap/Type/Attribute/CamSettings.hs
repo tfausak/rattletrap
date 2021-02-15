@@ -2,11 +2,11 @@
 
 module Rattletrap.Type.Attribute.CamSettings where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import Rattletrap.Utility.Monad
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 data CamSettings = CamSettings
   { fov :: F32.F32
@@ -24,15 +24,14 @@ $(deriveJson ''CamSettings)
 bitPut :: CamSettings -> BitPut.BitPut
 bitPut camSettingsAttribute =
   F32.bitPut (fov camSettingsAttribute)
-  <> F32.bitPut (height camSettingsAttribute)
-  <> F32.bitPut (angle camSettingsAttribute)
-  <> F32.bitPut (distance camSettingsAttribute)
-  <> F32.bitPut (stiffness camSettingsAttribute)
-  <> F32.bitPut (swivelSpeed camSettingsAttribute)
-  <> foldMap F32.bitPut (transitionSpeed camSettingsAttribute)
+    <> F32.bitPut (height camSettingsAttribute)
+    <> F32.bitPut (angle camSettingsAttribute)
+    <> F32.bitPut (distance camSettingsAttribute)
+    <> F32.bitPut (stiffness camSettingsAttribute)
+    <> F32.bitPut (swivelSpeed camSettingsAttribute)
+    <> foldMap F32.bitPut (transitionSpeed camSettingsAttribute)
 
-bitGet
-  :: (Int, Int, Int) -> BitGet.BitGet CamSettings
+bitGet :: (Int, Int, Int) -> BitGet.BitGet CamSettings
 bitGet version =
   CamSettings
     <$> F32.bitGet

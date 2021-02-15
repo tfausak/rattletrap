@@ -2,14 +2,14 @@
 
 module Rattletrap.Type.Replication.Updated where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Type.Attribute as Attribute
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
+import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 import qualified Data.Map as Map
 
@@ -22,9 +22,9 @@ $(deriveJson ''Updated)
 bitPut :: Updated -> BitPut.BitPut
 bitPut x =
   foldMap
-    (\ y -> BitPut.bool True <> Attribute.bitPut y)
-    (List.toList $ attributes x)
-  <> BitPut.bool False
+      (\y -> BitPut.bool True <> Attribute.bitPut y)
+      (List.toList $ attributes x)
+    <> BitPut.bool False
 
 bitGet
   :: (Int, Int, Int)
@@ -33,7 +33,7 @@ bitGet
   -> CompressedWord.CompressedWord
   -> BitGet.BitGet Updated
 bitGet version classes actors actor = fmap Updated . List.untilM $ do
-    p <- BitGet.bool
-    if p
-      then Just <$> Attribute.bitGet version classes actors actor
-      else pure Nothing
+  p <- BitGet.bool
+  if p
+    then Just <$> Attribute.bitGet version classes actors actor
+    else pure Nothing

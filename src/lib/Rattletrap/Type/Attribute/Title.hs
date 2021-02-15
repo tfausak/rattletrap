@@ -2,10 +2,10 @@
 
 module Rattletrap.Type.Attribute.Title where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 data Title = Title
   { unknown1 :: Bool
@@ -24,13 +24,13 @@ $(deriveJson ''Title)
 bitPut :: Title -> BitPut.BitPut
 bitPut titleAttribute =
   BitPut.bool (unknown1 titleAttribute)
-  <> BitPut.bool (unknown2 titleAttribute)
-  <> U32.bitPut (unknown3 titleAttribute)
-  <> U32.bitPut (unknown4 titleAttribute)
-  <> U32.bitPut (unknown5 titleAttribute)
-  <> U32.bitPut (unknown6 titleAttribute)
-  <> U32.bitPut (unknown7 titleAttribute)
-  <> BitPut.bool (unknown8 titleAttribute)
+    <> BitPut.bool (unknown2 titleAttribute)
+    <> U32.bitPut (unknown3 titleAttribute)
+    <> U32.bitPut (unknown4 titleAttribute)
+    <> U32.bitPut (unknown5 titleAttribute)
+    <> U32.bitPut (unknown6 titleAttribute)
+    <> U32.bitPut (unknown7 titleAttribute)
+    <> BitPut.bool (unknown8 titleAttribute)
 
 bitGet :: BitGet.BitGet Title
 bitGet =

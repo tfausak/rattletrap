@@ -2,15 +2,15 @@
 
 module Rattletrap.Type.ReplicationValue where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import Rattletrap.Type.Common
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Replication.Destroyed as Destroyed
 import qualified Rattletrap.Type.Replication.Spawned as Spawned
 import qualified Rattletrap.Type.Replication.Updated as Updated
-import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
-import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -29,17 +29,9 @@ $(deriveJson ''ReplicationValue)
 
 bitPut :: ReplicationValue -> BitPut.BitPut
 bitPut value = case value of
-  Spawned x ->
-    BitPut.bool True
-    <> BitPut.bool True
-    <> Spawned.bitPut x
-  Updated x ->
-    BitPut.bool True
-    <> BitPut.bool False
-    <> Updated.bitPut x
-  Destroyed x ->
-    BitPut.bool False
-    <> Destroyed.bitPut x
+  Spawned x -> BitPut.bool True <> BitPut.bool True <> Spawned.bitPut x
+  Updated x -> BitPut.bool True <> BitPut.bool False <> Updated.bitPut x
+  Destroyed x -> BitPut.bool False <> Destroyed.bitPut x
 
 bitGet
   :: (Int, Int, Int)
@@ -56,15 +48,7 @@ bitGet version classAttributeMap actorId = do
     then do
       isNew <- Trans.lift BitGet.bool
       if isNew
-        then
-          Spawned
-            <$> Spawned.bitGet version classAttributeMap actorId
+        then Spawned <$> Spawned.bitGet version classAttributeMap actorId
         else Updated <$> Trans.lift
-          (Updated.bitGet
-            version
-            classAttributeMap
-            actorMap
-            actorId
-          )
-    else Destroyed
-      <$> Trans.lift Destroyed.bitGet
+          (Updated.bitGet version classAttributeMap actorMap actorId)
+    else Destroyed <$> Trans.lift Destroyed.bitGet

@@ -2,11 +2,11 @@
 
 module Rattletrap.Type.ClassMapping where
 
+import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.ByteGet as ByteGet
 
 data ClassMapping = ClassMapping
   { name :: Str.Str
@@ -17,9 +17,7 @@ data ClassMapping = ClassMapping
 $(deriveJson ''ClassMapping)
 
 bytePut :: ClassMapping -> BytePut.BytePut
-bytePut x =
-  Str.bytePut (name x)
-  <> U32.bytePut (streamId x)
+bytePut x = Str.bytePut (name x) <> U32.bytePut (streamId x)
 
 byteGet :: ByteGet.ByteGet ClassMapping
 byteGet = ClassMapping <$> Str.byteGet <*> U32.byteGet

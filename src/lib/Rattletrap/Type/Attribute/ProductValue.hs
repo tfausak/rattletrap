@@ -2,13 +2,13 @@
 
 module Rattletrap.Type.Attribute.ProductValue where
 
+import qualified Rattletrap.BitGet as BitGet
+import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Utility.Monad
-import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.BitGet as BitGet
 
 data ProductValue
   = PaintedOld CompressedWord.CompressedWord
@@ -32,9 +32,7 @@ bitPut val = case val of
   SpecialEdition x -> BitPut.bits 31 x
   UserColorOld x -> case x of
     Nothing -> BitPut.bool False
-    Just y ->
-      BitPut.bool True
-      <> BitPut.bits 31 y
+    Just y -> BitPut.bool True <> BitPut.bits 31 y
   UserColorNew x -> U32.bitPut x
   TitleId x -> Str.bitPut x
 
