@@ -15,19 +15,8 @@ type BitPut = BitPutM ()
 
 newtype BitPutM a = BitPutM (BinaryBits.BitPut a)
 
-instance Functor BitPutM where
-  fmap f = fromBinaryBits . fmap f . toBinaryBits
-
-instance Applicative BitPutM where
-  pure = fromBinaryBits . pure
-
-  x <*> y = fromBinaryBits $ toBinaryBits x <*> toBinaryBits y
-
--- instance Monad BitPutM where
---   x >>= f = fromBinaryBits $ toBinaryBits x >>= toBinaryBits . f
-
 instance Semigroup (BitPutM a) where
-  x <> y = fromBinaryBits $ toBinaryBits x *> toBinaryBits y
+  x <> y = fromBinaryBits $ toBinaryBits x >> toBinaryBits y
 
 instance Monoid (BitPutM ()) where
   mempty = fromBinaryBits $ pure ()
