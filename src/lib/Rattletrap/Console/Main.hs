@@ -11,6 +11,7 @@ import qualified Data.Version as Version
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified Paths_rattletrap as This
+import qualified Rattletrap.Console.Mode as Mode
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Utility.Helper as Rattletrap
 import qualified System.Console.GetOpt as Console
@@ -39,15 +40,15 @@ rattletrap name arguments = do
 
 getDecoder :: Config -> Bytes.ByteString -> Either String Replay.FullReplay
 getDecoder config = case getMode config of
-  ModeDecode -> Rattletrap.decodeReplayFile $ configFast config
-  ModeEncode -> Rattletrap.decodeReplayJson
+  Mode.Decode -> Rattletrap.decodeReplayFile $ configFast config
+  Mode.Encode -> Rattletrap.decodeReplayJson
 
 getEncoder :: Config -> Replay.FullReplay -> Bytes.ByteString
 getEncoder config = case getMode config of
-  ModeDecode -> if configCompact config
+  Mode.Decode -> if configCompact config
     then LazyBytes.toStrict . Json.encode
     else Rattletrap.encodeReplayJson
-  ModeEncode -> Rattletrap.encodeReplayFile $ configFast config
+  Mode.Encode -> Rattletrap.encodeReplayFile $ configFast config
 
 getInput :: Config -> IO Bytes.ByteString
 getInput config = case configInput config of
@@ -125,7 +126,7 @@ modeOption = Console.Option
   ["mode"]
   (Console.ReqArg
     (\rawMode config -> do
-      mode <- parseMode rawMode
+      mode <- Mode.fromString rawMode
       pure config { configMode = Just mode }
     )
     "MODE"
@@ -157,7 +158,7 @@ data Config = Config
   , configFast :: Bool
   , configHelp :: Bool
   , configInput :: Maybe String
-  , configMode :: Maybe Mode
+  , configMode :: Maybe Mode.Mode
   , configOutput :: Maybe String
   , configVersion :: Bool
   }
@@ -174,28 +175,17 @@ defaultConfig = Config
   , configVersion = False
   }
 
-getMode :: Config -> Mode
+getMode :: Config -> Mode.Mode
 getMode config = case getExtension (configInput config) of
-  ".json" -> ModeEncode
-  ".replay" -> ModeDecode
+  ".json" -> Mode.Encode
+  ".replay" -> Mode.Decode
   _ -> case getExtension (configOutput config) of
-    ".json" -> ModeDecode
-    ".replay" -> ModeEncode
-    _ -> ModeDecode
+    ".json" -> Mode.Decode
+    ".replay" -> Mode.Encode
+    _ -> Mode.Decode
 
 getExtension :: Maybe String -> String
 getExtension = maybe "" Path.takeExtension
-
-data Mode
-  = ModeDecode
-  | ModeEncode
-  deriving (Show)
-
-parseMode :: String -> Either String Mode
-parseMode mode = case mode of
-  "decode" -> Right ModeDecode
-  "encode" -> Right ModeEncode
-  _ -> Left (Printf.printf "invalid mode: %s" (show mode))
 
 printUnexpectedArguments :: [String] -> IO ()
 printUnexpectedArguments = mapM_ printUnexpectedArgument
