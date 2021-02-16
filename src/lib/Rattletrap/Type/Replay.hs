@@ -28,22 +28,25 @@ data ReplayWith header content = Replay
 $(deriveJson ''ReplayWith)
 
 bytePut :: Replay -> BytePut.BytePut
-bytePut x = Section.bytePut Header.putHeader (header x)
+bytePut x = Section.bytePut Header.bytePut (header x)
   <> Section.bytePut Content.bytePut (content x)
 
 byteGet :: Bool -> ByteGet.ByteGet Replay
 byteGet fast = do
-  header_ <- Section.byteGet $ const Header.decodeHeader
-  content_ <- if fast
-    then pure $ Section.create Content.bytePut Content.empty
-    else
-      let body = Section.body header_
-      in
-        Section.byteGet . const $ Content.byteGet
-          (getVersion body)
-          (getNumFrames body)
-          (getMaxChannels body)
-  pure $ Replay header_ content_
+  hs <- Section.byteGet $ ByteGet.byteString . fromIntegral . U32.toWord32
+  h <- either fail pure . ByteGet.run Header.byteGet $ Section.body hs
+  cs <- Section.byteGet $ ByteGet.byteString . fromIntegral . U32.toWord32
+  c <- if fast
+    then pure Content.empty
+    else either fail pure . ByteGet.run (getContent h) $ Section.body cs
+  pure Replay
+    { header = hs { Section.body = h }
+    , content = cs { Section.body = c }
+    }
+
+getContent :: Header.Header -> ByteGet.ByteGet Content.Content
+getContent h =
+  Content.byteGet (getVersion h) (getNumFrames h) (getMaxChannels h)
 
 getVersion :: Header.Header -> Version.Version
 getVersion x = Version.Version

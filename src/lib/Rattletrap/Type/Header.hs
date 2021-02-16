@@ -59,16 +59,16 @@ data Header = Header
 
 $(deriveJson ''Header)
 
-putHeader :: Header -> BytePut.BytePut
-putHeader x =
+bytePut :: Header -> BytePut.BytePut
+bytePut x =
   U32.bytePut (engineVersion x)
     <> U32.bytePut (licenseeVersion x)
     <> foldMap U32.bytePut (patchVersion x)
     <> Str.bytePut (label x)
     <> Dictionary.bytePut Property.bytePut (properties x)
 
-decodeHeader :: ByteGet.ByteGet Header
-decodeHeader = do
+byteGet :: ByteGet.ByteGet Header
+byteGet = do
   (major, minor) <- (,) <$> U32.byteGet <*> U32.byteGet
   Header major minor
     <$> whenMaybe
