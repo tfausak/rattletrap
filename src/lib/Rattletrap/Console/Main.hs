@@ -11,13 +11,13 @@ import qualified Data.Version as Version
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified Paths_rattletrap as This
+import qualified Rattletrap.Console.Config as Config
 import qualified Rattletrap.Console.Mode as Mode
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Utility.Helper as Rattletrap
 import qualified System.Console.GetOpt as Console
 import qualified System.Environment as Environment
 import qualified System.Exit as Exit
-import qualified System.FilePath as Path
 import qualified System.IO as IO
 import qualified Text.Printf as Printf
 
@@ -30,28 +30,28 @@ main = do
 rattletrap :: String -> [String] -> IO ()
 rattletrap name arguments = do
   config <- getConfig arguments
-  Monad.when (configHelp config) (printHelp name *> Exit.exitFailure)
-  Monad.when (configVersion config) (printVersion *> Exit.exitFailure)
+  Monad.when (Config.help config) (printHelp name *> Exit.exitFailure)
+  Monad.when (Config.version config) (printVersion *> Exit.exitFailure)
   input <- getInput config
   let decode = getDecoder config
   replay <- either fail pure (decode input)
   let encode = getEncoder config
   putOutput config (encode replay)
 
-getDecoder :: Config -> Bytes.ByteString -> Either String Replay.FullReplay
-getDecoder config = case getMode config of
-  Mode.Decode -> Rattletrap.decodeReplayFile $ configFast config
+getDecoder :: Config.Config -> Bytes.ByteString -> Either String Replay.FullReplay
+getDecoder config = case Config.getMode config of
+  Mode.Decode -> Rattletrap.decodeReplayFile $ Config.fast config
   Mode.Encode -> Rattletrap.decodeReplayJson
 
-getEncoder :: Config -> Replay.FullReplay -> Bytes.ByteString
-getEncoder config = case getMode config of
-  Mode.Decode -> if configCompact config
+getEncoder :: Config.Config -> Replay.FullReplay -> Bytes.ByteString
+getEncoder config = case Config.getMode config of
+  Mode.Decode -> if Config.compact config
     then LazyBytes.toStrict . Json.encode
     else Rattletrap.encodeReplayJson
-  Mode.Encode -> Rattletrap.encodeReplayFile $ configFast config
+  Mode.Encode -> Rattletrap.encodeReplayFile $ Config.fast config
 
-getInput :: Config -> IO Bytes.ByteString
-getInput config = case configInput config of
+getInput :: Config.Config -> IO Bytes.ByteString
+getInput config = case Config.input config of
   Nothing -> Bytes.getContents
   Just fileOrUrl -> case Client.parseUrlThrow fileOrUrl of
     Nothing -> Bytes.readFile fileOrUrl
@@ -60,10 +60,10 @@ getInput config = case configInput config of
       response <- Client.httpLbs request manager
       pure (LazyBytes.toStrict (Client.responseBody response))
 
-putOutput :: Config -> Bytes.ByteString -> IO ()
-putOutput = maybe Bytes.putStr Bytes.writeFile . configOutput
+putOutput :: Config.Config -> Bytes.ByteString -> IO ()
+putOutput = maybe Bytes.putStr Bytes.writeFile . Config.output
 
-getConfig :: [String] -> IO Config
+getConfig :: [String] -> IO Config.Config
 getConfig arguments = do
   let
     (updates, unexpectedArguments, unknownOptions, problems) =
@@ -72,11 +72,11 @@ getConfig arguments = do
   printUnknownOptions unknownOptions
   printProblems problems
   Monad.unless (null problems) Exit.exitFailure
-  either fail pure (Monad.foldM applyUpdate defaultConfig updates)
+  either fail pure (Monad.foldM applyUpdate Config.initial updates)
 
 type Option = Console.OptDescr Update
 
-type Update = Config -> Either String Config
+type Update = Config.Config -> Either String Config.Config
 
 options :: [Option]
 options =
@@ -93,21 +93,21 @@ compactOption :: Option
 compactOption = Console.Option
   ['c']
   ["compact"]
-  (Console.NoArg (\config -> pure config { configCompact = True }))
+  (Console.NoArg (\config -> pure config { Config.compact = True }))
   "minify JSON output"
 
 fastOption :: Option
 fastOption = Console.Option
   ['f']
   ["fast"]
-  (Console.NoArg (\config -> pure config { configFast = True }))
+  (Console.NoArg (\config -> pure config { Config.fast = True }))
   "only encode or decode the header"
 
 helpOption :: Option
 helpOption = Console.Option
   ['h']
   ["help"]
-  (Console.NoArg (\config -> pure config { configHelp = True }))
+  (Console.NoArg (\config -> pure config { Config.help = True }))
   "show the help"
 
 inputOption :: Option
@@ -115,7 +115,7 @@ inputOption = Console.Option
   ['i']
   ["input"]
   (Console.ReqArg
-    (\input config -> pure config { configInput = Just input })
+    (\input config -> pure config { Config.input = Just input })
     "FILE|URL"
   )
   "input file or URL"
@@ -127,7 +127,7 @@ modeOption = Console.Option
   (Console.ReqArg
     (\rawMode config -> do
       mode <- Mode.fromString rawMode
-      pure config { configMode = Just mode }
+      pure config { Config.mode = Just mode }
     )
     "MODE"
   )
@@ -138,7 +138,7 @@ outputOption = Console.Option
   ['o']
   ["output"]
   (Console.ReqArg
-    (\output config -> pure config { configOutput = Just output })
+    (\output config -> pure config { Config.output = Just output })
     "FILE"
   )
   "output file"
@@ -147,45 +147,11 @@ versionOption :: Option
 versionOption = Console.Option
   ['v']
   ["version"]
-  (Console.NoArg (\config -> pure config { configVersion = True }))
+  (Console.NoArg (\config -> pure config { Config.version = True }))
   "show the version"
 
-applyUpdate :: Config -> Update -> Either String Config
+applyUpdate :: Config.Config -> Update -> Either String Config.Config
 applyUpdate config update = update config
-
-data Config = Config
-  { configCompact :: Bool
-  , configFast :: Bool
-  , configHelp :: Bool
-  , configInput :: Maybe String
-  , configMode :: Maybe Mode.Mode
-  , configOutput :: Maybe String
-  , configVersion :: Bool
-  }
-  deriving Show
-
-defaultConfig :: Config
-defaultConfig = Config
-  { configCompact = False
-  , configFast = False
-  , configHelp = False
-  , configInput = Nothing
-  , configMode = Nothing
-  , configOutput = Nothing
-  , configVersion = False
-  }
-
-getMode :: Config -> Mode.Mode
-getMode config = case getExtension (configInput config) of
-  ".json" -> Mode.Encode
-  ".replay" -> Mode.Decode
-  _ -> case getExtension (configOutput config) of
-    ".json" -> Mode.Decode
-    ".replay" -> Mode.Encode
-    _ -> Mode.Decode
-
-getExtension :: Maybe String -> String
-getExtension = maybe "" Path.takeExtension
 
 printUnexpectedArguments :: [String] -> IO ()
 printUnexpectedArguments = mapM_ printUnexpectedArgument
