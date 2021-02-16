@@ -45,7 +45,7 @@ rattletrap name arguments = do
 
 getDecoder :: Config.Config -> Bytes.ByteString -> Either String Replay.Replay
 getDecoder config = case Config.getMode config of
-  Mode.Decode -> Rattletrap.decodeReplayFile $ Config.fast config
+  Mode.Decode -> Rattletrap.decodeReplayFile (Config.fast config) (Config.skipCrc config)
   Mode.Encode -> Rattletrap.decodeReplayJson
 
 getEncoder :: Config.Config -> Replay.Replay -> Bytes.ByteString

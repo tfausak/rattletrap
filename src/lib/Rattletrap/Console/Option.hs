@@ -13,6 +13,7 @@ all =
   , input
   , mode
   , output
+  , skipCrc
   , version
   ]
 
@@ -66,6 +67,13 @@ output = Console.Option
     "FILE"
   )
   "output file"
+
+skipCrc :: Option
+skipCrc = Console.Option
+  []
+  ["skip-crc"]
+  (Console.NoArg Flag.SkipCrc)
+  "skips the CRC"
 
 version :: Option
 version = Console.Option

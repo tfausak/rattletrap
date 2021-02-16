@@ -11,6 +11,7 @@ data Config = Config
   , input :: Maybe String
   , mode :: Maybe Mode.Mode
   , output :: Maybe String
+  , skipCrc :: Bool
   , version :: Bool
   }
   deriving (Eq, Show)
@@ -23,6 +24,7 @@ initial = Config
   , input = Nothing
   , mode = Nothing
   , output = Nothing
+  , skipCrc = False
   , version = False
   }
 
@@ -36,6 +38,7 @@ applyFlag config flag = case flag of
     y <- Mode.fromString x
     Right config { mode = Just y }
   Flag.Output x -> Right config { output = Just x }
+  Flag.SkipCrc -> Right config { skipCrc = True }
   Flag.Version -> Right config { version = True }
 
 getMode :: Config -> Mode.Mode

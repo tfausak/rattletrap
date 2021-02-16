@@ -31,11 +31,11 @@ bytePut :: Replay -> BytePut.BytePut
 bytePut x = Section.bytePut Header.bytePut (header x)
   <> Section.bytePut Content.bytePut (content x)
 
-byteGet :: Bool -> ByteGet.ByteGet Replay
-byteGet fast = do
-  hs <- Section.byteGet $ ByteGet.byteString . fromIntegral . U32.toWord32
+byteGet :: Bool -> Bool -> ByteGet.ByteGet Replay
+byteGet fast skip = do
+  hs <- Section.byteGet skip $ ByteGet.byteString . fromIntegral . U32.toWord32
   h <- either fail pure . ByteGet.run Header.byteGet $ Section.body hs
-  cs <- Section.byteGet $ ByteGet.byteString . fromIntegral . U32.toWord32
+  cs <- Section.byteGet skip $ ByteGet.byteString . fromIntegral . U32.toWord32
   c <- if fast
     then pure Content.empty
     else either fail pure . ByteGet.run (getContent h) $ Section.body cs

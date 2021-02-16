@@ -20,8 +20,8 @@ import qualified Data.ByteString.Lazy as LazyBytes
 
 -- | Parses a raw replay.
 decodeReplayFile
-  :: Bool -> Bytes.ByteString -> Either String Replay.Replay
-decodeReplayFile = ByteGet.run . Replay.byteGet
+  :: Bool -> Bool -> Bytes.ByteString -> Either String Replay.Replay
+decodeReplayFile fast = ByteGet.run . Replay.byteGet fast
 
 -- | Encodes a replay as JSON.
 encodeReplayJson :: Replay.Replay -> Bytes.ByteString
