@@ -14,10 +14,10 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 
-type FullReplay = Replay (Section.Section Header.Header) (Section.Section Content.Content)
+type Replay = ReplayWith (Section.Section Header.Header) (Section.Section Content.Content)
 
 -- | A Rocket League replay.
-data Replay header content = Replay
+data ReplayWith header content = Replay
   { header :: header
   -- ^ This has most of the high-level metadata.
   , content :: content
@@ -25,13 +25,13 @@ data Replay header content = Replay
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Replay)
+$(deriveJson ''ReplayWith)
 
-bytePut :: FullReplay -> BytePut.BytePut
+bytePut :: Replay -> BytePut.BytePut
 bytePut x = Section.bytePut Header.putHeader (header x)
   <> Section.bytePut Content.bytePut (content x)
 
-byteGet :: Bool -> ByteGet.ByteGet FullReplay
+byteGet :: Bool -> ByteGet.ByteGet Replay
 byteGet fast = do
   header_ <- Section.byteGet Header.decodeHeader
   content_ <- if fast

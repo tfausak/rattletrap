@@ -43,12 +43,12 @@ rattletrap name arguments = do
   let encode = getEncoder config
   putOutput config (encode replay)
 
-getDecoder :: Config.Config -> Bytes.ByteString -> Either String Replay.FullReplay
+getDecoder :: Config.Config -> Bytes.ByteString -> Either String Replay.Replay
 getDecoder config = case Config.getMode config of
   Mode.Decode -> Rattletrap.decodeReplayFile $ Config.fast config
   Mode.Encode -> Rattletrap.decodeReplayJson
 
-getEncoder :: Config.Config -> Replay.FullReplay -> Bytes.ByteString
+getEncoder :: Config.Config -> Replay.Replay -> Bytes.ByteString
 getEncoder config = case Config.getMode config of
   Mode.Decode -> if Config.compact config
     then LazyBytes.toStrict . Json.encode
