@@ -33,13 +33,13 @@ bytePut x = Section.bytePut Header.putHeader (header x)
 
 byteGet :: Bool -> ByteGet.ByteGet Replay
 byteGet fast = do
-  header_ <- Section.byteGet Header.decodeHeader
+  header_ <- Section.byteGet $ const Header.decodeHeader
   content_ <- if fast
     then pure $ Section.create Content.bytePut Content.empty
     else
       let body = Section.body header_
       in
-        Section.byteGet $ Content.byteGet
+        Section.byteGet . const $ Content.byteGet
           (getVersion body)
           (getNumFrames body)
           (getMaxChannels body)
