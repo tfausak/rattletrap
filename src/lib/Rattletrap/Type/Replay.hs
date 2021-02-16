@@ -13,13 +13,13 @@ import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 
-type FullReplay = Replay Content.Content
+type FullReplay = Replay (Section.Section Header.Header) (Section.Section Content.Content)
 
 -- | A Rocket League replay.
-data Replay content = Replay
-  { header :: Section.Section Header.Header
+data Replay header content = Replay
+  { header :: header
   -- ^ This has most of the high-level metadata.
-  , content :: Section.Section content
+  , content :: content
   -- ^ This has most of the low-level game data.
   }
   deriving (Eq, Show)
