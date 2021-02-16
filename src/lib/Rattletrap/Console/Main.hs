@@ -20,7 +20,6 @@ import qualified System.Console.GetOpt as Console
 import qualified System.Environment as Environment
 import qualified System.Exit as Exit
 import qualified System.IO as IO
-import qualified Text.Printf as Printf
 
 main :: IO ()
 main = do
@@ -31,8 +30,13 @@ main = do
 rattletrap :: String -> [String] -> IO ()
 rattletrap name arguments = do
   config <- getConfig arguments
-  Monad.when (Config.help config) (printHelp name *> Exit.exitFailure)
-  Monad.when (Config.version config) (printVersion *> Exit.exitFailure)
+  Monad.when (Config.help config) $ do
+    IO.hPutStr IO.stderr $
+      Console.usageInfo (unwords [name, "version", version]) Option.all
+    Exit.exitFailure
+  Monad.when (Config.version config) $ do
+    IO.hPutStrLn IO.stderr version
+    Exit.exitFailure
   input <- getInput config
   let decode = getDecoder config
   replay <- either fail pure (decode input)
@@ -69,48 +73,14 @@ getConfig arguments = do
   let
     (flags, unexpectedArguments, unknownOptions, problems) =
       Console.getOpt' Console.Permute Option.all arguments
-  printUnexpectedArguments unexpectedArguments
-  printUnknownOptions unknownOptions
-  printProblems problems
+  Monad.forM_ unexpectedArguments $ \ x ->
+    IO.hPutStrLn IO.stderr $ "WARNING: unexpected argument `" <> x <> "'"
+  Monad.forM_ unknownOptions $ \ x ->
+    IO.hPutStrLn IO.stderr $ "WARNING: unknown option `" <> x <> "'"
+  Monad.forM_ problems $ \ x ->
+    IO.hPutStr IO.stderr $ "ERROR: " <> x
   Monad.unless (null problems) Exit.exitFailure
-  either fail pure (Monad.foldM Config.applyFlag Config.initial flags)
-
-printUnexpectedArguments :: [String] -> IO ()
-printUnexpectedArguments = mapM_ printUnexpectedArgument
-
-printUnexpectedArgument :: String -> IO ()
-printUnexpectedArgument =
-  warnLn . Printf.printf "WARNING: unexpected argument `%s'"
-
-printUnknownOptions :: [String] -> IO ()
-printUnknownOptions = mapM_ printUnknownOption
-
-printUnknownOption :: String -> IO ()
-printUnknownOption = warnLn . Printf.printf "WARNING: unknown option `%s'"
-
-printProblems :: [String] -> IO ()
-printProblems = mapM_ printProblem
-
-printProblem :: String -> IO ()
-printProblem = warn . Printf.printf "ERROR: %s"
-
-printHelp :: String -> IO ()
-printHelp = warn . help
-
-help :: String -> String
-help name = Console.usageInfo (header name) Option.all
-
-header :: String -> String
-header name = unwords [name, "version", version]
+  either fail pure $ Monad.foldM Config.applyFlag Config.initial flags
 
 version :: String
 version = Version.showVersion This.version
-
-printVersion :: IO ()
-printVersion = warnLn version
-
-warn :: String -> IO ()
-warn = IO.hPutStr IO.stderr
-
-warnLn :: String -> IO ()
-warnLn = IO.hPutStrLn IO.stderr
