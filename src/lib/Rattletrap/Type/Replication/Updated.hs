@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Replication.Updated where
 
 import qualified Rattletrap.BitGet as BitGet

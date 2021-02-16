@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Attribute.WeldedInfo where
 
 import qualified Rattletrap.BitGet as BitGet

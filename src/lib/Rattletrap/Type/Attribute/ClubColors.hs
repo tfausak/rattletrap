@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Attribute.ClubColors where
 
 import qualified Rattletrap.BitGet as BitGet

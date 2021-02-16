@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.PropertyValue where
 
 import qualified Rattletrap.ByteGet as ByteGet

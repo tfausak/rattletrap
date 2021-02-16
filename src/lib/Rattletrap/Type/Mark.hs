@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Mark where
 
 import qualified Rattletrap.ByteGet as ByteGet

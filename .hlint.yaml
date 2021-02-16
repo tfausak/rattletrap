@@ -1,7 +1,6 @@
 # https://github.com/ndmitchell/hlint
 - extensions:
   - default: false
-  - name: TemplateHaskell
 - flags:
   - default: false
 - group: { name: dollar, enabled: true }

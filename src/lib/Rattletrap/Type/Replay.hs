@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Replay where
 
 import qualified Rattletrap.ByteGet as ByteGet
@@ -29,9 +27,7 @@ data Replay content = Replay
 $(deriveJson ''Replay)
 
 bytePut :: FullReplay -> BytePut.BytePut
-bytePut x =
-  do
-    Section.bytePut Header.putHeader (header x)
+bytePut x = Section.bytePut Header.putHeader (header x)
   <> Section.bytePut Content.bytePut (content x)
 
 byteGet :: Bool -> ByteGet.ByteGet FullReplay
