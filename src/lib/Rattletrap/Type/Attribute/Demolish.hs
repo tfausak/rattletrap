@@ -5,6 +5,7 @@ import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Vector as Vector
+import qualified Rattletrap.Type.Version as Version
 
 data Demolish = Demolish
   { attackerFlag :: Bool
@@ -27,7 +28,7 @@ bitPut demolishAttribute =
     <> Vector.bitPut (attackerVelocity demolishAttribute)
     <> Vector.bitPut (victimVelocity demolishAttribute)
 
-bitGet :: (Int, Int, Int) -> BitGet.BitGet Demolish
+bitGet :: Version.Version -> BitGet.BitGet Demolish
 bitGet version =
   Demolish
     <$> BitGet.bool

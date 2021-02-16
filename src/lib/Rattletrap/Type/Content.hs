@@ -15,6 +15,7 @@ import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Bytes
 
 import qualified Control.Monad.Trans.State as State
@@ -112,7 +113,7 @@ putFrames x =
     (reverseBytes (padBytes (U32.toWord32 streamSize_) stream))
 
 byteGet
-  :: (Int, Int, Int)
+  :: Version.Version
   -- ^ Version numbers, usually from 'Rattletrap.Header.getVersion'.
   -> Int
   -- ^ The number of frames in the stream, usually from

@@ -8,6 +8,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 
 import qualified Data.Map as Map
 
@@ -25,7 +26,7 @@ bitPut x =
     <> BitPut.bool False
 
 bitGet
-  :: (Int, Int, Int)
+  :: Version.Version
   -> ClassAttributeMap.ClassAttributeMap
   -> Map.Map CompressedWord.CompressedWord U32.U32
   -> CompressedWord.CompressedWord

@@ -8,6 +8,7 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
+import qualified Rattletrap.Type.Version as Version
 
 import qualified Data.Map as Map
 
@@ -34,14 +35,14 @@ bitPut attribute =
     <> ProductValue.bitPut (value attribute)
 
 decodeProductAttributesBits
-  :: (Int, Int, Int)
+  :: Version.Version
   -> Map U32.U32 Str.Str
   -> BitGet.BitGet (List.List Product)
 decodeProductAttributesBits version objectMap = do
   size <- U8.bitGet
   List.replicateM (fromIntegral $ U8.toWord8 size) $ bitGet version objectMap
 
-bitGet :: (Int, Int, Int) -> Map U32.U32 Str.Str -> BitGet.BitGet Product
+bitGet :: Version.Version -> Map U32.U32 Str.Str -> BitGet.BitGet Product
 bitGet version objectMap = do
   flag <- BitGet.bool
   objectId_ <- U32.bitGet

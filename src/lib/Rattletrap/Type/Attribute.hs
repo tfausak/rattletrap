@@ -8,6 +8,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 
 data Attribute = Attribute
   { id :: CompressedWord.CompressedWord
@@ -26,7 +27,7 @@ bitPut attribute =
     <> AttributeValue.bitPut (value attribute)
 
 bitGet
-  :: (Int, Int, Int)
+  :: Version.Version
   -> ClassAttributeMap.ClassAttributeMap
   -> Map CompressedWord.CompressedWord U32.U32
   -> CompressedWord.CompressedWord

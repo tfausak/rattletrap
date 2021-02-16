@@ -133,6 +133,7 @@ library
     Rattletrap.Type.U64
     Rattletrap.Type.U8
     Rattletrap.Type.Vector
+    Rattletrap.Type.Version
     Rattletrap.Utility.Bytes
     Rattletrap.Utility.Crc
     Rattletrap.Utility.Helper

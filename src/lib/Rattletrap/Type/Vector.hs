@@ -4,6 +4,7 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
+import qualified Rattletrap.Type.Version as Version
 
 data Vector = Vector
   { size :: CompressedWord.CompressedWord
@@ -38,9 +39,9 @@ bitPut vector =
     <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dy)
     <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dz)
 
-bitGet :: (Int, Int, Int) -> BitGet.BitGet Vector
+bitGet :: Version.Version -> BitGet.BitGet Vector
 bitGet version = do
-  size_ <- CompressedWord.bitGet (if version >= (868, 22, 7) then 21 else 19)
+  size_ <- CompressedWord.bitGet (if has21Bits version then 21 else 19)
   let
     limit = getLimit size_
     bias_ = getBias size_
@@ -48,6 +49,10 @@ bitGet version = do
     <$> fmap (fromDelta bias_) (CompressedWord.bitGet limit)
     <*> fmap (fromDelta bias_) (CompressedWord.bitGet limit)
     <*> fmap (fromDelta bias_) (CompressedWord.bitGet limit)
+
+has21Bits :: Version.Version -> Bool
+has21Bits v =
+  Version.major v >= 868 && Version.minor v >= 22 && Version.patch v >= 7
 
 getLimit :: CompressedWord.CompressedWord -> Word
 getLimit = (2 ^) . (+ 2) . CompressedWord.value

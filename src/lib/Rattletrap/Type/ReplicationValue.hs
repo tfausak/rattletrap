@@ -9,6 +9,7 @@ import qualified Rattletrap.Type.Replication.Destroyed as Destroyed
 import qualified Rattletrap.Type.Replication.Spawned as Spawned
 import qualified Rattletrap.Type.Replication.Updated as Updated
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -32,7 +33,7 @@ bitPut value = case value of
   Destroyed x -> BitPut.bool False <> Destroyed.bitPut x
 
 bitGet
-  :: (Int, Int, Int)
+  :: Version.Version
   -> ClassAttributeMap.ClassAttributeMap
   -> CompressedWord.CompressedWord
   -> State.StateT

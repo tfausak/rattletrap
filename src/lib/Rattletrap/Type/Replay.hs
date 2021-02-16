@@ -12,6 +12,7 @@ import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 
 type FullReplay = Replay (Section.Section Header.Header) (Section.Section Content.Content)
 
@@ -44,12 +45,12 @@ byteGet fast = do
           (getMaxChannels body)
   pure $ Replay header_ content_
 
-getVersion :: Header.Header -> (Int, Int, Int)
-getVersion header_ =
-  ( fromIntegral (U32.toWord32 (Header.engineVersion header_))
-  , fromIntegral (U32.toWord32 (Header.licenseeVersion header_))
-  , getPatchVersion header_
-  )
+getVersion :: Header.Header -> Version.Version
+getVersion x = Version.Version
+  { Version.major = fromIntegral . U32.toWord32 $ Header.engineVersion x
+  , Version.minor = fromIntegral . U32.toWord32 $ Header.licenseeVersion x
+  , Version.patch = getPatchVersion x
+  }
 
 getPatchVersion :: Header.Header -> Int
 getPatchVersion header_ = case Header.patchVersion header_ of

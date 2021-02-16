@@ -5,6 +5,7 @@ import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.U8 as U8
+import qualified Rattletrap.Type.Version as Version
 
 data UniqueId = UniqueId
   { systemId :: U8.U8
@@ -21,7 +22,7 @@ bitPut uniqueIdAttribute =
     <> RemoteId.bitPut (remoteId uniqueIdAttribute)
     <> U8.bitPut (localId uniqueIdAttribute)
 
-bitGet :: (Int, Int, Int) -> BitGet.BitGet UniqueId
+bitGet :: Version.Version -> BitGet.BitGet UniqueId
 bitGet version = do
   systemId_ <- U8.bitGet
   UniqueId systemId_ <$> RemoteId.bitGet version systemId_ <*> U8.bitGet

@@ -7,6 +7,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U8 as U8
+import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
 
 data Reservation = Reservation
@@ -30,7 +31,7 @@ bitPut reservationAttribute =
     <> BitPut.bool (unknown2 reservationAttribute)
     <> foldMap (BitPut.word8 6) (unknown3 reservationAttribute)
 
-bitGet :: (Int, Int, Int) -> BitGet.BitGet Reservation
+bitGet :: Version.Version -> BitGet.BitGet Reservation
 bitGet version = do
   number_ <- CompressedWord.bitGet 7
   uniqueId_ <- UniqueId.bitGet version
@@ -38,4 +39,8 @@ bitGet version = do
     <$> whenMaybe (UniqueId.systemId uniqueId_ /= U8.fromWord8 0) Str.bitGet
     <*> BitGet.bool
     <*> BitGet.bool
-    <*> whenMaybe (version >= (868, 12, 0)) (BitGet.word8 6)
+    <*> whenMaybe (hasUnknown3 version) (BitGet.word8 6)
+
+hasUnknown3 :: Version.Version -> Bool
+hasUnknown3 v =
+  Version.major v >= 868 && Version.minor v >= 12 && Version.patch v >= 0

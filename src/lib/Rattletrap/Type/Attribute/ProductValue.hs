@@ -6,6 +6,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
 
 data ProductValue
@@ -35,7 +36,7 @@ bitPut val = case val of
   TitleId x -> Str.bitPut x
 
 bitGet
-  :: (Int, Int, Int) -> U32.U32 -> Maybe Str.Str -> BitGet.BitGet ProductValue
+  :: Version.Version -> U32.U32 -> Maybe Str.Str -> BitGet.BitGet ProductValue
 bitGet version objectId maybeObjectName =
   case Str.toString <$> maybeObjectName of
     Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
@@ -54,22 +55,30 @@ bitGet version objectId maybeObjectName =
 decodeSpecialEdition :: BitGet.BitGet ProductValue
 decodeSpecialEdition = SpecialEdition <$> BitGet.bits 31
 
-decodePainted :: (Int, Int, Int) -> BitGet.BitGet ProductValue
-decodePainted version = if version >= (868, 18, 0)
+decodePainted :: Version.Version -> BitGet.BitGet ProductValue
+decodePainted version = if hasNewPainted version
   then PaintedNew <$> BitGet.bits 31
   else PaintedOld <$> CompressedWord.bitGet 13
 
-decodeTeamEdition :: (Int, Int, Int) -> BitGet.BitGet ProductValue
-decodeTeamEdition version = if version >= (868, 18, 0)
+decodeTeamEdition :: Version.Version -> BitGet.BitGet ProductValue
+decodeTeamEdition version = if hasNewPainted version
   then TeamEditionNew <$> BitGet.bits 31
   else TeamEditionOld <$> CompressedWord.bitGet 13
 
-decodeColor :: (Int, Int, Int) -> BitGet.BitGet ProductValue
-decodeColor version = if version >= (868, 23, 8)
+decodeColor :: Version.Version -> BitGet.BitGet ProductValue
+decodeColor version = if hasNewColor version
   then UserColorNew <$> U32.bitGet
   else do
     hasValue <- BitGet.bool
     UserColorOld <$> whenMaybe hasValue (BitGet.bits 31)
+
+hasNewPainted :: Version.Version -> Bool
+hasNewPainted v =
+  Version.major v >= 868 && Version.minor v >= 18 && Version.patch v >= 0
+
+hasNewColor :: Version.Version -> Bool
+hasNewColor v =
+  Version.major v >= 868 && Version.minor v >= 23 && Version.patch v >= 8
 
 decodeTitle :: BitGet.BitGet ProductValue
 decodeTitle = TitleId <$> Str.bitGet

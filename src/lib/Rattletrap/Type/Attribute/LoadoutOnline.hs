@@ -8,6 +8,7 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
+import qualified Rattletrap.Type.Version as Version
 
 import qualified Data.Map as Map
 
@@ -25,7 +26,7 @@ bitPut loadoutAttribute =
       <> foldMap Product.putProductAttributes attributes
 
 bitGet
-  :: (Int, Int, Int) -> Map.Map U32.U32 Str.Str -> BitGet.BitGet LoadoutOnline
+  :: Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet LoadoutOnline
 bitGet version objectMap = do
   size <- U8.bitGet
   LoadoutOnline <$> List.replicateM

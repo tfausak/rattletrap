@@ -8,6 +8,7 @@ import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Initialization as Initialization
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
 
 import qualified Control.Monad.Trans.Class as Trans
@@ -42,7 +43,7 @@ bitPut spawnedReplication =
     <> Initialization.bitPut (initialization spawnedReplication)
 
 bitGet
-  :: (Int, Int, Int)
+  :: Version.Version
   -> ClassAttributeMap.ClassAttributeMap
   -> CompressedWord.CompressedWord
   -> State.StateT
@@ -51,7 +52,7 @@ bitGet
        Spawned
 bitGet version classAttributeMap actorId = do
   flag_ <- Trans.lift BitGet.bool
-  nameIndex_ <- whenMaybe (version >= (868, 14, 0)) (Trans.lift U32.bitGet)
+  nameIndex_ <- whenMaybe (hasNameIndex version) (Trans.lift U32.bitGet)
   name_ <- either fail pure (lookupName classAttributeMap nameIndex_)
   objectId_ <- Trans.lift U32.bitGet
   State.modify (Map.insert actorId objectId_)
@@ -74,6 +75,10 @@ bitGet version classAttributeMap actorId = do
       className_
       initialization_
     )
+
+hasNameIndex :: Version.Version -> Bool
+hasNameIndex v =
+  Version.major v >= 868 && Version.minor v >= 14 && Version.patch v >= 0
 
 lookupName
   :: ClassAttributeMap.ClassAttributeMap
