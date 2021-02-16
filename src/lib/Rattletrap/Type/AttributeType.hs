@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.AttributeType where
 
 import Rattletrap.Type.Common

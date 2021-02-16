@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.I8 where
 
 import qualified Rattletrap.BitGet as BitGet

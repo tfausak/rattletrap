@@ -1,11 +1,10 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Attribute.CamSettings where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
+import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
 
 data CamSettings = CamSettings
@@ -31,7 +30,7 @@ bitPut camSettingsAttribute =
     <> F32.bitPut (swivelSpeed camSettingsAttribute)
     <> foldMap F32.bitPut (transitionSpeed camSettingsAttribute)
 
-bitGet :: (Int, Int, Int) -> BitGet.BitGet CamSettings
+bitGet :: Version.Version -> BitGet.BitGet CamSettings
 bitGet version =
   CamSettings
     <$> F32.bitGet
@@ -40,4 +39,8 @@ bitGet version =
     <*> F32.bitGet
     <*> F32.bitGet
     <*> F32.bitGet
-    <*> whenMaybe (version >= (868, 20, 0)) F32.bitGet
+    <*> whenMaybe (hasTransitionSpeed version) F32.bitGet
+
+hasTransitionSpeed :: Version.Version -> Bool
+hasTransitionSpeed v =
+  Version.major v >= 868 && Version.minor v >= 20 && Version.patch v >= 0

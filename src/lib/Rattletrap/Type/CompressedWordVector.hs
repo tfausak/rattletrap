@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.CompressedWordVector where
 
 import qualified Rattletrap.BitGet as BitGet

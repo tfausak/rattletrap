@@ -1,10 +1,9 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Attribute.GameMode where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
+import qualified Rattletrap.Type.Version as Version
 
 data GameMode = GameMode
   { numBits :: Int
@@ -22,9 +21,13 @@ bitPut :: GameMode -> BitPut.BitPut
 bitPut gameModeAttribute = do
   BitPut.word8 (numBits gameModeAttribute) (word gameModeAttribute)
 
-bitGet :: (Int, Int, Int) -> BitGet.BitGet GameMode
+bitGet :: Version.Version -> BitGet.BitGet GameMode
 bitGet version =
   GameMode (numBits_ version) <$> BitGet.word8 (numBits_ version)
 
-numBits_ :: (Int, Int, Int) -> Int
-numBits_ version = if version >= (868, 12, 0) then 8 else 2
+numBits_ :: Version.Version -> Int
+numBits_ version = if has8Bits version then 8 else 2
+
+has8Bits :: Version.Version -> Bool
+has8Bits v =
+  Version.major v >= 868 && Version.minor v >= 12 && Version.patch v >= 0

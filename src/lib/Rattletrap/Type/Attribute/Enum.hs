@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Attribute.Enum where
 
 import Prelude hiding (Enum)

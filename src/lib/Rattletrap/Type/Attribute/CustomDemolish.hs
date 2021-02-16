@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Attribute.CustomDemolish where
 
 import qualified Rattletrap.BitGet as BitGet
@@ -7,6 +5,7 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Type.Attribute.Demolish as Demolish
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
+import qualified Rattletrap.Type.Version as Version
 
 data CustomDemolish = CustomDemolish
   { flag :: Bool
@@ -23,6 +22,6 @@ bitPut x =
     <> I32.bitPut (Rattletrap.Type.Attribute.CustomDemolish.id x)
     <> Demolish.bitPut (demolish x)
 
-bitGet :: (Int, Int, Int) -> BitGet.BitGet CustomDemolish
+bitGet :: Version.Version -> BitGet.BitGet CustomDemolish
 bitGet version =
   CustomDemolish <$> BitGet.bool <*> I32.bitGet <*> Demolish.bitGet version

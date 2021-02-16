@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Replication where
 
 import qualified Rattletrap.BitGet as BitGet
@@ -10,6 +8,7 @@ import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -33,7 +32,7 @@ bitPut replication = CompressedWord.bitPut (actorId replication)
   <> ReplicationValue.bitPut (value replication)
 
 decodeReplicationsBits
-  :: (Int, Int, Int)
+  :: Version.Version
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT
@@ -45,7 +44,7 @@ decodeReplicationsBits version limit classes = List.untilM $ do
   if p then Just <$> bitGet version limit classes else pure Nothing
 
 bitGet
-  :: (Int, Int, Int)
+  :: Version.Version
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT

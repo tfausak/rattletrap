@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Initialization where
 
 import qualified Rattletrap.BitGet as BitGet
@@ -7,6 +5,7 @@ import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Vector as Vector
+import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
 
 data Initialization = Initialization
@@ -26,7 +25,7 @@ bitPut initialization =
   foldMap Vector.bitPut (location initialization)
     <> foldMap Int8Vector.bitPut (rotation initialization)
 
-bitGet :: (Int, Int, Int) -> Bool -> Bool -> BitGet.BitGet Initialization
+bitGet :: Version.Version -> Bool -> Bool -> BitGet.BitGet Initialization
 bitGet version hasLocation hasRotation =
   Initialization
     <$> whenMaybe hasLocation (Vector.bitGet version)

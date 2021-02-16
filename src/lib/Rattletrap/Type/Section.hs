@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Section where
 
 import qualified Rattletrap.ByteGet as ByteGet
@@ -50,14 +48,15 @@ bytePut putBody section =
     <> U32.bytePut (U32.fromWord32 crc_)
     <> BytePut.byteString rawBody
 
-byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (Section a)
-byteGet getBody = do
+byteGet :: Bool -> (U32.U32 -> ByteGet.ByteGet a) -> ByteGet.ByteGet (Section a)
+byteGet skip getBody = do
   size_ <- U32.byteGet
   crc_ <- U32.byteGet
   rawBody <- ByteGet.byteString (fromIntegral (U32.toWord32 size_))
-  let actualCrc = U32.fromWord32 (Crc.compute rawBody)
-  Monad.when (actualCrc /= crc_) (fail (crcMessage actualCrc crc_))
-  body_ <- either fail pure $ ByteGet.run getBody rawBody
+  Monad.unless skip $ do
+    let actualCrc = U32.fromWord32 (Crc.compute rawBody)
+    Monad.when (actualCrc /= crc_) (fail (crcMessage actualCrc crc_))
+  body_ <- either fail pure $ ByteGet.run (getBody size_) rawBody
   pure (Section size_ crc_ body_)
 
 crcMessage :: U32.U32 -> U32.U32 -> String

@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.ClassMapping where
 
 import qualified Rattletrap.ByteGet as ByteGet

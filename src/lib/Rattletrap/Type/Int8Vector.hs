@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Int8Vector where
 
 import qualified Rattletrap.BitGet as BitGet

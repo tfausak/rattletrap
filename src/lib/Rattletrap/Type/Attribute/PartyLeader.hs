@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Attribute.PartyLeader where
 
 import qualified Rattletrap.BitGet as BitGet
@@ -7,6 +5,7 @@ import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.U8 as U8
+import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
 
 data PartyLeader = PartyLeader
@@ -22,7 +21,7 @@ bitPut x = U8.bitPut (systemId x) <> foldMap
   (\(y, z) -> RemoteId.bitPut y <> U8.bitPut z)
   (Rattletrap.Type.Attribute.PartyLeader.id x)
 
-bitGet :: (Int, Int, Int) -> BitGet.BitGet PartyLeader
+bitGet :: Version.Version -> BitGet.BitGet PartyLeader
 bitGet version = do
   systemId_ <- U8.bitGet
   PartyLeader systemId_ <$> whenMaybe

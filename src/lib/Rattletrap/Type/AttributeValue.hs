@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.AttributeValue where
 
 import qualified Rattletrap.BitGet as BitGet
@@ -46,6 +44,7 @@ import qualified Rattletrap.Type.AttributeType as AttributeType
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 
 import qualified Data.Map as Map
 
@@ -132,7 +131,7 @@ bitPut value = case value of
   WeldedInfo x -> WeldedInfo.bitPut x
 
 bitGet
-  :: (Int, Int, Int)
+  :: Version.Version
   -> Map U32.U32 Str.Str
   -> Str.Str
   -> BitGet.BitGet AttributeValue

@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Attribute.RigidBodyState where
 
 import qualified Rattletrap.BitGet as BitGet
@@ -7,6 +5,7 @@ import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Rotation as Rotation
 import qualified Rattletrap.Type.Vector as Vector
+import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
 
 data RigidBodyState = RigidBodyState
@@ -28,7 +27,7 @@ bitPut rigidBodyStateAttribute =
     <> foldMap Vector.bitPut (linearVelocity rigidBodyStateAttribute)
     <> foldMap Vector.bitPut (angularVelocity rigidBodyStateAttribute)
 
-bitGet :: (Int, Int, Int) -> BitGet.BitGet RigidBodyState
+bitGet :: Version.Version -> BitGet.BitGet RigidBodyState
 bitGet version = do
   sleeping_ <- BitGet.bool
   RigidBodyState sleeping_

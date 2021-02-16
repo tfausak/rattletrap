@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.KeyFrame where
 
 import qualified Rattletrap.ByteGet as ByteGet

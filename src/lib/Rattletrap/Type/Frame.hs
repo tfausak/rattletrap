@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Frame where
 
 import qualified Rattletrap.BitGet as BitGet
@@ -11,6 +9,7 @@ import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Replication as Replication
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -38,7 +37,7 @@ bitPut frame =
     <> Replication.putReplications (replications frame)
 
 decodeFramesBits
-  :: (Int, Int, Int)
+  :: Version.Version
   -> Int
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
@@ -50,7 +49,7 @@ decodeFramesBits version count limit classes =
   List.replicateM count $ bitGet version limit classes
 
 bitGet
-  :: (Int, Int, Int)
+  :: Version.Version
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT

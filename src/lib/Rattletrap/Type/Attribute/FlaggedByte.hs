@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Attribute.FlaggedByte where
 
 import qualified Rattletrap.BitGet as BitGet

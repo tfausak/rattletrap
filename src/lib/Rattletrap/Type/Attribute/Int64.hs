@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Attribute.Int64 where
 
 import qualified Rattletrap.BitGet as BitGet

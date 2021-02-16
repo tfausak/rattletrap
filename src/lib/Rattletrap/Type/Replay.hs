@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell #-}
-
 module Rattletrap.Type.Replay where
 
 import qualified Rattletrap.ByteGet as ByteGet
@@ -14,46 +12,48 @@ import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 
-type FullReplay = Replay Content.Content
+type Replay = ReplayWith (Section.Section Header.Header) (Section.Section Content.Content)
 
 -- | A Rocket League replay.
-data Replay content = Replay
-  { header :: Section.Section Header.Header
+data ReplayWith header content = Replay
+  { header :: header
   -- ^ This has most of the high-level metadata.
-  , content :: Section.Section content
+  , content :: content
   -- ^ This has most of the low-level game data.
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Replay)
+$(deriveJson ''ReplayWith)
 
-bytePut :: FullReplay -> BytePut.BytePut
-bytePut x =
-  do
-    Section.bytePut Header.putHeader (header x)
+bytePut :: Replay -> BytePut.BytePut
+bytePut x = Section.bytePut Header.bytePut (header x)
   <> Section.bytePut Content.bytePut (content x)
 
-byteGet :: Bool -> ByteGet.ByteGet FullReplay
-byteGet fast = do
-  header_ <- Section.byteGet Header.decodeHeader
-  content_ <- if fast
-    then pure $ Section.create Content.bytePut Content.empty
-    else
-      let body = Section.body header_
-      in
-        Section.byteGet $ Content.byteGet
-          (getVersion body)
-          (getNumFrames body)
-          (getMaxChannels body)
-  pure $ Replay header_ content_
+byteGet :: Bool -> Bool -> ByteGet.ByteGet Replay
+byteGet fast skip = do
+  hs <- Section.byteGet skip $ ByteGet.byteString . fromIntegral . U32.toWord32
+  h <- either fail pure . ByteGet.run Header.byteGet $ Section.body hs
+  cs <- Section.byteGet skip $ ByteGet.byteString . fromIntegral . U32.toWord32
+  c <- if fast
+    then pure Content.empty
+    else either fail pure . ByteGet.run (getContent h) $ Section.body cs
+  pure Replay
+    { header = hs { Section.body = h }
+    , content = cs { Section.body = c }
+    }
 
-getVersion :: Header.Header -> (Int, Int, Int)
-getVersion header_ =
-  ( fromIntegral (U32.toWord32 (Header.engineVersion header_))
-  , fromIntegral (U32.toWord32 (Header.licenseeVersion header_))
-  , getPatchVersion header_
-  )
+getContent :: Header.Header -> ByteGet.ByteGet Content.Content
+getContent h =
+  Content.byteGet (getVersion h) (getNumFrames h) (getMaxChannels h)
+
+getVersion :: Header.Header -> Version.Version
+getVersion x = Version.Version
+  { Version.major = fromIntegral . U32.toWord32 $ Header.engineVersion x
+  , Version.minor = fromIntegral . U32.toWord32 $ Header.licenseeVersion x
+  , Version.patch = getPatchVersion x
+  }
 
 getPatchVersion :: Header.Header -> Int
 getPatchVersion header_ = case Header.patchVersion header_ of
