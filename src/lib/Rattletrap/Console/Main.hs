@@ -12,8 +12,8 @@ import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified Paths_rattletrap as This
 import qualified Rattletrap.Console.Config as Config
-import qualified Rattletrap.Console.Flag as Flag
 import qualified Rattletrap.Console.Mode as Mode
+import qualified Rattletrap.Console.Option as Option
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Utility.Helper as Rattletrap
 import qualified System.Console.GetOpt as Console
@@ -68,83 +68,12 @@ getConfig :: [String] -> IO Config.Config
 getConfig arguments = do
   let
     (flags, unexpectedArguments, unknownOptions, problems) =
-      Console.getOpt' Console.Permute options arguments
+      Console.getOpt' Console.Permute Option.all arguments
   printUnexpectedArguments unexpectedArguments
   printUnknownOptions unknownOptions
   printProblems problems
   Monad.unless (null problems) Exit.exitFailure
   either fail pure (Monad.foldM Config.applyFlag Config.initial flags)
-
-type Option = Console.OptDescr Flag.Flag
-
-options :: [Option]
-options =
-  [ compactOption
-  , fastOption
-  , helpOption
-  , inputOption
-  , modeOption
-  , outputOption
-  , versionOption
-  ]
-
-compactOption :: Option
-compactOption = Console.Option
-  ['c']
-  ["compact"]
-  (Console.NoArg Flag.Compact)
-  "minify JSON output"
-
-fastOption :: Option
-fastOption = Console.Option
-  ['f']
-  ["fast"]
-  (Console.NoArg Flag.Fast)
-  "only encode or decode the header"
-
-helpOption :: Option
-helpOption = Console.Option
-  ['h']
-  ["help"]
-  (Console.NoArg Flag.Help)
-  "show the help"
-
-inputOption :: Option
-inputOption = Console.Option
-  ['i']
-  ["input"]
-  (Console.ReqArg
-    Flag.Input
-    "FILE|URL"
-  )
-  "input file or URL"
-
-modeOption :: Option
-modeOption = Console.Option
-  ['m']
-  ["mode"]
-  (Console.ReqArg
-    Flag.Mode
-    "MODE"
-  )
-  "decode or encode"
-
-outputOption :: Option
-outputOption = Console.Option
-  ['o']
-  ["output"]
-  (Console.ReqArg
-    Flag.Output
-    "FILE"
-  )
-  "output file"
-
-versionOption :: Option
-versionOption = Console.Option
-  ['v']
-  ["version"]
-  (Console.NoArg Flag.Version)
-  "show the version"
 
 printUnexpectedArguments :: [String] -> IO ()
 printUnexpectedArguments = mapM_ printUnexpectedArgument
@@ -169,7 +98,7 @@ printHelp :: String -> IO ()
 printHelp = warn . help
 
 help :: String -> String
-help name = Console.usageInfo (header name) options
+help name = Console.usageInfo (header name) Option.all
 
 header :: String -> String
 header name = unwords [name, "version", version]

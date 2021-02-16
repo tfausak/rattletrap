@@ -50,6 +50,7 @@ library
     Rattletrap.Console.Flag
     Rattletrap.Console.Main
     Rattletrap.Console.Mode
+    Rattletrap.Console.Option
     Rattletrap.Data
     Rattletrap.Get
     Rattletrap.Type.Attribute
