@@ -47,6 +47,7 @@ library
     Rattletrap.ByteGet
     Rattletrap.BytePut
     Rattletrap.Console.Config
+    Rattletrap.Console.Flag
     Rattletrap.Console.Main
     Rattletrap.Console.Mode
     Rattletrap.Data

@@ -12,6 +12,7 @@ import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified Paths_rattletrap as This
 import qualified Rattletrap.Console.Config as Config
+import qualified Rattletrap.Console.Flag as Flag
 import qualified Rattletrap.Console.Mode as Mode
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Utility.Helper as Rattletrap
@@ -66,17 +67,15 @@ putOutput = maybe Bytes.putStr Bytes.writeFile . Config.output
 getConfig :: [String] -> IO Config.Config
 getConfig arguments = do
   let
-    (updates, unexpectedArguments, unknownOptions, problems) =
+    (flags, unexpectedArguments, unknownOptions, problems) =
       Console.getOpt' Console.Permute options arguments
   printUnexpectedArguments unexpectedArguments
   printUnknownOptions unknownOptions
   printProblems problems
   Monad.unless (null problems) Exit.exitFailure
-  either fail pure (Monad.foldM applyUpdate Config.initial updates)
+  either fail pure (Monad.foldM Config.applyFlag Config.initial flags)
 
-type Option = Console.OptDescr Update
-
-type Update = Config.Config -> Either String Config.Config
+type Option = Console.OptDescr Flag.Flag
 
 options :: [Option]
 options =
@@ -93,21 +92,21 @@ compactOption :: Option
 compactOption = Console.Option
   ['c']
   ["compact"]
-  (Console.NoArg (\config -> pure config { Config.compact = True }))
+  (Console.NoArg Flag.Compact)
   "minify JSON output"
 
 fastOption :: Option
 fastOption = Console.Option
   ['f']
   ["fast"]
-  (Console.NoArg (\config -> pure config { Config.fast = True }))
+  (Console.NoArg Flag.Fast)
   "only encode or decode the header"
 
 helpOption :: Option
 helpOption = Console.Option
   ['h']
   ["help"]
-  (Console.NoArg (\config -> pure config { Config.help = True }))
+  (Console.NoArg Flag.Help)
   "show the help"
 
 inputOption :: Option
@@ -115,7 +114,7 @@ inputOption = Console.Option
   ['i']
   ["input"]
   (Console.ReqArg
-    (\input config -> pure config { Config.input = Just input })
+    Flag.Input
     "FILE|URL"
   )
   "input file or URL"
@@ -125,10 +124,7 @@ modeOption = Console.Option
   ['m']
   ["mode"]
   (Console.ReqArg
-    (\rawMode config -> do
-      mode <- Mode.fromString rawMode
-      pure config { Config.mode = Just mode }
-    )
+    Flag.Mode
     "MODE"
   )
   "decode or encode"
@@ -138,7 +134,7 @@ outputOption = Console.Option
   ['o']
   ["output"]
   (Console.ReqArg
-    (\output config -> pure config { Config.output = Just output })
+    Flag.Output
     "FILE"
   )
   "output file"
@@ -147,11 +143,8 @@ versionOption :: Option
 versionOption = Console.Option
   ['v']
   ["version"]
-  (Console.NoArg (\config -> pure config { Config.version = True }))
+  (Console.NoArg Flag.Version)
   "show the version"
-
-applyUpdate :: Config.Config -> Update -> Either String Config.Config
-applyUpdate config update = update config
 
 printUnexpectedArguments :: [String] -> IO ()
 printUnexpectedArguments = mapM_ printUnexpectedArgument

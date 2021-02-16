@@ -1,5 +1,6 @@
 module Rattletrap.Console.Config where
 
+import qualified Rattletrap.Console.Flag as Flag
 import qualified Rattletrap.Console.Mode as Mode
 import qualified System.FilePath as FilePath
 
@@ -24,6 +25,18 @@ initial = Config
   , output = Nothing
   , version = False
   }
+
+applyFlag :: Config -> Flag.Flag -> Either String Config
+applyFlag config flag = case flag of
+  Flag.Compact -> Right config { compact = True }
+  Flag.Fast -> Right config { fast = True }
+  Flag.Help -> Right config { help = True }
+  Flag.Input x -> Right config { input = Just x }
+  Flag.Mode x -> do
+    y <- Mode.fromString x
+    Right config { mode = Just y }
+  Flag.Output x -> Right config { output = Just x }
+  Flag.Version -> Right config { version = True }
 
 getMode :: Config -> Mode.Mode
 getMode config =
