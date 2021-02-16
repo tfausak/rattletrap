@@ -22,8 +22,10 @@ import qualified Control.Monad.Trans.State as State
 import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
 
+type Content = ContentWith (List.List Frame.Frame)
+
 -- | Contains low-level game data about a 'Rattletrap.Replay.Replay'.
-data Content = Content
+data ContentWith frames = Content
   { levels :: List.List Str.Str
   -- ^ This typically only has one element, like @stadium_oob_audio_map@.
   , keyFrames :: List.List KeyFrame.KeyFrame
@@ -33,7 +35,7 @@ data Content = Content
   , streamSize :: U32.U32
   -- ^ The size of the stream in bytes. This is only really necessary because
   -- the stream has some arbitrary amount of padding at the end.
-  , frames :: List.List Frame.Frame
+  , frames :: frames
   -- ^ The actual game data. This is where all the interesting information is.
   , messages :: List.List Message.Message
   -- ^ Debugging messages. In newer replays, this is always empty.
@@ -58,7 +60,7 @@ data Content = Content
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Content)
+$(deriveJson ''ContentWith)
 
 empty :: Content
 empty = Content
