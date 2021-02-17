@@ -4,13 +4,15 @@ module Rattletrap.Console.Main
   ) where
 
 import qualified Control.Monad as Monad
-import qualified Data.Aeson as Json
-import qualified Data.ByteString as Bytes
-import qualified Data.ByteString.Lazy as LazyBytes
+import qualified Data.Aeson as Aeson
+import qualified Data.Aeson.Encode.Pretty as Aeson
+import qualified Data.ByteString as ByteString
+import qualified Data.ByteString.Lazy as LazyByteString
+import qualified Data.Text as Text
 import qualified Data.Version as Version
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
-import qualified Paths_rattletrap as This
+import qualified Paths_rattletrap as Package
 import qualified Rattletrap.Console.Config as Config
 import qualified Rattletrap.Console.Mode as Mode
 import qualified Rattletrap.Console.Option as Option
@@ -37,36 +39,55 @@ rattletrap name arguments = do
   Monad.when (Config.version config) $ do
     IO.hPutStrLn IO.stderr version
     Exit.exitFailure
+  Monad.when (Config.schema config) $ do
+    LazyByteString.putStr $ Aeson.encodePretty' Aeson.defConfig
+      { Aeson.confCompare = compare
+      , Aeson.confIndent = Aeson.Tab
+      , Aeson.confTrailingNewline = True
+      } schema
+    Exit.exitSuccess
   input <- getInput config
   let decode = getDecoder config
   replay <- either fail pure (decode input)
   let encode = getEncoder config
   putOutput config (encode replay)
 
-getDecoder :: Config.Config -> Bytes.ByteString -> Either String Replay.Replay
+schema :: Aeson.Value
+schema = Aeson.object
+  [ pair "$schema" "https://json-schema.org/draft-07/schema"
+  , pair "$ref" "#/definitions/replay"
+  , pair "definitions" $ Aeson.object
+    [ pair "replay" $ Aeson.object [pair "type" "object"]
+    ]
+  ]
+
+pair :: (Aeson.ToJSON v, Aeson.KeyValue kv) => String -> v -> kv
+pair k v = Text.pack k Aeson..= v
+
+getDecoder :: Config.Config -> ByteString.ByteString -> Either String Replay.Replay
 getDecoder config = case Config.getMode config of
   Mode.Decode -> Rattletrap.decodeReplayFile (Config.fast config) (Config.skipCrc config)
   Mode.Encode -> Rattletrap.decodeReplayJson
 
-getEncoder :: Config.Config -> Replay.Replay -> Bytes.ByteString
+getEncoder :: Config.Config -> Replay.Replay -> ByteString.ByteString
 getEncoder config = case Config.getMode config of
   Mode.Decode -> if Config.compact config
-    then LazyBytes.toStrict . Json.encode
+    then LazyByteString.toStrict . Aeson.encode
     else Rattletrap.encodeReplayJson
   Mode.Encode -> Rattletrap.encodeReplayFile $ Config.fast config
 
-getInput :: Config.Config -> IO Bytes.ByteString
+getInput :: Config.Config -> IO ByteString.ByteString
 getInput config = case Config.input config of
-  Nothing -> Bytes.getContents
+  Nothing -> ByteString.getContents
   Just fileOrUrl -> case Client.parseUrlThrow fileOrUrl of
-    Nothing -> Bytes.readFile fileOrUrl
+    Nothing -> ByteString.readFile fileOrUrl
     Just request -> do
       manager <- Client.newTlsManager
       response <- Client.httpLbs request manager
-      pure (LazyBytes.toStrict (Client.responseBody response))
+      pure (LazyByteString.toStrict (Client.responseBody response))
 
-putOutput :: Config.Config -> Bytes.ByteString -> IO ()
-putOutput = maybe Bytes.putStr Bytes.writeFile . Config.output
+putOutput :: Config.Config -> ByteString.ByteString -> IO ()
+putOutput = maybe ByteString.putStr ByteString.writeFile . Config.output
 
 getConfig :: [String] -> IO Config.Config
 getConfig arguments = do
@@ -83,4 +104,4 @@ getConfig arguments = do
   either fail pure $ Monad.foldM Config.applyFlag Config.initial flags
 
 version :: String
-version = Version.showVersion This.version
+version = Version.showVersion Package.version

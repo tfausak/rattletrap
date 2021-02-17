@@ -13,6 +13,7 @@ all =
   , input
   , mode
   , output
+  , schema
   , skipCrc
   , version
   ]
@@ -68,12 +69,19 @@ output = Console.Option
   )
   "output file"
 
+schema :: Option
+schema = Console.Option
+  []
+  ["schema"]
+  (Console.NoArg Flag.Schema)
+  "output the schema"
+
 skipCrc :: Option
 skipCrc = Console.Option
   []
   ["skip-crc"]
   (Console.NoArg Flag.SkipCrc)
-  "skips the CRC"
+  "skip the CRC"
 
 version :: Option
 version = Console.Option

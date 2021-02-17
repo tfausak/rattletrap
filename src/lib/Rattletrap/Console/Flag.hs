@@ -7,6 +7,7 @@ data Flag
   | Input FilePath
   | Mode String
   | Output FilePath
+  | Schema
   | SkipCrc
   | Version
   deriving (Eq, Show)

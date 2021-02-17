@@ -11,6 +11,7 @@ data Config = Config
   , input :: Maybe String
   , mode :: Maybe Mode.Mode
   , output :: Maybe String
+  , schema :: Bool
   , skipCrc :: Bool
   , version :: Bool
   }
@@ -24,6 +25,7 @@ initial = Config
   , input = Nothing
   , mode = Nothing
   , output = Nothing
+  , schema = False
   , skipCrc = False
   , version = False
   }
@@ -38,6 +40,7 @@ applyFlag config flag = case flag of
     y <- Mode.fromString x
     Right config { mode = Just y }
   Flag.Output x -> Right config { output = Just x }
+  Flag.Schema -> Right config { schema = True }
   Flag.SkipCrc -> Right config { skipCrc = True }
   Flag.Version -> Right config { version = True }
 
