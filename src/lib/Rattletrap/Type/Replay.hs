@@ -14,6 +14,7 @@ import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
 
 type Replay = ReplayWith (Section.Section Header.Header) (Section.Section Content.Content)
 
@@ -29,7 +30,10 @@ data ReplayWith header content = Replay
 $(deriveJson ''ReplayWith)
 
 schema :: Schema.Schema
-schema = Schema.named "replay" $ Schema.object []
+schema = Schema.named "replay" $ Schema.object
+  [ Json.pair "header" $ Schema.ref Header.schema
+  , Json.pair "content" $ Schema.ref Content.schema
+  ]
 
 bytePut :: Replay -> BytePut.BytePut
 bytePut x = Section.bytePut Header.bytePut (header x)

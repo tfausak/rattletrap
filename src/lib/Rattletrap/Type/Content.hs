@@ -4,6 +4,7 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Cache as Cache
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.ClassMapping as ClassMapping
@@ -61,6 +62,9 @@ data ContentWith frames = Content
   deriving (Eq, Show)
 
 $(deriveJson ''ContentWith)
+
+schema :: Schema.Schema
+schema = Schema.named "content" $ Schema.object []
 
 empty :: Content
 empty = Content

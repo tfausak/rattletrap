@@ -2,12 +2,14 @@ module Rattletrap.Type.Header where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Json as Json
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
@@ -58,6 +60,12 @@ data Header = Header
   deriving (Eq, Show)
 
 $(deriveJson ''Header)
+
+schema :: Schema.Schema
+schema = Schema.named "header" $ Schema.object
+  [ Json.pair "engineVersion" $ Schema.ref U32.schema
+  , Json.pair "licenseeVersion" $ Schema.ref U32.schema
+  ]
 
 bytePut :: Header -> BytePut.BytePut
 bytePut x =

@@ -16,7 +16,10 @@ import qualified Rattletrap.Console.Config as Config
 import qualified Rattletrap.Console.Mode as Mode
 import qualified Rattletrap.Console.Option as Option
 import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Type.Content as Content
+import qualified Rattletrap.Type.Header as Header
 import qualified Rattletrap.Type.Replay as Replay
+import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Helper as Rattletrap
 import qualified Rattletrap.Utility.Json as Json
 import qualified System.Console.GetOpt as Console
@@ -59,7 +62,10 @@ schema = Aeson.object
   , Json.pair "$ref" "#/definitions/replay"
   , Json.pair "definitions" . Aeson.object $ fmap
     (\ s -> Schema.name s Aeson..= Schema.json s)
-    [ Replay.schema
+    [ Content.schema
+    , Header.schema
+    , Replay.schema
+    , U32.schema
     ]
   ]
 
