@@ -8,7 +8,6 @@ import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Encode.Pretty as Aeson
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
-import qualified Data.Text as Text
 import qualified Data.Version as Version
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
@@ -16,8 +15,10 @@ import qualified Paths_rattletrap as Package
 import qualified Rattletrap.Console.Config as Config
 import qualified Rattletrap.Console.Mode as Mode
 import qualified Rattletrap.Console.Option as Option
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Utility.Helper as Rattletrap
+import qualified Rattletrap.Utility.Json as Json
 import qualified System.Console.GetOpt as Console
 import qualified System.Environment as Environment
 import qualified System.Exit as Exit
@@ -54,15 +55,13 @@ rattletrap name arguments = do
 
 schema :: Aeson.Value
 schema = Aeson.object
-  [ pair "$schema" "https://json-schema.org/draft-07/schema"
-  , pair "$ref" "#/definitions/replay"
-  , pair "definitions" $ Aeson.object
-    [ pair "replay" $ Aeson.object [pair "type" "object"]
+  [ Json.pair "$schema" "https://json-schema.org/draft-07/schema"
+  , Json.pair "$ref" "#/definitions/replay"
+  , Json.pair "definitions" . Aeson.object $ fmap
+    (\ s -> Schema.name s Aeson..= Schema.json s)
+    [ Replay.schema
     ]
   ]
-
-pair :: (Aeson.ToJSON v, Aeson.KeyValue kv) => String -> v -> kv
-pair k v = Text.pack k Aeson..= v
 
 getDecoder :: Config.Config -> ByteString.ByteString -> Either String Replay.Replay
 getDecoder config = case Config.getMode config of

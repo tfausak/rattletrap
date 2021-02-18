@@ -53,6 +53,7 @@ library
     Rattletrap.Console.Option
     Rattletrap.Data
     Rattletrap.Get
+    Rattletrap.Schema
     Rattletrap.Type.Attribute
     Rattletrap.Type.Attribute.AppliedDamage
     Rattletrap.Type.Attribute.Boolean
@@ -137,6 +138,7 @@ library
     Rattletrap.Utility.Bytes
     Rattletrap.Utility.Crc
     Rattletrap.Utility.Helper
+    Rattletrap.Utility.Json
     Rattletrap.Utility.Monad
   ghc-options:
     -Weverything

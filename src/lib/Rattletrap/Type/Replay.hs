@@ -2,6 +2,7 @@ module Rattletrap.Type.Replay where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Dictionary as Dictionary
@@ -26,6 +27,9 @@ data ReplayWith header content = Replay
   deriving (Eq, Show)
 
 $(deriveJson ''ReplayWith)
+
+schema :: Schema.Schema
+schema = Schema.named "replay" $ Schema.object []
 
 bytePut :: Replay -> BytePut.BytePut
 bytePut x = Section.bytePut Header.bytePut (header x)
