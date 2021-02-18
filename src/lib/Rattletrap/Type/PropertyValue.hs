@@ -1,7 +1,9 @@
 module Rattletrap.Type.PropertyValue where
 
+import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.F32 as F32
@@ -28,6 +30,11 @@ data PropertyValue a
   deriving (Eq, Show)
 
 $(deriveJson ''PropertyValue)
+
+schema :: Schema.Schema -> Schema.Schema
+schema s = Schema.named ("property-value-" <> Text.unpack (Schema.name s)) $ Schema.object
+  [ -- TODO
+  ]
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
 bytePut putProperty value = case value of

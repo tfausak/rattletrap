@@ -64,7 +64,9 @@ data ContentWith frames = Content
 $(deriveJson ''ContentWith)
 
 schema :: Schema.Schema
-schema = Schema.named "content" $ Schema.object []
+schema = Schema.named "content" $ Schema.object
+  [ -- TODO
+  ]
 
 empty :: Content
 empty = Content

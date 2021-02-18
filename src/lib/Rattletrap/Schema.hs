@@ -30,3 +30,12 @@ maybe s = Schema
     , Aeson.object [Json.pair "type" "null"]
     ]]
   }
+
+array :: Schema -> Schema
+array s = Schema
+  { name = Text.pack "array-" <> name s
+  , json = Aeson.object
+    [ Json.pair "type" "array"
+    , Json.pair "items" $ ref s
+    ]
+  }

@@ -2,8 +2,10 @@ module Rattletrap.Type.Dictionary where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
@@ -55,6 +57,16 @@ instance Aeson.ToJSON a => Aeson.ToJSON (Dictionary a) where
       . List.toList
       $ elements x
       ]
+
+schema :: Schema.Schema -> Schema.Schema
+schema s = Schema.named ("dictionary-" <> Text.unpack (Schema.name s)) $ Schema.object
+  [ Json.pair "keys" . Schema.json $ Schema.array Str.schema
+  , Json.pair "last_key" $ Schema.ref Str.schema
+  , Json.pair "value" $ Aeson.object
+    [ Json.pair "type" "object"
+    , Json.pair "additionalProperties" $ Schema.ref s
+    ]
+  ]
 
 lookup :: Str.Str -> Dictionary a -> Maybe a
 lookup k = Prelude.lookup k . List.toList . elements
