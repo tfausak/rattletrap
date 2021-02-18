@@ -65,6 +65,8 @@ schema :: Schema.Schema
 schema = Schema.named "header" $ Schema.object
   [ Json.pair "engineVersion" $ Schema.ref U32.schema
   , Json.pair "licenseeVersion" $ Schema.ref U32.schema
+  , Json.pair "patchVersion" . Schema.json $ Schema.maybe U32.schema
+  , Json.pair "label" $ Schema.ref Str.schema
   ]
 
 bytePut :: Header -> BytePut.BytePut

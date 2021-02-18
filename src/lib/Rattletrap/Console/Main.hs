@@ -19,6 +19,7 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Header as Header
 import qualified Rattletrap.Type.Replay as Replay
+import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Helper as Rattletrap
 import qualified Rattletrap.Utility.Json as Json
@@ -65,6 +66,7 @@ schema = Aeson.object
     [ Content.schema
     , Header.schema
     , Replay.schema
+    , Str.schema
     , U32.schema
     ]
   ]

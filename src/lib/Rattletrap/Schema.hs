@@ -13,7 +13,7 @@ named :: String -> Aeson.Value -> Schema
 named n j = Schema { name = Text.pack n, json = j }
 
 ref :: Schema -> Aeson.Value
-ref s = Aeson.object [ Json.pair "ref" $ Text.pack "#/definitions/" <> name s ]
+ref s = Aeson.object [ Json.pair "$ref" $ Text.pack "#/definitions/" <> name s ]
 
 object :: [(Text.Text, Aeson.Value)] -> Aeson.Value
 object xs = Aeson.object
@@ -21,3 +21,12 @@ object xs = Aeson.object
   , Json.pair "properties" $ Aeson.object xs
   , Json.pair "required" $ fmap fst xs
   ]
+
+maybe :: Schema -> Schema
+maybe s = Schema
+  { name = Text.pack "maybe-" <> name s
+  , json = Aeson.object [Json.pair "oneOf"
+    [ ref s
+    , Aeson.object [Json.pair "type" "null"]
+    ]]
+  }

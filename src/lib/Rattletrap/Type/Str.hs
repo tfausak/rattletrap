@@ -4,10 +4,13 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Utility.Bytes
+import qualified Rattletrap.Utility.Json as Json
 
+import qualified Data.Aeson as Aeson
 import qualified Data.ByteString as Bytes
 import qualified Data.Char as Char
 import qualified Data.Text as Text
@@ -20,6 +23,9 @@ newtype Str
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''Str)
+
+schema :: Schema.Schema
+schema = Schema.named "str" $ Aeson.object [ Json.pair "type" "string" ]
 
 fromText :: Text -> Str
 fromText = Str
