@@ -63,11 +63,11 @@ $(deriveJson ''Header)
 
 schema :: Schema.Schema
 schema = Schema.named "header" $ Schema.object
-  [ Json.pair "engineVersion" $ Schema.ref U32.schema
-  , Json.pair "licenseeVersion" $ Schema.ref U32.schema
-  , Json.pair "patchVersion" . Schema.json $ Schema.maybe U32.schema
-  , Json.pair "label" $ Schema.ref Str.schema
-  , Json.pair "properties" . Schema.json $ Dictionary.schema Property.schema
+  [ (Json.pair "engine_version" $ Schema.ref U32.schema, True)
+  , (Json.pair "licensee_version" $ Schema.ref U32.schema, True)
+  , (Json.pair "patch_version" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "label" $ Schema.ref Str.schema, True)
+  , (Json.pair "properties" . Schema.json $ Dictionary.schema Property.schema, True)
   ]
 
 bytePut :: Header -> BytePut.BytePut

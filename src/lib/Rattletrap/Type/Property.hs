@@ -21,9 +21,9 @@ $(deriveJson ''Property)
 
 schema :: Schema.Schema
 schema = Schema.named "property" $ Schema.object
-  [ Json.pair "kind" $ Schema.ref Str.schema
-  , Json.pair "size" $ Schema.ref U64.schema
-  , Json.pair "value" . Schema.ref $ PropertyValue.schema schema
+  [ (Json.pair "kind" $ Schema.ref Str.schema, True)
+  , (Json.pair "size" $ Schema.ref U64.schema, True)
+  , (Json.pair "value" . Schema.ref $ PropertyValue.schema schema, True)
   ]
 
 bytePut :: Property -> BytePut.BytePut

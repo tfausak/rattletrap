@@ -31,8 +31,8 @@ $(deriveJson ''ReplayWith)
 
 schema :: Schema.Schema
 schema = Schema.named "replay" $ Schema.object
-  [ Json.pair "header" $ Schema.ref Header.schema
-  , Json.pair "content" $ Schema.ref Content.schema
+  [ (Json.pair "header" . Schema.json $ Section.schema Header.schema, True)
+  , (Json.pair "content" . Schema.json $ Section.schema Content.schema, True)
   ]
 
 bytePut :: Replay -> BytePut.BytePut

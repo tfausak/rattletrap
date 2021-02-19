@@ -15,11 +15,15 @@ named n j = Schema { name = Text.pack n, json = j }
 ref :: Schema -> Aeson.Value
 ref s = Aeson.object [ Json.pair "$ref" $ Text.pack "#/definitions/" <> name s ]
 
-object :: [(Text.Text, Aeson.Value)] -> Aeson.Value
+object :: [((Text.Text, Aeson.Value), Bool)] -> Aeson.Value
 object xs = Aeson.object
   [ Json.pair "type" "object"
-  , Json.pair "properties" $ Aeson.object xs
-  , Json.pair "required" $ fmap fst xs
+  , Json.pair "properties" . Aeson.object $ fmap fst xs
+  , Json.pair "required" . fmap (fst . fst) $ filter snd xs
+  -- TODO: This is temporary to make sure I don't mess up any of the property
+  -- names. Once the schema is done I should remove this because it's too
+  -- restrictive.
+  , Json.pair "additionalProperties" False
   ]
 
 maybe :: Schema -> Schema
