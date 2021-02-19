@@ -47,6 +47,14 @@ jobs:
           path: docker/rattletrap
           name: rattletrap-${{ matrix.os }}-ghc-${{ matrix.ghc }}-${{ github.sha }}${{ matrix.extension }}
 
+      - run: cabal exec -- rattletrap --schema | tee schema.json
+
+      - if: matrix.primary
+        uses: actions/upload-artifact@v2
+        with:
+          path: schema.json
+          name: rattletrap-schema-${{ github.sha }}.json
+
       - run: cabal sdist --output-dir docker
 
       - if: matrix.primary
