@@ -5,12 +5,22 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
+import qualified Data.Aeson as Aeson
+import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
 
 newtype U8
   = U8 Word8
   deriving (Eq, Show)
 
 $(deriveJson ''U8)
+
+schema :: Schema.Schema
+schema = Schema.named "u8" $ Aeson.object
+  [ Json.pair "type" "integer"
+  , Json.pair "minimum" (minBound :: Word8)
+  , Json.pair "maximum" (maxBound :: Word8)
+  ]
 
 fromWord8 :: Word8 -> U8
 fromWord8 = U8

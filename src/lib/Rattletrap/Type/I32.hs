@@ -5,12 +5,22 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
+import qualified Data.Aeson as Aeson
+import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
 
 newtype I32
   = I32 Int32
   deriving (Eq, Show)
 
 $(deriveJson ''I32)
+
+schema :: Schema.Schema
+schema = Schema.named "i32" $ Aeson.object
+  [ Json.pair "type" "integer"
+  , Json.pair "minimum" (minBound :: Int32)
+  , Json.pair "maximum" (maxBound :: Int32)
+  ]
 
 fromInt32 :: Int32 -> I32
 fromInt32 = I32

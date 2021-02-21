@@ -1,5 +1,6 @@
 module Rattletrap.Type.PropertyValue where
 
+import qualified Data.Aeson as Aeson
 import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
@@ -13,6 +14,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Json as Json
 
 data PropertyValue a
   = Array (List.List (Dictionary.Dictionary a))
@@ -32,8 +34,23 @@ data PropertyValue a
 $(deriveJson ''PropertyValue)
 
 schema :: Schema.Schema -> Schema.Schema
-schema s = Schema.named ("property-value-" <> Text.unpack (Schema.name s)) $ Schema.object
-  [ -- TODO
+schema s = Schema.named ("property-value-" <> Text.unpack (Schema.name s)) $ Aeson.object
+  [ Json.pair "oneOf"
+    [ Schema.object [(Json.pair "array" . Schema.json . List.schema $ Dictionary.schema s, True)]
+    , Schema.object [(Json.pair "bool" $ Schema.ref U8.schema, True)]
+    , Schema.object [(Json.pair "byte" $ Aeson.object
+      [ Json.pair "type" "array"
+      , Json.pair "items"
+        [ Schema.ref Str.schema
+        , Schema.json $ Schema.maybe Str.schema
+        ]
+      ], True)]
+    , Schema.object [(Json.pair "float" $ Schema.ref F32.schema, True)]
+    , Schema.object [(Json.pair "int" $ Schema.ref I32.schema, True)]
+    , Schema.object [(Json.pair "name" $ Schema.ref Str.schema, True)]
+    , Schema.object [(Json.pair "qWord" $ Schema.ref U64.schema, True)]
+    , Schema.object [(Json.pair "str" $ Schema.ref Str.schema, True)]
+    ]
   ]
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
