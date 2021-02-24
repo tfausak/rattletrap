@@ -5,6 +5,8 @@ import qualified Rattletrap.BytePut as BytePut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
 
 data KeyFrame = KeyFrame
   { time :: F32.F32
@@ -17,6 +19,13 @@ data KeyFrame = KeyFrame
   deriving (Eq, Show)
 
 $(deriveJson ''KeyFrame)
+
+schema :: Schema.Schema
+schema = Schema.named "keyFrame" $ Schema.object
+  [ (Json.pair "time" True, True)
+  , (Json.pair "frame" True, True)
+  , (Json.pair "position" True, True)
+  ]
 
 bytePut :: KeyFrame -> BytePut.BytePut
 bytePut x =

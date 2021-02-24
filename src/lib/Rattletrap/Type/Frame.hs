@@ -10,6 +10,8 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Replication as Replication
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -26,6 +28,13 @@ data Frame = Frame
   deriving (Eq, Show)
 
 $(deriveJson ''Frame)
+
+schema :: Schema.Schema
+schema = Schema.named "frame" $ Schema.object
+  [ (Json.pair "time" True, True)
+  , (Json.pair "delta" True, True)
+  , (Json.pair "replications" True, True)
+  ]
 
 putFrames :: List.List Frame -> BitPut.BitPut
 putFrames = foldMap bitPut . List.toList

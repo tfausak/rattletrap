@@ -19,11 +19,15 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.F32 as F32
+import qualified Rattletrap.Type.Frame as Frame
 import qualified Rattletrap.Type.Header as Header
 import qualified Rattletrap.Type.I32 as I32
+import qualified Rattletrap.Type.KeyFrame as KeyFrame
+import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Replay as Replay
+import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U64 as U64
@@ -68,19 +72,25 @@ rattletrap name arguments = do
   putOutput config (encode replay)
 
 schema :: Aeson.Value
-schema = Aeson.object
+schema =
+  let contentSchema = Content.schema $ List.schema Frame.schema
+  in Aeson.object
   [ Json.pair "$schema" "https://json-schema.org/draft-07/schema"
   , Json.pair "$ref" "#/definitions/replay"
   , Json.pair "definitions" . Aeson.object $ fmap
     (\ s -> Schema.name s Aeson..= Schema.json s)
-    [ Content.schema
+    [ contentSchema
     , Dictionary.schema Property.schema
     , F32.schema
+    , Frame.schema
     , Header.schema
     , I32.schema
+    , KeyFrame.schema
     , Property.schema
     , PropertyValue.schema Property.schema
-    , Replay.schema
+    , Replay.schema (Section.schema Header.schema) . Section.schema $ contentSchema
+    , Section.schema Header.schema
+    , Section.schema contentSchema
     , Str.schema
     , U32.schema
     , U64.schema
