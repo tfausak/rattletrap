@@ -27,7 +27,7 @@ decodeReplayFile fast = ByteGet.run . Replay.byteGet fast
 encodeReplayJson :: Replay.Replay -> Bytes.ByteString
 encodeReplayJson = LazyBytes.toStrict . Json.encodePretty' Json.defConfig
   { Json.confCompare = compare
-  , Json.confIndent = Json.Spaces 2
+  , Json.confIndent = Json.Tab
   , Json.confTrailingNewline = True
   }
 
