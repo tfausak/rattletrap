@@ -52,11 +52,14 @@ rattletrap name arguments = do
     IO.hPutStrLn IO.stderr version
     Exit.exitFailure
   Monad.when (Config.schema config) $ do
-    LazyByteString.putStr $ Aeson.encodePretty' Aeson.defConfig
-      { Aeson.confCompare = compare
-      , Aeson.confIndent = Aeson.Tab
-      , Aeson.confTrailingNewline = True
-      } schema
+    let json = Aeson.encodePretty' Aeson.defConfig
+          { Aeson.confCompare = compare
+          , Aeson.confIndent = Aeson.Tab
+          , Aeson.confTrailingNewline = True
+          } schema
+    case Config.output config of
+      Nothing -> LazyByteString.putStr json
+      Just file -> LazyByteString.writeFile file json
     Exit.exitSuccess
   input <- getInput config
   let decode = getDecoder config
