@@ -48,7 +48,7 @@ schema s = Schema.named ("property-value-" <> Text.unpack (Schema.name s)) $ Aes
     , Schema.object [(Json.pair "float" $ Schema.ref F32.schema, True)]
     , Schema.object [(Json.pair "int" $ Schema.ref I32.schema, True)]
     , Schema.object [(Json.pair "name" $ Schema.ref Str.schema, True)]
-    , Schema.object [(Json.pair "qWord" $ Schema.ref U64.schema, True)]
+    , Schema.object [(Json.pair "q_word" $ Schema.ref U64.schema, True)]
     , Schema.object [(Json.pair "str" $ Schema.ref Str.schema, True)]
     ]
   ]
