@@ -45,7 +45,8 @@ instance (Aeson.ToJSON h, Aeson.ToJSON c) => Aeson.ToJSON (ReplayWith h c) where
 
 schema :: Schema.Schema
 schema = Schema.named "replay" $ Schema.object
-  [ (Json.pair "header" . Schema.json $ Section.schema Header.schema, True)
+  [ (Json.pair "$schema" $ Aeson.object [Json.pair "type" "string"], True)
+  , (Json.pair "header" . Schema.json $ Section.schema Header.schema, True)
   , (Json.pair "content" . Schema.json $ Section.schema Content.schema, True)
   ]
 
