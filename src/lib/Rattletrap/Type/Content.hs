@@ -18,6 +18,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Bytes
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad.Trans.State as State
 import qualified Data.ByteString as Bytes
@@ -65,7 +66,18 @@ $(deriveJson ''ContentWith)
 
 schema :: Schema.Schema
 schema = Schema.named "content" $ Schema.object
-  [ -- TODO
+  [ (Json.pair "levels" True, True)
+  , (Json.pair "key_frames" True, True)
+  , (Json.pair "stream_size" True, True)
+  , (Json.pair "frames" True, True)
+  , (Json.pair "messages" True, True)
+  , (Json.pair "marks" True, True)
+  , (Json.pair "packages" True, True)
+  , (Json.pair "objects" True, True)
+  , (Json.pair "names" True, True)
+  , (Json.pair "class_mappings" True, True)
+  , (Json.pair "caches" True, True)
+  , (Json.pair "unknown" True, True)
   ]
 
 empty :: Content
