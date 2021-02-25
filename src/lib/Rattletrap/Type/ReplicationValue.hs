@@ -32,9 +32,9 @@ $(deriveJson ''ReplicationValue)
 schema :: Schema.Schema
 schema = Schema.named "replicationValue" $ Aeson.object
   [ Json.pair "oneOf"
-    [ Schema.object [(Json.pair "spawned" $ Schema.json Schema.todo, True)]
+    [ Schema.object [(Json.pair "spawned" $ Schema.ref Spawned.schema, True)]
     , Schema.object [(Json.pair "updated" $ Schema.json Schema.todo, True)]
-    , Schema.object [(Json.pair "destroyed" $ Schema.json Schema.todo, True)]
+    , Schema.object [(Json.pair "destroyed" $ Schema.ref Destroyed.schema, True)]
     ]
   ]
 

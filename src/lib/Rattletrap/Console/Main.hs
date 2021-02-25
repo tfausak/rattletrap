@@ -26,6 +26,9 @@ import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.Frame as Frame
 import qualified Rattletrap.Type.Header as Header
 import qualified Rattletrap.Type.I32 as I32
+import qualified Rattletrap.Type.I8 as I8
+import qualified Rattletrap.Type.Int8Vector as Int8Vector
+import qualified Rattletrap.Type.Initialization as Initialization
 import qualified Rattletrap.Type.KeyFrame as KeyFrame
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Mark as Mark
@@ -33,6 +36,8 @@ import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Replication as Replication
+import qualified Rattletrap.Type.Replication.Destroyed as Replication.Destroyed
+import qualified Rattletrap.Type.Replication.Spawned as Replication.Spawned
 import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Section as Section
@@ -40,6 +45,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
+import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Utility.Helper as Rattletrap
 import qualified Rattletrap.Utility.Json as Json
 import qualified System.Console.GetOpt as Console
@@ -97,6 +103,9 @@ schema =
     , Frame.schema
     , Header.schema
     , I32.schema
+    , I8.schema
+    , Int8Vector.schema
+    , Initialization.schema
     , KeyFrame.schema
     , Mark.schema
     , Message.schema
@@ -104,6 +113,8 @@ schema =
     , PropertyValue.schema Property.schema
     , Replay.schema (Section.schema Header.schema) . Section.schema $ contentSchema
     , Replication.schema
+    , Replication.Destroyed.schema
+    , Replication.Spawned.schema
     , ReplicationValue.schema
     , Section.schema Header.schema
     , Section.schema contentSchema
@@ -111,6 +122,7 @@ schema =
     , U32.schema
     , U64.schema
     , U8.schema
+    , Vector.schema
     ]
   ]
 

@@ -7,6 +7,8 @@ import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
+import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
 
 data Initialization = Initialization
   { location :: Maybe Vector.Vector
@@ -19,6 +21,12 @@ data Initialization = Initialization
   deriving (Eq, Show)
 
 $(deriveJson ''Initialization)
+
+schema :: Schema.Schema
+schema = Schema.named "initialization" $ Schema.object
+  [ (Json.pair "location" . Schema.json $ Schema.maybe Vector.schema, False)
+  , (Json.pair "rotation" . Schema.json $ Schema.maybe Int8Vector.schema, False)
+  ]
 
 bitPut :: Initialization -> BitPut.BitPut
 bitPut initialization =

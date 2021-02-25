@@ -5,6 +5,8 @@ import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I8 as I8
 import Rattletrap.Utility.Monad
+import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
 
 data Int8Vector = Int8Vector
   { x :: Maybe I8.I8
@@ -14,6 +16,13 @@ data Int8Vector = Int8Vector
   deriving (Eq, Show)
 
 $(deriveJson ''Int8Vector)
+
+schema :: Schema.Schema
+schema = Schema.named "int8Vector" $ Schema.object
+  [ (Json.pair "x" . Schema.json $ Schema.maybe I8.schema, False)
+  , (Json.pair "y" . Schema.json $ Schema.maybe I8.schema, False)
+  , (Json.pair "z" . Schema.json $ Schema.maybe I8.schema, False)
+  ]
 
 bitPut :: Int8Vector -> BitPut.BitPut
 bitPut int8Vector =

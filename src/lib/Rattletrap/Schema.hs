@@ -44,5 +44,11 @@ array s = Schema
     ]
   }
 
+boolean :: Schema
+boolean = named "boolean" $ Aeson.object [ Json.pair "type" "boolean" ]
+
+integer :: Schema
+integer = named "integer" $ Aeson.object [ Json.pair "type" "integer" ]
+
 todo :: Schema
 todo = named "todo" $ Aeson.toJSON True
