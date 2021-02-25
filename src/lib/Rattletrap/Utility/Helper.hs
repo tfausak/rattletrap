@@ -24,8 +24,8 @@ decodeReplayFile
 decodeReplayFile fast = ByteGet.run . Replay.byteGet fast
 
 -- | Encodes a replay as JSON.
-encodeReplayJson :: Replay.Replay -> Bytes.ByteString
-encodeReplayJson = LazyBytes.toStrict . Json.encodePretty' Json.defConfig
+encodeReplayJson :: Replay.Replay -> LazyBytes.ByteString
+encodeReplayJson = Json.encodePretty' Json.defConfig
   { Json.confCompare = compare
   , Json.confIndent = Json.Tab
   , Json.confTrailingNewline = True
@@ -36,7 +36,7 @@ decodeReplayJson :: Bytes.ByteString -> Either String Replay.Replay
 decodeReplayJson = Json.eitherDecodeStrict'
 
 -- | Encodes a raw replay.
-encodeReplayFile :: Bool -> Replay.Replay -> Bytes.ByteString
-encodeReplayFile fast replay = BytePut.toByteString . Replay.bytePut $ if fast
+encodeReplayFile :: Bool -> Replay.Replay -> LazyBytes.ByteString
+encodeReplayFile fast replay = BytePut.toLazyByteString . Replay.bytePut $ if fast
   then replay { Replay.content = Section.create Content.bytePut Content.empty }
   else replay

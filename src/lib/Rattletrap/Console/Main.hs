@@ -131,10 +131,10 @@ getDecoder config = case Config.getMode config of
   Mode.Decode -> Rattletrap.decodeReplayFile (Config.fast config) (Config.skipCrc config)
   Mode.Encode -> Rattletrap.decodeReplayJson
 
-getEncoder :: Config.Config -> Replay.Replay -> ByteString.ByteString
+getEncoder :: Config.Config -> Replay.Replay -> LazyByteString.ByteString
 getEncoder config = case Config.getMode config of
   Mode.Decode -> if Config.compact config
-    then LazyByteString.toStrict . Aeson.encode
+    then Aeson.encode
     else Rattletrap.encodeReplayJson
   Mode.Encode -> Rattletrap.encodeReplayFile $ Config.fast config
 
@@ -148,8 +148,8 @@ getInput config = case Config.input config of
       response <- Client.httpLbs request manager
       pure (LazyByteString.toStrict (Client.responseBody response))
 
-putOutput :: Config.Config -> ByteString.ByteString -> IO ()
-putOutput = maybe ByteString.putStr ByteString.writeFile . Config.output
+putOutput :: Config.Config -> LazyByteString.ByteString -> IO ()
+putOutput = maybe LazyByteString.putStr LazyByteString.writeFile . Config.output
 
 getConfig :: [String] -> IO Config.Config
 getConfig arguments = do
