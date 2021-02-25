@@ -43,3 +43,6 @@ array s = Schema
     , Json.pair "items" $ ref s
     ]
   }
+
+todo :: Schema
+todo = named "todo" $ Aeson.toJSON True

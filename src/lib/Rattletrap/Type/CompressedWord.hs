@@ -3,6 +3,9 @@ module Rattletrap.Type.CompressedWord where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
+import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
+import qualified Data.Aeson as Aeson
 
 import qualified Data.Bits as Bits
 
@@ -15,6 +18,12 @@ data CompressedWord = CompressedWord
   deriving (Eq, Ord, Show)
 
 $(deriveJson ''CompressedWord)
+
+schema :: Schema.Schema
+schema = Schema.named "compressedWord" $ Schema.object
+  [ (Json.pair "limit" $ Aeson.object [Json.pair "type" "integer"], True)
+  , (Json.pair "value" $ Aeson.object [Json.pair "type" "integer"], True)
+  ]
 
 bitPut :: CompressedWord -> BitPut.BitPut
 bitPut compressedWord =

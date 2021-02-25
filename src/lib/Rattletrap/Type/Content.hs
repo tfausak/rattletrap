@@ -71,13 +71,13 @@ schema s = Schema.named "content" $ Schema.object
   , (Json.pair "key_frames" . Schema.json $ List.schema KeyFrame.schema, True)
   , (Json.pair "stream_size" $ Schema.ref U32.schema, True)
   , (Json.pair "frames" $ Schema.json s, True)
-  , (Json.pair "messages" True, True)
-  , (Json.pair "marks" True, True)
+  , (Json.pair "messages" . Schema.json $ List.schema Message.schema, True)
+  , (Json.pair "marks" . Schema.json $ List.schema Mark.schema, True)
   , (Json.pair "packages" . Schema.json $ List.schema Str.schema, True)
   , (Json.pair "objects" . Schema.json $ List.schema Str.schema, True)
   , (Json.pair "names" . Schema.json $ List.schema Str.schema, True)
-  , (Json.pair "class_mappings" True, True)
-  , (Json.pair "caches" True, True)
+  , (Json.pair "class_mappings" . Schema.json $ List.schema ClassMapping.schema, True)
+  , (Json.pair "caches" . Schema.json $ List.schema Cache.schema, True)
   , (Json.pair "unknown" . Schema.json $ Schema.array U8.schema, True)
   ]
 

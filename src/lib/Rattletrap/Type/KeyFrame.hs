@@ -22,9 +22,9 @@ $(deriveJson ''KeyFrame)
 
 schema :: Schema.Schema
 schema = Schema.named "keyFrame" $ Schema.object
-  [ (Json.pair "time" True, True)
-  , (Json.pair "frame" True, True)
-  , (Json.pair "position" True, True)
+  [ (Json.pair "time" $ Schema.ref F32.schema, True)
+  , (Json.pair "frame" $ Schema.ref U32.schema, True)
+  , (Json.pair "position" $ Schema.ref U32.schema, True)
   ]
 
 bytePut :: KeyFrame -> BytePut.BytePut

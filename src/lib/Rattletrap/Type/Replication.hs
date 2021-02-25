@@ -9,6 +9,8 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -21,6 +23,12 @@ data Replication = Replication
   deriving (Eq, Show)
 
 $(deriveJson ''Replication)
+
+schema :: Schema.Schema
+schema = Schema.named "replication" $ Schema.object
+  [ (Json.pair "actor_id" $ Schema.ref CompressedWord.schema, True)
+  , (Json.pair "value" $ Schema.ref ReplicationValue.schema, True)
+  ]
 
 putReplications :: List.List Replication -> BitPut.BitPut
 putReplications xs =

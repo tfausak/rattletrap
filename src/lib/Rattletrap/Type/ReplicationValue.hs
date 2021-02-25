@@ -10,6 +10,9 @@ import qualified Rattletrap.Type.Replication.Spawned as Spawned
 import qualified Rattletrap.Type.Replication.Updated as Updated
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
+import qualified Data.Aeson as Aeson
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -25,6 +28,15 @@ data ReplicationValue
   deriving (Eq, Show)
 
 $(deriveJson ''ReplicationValue)
+
+schema :: Schema.Schema
+schema = Schema.named "replicationValue" $ Aeson.object
+  [ Json.pair "oneOf"
+    [ Schema.object [(Json.pair "spawned" $ Schema.json Schema.todo, True)]
+    , Schema.object [(Json.pair "updated" $ Schema.json Schema.todo, True)]
+    , Schema.object [(Json.pair "destroyed" $ Schema.json Schema.todo, True)]
+    ]
+  ]
 
 bitPut :: ReplicationValue -> BitPut.BitPut
 bitPut value = case value of

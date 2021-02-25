@@ -31,9 +31,9 @@ $(deriveJson ''Frame)
 
 schema :: Schema.Schema
 schema = Schema.named "frame" $ Schema.object
-  [ (Json.pair "time" True, True)
-  , (Json.pair "delta" True, True)
-  , (Json.pair "replications" True, True)
+  [ (Json.pair "time" $ Schema.ref F32.schema, True)
+  , (Json.pair "delta" $ Schema.ref F32.schema, True)
+  , (Json.pair "replications" . Schema.json $ List.schema Replication.schema, True)
   ]
 
 putFrames :: List.List Frame -> BitPut.BitPut

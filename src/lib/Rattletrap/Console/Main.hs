@@ -16,6 +16,10 @@ import qualified Rattletrap.Console.Config as Config
 import qualified Rattletrap.Console.Mode as Mode
 import qualified Rattletrap.Console.Option as Option
 import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
+import qualified Rattletrap.Type.Cache as Cache
+import qualified Rattletrap.Type.ClassMapping as ClassMapping
+import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.F32 as F32
@@ -24,8 +28,12 @@ import qualified Rattletrap.Type.Header as Header
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.KeyFrame as KeyFrame
 import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.Mark as Mark
+import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
+import qualified Rattletrap.Type.Replication as Replication
+import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
@@ -79,16 +87,24 @@ schema =
   , Json.pair "$ref" "#/definitions/replay"
   , Json.pair "definitions" . Aeson.object $ fmap
     (\ s -> Schema.name s Aeson..= Schema.json s)
-    [ contentSchema
+    [ AttributeMapping.schema
+    , Cache.schema
+    , ClassMapping.schema
+    , CompressedWord.schema
+    , contentSchema
     , Dictionary.schema Property.schema
     , F32.schema
     , Frame.schema
     , Header.schema
     , I32.schema
     , KeyFrame.schema
+    , Mark.schema
+    , Message.schema
     , Property.schema
     , PropertyValue.schema Property.schema
     , Replay.schema (Section.schema Header.schema) . Section.schema $ contentSchema
+    , Replication.schema
+    , ReplicationValue.schema
     , Section.schema Header.schema
     , Section.schema contentSchema
     , Str.schema
