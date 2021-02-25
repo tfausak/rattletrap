@@ -27,10 +27,8 @@ instance Aeson.ToJSON U64 where
   toJSON = Aeson.toJSON . show . toWord64
 
 schema :: Schema.Schema
-schema = Schema.named "u64" $ Aeson.object
-  [ Json.pair "type" "string"
-  , Json.pair "pattern" "^[0-9]+$"
-  ]
+schema = Schema.named "u64"
+  $ Aeson.object [Json.pair "type" "string", Json.pair "pattern" "^[0-9]+$"]
 
 fromWord64 :: Word.Word64 -> U64
 fromWord64 = U64

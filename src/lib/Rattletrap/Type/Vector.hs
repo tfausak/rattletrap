@@ -2,10 +2,10 @@ module Rattletrap.Type.Vector where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Utility.Json as Json
 
 data Vector = Vector

@@ -37,6 +37,9 @@ decodeReplayJson = Json.eitherDecodeStrict'
 
 -- | Encodes a raw replay.
 encodeReplayFile :: Bool -> Replay.Replay -> LazyBytes.ByteString
-encodeReplayFile fast replay = BytePut.toLazyByteString . Replay.bytePut $ if fast
-  then replay { Replay.content = Section.create Content.bytePut Content.empty }
-  else replay
+encodeReplayFile fast replay =
+  BytePut.toLazyByteString . Replay.bytePut $ if fast
+    then replay
+      { Replay.content = Section.create Content.bytePut Content.empty
+      }
+    else replay

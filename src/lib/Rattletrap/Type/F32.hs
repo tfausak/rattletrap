@@ -1,12 +1,12 @@
 module Rattletrap.Type.F32 where
 
+import qualified Data.Aeson as Aeson
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import Rattletrap.Type.Common
-import qualified Data.Aeson as Aeson
 import qualified Rattletrap.Schema as Schema
+import Rattletrap.Type.Common
 import qualified Rattletrap.Utility.Json as Json
 
 newtype F32
@@ -16,9 +16,7 @@ newtype F32
 $(deriveJson ''F32)
 
 schema :: Schema.Schema
-schema = Schema.named "f32" $ Aeson.object
-  [ Json.pair "type" "number"
-  ]
+schema = Schema.named "f32" $ Aeson.object [Json.pair "type" "number"]
 
 fromFloat :: Float -> F32
 fromFloat = F32

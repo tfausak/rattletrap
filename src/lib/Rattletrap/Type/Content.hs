@@ -76,7 +76,10 @@ schema s = Schema.named "content" $ Schema.object
   , (Json.pair "packages" . Schema.json $ List.schema Str.schema, True)
   , (Json.pair "objects" . Schema.json $ List.schema Str.schema, True)
   , (Json.pair "names" . Schema.json $ List.schema Str.schema, True)
-  , (Json.pair "class_mappings" . Schema.json $ List.schema ClassMapping.schema, True)
+  , ( Json.pair "class_mappings" . Schema.json $ List.schema
+      ClassMapping.schema
+    , True
+    )
   , (Json.pair "caches" . Schema.json $ List.schema Cache.schema, True)
   , (Json.pair "unknown" . Schema.json $ Schema.array U8.schema, True)
   ]

@@ -59,14 +59,17 @@ instance Aeson.ToJSON a => Aeson.ToJSON (Dictionary a) where
       ]
 
 schema :: Schema.Schema -> Schema.Schema
-schema s = Schema.named ("dictionary-" <> Text.unpack (Schema.name s)) $ Schema.object
-  [ (Json.pair "keys" . Schema.json $ Schema.array Str.schema, True)
-  , (Json.pair "last_key" $ Schema.ref Str.schema, True)
-  , (Json.pair "value" $ Aeson.object
-    [ Json.pair "type" "object"
-    , Json.pair "additionalProperties" $ Schema.ref s
-    ], True)
-  ]
+schema s =
+  Schema.named ("dictionary-" <> Text.unpack (Schema.name s)) $ Schema.object
+    [ (Json.pair "keys" . Schema.json $ Schema.array Str.schema, True)
+    , (Json.pair "last_key" $ Schema.ref Str.schema, True)
+    , ( Json.pair "value" $ Aeson.object
+        [ Json.pair "type" "object"
+        , Json.pair "additionalProperties" $ Schema.ref s
+        ]
+      , True
+      )
+    ]
 
 lookup :: Str.Str -> Dictionary a -> Maybe a
 lookup k = Prelude.lookup k . List.toList . elements

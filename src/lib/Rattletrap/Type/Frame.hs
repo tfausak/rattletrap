@@ -2,6 +2,7 @@ module Rattletrap.Type.Frame where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
@@ -10,7 +11,6 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Replication as Replication
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad.Trans.Class as Trans
@@ -33,7 +33,9 @@ schema :: Schema.Schema
 schema = Schema.named "frame" $ Schema.object
   [ (Json.pair "time" $ Schema.ref F32.schema, True)
   , (Json.pair "delta" $ Schema.ref F32.schema, True)
-  , (Json.pair "replications" . Schema.json $ List.schema Replication.schema, True)
+  , ( Json.pair "replications" . Schema.json $ List.schema Replication.schema
+    , True
+    )
   ]
 
 putFrames :: List.List Frame -> BitPut.BitPut

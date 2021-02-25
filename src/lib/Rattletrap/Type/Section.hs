@@ -29,11 +29,12 @@ data Section a = Section
 $(deriveJson ''Section)
 
 schema :: Schema.Schema -> Schema.Schema
-schema s = Schema.named ("section-" <> Text.unpack (Schema.name s)) $ Schema.object
-  [ (Json.pair "size" $ Schema.ref U32.schema, True)
-  , (Json.pair "crc" $ Schema.ref U32.schema, True)
-  , (Json.pair "body" $ Schema.ref s, True)
-  ]
+schema s =
+  Schema.named ("section-" <> Text.unpack (Schema.name s)) $ Schema.object
+    [ (Json.pair "size" $ Schema.ref U32.schema, True)
+    , (Json.pair "crc" $ Schema.ref U32.schema, True)
+    , (Json.pair "body" $ Schema.ref s, True)
+    ]
 
 create :: (a -> BytePut.BytePut) -> a -> Section a
 create encode body_ =
@@ -58,7 +59,8 @@ bytePut putBody section =
     <> U32.bytePut (U32.fromWord32 crc_)
     <> BytePut.byteString rawBody
 
-byteGet :: Bool -> (U32.U32 -> ByteGet.ByteGet a) -> ByteGet.ByteGet (Section a)
+byteGet
+  :: Bool -> (U32.U32 -> ByteGet.ByteGet a) -> ByteGet.ByteGet (Section a)
 byteGet skip getBody = do
   size_ <- U32.byteGet
   crc_ <- U32.byteGet

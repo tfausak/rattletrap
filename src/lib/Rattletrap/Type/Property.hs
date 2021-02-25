@@ -28,9 +28,9 @@ schema = Schema.named "property" $ Schema.object
 
 bytePut :: Property -> BytePut.BytePut
 bytePut x =
-  Str.bytePut (kind x)
-    <> U64.bytePut (size x)
-    <> PropertyValue.bytePut bytePut (value x)
+  Str.bytePut (kind x) <> U64.bytePut (size x) <> PropertyValue.bytePut
+    bytePut
+    (value x)
 
 byteGet :: ByteGet.ByteGet Property
 byteGet = do

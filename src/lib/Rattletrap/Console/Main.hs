@@ -27,19 +27,19 @@ import qualified Rattletrap.Type.Frame as Frame
 import qualified Rattletrap.Type.Header as Header
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.I8 as I8
-import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Initialization as Initialization
+import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.KeyFrame as KeyFrame
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
+import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Replication as Replication
 import qualified Rattletrap.Type.Replication.Destroyed as Replication.Destroyed
 import qualified Rattletrap.Type.Replication.Spawned as Replication.Spawned
 import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
-import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
@@ -63,18 +63,21 @@ rattletrap :: String -> [String] -> IO ()
 rattletrap name arguments = do
   config <- getConfig arguments
   Monad.when (Config.help config) $ do
-    IO.hPutStr IO.stderr $
-      Console.usageInfo (unwords [name, "version", version]) Option.all
+    IO.hPutStr IO.stderr
+      $ Console.usageInfo (unwords [name, "version", version]) Option.all
     Exit.exitFailure
   Monad.when (Config.version config) $ do
     IO.hPutStrLn IO.stderr version
     Exit.exitFailure
   Monad.when (Config.schema config) $ do
-    let json = Aeson.encodePretty' Aeson.defConfig
+    let
+      json = Aeson.encodePretty'
+        Aeson.defConfig
           { Aeson.confCompare = compare
           , Aeson.confIndent = Aeson.Tab
           , Aeson.confTrailingNewline = True
-          } schema
+          }
+        schema
     case Config.output config of
       Nothing -> LazyByteString.putStr json
       Just file -> LazyByteString.writeFile file json
@@ -88,54 +91,58 @@ rattletrap name arguments = do
 schema :: Aeson.Value
 schema =
   let contentSchema = Content.schema $ List.schema Frame.schema
-  in Aeson.object
-  [ Json.pair "$schema" "https://json-schema.org/draft-07/schema"
-  , Json.pair "$ref" "#/definitions/replay"
-  , Json.pair "definitions" . Aeson.object $ fmap
-    (\ s -> Schema.name s Aeson..= Schema.json s)
-    [ AttributeMapping.schema
-    , Cache.schema
-    , ClassMapping.schema
-    , CompressedWord.schema
-    , contentSchema
-    , Dictionary.schema Property.schema
-    , F32.schema
-    , Frame.schema
-    , Header.schema
-    , I32.schema
-    , I8.schema
-    , Int8Vector.schema
-    , Initialization.schema
-    , KeyFrame.schema
-    , Mark.schema
-    , Message.schema
-    , Property.schema
-    , PropertyValue.schema Property.schema
-    , Replay.schema (Section.schema Header.schema) . Section.schema $ contentSchema
-    , Replication.schema
-    , Replication.Destroyed.schema
-    , Replication.Spawned.schema
-    , ReplicationValue.schema
-    , Section.schema Header.schema
-    , Section.schema contentSchema
-    , Str.schema
-    , U32.schema
-    , U64.schema
-    , U8.schema
-    , Vector.schema
-    ]
-  ]
+  in
+    Aeson.object
+      [ Json.pair "$schema" "https://json-schema.org/draft-07/schema"
+      , Json.pair "$ref" "#/definitions/replay"
+      , Json.pair "definitions" . Aeson.object $ fmap
+        (\s -> Schema.name s Aeson..= Schema.json s)
+        [ AttributeMapping.schema
+        , Cache.schema
+        , ClassMapping.schema
+        , CompressedWord.schema
+        , contentSchema
+        , Dictionary.schema Property.schema
+        , F32.schema
+        , Frame.schema
+        , Header.schema
+        , I32.schema
+        , I8.schema
+        , Int8Vector.schema
+        , Initialization.schema
+        , KeyFrame.schema
+        , Mark.schema
+        , Message.schema
+        , Property.schema
+        , PropertyValue.schema Property.schema
+        , Replay.schema (Section.schema Header.schema)
+        . Section.schema
+        $ contentSchema
+        , Replication.schema
+        , Replication.Destroyed.schema
+        , Replication.Spawned.schema
+        , ReplicationValue.schema
+        , Section.schema Header.schema
+        , Section.schema contentSchema
+        , Str.schema
+        , U32.schema
+        , U64.schema
+        , U8.schema
+        , Vector.schema
+        ]
+      ]
 
-getDecoder :: Config.Config -> ByteString.ByteString -> Either String Replay.Replay
+getDecoder
+  :: Config.Config -> ByteString.ByteString -> Either String Replay.Replay
 getDecoder config = case Config.getMode config of
-  Mode.Decode -> Rattletrap.decodeReplayFile (Config.fast config) (Config.skipCrc config)
+  Mode.Decode ->
+    Rattletrap.decodeReplayFile (Config.fast config) (Config.skipCrc config)
   Mode.Encode -> Rattletrap.decodeReplayJson
 
 getEncoder :: Config.Config -> Replay.Replay -> LazyByteString.ByteString
 getEncoder config = case Config.getMode config of
-  Mode.Decode -> if Config.compact config
-    then Aeson.encode
-    else Rattletrap.encodeReplayJson
+  Mode.Decode ->
+    if Config.compact config then Aeson.encode else Rattletrap.encodeReplayJson
   Mode.Encode -> Rattletrap.encodeReplayFile $ Config.fast config
 
 getInput :: Config.Config -> IO ByteString.ByteString
@@ -149,19 +156,19 @@ getInput config = case Config.input config of
       pure (LazyByteString.toStrict (Client.responseBody response))
 
 putOutput :: Config.Config -> LazyByteString.ByteString -> IO ()
-putOutput = maybe LazyByteString.putStr LazyByteString.writeFile . Config.output
+putOutput =
+  maybe LazyByteString.putStr LazyByteString.writeFile . Config.output
 
 getConfig :: [String] -> IO Config.Config
 getConfig arguments = do
   let
     (flags, unexpectedArguments, unknownOptions, problems) =
       Console.getOpt' Console.Permute Option.all arguments
-  Monad.forM_ unexpectedArguments $ \ x ->
+  Monad.forM_ unexpectedArguments $ \x ->
     IO.hPutStrLn IO.stderr $ "WARNING: unexpected argument `" <> x <> "'"
-  Monad.forM_ unknownOptions $ \ x ->
-    IO.hPutStrLn IO.stderr $ "WARNING: unknown option `" <> x <> "'"
-  Monad.forM_ problems $ \ x ->
-    IO.hPutStr IO.stderr $ "ERROR: " <> x
+  Monad.forM_ unknownOptions
+    $ \x -> IO.hPutStrLn IO.stderr $ "WARNING: unknown option `" <> x <> "'"
+  Monad.forM_ problems $ \x -> IO.hPutStr IO.stderr $ "ERROR: " <> x
   Monad.unless (null problems) Exit.exitFailure
   either fail pure $ Monad.foldM Config.applyFlag Config.initial flags
 

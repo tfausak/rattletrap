@@ -1,11 +1,11 @@
 module Rattletrap.Type.CompressedWord where
 
+import qualified Data.Aeson as Aeson
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import Rattletrap.Type.Common
 import qualified Rattletrap.Schema as Schema
+import Rattletrap.Type.Common
 import qualified Rattletrap.Utility.Json as Json
-import qualified Data.Aeson as Aeson
 
 import qualified Data.Bits as Bits
 

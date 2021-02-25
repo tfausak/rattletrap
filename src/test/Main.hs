@@ -17,8 +17,9 @@ main = runTests makeTests
 
 runTests :: Test.Test -> IO ()
 runTests test = do
-  Exception.handle ignoreExitSuccess
-    $ Rattletrap.rattletrap "" ["--schema", "--output", Path.combine directory "schema.json"]
+  Exception.handle ignoreExitSuccess $ Rattletrap.rattletrap
+    ""
+    ["--schema", "--output", Path.combine directory "schema.json"]
   (result, elapsed) <- withElapsed $ Test.runTestTT test
   Printf.printf "Total time: %.3f seconds\n" elapsed
   Monad.when
@@ -34,8 +35,8 @@ makeTests :: Test.Test
 makeTests = Test.TestList $ fmap toTest replays
 
 toTest :: (String, String) -> Test.Test
-toTest (uuid, name) = Test.TestLabel (toLabel uuid name)
-  . Test.TestCase $ toAssertion uuid
+toTest (uuid, name) =
+  Test.TestLabel (toLabel uuid name) . Test.TestCase $ toAssertion uuid
 
 toLabel :: String -> String -> String
 toLabel uuid name = uuid <> ": " <> name

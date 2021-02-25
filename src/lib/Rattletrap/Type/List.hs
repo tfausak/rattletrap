@@ -2,9 +2,9 @@ module Rattletrap.Type.List where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Schema as Schema
 
 import qualified Control.Monad as Monad
 

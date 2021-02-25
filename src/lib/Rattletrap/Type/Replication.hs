@@ -2,6 +2,7 @@ module Rattletrap.Type.Replication where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
@@ -9,7 +10,6 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad.Trans.Class as Trans

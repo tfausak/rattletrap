@@ -1,13 +1,13 @@
 module Rattletrap.Type.I8 where
 
+import qualified Data.Aeson as Aeson
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Utility.Json as Json
-import qualified Data.Aeson as Aeson
 import Rattletrap.Type.Common
+import qualified Rattletrap.Utility.Json as Json
 
 newtype I8
   = I8 Int8

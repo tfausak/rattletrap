@@ -25,7 +25,7 @@ newtype Str
 $(deriveJson ''Str)
 
 schema :: Schema.Schema
-schema = Schema.named "str" $ Aeson.object [ Json.pair "type" "string" ]
+schema = Schema.named "str" $ Aeson.object [Json.pair "type" "string"]
 
 fromText :: Text -> Str
 fromText = Str

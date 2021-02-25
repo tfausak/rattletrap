@@ -19,7 +19,10 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
-type Replay = ReplayWith (Section.Section Header.Header) (Section.Section Content.Content)
+type Replay
+  = ReplayWith
+      (Section.Section Header.Header)
+      (Section.Section Content.Content)
 
 -- | A Rocket League replay.
 data ReplayWith header content = Replay
@@ -31,7 +34,7 @@ data ReplayWith header content = Replay
   deriving (Eq, Show)
 
 instance (Aeson.FromJSON h, Aeson.FromJSON c) => Aeson.FromJSON (ReplayWith h c) where
-  parseJSON = Aeson.withObject "Replay" $ \ object -> do
+  parseJSON = Aeson.withObject "Replay" $ \object -> do
     header <- Json.required object "header"
     content <- Json.required object "content"
     pure Replay { header, content }

@@ -1,7 +1,9 @@
 module Rattletrap.Type.ReplicationValue where
 
+import qualified Data.Aeson as Aeson
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
@@ -10,9 +12,7 @@ import qualified Rattletrap.Type.Replication.Spawned as Spawned
 import qualified Rattletrap.Type.Replication.Updated as Updated
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Utility.Json as Json
-import qualified Data.Aeson as Aeson
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -31,11 +31,13 @@ $(deriveJson ''ReplicationValue)
 
 schema :: Schema.Schema
 schema = Schema.named "replicationValue" $ Aeson.object
-  [ Json.pair "oneOf"
-    [ Schema.object [(Json.pair "spawned" $ Schema.ref Spawned.schema, True)]
-    , Schema.object [(Json.pair "updated" $ Schema.json Schema.todo, True)]
-    , Schema.object [(Json.pair "destroyed" $ Schema.ref Destroyed.schema, True)]
-    ]
+  [ Json.pair
+      "oneOf"
+      [ Schema.object [(Json.pair "spawned" $ Schema.ref Spawned.schema, True)]
+      , Schema.object [(Json.pair "updated" $ Schema.json Schema.todo, True)]
+      , Schema.object
+        [(Json.pair "destroyed" $ Schema.ref Destroyed.schema, True)]
+      ]
   ]
 
 bitPut :: ReplicationValue -> BitPut.BitPut

@@ -7,13 +7,14 @@ import qualified Rattletrap.Utility.Json as Json
 data Schema = Schema
   { name :: Text.Text
   , json :: Aeson.Value
-  } deriving (Eq, Show)
+  }
+  deriving (Eq, Show)
 
 named :: String -> Aeson.Value -> Schema
 named n j = Schema { name = Text.pack n, json = j }
 
 ref :: Schema -> Aeson.Value
-ref s = Aeson.object [ Json.pair "$ref" $ Text.pack "#/definitions/" <> name s ]
+ref s = Aeson.object [Json.pair "$ref" $ Text.pack "#/definitions/" <> name s]
 
 object :: [((Text.Text, Aeson.Value), Bool)] -> Aeson.Value
 object xs = Aeson.object
@@ -29,26 +30,21 @@ object xs = Aeson.object
 maybe :: Schema -> Schema
 maybe s = Schema
   { name = Text.pack "maybe-" <> name s
-  , json = Aeson.object [Json.pair "oneOf"
-    [ ref s
-    , Aeson.object [Json.pair "type" "null"]
-    ]]
+  , json = Aeson.object
+    [Json.pair "oneOf" [ref s, Aeson.object [Json.pair "type" "null"]]]
   }
 
 array :: Schema -> Schema
 array s = Schema
   { name = Text.pack "array-" <> name s
-  , json = Aeson.object
-    [ Json.pair "type" "array"
-    , Json.pair "items" $ ref s
-    ]
+  , json = Aeson.object [Json.pair "type" "array", Json.pair "items" $ ref s]
   }
 
 boolean :: Schema
-boolean = named "boolean" $ Aeson.object [ Json.pair "type" "boolean" ]
+boolean = named "boolean" $ Aeson.object [Json.pair "type" "boolean"]
 
 integer :: Schema
-integer = named "integer" $ Aeson.object [ Json.pair "type" "integer" ]
+integer = named "integer" $ Aeson.object [Json.pair "type" "integer"]
 
 todo :: Schema
 todo = named "todo" $ Aeson.toJSON True

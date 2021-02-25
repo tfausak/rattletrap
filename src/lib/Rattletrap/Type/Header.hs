@@ -8,8 +8,8 @@ import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import Rattletrap.Utility.Monad
 import qualified Rattletrap.Utility.Json as Json
+import Rattletrap.Utility.Monad
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
@@ -67,7 +67,9 @@ schema = Schema.named "header" $ Schema.object
   , (Json.pair "licensee_version" $ Schema.ref U32.schema, True)
   , (Json.pair "patch_version" . Schema.json $ Schema.maybe U32.schema, False)
   , (Json.pair "label" $ Schema.ref Str.schema, True)
-  , (Json.pair "properties" . Schema.json $ Dictionary.schema Property.schema, True)
+  , ( Json.pair "properties" . Schema.json $ Dictionary.schema Property.schema
+    , True
+    )
   ]
 
 bytePut :: Header -> BytePut.BytePut

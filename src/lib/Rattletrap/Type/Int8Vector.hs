@@ -2,11 +2,11 @@ module Rattletrap.Type.Int8Vector where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I8 as I8
-import Rattletrap.Utility.Monad
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Utility.Json as Json
+import Rattletrap.Utility.Monad
 
 data Int8Vector = Int8Vector
   { x :: Maybe I8.I8
