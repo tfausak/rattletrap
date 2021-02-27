@@ -155,7 +155,7 @@ schema =
   let contentSchema = Content.schema $ List.schema Frame.schema
   in
     Aeson.object
-      [ Json.pair "$schema" "http://json-schema.org/draft-07/schema"
+      [ Json.pair "$schema" "https://json-schema.org/draft-07/schema"
       , Json.pair "$ref" "#/definitions/replay"
       , Json.pair "definitions" . Aeson.object $ fmap
         (\s -> Schema.name s Aeson..= Schema.json s)
