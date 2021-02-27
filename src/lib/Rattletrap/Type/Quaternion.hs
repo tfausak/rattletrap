@@ -23,10 +23,10 @@ $(deriveJson ''Quaternion)
 
 schema :: Schema.Schema
 schema = Schema.named "quaternion" $ Schema.object
-  [ (Json.pair "x" $ Schema.json Schema.number, True)
-  , (Json.pair "y" $ Schema.json Schema.number, True)
-  , (Json.pair "z" $ Schema.json Schema.number, True)
-  , (Json.pair "w" $ Schema.json Schema.number, True)
+  [ (Json.pair "x" $ Schema.ref Schema.number, True)
+  , (Json.pair "y" $ Schema.ref Schema.number, True)
+  , (Json.pair "z" $ Schema.ref Schema.number, True)
+  , (Json.pair "w" $ Schema.ref Schema.number, True)
   ]
 
 data Component

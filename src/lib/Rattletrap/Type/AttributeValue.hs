@@ -97,12 +97,18 @@ schema = Schema.named "attribute-value" . Schema.oneOf $ fmap
   (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
   [ ("boolean", Boolean.schema)
   , ("byte", Byte.schema)
+  , ("cam_settings", CamSettings.schema)
+  , ("enum", Enum.schema)
   , ("flagged_int", FlaggedInt.schema)
+  , ("float", Float.schema)
   , ("int", Int.schema)
   , ("loadout", Loadout.schema)
+  , ("pickup", Pickup.schema)
   , ("q_word", QWord.schema)
+  , ("reservation", Reservation.schema)
   , ("rigid_body_state", RigidBodyState.schema)
   , ("string", String.schema)
+  , ("team_paint", TeamPaint.schema)
   , ("unique_id", UniqueId.schema)
   -- TODO
   ]

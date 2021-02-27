@@ -12,7 +12,7 @@ newtype Boolean = Boolean
 $(deriveJson ''Boolean)
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-boolean" $ Schema.json Schema.boolean
+schema = Schema.named "attribute-boolean" $ Schema.ref Schema.boolean
 
 bitPut :: Boolean -> BitPut.BitPut
 bitPut booleanAttribute = BitPut.bool (value booleanAttribute)

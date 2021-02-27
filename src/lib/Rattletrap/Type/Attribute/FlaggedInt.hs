@@ -17,7 +17,7 @@ $(deriveJson ''FlaggedInt)
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-flagged-int" $ Schema.object
-  [ (Json.pair "flag" $ Schema.json Schema.boolean, True)
+  [ (Json.pair "flag" $ Schema.ref Schema.boolean, True)
   , (Json.pair "int" $ Schema.ref I32.schema, True)
   ]
 

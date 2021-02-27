@@ -23,7 +23,7 @@ $(deriveJson ''RigidBodyState)
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-rigid-body-state" $ Schema.object
-  [ (Json.pair "sleeping" $ Schema.json Schema.boolean, True)
+  [ (Json.pair "sleeping" $ Schema.ref Schema.boolean, True)
   , (Json.pair "location" $ Schema.ref Vector.schema, True)
   , (Json.pair "rotation" $ Schema.ref Rotation.schema, True)
   , ( Json.pair "linear_velocity" . Schema.json $ Schema.maybe Vector.schema

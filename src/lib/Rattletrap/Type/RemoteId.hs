@@ -32,7 +32,7 @@ $(deriveJson ''RemoteId)
 schema :: Schema.Schema
 schema = Schema.named "remote-id" . Schema.oneOf $ fmap
   (\(k, v) -> Schema.object [(Json.pair k v, True)])
-  [ ("splitscreen", Schema.json Schema.integer)
+  [ ("splitscreen", Schema.ref Schema.integer)
   , ("steam", Schema.ref U64.schema)
   , ("xbox", Schema.ref U64.schema)
   , ("epic", Schema.ref Str.schema)

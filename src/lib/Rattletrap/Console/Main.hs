@@ -19,12 +19,18 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute as Attribute
 import qualified Rattletrap.Type.Attribute.Boolean as Attribute.Boolean
 import qualified Rattletrap.Type.Attribute.Byte as Attribute.Byte
+import qualified Rattletrap.Type.Attribute.CamSettings as Attribute.CamSettings
+import qualified Rattletrap.Type.Attribute.Enum as Attribute.Enum
 import qualified Rattletrap.Type.Attribute.FlaggedInt as Attribute.FlaggedInt
+import qualified Rattletrap.Type.Attribute.Float as Attribute.Float
 import qualified Rattletrap.Type.Attribute.Int as Attribute.Int
 import qualified Rattletrap.Type.Attribute.Loadout as Attribute.Loadout
+import qualified Rattletrap.Type.Attribute.Pickup as Attribute.Pickup
 import qualified Rattletrap.Type.Attribute.QWord as Attribute.QWord
+import qualified Rattletrap.Type.Attribute.Reservation as Attribute.Reservation
 import qualified Rattletrap.Type.Attribute.RigidBodyState as Attribute.RigidBodyState
 import qualified Rattletrap.Type.Attribute.String as Attribute.String
+import qualified Rattletrap.Type.Attribute.TeamPaint as Attribute.TeamPaint
 import qualified Rattletrap.Type.Attribute.UniqueId as Attribute.UniqueId
 import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
 import qualified Rattletrap.Type.AttributeValue as AttributeValue
@@ -116,12 +122,18 @@ schema =
         [ Attribute.schema
         , Attribute.Boolean.schema
         , Attribute.Byte.schema
+        , Attribute.CamSettings.schema
+        , Attribute.Enum.schema
         , Attribute.FlaggedInt.schema
+        , Attribute.Float.schema
         , Attribute.Int.schema
         , Attribute.Loadout.schema
+        , Attribute.Pickup.schema
         , Attribute.QWord.schema
+        , Attribute.Reservation.schema
         , Attribute.RigidBodyState.schema
         , Attribute.String.schema
+        , Attribute.TeamPaint.schema
         , Attribute.UniqueId.schema
         , AttributeMapping.schema
         , AttributeValue.schema
@@ -161,6 +173,10 @@ schema =
         , U64.schema
         , U8.schema
         , Vector.schema
+        , Schema.integer
+        , Schema.boolean
+        , Schema.null
+        , Schema.number
         ]
       ]
 

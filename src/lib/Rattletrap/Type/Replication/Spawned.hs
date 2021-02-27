@@ -39,7 +39,7 @@ $(deriveJson ''Spawned)
 
 schema :: Schema.Schema
 schema = Schema.named "replication-spawned" $ Schema.object
-  [ (Json.pair "flag" $ Schema.json Schema.boolean, True)
+  [ (Json.pair "flag" $ Schema.ref Schema.boolean, True)
   , (Json.pair "name_index" . Schema.json $ Schema.maybe U32.schema, False)
   , (Json.pair "name" . Schema.json $ Schema.maybe Str.schema, False)
   , (Json.pair "object_id" $ Schema.ref U32.schema, True)

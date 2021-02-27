@@ -29,10 +29,10 @@ $(deriveJson ''Vector)
 schema :: Schema.Schema
 schema = Schema.named "vector" $ Schema.object
   [ (Json.pair "size" $ Schema.ref CompressedWord.schema, True)
-  , (Json.pair "bias" $ Schema.json Schema.integer, True)
-  , (Json.pair "x" $ Schema.json Schema.integer, True)
-  , (Json.pair "y" $ Schema.json Schema.integer, True)
-  , (Json.pair "z" $ Schema.json Schema.integer, True)
+  , (Json.pair "bias" $ Schema.ref Schema.integer, True)
+  , (Json.pair "x" $ Schema.ref Schema.integer, True)
+  , (Json.pair "y" $ Schema.ref Schema.integer, True)
+  , (Json.pair "z" $ Schema.ref Schema.integer, True)
   ]
 
 bitPut :: Vector -> BitPut.BitPut
