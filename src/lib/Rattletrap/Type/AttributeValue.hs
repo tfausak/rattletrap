@@ -95,7 +95,17 @@ $(deriveJson ''AttributeValue)
 schema :: Schema.Schema
 schema = Schema.named "attribute-value" . Schema.oneOf $ fmap
   (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
-  [("rigid_body_state", RigidBodyState.schema)]
+  [ ("boolean", Boolean.schema)
+  , ("byte", Byte.schema)
+  , ("flagged_int", FlaggedInt.schema)
+  , ("int", Int.schema)
+  , ("loadout", Loadout.schema)
+  , ("q_word", QWord.schema)
+  , ("rigid_body_state", RigidBodyState.schema)
+  , ("string", String.schema)
+  , ("unique_id", UniqueId.schema)
+  -- TODO
+  ]
 
 bitPut :: AttributeValue -> BitPut.BitPut
 bitPut value = case value of

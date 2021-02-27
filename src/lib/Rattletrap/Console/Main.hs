@@ -17,7 +17,15 @@ import qualified Rattletrap.Console.Mode as Mode
 import qualified Rattletrap.Console.Option as Option
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute as Attribute
+import qualified Rattletrap.Type.Attribute.Boolean as Attribute.Boolean
+import qualified Rattletrap.Type.Attribute.Byte as Attribute.Byte
+import qualified Rattletrap.Type.Attribute.FlaggedInt as Attribute.FlaggedInt
+import qualified Rattletrap.Type.Attribute.Int as Attribute.Int
+import qualified Rattletrap.Type.Attribute.Loadout as Attribute.Loadout
+import qualified Rattletrap.Type.Attribute.QWord as Attribute.QWord
 import qualified Rattletrap.Type.Attribute.RigidBodyState as Attribute.RigidBodyState
+import qualified Rattletrap.Type.Attribute.String as Attribute.String
+import qualified Rattletrap.Type.Attribute.UniqueId as Attribute.UniqueId
 import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
 import qualified Rattletrap.Type.AttributeValue as AttributeValue
 import qualified Rattletrap.Type.Cache as Cache
@@ -40,6 +48,7 @@ import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Quaternion as Quaternion
+import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Replication as Replication
 import qualified Rattletrap.Type.Replication.Destroyed as Replication.Destroyed
@@ -105,7 +114,15 @@ schema =
       , Json.pair "definitions" . Aeson.object $ fmap
         (\s -> Schema.name s Aeson..= Schema.json s)
         [ Attribute.schema
+        , Attribute.Boolean.schema
+        , Attribute.Byte.schema
+        , Attribute.FlaggedInt.schema
+        , Attribute.Int.schema
+        , Attribute.Loadout.schema
+        , Attribute.QWord.schema
         , Attribute.RigidBodyState.schema
+        , Attribute.String.schema
+        , Attribute.UniqueId.schema
         , AttributeMapping.schema
         , AttributeValue.schema
         , Cache.schema
@@ -127,6 +144,7 @@ schema =
         , Property.schema
         , PropertyValue.schema Property.schema
         , Quaternion.schema
+        , RemoteId.schema
         , Replay.schema (Section.schema Header.schema)
         . Section.schema
         $ contentSchema
