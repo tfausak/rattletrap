@@ -84,26 +84,42 @@ main = do
 rattletrap :: String -> [String] -> IO ()
 rattletrap name arguments = do
   config <- getConfig arguments
-  Monad.when (Config.help config) $ do
-    IO.hPutStr IO.stderr
-      $ Console.usageInfo (unwords [name, "version", version]) Option.all
-    Exit.exitFailure
-  Monad.when (Config.version config) $ do
-    IO.hPutStrLn IO.stderr version
-    Exit.exitFailure
-  Monad.when (Config.schema config) $ do
-    let
-      json = Aeson.encodePretty'
-        Aeson.defConfig
-          { Aeson.confCompare = compare
-          , Aeson.confIndent = Aeson.Tab
-          , Aeson.confTrailingNewline = True
-          }
-        schema
-    case Config.output config of
-      Nothing -> LazyByteString.putStr json
-      Just file -> LazyByteString.writeFile file json
-    Exit.exitSuccess
+  if Config.help config
+    then helpMain name
+    else if Config.version config
+      then versionMain
+      else if Config.schema config
+      then schemaMain config
+      else defaultMain config
+
+helpMain :: String -> IO ()
+helpMain name = do
+  IO.hPutStr IO.stderr
+    $ Console.usageInfo (unwords [name, "version", version]) Option.all
+  Exit.exitFailure
+
+versionMain :: IO ()
+versionMain = do
+  IO.hPutStrLn IO.stderr version
+  Exit.exitFailure
+
+schemaMain :: Config.Config -> IO ()
+schemaMain config = do
+  let
+    json = Aeson.encodePretty'
+      Aeson.defConfig
+        { Aeson.confCompare = compare
+        , Aeson.confIndent = Aeson.Tab
+        , Aeson.confTrailingNewline = True
+        }
+      schema
+  case Config.output config of
+    Nothing -> LazyByteString.putStr json
+    Just file -> LazyByteString.writeFile file json
+  Exit.exitSuccess
+
+defaultMain :: Config.Config -> IO ()
+defaultMain config = do
   input <- getInput config
   let decode = getDecoder config
   replay <- either fail pure (decode input)
