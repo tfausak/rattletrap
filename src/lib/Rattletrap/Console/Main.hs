@@ -116,7 +116,6 @@ schemaMain config = do
   case Config.output config of
     Nothing -> LazyByteString.putStr json
     Just file -> LazyByteString.writeFile file json
-  Exit.exitSuccess
 
 defaultMain :: Config.Config -> IO ()
 defaultMain config = do

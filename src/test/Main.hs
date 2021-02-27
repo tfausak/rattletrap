@@ -2,7 +2,6 @@ module Main
   ( main
   ) where
 
-import qualified Control.Exception as Exception
 import qualified Control.Monad as Monad
 import qualified Data.ByteString as Bytes
 import qualified GHC.Clock as Clock
@@ -17,7 +16,7 @@ main = runTests makeTests
 
 runTests :: Test.Test -> IO ()
 runTests test = do
-  Exception.handle ignoreExitSuccess $ Rattletrap.rattletrap
+  Rattletrap.rattletrap
     ""
     ["--schema", "--output", Path.combine directory "schema.json"]
   (result, elapsed) <- withElapsed $ Test.runTestTT test
@@ -25,11 +24,6 @@ runTests test = do
   Monad.when
     (Test.errors result > 0 || Test.failures result > 0)
     Exit.exitFailure
-
-ignoreExitSuccess :: Exit.ExitCode -> IO ()
-ignoreExitSuccess exitCode = case exitCode of
-  Exit.ExitSuccess -> pure ()
-  _ -> Exception.throwIO exitCode
 
 makeTests :: Test.Test
 makeTests = Test.TestList $ fmap toTest replays
