@@ -8,10 +8,8 @@ import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Encode.Pretty as Aeson
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
-import qualified Data.Version as Version
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
-import qualified Paths_rattletrap as Package
 import qualified Rattletrap.Console.Config as Config
 import qualified Rattletrap.Console.Mode as Mode
 import qualified Rattletrap.Console.Option as Option
@@ -95,6 +93,7 @@ import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Utility.Helper as Rattletrap
 import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Version as Version
 import qualified System.Console.GetOpt as Console
 import qualified System.Environment as Environment
 import qualified System.Exit as Exit
@@ -120,12 +119,12 @@ rattletrap name arguments = do
 helpMain :: String -> IO ()
 helpMain name = do
   IO.hPutStr IO.stderr
-    $ Console.usageInfo (unwords [name, "version", version]) Option.all
+    $ Console.usageInfo (unwords [name, "version", Version.string]) Option.all
   Exit.exitFailure
 
 versionMain :: IO ()
 versionMain = do
-  IO.hPutStrLn IO.stderr version
+  IO.hPutStrLn IO.stderr Version.string
   Exit.exitFailure
 
 schemaMain :: Config.Config -> IO ()
@@ -156,6 +155,7 @@ schema =
   in
     Aeson.object
       [ Json.pair "$schema" "https://json-schema.org/draft-07/schema"
+      , Json.pair "$id" Replay.schemaUrl
       , Json.pair "$ref" "#/definitions/replay"
       , Json.pair "definitions" . Aeson.object $ fmap
         (\s -> Schema.name s Aeson..= Schema.json s)
@@ -213,10 +213,10 @@ schema =
         , I32.schema
         , I64.schema
         , I8.schema
-        , Int8Vector.schema
         , Initialization.schema
-        , List.schema Attribute.Product.schema
+        , Int8Vector.schema
         , KeyFrame.schema
+        , List.schema Attribute.Product.schema
         , Mark.schema
         , Message.schema
         , Property.schema
@@ -226,24 +226,24 @@ schema =
         , Replay.schema (Section.schema Header.schema)
         . Section.schema
         $ contentSchema
-        , Replication.schema
         , Replication.Destroyed.schema
+        , Replication.schema
         , Replication.Spawned.schema
         , Replication.Updated.schema
         , ReplicationValue.schema
         , Rotation.schema
-        , Section.schema Header.schema
+        , Schema.boolean
+        , Schema.integer
+        , Schema.null
+        , Schema.number
+        , Schema.string
         , Section.schema contentSchema
+        , Section.schema Header.schema
         , Str.schema
         , U32.schema
         , U64.schema
         , U8.schema
         , Vector.schema
-        , Schema.integer
-        , Schema.boolean
-        , Schema.null
-        , Schema.number
-        , Schema.string
         ]
       ]
 
@@ -286,6 +286,3 @@ getConfig arguments = do
   Monad.forM_ problems $ \x -> IO.hPutStr IO.stderr $ "ERROR: " <> x
   Monad.unless (null problems) Exit.exitFailure
   either fail pure $ Monad.foldM Config.applyFlag Config.initial flags
-
-version :: String
-version = Version.showVersion Package.version

@@ -18,6 +18,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Version as Version
 
 type Replay
   = ReplayWith
@@ -41,7 +42,7 @@ instance (Aeson.FromJSON h, Aeson.FromJSON c) => Aeson.FromJSON (ReplayWith h c)
 
 instance (Aeson.ToJSON h, Aeson.ToJSON c) => Aeson.ToJSON (ReplayWith h c) where
   toJSON x = Aeson.object
-    [ Json.pair "$schema" "./schema.json" -- TODO
+    [ Json.pair "$schema" schemaUrl
     , Json.pair "header" $ header x
     , Json.pair "content" $ content x
     ]
@@ -50,6 +51,15 @@ schema :: Schema.Schema -> Schema.Schema -> Schema.Schema
 schema h c = Schema.named "replay" $ Schema.object
   [ (Json.pair "header" $ Schema.ref h, True)
   , (Json.pair "content" $ Schema.ref c, True)
+  ]
+
+schemaUrl :: String
+schemaUrl = mconcat
+  [ "https://github.com/tfausak/rattletrap/releases/download/"
+  , Version.string
+  , "/rattletrap-"
+  , Version.string
+  , "-schema.json"
   ]
 
 bytePut :: Replay -> BytePut.BytePut

@@ -140,6 +140,7 @@ library
     Rattletrap.Utility.Helper
     Rattletrap.Utility.Json
     Rattletrap.Utility.Monad
+    Rattletrap.Version
   ghc-options:
     -Weverything
     -Wno-all-missed-specialisations
