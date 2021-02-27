@@ -118,13 +118,13 @@ rattletrap name arguments = do
 
 helpMain :: String -> IO ()
 helpMain name = do
-  IO.hPutStr IO.stderr
+  putStr
     $ Console.usageInfo (unwords [name, "version", Version.string]) Option.all
   Exit.exitFailure
 
 versionMain :: IO ()
 versionMain = do
-  IO.hPutStrLn IO.stderr Version.string
+  putStrLn Version.string
   Exit.exitFailure
 
 schemaMain :: Config.Config -> IO ()
