@@ -1,6 +1,3 @@
-{- hlint ignore "Avoid restricted extensions" -}
-{-# LANGUAGE NamedFieldPuns #-}
-
 module Rattletrap.Type.Replay where
 
 import qualified Data.Aeson as Aeson
