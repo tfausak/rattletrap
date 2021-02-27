@@ -9,6 +9,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Schema as Schema
 
 import qualified Data.Map as Map
 
@@ -17,6 +18,12 @@ newtype LoadoutOnline = LoadoutOnline
   } deriving (Eq, Show)
 
 $(deriveJson ''LoadoutOnline)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-loadout-online"
+  . Schema.json
+  . List.schema
+  $ List.schema Product.schema
 
 bitPut :: LoadoutOnline -> BitPut.BitPut
 bitPut loadoutAttribute =

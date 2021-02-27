@@ -4,6 +4,8 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data Title = Title
   { unknown1 :: Bool
@@ -18,6 +20,18 @@ data Title = Title
   deriving (Eq, Show)
 
 $(deriveJson ''Title)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-title" $ Schema.object
+  [ (Json.pair "unknown1" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "unknown2" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "unknown3" $ Schema.ref U32.schema, True)
+  , (Json.pair "unknown4" $ Schema.ref U32.schema, True)
+  , (Json.pair "unknown5" $ Schema.ref U32.schema, True)
+  , (Json.pair "unknown6" $ Schema.ref U32.schema, True)
+  , (Json.pair "unknown7" $ Schema.ref U32.schema, True)
+  , (Json.pair "unknown8" $ Schema.ref Schema.boolean, True)
+  ]
 
 bitPut :: Title -> BitPut.BitPut
 bitPut titleAttribute =

@@ -2,10 +2,12 @@ module Rattletrap.Type.Property where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
+import qualified Rattletrap.Utility.Json as Json
 
 data Property = Property
   { kind :: Str.Str
@@ -17,12 +19,18 @@ data Property = Property
 
 $(deriveJson ''Property)
 
+schema :: Schema.Schema
+schema = Schema.named "property" $ Schema.object
+  [ (Json.pair "kind" $ Schema.ref Str.schema, True)
+  , (Json.pair "size" $ Schema.ref U64.schema, True)
+  , (Json.pair "value" . Schema.ref $ PropertyValue.schema schema, True)
+  ]
+
 bytePut :: Property -> BytePut.BytePut
 bytePut x =
-  do
-      Str.bytePut (kind x)
-    <> U64.bytePut (size x)
-    <> PropertyValue.bytePut bytePut (value x)
+  Str.bytePut (kind x) <> U64.bytePut (size x) <> PropertyValue.bytePut
+    bytePut
+    (value x)
 
 byteGet :: ByteGet.ByteGet Property
 byteGet = do

@@ -7,6 +7,8 @@ import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data PartyLeader = PartyLeader
   { systemId :: U8.U8
@@ -15,6 +17,20 @@ data PartyLeader = PartyLeader
   deriving (Eq, Show)
 
 $(deriveJson ''PartyLeader)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-party-leader" $ Schema.object
+  [ (Json.pair "system_id" $ Schema.ref U8.schema, True)
+  , ( Json.pair "id" $ Schema.oneOf
+    [ Schema.tuple
+        [ Schema.ref RemoteId.schema
+        , Schema.ref U8.schema
+        ]
+    , Schema.ref Schema.null
+    ]
+    , False
+    )
+  ]
 
 bitPut :: PartyLeader -> BitPut.BitPut
 bitPut x = U8.bitPut (systemId x) <> foldMap

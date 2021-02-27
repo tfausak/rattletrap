@@ -5,6 +5,8 @@ import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data TeamPaint = TeamPaint
   { team :: U8.U8
@@ -16,6 +18,15 @@ data TeamPaint = TeamPaint
   deriving (Eq, Show)
 
 $(deriveJson ''TeamPaint)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-team-paint" $ Schema.object
+  [ (Json.pair "team" $ Schema.ref U8.schema, True)
+  , (Json.pair "primary_color" $ Schema.ref U8.schema, True)
+  , (Json.pair "accent_color" $ Schema.ref U8.schema, True)
+  , (Json.pair "primary_finish" $ Schema.ref U32.schema, True)
+  , (Json.pair "accent_finish" $ Schema.ref U32.schema, True)
+  ]
 
 bitPut :: TeamPaint -> BitPut.BitPut
 bitPut teamPaintAttribute =

@@ -6,6 +6,8 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data PickupNew = PickupNew
   { instigatorId :: Maybe U32.U32
@@ -14,6 +16,12 @@ data PickupNew = PickupNew
   deriving (Eq, Show)
 
 $(deriveJson ''PickupNew)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-pickup-new" $ Schema.object
+  [ (Json.pair "instigator_id" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "picked_up" $ Schema.ref U8.schema, True)
+  ]
 
 bitPut :: PickupNew -> BitPut.BitPut
 bitPut x =

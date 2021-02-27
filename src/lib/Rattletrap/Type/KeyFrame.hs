@@ -2,9 +2,11 @@ module Rattletrap.Type.KeyFrame where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Utility.Json as Json
 
 data KeyFrame = KeyFrame
   { time :: F32.F32
@@ -17,6 +19,13 @@ data KeyFrame = KeyFrame
   deriving (Eq, Show)
 
 $(deriveJson ''KeyFrame)
+
+schema :: Schema.Schema
+schema = Schema.named "keyFrame" $ Schema.object
+  [ (Json.pair "time" $ Schema.ref F32.schema, True)
+  , (Json.pair "frame" $ Schema.ref U32.schema, True)
+  , (Json.pair "position" $ Schema.ref U32.schema, True)
+  ]
 
 bytePut :: KeyFrame -> BytePut.BytePut
 bytePut x =

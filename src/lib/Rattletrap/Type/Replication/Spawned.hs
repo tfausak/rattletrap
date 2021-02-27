@@ -2,6 +2,7 @@ module Rattletrap.Type.Replication.Spawned where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
@@ -9,6 +10,7 @@ import qualified Rattletrap.Type.Initialization as Initialization
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
 import Rattletrap.Utility.Monad
 
 import qualified Control.Monad.Trans.Class as Trans
@@ -34,6 +36,17 @@ data Spawned = Spawned
   deriving (Eq, Show)
 
 $(deriveJson ''Spawned)
+
+schema :: Schema.Schema
+schema = Schema.named "replication-spawned" $ Schema.object
+  [ (Json.pair "flag" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "name_index" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "name" . Schema.json $ Schema.maybe Str.schema, False)
+  , (Json.pair "object_id" $ Schema.ref U32.schema, True)
+  , (Json.pair "object_name" $ Schema.ref Str.schema, True)
+  , (Json.pair "class_name" $ Schema.ref Str.schema, True)
+  , (Json.pair "initialization" $ Schema.ref Initialization.schema, True)
+  ]
 
 bitPut :: Spawned -> BitPut.BitPut
 bitPut spawnedReplication =

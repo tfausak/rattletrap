@@ -1,8 +1,12 @@
+{- hlint ignore "Avoid restricted extensions" -}
+{-# LANGUAGE NamedFieldPuns #-}
+
 module Rattletrap.Type.Replay where
 
+import qualified Data.Aeson as Aeson
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import Rattletrap.Type.Common
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.Header as Header
@@ -13,8 +17,13 @@ import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Version as Version
 
-type Replay = ReplayWith (Section.Section Header.Header) (Section.Section Content.Content)
+type Replay
+  = ReplayWith
+      (Section.Section Header.Header)
+      (Section.Section Content.Content)
 
 -- | A Rocket League replay.
 data ReplayWith header content = Replay
@@ -25,7 +34,33 @@ data ReplayWith header content = Replay
   }
   deriving (Eq, Show)
 
-$(deriveJson ''ReplayWith)
+instance (Aeson.FromJSON h, Aeson.FromJSON c) => Aeson.FromJSON (ReplayWith h c) where
+  parseJSON = Aeson.withObject "Replay" $ \object -> do
+    header <- Json.required object "header"
+    content <- Json.required object "content"
+    pure Replay { header, content }
+
+instance (Aeson.ToJSON h, Aeson.ToJSON c) => Aeson.ToJSON (ReplayWith h c) where
+  toJSON x = Aeson.object
+    [ Json.pair "$schema" schemaUrl
+    , Json.pair "header" $ header x
+    , Json.pair "content" $ content x
+    ]
+
+schema :: Schema.Schema -> Schema.Schema -> Schema.Schema
+schema h c = Schema.named "replay" $ Schema.object
+  [ (Json.pair "header" $ Schema.ref h, True)
+  , (Json.pair "content" $ Schema.ref c, True)
+  ]
+
+schemaUrl :: String
+schemaUrl = mconcat
+  [ "https://github.com/tfausak/rattletrap/releases/download/"
+  , Version.string
+  , "/rattletrap-"
+  , Version.string
+  , "-schema.json"
+  ]
 
 bytePut :: Replay -> BytePut.BytePut
 bytePut x = Section.bytePut Header.bytePut (header x)

@@ -2,6 +2,7 @@ module Rattletrap.Type.Attribute.Byte where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U8 as U8
 
@@ -10,6 +11,9 @@ newtype Byte = Byte
   } deriving (Eq, Show)
 
 $(deriveJson ''Byte)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-byte" $ Schema.ref U8.schema
 
 bitPut :: Byte -> BitPut.BitPut
 bitPut byteAttribute = U8.bitPut (value byteAttribute)

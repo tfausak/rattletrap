@@ -2,6 +2,7 @@ module Rattletrap.Type.ReplicationValue where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
@@ -10,6 +11,7 @@ import qualified Rattletrap.Type.Replication.Spawned as Spawned
 import qualified Rattletrap.Type.Replication.Updated as Updated
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -25,6 +27,14 @@ data ReplicationValue
   deriving (Eq, Show)
 
 $(deriveJson ''ReplicationValue)
+
+schema :: Schema.Schema
+schema = Schema.named "replicationValue" . Schema.oneOf $ fmap
+  (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
+  [ ("spawned", Spawned.schema)
+  , ("updated", Updated.schema)
+  , ("destroyed", Destroyed.schema)
+  ]
 
 bitPut :: ReplicationValue -> BitPut.BitPut
 bitPut value = case value of

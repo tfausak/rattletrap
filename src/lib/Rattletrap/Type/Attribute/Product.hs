@@ -9,6 +9,8 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 import qualified Data.Map as Map
 
@@ -22,6 +24,14 @@ data Product = Product
   deriving (Eq, Show)
 
 $(deriveJson ''Product)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-product" $ Schema.object
+  [ (Json.pair "unknown" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "object_id" $ Schema.ref U32.schema, True)
+  , (Json.pair "object_name" . Schema.json $ Schema.maybe Str.schema, False)
+  , (Json.pair "value" $ Schema.ref ProductValue.schema, True)
+  ]
 
 putProductAttributes :: List.List Product -> BitPut.BitPut
 putProductAttributes attributes =

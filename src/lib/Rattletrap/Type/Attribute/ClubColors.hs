@@ -4,6 +4,8 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U8 as U8
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data ClubColors = ClubColors
   { blueFlag :: Bool
@@ -14,6 +16,14 @@ data ClubColors = ClubColors
   deriving (Eq, Show)
 
 $(deriveJson ''ClubColors)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-club-colors" $ Schema.object
+  [ (Json.pair "blue_flag" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "blue_color" $ Schema.ref U8.schema, True)
+  , (Json.pair "orange_flag" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "orange_color" $ Schema.ref U8.schema, True)
+  ]
 
 bitPut :: ClubColors -> BitPut.BitPut
 bitPut clubColorsAttribute =

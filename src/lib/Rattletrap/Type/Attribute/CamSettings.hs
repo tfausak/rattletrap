@@ -6,6 +6,8 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data CamSettings = CamSettings
   { fov :: F32.F32
@@ -19,6 +21,17 @@ data CamSettings = CamSettings
   deriving (Eq, Show)
 
 $(deriveJson ''CamSettings)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-cam-settings" $ Schema.object
+  [ (Json.pair "fov" $ Schema.ref F32.schema, True)
+  , (Json.pair "height" $ Schema.ref F32.schema, True)
+  , (Json.pair "angle" $ Schema.ref F32.schema, True)
+  , (Json.pair "distance" $ Schema.ref F32.schema, True)
+  , (Json.pair "stiffness" $ Schema.ref F32.schema, True)
+  , (Json.pair "swivel_speed" $ Schema.ref F32.schema, True)
+  , (Json.pair "transition_speed" . Schema.json $ Schema.maybe F32.schema, False)
+  ]
 
 bitPut :: CamSettings -> BitPut.BitPut
 bitPut camSettingsAttribute =

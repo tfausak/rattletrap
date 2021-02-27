@@ -2,9 +2,11 @@ module Rattletrap.Type.Vector where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
 
 data Vector = Vector
   { size :: CompressedWord.CompressedWord
@@ -23,6 +25,15 @@ data Vector = Vector
   deriving (Eq, Show)
 
 $(deriveJson ''Vector)
+
+schema :: Schema.Schema
+schema = Schema.named "vector" $ Schema.object
+  [ (Json.pair "size" $ Schema.ref CompressedWord.schema, True)
+  , (Json.pair "bias" $ Schema.ref Schema.integer, True)
+  , (Json.pair "x" $ Schema.ref Schema.integer, True)
+  , (Json.pair "y" $ Schema.ref Schema.integer, True)
+  , (Json.pair "z" $ Schema.ref Schema.integer, True)
+  ]
 
 bitPut :: Vector -> BitPut.BitPut
 bitPut vector =

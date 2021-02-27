@@ -2,9 +2,11 @@ module Rattletrap.Type.Message where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Utility.Json as Json
 
 data Message = Message
   { frame :: U32.U32
@@ -17,6 +19,13 @@ data Message = Message
   deriving (Eq, Show)
 
 $(deriveJson ''Message)
+
+schema :: Schema.Schema
+schema = Schema.named "message" $ Schema.object
+  [ (Json.pair "frame" $ Schema.ref U32.schema, True)
+  , (Json.pair "name" $ Schema.ref Str.schema, True)
+  , (Json.pair "value" $ Schema.ref Str.schema, True)
+  ]
 
 bytePut :: Message -> BytePut.BytePut
 bytePut x =

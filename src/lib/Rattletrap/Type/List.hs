@@ -2,6 +2,7 @@ module Rattletrap.Type.List where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 
@@ -12,6 +13,9 @@ newtype List a
   deriving (Eq, Show)
 
 $(deriveJson ''List)
+
+schema :: Schema.Schema -> Schema.Schema
+schema = Schema.array
 
 fromList :: [a] -> List a
 fromList = List

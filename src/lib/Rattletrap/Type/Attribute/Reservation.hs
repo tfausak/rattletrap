@@ -2,6 +2,7 @@ module Rattletrap.Type.Attribute.Reservation where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.UniqueId as UniqueId
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
@@ -9,6 +10,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Json as Json
 
 data Reservation = Reservation
   { number :: CompressedWord.CompressedWord
@@ -21,6 +23,16 @@ data Reservation = Reservation
   deriving (Eq, Show)
 
 $(deriveJson ''Reservation)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-reservation" $ Schema.object
+  [ (Json.pair "number" $ Schema.ref CompressedWord.schema, True)
+  , (Json.pair "unique_id" $ Schema.ref UniqueId.schema, True)
+  , (Json.pair "name" . Schema.json $ Schema.maybe Str.schema, False)
+  , (Json.pair "unknown1" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "unknown2" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "unknown3" . Schema.json $ Schema.maybe Schema.integer, False)
+  ]
 
 bitPut :: Reservation -> BitPut.BitPut
 bitPut reservationAttribute =

@@ -4,6 +4,8 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Data.Aeson as Aeson
 import qualified Data.Int as Int
@@ -23,6 +25,10 @@ instance Aeson.FromJSON I64 where
 
 instance Aeson.ToJSON I64 where
   toJSON = Aeson.toJSON . show . toInt64
+
+schema :: Schema.Schema
+schema = Schema.named "i64"
+  $ Aeson.object [Json.pair "type" "string", Json.pair "pattern" "^-?[0-9]+$"]
 
 fromInt64 :: Int.Int64 -> I64
 fromInt64 = I64

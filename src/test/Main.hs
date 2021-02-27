@@ -8,38 +8,39 @@ import qualified GHC.Clock as Clock
 import qualified Rattletrap
 import qualified System.Exit as Exit
 import qualified System.FilePath as Path
-import qualified System.IO.Temp as Temp
 import qualified Test.HUnit as Test
 import qualified Text.Printf as Printf
 
 main :: IO ()
-main = Temp.withSystemTempDirectory "rattletrap-" (runTests . toTests)
+main = runTests makeTests
 
 runTests :: Test.Test -> IO ()
 runTests test = do
+  Rattletrap.rattletrap
+    ""
+    ["--schema", "--output", Path.combine directory "schema.json"]
   (result, elapsed) <- withElapsed $ Test.runTestTT test
   Printf.printf "Total time: %.3f seconds\n" elapsed
   Monad.when
     (Test.errors result > 0 || Test.failures result > 0)
     Exit.exitFailure
 
-toTests :: FilePath -> Test.Test
-toTests directory = Test.TestList (fmap (toTest directory) replays)
+makeTests :: Test.Test
+makeTests = Test.TestList $ fmap toTest replays
 
-toTest :: FilePath -> (String, String) -> Test.Test
-toTest directory (uuid, name) = Test.TestLabel
-  (toLabel uuid name)
-  (Test.TestCase (toAssertion directory uuid))
+toTest :: (String, String) -> Test.Test
+toTest (uuid, name) =
+  Test.TestLabel (toLabel uuid name) . Test.TestCase $ toAssertion uuid
 
 toLabel :: String -> String -> String
 toLabel uuid name = uuid <> ": " <> name
 
-toAssertion :: FilePath -> String -> Test.Assertion
-toAssertion directory uuid = do
+toAssertion :: String -> Test.Assertion
+toAssertion uuid = do
   let
-    inputFile = Path.joinPath ["replays", Path.addExtension uuid ".replay"]
-    jsonFile = Path.joinPath [directory, Path.addExtension uuid ".json"]
-    outputFile = Path.joinPath [directory, Path.addExtension uuid ".replay"]
+    inputFile = Path.combine "replays" $ uuid <> ".replay"
+    jsonFile = Path.combine directory $ uuid <> ".json"
+    outputFile = Path.combine directory $ uuid <> ".replay"
   input <- Bytes.readFile inputFile
   decode inputFile jsonFile
   encode jsonFile outputFile
@@ -62,6 +63,9 @@ withElapsed action = do
   result <- action
   after <- Clock.getMonotonicTime
   pure (result, after - before)
+
+directory :: FilePath
+directory = "output"
 
 replays :: [(String, String)]
 replays =

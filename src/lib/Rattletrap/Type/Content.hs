@@ -4,6 +4,7 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Cache as Cache
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.ClassMapping as ClassMapping
@@ -15,8 +16,10 @@ import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Bytes
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad.Trans.State as State
 import qualified Data.ByteString as Bytes
@@ -61,6 +64,25 @@ data ContentWith frames = Content
   deriving (Eq, Show)
 
 $(deriveJson ''ContentWith)
+
+schema :: Schema.Schema -> Schema.Schema
+schema s = Schema.named "content" $ Schema.object
+  [ (Json.pair "levels" . Schema.json $ List.schema Str.schema, True)
+  , (Json.pair "key_frames" . Schema.json $ List.schema KeyFrame.schema, True)
+  , (Json.pair "stream_size" $ Schema.ref U32.schema, True)
+  , (Json.pair "frames" $ Schema.json s, True)
+  , (Json.pair "messages" . Schema.json $ List.schema Message.schema, True)
+  , (Json.pair "marks" . Schema.json $ List.schema Mark.schema, True)
+  , (Json.pair "packages" . Schema.json $ List.schema Str.schema, True)
+  , (Json.pair "objects" . Schema.json $ List.schema Str.schema, True)
+  , (Json.pair "names" . Schema.json $ List.schema Str.schema, True)
+  , ( Json.pair "class_mappings" . Schema.json $ List.schema
+      ClassMapping.schema
+    , True
+    )
+  , (Json.pair "caches" . Schema.json $ List.schema Cache.schema, True)
+  , (Json.pair "unknown" . Schema.json $ Schema.array U8.schema, True)
+  ]
 
 empty :: Content
 empty = Content

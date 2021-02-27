@@ -2,9 +2,11 @@ module Rattletrap.Type.Attribute.Loadout where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
+import qualified Rattletrap.Utility.Json as Json
 import Rattletrap.Utility.Monad
 
 data Loadout = Loadout
@@ -30,6 +32,27 @@ data Loadout = Loadout
   deriving (Eq, Show)
 
 $(deriveJson ''Loadout)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-loadout" $ Schema.object
+  [ (Json.pair "version" $ Schema.ref U8.schema, True)
+  , (Json.pair "body" $ Schema.ref U32.schema, True)
+  , (Json.pair "decal" $ Schema.ref U32.schema, True)
+  , (Json.pair "wheels" $ Schema.ref U32.schema, True)
+  , (Json.pair "rocket_trail" $ Schema.ref U32.schema, True)
+  , (Json.pair "antenna" $ Schema.ref U32.schema, True)
+  , (Json.pair "topper" $ Schema.ref U32.schema, True)
+  , (Json.pair "unknown1" $ Schema.ref U32.schema, True)
+  , (Json.pair "unknown2" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "engine_audio" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "trail" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "goal_explosion" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "banner" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "unknown3" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "unknown4" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "unknown5" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "unknown6" . Schema.json $ Schema.maybe U32.schema, False)
+  ]
 
 bitPut :: Loadout -> BitPut.BitPut
 bitPut loadoutAttribute =

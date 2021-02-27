@@ -2,12 +2,14 @@ module Rattletrap.Type.RemoteId where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Bytes
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Data.ByteString as Bytes
 import qualified Data.Text as Text
@@ -26,6 +28,24 @@ data RemoteId
   deriving (Eq, Show)
 
 $(deriveJson ''RemoteId)
+
+schema :: Schema.Schema
+schema = Schema.named "remote-id" . Schema.oneOf $ fmap
+  (\(k, v) -> Schema.object [(Json.pair k v, True)])
+  [ ("play_station", Schema.tuple
+    [ Schema.ref Schema.string
+    , Schema.json $ Schema.array Schema.number
+    ])
+  , ("psy_net", Schema.oneOf
+    [ Schema.object [(Json.pair "Left" $ Schema.ref U64.schema, True)]
+    , Schema.object [(Json.pair "Right" . Schema.tuple . replicate 4 $ Schema.ref U64.schema, True)]
+    ])
+  , ("splitscreen", Schema.ref Schema.integer)
+  , ("steam", Schema.ref U64.schema)
+  , ("switch", Schema.tuple . replicate 4 $ Schema.ref U64.schema)
+  , ("xbox", Schema.ref U64.schema)
+  , ("epic", Schema.ref Str.schema)
+  ]
 
 bitPut :: RemoteId -> BitPut.BitPut
 bitPut remoteId = case remoteId of

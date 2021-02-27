@@ -3,6 +3,7 @@ module Rattletrap.Type.AttributeValue where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Data as Data
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.AppliedDamage as AppliedDamage
 import qualified Rattletrap.Type.Attribute.Boolean as Boolean
 import qualified Rattletrap.Type.Attribute.Byte as Byte
@@ -45,6 +46,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Data.Map as Map
 
@@ -89,6 +91,48 @@ data AttributeValue
   deriving (Eq, Show)
 
 $(deriveJson ''AttributeValue)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-value" . Schema.oneOf $ fmap
+  (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
+  [ ("applied_damage", AppliedDamage.schema)
+  , ("boolean", Boolean.schema)
+  , ("byte", Byte.schema)
+  , ("cam_settings", CamSettings.schema)
+  , ("club_colors", ClubColors.schema)
+  , ("custom_demolish", CustomDemolish.schema)
+  , ("damage_state", DamageState.schema)
+  , ("demolish", Demolish.schema)
+  , ("enum", Enum.schema)
+  , ("explosion", Explosion.schema)
+  , ("extended_explosion", ExtendedExplosion.schema)
+  , ("flagged_byte", FlaggedByte.schema)
+  , ("flagged_int", FlaggedInt.schema)
+  , ("float", Float.schema)
+  , ("game_mode", GameMode.schema)
+  , ("int", Int.schema)
+  , ("int64", Int64.schema)
+  , ("loadout_online", LoadoutOnline.schema)
+  , ("loadout", Loadout.schema)
+  , ("loadouts_online", LoadoutsOnline.schema)
+  , ("loadouts", Loadouts.schema)
+  , ("location", Location.schema)
+  , ("music_stinger", MusicStinger.schema)
+  , ("party_leader", PartyLeader.schema)
+  , ("pickup_new", PickupNew.schema)
+  , ("pickup", Pickup.schema)
+  , ("player_history_key", PlayerHistoryKey.schema)
+  , ("private_match_settings", PrivateMatchSettings.schema)
+  , ("q_word", QWord.schema)
+  , ("reservation", Reservation.schema)
+  , ("rigid_body_state", RigidBodyState.schema)
+  , ("stat_event", StatEvent.schema)
+  , ("string", String.schema)
+  , ("team_paint", TeamPaint.schema)
+  , ("title", Title.schema)
+  , ("unique_id", UniqueId.schema)
+  , ("welded_info", WeldedInfo.schema)
+  ]
 
 bitPut :: AttributeValue -> BitPut.BitPut
 bitPut value = case value of

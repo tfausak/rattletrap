@@ -2,10 +2,12 @@ module Rattletrap.Type.Attribute.RigidBodyState where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Rotation as Rotation
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
 import Rattletrap.Utility.Monad
 
 data RigidBodyState = RigidBodyState
@@ -18,6 +20,19 @@ data RigidBodyState = RigidBodyState
   deriving (Eq, Show)
 
 $(deriveJson ''RigidBodyState)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-rigid-body-state" $ Schema.object
+  [ (Json.pair "sleeping" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "location" $ Schema.ref Vector.schema, True)
+  , (Json.pair "rotation" $ Schema.ref Rotation.schema, True)
+  , ( Json.pair "linear_velocity" . Schema.json $ Schema.maybe Vector.schema
+    , False
+    )
+  , ( Json.pair "angular_velocity" . Schema.json $ Schema.maybe Vector.schema
+    , False
+    )
+  ]
 
 bitPut :: RigidBodyState -> BitPut.BitPut
 bitPut rigidBodyStateAttribute =
