@@ -120,12 +120,10 @@ helpMain :: String -> IO ()
 helpMain name = do
   putStr
     $ Console.usageInfo (unwords [name, "version", Version.string]) Option.all
-  Exit.exitFailure
 
 versionMain :: IO ()
 versionMain = do
   putStrLn Version.string
-  Exit.exitFailure
 
 schemaMain :: Config.Config -> IO ()
 schemaMain config = do
