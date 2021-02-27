@@ -1,6 +1,5 @@
 module Rattletrap.Type.AttributeValue where
 
-import qualified Data.Aeson as Aeson
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Data as Data
@@ -94,16 +93,9 @@ data AttributeValue
 $(deriveJson ''AttributeValue)
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-value" $ Aeson.object
-  [ Json.pair
-      "oneOf"
-      [ Schema.object
-          [ ( Json.pair "rigid_body_state" $ Schema.json RigidBodyState.schema
-            , True
-            )
-          ]
-      ]
-  ]
+schema = Schema.named "attribute-value" . Schema.oneOf $ fmap
+  (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
+  [("rigid_body_state", RigidBodyState.schema)]
 
 bitPut :: AttributeValue -> BitPut.BitPut
 bitPut value = case value of

@@ -1,6 +1,5 @@
 module Rattletrap.Type.ReplicationValue where
 
-import qualified Data.Aeson as Aeson
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
@@ -30,15 +29,11 @@ data ReplicationValue
 $(deriveJson ''ReplicationValue)
 
 schema :: Schema.Schema
-schema = Schema.named "replicationValue" $ Aeson.object
-  [ Json.pair
-      "oneOf"
-      [ Schema.object [(Json.pair "spawned" $ Schema.ref Spawned.schema, True)]
-      , Schema.object
-        [(Json.pair "updated" $ Schema.json Updated.schema, True)]
-      , Schema.object
-        [(Json.pair "destroyed" $ Schema.ref Destroyed.schema, True)]
-      ]
+schema = Schema.named "replicationValue" . Schema.oneOf $ fmap
+  (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
+  [ ("spawned", Spawned.schema)
+  , ("updated", Updated.schema)
+  , ("destroyed", Destroyed.schema)
   ]
 
 bitPut :: ReplicationValue -> BitPut.BitPut

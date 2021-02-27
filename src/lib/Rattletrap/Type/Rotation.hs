@@ -1,6 +1,5 @@
 module Rattletrap.Type.Rotation where
 
-import qualified Data.Aeson as Aeson
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
@@ -18,18 +17,10 @@ data Rotation
 $(deriveJson ''Rotation)
 
 schema :: Schema.Schema
-schema = Schema.named "rotation" $ Aeson.object
-  [ Json.pair
-      "oneOf"
-      [ Schema.object
-        [ ( Json.pair "compressed_word_vector"
-            $ Schema.ref CompressedWordVector.schema
-          , True
-          )
-        ]
-      , Schema.object
-        [(Json.pair "quaternion" $ Schema.ref Quaternion.schema, True)]
-      ]
+schema = Schema.named "rotation" . Schema.oneOf $ fmap
+  (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
+  [ ("compressed_word_vector", CompressedWordVector.schema)
+  , ("quaternion", Quaternion.schema)
   ]
 
 bitPut :: Rotation -> BitPut.BitPut

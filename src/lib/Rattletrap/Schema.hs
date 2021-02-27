@@ -30,9 +30,11 @@ object xs = Aeson.object
 maybe :: Schema -> Schema
 maybe s = Schema
   { name = Text.pack "maybe-" <> name s
-  , json = Aeson.object
-    [Json.pair "oneOf" [ref s, Aeson.object [Json.pair "type" "null"]]]
+  , json = oneOf [ref s, json Rattletrap.Schema.null]
   }
+
+oneOf :: [Aeson.Value] -> Aeson.Value
+oneOf xs = Aeson.object [Json.pair "oneOf" xs]
 
 array :: Schema -> Schema
 array s = Schema
@@ -45,6 +47,9 @@ boolean = named "boolean" $ Aeson.object [Json.pair "type" "boolean"]
 
 integer :: Schema
 integer = named "integer" $ Aeson.object [Json.pair "type" "integer"]
+
+null :: Schema
+null = named "null" $ Aeson.object [Json.pair "type" "null"]
 
 number :: Schema
 number = named "number" $ Aeson.object [Json.pair "type" "number"]

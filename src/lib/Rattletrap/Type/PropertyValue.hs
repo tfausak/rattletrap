@@ -36,37 +36,24 @@ $(deriveJson ''PropertyValue)
 schema :: Schema.Schema -> Schema.Schema
 schema s =
   Schema.named ("property-value-" <> Text.unpack (Schema.name s))
-    $ Aeson.object
-        [ Json.pair
-            "oneOf"
-            [ Schema.object
-              [ ( Json.pair "array"
-                . Schema.json
-                . List.schema
-                $ Dictionary.schema s
-                , True
-                )
-              ]
-            , Schema.object [(Json.pair "bool" $ Schema.ref U8.schema, True)]
-            , Schema.object
-              [ ( Json.pair "byte" $ Aeson.object
-                  [ Json.pair "type" "array"
-                  , Json.pair
-                    "items"
-                    [ Schema.ref Str.schema
-                    , Schema.json $ Schema.maybe Str.schema
-                    ]
-                  ]
-                , True
-                )
-              ]
-            , Schema.object [(Json.pair "float" $ Schema.ref F32.schema, True)]
-            , Schema.object [(Json.pair "int" $ Schema.ref I32.schema, True)]
-            , Schema.object [(Json.pair "name" $ Schema.ref Str.schema, True)]
-            , Schema.object
-              [(Json.pair "q_word" $ Schema.ref U64.schema, True)]
-            , Schema.object [(Json.pair "str" $ Schema.ref Str.schema, True)]
+    . Schema.oneOf
+    $ fmap
+        (\(k, v) -> Schema.object [(Json.pair k v, True)])
+        [ ("array", Schema.json . List.schema $ Dictionary.schema s)
+        , ("bool", Schema.ref U8.schema)
+        , ( "byte"
+          , Aeson.object
+            [ Json.pair "type" "array"
+            , Json.pair
+              "items"
+              [Schema.ref Str.schema, Schema.json $ Schema.maybe Str.schema]
             ]
+          )
+        , ("float", Schema.ref F32.schema)
+        , ("int", Schema.ref I32.schema)
+        , ("name", Schema.ref Str.schema)
+        , ("q_word", Schema.ref U64.schema)
+        , ("str", Schema.ref Str.schema)
         ]
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
