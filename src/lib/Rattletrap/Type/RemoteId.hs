@@ -32,11 +32,19 @@ $(deriveJson ''RemoteId)
 schema :: Schema.Schema
 schema = Schema.named "remote-id" . Schema.oneOf $ fmap
   (\(k, v) -> Schema.object [(Json.pair k v, True)])
-  [ ("splitscreen", Schema.ref Schema.integer)
+  [ ("play_station", Schema.tuple
+    [ Schema.ref Schema.string
+    , Schema.json $ Schema.array Schema.number
+    ])
+  , ("psy_net", Schema.oneOf
+    [ Schema.object [(Json.pair "Left" $ Schema.ref U64.schema, True)]
+    , Schema.object [(Json.pair "Right" . Schema.tuple . replicate 4 $ Schema.ref U64.schema, True)]
+    ])
+  , ("splitscreen", Schema.ref Schema.integer)
   , ("steam", Schema.ref U64.schema)
+  , ("switch", Schema.tuple . replicate 4 $ Schema.ref U64.schema)
   , ("xbox", Schema.ref U64.schema)
   , ("epic", Schema.ref Str.schema)
-  -- TODO
   ]
 
 bitPut :: RemoteId -> BitPut.BitPut

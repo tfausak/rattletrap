@@ -6,6 +6,8 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data Demolish = Demolish
   { attackerFlag :: Bool
@@ -18,6 +20,16 @@ data Demolish = Demolish
   deriving (Eq, Show)
 
 $(deriveJson ''Demolish)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-demolish" $ Schema.object
+  [ (Json.pair "attacker_flag" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "attacker_actor_id" $ Schema.ref U32.schema, True)
+  , (Json.pair "victim_flag" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "victim_actor_id" $ Schema.ref U32.schema, True)
+  , (Json.pair "attacker_velocity" $ Schema.ref Vector.schema, True)
+  , (Json.pair "victim_velocity" $ Schema.ref Vector.schema, True)
+  ]
 
 bitPut :: Demolish -> BitPut.BitPut
 bitPut demolishAttribute =

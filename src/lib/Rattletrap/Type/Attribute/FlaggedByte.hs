@@ -4,6 +4,8 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U8 as U8
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data FlaggedByte = FlaggedByte
   { flag :: Bool
@@ -12,6 +14,12 @@ data FlaggedByte = FlaggedByte
   deriving (Eq, Show)
 
 $(deriveJson ''FlaggedByte)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-flagged-byte" $ Schema.object
+  [ (Json.pair "flag" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "byte" $ Schema.ref U8.schema, True)
+  ]
 
 bitPut :: FlaggedByte -> BitPut.BitPut
 bitPut flaggedByteAttribute = BitPut.bool (flag flaggedByteAttribute)

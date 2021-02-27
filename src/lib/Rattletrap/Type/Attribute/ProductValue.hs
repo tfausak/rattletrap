@@ -8,6 +8,8 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data ProductValue
   = PaintedOld CompressedWord.CompressedWord
@@ -21,6 +23,20 @@ data ProductValue
   deriving (Eq, Show)
 
 $(deriveJson ''ProductValue)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-product-value"
+  . Schema.oneOf
+  $ fmap (\ (k, v) -> Schema.object [(Json.pair k v, True)])
+  [ ("painted_old", Schema.ref CompressedWord.schema)
+  , ("painted_new", Schema.ref Schema.integer)
+  , ("team_edition_old", Schema.ref CompressedWord.schema)
+  , ("team_edition_new", Schema.ref Schema.integer)
+  , ("special_edition", Schema.ref Schema.integer)
+  , ("user_color_old", Schema.json $ Schema.maybe Schema.integer)
+  , ("user_color_new", Schema.ref U32.schema)
+  , ("title_id", Schema.ref Str.schema)
+  ]
 
 bitPut :: ProductValue -> BitPut.BitPut
 bitPut val = case val of

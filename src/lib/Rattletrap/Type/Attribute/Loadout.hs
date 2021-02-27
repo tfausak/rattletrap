@@ -46,7 +46,7 @@ schema = Schema.named "attribute-loadout" $ Schema.object
   , (Json.pair "unknown2" . Schema.json $ Schema.maybe U32.schema, False)
   , (Json.pair "engine_audio" . Schema.json $ Schema.maybe U32.schema, False)
   , (Json.pair "trail" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "goal_xxplosion" . Schema.json $ Schema.maybe U32.schema, False)
+  , (Json.pair "goal_explosion" . Schema.json $ Schema.maybe U32.schema, False)
   , (Json.pair "banner" . Schema.json $ Schema.maybe U32.schema, False)
   , (Json.pair "unknown3" . Schema.json $ Schema.maybe U32.schema, False)
   , (Json.pair "unknown4" . Schema.json $ Schema.maybe U32.schema, False)

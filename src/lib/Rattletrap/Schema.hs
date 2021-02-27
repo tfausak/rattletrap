@@ -21,10 +21,6 @@ object xs = Aeson.object
   [ Json.pair "type" "object"
   , Json.pair "properties" . Aeson.object $ fmap fst xs
   , Json.pair "required" . fmap (fst . fst) $ filter snd xs
-  -- TODO: This is temporary to make sure I don't mess up any of the property
-  -- names. Once the schema is done I should remove this because it's too
-  -- restrictive.
-  , Json.pair "additionalProperties" False
   ]
 
 maybe :: Schema -> Schema
@@ -37,7 +33,12 @@ oneOf :: [Aeson.Value] -> Aeson.Value
 oneOf xs = Aeson.object [Json.pair "oneOf" xs]
 
 tuple :: [Aeson.Value] -> Aeson.Value
-tuple xs = Aeson.object [Json.pair "type" "array", Json.pair "items" xs]
+tuple xs = Aeson.object
+  [ Json.pair "type" "array"
+  , Json.pair "items" xs
+  , Json.pair "minItems" $ length xs
+  , Json.pair "maxItems" $ length xs
+  ]
 
 array :: Schema -> Schema
 array s = Schema
@@ -57,5 +58,5 @@ null = named "null" $ Aeson.object [Json.pair "type" "null"]
 number :: Schema
 number = named "number" $ Aeson.object [Json.pair "type" "number"]
 
-todo :: Schema
-todo = named "todo" $ Aeson.toJSON True
+string :: Schema
+string = named "string" $ Aeson.object [Json.pair "type" "string"]

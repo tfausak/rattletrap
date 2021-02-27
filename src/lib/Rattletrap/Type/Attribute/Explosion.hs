@@ -6,6 +6,8 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data Explosion = Explosion
   { flag :: Bool
@@ -15,6 +17,13 @@ data Explosion = Explosion
   deriving (Eq, Show)
 
 $(deriveJson ''Explosion)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-explosion" $ Schema.object
+  [ (Json.pair "flag" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "actor_id" $ Schema.ref I32.schema, True)
+  , (Json.pair "location" $ Schema.ref Vector.schema, True)
+  ]
 
 bitPut :: Explosion -> BitPut.BitPut
 bitPut explosionAttribute =

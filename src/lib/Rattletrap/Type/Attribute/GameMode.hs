@@ -4,6 +4,8 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data GameMode = GameMode
   { numBits :: Int
@@ -16,6 +18,12 @@ data GameMode = GameMode
   deriving (Eq, Show)
 
 $(deriveJson ''GameMode)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-game-mode" $ Schema.object
+  [ (Json.pair "num_bits" $ Schema.ref Schema.integer, True)
+  , (Json.pair "word" $ Schema.ref Schema.integer, True)
+  ]
 
 bitPut :: GameMode -> BitPut.BitPut
 bitPut gameModeAttribute = do

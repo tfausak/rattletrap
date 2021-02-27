@@ -8,6 +8,8 @@ import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data WeldedInfo = WeldedInfo
   { active :: Bool
@@ -19,6 +21,15 @@ data WeldedInfo = WeldedInfo
   deriving (Eq, Show)
 
 $(deriveJson ''WeldedInfo)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-welded-info" $ Schema.object
+  [ (Json.pair "active" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "actor_id" $ Schema.ref I32.schema, True)
+  , (Json.pair "offset" $ Schema.ref Vector.schema, True)
+  , (Json.pair "mass" $ Schema.ref F32.schema, True)
+  , (Json.pair "rotation" $ Schema.ref Int8Vector.schema, True)
+  ]
 
 bitPut :: WeldedInfo -> BitPut.BitPut
 bitPut weldedInfoAttribute =

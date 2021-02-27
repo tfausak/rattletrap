@@ -6,6 +6,8 @@ import qualified Rattletrap.Type.Attribute.Demolish as Demolish
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 
 data CustomDemolish = CustomDemolish
   { flag :: Bool
@@ -15,6 +17,13 @@ data CustomDemolish = CustomDemolish
   deriving (Eq, Show)
 
 $(deriveJson ''CustomDemolish)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-custom-demolish" $ Schema.object
+  [ (Json.pair "flag" $ Schema.ref Schema.boolean, True)
+  , (Json.pair "id" $ Schema.ref I32.schema, True)
+  , (Json.pair "demolish" $ Schema.ref Demolish.schema, True)
+  ]
 
 bitPut :: CustomDemolish -> BitPut.BitPut
 bitPut x =
