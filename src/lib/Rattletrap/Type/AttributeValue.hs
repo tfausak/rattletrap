@@ -1,8 +1,10 @@
 module Rattletrap.Type.AttributeValue where
 
+import qualified Data.Aeson as Aeson
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Data as Data
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.AppliedDamage as AppliedDamage
 import qualified Rattletrap.Type.Attribute.Boolean as Boolean
 import qualified Rattletrap.Type.Attribute.Byte as Byte
@@ -45,6 +47,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Data.Map as Map
 
@@ -89,6 +92,18 @@ data AttributeValue
   deriving (Eq, Show)
 
 $(deriveJson ''AttributeValue)
+
+schema :: Schema.Schema
+schema = Schema.named "attribute-value" $ Aeson.object
+  [ Json.pair
+      "oneOf"
+      [ Schema.object
+          [ ( Json.pair "rigid_body_state" $ Schema.json RigidBodyState.schema
+            , True
+            )
+          ]
+      ]
+  ]
 
 bitPut :: AttributeValue -> BitPut.BitPut
 bitPut value = case value of

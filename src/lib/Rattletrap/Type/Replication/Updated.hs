@@ -2,6 +2,7 @@ module Rattletrap.Type.Replication.Updated where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute as Attribute
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import Rattletrap.Type.Common
@@ -17,6 +18,10 @@ newtype Updated = Updated
   } deriving (Eq, Show)
 
 $(deriveJson ''Updated)
+
+schema :: Schema.Schema
+schema = Schema.named "replication-updated" . Schema.json $ List.schema
+  Attribute.schema
 
 bitPut :: Updated -> BitPut.BitPut
 bitPut x =

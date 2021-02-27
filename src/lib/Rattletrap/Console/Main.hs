@@ -16,10 +16,14 @@ import qualified Rattletrap.Console.Config as Config
 import qualified Rattletrap.Console.Mode as Mode
 import qualified Rattletrap.Console.Option as Option
 import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Type.Attribute as Attribute
+import qualified Rattletrap.Type.Attribute.RigidBodyState as Attribute.RigidBodyState
 import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
+import qualified Rattletrap.Type.AttributeValue as AttributeValue
 import qualified Rattletrap.Type.Cache as Cache
 import qualified Rattletrap.Type.ClassMapping as ClassMapping
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
+import qualified Rattletrap.Type.CompressedWordVector as CompressedWordVector
 import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.F32 as F32
@@ -35,11 +39,14 @@ import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
+import qualified Rattletrap.Type.Quaternion as Quaternion
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Replication as Replication
 import qualified Rattletrap.Type.Replication.Destroyed as Replication.Destroyed
 import qualified Rattletrap.Type.Replication.Spawned as Replication.Spawned
+import qualified Rattletrap.Type.Replication.Updated as Replication.Updated
 import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
+import qualified Rattletrap.Type.Rotation as Rotation
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
@@ -97,10 +104,14 @@ schema =
       , Json.pair "$ref" "#/definitions/replay"
       , Json.pair "definitions" . Aeson.object $ fmap
         (\s -> Schema.name s Aeson..= Schema.json s)
-        [ AttributeMapping.schema
+        [ Attribute.schema
+        , Attribute.RigidBodyState.schema
+        , AttributeMapping.schema
+        , AttributeValue.schema
         , Cache.schema
         , ClassMapping.schema
         , CompressedWord.schema
+        , CompressedWordVector.schema
         , contentSchema
         , Dictionary.schema Property.schema
         , F32.schema
@@ -115,13 +126,16 @@ schema =
         , Message.schema
         , Property.schema
         , PropertyValue.schema Property.schema
+        , Quaternion.schema
         , Replay.schema (Section.schema Header.schema)
         . Section.schema
         $ contentSchema
         , Replication.schema
         , Replication.Destroyed.schema
         , Replication.Spawned.schema
+        , Replication.Updated.schema
         , ReplicationValue.schema
+        , Rotation.schema
         , Section.schema Header.schema
         , Section.schema contentSchema
         , Str.schema
