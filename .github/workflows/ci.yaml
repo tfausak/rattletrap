@@ -45,7 +45,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: docker/rattletrap
-          name: rattletrap-${{ matrix.os }}-ghc-${{ matrix.ghc }}-${{ github.sha }}${{ matrix.extension }}
+          name: rattletrap-${{ github.sha }}-${{ matrix.os }}${{ matrix.extension }}
 
       - run: cabal exec -- rattletrap --schema | tee schema.json
 
@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           path: schema.json
-          name: rattletrap-schema-${{ github.sha }}.json
+          name: rattletrap-${{ github.sha }}-schema.json
 
       - run: cabal sdist --output-dir docker
 
@@ -76,6 +76,16 @@ jobs:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-${{ matrix.os }}${{ matrix.extension }}
           asset_path: docker/rattletrap
+          upload_url: ${{ github.event.release.upload_url }}
+
+      - if: github.event_name == 'release' && matrix.primary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/json
+          asset_name: rattletrap-${{ github.event.release.tag_name }}-schema.json
+          asset_path: schema.json
           upload_url: ${{ github.event.release.upload_url }}
 
       - if: github.event_name == 'release' && matrix.primary
