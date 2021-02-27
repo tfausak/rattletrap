@@ -1,6 +1,5 @@
 module Rattletrap.Type.PropertyValue where
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
@@ -42,12 +41,8 @@ schema s =
         [ ("array", Schema.json . List.schema $ Dictionary.schema s)
         , ("bool", Schema.ref U8.schema)
         , ( "byte"
-          , Aeson.object
-            [ Json.pair "type" "array"
-            , Json.pair
-              "items"
+          , Schema.tuple
               [Schema.ref Str.schema, Schema.json $ Schema.maybe Str.schema]
-            ]
           )
         , ("float", Schema.ref F32.schema)
         , ("int", Schema.ref I32.schema)

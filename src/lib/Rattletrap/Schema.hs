@@ -36,6 +36,9 @@ maybe s = Schema
 oneOf :: [Aeson.Value] -> Aeson.Value
 oneOf xs = Aeson.object [Json.pair "oneOf" xs]
 
+tuple :: [Aeson.Value] -> Aeson.Value
+tuple xs = Aeson.object [Json.pair "type" "array", Json.pair "items" xs]
+
 array :: Schema -> Schema
 array s = Schema
   { name = Text.pack "array-" <> name s
