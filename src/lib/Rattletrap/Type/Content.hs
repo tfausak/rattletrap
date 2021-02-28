@@ -24,6 +24,7 @@ import qualified Rattletrap.Utility.Json as Json
 import qualified Control.Monad.Trans.State as State
 import qualified Data.ByteString as Bytes
 import qualified Data.ByteString.Lazy as LazyBytes
+import qualified Data.Word as Word
 
 type Content = ContentWith (List.List Frame.Frame)
 
@@ -59,7 +60,7 @@ data ContentWith frames = Content
   , caches :: List.List Cache.Cache
   -- ^ A list of classes along with their parent classes and attributes. Used
   -- for the 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-  , unknown :: [Word8]
+  , unknown :: [Word.Word8]
   }
   deriving (Eq, Show)
 

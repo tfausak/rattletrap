@@ -1,5 +1,6 @@
 module Rattletrap.Type.Attribute.ProductValue where
 
+import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
@@ -13,11 +14,11 @@ import qualified Rattletrap.Schema as Schema
 
 data ProductValue
   = PaintedOld CompressedWord.CompressedWord
-  | PaintedNew Word32
+  | PaintedNew Word.Word32
   | TeamEditionOld CompressedWord.CompressedWord
-  | TeamEditionNew Word32
-  | SpecialEdition Word32
-  | UserColorOld (Maybe Word32)
+  | TeamEditionNew Word.Word32
+  | SpecialEdition Word.Word32
+  | UserColorOld (Maybe Word.Word32)
   | UserColorNew U32.U32
   | TitleId Str.Str
   deriving (Eq, Show)

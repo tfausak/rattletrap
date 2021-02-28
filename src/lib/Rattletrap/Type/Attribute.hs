@@ -1,5 +1,6 @@
 module Rattletrap.Type.Attribute where
 
+import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
@@ -38,7 +39,7 @@ bitPut attribute =
 bitGet
   :: Version.Version
   -> ClassAttributeMap.ClassAttributeMap
-  -> Map CompressedWord.CompressedWord U32.U32
+  -> Map.Map CompressedWord.CompressedWord U32.U32
   -> CompressedWord.CompressedWord
   -> BitGet.BitGet Attribute
 bitGet version classes actors actor = do
@@ -54,22 +55,22 @@ bitGet version classes actors actor = do
 
 lookupAttributeMap
   :: ClassAttributeMap.ClassAttributeMap
-  -> Map CompressedWord.CompressedWord U32.U32
+  -> Map.Map CompressedWord.CompressedWord U32.U32
   -> CompressedWord.CompressedWord
-  -> BitGet.BitGet (Map U32.U32 U32.U32)
+  -> BitGet.BitGet (Map.Map U32.U32 U32.U32)
 lookupAttributeMap classes actors actor = fromMaybe
   ("[RT01] could not get attribute map for " <> show actor)
   (ClassAttributeMap.getAttributeMap classes actors actor)
 
 lookupAttributeIdLimit
-  :: Map U32.U32 U32.U32 -> CompressedWord.CompressedWord -> BitGet.BitGet Word
+  :: Map.Map U32.U32 U32.U32 -> CompressedWord.CompressedWord -> BitGet.BitGet Word
 lookupAttributeIdLimit attributes actor = fromMaybe
   ("[RT02] could not get attribute ID limit for " <> show actor)
   (ClassAttributeMap.getAttributeIdLimit attributes)
 
 lookupAttributeName
   :: ClassAttributeMap.ClassAttributeMap
-  -> Map U32.U32 U32.U32
+  -> Map.Map U32.U32 U32.U32
   -> CompressedWord.CompressedWord
   -> BitGet.BitGet Str.Str
 lookupAttributeName classes attributes attribute = fromMaybe

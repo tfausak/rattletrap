@@ -1,5 +1,6 @@
 module Rattletrap.Type.Attribute.Enum where
 
+import qualified Data.Word as Word
 import Prelude hiding (Enum)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
@@ -7,7 +8,7 @@ import Rattletrap.Type.Common
 import qualified Rattletrap.Schema as Schema
 
 newtype Enum = Enum
-  { value :: Word16
+  { value :: Word.Word16
   } deriving (Eq, Show)
 
 $(deriveJson ''Enum)

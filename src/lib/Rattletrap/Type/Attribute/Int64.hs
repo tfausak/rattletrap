@@ -3,7 +3,7 @@ module Rattletrap.Type.Attribute.Int64 where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common hiding (Int64)
+import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I64 as I64
 
 newtype Int64 = Int64

@@ -1,5 +1,6 @@
 module Rattletrap.Type.Attribute.Reservation where
 
+import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
@@ -18,7 +19,7 @@ data Reservation = Reservation
   , name :: Maybe Str.Str
   , unknown1 :: Bool
   , unknown2 :: Bool
-  , unknown3 :: Maybe Word8
+  , unknown3 :: Maybe Word.Word8
   }
   deriving (Eq, Show)
 

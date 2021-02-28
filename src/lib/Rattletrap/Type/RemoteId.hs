@@ -17,9 +17,9 @@ import qualified Data.Text.Encoding as Text
 import qualified Data.Word as Word
 
 data RemoteId
-  = PlayStation Text [Word8]
+  = PlayStation Text.Text [Word.Word8]
   | PsyNet (Either U64.U64 (U64.U64, U64.U64, U64.U64, U64.U64))
-  | Splitscreen Word32
+  | Splitscreen Word.Word32
   -- ^ Really only 24 bits.
   | Steam U64.U64
   | Switch U64.U64 U64.U64 U64.U64 U64.U64

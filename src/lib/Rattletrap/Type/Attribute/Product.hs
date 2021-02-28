@@ -46,13 +46,13 @@ bitPut attribute =
 
 decodeProductAttributesBits
   :: Version.Version
-  -> Map U32.U32 Str.Str
+  -> Map.Map U32.U32 Str.Str
   -> BitGet.BitGet (List.List Product)
 decodeProductAttributesBits version objectMap = do
   size <- U8.bitGet
   List.replicateM (fromIntegral $ U8.toWord8 size) $ bitGet version objectMap
 
-bitGet :: Version.Version -> Map U32.U32 Str.Str -> BitGet.BitGet Product
+bitGet :: Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet Product
 bitGet version objectMap = do
   flag <- BitGet.bool
   objectId_ <- U32.bitGet

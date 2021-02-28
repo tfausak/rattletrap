@@ -1,5 +1,6 @@
 module Rattletrap.Type.Attribute.GameMode where
 
+import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import Rattletrap.Type.Common
@@ -13,7 +14,7 @@ data GameMode = GameMode
   -- It's stored as a regular 'Int' rather than something more precise like an
   -- 'Int8' because it just gets passed to functions that expect 'Int's.
   -- There's no reason to do a bunch of conversions.
-  , word :: Word8
+  , word :: Word.Word8
   }
   deriving (Eq, Show)
 

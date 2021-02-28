@@ -176,7 +176,7 @@ bitPut value = case value of
 
 bitGet
   :: Version.Version
-  -> Map U32.U32 Str.Str
+  -> Map.Map U32.U32 Str.Str
   -> Str.Str
   -> BitGet.BitGet AttributeValue
 bitGet version objectMap name = do
