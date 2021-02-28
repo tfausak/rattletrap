@@ -6,14 +6,17 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Utility.Json as Json
 
 newtype F32
   = F32 Float
   deriving (Eq, Show)
 
-$(deriveJson ''F32)
+instance Aeson.FromJSON F32 where
+  parseJSON = fmap fromFloat . Aeson.parseJSON
+
+instance Aeson.ToJSON F32 where
+  toJSON = Aeson.toJSON . toFloat
 
 schema :: Schema.Schema
 schema = Schema.named "f32" $ Aeson.object [Json.pair "type" "number"]

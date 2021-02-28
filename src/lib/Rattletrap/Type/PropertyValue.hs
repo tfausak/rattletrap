@@ -1,10 +1,11 @@
 module Rattletrap.Type.PropertyValue where
 
+import qualified Data.Aeson as Aeson
+import qualified Data.Foldable as Foldable
 import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.I32 as I32
@@ -30,7 +31,28 @@ data PropertyValue a
   | Str Str.Str
   deriving (Eq, Show)
 
-$(deriveJson ''PropertyValue)
+instance Aeson.FromJSON a => Aeson.FromJSON (PropertyValue a) where
+  parseJSON = Aeson.withObject "PropertyValue" $ \ object -> Foldable.asum
+    [ Array <$> Json.required object "array"
+    , Bool <$> Json.required object "bool"
+    , uncurry Byte <$> Json.required object "byte"
+    , Float <$> Json.required object "float"
+    , Int <$> Json.required object "int"
+    , Name <$> Json.required object "name"
+    , QWord <$> Json.required object "q_word"
+    , Str <$> Json.required object "str"
+    ]
+
+instance Aeson.ToJSON a => Aeson.ToJSON (PropertyValue a) where
+  toJSON x = case x of
+    Array y -> Aeson.object [Json.pair "array" y]
+    Bool y -> Aeson.object [Json.pair "bool" y]
+    Byte y z -> Aeson.object [Json.pair "byte" (y, z)]
+    Float y -> Aeson.object [Json.pair "float" y]
+    Int y -> Aeson.object [Json.pair "int" y]
+    Name y -> Aeson.object [Json.pair "name" y]
+    QWord y -> Aeson.object [Json.pair "q_word" y]
+    Str y -> Aeson.object [Json.pair "str" y]
 
 schema :: Schema.Schema -> Schema.Schema
 schema s =

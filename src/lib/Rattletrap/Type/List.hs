@@ -3,16 +3,20 @@ module Rattletrap.Type.List where
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 
 import qualified Control.Monad as Monad
+import qualified Data.Aeson as Aeson
 
 newtype List a
   = List [a]
   deriving (Eq, Show)
 
-$(deriveJson ''List)
+instance Aeson.FromJSON a => Aeson.FromJSON (List a) where
+  parseJSON = fmap fromList . Aeson.parseJSON
+
+instance Aeson.ToJSON a => Aeson.ToJSON (List a) where
+  toJSON = Aeson.toJSON . toList
 
 schema :: Schema.Schema -> Schema.Schema
 schema = Schema.array
