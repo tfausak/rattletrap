@@ -1,6 +1,5 @@
 module Rattletrap.Type.Replication.Destroyed where
 
-import qualified Data.Aeson as Aeson
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
@@ -17,7 +16,7 @@ $(deriveJson ''Destroyed)
 
 schema :: Schema.Schema
 schema = Schema.named "replication-destroyed"
-  $ Aeson.object [Json.pair "type" "array"]
+  $ Json.object [Json.pair "type" "array"]
 
 bitPut :: Destroyed -> BitPut.BitPut
 bitPut _ = mempty

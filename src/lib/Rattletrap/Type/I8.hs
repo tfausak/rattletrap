@@ -1,6 +1,5 @@
 module Rattletrap.Type.I8 where
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Int as Int
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
@@ -17,7 +16,7 @@ newtype I8
 $(deriveJson ''I8)
 
 schema :: Schema.Schema
-schema = Schema.named "i8" $ Aeson.object
+schema = Schema.named "i8" $ Json.object
   [ Json.pair "type" "integer"
   , Json.pair "minimum" (minBound :: Int.Int8)
   , Json.pair "maximum" (maxBound :: Int.Int8)

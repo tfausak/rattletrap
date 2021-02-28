@@ -9,7 +9,6 @@ import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Utility.Bytes
 import qualified Rattletrap.Utility.Json as Json
 
-import qualified Data.Aeson as Aeson
 import qualified Data.ByteString as Bytes
 import qualified Data.Char as Char
 import qualified Data.Int as Int
@@ -22,14 +21,14 @@ newtype Str
   = Str Text.Text
   deriving (Eq, Ord, Show)
 
-instance Aeson.FromJSON Str where
-  parseJSON = fmap fromText . Aeson.parseJSON
+instance Json.FromJSON Str where
+  parseJSON = fmap fromText . Json.parseJSON
 
-instance Aeson.ToJSON Str where
-  toJSON = Aeson.toJSON . toText
+instance Json.ToJSON Str where
+  toJSON = Json.toJSON . toText
 
 schema :: Schema.Schema
-schema = Schema.named "str" $ Aeson.object [Json.pair "type" "string"]
+schema = Schema.named "str" $ Json.object [Json.pair "type" "string"]
 
 fromText :: Text.Text -> Str
 fromText = Str

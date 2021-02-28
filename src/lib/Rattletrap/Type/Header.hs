@@ -1,6 +1,5 @@
 module Rattletrap.Type.Header where
 
-import qualified Data.Aeson as Aeson
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
@@ -59,8 +58,8 @@ data Header = Header
   }
   deriving (Eq, Show)
 
-instance Aeson.FromJSON Header where
-  parseJSON = Aeson.withObject "Header" $ \ object -> do
+instance Json.FromJSON Header where
+  parseJSON = Json.withObject "Header" $ \ object -> do
     engineVersion <- Json.required object "engine_version"
     licenseeVersion <- Json.required object "licensee_version"
     patchVersion <- Json.required object "patch_version"
@@ -68,8 +67,8 @@ instance Aeson.FromJSON Header where
     properties <- Json.required object "properties"
     pure Header { engineVersion, licenseeVersion, patchVersion, label, properties }
 
-instance Aeson.ToJSON Header where
-  toJSON x = Aeson.object
+instance Json.ToJSON Header where
+  toJSON x = Json.object
     [ Json.pair "engine_version" $ engineVersion x
     , Json.pair "licensee_version" $ licenseeVersion x
     , Json.pair "patch_version" $ patchVersion x

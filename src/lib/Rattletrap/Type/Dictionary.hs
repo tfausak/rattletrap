@@ -7,8 +7,6 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Utility.Json as Json
 
-import qualified Data.Aeson as Aeson
-import qualified Data.Aeson.Types as Aeson
 import qualified Data.Bifunctor as Bifunctor
 import qualified Data.Map as Map
 import qualified Data.Text as Text
@@ -19,14 +17,11 @@ data Dictionary a = Dictionary
   }
   deriving (Eq, Show)
 
-instance Aeson.FromJSON a => Aeson.FromJSON (Dictionary a) where
-  parseJSON = Aeson.withObject "Dictionary" $ \o -> do
-    let
-      required :: Aeson.FromJSON a => String -> Aeson.Parser a
-      required k = o Aeson..: Text.pack k
-    keys <- required "keys"
-    lastKey_ <- required "last_key"
-    value <- required "value"
+instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
+  parseJSON = Json.withObject "Dictionary" $ \o -> do
+    keys <- Json.required o "keys"
+    lastKey_ <- Json.required o "last_key"
+    value <- Json.required o "value"
     let
       build
         :: MonadFail m
@@ -43,15 +38,12 @@ instance Aeson.FromJSON a => Aeson.FromJSON (Dictionary a) where
     elements_ <- build value 0 [] keys
     pure Dictionary { elements = elements_, lastKey = lastKey_ }
 
-instance Aeson.ToJSON a => Aeson.ToJSON (Dictionary a) where
+instance Json.ToJSON a => Json.ToJSON (Dictionary a) where
   toJSON x =
-    let
-      pair :: (Aeson.ToJSON v, Aeson.KeyValue kv) => String -> v -> kv
-      pair k v = Text.pack k Aeson..= v
-    in Aeson.object
-      [ pair "keys" . fmap fst . List.toList $ elements x
-      , pair "last_key" $ lastKey x
-      , pair "value"
+    Json.object
+      [ Json.pair "keys" . fmap fst . List.toList $ elements x
+      , Json.pair "last_key" $ lastKey x
+      , Json.pair "value"
       . Map.fromList
       . fmap (Bifunctor.first Str.toText)
       . List.toList
@@ -63,7 +55,7 @@ schema s =
   Schema.named ("dictionary-" <> Text.unpack (Schema.name s)) $ Schema.object
     [ (Json.pair "keys" . Schema.json $ Schema.array Str.schema, True)
     , (Json.pair "last_key" $ Schema.ref Str.schema, True)
-    , ( Json.pair "value" $ Aeson.object
+    , ( Json.pair "value" $ Json.object
         [ Json.pair "type" "object"
         , Json.pair "additionalProperties" $ Schema.ref s
         ]

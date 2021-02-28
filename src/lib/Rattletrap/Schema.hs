@@ -1,25 +1,24 @@
 module Rattletrap.Schema where
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Text as Text
 import qualified Rattletrap.Utility.Json as Json
 
 data Schema = Schema
   { name :: Text.Text
-  , json :: Aeson.Value
+  , json :: Json.Value
   }
   deriving (Eq, Show)
 
-named :: String -> Aeson.Value -> Schema
+named :: String -> Json.Value -> Schema
 named n j = Schema { name = Text.pack n, json = j }
 
-ref :: Schema -> Aeson.Value
-ref s = Aeson.object [Json.pair "$ref" $ Text.pack "#/definitions/" <> name s]
+ref :: Schema -> Json.Value
+ref s = Json.object [Json.pair "$ref" $ Text.pack "#/definitions/" <> name s]
 
-object :: [((Text.Text, Aeson.Value), Bool)] -> Aeson.Value
-object xs = Aeson.object
+object :: [((Text.Text, Json.Value), Bool)] -> Json.Value
+object xs = Json.object
   [ Json.pair "type" "object"
-  , Json.pair "properties" . Aeson.object $ fmap fst xs
+  , Json.pair "properties" . Json.object $ fmap fst xs
   , Json.pair "required" . fmap (fst . fst) $ filter snd xs
   ]
 
@@ -29,11 +28,11 @@ maybe s = Schema
   , json = oneOf [ref s, json Rattletrap.Schema.null]
   }
 
-oneOf :: [Aeson.Value] -> Aeson.Value
-oneOf xs = Aeson.object [Json.pair "oneOf" xs]
+oneOf :: [Json.Value] -> Json.Value
+oneOf xs = Json.object [Json.pair "oneOf" xs]
 
-tuple :: [Aeson.Value] -> Aeson.Value
-tuple xs = Aeson.object
+tuple :: [Json.Value] -> Json.Value
+tuple xs = Json.object
   [ Json.pair "type" "array"
   , Json.pair "items" xs
   , Json.pair "minItems" $ length xs
@@ -43,20 +42,20 @@ tuple xs = Aeson.object
 array :: Schema -> Schema
 array s = Schema
   { name = Text.pack "array-" <> name s
-  , json = Aeson.object [Json.pair "type" "array", Json.pair "items" $ ref s]
+  , json = Json.object [Json.pair "type" "array", Json.pair "items" $ ref s]
   }
 
 boolean :: Schema
-boolean = named "boolean" $ Aeson.object [Json.pair "type" "boolean"]
+boolean = named "boolean" $ Json.object [Json.pair "type" "boolean"]
 
 integer :: Schema
-integer = named "integer" $ Aeson.object [Json.pair "type" "integer"]
+integer = named "integer" $ Json.object [Json.pair "type" "integer"]
 
 null :: Schema
-null = named "null" $ Aeson.object [Json.pair "type" "null"]
+null = named "null" $ Json.object [Json.pair "type" "null"]
 
 number :: Schema
-number = named "number" $ Aeson.object [Json.pair "type" "number"]
+number = named "number" $ Json.object [Json.pair "type" "number"]
 
 string :: Schema
-string = named "string" $ Aeson.object [Json.pair "type" "string"]
+string = named "string" $ Json.object [Json.pair "type" "string"]

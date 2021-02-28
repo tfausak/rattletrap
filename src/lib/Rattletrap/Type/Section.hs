@@ -8,7 +8,6 @@ import qualified Rattletrap.Utility.Crc as Crc
 import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad as Monad
-import qualified Data.Aeson as Aeson
 import qualified Data.ByteString as Bytes
 import qualified Data.Text as Text
 
@@ -26,15 +25,15 @@ data Section a = Section
   }
   deriving (Eq, Show)
 
-instance Aeson.FromJSON a => Aeson.FromJSON (Section a) where
-  parseJSON = Aeson.withObject "Section" $ \ object -> do
+instance Json.FromJSON a => Json.FromJSON (Section a) where
+  parseJSON = Json.withObject "Section" $ \ object -> do
     size <- Json.required object "size"
     crc <- Json.required object "crc"
     body <- Json.required object "body"
     pure Section { size, crc, body }
 
-instance Aeson.ToJSON a => Aeson.ToJSON (Section a) where
-  toJSON x = Aeson.object
+instance Json.ToJSON a => Json.ToJSON (Section a) where
+  toJSON x = Json.object
     [ Json.pair "size" $ size x
     , Json.pair "crc" $ crc x
     , Json.pair "body" $ body x

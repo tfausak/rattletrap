@@ -1,6 +1,5 @@
 module Rattletrap.Type.Property where
 
-import qualified Data.Aeson as Aeson
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
@@ -17,15 +16,15 @@ data Property = Property
   }
   deriving (Eq, Show)
 
-instance Aeson.FromJSON Property where
-  parseJSON = Aeson.withObject "Property" $ \ object -> do
+instance Json.FromJSON Property where
+  parseJSON = Json.withObject "Property" $ \ object -> do
     kind <- Json.required object "kind"
     size <- Json.required object "size"
     value <- Json.required object "value"
     pure Property { kind, size, value }
 
-instance Aeson.ToJSON Property where
-  toJSON x = Aeson.object
+instance Json.ToJSON Property where
+  toJSON x = Json.object
     [ Json.pair "kind" $ kind x
     , Json.pair "size" $ size x
     , Json.pair "value" $ value x
