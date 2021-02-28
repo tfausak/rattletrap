@@ -1,12 +1,12 @@
 module Rattletrap.Type.Attribute where
 
 import qualified Data.Map as Map
+import Prelude hiding (id)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.AttributeValue as AttributeValue
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
@@ -22,7 +22,19 @@ data Attribute = Attribute
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Attribute)
+instance Json.FromJSON Attribute where
+  parseJSON = Json.withObject "Attribute" $ \ object -> do
+    id <- Json.required object "id"
+    name <- Json.required object "name"
+    value <- Json.required object "value"
+    pure Attribute { id, name, value }
+
+instance Json.ToJSON Attribute where
+  toJSON x = Json.object
+    [ Json.pair "id" $ id x
+    , Json.pair "name" $ name x
+    , Json.pair "value" $ value x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute" $ Schema.object

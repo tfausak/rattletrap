@@ -3,7 +3,6 @@ module Rattletrap.Type.CompressedWordVector where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Utility.Json as Json
 
@@ -14,7 +13,19 @@ data CompressedWordVector = CompressedWordVector
   }
   deriving (Eq, Show)
 
-$(deriveJson ''CompressedWordVector)
+instance Json.FromJSON CompressedWordVector where
+  parseJSON = Json.withObject "CompressedWordVector" $ \ object -> do
+    x <- Json.required object "x"
+    y <- Json.required object "y"
+    z <- Json.required object "z"
+    pure CompressedWordVector { x, y, z }
+
+instance Json.ToJSON CompressedWordVector where
+  toJSON a = Json.object
+    [ Json.pair "x" $ x a
+    , Json.pair "y" $ y a
+    , Json.pair "z" $ z a
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "compressed-word-vector" $ Schema.object

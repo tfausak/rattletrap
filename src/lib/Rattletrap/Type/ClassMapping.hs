@@ -3,7 +3,6 @@ module Rattletrap.Type.ClassMapping where
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
@@ -14,7 +13,17 @@ data ClassMapping = ClassMapping
   }
   deriving (Eq, Show)
 
-$(deriveJson ''ClassMapping)
+instance Json.FromJSON ClassMapping where
+  parseJSON = Json.withObject "ClassMapping" $ \ object -> do
+    name <- Json.required object "name"
+    streamId <- Json.required object "stream_id"
+    pure ClassMapping { name, streamId }
+
+instance Json.ToJSON ClassMapping where
+  toJSON x = Json.object
+    [ Json.pair "name" $ name x
+    , Json.pair "stream_id" $ streamId x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "classMapping" $ Schema.object

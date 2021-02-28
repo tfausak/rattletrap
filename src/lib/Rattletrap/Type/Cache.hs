@@ -4,7 +4,6 @@ import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
@@ -17,7 +16,21 @@ data Cache = Cache
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Cache)
+instance Json.FromJSON Cache where
+  parseJSON = Json.withObject "Cache" $ \ object -> do
+    classId <- Json.required object "class_id"
+    parentCacheId <- Json.required object "parent_cache_id"
+    cacheId <- Json.required object "cache_id"
+    attributeMappings <- Json.required object "attribute_mappings"
+    pure Cache { classId, parentCacheId, cacheId, attributeMappings }
+
+instance Json.ToJSON Cache where
+  toJSON x = Json.object
+    [ Json.pair "class_id" $ classId x
+    , Json.pair "parent_cache_id" $ parentCacheId x
+    , Json.pair "cache_id" $ cacheId x
+    , Json.pair "attribute_mappings" $ attributeMappings x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "cache" $ Schema.object

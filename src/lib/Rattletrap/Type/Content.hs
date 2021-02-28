@@ -8,7 +8,6 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Cache as Cache
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.ClassMapping as ClassMapping
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Frame as Frame
 import qualified Rattletrap.Type.KeyFrame as KeyFrame
 import qualified Rattletrap.Type.List as List
@@ -64,7 +63,37 @@ data ContentWith frames = Content
   }
   deriving (Eq, Show)
 
-$(deriveJson ''ContentWith)
+instance Json.FromJSON frames => Json.FromJSON (ContentWith frames) where
+  parseJSON = Json.withObject "Content" $ \ object -> do
+    levels <- Json.required object "levels"
+    keyFrames <- Json.required object "key_frames"
+    streamSize <- Json.required object "stream_size"
+    frames <- Json.required object "frames"
+    messages <- Json.required object "messages"
+    marks <- Json.required object "marks"
+    packages <- Json.required object "packages"
+    objects <- Json.required object "objects"
+    names <- Json.required object "names"
+    classMappings <- Json.required object "class_mappings"
+    caches <- Json.required object "caches"
+    unknown <- Json.required object "unknown"
+    pure Content { levels, keyFrames, streamSize, frames, messages, marks, packages, objects, names, classMappings, caches, unknown }
+
+instance Json.ToJSON frames => Json.ToJSON (ContentWith frames) where
+  toJSON x = Json.object
+    [ Json.pair "levels" $ levels x
+    , Json.pair "key_frames" $ keyFrames x
+    , Json.pair "stream_size" $ streamSize x
+    , Json.pair "frames" $ frames x
+    , Json.pair "messages" $ messages x
+    , Json.pair "marks" $ marks x
+    , Json.pair "packages" $ packages x
+    , Json.pair "objects" $ objects x
+    , Json.pair "names" $ names x
+    , Json.pair "class_mappings" $ classMappings x
+    , Json.pair "caches" $ caches x
+    , Json.pair "unknown" $ unknown x
+    ]
 
 schema :: Schema.Schema -> Schema.Schema
 schema s = Schema.named "content" $ Schema.object

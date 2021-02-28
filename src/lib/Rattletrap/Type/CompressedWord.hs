@@ -3,7 +3,6 @@ module Rattletrap.Type.CompressedWord where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Utility.Json as Json
 
 import qualified Data.Bits as Bits
@@ -16,7 +15,17 @@ data CompressedWord = CompressedWord
   }
   deriving (Eq, Ord, Show)
 
-$(deriveJson ''CompressedWord)
+instance Json.FromJSON CompressedWord where
+  parseJSON = Json.withObject "CompressedWord" $ \ object -> do
+    limit <- Json.required object "limit"
+    value <- Json.required object "value"
+    pure CompressedWord { limit, value }
+
+instance Json.ToJSON CompressedWord where
+  toJSON x = Json.object
+    [ Json.pair "limit" $ limit x
+    , Json.pair "value" $ value x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "compressedWord" $ Schema.object
