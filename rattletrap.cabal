@@ -32,8 +32,7 @@ library
     , http-client-tls >= 0.3.5 && < 0.4
     , text >= 1.2.4 && < 1.3
     , transformers >= 0.5.6 && < 0.6
-  default-extensions:
-    NamedFieldPuns
+  default-extensions: NamedFieldPuns
   default-language: Haskell2010
   exposed-modules:
     Paths_rattletrap
@@ -144,19 +143,14 @@ library
     -Wno-missing-export-lists
     -Wno-missing-exported-signatures
     -Wno-missing-import-lists
+    -Wno-missing-safe-haskell-mode
+    -Wno-prepositive-qualified-module
     -Wno-safe
     -Wno-unsafe
   hs-source-dirs: src/lib
 
-  if impl(ghc >= 8.10)
-    ghc-options:
-      -Wno-missing-safe-haskell-mode
-      -Wno-prepositive-qualified-module
-
 executable rattletrap
-  build-depends:
-    base -any
-    , rattletrap -any
+  build-depends: base, rattletrap
   default-language: Haskell2010
   ghc-options: -rtsopts -threaded
   hs-source-dirs: src/exe
@@ -164,11 +158,11 @@ executable rattletrap
 
 test-suite test
   build-depends:
-    base -any
-    , bytestring -any
-    , filepath -any
+    base
+    , bytestring
+    , filepath
     , HUnit >= 1.6.1 && < 1.7
-    , rattletrap -any
+    , rattletrap
   default-language: Haskell2010
   ghc-options: -rtsopts -threaded
   hs-source-dirs: src/test
