@@ -16,7 +16,7 @@ data PickupNew = PickupNew
 
 instance Json.FromJSON PickupNew where
   parseJSON = Json.withObject "PickupNew" $ \object -> do
-    instigatorId <- Json.required object "instigator_id"
+    instigatorId <- Json.optional object "instigator_id"
     pickedUp <- Json.required object "picked_up"
     pure PickupNew { instigatorId, pickedUp }
 

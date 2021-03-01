@@ -21,8 +21,8 @@ data Initialization = Initialization
 
 instance Json.FromJSON Initialization where
   parseJSON = Json.withObject "Initialization" $ \object -> do
-    location <- Json.required object "location"
-    rotation <- Json.required object "rotation"
+    location <- Json.optional object "location"
+    rotation <- Json.optional object "rotation"
     pure Initialization { location, rotation }
 
 instance Json.ToJSON Initialization where

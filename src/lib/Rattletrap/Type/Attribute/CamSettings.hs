@@ -27,7 +27,7 @@ instance Json.FromJSON CamSettings where
     distance <- Json.required object "distance"
     stiffness <- Json.required object "stiffness"
     swivelSpeed <- Json.required object "swivel_speed"
-    transitionSpeed <- Json.required object "transition_speed"
+    transitionSpeed <- Json.optional object "transition_speed"
     pure CamSettings
       { fov
       , height

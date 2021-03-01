@@ -19,7 +19,7 @@ data PartyLeader = PartyLeader
 instance Json.FromJSON PartyLeader where
   parseJSON = Json.withObject "PartyLeader" $ \object -> do
     systemId <- Json.required object "system_id"
-    id <- Json.required object "id"
+    id <- Json.optional object "id"
     pure PartyLeader { systemId, id }
 
 instance Json.ToJSON PartyLeader where

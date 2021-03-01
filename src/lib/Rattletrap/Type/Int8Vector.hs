@@ -16,9 +16,9 @@ data Int8Vector = Int8Vector
 
 instance Json.FromJSON Int8Vector where
   parseJSON = Json.withObject "Int8Vector" $ \object -> do
-    x <- Json.required object "x"
-    y <- Json.required object "y"
-    z <- Json.required object "z"
+    x <- Json.optional object "x"
+    y <- Json.optional object "y"
+    z <- Json.optional object "z"
     pure Int8Vector { x, y, z }
 
 instance Json.ToJSON Int8Vector where

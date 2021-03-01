@@ -23,8 +23,8 @@ instance Json.FromJSON RigidBodyState where
     sleeping <- Json.required object "sleeping"
     location <- Json.required object "location"
     rotation <- Json.required object "rotation"
-    linearVelocity <- Json.required object "linear_velocity"
-    angularVelocity <- Json.required object "angular_velocity"
+    linearVelocity <- Json.optional object "linear_velocity"
+    angularVelocity <- Json.optional object "angular_velocity"
     pure RigidBodyState
       { sleeping
       , location

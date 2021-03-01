@@ -37,8 +37,8 @@ data Spawned = Spawned
 instance Json.FromJSON Spawned where
   parseJSON = Json.withObject "Spawned" $ \object -> do
     flag <- Json.required object "flag"
-    nameIndex <- Json.required object "name_index"
-    name <- Json.required object "name"
+    nameIndex <- Json.optional object "name_index"
+    name <- Json.optional object "name"
     objectId <- Json.required object "object_id"
     objectName <- Json.required object "object_name"
     className <- Json.required object "class_name"

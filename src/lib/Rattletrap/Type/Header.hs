@@ -62,7 +62,7 @@ instance Json.FromJSON Header where
   parseJSON = Json.withObject "Header" $ \object -> do
     engineVersion <- Json.required object "engine_version"
     licenseeVersion <- Json.required object "licensee_version"
-    patchVersion <- Json.required object "patch_version"
+    patchVersion <- Json.optional object "patch_version"
     label <- Json.required object "label"
     properties <- Json.required object "properties"
     pure Header

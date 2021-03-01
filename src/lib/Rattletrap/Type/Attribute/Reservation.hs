@@ -26,10 +26,10 @@ instance Json.FromJSON Reservation where
   parseJSON = Json.withObject "Reservation" $ \object -> do
     number <- Json.required object "number"
     uniqueId <- Json.required object "unique_id"
-    name <- Json.required object "name"
+    name <- Json.optional object "name"
     unknown1 <- Json.required object "unknown1"
     unknown2 <- Json.required object "unknown2"
-    unknown3 <- Json.required object "unknown3"
+    unknown3 <- Json.optional object "unknown3"
     pure Reservation { number, uniqueId, name, unknown1, unknown2, unknown3 }
 
 instance Json.ToJSON Reservation where

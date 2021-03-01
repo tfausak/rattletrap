@@ -26,7 +26,7 @@ instance Json.FromJSON Product where
   parseJSON = Json.withObject "Product" $ \object -> do
     unknown <- Json.required object "unknown"
     objectId <- Json.required object "object_id"
-    objectName <- Json.required object "object_name"
+    objectName <- Json.optional object "object_name"
     value <- Json.required object "value"
     pure Product { unknown, objectId, objectName, value }
 
