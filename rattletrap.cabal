@@ -16,10 +16,6 @@ source-repository head
   type: git
   location: https://github.com/tfausak/rattletrap
 
-flag static
-  manual: True
-  default: False
-
 library
   autogen-modules: Paths_rattletrap
   build-depends:
@@ -165,9 +161,6 @@ executable rattletrap
   ghc-options: -rtsopts -threaded
   hs-source-dirs: src/exe
   main-is: Main.hs
-
-  if flag(static)
-    ld-options: -static
 
 test-suite test
   build-depends:
