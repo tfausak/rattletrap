@@ -2,13 +2,12 @@ module Rattletrap.Type.Attribute.AppliedDamage where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import Rattletrap.Type.Common
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data AppliedDamage = AppliedDamage
   { unknown1 :: U8.U8
@@ -18,7 +17,21 @@ data AppliedDamage = AppliedDamage
   }
   deriving (Eq, Show)
 
-$(deriveJson ''AppliedDamage)
+instance Json.FromJSON AppliedDamage where
+  parseJSON = Json.withObject "AppliedDamage" $ \object -> do
+    unknown1 <- Json.required object "unknown1"
+    location <- Json.required object "location"
+    unknown3 <- Json.required object "unknown3"
+    unknown4 <- Json.required object "unknown4"
+    pure AppliedDamage { unknown1, location, unknown3, unknown4 }
+
+instance Json.ToJSON AppliedDamage where
+  toJSON x = Json.object
+    [ Json.pair "unknown1" $ unknown1 x
+    , Json.pair "location" $ location x
+    , Json.pair "unknown3" $ unknown3 x
+    , Json.pair "unknown4" $ unknown4 x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-applied-damage" $ Schema.object

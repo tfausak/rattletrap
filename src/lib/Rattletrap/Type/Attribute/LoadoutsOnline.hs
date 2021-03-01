@@ -2,13 +2,12 @@ module Rattletrap.Type.Attribute.LoadoutsOnline where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.LoadoutOnline as LoadoutOnline
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 import qualified Data.Map as Map
 
@@ -20,7 +19,21 @@ data LoadoutsOnline = LoadoutsOnline
   }
   deriving (Eq, Show)
 
-$(deriveJson ''LoadoutsOnline)
+instance Json.FromJSON LoadoutsOnline where
+  parseJSON = Json.withObject "LoadoutsOnline" $ \object -> do
+    blue <- Json.required object "blue"
+    orange <- Json.required object "orange"
+    unknown1 <- Json.required object "unknown1"
+    unknown2 <- Json.required object "unknown2"
+    pure LoadoutsOnline { blue, orange, unknown1, unknown2 }
+
+instance Json.ToJSON LoadoutsOnline where
+  toJSON x = Json.object
+    [ Json.pair "blue" $ blue x
+    , Json.pair "orange" $ orange x
+    , Json.pair "unknown1" $ unknown1 x
+    , Json.pair "unknown2" $ unknown2 x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-loadouts-online" $ Schema.object

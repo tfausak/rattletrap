@@ -3,7 +3,6 @@ module Rattletrap.Type.Message where
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
@@ -18,7 +17,19 @@ data Message = Message
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Message)
+instance Json.FromJSON Message where
+  parseJSON = Json.withObject "Message" $ \object -> do
+    frame <- Json.required object "frame"
+    name <- Json.required object "name"
+    value <- Json.required object "value"
+    pure Message { frame, name, value }
+
+instance Json.ToJSON Message where
+  toJSON x = Json.object
+    [ Json.pair "frame" $ frame x
+    , Json.pair "name" $ name x
+    , Json.pair "value" $ value x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "message" $ Schema.object

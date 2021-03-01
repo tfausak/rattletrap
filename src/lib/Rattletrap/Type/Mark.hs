@@ -3,7 +3,6 @@ module Rattletrap.Type.Mark where
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
@@ -16,7 +15,15 @@ data Mark = Mark
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Mark)
+instance Json.FromJSON Mark where
+  parseJSON = Json.withObject "Mark" $ \object -> do
+    value <- Json.required object "value"
+    frame <- Json.required object "frame"
+    pure Mark { value, frame }
+
+instance Json.ToJSON Mark where
+  toJSON x =
+    Json.object [Json.pair "value" $ value x, Json.pair "frame" $ frame x]
 
 schema :: Schema.Schema
 schema = Schema.named "mark" $ Schema.object

@@ -1,10 +1,8 @@
 module Rattletrap.Type.Replication.Destroyed where
 
-import qualified Data.Aeson as Aeson
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Utility.Json as Json
 
 -- | Destroyed replications don't actually contain any extra information. All
@@ -13,11 +11,17 @@ import qualified Rattletrap.Utility.Json as Json
 data Destroyed = Destroyed
   deriving (Eq, Show)
 
-$(deriveJson ''Destroyed)
+instance Json.FromJSON Destroyed where
+  parseJSON json = do
+    () <- Json.parseJSON json
+    pure Destroyed
+
+instance Json.ToJSON Destroyed where
+  toJSON = const $ Json.toJSON ()
 
 schema :: Schema.Schema
-schema = Schema.named "replication-destroyed"
-  $ Aeson.object [Json.pair "type" "array"]
+schema =
+  Schema.named "replication-destroyed" $ Json.object [Json.pair "type" "array"]
 
 bitPut :: Destroyed -> BitPut.BitPut
 bitPut _ = mempty

@@ -3,7 +3,6 @@ module Rattletrap.Type.AttributeMapping where
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
 
@@ -13,7 +12,15 @@ data AttributeMapping = AttributeMapping
   }
   deriving (Eq, Show)
 
-$(deriveJson ''AttributeMapping)
+instance Json.FromJSON AttributeMapping where
+  parseJSON = Json.withObject "AttributeMapping" $ \object -> do
+    objectId <- Json.required object "object_id"
+    streamId <- Json.required object "stream_id"
+    pure AttributeMapping { objectId, streamId }
+
+instance Json.ToJSON AttributeMapping where
+  toJSON x = Json.object
+    [Json.pair "object_id" $ objectId x, Json.pair "stream_id" $ streamId x]
 
 schema :: Schema.Schema
 schema = Schema.named "attributeMapping" $ Schema.object

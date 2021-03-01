@@ -2,13 +2,12 @@ module Rattletrap.Type.Attribute.DamageState where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import Rattletrap.Type.Common
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data DamageState = DamageState
   { unknown1 :: U8.U8
@@ -20,7 +19,32 @@ data DamageState = DamageState
   }
   deriving (Eq, Show)
 
-$(deriveJson ''DamageState)
+instance Json.FromJSON DamageState where
+  parseJSON = Json.withObject "DamageState" $ \object -> do
+    unknown1 <- Json.required object "unknown1"
+    unknown2 <- Json.required object "unknown2"
+    unknown3 <- Json.required object "unknown3"
+    unknown4 <- Json.required object "unknown4"
+    unknown5 <- Json.required object "unknown5"
+    unknown6 <- Json.required object "unknown6"
+    pure DamageState
+      { unknown1
+      , unknown2
+      , unknown3
+      , unknown4
+      , unknown5
+      , unknown6
+      }
+
+instance Json.ToJSON DamageState where
+  toJSON x = Json.object
+    [ Json.pair "unknown1" $ unknown1 x
+    , Json.pair "unknown2" $ unknown2 x
+    , Json.pair "unknown3" $ unknown3 x
+    , Json.pair "unknown4" $ unknown4 x
+    , Json.pair "unknown5" $ unknown5 x
+    , Json.pair "unknown6" $ unknown6 x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-damage-state" $ Schema.object

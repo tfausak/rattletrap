@@ -3,7 +3,6 @@ module Rattletrap.Type.Section where
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Crc as Crc
 import qualified Rattletrap.Utility.Json as Json
@@ -26,7 +25,19 @@ data Section a = Section
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Section)
+instance Json.FromJSON a => Json.FromJSON (Section a) where
+  parseJSON = Json.withObject "Section" $ \object -> do
+    size <- Json.required object "size"
+    crc <- Json.required object "crc"
+    body <- Json.required object "body"
+    pure Section { size, crc, body }
+
+instance Json.ToJSON a => Json.ToJSON (Section a) where
+  toJSON x = Json.object
+    [ Json.pair "size" $ size x
+    , Json.pair "crc" $ crc x
+    , Json.pair "body" $ body x
+    ]
 
 schema :: Schema.Schema -> Schema.Schema
 schema s =

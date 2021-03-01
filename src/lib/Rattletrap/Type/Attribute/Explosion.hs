@@ -2,12 +2,11 @@ module Rattletrap.Type.Attribute.Explosion where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import Rattletrap.Type.Common
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data Explosion = Explosion
   { flag :: Bool
@@ -16,7 +15,19 @@ data Explosion = Explosion
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Explosion)
+instance Json.FromJSON Explosion where
+  parseJSON = Json.withObject "Explosion" $ \object -> do
+    flag <- Json.required object "flag"
+    actorId <- Json.required object "actor_id"
+    location <- Json.required object "location"
+    pure Explosion { flag, actorId, location }
+
+instance Json.ToJSON Explosion where
+  toJSON x = Json.object
+    [ Json.pair "flag" $ flag x
+    , Json.pair "actor_id" $ actorId x
+    , Json.pair "location" $ location x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-explosion" $ Schema.object

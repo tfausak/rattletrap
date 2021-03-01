@@ -3,7 +3,6 @@ module Rattletrap.Type.Int8Vector where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I8 as I8
 import qualified Rattletrap.Utility.Json as Json
 import Rattletrap.Utility.Monad
@@ -15,7 +14,16 @@ data Int8Vector = Int8Vector
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Int8Vector)
+instance Json.FromJSON Int8Vector where
+  parseJSON = Json.withObject "Int8Vector" $ \object -> do
+    x <- Json.optional object "x"
+    y <- Json.optional object "y"
+    z <- Json.optional object "z"
+    pure Int8Vector { x, y, z }
+
+instance Json.ToJSON Int8Vector where
+  toJSON a =
+    Json.object [Json.pair "x" $ x a, Json.pair "y" $ y a, Json.pair "z" $ z a]
 
 schema :: Schema.Schema
 schema = Schema.named "int8Vector" $ Schema.object

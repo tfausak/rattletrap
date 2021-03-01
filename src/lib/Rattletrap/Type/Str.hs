@@ -5,32 +5,35 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Utility.Bytes
 import qualified Rattletrap.Utility.Json as Json
 
-import qualified Data.Aeson as Aeson
 import qualified Data.ByteString as Bytes
 import qualified Data.Char as Char
+import qualified Data.Int as Int
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Text.Encoding.Error as Text
 import qualified Debug.Trace as Debug
 
 newtype Str
-  = Str Text
+  = Str Text.Text
   deriving (Eq, Ord, Show)
 
-$(deriveJson ''Str)
+instance Json.FromJSON Str where
+  parseJSON = fmap fromText . Json.parseJSON
+
+instance Json.ToJSON Str where
+  toJSON = Json.toJSON . toText
 
 schema :: Schema.Schema
-schema = Schema.named "str" $ Aeson.object [Json.pair "type" "string"]
+schema = Schema.named "str" $ Json.object [Json.pair "type" "string"]
 
-fromText :: Text -> Str
+fromText :: Text.Text -> Str
 fromText = Str
 
-toText :: Str -> Text
+toText :: Str -> Text.Text
 toText (Str x) = x
 
 fromString :: String -> Str
@@ -53,13 +56,13 @@ getTextSize :: Str -> I32.I32
 getTextSize text =
   let
     value = toText text
-    scale = if Text.all Char.isLatin1 value then 1 else -1 :: Int32
+    scale = if Text.all Char.isLatin1 value then 1 else -1 :: Int.Int32
     rawSize = if Text.null value
       then 0
-      else fromIntegral (Text.length value) + 1 :: Int32
+      else fromIntegral (Text.length value) + 1 :: Int.Int32
     size = if value == Text.pack "\x00\x00\x00None"
       then 0x05000000
-      else scale * rawSize :: Int32
+      else scale * rawSize :: Int.Int32
   in I32.fromInt32 size
 
 getTextEncoder :: I32.I32 -> Text.Text -> Bytes.ByteString

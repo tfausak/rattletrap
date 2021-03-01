@@ -1,11 +1,11 @@
 module Rattletrap.Type.Attribute.GameMode where
 
+import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import Rattletrap.Type.Common
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data GameMode = GameMode
   { numBits :: Int
@@ -13,11 +13,19 @@ data GameMode = GameMode
   -- It's stored as a regular 'Int' rather than something more precise like an
   -- 'Int8' because it just gets passed to functions that expect 'Int's.
   -- There's no reason to do a bunch of conversions.
-  , word :: Word8
+  , word :: Word.Word8
   }
   deriving (Eq, Show)
 
-$(deriveJson ''GameMode)
+instance Json.FromJSON GameMode where
+  parseJSON = Json.withObject "GameMode" $ \object -> do
+    numBits <- Json.required object "num_bits"
+    word <- Json.required object "word"
+    pure GameMode { numBits, word }
+
+instance Json.ToJSON GameMode where
+  toJSON x =
+    Json.object [Json.pair "num_bits" $ numBits x, Json.pair "word" $ word x]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-game-mode" $ Schema.object

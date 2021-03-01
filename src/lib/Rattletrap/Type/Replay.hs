@@ -1,9 +1,5 @@
-{- hlint ignore "Avoid restricted extensions" -}
-{-# LANGUAGE NamedFieldPuns #-}
-
 module Rattletrap.Type.Replay where
 
-import qualified Data.Aeson as Aeson
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
@@ -34,14 +30,14 @@ data ReplayWith header content = Replay
   }
   deriving (Eq, Show)
 
-instance (Aeson.FromJSON h, Aeson.FromJSON c) => Aeson.FromJSON (ReplayWith h c) where
-  parseJSON = Aeson.withObject "Replay" $ \object -> do
+instance (Json.FromJSON h, Json.FromJSON c) => Json.FromJSON (ReplayWith h c) where
+  parseJSON = Json.withObject "Replay" $ \object -> do
     header <- Json.required object "header"
     content <- Json.required object "content"
     pure Replay { header, content }
 
-instance (Aeson.ToJSON h, Aeson.ToJSON c) => Aeson.ToJSON (ReplayWith h c) where
-  toJSON x = Aeson.object
+instance (Json.ToJSON h, Json.ToJSON c) => Json.ToJSON (ReplayWith h c) where
+  toJSON x = Json.object
     [ Json.pair "$schema" schemaUrl
     , Json.pair "header" $ header x
     , Json.pair "content" $ content x

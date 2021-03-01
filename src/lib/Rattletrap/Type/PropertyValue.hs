@@ -1,10 +1,10 @@
 module Rattletrap.Type.PropertyValue where
 
+import qualified Data.Foldable as Foldable
 import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.I32 as I32
@@ -30,7 +30,28 @@ data PropertyValue a
   | Str Str.Str
   deriving (Eq, Show)
 
-$(deriveJson ''PropertyValue)
+instance Json.FromJSON a => Json.FromJSON (PropertyValue a) where
+  parseJSON = Json.withObject "PropertyValue" $ \object -> Foldable.asum
+    [ Array <$> Json.required object "array"
+    , Bool <$> Json.required object "bool"
+    , uncurry Byte <$> Json.required object "byte"
+    , Float <$> Json.required object "float"
+    , Int <$> Json.required object "int"
+    , Name <$> Json.required object "name"
+    , QWord <$> Json.required object "q_word"
+    , Str <$> Json.required object "str"
+    ]
+
+instance Json.ToJSON a => Json.ToJSON (PropertyValue a) where
+  toJSON x = case x of
+    Array y -> Json.object [Json.pair "array" y]
+    Bool y -> Json.object [Json.pair "bool" y]
+    Byte y z -> Json.object [Json.pair "byte" (y, z)]
+    Float y -> Json.object [Json.pair "float" y]
+    Int y -> Json.object [Json.pair "int" y]
+    Name y -> Json.object [Json.pair "name" y]
+    QWord y -> Json.object [Json.pair "q_word" y]
+    Str y -> Json.object [Json.pair "str" y]
 
 schema :: Schema.Schema -> Schema.Schema
 schema s =
@@ -42,7 +63,7 @@ schema s =
         , ("bool", Schema.ref U8.schema)
         , ( "byte"
           , Schema.tuple
-              [Schema.ref Str.schema, Schema.json $ Schema.maybe Str.schema]
+            [Schema.ref Str.schema, Schema.json $ Schema.maybe Str.schema]
           )
         , ("float", Schema.ref F32.schema)
         , ("int", Schema.ref I32.schema)

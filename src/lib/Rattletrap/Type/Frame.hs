@@ -4,7 +4,6 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.List as List
@@ -27,7 +26,19 @@ data Frame = Frame
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Frame)
+instance Json.FromJSON Frame where
+  parseJSON = Json.withObject "Frame" $ \object -> do
+    time <- Json.required object "time"
+    delta <- Json.required object "delta"
+    replications <- Json.required object "replications"
+    pure Frame { time, delta, replications }
+
+instance Json.ToJSON Frame where
+  toJSON x = Json.object
+    [ Json.pair "time" $ time x
+    , Json.pair "delta" $ delta x
+    , Json.pair "replications" $ replications x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "frame" $ Schema.object

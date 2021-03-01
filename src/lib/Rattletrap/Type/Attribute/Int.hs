@@ -4,14 +4,18 @@ import Prelude hiding (Int)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
+import qualified Rattletrap.Utility.Json as Json
 
 newtype Int = Int
   { value :: I32.I32
   } deriving (Eq, Show)
 
-$(deriveJson ''Int)
+instance Json.FromJSON Int where
+  parseJSON = fmap Int . Json.parseJSON
+
+instance Json.ToJSON Int where
+  toJSON = Json.toJSON . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-int" $ Schema.ref I32.schema

@@ -3,8 +3,8 @@ module Rattletrap.Type.List where
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad as Monad
 
@@ -12,7 +12,11 @@ newtype List a
   = List [a]
   deriving (Eq, Show)
 
-$(deriveJson ''List)
+instance Json.FromJSON a => Json.FromJSON (List a) where
+  parseJSON = fmap fromList . Json.parseJSON
+
+instance Json.ToJSON a => Json.ToJSON (List a) where
+  toJSON = Json.toJSON . toList
 
 schema :: Schema.Schema -> Schema.Schema
 schema = Schema.array

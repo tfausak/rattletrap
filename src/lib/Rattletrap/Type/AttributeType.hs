@@ -1,7 +1,5 @@
 module Rattletrap.Type.AttributeType where
 
-import Rattletrap.Type.Common
-
 data AttributeType
   = AppliedDamage
   | Boolean
@@ -41,5 +39,3 @@ data AttributeType
   | UniqueId
   | WeldedInfo
   deriving (Eq, Show)
-
-$(deriveJson ''AttributeType)

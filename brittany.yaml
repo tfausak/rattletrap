@@ -1,7 +1,7 @@
 # https://github.com/lspitzner/brittany
 conf_forward:
   options_ghc:
-    - -XTemplateHaskell
+    - -XNamedFieldPuns
 conf_layout:
   lconfig_cols: 79
   lconfig_columnAlignMode: { tag: ColumnAlignModeDisabled }

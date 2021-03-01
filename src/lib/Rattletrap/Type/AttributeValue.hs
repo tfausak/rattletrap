@@ -42,12 +42,12 @@ import qualified Rattletrap.Type.Attribute.Title as Title
 import qualified Rattletrap.Type.Attribute.UniqueId as UniqueId
 import qualified Rattletrap.Type.Attribute.WeldedInfo as WeldedInfo
 import qualified Rattletrap.Type.AttributeType as AttributeType
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
+import qualified Data.Foldable as Foldable
 import qualified Data.Map as Map
 
 data AttributeValue
@@ -90,7 +90,87 @@ data AttributeValue
   | WeldedInfo WeldedInfo.WeldedInfo
   deriving (Eq, Show)
 
-$(deriveJson ''AttributeValue)
+instance Json.FromJSON AttributeValue where
+  parseJSON = Json.withObject "AttributeValue" $ \object -> Foldable.asum
+    [ AppliedDamage <$> Json.required object "applied_damage"
+    , Boolean <$> Json.required object "boolean"
+    , Byte <$> Json.required object "byte"
+    , CamSettings <$> Json.required object "cam_settings"
+    , ClubColors <$> Json.required object "club_colors"
+    , CustomDemolish <$> Json.required object "custom_demolish"
+    , DamageState <$> Json.required object "damage_state"
+    , Demolish <$> Json.required object "demolish"
+    , Enum <$> Json.required object "enum"
+    , Explosion <$> Json.required object "explosion"
+    , ExtendedExplosion <$> Json.required object "extended_explosion"
+    , FlaggedByte <$> Json.required object "flagged_byte"
+    , FlaggedInt <$> Json.required object "flagged_int"
+    , Float <$> Json.required object "float"
+    , GameMode <$> Json.required object "game_mode"
+    , Int <$> Json.required object "int"
+    , Int64 <$> Json.required object "int64"
+    , Loadout <$> Json.required object "loadout"
+    , LoadoutOnline <$> Json.required object "loadout_online"
+    , Loadouts <$> Json.required object "loadouts"
+    , LoadoutsOnline <$> Json.required object "loadouts_online"
+    , Location <$> Json.required object "location"
+    , MusicStinger <$> Json.required object "music_stinger"
+    , PartyLeader <$> Json.required object "party_leader"
+    , Pickup <$> Json.required object "pickup"
+    , PickupNew <$> Json.required object "pickup_new"
+    , PlayerHistoryKey <$> Json.required object "player_history_key"
+    , PrivateMatchSettings <$> Json.required object "private_match_settings"
+    , QWord <$> Json.required object "q_word"
+    , Reservation <$> Json.required object "reservation"
+    , RigidBodyState <$> Json.required object "rigid_body_state"
+    , StatEvent <$> Json.required object "stat_event"
+    , String <$> Json.required object "string"
+    , TeamPaint <$> Json.required object "team_paint"
+    , Title <$> Json.required object "title"
+    , UniqueId <$> Json.required object "unique_id"
+    , WeldedInfo <$> Json.required object "welded_info"
+    ]
+
+instance Json.ToJSON AttributeValue where
+  toJSON x = case x of
+    AppliedDamage y -> Json.object [Json.pair "applied_damage" y]
+    Boolean y -> Json.object [Json.pair "boolean" y]
+    Byte y -> Json.object [Json.pair "byte" y]
+    CamSettings y -> Json.object [Json.pair "cam_settings" y]
+    ClubColors y -> Json.object [Json.pair "club_colors" y]
+    CustomDemolish y -> Json.object [Json.pair "custom_demolish" y]
+    DamageState y -> Json.object [Json.pair "damage_state" y]
+    Demolish y -> Json.object [Json.pair "demolish" y]
+    Enum y -> Json.object [Json.pair "enum" y]
+    Explosion y -> Json.object [Json.pair "explosion" y]
+    ExtendedExplosion y -> Json.object [Json.pair "extended_explosion" y]
+    FlaggedByte y -> Json.object [Json.pair "flagged_byte" y]
+    FlaggedInt y -> Json.object [Json.pair "flagged_int" y]
+    Float y -> Json.object [Json.pair "float" y]
+    GameMode y -> Json.object [Json.pair "game_mode" y]
+    Int y -> Json.object [Json.pair "int" y]
+    Int64 y -> Json.object [Json.pair "int64" y]
+    Loadout y -> Json.object [Json.pair "loadout" y]
+    LoadoutOnline y -> Json.object [Json.pair "loadout_online" y]
+    Loadouts y -> Json.object [Json.pair "loadouts" y]
+    LoadoutsOnline y -> Json.object [Json.pair "loadouts_online" y]
+    Location y -> Json.object [Json.pair "location" y]
+    MusicStinger y -> Json.object [Json.pair "music_stinger" y]
+    PartyLeader y -> Json.object [Json.pair "party_leader" y]
+    Pickup y -> Json.object [Json.pair "pickup" y]
+    PickupNew y -> Json.object [Json.pair "pickup_new" y]
+    PlayerHistoryKey y -> Json.object [Json.pair "player_history_key" y]
+    PrivateMatchSettings y ->
+      Json.object [Json.pair "private_match_settings" y]
+    QWord y -> Json.object [Json.pair "q_word" y]
+    Reservation y -> Json.object [Json.pair "reservation" y]
+    RigidBodyState y -> Json.object [Json.pair "rigid_body_state" y]
+    StatEvent y -> Json.object [Json.pair "stat_event" y]
+    String y -> Json.object [Json.pair "string" y]
+    TeamPaint y -> Json.object [Json.pair "team_paint" y]
+    Title y -> Json.object [Json.pair "title" y]
+    UniqueId y -> Json.object [Json.pair "unique_id" y]
+    WeldedInfo y -> Json.object [Json.pair "welded_info" y]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-value" . Schema.oneOf $ fmap
@@ -176,7 +256,7 @@ bitPut value = case value of
 
 bitGet
   :: Version.Version
-  -> Map U32.U32 Str.Str
+  -> Map.Map U32.U32 Str.Str
   -> Str.Str
   -> BitGet.BitGet AttributeValue
 bitGet version objectMap name = do

@@ -2,10 +2,9 @@ module Rattletrap.Type.Attribute.ClubColors where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import Rattletrap.Type.Common
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data ClubColors = ClubColors
   { blueFlag :: Bool
@@ -15,7 +14,21 @@ data ClubColors = ClubColors
   }
   deriving (Eq, Show)
 
-$(deriveJson ''ClubColors)
+instance Json.FromJSON ClubColors where
+  parseJSON = Json.withObject "ClubColors" $ \object -> do
+    blueFlag <- Json.required object "blue_flag"
+    blueColor <- Json.required object "blue_color"
+    orangeFlag <- Json.required object "orange_flag"
+    orangeColor <- Json.required object "orange_color"
+    pure ClubColors { blueFlag, blueColor, orangeFlag, orangeColor }
+
+instance Json.ToJSON ClubColors where
+  toJSON x = Json.object
+    [ Json.pair "blue_flag" $ blueFlag x
+    , Json.pair "blue_color" $ blueColor x
+    , Json.pair "orange_flag" $ orangeFlag x
+    , Json.pair "orange_color" $ orangeColor x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-club-colors" $ Schema.object

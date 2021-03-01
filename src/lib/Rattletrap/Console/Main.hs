@@ -113,13 +113,14 @@ rattletrap name arguments = do
     else if Config.version config
       then versionMain
       else if Config.schema config
-      then schemaMain config
-      else defaultMain config
+        then schemaMain config
+        else defaultMain config
 
 helpMain :: String -> IO ()
 helpMain name = do
-  putStr
-    $ Console.usageInfo (unwords [name, "version", Version.string]) Option.all
+  putStr $ Console.usageInfo
+    (unwords [name, "version", Version.string])
+    Option.all
 
 versionMain :: IO ()
 versionMain = do

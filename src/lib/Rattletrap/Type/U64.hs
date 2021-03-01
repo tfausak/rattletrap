@@ -7,7 +7,6 @@ import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Utility.Json as Json
 
-import qualified Data.Aeson as Aeson
 import qualified Data.Text as Text
 import qualified Data.Word as Word
 import qualified Text.Read as Read
@@ -16,19 +15,19 @@ newtype U64
   = U64 Word.Word64
   deriving (Eq, Show)
 
-instance Aeson.FromJSON U64 where
+instance Json.FromJSON U64 where
   parseJSON =
-    Aeson.withText "U64"
+    Json.withText "U64"
       $ either fail (pure . fromWord64)
       . Read.readEither
       . Text.unpack
 
-instance Aeson.ToJSON U64 where
-  toJSON = Aeson.toJSON . show . toWord64
+instance Json.ToJSON U64 where
+  toJSON = Json.toJSON . show . toWord64
 
 schema :: Schema.Schema
 schema = Schema.named "u64"
-  $ Aeson.object [Json.pair "type" "string", Json.pair "pattern" "^[0-9]+$"]
+  $ Json.object [Json.pair "type" "string", Json.pair "pattern" "^[0-9]+$"]
 
 fromWord64 :: Word.Word64 -> U64
 fromWord64 = U64

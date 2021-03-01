@@ -3,7 +3,6 @@ module Rattletrap.Type.Attribute.RigidBodyState where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Rotation as Rotation
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
@@ -19,7 +18,29 @@ data RigidBodyState = RigidBodyState
   }
   deriving (Eq, Show)
 
-$(deriveJson ''RigidBodyState)
+instance Json.FromJSON RigidBodyState where
+  parseJSON = Json.withObject "RigidBodyState" $ \object -> do
+    sleeping <- Json.required object "sleeping"
+    location <- Json.required object "location"
+    rotation <- Json.required object "rotation"
+    linearVelocity <- Json.optional object "linear_velocity"
+    angularVelocity <- Json.optional object "angular_velocity"
+    pure RigidBodyState
+      { sleeping
+      , location
+      , rotation
+      , linearVelocity
+      , angularVelocity
+      }
+
+instance Json.ToJSON RigidBodyState where
+  toJSON x = Json.object
+    [ Json.pair "sleeping" $ sleeping x
+    , Json.pair "location" $ location x
+    , Json.pair "rotation" $ rotation x
+    , Json.pair "linear_velocity" $ linearVelocity x
+    , Json.pair "angular_velocity" $ angularVelocity x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-rigid-body-state" $ Schema.object

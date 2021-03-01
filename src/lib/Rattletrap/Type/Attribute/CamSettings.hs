@@ -2,12 +2,11 @@ module Rattletrap.Type.Attribute.CamSettings where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import Rattletrap.Type.Common
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.Version as Version
-import Rattletrap.Utility.Monad
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
+import Rattletrap.Utility.Monad
 
 data CamSettings = CamSettings
   { fov :: F32.F32
@@ -20,7 +19,35 @@ data CamSettings = CamSettings
   }
   deriving (Eq, Show)
 
-$(deriveJson ''CamSettings)
+instance Json.FromJSON CamSettings where
+  parseJSON = Json.withObject "CamSettings" $ \object -> do
+    fov <- Json.required object "fov"
+    height <- Json.required object "height"
+    angle <- Json.required object "angle"
+    distance <- Json.required object "distance"
+    stiffness <- Json.required object "stiffness"
+    swivelSpeed <- Json.required object "swivel_speed"
+    transitionSpeed <- Json.optional object "transition_speed"
+    pure CamSettings
+      { fov
+      , height
+      , angle
+      , distance
+      , stiffness
+      , swivelSpeed
+      , transitionSpeed
+      }
+
+instance Json.ToJSON CamSettings where
+  toJSON x = Json.object
+    [ Json.pair "fov" $ fov x
+    , Json.pair "height" $ height x
+    , Json.pair "angle" $ angle x
+    , Json.pair "distance" $ distance x
+    , Json.pair "stiffness" $ stiffness x
+    , Json.pair "swivel_speed" $ swivelSpeed x
+    , Json.pair "transition_speed" $ transitionSpeed x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-cam-settings" $ Schema.object
@@ -30,7 +57,9 @@ schema = Schema.named "attribute-cam-settings" $ Schema.object
   , (Json.pair "distance" $ Schema.ref F32.schema, True)
   , (Json.pair "stiffness" $ Schema.ref F32.schema, True)
   , (Json.pair "swivel_speed" $ Schema.ref F32.schema, True)
-  , (Json.pair "transition_speed" . Schema.json $ Schema.maybe F32.schema, False)
+  , ( Json.pair "transition_speed" . Schema.json $ Schema.maybe F32.schema
+    , False
+    )
   ]
 
 bitPut :: CamSettings -> BitPut.BitPut

@@ -1,4 +1,6 @@
 # https://github.com/ndmitchell/hlint
+- arguments:
+    - -XNamedFieldPuns
 - extensions:
   - default: false
 - flags:

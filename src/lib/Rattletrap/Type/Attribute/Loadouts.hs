@@ -2,10 +2,9 @@ module Rattletrap.Type.Attribute.Loadouts where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Type.Attribute.Loadout as Loadout
-import Rattletrap.Type.Common
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Type.Attribute.Loadout as Loadout
+import qualified Rattletrap.Utility.Json as Json
 
 data Loadouts = Loadouts
   { blue :: Loadout.Loadout
@@ -13,7 +12,15 @@ data Loadouts = Loadouts
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Loadouts)
+instance Json.FromJSON Loadouts where
+  parseJSON = Json.withObject "Loadouts" $ \object -> do
+    blue <- Json.required object "blue"
+    orange <- Json.required object "orange"
+    pure Loadouts { blue, orange }
+
+instance Json.ToJSON Loadouts where
+  toJSON x =
+    Json.object [Json.pair "blue" $ blue x, Json.pair "orange" $ orange x]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-loadouts" $ Schema.object

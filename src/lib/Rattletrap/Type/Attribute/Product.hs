@@ -2,15 +2,14 @@ module Rattletrap.Type.Attribute.Product where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.ProductValue as ProductValue
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 import qualified Data.Map as Map
 
@@ -23,7 +22,21 @@ data Product = Product
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Product)
+instance Json.FromJSON Product where
+  parseJSON = Json.withObject "Product" $ \object -> do
+    unknown <- Json.required object "unknown"
+    objectId <- Json.required object "object_id"
+    objectName <- Json.optional object "object_name"
+    value <- Json.required object "value"
+    pure Product { unknown, objectId, objectName, value }
+
+instance Json.ToJSON Product where
+  toJSON x = Json.object
+    [ Json.pair "unknown" $ unknown x
+    , Json.pair "object_id" $ objectId x
+    , Json.pair "object_name" $ objectName x
+    , Json.pair "value" $ value x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-product" $ Schema.object
@@ -46,13 +59,13 @@ bitPut attribute =
 
 decodeProductAttributesBits
   :: Version.Version
-  -> Map U32.U32 Str.Str
+  -> Map.Map U32.U32 Str.Str
   -> BitGet.BitGet (List.List Product)
 decodeProductAttributesBits version objectMap = do
   size <- U8.bitGet
   List.replicateM (fromIntegral $ U8.toWord8 size) $ bitGet version objectMap
 
-bitGet :: Version.Version -> Map U32.U32 Str.Str -> BitGet.BitGet Product
+bitGet :: Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet Product
 bitGet version objectMap = do
   flag <- BitGet.bool
   objectId_ <- U32.bitGet

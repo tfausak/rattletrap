@@ -2,12 +2,11 @@ module Rattletrap.Type.Attribute.Demolish where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import Rattletrap.Type.Common
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data Demolish = Demolish
   { attackerFlag :: Bool
@@ -19,7 +18,32 @@ data Demolish = Demolish
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Demolish)
+instance Json.FromJSON Demolish where
+  parseJSON = Json.withObject "Demolish" $ \object -> do
+    attackerFlag <- Json.required object "attacker_flag"
+    attackerActorId <- Json.required object "attacker_actor_id"
+    victimFlag <- Json.required object "victim_flag"
+    victimActorId <- Json.required object "victim_actor_id"
+    attackerVelocity <- Json.required object "attacker_velocity"
+    victimVelocity <- Json.required object "victim_velocity"
+    pure Demolish
+      { attackerFlag
+      , attackerActorId
+      , victimFlag
+      , victimActorId
+      , attackerVelocity
+      , victimVelocity
+      }
+
+instance Json.ToJSON Demolish where
+  toJSON x = Json.object
+    [ Json.pair "attacker_flag" $ attackerFlag x
+    , Json.pair "attacker_actor_id" $ attackerActorId x
+    , Json.pair "victim_flag" $ victimFlag x
+    , Json.pair "victim_actor_id" $ victimActorId x
+    , Json.pair "attacker_velocity" $ attackerVelocity x
+    , Json.pair "victim_velocity" $ victimVelocity x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-demolish" $ Schema.object
