@@ -16,13 +16,13 @@ data Pickup = Pickup
 instance Json.FromJSON Pickup where
   parseJSON = Json.withObject "Pickup" $ \object -> do
     instigatorId <- Json.required object "instigator_id"
-    pickedUp <- Json.required object "pickedUp"
+    pickedUp <- Json.required object "picked_up"
     pure Pickup { instigatorId, pickedUp }
 
 instance Json.ToJSON Pickup where
   toJSON x = Json.object
     [ Json.pair "instigator_id" $ instigatorId x
-    , Json.pair "pickedUp" $ pickedUp x
+    , Json.pair "picked_up" $ pickedUp x
     ]
 
 schema :: Schema.Schema

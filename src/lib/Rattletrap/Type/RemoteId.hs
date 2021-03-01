@@ -29,7 +29,7 @@ data RemoteId
 
 instance Json.FromJSON RemoteId where
   parseJSON = Json.withObject "RemoteId" $ \object -> Foldable.asum
-    [ uncurry PlayStation <$> Json.required object "play_stations"
+    [ uncurry PlayStation <$> Json.required object "play_station"
     , PsyNet <$> Json.required object "psy_net"
     , Splitscreen <$> Json.required object "splitscreen"
     , Steam <$> Json.required object "steam"
@@ -43,7 +43,7 @@ uncurry4 f (a, b, c, d) = f a b c d
 
 instance Json.ToJSON RemoteId where
   toJSON x = case x of
-    PlayStation y z -> Json.object [Json.pair "play_stations" (y, z)]
+    PlayStation y z -> Json.object [Json.pair "play_station" (y, z)]
     PsyNet y -> Json.object [Json.pair "psy_net" y]
     Splitscreen y -> Json.object [Json.pair "splitscreen" y]
     Steam y -> Json.object [Json.pair "steam" y]

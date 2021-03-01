@@ -34,7 +34,7 @@ instance Json.FromJSON TeamPaint where
 instance Json.ToJSON TeamPaint where
   toJSON x = Json.object
     [ Json.pair "team" $ team x
-    , Json.pair "primaryColor" $ primaryColor x
+    , Json.pair "primary_color" $ primaryColor x
     , Json.pair "accent_color" $ accentColor x
     , Json.pair "primary_finish" $ primaryFinish x
     , Json.pair "accent_finish" $ accentFinish x
