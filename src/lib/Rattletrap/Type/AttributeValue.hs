@@ -91,7 +91,7 @@ data AttributeValue
   deriving (Eq, Show)
 
 instance Json.FromJSON AttributeValue where
-  parseJSON = Json.withObject "AttributeValue" $ \ object -> Foldable.asum
+  parseJSON = Json.withObject "AttributeValue" $ \object -> Foldable.asum
     [ AppliedDamage <$> Json.required object "applied_damage"
     , Boolean <$> Json.required object "boolean"
     , Byte <$> Json.required object "byte"
@@ -160,7 +160,8 @@ instance Json.ToJSON AttributeValue where
     Pickup y -> Json.object [Json.pair "pickup" y]
     PickupNew y -> Json.object [Json.pair "pickup_new" y]
     PlayerHistoryKey y -> Json.object [Json.pair "player_history_key" y]
-    PrivateMatchSettings y -> Json.object [Json.pair "private_match_settings" y]
+    PrivateMatchSettings y ->
+      Json.object [Json.pair "private_match_settings" y]
     QWord y -> Json.object [Json.pair "q_word" y]
     Reservation y -> Json.object [Json.pair "reservation" y]
     RigidBodyState y -> Json.object [Json.pair "rigid_body_state" y]

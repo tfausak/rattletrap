@@ -4,8 +4,8 @@ import Prelude hiding (String)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Utility.Json as Json
 
 newtype String = String
   { value :: Str.Str

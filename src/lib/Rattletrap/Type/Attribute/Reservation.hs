@@ -10,8 +10,8 @@ import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
-import Rattletrap.Utility.Monad
 import qualified Rattletrap.Utility.Json as Json
+import Rattletrap.Utility.Monad
 
 data Reservation = Reservation
   { number :: CompressedWord.CompressedWord

@@ -3,8 +3,8 @@ module Rattletrap.Type.Attribute.Float where
 import Prelude hiding (Float)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Utility.Json as Json
 
 newtype Float = Float

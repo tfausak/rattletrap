@@ -24,7 +24,7 @@ data Vector = Vector
   deriving (Eq, Show)
 
 instance Json.FromJSON Vector where
-  parseJSON = Json.withObject "Vector" $ \ object -> do
+  parseJSON = Json.withObject "Vector" $ \object -> do
     size <- Json.required object "size"
     bias <- Json.required object "bias"
     x <- Json.required object "x"

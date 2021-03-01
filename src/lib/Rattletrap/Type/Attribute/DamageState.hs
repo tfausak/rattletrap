@@ -2,13 +2,13 @@ module Rattletrap.Type.Attribute.DamageState where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data DamageState = DamageState
   { unknown1 :: U8.U8

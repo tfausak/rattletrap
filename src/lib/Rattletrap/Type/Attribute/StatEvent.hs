@@ -2,10 +2,10 @@ module Rattletrap.Type.Attribute.StatEvent where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data StatEvent = StatEvent
   { unknown :: Bool

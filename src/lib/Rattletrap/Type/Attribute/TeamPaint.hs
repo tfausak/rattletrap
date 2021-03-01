@@ -2,11 +2,11 @@ module Rattletrap.Type.Attribute.TeamPaint where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data TeamPaint = TeamPaint
   { team :: U8.U8

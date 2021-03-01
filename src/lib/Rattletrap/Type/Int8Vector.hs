@@ -15,18 +15,15 @@ data Int8Vector = Int8Vector
   deriving (Eq, Show)
 
 instance Json.FromJSON Int8Vector where
-  parseJSON = Json.withObject "Int8Vector" $ \ object -> do
+  parseJSON = Json.withObject "Int8Vector" $ \object -> do
     x <- Json.required object "x"
     y <- Json.required object "y"
     z <- Json.required object "z"
     pure Int8Vector { x, y, z }
 
 instance Json.ToJSON Int8Vector where
-  toJSON a = Json.object
-    [ Json.pair "x" $ x a
-    , Json.pair "y" $ y a
-    , Json.pair "z" $ z a
-    ]
+  toJSON a =
+    Json.object [Json.pair "x" $ x a, Json.pair "y" $ y a, Json.pair "z" $ z a]
 
 schema :: Schema.Schema
 schema = Schema.named "int8Vector" $ Schema.object

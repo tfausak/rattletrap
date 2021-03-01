@@ -2,12 +2,12 @@ module Rattletrap.Type.Attribute.ExtendedExplosion where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.Explosion as Explosion
 import qualified Rattletrap.Type.Attribute.FlaggedInt as FlaggedInt
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data ExtendedExplosion = ExtendedExplosion
   { explosion :: Explosion.Explosion

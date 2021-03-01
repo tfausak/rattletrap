@@ -17,7 +17,7 @@ data Cache = Cache
   deriving (Eq, Show)
 
 instance Json.FromJSON Cache where
-  parseJSON = Json.withObject "Cache" $ \ object -> do
+  parseJSON = Json.withObject "Cache" $ \object -> do
     classId <- Json.required object "class_id"
     parentCacheId <- Json.required object "parent_cache_id"
     cacheId <- Json.required object "cache_id"

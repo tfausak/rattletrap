@@ -2,10 +2,10 @@ module Rattletrap.Type.Attribute.Loadouts where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.Loadout as Loadout
 import Rattletrap.Type.Common
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data Loadouts = Loadouts
   { blue :: Loadout.Loadout

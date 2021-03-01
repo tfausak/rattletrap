@@ -2,12 +2,12 @@ module Rattletrap.Type.Attribute.CamSettings where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.Version as Version
-import Rattletrap.Utility.Monad
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
+import Rattletrap.Utility.Monad
 
 data CamSettings = CamSettings
   { fov :: F32.F32
@@ -30,7 +30,9 @@ schema = Schema.named "attribute-cam-settings" $ Schema.object
   , (Json.pair "distance" $ Schema.ref F32.schema, True)
   , (Json.pair "stiffness" $ Schema.ref F32.schema, True)
   , (Json.pair "swivel_speed" $ Schema.ref F32.schema, True)
-  , (Json.pair "transition_speed" . Schema.json $ Schema.maybe F32.schema, False)
+  , ( Json.pair "transition_speed" . Schema.json $ Schema.maybe F32.schema
+    , False
+    )
   ]
 
 bitPut :: CamSettings -> BitPut.BitPut

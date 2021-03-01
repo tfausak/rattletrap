@@ -27,7 +27,7 @@ data ReplicationValue
   deriving (Eq, Show)
 
 instance Json.FromJSON ReplicationValue where
-  parseJSON = Json.withObject "ReplicationValue" $ \ object -> Foldable.asum
+  parseJSON = Json.withObject "ReplicationValue" $ \object -> Foldable.asum
     [ Spawned <$> Json.required object "spawned"
     , Updated <$> Json.required object "updated"
     , Destroyed <$> Json.required object "destroyed"

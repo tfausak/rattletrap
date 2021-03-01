@@ -17,7 +17,7 @@ data Property = Property
   deriving (Eq, Show)
 
 instance Json.FromJSON Property where
-  parseJSON = Json.withObject "Property" $ \ object -> do
+  parseJSON = Json.withObject "Property" $ \object -> do
     kind <- Json.required object "kind"
     size <- Json.required object "size"
     value <- Json.required object "value"

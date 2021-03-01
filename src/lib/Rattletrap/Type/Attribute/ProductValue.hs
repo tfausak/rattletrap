@@ -4,13 +4,13 @@ import qualified Data.Foldable as Foldable
 import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import Rattletrap.Utility.Monad
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
+import Rattletrap.Utility.Monad
 
 data ProductValue
   = PaintedOld CompressedWord.CompressedWord
@@ -24,7 +24,7 @@ data ProductValue
   deriving (Eq, Show)
 
 instance Json.FromJSON ProductValue where
-  parseJSON = Json.withObject "ProductValue" $ \ object -> Foldable.asum
+  parseJSON = Json.withObject "ProductValue" $ \object -> Foldable.asum
     [ PaintedOld <$> Json.required object "painted_old"
     , PaintedNew <$> Json.required object "painted_new"
     , TeamEditionOld <$> Json.required object "team_edition_old"
@@ -47,9 +47,8 @@ instance Json.ToJSON ProductValue where
     TitleId y -> Json.object [Json.pair "title_id" y]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-product-value"
-  . Schema.oneOf
-  $ fmap (\ (k, v) -> Schema.object [(Json.pair k v, True)])
+schema = Schema.named "attribute-product-value" . Schema.oneOf $ fmap
+  (\(k, v) -> Schema.object [(Json.pair k v, True)])
   [ ("painted_old", Schema.ref CompressedWord.schema)
   , ("painted_new", Schema.ref Schema.integer)
   , ("team_edition_old", Schema.ref CompressedWord.schema)

@@ -28,7 +28,7 @@ data RemoteId
   deriving (Eq, Show)
 
 instance Json.FromJSON RemoteId where
-  parseJSON = Json.withObject "RemoteId" $ \ object -> Foldable.asum
+  parseJSON = Json.withObject "RemoteId" $ \object -> Foldable.asum
     [ uncurry PlayStation <$> Json.required object "play_stations"
     , PsyNet <$> Json.required object "psy_net"
     , Splitscreen <$> Json.required object "splitscreen"
@@ -54,14 +54,21 @@ instance Json.ToJSON RemoteId where
 schema :: Schema.Schema
 schema = Schema.named "remote-id" . Schema.oneOf $ fmap
   (\(k, v) -> Schema.object [(Json.pair k v, True)])
-  [ ("play_station", Schema.tuple
-    [ Schema.ref Schema.string
-    , Schema.json $ Schema.array Schema.number
-    ])
-  , ("psy_net", Schema.oneOf
-    [ Schema.object [(Json.pair "Left" $ Schema.ref U64.schema, True)]
-    , Schema.object [(Json.pair "Right" . Schema.tuple . replicate 4 $ Schema.ref U64.schema, True)]
-    ])
+  [ ( "play_station"
+    , Schema.tuple
+      [Schema.ref Schema.string, Schema.json $ Schema.array Schema.number]
+    )
+  , ( "psy_net"
+    , Schema.oneOf
+      [ Schema.object [(Json.pair "Left" $ Schema.ref U64.schema, True)]
+      , Schema.object
+        [ ( Json.pair "Right" . Schema.tuple . replicate 4 $ Schema.ref
+            U64.schema
+          , True
+          )
+        ]
+      ]
+    )
   , ("splitscreen", Schema.ref Schema.integer)
   , ("steam", Schema.ref U64.schema)
   , ("switch", Schema.tuple . replicate 4 $ Schema.ref U64.schema)

@@ -5,11 +5,11 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute as Attribute
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Data.Map as Map
 

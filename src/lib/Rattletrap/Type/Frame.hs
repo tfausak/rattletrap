@@ -27,7 +27,7 @@ data Frame = Frame
   deriving (Eq, Show)
 
 instance Json.FromJSON Frame where
-  parseJSON = Json.withObject "Frame" $ \ object -> do
+  parseJSON = Json.withObject "Frame" $ \object -> do
     time <- Json.required object "time"
     delta <- Json.required object "delta"
     replications <- Json.required object "replications"

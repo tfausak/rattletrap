@@ -2,10 +2,10 @@ module Rattletrap.Type.Attribute.Location where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
 
 newtype Location = Location
   { value :: Vector.Vector

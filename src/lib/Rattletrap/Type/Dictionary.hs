@@ -39,16 +39,15 @@ instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
     pure Dictionary { elements = elements_, lastKey = lastKey_ }
 
 instance Json.ToJSON a => Json.ToJSON (Dictionary a) where
-  toJSON x =
-    Json.object
-      [ Json.pair "keys" . fmap fst . List.toList $ elements x
-      , Json.pair "last_key" $ lastKey x
-      , Json.pair "value"
-      . Map.fromList
-      . fmap (Bifunctor.first Str.toText)
-      . List.toList
-      $ elements x
-      ]
+  toJSON x = Json.object
+    [ Json.pair "keys" . fmap fst . List.toList $ elements x
+    , Json.pair "last_key" $ lastKey x
+    , Json.pair "value"
+    . Map.fromList
+    . fmap (Bifunctor.first Str.toText)
+    . List.toList
+    $ elements x
+    ]
 
 schema :: Schema.Schema -> Schema.Schema
 schema s =

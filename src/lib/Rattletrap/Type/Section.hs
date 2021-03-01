@@ -26,7 +26,7 @@ data Section a = Section
   deriving (Eq, Show)
 
 instance Json.FromJSON a => Json.FromJSON (Section a) where
-  parseJSON = Json.withObject "Section" $ \ object -> do
+  parseJSON = Json.withObject "Section" $ \object -> do
     size <- Json.required object "size"
     crc <- Json.required object "crc"
     body <- Json.required object "body"

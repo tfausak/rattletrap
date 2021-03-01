@@ -20,8 +20,8 @@ instance Json.ToJSON Destroyed where
   toJSON = const $ Json.toJSON ()
 
 schema :: Schema.Schema
-schema = Schema.named "replication-destroyed"
-  $ Json.object [Json.pair "type" "array"]
+schema =
+  Schema.named "replication-destroyed" $ Json.object [Json.pair "type" "array"]
 
 bitPut :: Destroyed -> BitPut.BitPut
 bitPut _ = mempty

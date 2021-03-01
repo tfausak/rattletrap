@@ -59,13 +59,19 @@ data Header = Header
   deriving (Eq, Show)
 
 instance Json.FromJSON Header where
-  parseJSON = Json.withObject "Header" $ \ object -> do
+  parseJSON = Json.withObject "Header" $ \object -> do
     engineVersion <- Json.required object "engine_version"
     licenseeVersion <- Json.required object "licensee_version"
     patchVersion <- Json.required object "patch_version"
     label <- Json.required object "label"
     properties <- Json.required object "properties"
-    pure Header { engineVersion, licenseeVersion, patchVersion, label, properties }
+    pure Header
+      { engineVersion
+      , licenseeVersion
+      , patchVersion
+      , label
+      , properties
+      }
 
 instance Json.ToJSON Header where
   toJSON x = Json.object

@@ -14,18 +14,15 @@ data CompressedWordVector = CompressedWordVector
   deriving (Eq, Show)
 
 instance Json.FromJSON CompressedWordVector where
-  parseJSON = Json.withObject "CompressedWordVector" $ \ object -> do
+  parseJSON = Json.withObject "CompressedWordVector" $ \object -> do
     x <- Json.required object "x"
     y <- Json.required object "y"
     z <- Json.required object "z"
     pure CompressedWordVector { x, y, z }
 
 instance Json.ToJSON CompressedWordVector where
-  toJSON a = Json.object
-    [ Json.pair "x" $ x a
-    , Json.pair "y" $ y a
-    , Json.pair "z" $ z a
-    ]
+  toJSON a =
+    Json.object [Json.pair "x" $ x a, Json.pair "y" $ y a, Json.pair "z" $ z a]
 
 schema :: Schema.Schema
 schema = Schema.named "compressed-word-vector" $ Schema.object

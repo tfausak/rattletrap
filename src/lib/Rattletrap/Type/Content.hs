@@ -64,7 +64,7 @@ data ContentWith frames = Content
   deriving (Eq, Show)
 
 instance Json.FromJSON frames => Json.FromJSON (ContentWith frames) where
-  parseJSON = Json.withObject "Content" $ \ object -> do
+  parseJSON = Json.withObject "Content" $ \object -> do
     levels <- Json.required object "levels"
     keyFrames <- Json.required object "key_frames"
     streamSize <- Json.required object "stream_size"
@@ -77,7 +77,20 @@ instance Json.FromJSON frames => Json.FromJSON (ContentWith frames) where
     classMappings <- Json.required object "class_mappings"
     caches <- Json.required object "caches"
     unknown <- Json.required object "unknown"
-    pure Content { levels, keyFrames, streamSize, frames, messages, marks, packages, objects, names, classMappings, caches, unknown }
+    pure Content
+      { levels
+      , keyFrames
+      , streamSize
+      , frames
+      , messages
+      , marks
+      , packages
+      , objects
+      , names
+      , classMappings
+      , caches
+      , unknown
+      }
 
 instance Json.ToJSON frames => Json.ToJSON (ContentWith frames) where
   toJSON x = Json.object

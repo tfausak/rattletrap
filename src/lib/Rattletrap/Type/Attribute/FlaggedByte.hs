@@ -2,10 +2,10 @@ module Rattletrap.Type.Attribute.FlaggedByte where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data FlaggedByte = FlaggedByte
   { flag :: Bool

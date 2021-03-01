@@ -16,16 +16,14 @@ data Mark = Mark
   deriving (Eq, Show)
 
 instance Json.FromJSON Mark where
-  parseJSON = Json.withObject "Mark" $ \ object -> do
+  parseJSON = Json.withObject "Mark" $ \object -> do
     value <- Json.required object "value"
     frame <- Json.required object "frame"
     pure Mark { value, frame }
 
 instance Json.ToJSON Mark where
-  toJSON x = Json.object
-    [ Json.pair "value" $ value x
-    , Json.pair "frame" $ frame x
-    ]
+  toJSON x =
+    Json.object [Json.pair "value" $ value x, Json.pair "frame" $ frame x]
 
 schema :: Schema.Schema
 schema = Schema.named "mark" $ Schema.object

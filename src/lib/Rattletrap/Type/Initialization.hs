@@ -20,16 +20,14 @@ data Initialization = Initialization
   deriving (Eq, Show)
 
 instance Json.FromJSON Initialization where
-  parseJSON = Json.withObject "Initialization" $ \ object -> do
+  parseJSON = Json.withObject "Initialization" $ \object -> do
     location <- Json.required object "location"
     rotation <- Json.required object "rotation"
     pure Initialization { location, rotation }
 
 instance Json.ToJSON Initialization where
   toJSON x = Json.object
-    [ Json.pair "location" $ location x
-    , Json.pair "rotation" $ rotation x
-    ]
+    [Json.pair "location" $ location x, Json.pair "rotation" $ rotation x]
 
 schema :: Schema.Schema
 schema = Schema.named "initialization" $ Schema.object

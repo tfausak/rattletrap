@@ -15,14 +15,15 @@ data Rotation
   deriving (Eq, Show)
 
 instance Json.FromJSON Rotation where
-  parseJSON = Json.withObject "Rotation" $ \ object -> Foldable.asum
+  parseJSON = Json.withObject "Rotation" $ \object -> Foldable.asum
     [ CompressedWordVector <$> Json.required object "compressed_word_vector"
     , Quaternion <$> Json.required object "quaternion"
     ]
 
 instance Json.ToJSON Rotation where
   toJSON x = case x of
-    CompressedWordVector y -> Json.object [Json.pair "compressed_word_vector" y]
+    CompressedWordVector y ->
+      Json.object [Json.pair "compressed_word_vector" y]
     Quaternion y -> Json.object [Json.pair "quaternion" y]
 
 schema :: Schema.Schema

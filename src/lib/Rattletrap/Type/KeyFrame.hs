@@ -18,7 +18,7 @@ data KeyFrame = KeyFrame
   deriving (Eq, Show)
 
 instance Json.FromJSON KeyFrame where
-  parseJSON = Json.withObject "KeyFrame" $ \ object -> do
+  parseJSON = Json.withObject "KeyFrame" $ \object -> do
     time <- Json.required object "time"
     frame <- Json.required object "frame"
     position <- Json.required object "position"

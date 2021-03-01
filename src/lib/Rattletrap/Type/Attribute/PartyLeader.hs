@@ -2,13 +2,13 @@ module Rattletrap.Type.Attribute.PartyLeader where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
-import Rattletrap.Utility.Monad
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
+import Rattletrap.Utility.Monad
 
 data PartyLeader = PartyLeader
   { systemId :: U8.U8
@@ -22,12 +22,9 @@ schema :: Schema.Schema
 schema = Schema.named "attribute-party-leader" $ Schema.object
   [ (Json.pair "system_id" $ Schema.ref U8.schema, True)
   , ( Json.pair "id" $ Schema.oneOf
-    [ Schema.tuple
-        [ Schema.ref RemoteId.schema
-        , Schema.ref U8.schema
-        ]
-    , Schema.ref Schema.null
-    ]
+      [ Schema.tuple [Schema.ref RemoteId.schema, Schema.ref U8.schema]
+      , Schema.ref Schema.null
+      ]
     , False
     )
   ]

@@ -108,7 +108,9 @@ getName nameMap_ nameIndex =
   IntMap.lookup (fromIntegral (U32.toWord32 nameIndex)) nameMap_
 
 makeObjectClassMap
-  :: Map.Map U32.U32 Str.Str -> Bimap U32.U32 Str.Str -> Map.Map U32.U32 U32.U32
+  :: Map.Map U32.U32 Str.Str
+  -> Bimap U32.U32 Str.Str
+  -> Map.Map U32.U32 U32.U32
 makeObjectClassMap objectMap_ classMap = do
   let objectIds = Map.keys objectMap_
   let classIds = fmap (getClassId objectMap_ classMap) objectIds
@@ -123,7 +125,10 @@ makeObjectClassMap objectMap_ classMap = do
   Map.fromList pairs
 
 getClassId
-  :: Map.Map U32.U32 Str.Str -> Bimap U32.U32 Str.Str -> U32.U32 -> Maybe U32.U32
+  :: Map.Map U32.U32 Str.Str
+  -> Bimap U32.U32 Str.Str
+  -> U32.U32
+  -> Maybe U32.U32
 getClassId objectMap_ classMap objectId = do
   objectName <- getObjectName objectMap_ objectId
   className <- getClassName objectName
@@ -154,7 +159,8 @@ makeClassMap classMappings = bimap
     (List.toList classMappings)
   )
 
-makeAttributeMap :: List.List Cache.Cache -> Map.Map U32.U32 (Map.Map U32.U32 U32.U32)
+makeAttributeMap
+  :: List.List Cache.Cache -> Map.Map U32.U32 (Map.Map U32.U32 U32.U32)
 makeAttributeMap caches = Map.fromList
   (fmap
     (\cache ->

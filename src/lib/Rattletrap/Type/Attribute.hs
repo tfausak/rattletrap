@@ -23,7 +23,7 @@ data Attribute = Attribute
   deriving (Eq, Show)
 
 instance Json.FromJSON Attribute where
-  parseJSON = Json.withObject "Attribute" $ \ object -> do
+  parseJSON = Json.withObject "Attribute" $ \object -> do
     id <- Json.required object "id"
     name <- Json.required object "name"
     value <- Json.required object "value"
@@ -75,7 +75,9 @@ lookupAttributeMap classes actors actor = fromMaybe
   (ClassAttributeMap.getAttributeMap classes actors actor)
 
 lookupAttributeIdLimit
-  :: Map.Map U32.U32 U32.U32 -> CompressedWord.CompressedWord -> BitGet.BitGet Word
+  :: Map.Map U32.U32 U32.U32
+  -> CompressedWord.CompressedWord
+  -> BitGet.BitGet Word
 lookupAttributeIdLimit attributes actor = fromMaybe
   ("[RT02] could not get attribute ID limit for " <> show actor)
   (ClassAttributeMap.getAttributeIdLimit attributes)

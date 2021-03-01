@@ -2,12 +2,12 @@ module Rattletrap.Type.Attribute.CustomDemolish where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.Demolish as Demolish
 import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data CustomDemolish = CustomDemolish
   { flag :: Bool

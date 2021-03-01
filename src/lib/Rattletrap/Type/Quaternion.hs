@@ -19,7 +19,7 @@ data Quaternion = Quaternion
   deriving (Eq, Show)
 
 instance Json.FromJSON Quaternion where
-  parseJSON = Json.withObject "Quaternion" $ \ object -> do
+  parseJSON = Json.withObject "Quaternion" $ \object -> do
     x <- Json.required object "x"
     y <- Json.required object "y"
     z <- Json.required object "z"

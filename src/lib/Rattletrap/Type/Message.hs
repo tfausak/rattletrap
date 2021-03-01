@@ -18,7 +18,7 @@ data Message = Message
   deriving (Eq, Show)
 
 instance Json.FromJSON Message where
-  parseJSON = Json.withObject "Message" $ \ object -> do
+  parseJSON = Json.withObject "Message" $ \object -> do
     frame <- Json.required object "frame"
     name <- Json.required object "name"
     value <- Json.required object "value"

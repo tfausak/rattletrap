@@ -2,12 +2,12 @@ module Rattletrap.Type.Attribute.AppliedDamage where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Schema as Schema
 
 data AppliedDamage = AppliedDamage
   { unknown1 :: U8.U8
@@ -18,7 +18,7 @@ data AppliedDamage = AppliedDamage
   deriving (Eq, Show)
 
 instance Json.FromJSON AppliedDamage where
-  parseJSON = Json.withObject "AppliedDamage" $ \ object -> do
+  parseJSON = Json.withObject "AppliedDamage" $ \object -> do
     unknown1 <- Json.required object "unknown1"
     location <- Json.required object "location"
     unknown3 <- Json.required object "unknown3"

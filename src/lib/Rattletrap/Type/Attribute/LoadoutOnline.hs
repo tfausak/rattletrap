@@ -2,14 +2,14 @@ module Rattletrap.Type.Attribute.LoadoutOnline where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.Product as Product
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Utility.Json as Json
 
 import qualified Data.Map as Map
 
@@ -24,10 +24,11 @@ instance Json.ToJSON LoadoutOnline where
   toJSON = Json.toJSON . value
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-loadout-online"
-  . Schema.json
-  . List.schema
-  $ List.schema Product.schema
+schema =
+  Schema.named "attribute-loadout-online"
+    . Schema.json
+    . List.schema
+    $ List.schema Product.schema
 
 bitPut :: LoadoutOnline -> BitPut.BitPut
 bitPut loadoutAttribute =

@@ -3,8 +3,8 @@ module Rattletrap.Type.Attribute.QWord where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Type.U64 as U64
+import qualified Rattletrap.Utility.Json as Json
 
 newtype QWord = QWord
   { value :: U64.U64

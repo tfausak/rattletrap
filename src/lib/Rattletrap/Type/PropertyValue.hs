@@ -31,7 +31,7 @@ data PropertyValue a
   deriving (Eq, Show)
 
 instance Json.FromJSON a => Json.FromJSON (PropertyValue a) where
-  parseJSON = Json.withObject "PropertyValue" $ \ object -> Foldable.asum
+  parseJSON = Json.withObject "PropertyValue" $ \object -> Foldable.asum
     [ Array <$> Json.required object "array"
     , Bool <$> Json.required object "bool"
     , uncurry Byte <$> Json.required object "byte"
@@ -63,7 +63,7 @@ schema s =
         , ("bool", Schema.ref U8.schema)
         , ( "byte"
           , Schema.tuple
-              [Schema.ref Str.schema, Schema.json $ Schema.maybe Str.schema]
+            [Schema.ref Str.schema, Schema.json $ Schema.maybe Str.schema]
           )
         , ("float", Schema.ref F32.schema)
         , ("int", Schema.ref I32.schema)
