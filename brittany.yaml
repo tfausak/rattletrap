@@ -2,7 +2,6 @@
 conf_forward:
   options_ghc:
     - -XNamedFieldPuns
-    - -XTemplateHaskell
 conf_layout:
   lconfig_cols: 79
   lconfig_columnAlignMode: { tag: ColumnAlignModeDisabled }
