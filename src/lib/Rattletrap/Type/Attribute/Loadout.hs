@@ -3,7 +3,6 @@ module Rattletrap.Type.Attribute.Loadout where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
@@ -31,7 +30,65 @@ data Loadout = Loadout
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Loadout)
+instance Json.FromJSON Loadout where
+  parseJSON = Json.withObject "Loadout" $ \object -> do
+    version <- Json.required object "version"
+    body <- Json.required object "body"
+    decal <- Json.required object "decal"
+    wheels <- Json.required object "wheels"
+    rocketTrail <- Json.required object "rocket_trail"
+    antenna <- Json.required object "antenna"
+    topper <- Json.required object "topper"
+    unknown1 <- Json.required object "unknown1"
+    unknown2 <- Json.required object "unknown2"
+    engineAudio <- Json.required object "engine_audio"
+    trail <- Json.required object "trail"
+    goalExplosion <- Json.required object "goal_explosion"
+    banner <- Json.required object "banner"
+    unknown3 <- Json.required object "unknown3"
+    unknown4 <- Json.required object "unknown4"
+    unknown5 <- Json.required object "unknown5"
+    unknown6 <- Json.required object "unknown6"
+    pure Loadout
+      { version
+      , body
+      , decal
+      , wheels
+      , rocketTrail
+      , antenna
+      , topper
+      , unknown1
+      , unknown2
+      , engineAudio
+      , trail
+      , goalExplosion
+      , banner
+      , unknown3
+      , unknown4
+      , unknown5
+      , unknown6
+      }
+
+instance Json.ToJSON Loadout where
+  toJSON x = Json.object
+    [ Json.pair "version" $ version x
+    , Json.pair "body" $ body x
+    , Json.pair "decal" $ decal x
+    , Json.pair "wheels" $ wheels x
+    , Json.pair "rocket_trail" $ rocketTrail x
+    , Json.pair "antenna" $ antenna x
+    , Json.pair "topper" $ topper x
+    , Json.pair "unknown1" $ unknown1 x
+    , Json.pair "unknown2" $ unknown2 x
+    , Json.pair "engine_audio" $ engineAudio x
+    , Json.pair "trail" $ trail x
+    , Json.pair "goal_explosion" $ goalExplosion x
+    , Json.pair "banner" $ banner x
+    , Json.pair "unknown3" $ unknown3 x
+    , Json.pair "unknown4" $ unknown4 x
+    , Json.pair "unknown5" $ unknown5 x
+    , Json.pair "unknown6" $ unknown6 x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-loadout" $ Schema.object

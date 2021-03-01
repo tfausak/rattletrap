@@ -4,7 +4,6 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.ProductValue as ProductValue
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
@@ -23,7 +22,21 @@ data Product = Product
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Product)
+instance Json.FromJSON Product where
+  parseJSON = Json.withObject "Product" $ \object -> do
+    unknown <- Json.required object "unknown"
+    objectId <- Json.required object "object_id"
+    objectName <- Json.required object "object_name"
+    value <- Json.required object "value"
+    pure Product { unknown, objectId, objectName, value }
+
+instance Json.ToJSON Product where
+  toJSON x = Json.object
+    [ Json.pair "unknown" $ unknown x
+    , Json.pair "object_id" $ objectId x
+    , Json.pair "object_name" $ objectName x
+    , Json.pair "value" $ value x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-product" $ Schema.object

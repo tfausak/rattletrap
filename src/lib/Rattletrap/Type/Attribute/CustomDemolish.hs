@@ -1,10 +1,10 @@
 module Rattletrap.Type.Attribute.CustomDemolish where
 
+import Prelude hiding (id)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.Demolish as Demolish
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
@@ -16,7 +16,19 @@ data CustomDemolish = CustomDemolish
   }
   deriving (Eq, Show)
 
-$(deriveJson ''CustomDemolish)
+instance Json.FromJSON CustomDemolish where
+  parseJSON = Json.withObject "CustomDemolish" $ \object -> do
+    flag <- Json.required object "flag"
+    id <- Json.required object "id"
+    demolish <- Json.required object "demolish"
+    pure CustomDemolish { flag, id, demolish }
+
+instance Json.ToJSON CustomDemolish where
+  toJSON x = Json.object
+    [ Json.pair "flag" $ flag x
+    , Json.pair "id" $ id x
+    , Json.pair "demolish" $ demolish x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-custom-demolish" $ Schema.object

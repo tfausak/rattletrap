@@ -4,7 +4,6 @@ import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
@@ -18,7 +17,15 @@ data GameMode = GameMode
   }
   deriving (Eq, Show)
 
-$(deriveJson ''GameMode)
+instance Json.FromJSON GameMode where
+  parseJSON = Json.withObject "GameMode" $ \object -> do
+    numBits <- Json.required object "num_bits"
+    word <- Json.required object "word"
+    pure GameMode { numBits, word }
+
+instance Json.ToJSON GameMode where
+  toJSON x =
+    Json.object [Json.pair "num_bits" $ numBits x, Json.pair "word" $ word x]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-game-mode" $ Schema.object

@@ -1,9 +1,9 @@
 module Rattletrap.Type.Attribute.PartyLeader where
 
+import Prelude hiding (id)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
@@ -16,7 +16,15 @@ data PartyLeader = PartyLeader
   }
   deriving (Eq, Show)
 
-$(deriveJson ''PartyLeader)
+instance Json.FromJSON PartyLeader where
+  parseJSON = Json.withObject "PartyLeader" $ \object -> do
+    systemId <- Json.required object "system_id"
+    id <- Json.required object "id"
+    pure PartyLeader { systemId, id }
+
+instance Json.ToJSON PartyLeader where
+  toJSON x =
+    Json.object [Json.pair "system_id" $ systemId x, Json.pair "id" $ id x]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-party-leader" $ Schema.object

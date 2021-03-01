@@ -3,7 +3,6 @@ module Rattletrap.Type.Attribute.Title where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
 
@@ -19,7 +18,38 @@ data Title = Title
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Title)
+instance Json.FromJSON Title where
+  parseJSON = Json.withObject "Title" $ \object -> do
+    unknown1 <- Json.required object "unknown1"
+    unknown2 <- Json.required object "unknown2"
+    unknown3 <- Json.required object "unknown3"
+    unknown4 <- Json.required object "unknown4"
+    unknown5 <- Json.required object "unknown5"
+    unknown6 <- Json.required object "unknown6"
+    unknown7 <- Json.required object "unknown7"
+    unknown8 <- Json.required object "unknown8"
+    pure Title
+      { unknown1
+      , unknown2
+      , unknown3
+      , unknown4
+      , unknown5
+      , unknown6
+      , unknown7
+      , unknown8
+      }
+
+instance Json.ToJSON Title where
+  toJSON x = Json.object
+    [ Json.pair "unknown1" $ unknown1 x
+    , Json.pair "unknown2" $ unknown2 x
+    , Json.pair "unknown3" $ unknown3 x
+    , Json.pair "unknown4" $ unknown4 x
+    , Json.pair "unknown5" $ unknown5 x
+    , Json.pair "unknown6" $ unknown6 x
+    , Json.pair "unknown7" $ unknown7 x
+    , Json.pair "unknown8" $ unknown8 x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-title" $ Schema.object

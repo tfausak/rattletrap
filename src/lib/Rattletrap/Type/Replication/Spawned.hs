@@ -4,7 +4,6 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Initialization as Initialization
 import qualified Rattletrap.Type.Str as Str
@@ -35,7 +34,35 @@ data Spawned = Spawned
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Spawned)
+instance Json.FromJSON Spawned where
+  parseJSON = Json.withObject "Spawned" $ \object -> do
+    flag <- Json.required object "flag"
+    nameIndex <- Json.required object "name_index"
+    name <- Json.required object "name"
+    objectId <- Json.required object "object_id"
+    objectName <- Json.required object "object_name"
+    className <- Json.required object "class_name"
+    initialization <- Json.required object "initialization"
+    pure Spawned
+      { flag
+      , nameIndex
+      , name
+      , objectId
+      , objectName
+      , className
+      , initialization
+      }
+
+instance Json.ToJSON Spawned where
+  toJSON x = Json.object
+    [ Json.pair "flag" $ flag x
+    , Json.pair "name_index" $ nameIndex x
+    , Json.pair "name" $ name x
+    , Json.pair "object_id" $ objectId x
+    , Json.pair "object_name" $ objectName x
+    , Json.pair "class_name" $ className x
+    , Json.pair "initialization" $ initialization x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "replication-spawned" $ Schema.object

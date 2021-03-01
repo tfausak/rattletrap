@@ -3,7 +3,6 @@ module Rattletrap.Type.Attribute.PickupNew where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
@@ -15,7 +14,17 @@ data PickupNew = PickupNew
   }
   deriving (Eq, Show)
 
-$(deriveJson ''PickupNew)
+instance Json.FromJSON PickupNew where
+  parseJSON = Json.withObject "PickupNew" $ \object -> do
+    instigatorId <- Json.required object "instigator_id"
+    pickedUp <- Json.required object "picked_up"
+    pure PickupNew { instigatorId, pickedUp }
+
+instance Json.ToJSON PickupNew where
+  toJSON x = Json.object
+    [ Json.pair "instigator_id" $ instigatorId x
+    , Json.pair "picked_up" $ pickedUp x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-pickup-new" $ Schema.object

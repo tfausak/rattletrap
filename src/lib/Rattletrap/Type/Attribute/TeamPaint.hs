@@ -3,7 +3,6 @@ module Rattletrap.Type.Attribute.TeamPaint where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
@@ -17,7 +16,29 @@ data TeamPaint = TeamPaint
   }
   deriving (Eq, Show)
 
-$(deriveJson ''TeamPaint)
+instance Json.FromJSON TeamPaint where
+  parseJSON = Json.withObject "TeamPaint" $ \object -> do
+    team <- Json.required object "team"
+    primaryColor <- Json.required object "primary_color"
+    accentColor <- Json.required object "accent_color"
+    primaryFinish <- Json.required object "primary_finish"
+    accentFinish <- Json.required object "accent_finish"
+    pure TeamPaint
+      { team
+      , primaryColor
+      , accentColor
+      , primaryFinish
+      , accentFinish
+      }
+
+instance Json.ToJSON TeamPaint where
+  toJSON x = Json.object
+    [ Json.pair "team" $ team x
+    , Json.pair "primaryColor" $ primaryColor x
+    , Json.pair "accent_color" $ accentColor x
+    , Json.pair "primary_finish" $ primaryFinish x
+    , Json.pair "accent_finish" $ accentFinish x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-team-paint" $ Schema.object

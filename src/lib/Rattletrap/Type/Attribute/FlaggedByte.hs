@@ -3,7 +3,6 @@ module Rattletrap.Type.Attribute.FlaggedByte where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
 
@@ -13,7 +12,15 @@ data FlaggedByte = FlaggedByte
   }
   deriving (Eq, Show)
 
-$(deriveJson ''FlaggedByte)
+instance Json.FromJSON FlaggedByte where
+  parseJSON = Json.withObject "FlaggedByte" $ \object -> do
+    flag <- Json.required object "flag"
+    byte <- Json.required object "byte"
+    pure FlaggedByte { flag, byte }
+
+instance Json.ToJSON FlaggedByte where
+  toJSON x =
+    Json.object [Json.pair "flag" $ flag x, Json.pair "byte" $ byte x]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-flagged-byte" $ Schema.object

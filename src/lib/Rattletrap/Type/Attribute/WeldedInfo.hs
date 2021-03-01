@@ -3,7 +3,6 @@ module Rattletrap.Type.Attribute.WeldedInfo where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Int8Vector as Int8Vector
@@ -20,7 +19,23 @@ data WeldedInfo = WeldedInfo
   }
   deriving (Eq, Show)
 
-$(deriveJson ''WeldedInfo)
+instance Json.FromJSON WeldedInfo where
+  parseJSON = Json.withObject "WeldedInfo" $ \object -> do
+    active <- Json.required object "active"
+    actorId <- Json.required object "actor_id"
+    offset <- Json.required object "offset"
+    mass <- Json.required object "mass"
+    rotation <- Json.required object "rotation"
+    pure WeldedInfo { active, actorId, offset, mass, rotation }
+
+instance Json.ToJSON WeldedInfo where
+  toJSON x = Json.object
+    [ Json.pair "active" $ active x
+    , Json.pair "actor_id" $ actorId x
+    , Json.pair "offset" $ offset x
+    , Json.pair "mass" $ mass x
+    , Json.pair "rotation" $ rotation x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-welded-info" $ Schema.object

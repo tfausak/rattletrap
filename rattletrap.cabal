@@ -102,7 +102,6 @@ library
     Rattletrap.Type.Cache
     Rattletrap.Type.ClassAttributeMap
     Rattletrap.Type.ClassMapping
-    Rattletrap.Type.Common
     Rattletrap.Type.CompressedWord
     Rattletrap.Type.CompressedWordVector
     Rattletrap.Type.Content

@@ -3,7 +3,6 @@ module Rattletrap.Type.Attribute.MusicStinger where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
@@ -15,7 +14,19 @@ data MusicStinger = MusicStinger
   }
   deriving (Eq, Show)
 
-$(deriveJson ''MusicStinger)
+instance Json.FromJSON MusicStinger where
+  parseJSON = Json.withObject "MusicStinger" $ \object -> do
+    flag <- Json.required object "flag"
+    cue <- Json.required object "cue"
+    trigger <- Json.required object "trigger"
+    pure MusicStinger { flag, cue, trigger }
+
+instance Json.ToJSON MusicStinger where
+  toJSON x = Json.object
+    [ Json.pair "flag" $ flag x
+    , Json.pair "cue" $ cue x
+    , Json.pair "trigger" $ trigger x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-music-stinger" $ Schema.object

@@ -5,7 +5,6 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.Explosion as Explosion
 import qualified Rattletrap.Type.Attribute.FlaggedInt as FlaggedInt
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
@@ -15,7 +14,15 @@ data ExtendedExplosion = ExtendedExplosion
   }
   deriving (Eq, Show)
 
-$(deriveJson ''ExtendedExplosion)
+instance Json.FromJSON ExtendedExplosion where
+  parseJSON = Json.withObject "ExtendedExplosion" $ \object -> do
+    explosion <- Json.required object "explosion"
+    unknown <- Json.required object "unknown"
+    pure ExtendedExplosion { explosion, unknown }
+
+instance Json.ToJSON ExtendedExplosion where
+  toJSON x = Json.object
+    [Json.pair "explosion" $ explosion x, Json.pair "unknown" $ unknown x]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-extended-explosion" $ Schema.object
