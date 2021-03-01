@@ -3,7 +3,6 @@ module Rattletrap.Type.Vector where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
@@ -24,7 +23,23 @@ data Vector = Vector
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Vector)
+instance Json.FromJSON Vector where
+  parseJSON = Json.withObject "Vector" $ \ object -> do
+    size <- Json.required object "size"
+    bias <- Json.required object "bias"
+    x <- Json.required object "x"
+    y <- Json.required object "y"
+    z <- Json.required object "z"
+    pure Vector { size, bias, x, y, z }
+
+instance Json.ToJSON Vector where
+  toJSON a = Json.object
+    [ Json.pair "size" $ size a
+    , Json.pair "bias" $ bias a
+    , Json.pair "x" $ x a
+    , Json.pair "y" $ y a
+    , Json.pair "z" $ z a
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "vector" $ Schema.object

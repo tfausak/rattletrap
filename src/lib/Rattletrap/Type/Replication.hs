@@ -4,7 +4,6 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
@@ -22,7 +21,17 @@ data Replication = Replication
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Replication)
+instance Json.FromJSON Replication where
+  parseJSON = Json.withObject "Replication" $ \ object -> do
+    actorId <- Json.required object "actor_id"
+    value <- Json.required object "value"
+    pure Replication { actorId, value }
+
+instance Json.ToJSON Replication where
+  toJSON x = Json.object
+    [ Json.pair "actor_id" $ actorId x
+    , Json.pair "value" $ value x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "replication" $ Schema.object

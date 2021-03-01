@@ -6,14 +6,17 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Utility.Json as Json
 
 newtype I8
   = I8 Int.Int8
   deriving (Eq, Show)
 
-$(deriveJson ''I8)
+instance Json.FromJSON I8 where
+  parseJSON = fmap fromInt8 . Json.parseJSON
+
+instance Json.ToJSON I8 where
+  toJSON = Json.toJSON . toInt8
 
 schema :: Schema.Schema
 schema = Schema.named "i8" $ Json.object

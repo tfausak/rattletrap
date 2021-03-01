@@ -1,9 +1,9 @@
 module Rattletrap.Type.Attribute.ProductValue where
 
+import qualified Data.Foldable as Foldable
 import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
@@ -23,7 +23,28 @@ data ProductValue
   | TitleId Str.Str
   deriving (Eq, Show)
 
-$(deriveJson ''ProductValue)
+instance Json.FromJSON ProductValue where
+  parseJSON = Json.withObject "ProductValue" $ \ object -> Foldable.asum
+    [ PaintedOld <$> Json.required object "painted_old"
+    , PaintedNew <$> Json.required object "painted_new"
+    , TeamEditionOld <$> Json.required object "team_edition_old"
+    , TeamEditionNew <$> Json.required object "team_edition_new"
+    , SpecialEdition <$> Json.required object "special_edition"
+    , UserColorOld <$> Json.required object "user_color_old"
+    , UserColorNew <$> Json.required object "user_color_new"
+    , TitleId <$> Json.required object "title_id"
+    ]
+
+instance Json.ToJSON ProductValue where
+  toJSON x = case x of
+    PaintedOld y -> Json.object [Json.pair "painted_old" y]
+    PaintedNew y -> Json.object [Json.pair "painted_new" y]
+    TeamEditionOld y -> Json.object [Json.pair "team_edition_old" y]
+    TeamEditionNew y -> Json.object [Json.pair "team_edition_new" y]
+    SpecialEdition y -> Json.object [Json.pair "special_edition" y]
+    UserColorOld y -> Json.object [Json.pair "user_color_old" y]
+    UserColorNew y -> Json.object [Json.pair "user_color_new" y]
+    TitleId y -> Json.object [Json.pair "title_id" y]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-product-value"

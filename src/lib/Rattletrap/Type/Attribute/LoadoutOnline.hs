@@ -3,7 +3,7 @@ module Rattletrap.Type.Attribute.LoadoutOnline where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Type.Attribute.Product as Product
-import Rattletrap.Type.Common
+import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
@@ -17,7 +17,11 @@ newtype LoadoutOnline = LoadoutOnline
   { value :: List.List (List.List Product.Product)
   } deriving (Eq, Show)
 
-$(deriveJson ''LoadoutOnline)
+instance Json.FromJSON LoadoutOnline where
+  parseJSON = fmap LoadoutOnline . Json.parseJSON
+
+instance Json.ToJSON LoadoutOnline where
+  toJSON = Json.toJSON . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-loadout-online"

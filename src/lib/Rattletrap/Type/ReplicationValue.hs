@@ -4,7 +4,6 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Replication.Destroyed as Destroyed
 import qualified Rattletrap.Type.Replication.Spawned as Spawned
@@ -15,6 +14,7 @@ import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
+import qualified Data.Foldable as Foldable
 import qualified Data.Map as Map
 
 data ReplicationValue
@@ -26,7 +26,18 @@ data ReplicationValue
   -- ^ Destroys an existing actor.
   deriving (Eq, Show)
 
-$(deriveJson ''ReplicationValue)
+instance Json.FromJSON ReplicationValue where
+  parseJSON = Json.withObject "ReplicationValue" $ \ object -> Foldable.asum
+    [ Spawned <$> Json.required object "spawned"
+    , Updated <$> Json.required object "updated"
+    , Destroyed <$> Json.required object "destroyed"
+    ]
+
+instance Json.ToJSON ReplicationValue where
+  toJSON x = case x of
+    Spawned y -> Json.object [Json.pair "spawned" y]
+    Updated y -> Json.object [Json.pair "updated" y]
+    Destroyed y -> Json.object [Json.pair "destroyed" y]
 
 schema :: Schema.Schema
 schema = Schema.named "replicationValue" . Schema.oneOf $ fmap

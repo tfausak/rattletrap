@@ -3,7 +3,6 @@ module Rattletrap.Type.Initialization where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
@@ -20,7 +19,17 @@ data Initialization = Initialization
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Initialization)
+instance Json.FromJSON Initialization where
+  parseJSON = Json.withObject "Initialization" $ \ object -> do
+    location <- Json.required object "location"
+    rotation <- Json.required object "rotation"
+    pure Initialization { location, rotation }
+
+instance Json.ToJSON Initialization where
+  toJSON x = Json.object
+    [ Json.pair "location" $ location x
+    , Json.pair "rotation" $ rotation x
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "initialization" $ Schema.object

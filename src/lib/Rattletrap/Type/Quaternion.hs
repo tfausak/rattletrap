@@ -3,7 +3,6 @@ module Rattletrap.Type.Quaternion where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Utility.Json as Json
 
@@ -19,7 +18,21 @@ data Quaternion = Quaternion
   }
   deriving (Eq, Show)
 
-$(deriveJson ''Quaternion)
+instance Json.FromJSON Quaternion where
+  parseJSON = Json.withObject "Quaternion" $ \ object -> do
+    x <- Json.required object "x"
+    y <- Json.required object "y"
+    z <- Json.required object "z"
+    w <- Json.required object "w"
+    pure Quaternion { x, y, z, w }
+
+instance Json.ToJSON Quaternion where
+  toJSON a = Json.object
+    [ Json.pair "x" $ x a
+    , Json.pair "y" $ y a
+    , Json.pair "z" $ z a
+    , Json.pair "w" $ w a
+    ]
 
 schema :: Schema.Schema
 schema = Schema.named "quaternion" $ Schema.object

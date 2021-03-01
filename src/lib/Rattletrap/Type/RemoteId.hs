@@ -3,7 +3,6 @@ module Rattletrap.Type.RemoteId where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
@@ -12,6 +11,7 @@ import Rattletrap.Utility.Bytes
 import qualified Rattletrap.Utility.Json as Json
 
 import qualified Data.ByteString as Bytes
+import qualified Data.Foldable as Foldable
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Word as Word
@@ -27,7 +27,29 @@ data RemoteId
   | Epic Str.Str
   deriving (Eq, Show)
 
-$(deriveJson ''RemoteId)
+instance Json.FromJSON RemoteId where
+  parseJSON = Json.withObject "RemoteId" $ \ object -> Foldable.asum
+    [ uncurry PlayStation <$> Json.required object "play_stations"
+    , PsyNet <$> Json.required object "psy_net"
+    , Splitscreen <$> Json.required object "splitscreen"
+    , Steam <$> Json.required object "steam"
+    , uncurry4 Switch <$> Json.required object "switch"
+    , Xbox <$> Json.required object "xbox"
+    , Epic <$> Json.required object "epic"
+    ]
+
+uncurry4 :: (a -> b -> c -> d -> e) -> (a, b, c, d) -> e
+uncurry4 f (a, b, c, d) = f a b c d
+
+instance Json.ToJSON RemoteId where
+  toJSON x = case x of
+    PlayStation y z -> Json.object [Json.pair "play_stations" (y, z)]
+    PsyNet y -> Json.object [Json.pair "psy_net" y]
+    Splitscreen y -> Json.object [Json.pair "splitscreen" y]
+    Steam y -> Json.object [Json.pair "steam" y]
+    Switch y z a b -> Json.object [Json.pair "switch" (y, z, a, b)]
+    Xbox y -> Json.object [Json.pair "xbox" y]
+    Epic y -> Json.object [Json.pair "epic" y]
 
 schema :: Schema.Schema
 schema = Schema.named "remote-id" . Schema.oneOf $ fmap

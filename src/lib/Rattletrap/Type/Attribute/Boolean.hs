@@ -3,13 +3,17 @@ module Rattletrap.Type.Attribute.Boolean where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
+import qualified Rattletrap.Utility.Json as Json
 
 newtype Boolean = Boolean
   { value :: Bool
   } deriving (Eq, Show)
 
-$(deriveJson ''Boolean)
+instance Json.FromJSON Boolean where
+  parseJSON = fmap Boolean . Json.parseJSON
+
+instance Json.ToJSON Boolean where
+  toJSON = Json.toJSON . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-boolean" $ Schema.ref Schema.boolean

@@ -1,9 +1,9 @@
 module Rattletrap.Type.Rotation where
 
+import qualified Data.Foldable as Foldable
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import Rattletrap.Type.Common
 import qualified Rattletrap.Type.CompressedWordVector as CompressedWordVector
 import qualified Rattletrap.Type.Quaternion as Quaternion
 import qualified Rattletrap.Type.Version as Version
@@ -14,7 +14,16 @@ data Rotation
   | Quaternion Quaternion.Quaternion
   deriving (Eq, Show)
 
-$(deriveJson ''Rotation)
+instance Json.FromJSON Rotation where
+  parseJSON = Json.withObject "Rotation" $ \ object -> Foldable.asum
+    [ CompressedWordVector <$> Json.required object "compressed_word_vector"
+    , Quaternion <$> Json.required object "quaternion"
+    ]
+
+instance Json.ToJSON Rotation where
+  toJSON x = case x of
+    CompressedWordVector y -> Json.object [Json.pair "compressed_word_vector" y]
+    Quaternion y -> Json.object [Json.pair "quaternion" y]
 
 schema :: Schema.Schema
 schema = Schema.named "rotation" . Schema.oneOf $ fmap
