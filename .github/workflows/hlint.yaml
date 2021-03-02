@@ -1,3 +1,4 @@
+name: HLint
 on: push
 jobs:
   hlint:
