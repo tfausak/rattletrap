@@ -1,0 +1,11 @@
+on: push
+jobs:
+  hlint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: curl --location --output hlint.tar.gz https://github.com/ndmitchell/hlint/releases/download/v3.2.7/hlint-3.2.7-x86_64-linux.tar.gz
+      - run: gzip --decompress hlint.tar.gz
+      - run: tar --extract --file hlint.tar
+      - run: cp hlint-3.2.7/hlint /usr/local/bin/
+      - run: hlint --version
