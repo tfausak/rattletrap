@@ -7,4 +7,5 @@ jobs:
       - run: curl --location --output hlint.tar.gz https://github.com/ndmitchell/hlint/releases/download/v3.2.7/hlint-3.2.7-x86_64-linux.tar.gz
       - run: gzip --decompress hlint.tar.gz
       - run: tar --extract --file hlint.tar
+      - run: echo '::add-matcher::hlint-problem-matcher.json'
       - run: hlint-3.2.7/hlint --hint .hlint.yaml src
