@@ -2,10 +2,11 @@
   "problemMatcher": [
     {
       "owner": "tfausak",
+      "severity": "warning",
       "pattern": [
         {
-          "regexp": "^(.+):(\\d+):(\\d+): (Error|Warning|Suggestion): (.+)",
-          "file": 1,
+          "regexp": "^(.+):(\\d+):(\\d+): (Error|Warning|Suggestion): (.+)$",
+          "fromPath": 1,
           "line": 2,
           "column": 3,
           "message": 5
