@@ -5,4 +5,5 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+      - run: echo '::add-matcher::config/brittany-problem-matcher.json'
       - run: git ls-files '*.hs' | xargs docker run --volume "$PWD:$PWD" --workdir "$PWD" itprotv/brittany:64830d767a4eb58aff4e1f1d72fcb489be367893 brittany --check-mode
