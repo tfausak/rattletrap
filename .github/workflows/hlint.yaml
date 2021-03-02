@@ -8,4 +8,4 @@ jobs:
       - run: gzip --decompress hlint.tar.gz
       - run: tar --extract --file hlint.tar
       - run: echo '::add-matcher::hlint-problem-matcher.json'
-      - run: hlint-3.2.7/hlint --hint .hlint.yaml "$( pwd )/src"
+      - run: hlint-3.2.7/hlint --hint .hlint.yaml ./src
