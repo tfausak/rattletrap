@@ -7,4 +7,4 @@ jobs:
       - run: curl --location --output hlint.tar.gz https://github.com/ndmitchell/hlint/releases/download/v3.2.7/hlint-3.2.7-x86_64-linux.tar.gz
       - run: gzip --decompress hlint.tar.gz
       - run: tar --extract --file hlint.tar
-      - run: hlint-3.2.7/hlint --version
+      - run: hlint-3.2.7/hlint src
