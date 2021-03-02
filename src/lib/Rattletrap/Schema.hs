@@ -10,7 +10,7 @@ data Schema = Schema
   deriving (Eq, Show)
 
 named :: String -> Json.Value -> Schema
-named n j = Schema { name = Text.pack $ n, json = j }
+named n j = Schema { name = Text.pack n, json = j }
 
 ref :: Schema -> Json.Value
 ref s = Json.object [Json.pair "$ref" $ Text.pack "#/definitions/" <> name s]
