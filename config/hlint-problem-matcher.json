@@ -9,7 +9,11 @@
           "file": 1,
           "line": 2,
           "column": 3,
-          "message": 5
+          "code": 5
+        },
+        {
+          "regexp": "^(.*\\S.*)$"
+          "message": 1
         }
       ]
     }
