@@ -5,6 +5,4 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: curl --location --output brittany.zip https://github.com/lspitzner/brittany/releases/download/0.13.1.0/brittany-0.13.1.0-linux.zip
-      - run: unzip brittany.zip
-      - run: git ls-files '*.hs' | xargs ./brittany --check-mode
+      - run: docker run hello-world
