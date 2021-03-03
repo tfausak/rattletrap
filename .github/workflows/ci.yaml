@@ -58,7 +58,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: docker/rattletrap
-          name: rattletrap-${{ github.sha }}-${{ matrix.os }}${{ matrix.extension }}
+          name: rattletrap-${{ github.sha }}-${{ matrix.os }}
 
       - run: cabal test --test-show-details direct
 
