@@ -70,17 +70,17 @@ jobs:
           path: output/schema.json
           name: rattletrap-schema-${{ github.sha }}-${{ matrix.os }}.json
 
-      - run: cabal sdist --output-dir docker
+      - run: cabal sdist --output-dir output
 
       - uses: actions/upload-artifact@v2
         with:
-          path: docker/rattletrap-*.tar.gz
+          path: output/rattletrap-*.tar.gz
           name: rattletrap-package-${{ github.sha }}-${{ matrix.os }}.tar.gz
 
       - run: cabal check
 
       - if: github.event_name == 'release' && matrix.primary
-        run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' docker/rattletrap-*.tar.gz
+        run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' output/rattletrap-*.tar.gz
 
       - if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
@@ -109,7 +109,7 @@ jobs:
         with:
           asset_content_type: application/gzip
           asset_name: rattletrap-${{ github.event.release.tag_name }}.tar.gz
-          asset_path: docker/rattletrap-*.tar.gz
+          asset_path: output/rattletrap-*.tar.gz
           upload_url: ${{ github.event.release.upload_url }}
 
       - if: github.event_name == 'release' && matrix.primary
