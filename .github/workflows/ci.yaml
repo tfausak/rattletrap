@@ -58,21 +58,21 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: docker/rattletrap
-          name: rattletrap-${{ github.sha }}-${{ matrix.os }}
+          name: rattletrap-executable-${{ github.sha }}-${{ matrix.os }}
 
       - run: cabal test --test-show-details direct
 
       - uses: actions/upload-artifact@v2
         with:
           path: output/schema.json
-          name: rattletrap-${{ github.sha }}-${{ matrix.os }}-schema.json
+          name: rattletrap-schema-${{ github.sha }}-${{ matrix.os }}.json
 
       - run: cabal sdist --output-dir docker
 
       - uses: actions/upload-artifact@v2
         with:
           path: docker/rattletrap-*.tar.gz
-          name: rattletrap-${{ github.sha }}-${{ matrix.os }}.tar.gz
+          name: rattletrap-package-${{ github.sha }}-${{ matrix.os }}.tar.gz
 
       - run: cabal check
 
