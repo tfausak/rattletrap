@@ -79,9 +79,6 @@ jobs:
 
       - run: cabal check
 
-      - if: github.event_name == 'release' && matrix.primary
-        run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' output/rattletrap-*.tar.gz
-
       - if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
         env:

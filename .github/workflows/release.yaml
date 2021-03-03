@@ -22,3 +22,11 @@ jobs:
           file: docker/Dockerfile
           tags: taylorfausak/rattletrap:version-${{ github.event.release.tag_name }}
           push: true
+  hackage:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: rattletrap-package-${{ github.sha }}-ubuntu-20.04.tar.gz
+          path: output/rattletrap-${{ github.event.release.tag_name }}.tar.gz
+      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' output/rattletrap-${{ github.event.release.tag_name }}.tar.gz
