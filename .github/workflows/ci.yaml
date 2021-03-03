@@ -51,8 +51,6 @@ jobs:
 
       - run: cabal build
 
-      - run: cabal test --test-show-details direct
-
       - run: cabal exec runghc src/util/copy-executable.hs
 
       - run: strip docker/rattletrap
@@ -61,6 +59,8 @@ jobs:
         with:
           path: docker/rattletrap
           name: rattletrap-${{ github.sha }}-${{ matrix.os }}${{ matrix.extension }}
+
+      - run: cabal test --test-show-details direct
 
       - run: cabal exec -- rattletrap --schema | tee schema.json
 
