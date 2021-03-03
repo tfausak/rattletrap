@@ -62,11 +62,10 @@ jobs:
 
       - run: cabal test --test-show-details direct
 
-      - if: matrix.primary
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
         with:
           path: output/schema.json
-          name: rattletrap-${{ github.sha }}-schema.json
+          name: rattletrap-${{ github.sha }}-${{ matrix.os }}-schema.json
 
       - run: cabal sdist --output-dir docker
 
