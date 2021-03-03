@@ -52,13 +52,15 @@ $ rattletrap --help
 ```
 
 ```
-rattletrap version 9.0.1
+rattletrap version 10.0.0
   -c           --compact         minify JSON output
   -f           --fast            only encode or decode the header
   -h           --help            show the help
   -i FILE|URL  --input=FILE|URL  input file or URL
   -m MODE      --mode=MODE       decode or encode
   -o FILE      --output=FILE     output file
+               --schema          output the schema
+               --skip-crc        skip the CRC
   -v           --version         show the version
 ```
 
