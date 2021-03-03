@@ -1,19 +1,34 @@
 name: CI
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
   push:
-    branches: [ main ]
+    branches:
+      - main
   release:
-    types: [ created ]
+    types:
+      - created
 jobs:
   build:
     strategy:
       matrix:
         include:
-          - { os: ubuntu-18.04, ghc: 8.10.4, cabal: 3.4.0.0, primary: true, extension: '' }
-          - { os: macos-10.15, ghc: 8.10.4, cabal: 3.4.0.0, primary: false, extension: '' }
-          - { os: windows-2019, ghc: 8.10.4, cabal: 3.4.0.0, primary: false, extension: '.exe' }
+          - os: ubuntu-18.04
+            ghc: 8.10.4
+            cabal: 3.4.0.0
+            primary: true
+            extension: ''
+          - os: macos-10.15
+            ghc: 8.10.4
+            cabal: 3.4.0.0
+            primary: false
+            extension: ''
+          - os: windows-2019
+            ghc: 8.10.4
+            cabal: 3.4.0.0
+            primary: false
+            extension: '.exe'
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
