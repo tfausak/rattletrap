@@ -125,7 +125,7 @@ $ rattletrap -i input.replay |
 [Rattletrap]: https://github.com/tfausak/rattletrap
 [Version badge]: https://img.shields.io/hackage/v/rattletrap.svg?logo=haskell&label=version&color=brightgreen
 [version]: https://hackage.haskell.org/package/rattletrap
-[Build badge]: https://github.com/tfausak/rattletrap/workflows/CI/badge.svg
+[Build badge]: https://github.com/tfausak/rattletrap/workflows/ci/badge.svg
 [build]: https://github.com/tfausak/rattletrap/actions
 [Rocket League]: https://www.rocketleague.com
 [1.92]: https://www.rocketleague.com/news/patch-notes-v1-92/
