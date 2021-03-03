@@ -16,7 +16,11 @@ required
   :: Aeson.FromJSON value => Aeson.Object -> String -> Aeson.Parser value
 required object key = object Aeson..: Text.pack key
 
-optional :: Aeson.FromJSON value => Aeson.Object -> String -> Aeson.Parser (Maybe value)
+optional
+  :: Aeson.FromJSON value
+  => Aeson.Object
+  -> String
+  -> Aeson.Parser (Maybe value)
 optional object key = object Aeson..:? Text.pack key
 
 pair :: (Aeson.ToJSON value, Aeson.KeyValue pair) => String -> value -> pair
