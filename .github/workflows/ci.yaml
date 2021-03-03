@@ -69,11 +69,10 @@ jobs:
 
       - run: cabal sdist --output-dir docker
 
-      - if: matrix.primary
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
         with:
           path: docker/rattletrap-*.tar.gz
-          name: rattletrap-${{ github.sha }}.tar.gz
+          name: rattletrap-${{ github.sha }}-${{ matrix.os }}.tar.gz
 
       - run: cabal check
 
