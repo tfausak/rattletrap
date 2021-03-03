@@ -1,7 +1,7 @@
 cabal-version: 2.0
 
 name: rattletrap
-version: 10.0.0
+version: 10.0.1
 synopsis: Parse and generate Rocket League replays.
 description: Rattletrap parses and generates Rocket League replays.
 
