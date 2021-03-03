@@ -20,18 +20,12 @@ jobs:
           - os: ubuntu-20.04
             ghc: 8.10.4
             cabal: 3.4.0.0
-            primary: true
-            extension: ''
           - os: macos-10.15
             ghc: 8.10.4
             cabal: 3.4.0.0
-            primary: false
-            extension: ''
           - os: windows-2019
             ghc: 8.10.4
             cabal: 3.4.0.0
-            primary: false
-            extension: '.exe'
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -78,36 +72,6 @@ jobs:
           name: rattletrap-package-${{ github.sha }}-${{ matrix.os }}.tar.gz
 
       - run: cabal check
-
-      - if: github.event_name == 'release'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          asset_content_type: application/octet-stream
-          asset_name: rattletrap-${{ github.event.release.tag_name }}-${{ matrix.os }}${{ matrix.extension }}
-          asset_path: docker/rattletrap
-          upload_url: ${{ github.event.release.upload_url }}
-
-      - if: github.event_name == 'release' && matrix.primary
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          asset_content_type: application/json
-          asset_name: rattletrap-${{ github.event.release.tag_name }}-schema.json
-          asset_path: output/schema.json
-          upload_url: ${{ github.event.release.upload_url }}
-
-      - if: github.event_name == 'release' && matrix.primary
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          asset_content_type: application/gzip
-          asset_name: rattletrap-${{ github.event.release.tag_name }}.tar.gz
-          asset_path: output/rattletrap-*.tar.gz
-          upload_url: ${{ github.event.release.upload_url }}
 
   brittany:
     runs-on: ubuntu-20.04
