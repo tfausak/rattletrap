@@ -1,4 +1,5 @@
-name: CI
+name: ci
+
 on:
   pull_request:
     branches:
@@ -9,7 +10,9 @@ on:
   release:
     types:
       - created
+
 jobs:
+
   build:
     strategy:
       matrix:
