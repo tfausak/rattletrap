@@ -1,19 +1,23 @@
-name: CI
+name: ci
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
   push:
-    branches: [ main ]
-  release:
-    types: [ created ]
+    branches:
+      - main
 jobs:
+
   build:
     strategy:
       matrix:
         include:
-          - { os: ubuntu-18.04, ghc: 8.10.4, cabal: 3.4.0.0, primary: true, extension: '' }
-          - { os: macos-10.15, ghc: 8.10.4, cabal: 3.4.0.0, primary: false, extension: '' }
-          - { os: windows-2019, ghc: 8.10.4, cabal: 3.4.0.0, primary: false, extension: '.exe' }
+          - os: ubuntu-20.04
+            ghc: 8.10.4
+          - os: macos-10.15
+            ghc: 8.10.4
+          - os: windows-2019
+            ghc: 8.10.4
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -24,7 +28,6 @@ jobs:
         uses: haskell/actions/setup@v1
         with:
           ghc-version: ${{ matrix.ghc }}
-          cabal-version: ${{ matrix.cabal }}
 
       - run: cabal freeze && cat cabal.project.freeze
 
@@ -36,8 +39,6 @@ jobs:
 
       - run: cabal build
 
-      - run: cabal test --test-show-details direct
-
       - run: cabal exec runghc src/util/copy-executable.hs
 
       - run: strip docker/rattletrap
@@ -45,62 +46,37 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: docker/rattletrap
-          name: rattletrap-${{ github.sha }}-${{ matrix.os }}${{ matrix.extension }}
+          name: rattletrap-executable-${{ github.sha }}-${{ matrix.os }}
 
-      - run: cabal exec -- rattletrap --schema | tee schema.json
+      - run: cabal test --test-show-details direct
 
-      - if: matrix.primary
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
         with:
-          path: schema.json
-          name: rattletrap-${{ github.sha }}-schema.json
+          path: output/schema.json
+          name: rattletrap-schema-${{ github.sha }}-${{ matrix.os }}.json
 
-      - run: cabal sdist --output-dir docker
+      - run: cabal sdist --output-dir output
 
-      - if: matrix.primary
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
         with:
-          path: docker/rattletrap-*.tar.gz
-          name: rattletrap-${{ github.sha }}.tar.gz
+          path: output/rattletrap-*.tar.gz
+          name: rattletrap-package-${{ github.sha }}-${{ matrix.os }}.tar.gz
 
       - run: cabal check
 
-      - if: github.event_name == 'release' && matrix.primary
-        run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' docker/rattletrap-*.tar.gz
+  brittany:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo '::add-matcher::config/brittany-problem-matcher.json'
+      - run: git ls-files '*.hs' | xargs docker run --volume "$PWD:$PWD" --workdir "$PWD" itprotv/brittany:64830d767a4eb58aff4e1f1d72fcb489be367893 brittany --check-mode --config-file config/brittany.yaml
 
-      - if: github.event_name == 'release'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          asset_content_type: application/octet-stream
-          asset_name: rattletrap-${{ github.event.release.tag_name }}-${{ matrix.os }}${{ matrix.extension }}
-          asset_path: docker/rattletrap
-          upload_url: ${{ github.event.release.upload_url }}
-
-      - if: github.event_name == 'release' && matrix.primary
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          asset_content_type: application/json
-          asset_name: rattletrap-${{ github.event.release.tag_name }}-schema.json
-          asset_path: schema.json
-          upload_url: ${{ github.event.release.upload_url }}
-
-      - if: github.event_name == 'release' && matrix.primary
-        uses: docker/setup-buildx-action@v1
-
-      - if: github.event_name == 'release' && matrix.primary
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - if: github.event_name == 'release' && matrix.primary
-        uses: docker/build-push-action@v2
-        with:
-          context: docker
-          file: docker/Dockerfile
-          tags: taylorfausak/rattletrap:version-${{ github.event.release.tag_name }}
-          push: true
+  hlint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: curl --location --output hlint.tar.gz https://github.com/ndmitchell/hlint/releases/download/v3.2.7/hlint-3.2.7-x86_64-linux.tar.gz
+      - run: gzip --decompress hlint.tar.gz
+      - run: tar --extract --file hlint.tar
+      - run: echo '::add-matcher::config/hlint-problem-matcher.json'
+      - run: hlint-3.2.7/hlint --hint config/hlint.yaml src
