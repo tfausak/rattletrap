@@ -85,6 +85,7 @@ jobs:
       - run: hlint-3.2.7/hlint --hint config/hlint.yaml src
 
   asset-linux:
+    needs: build
     if: github.event_name == 'release'
     runs-on: ubuntu-20.04
     steps:
@@ -102,6 +103,7 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
 
   asset-macos:
+    needs: build
     if: github.event_name == 'release'
     runs-on: ubuntu-20.04
     steps:
@@ -119,6 +121,7 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
 
   asset-windows:
+    needs: build
     if: github.event_name == 'release'
     runs-on: ubuntu-20.04
     steps:
@@ -136,6 +139,7 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
 
   asset-tarball:
+    needs: build
     if: github.event_name == 'release'
     runs-on: ubuntu-20.04
     steps:
@@ -153,6 +157,7 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
 
   asset-schema:
+    needs: build
     if: github.event_name == 'release'
     runs-on: ubuntu-20.04
     steps:
@@ -170,6 +175,7 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
 
   docker:
+    needs: build
     if: github.event_name == 'release'
     runs-on: ubuntu-20.04
     steps:
@@ -190,6 +196,7 @@ jobs:
           push: true
 
   hackage:
+    needs: build
     if: github.event_name == 'release'
     runs-on: ubuntu-20.04
     steps:
