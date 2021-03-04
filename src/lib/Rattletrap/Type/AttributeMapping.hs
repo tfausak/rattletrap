@@ -32,4 +32,7 @@ bytePut :: AttributeMapping -> BytePut.BytePut
 bytePut x = U32.bytePut (objectId x) <> U32.bytePut (streamId x)
 
 byteGet :: ByteGet.ByteGet AttributeMapping
-byteGet = AttributeMapping <$> U32.byteGet <*> U32.byteGet
+byteGet = do
+  objectId <- U32.byteGet
+  streamId <- U32.byteGet
+  pure AttributeMapping { objectId, streamId }

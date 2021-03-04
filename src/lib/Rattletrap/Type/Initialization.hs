@@ -43,7 +43,7 @@ bitPut initialization =
     <> foldMap Int8Vector.bitPut (rotation initialization)
 
 bitGet :: Version.Version -> Bool -> Bool -> BitGet.BitGet Initialization
-bitGet version hasLocation hasRotation =
-  Initialization
-    <$> whenMaybe hasLocation (Vector.bitGet version)
-    <*> whenMaybe hasRotation Int8Vector.bitGet
+bitGet version hasLocation hasRotation = do
+  location <- whenMaybe hasLocation (Vector.bitGet version)
+  rotation <- whenMaybe hasRotation Int8Vector.bitGet
+  pure Initialization { location, rotation }

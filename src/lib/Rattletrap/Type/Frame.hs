@@ -78,8 +78,8 @@ bitGet
        (Map.Map CompressedWord.CompressedWord U32.U32)
        BitGet.BitGet
        Frame
-bitGet version limit classes =
-  Frame
-    <$> Trans.lift F32.bitGet
-    <*> Trans.lift F32.bitGet
-    <*> Replication.decodeReplicationsBits version limit classes
+bitGet version limit classes = do
+  time <- Trans.lift F32.bitGet
+  delta <- Trans.lift F32.bitGet
+  replications <- Replication.decodeReplicationsBits version limit classes
+  pure Frame { time, delta, replications }

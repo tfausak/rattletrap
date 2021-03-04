@@ -190,41 +190,38 @@ byteGet
   -- 'Rattletrap.Header.getMaxChannels'.
   -> ByteGet.ByteGet Content
 byteGet version numFrames maxChannels = do
-  (levels_, keyFrames_, streamSize_) <-
-    (,,)
-    <$> List.byteGet Str.byteGet
-    <*> List.byteGet KeyFrame.byteGet
-    <*> U32.byteGet
-  (stream, messages_, marks_, packages_, objects_, names_, classMappings_, caches_) <-
-    (,,,,,,,)
-    <$> ByteGet.byteString (fromIntegral (U32.toWord32 streamSize_))
-    <*> List.byteGet Message.byteGet
-    <*> List.byteGet Mark.byteGet
-    <*> List.byteGet Str.byteGet
-    <*> List.byteGet Str.byteGet
-    <*> List.byteGet Str.byteGet
-    <*> List.byteGet ClassMapping.byteGet
-    <*> List.byteGet Cache.byteGet
+  levels <- List.byteGet Str.byteGet
+  keyFrames <- List.byteGet KeyFrame.byteGet
+  streamSize <- U32.byteGet
+  stream <- ByteGet.byteString . fromIntegral $ U32.toWord32 streamSize
+  messages <- List.byteGet Message.byteGet
+  marks <- List.byteGet Mark.byteGet
+  packages <- List.byteGet Str.byteGet
+  objects <- List.byteGet Str.byteGet
+  names <- List.byteGet Str.byteGet
+  classMappings <- List.byteGet ClassMapping.byteGet
+  caches <- List.byteGet Cache.byteGet
   let
     classAttributeMap =
-      ClassAttributeMap.make objects_ classMappings_ caches_ names_
+      ClassAttributeMap.make objects classMappings caches names
     bitGet = State.evalStateT
       (Frame.decodeFramesBits version numFrames maxChannels classAttributeMap)
       mempty
-  frames_ <-
+  frames <-
     either fail pure . ByteGet.run (BitGet.toByteGet bitGet) $ reverseBytes
       stream
-  Content
-      levels_
-      keyFrames_
-      streamSize_
-      frames_
-      messages_
-      marks_
-      packages_
-      objects_
-      names_
-      classMappings_
-      caches_
-    . LazyBytes.unpack
-    <$> ByteGet.remaining
+  unknown <- LazyBytes.unpack <$> ByteGet.remaining
+  pure Content
+    { levels
+    , keyFrames
+    , streamSize
+    , frames
+    , messages
+    , marks
+    , packages
+    , objects
+    , names
+    , classMappings
+    , caches
+    , unknown
+    }
