@@ -92,14 +92,14 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: rattletrap-executable-${{ github.sha }}-ubuntu-20.04
-          path: output/ubuntu-executable
+          path: output
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-ubuntu-20.04
-          asset_path: output/ubuntu-executable
+          asset_path: output/rattletrap-executable-${{ github.sha }}-ubuntu-20.04
           upload_url: ${{ github.event.release.upload_url }}
 
   asset-macos:
@@ -110,14 +110,14 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: rattletrap-executable-${{ github.sha }}-macos-10.15
-          path: output/macos-executable
+          path: output
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-macos-10.15
-          asset_path: output/macos-executable
+          asset_path: output/rattletrap-executable-${{ github.sha }}-macos-10.15
           upload_url: ${{ github.event.release.upload_url }}
 
   asset-windows:
@@ -128,14 +128,14 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: rattletrap-executable-${{ github.sha }}-windows-2019
-          path: output/windows-executable
+          path: output
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-windows-2019.exe
-          asset_path: output/windows-executable
+          asset_path: output/rattletrap-executable-${{ github.sha }}-windows-2019
           upload_url: ${{ github.event.release.upload_url }}
 
   asset-tarball:
@@ -146,14 +146,14 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: rattletrap-package-${{ github.sha }}-ubuntu-20.04.tar.gz
-          path: output/rattletrap.tar.gz
+          path: output
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           asset_content_type: application/gzip
           asset_name: rattletrap-${{ github.event.release.tag_name }}.tar.gz
-          asset_path: output/rattletrap.tar.gz
+          asset_path: output/rattletrap-package-${{ github.sha }}-ubuntu-20.04.tar.gz
           upload_url: ${{ github.event.release.upload_url }}
 
   asset-schema:
@@ -164,14 +164,14 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: rattletrap-schema-${{ github.sha }}-ubuntu-20.04.json
-          path: output/schema.json
+          path: output
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           asset_content_type: application/json
           asset_name: rattletrap-${{ github.event.release.tag_name }}-schema.json
-          asset_path: output/schema.json
+          asset_path: output/rattletrap-schema-${{ github.sha }}-ubuntu-20.04.json
           upload_url: ${{ github.event.release.upload_url }}
 
   docker:
@@ -182,7 +182,8 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: rattletrap-executable-${{ github.sha }}-ubuntu-20.04
-          path: docker/rattletrap
+          path: output
+      - run: mv output/rattletrap-executable-${{ github.sha }}-ubuntu-20.04 docker/rattletrap
       - uses: docker/setup-buildx-action@v1
       - uses: docker/login-action@v1
         with:
@@ -203,5 +204,6 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: rattletrap-package-${{ github.sha }}-ubuntu-20.04.tar.gz
-          path: output/rattletrap-${{ github.event.release.tag_name }}.tar.gz
-      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' output/rattletrap-${{ github.event.release.tag_name }}.tar.gz
+          path: output
+      - run: mv output/rattletrap-package-${{ github.sha }}-ubuntu-20.04.tar.gz rattletrap-${{ github.event.release.tag_name }}.tar.gz
+      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' rattletrap-${{ github.event.release.tag_name }}.tar.gz
