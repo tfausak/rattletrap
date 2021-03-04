@@ -84,6 +84,17 @@ jobs:
       - run: echo '::add-matcher::config/hlint-problem-matcher.json'
       - run: hlint-3.2.7/hlint --hint config/hlint.yaml src
 
+  artifact:
+    needs: build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: rattletrap-executable-${{ github.sha }}-ubuntu-20.04
+          path: output
+      - run: ls -R .
+      - run: ls -R output
+
   asset-linux:
     needs: build
     if: github.event_name == 'release'
