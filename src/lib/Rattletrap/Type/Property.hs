@@ -45,5 +45,7 @@ bytePut x =
 
 byteGet :: ByteGet.ByteGet Property
 byteGet = do
-  kind_ <- Str.byteGet
-  Property kind_ <$> U64.byteGet <*> PropertyValue.byteGet byteGet kind_
+  kind <- Str.byteGet
+  size <- U64.byteGet
+  value <- PropertyValue.byteGet byteGet kind
+  pure Property { kind, size, value }

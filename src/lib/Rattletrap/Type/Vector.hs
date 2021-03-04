@@ -67,14 +67,17 @@ bitPut vector =
 
 bitGet :: Version.Version -> BitGet.BitGet Vector
 bitGet version = do
-  size_ <- CompressedWord.bitGet (if has21Bits version then 21 else 19)
+  size <- CompressedWord.bitGet (if has21Bits version then 21 else 19)
   let
-    limit = getLimit size_
-    bias_ = getBias size_
-  Vector size_ bias_
-    <$> fmap (fromDelta bias_) (CompressedWord.bitGet limit)
-    <*> fmap (fromDelta bias_) (CompressedWord.bitGet limit)
-    <*> fmap (fromDelta bias_) (CompressedWord.bitGet limit)
+    limit = getLimit size
+    bias = getBias size
+  x <- getPart limit bias
+  y <- getPart limit bias
+  z <- getPart limit bias
+  pure Vector { size, bias, x, y, z }
+
+getPart :: Word -> Word -> BitGet.BitGet Int
+getPart limit bias = fmap (fromDelta bias) (CompressedWord.bitGet limit)
 
 has21Bits :: Version.Version -> Bool
 has21Bits v =

@@ -9,3 +9,4 @@
 - group: { name: generalise, enabled: true }
 - ignore: { name: Use <|> }
 - ignore: { name: Use lambda-case }
+- ignore: { name: Use <$> }

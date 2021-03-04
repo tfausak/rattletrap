@@ -49,9 +49,9 @@ bitPut appliedDamageAttribute =
     <> I32.bitPut (unknown4 appliedDamageAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet AppliedDamage
-bitGet version =
-  AppliedDamage
-    <$> U8.bitGet
-    <*> Vector.bitGet version
-    <*> I32.bitGet
-    <*> I32.bitGet
+bitGet version = do
+  unknown1 <- U8.bitGet
+  location <- Vector.bitGet version
+  unknown3 <- I32.bitGet
+  unknown4 <- I32.bitGet
+  pure AppliedDamage { unknown1, location, unknown3, unknown4 }

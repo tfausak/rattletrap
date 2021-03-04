@@ -144,8 +144,12 @@ putPart :: Double -> BitPut.BitPut
 putPart = CompressedWord.bitPut . compressPart
 
 bitGet :: BitGet.BitGet Quaternion
-bitGet =
-  toQuaternion <$> decodeComponent <*> decodePart <*> decodePart <*> decodePart
+bitGet = do
+  component <- decodeComponent
+  a <- decodePart
+  b <- decodePart
+  c <- decodePart
+  pure $ toQuaternion component a b c
 
 decodeComponent :: BitGet.BitGet Component
 decodeComponent = do

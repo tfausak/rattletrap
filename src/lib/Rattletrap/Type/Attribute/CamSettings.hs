@@ -73,15 +73,23 @@ bitPut camSettingsAttribute =
     <> foldMap F32.bitPut (transitionSpeed camSettingsAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet CamSettings
-bitGet version =
-  CamSettings
-    <$> F32.bitGet
-    <*> F32.bitGet
-    <*> F32.bitGet
-    <*> F32.bitGet
-    <*> F32.bitGet
-    <*> F32.bitGet
-    <*> whenMaybe (hasTransitionSpeed version) F32.bitGet
+bitGet version = do
+  fov <- F32.bitGet
+  height <- F32.bitGet
+  angle <- F32.bitGet
+  distance <- F32.bitGet
+  stiffness <- F32.bitGet
+  swivelSpeed <- F32.bitGet
+  transitionSpeed <- whenMaybe (hasTransitionSpeed version) F32.bitGet
+  pure CamSettings
+    { fov
+    , height
+    , angle
+    , distance
+    , stiffness
+    , swivelSpeed
+    , transitionSpeed
+    }
 
 hasTransitionSpeed :: Version.Version -> Bool
 hasTransitionSpeed v =
