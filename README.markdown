@@ -2,6 +2,7 @@
 
 [![Version badge][]][version]
 [![Build badge][]][build]
+[![Docker badge][]][docker]
 
 Rattletrap parses and generates [Rocket League][] replays. Parsing replays can
 be used to analyze data in order to collect high-level statistics like players
@@ -23,7 +24,7 @@ If you'd like to use a program written in a different language, consider
 
 Get Rattletrap by downloading [the latest release][] for your platform.
 
-Rattletrap is also available as [a Docker image][].
+Rattletrap is also available as [a Docker image][docker].
 
 To build Rattletrap from source, install [Stack][]. Then run
 `stack --resolver lts-14.25 install rattletrap`.
@@ -125,10 +126,12 @@ $ rattletrap -i input.replay |
 ```
 
 [Rattletrap]: https://github.com/tfausak/rattletrap
-[Version badge]: https://img.shields.io/hackage/v/rattletrap.svg?logo=haskell&label=version&color=brightgreen
+[Version badge]: https://img.shields.io/hackage/v/rattletrap.svg?logo=haskell
 [version]: https://hackage.haskell.org/package/rattletrap
 [Build badge]: https://github.com/tfausak/rattletrap/workflows/ci/badge.svg
 [build]: https://github.com/tfausak/rattletrap/actions
+[Docker badge]: https://img.shields.io/docker/v/taylorfausak/rattletrap?label=docker&logo=docker&logoColor=white
+[docker]: https://hub.docker.com/r/taylorfausak/rattletrap
 [Rocket League]: https://www.rocketleague.com
 [1.92]: https://www.rocketleague.com/news/patch-notes-v1-92/
 [Ball Chasing]: https://ballchasing.com
@@ -136,5 +139,4 @@ $ rattletrap -i input.replay |
 [C# parser]: https://github.com/jjbott/RocketLeagueReplayParser
 [Rust parser]: https://github.com/nickbabcock/rrrocket
 [the latest release]: https://github.com/tfausak/rattletrap/releases/latest
-[a Docker image]: https://hub.docker.com/r/taylorfausak/rattletrap
 [Stack]: https://docs.haskellstack.org/en/stable/README/
