@@ -24,4 +24,6 @@ bitPut :: Location -> BitPut.BitPut
 bitPut locationAttribute = Vector.bitPut (value locationAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet Location
-bitGet version = Location <$> Vector.bitGet version
+bitGet version = do
+  value <- Vector.bitGet version
+  pure Location { value }

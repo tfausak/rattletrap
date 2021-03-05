@@ -28,9 +28,9 @@ data ReplicationValue
 
 instance Json.FromJSON ReplicationValue where
   parseJSON = Json.withObject "ReplicationValue" $ \object -> Foldable.asum
-    [ Spawned <$> Json.required object "spawned"
-    , Updated <$> Json.required object "updated"
-    , Destroyed <$> Json.required object "destroyed"
+    [ fmap Spawned $ Json.required object "spawned"
+    , fmap Updated $ Json.required object "updated"
+    , fmap Destroyed $ Json.required object "destroyed"
     ]
 
 instance Json.ToJSON ReplicationValue where
@@ -68,7 +68,7 @@ bitGet version classAttributeMap actorId = do
     then do
       isNew <- Trans.lift BitGet.bool
       if isNew
-        then Spawned <$> Spawned.bitGet version classAttributeMap actorId
-        else Updated <$> Trans.lift
-          (Updated.bitGet version classAttributeMap actorMap actorId)
-    else Destroyed <$> Trans.lift Destroyed.bitGet
+        then fmap Spawned $ Spawned.bitGet version classAttributeMap actorId
+        else fmap Updated . Trans.lift
+          $ Updated.bitGet version classAttributeMap actorMap actorId
+    else fmap Destroyed $ Trans.lift Destroyed.bitGet

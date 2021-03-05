@@ -56,7 +56,7 @@ decodeReplicationsBits
        (List.List Replication)
 decodeReplicationsBits version limit classes = List.untilM $ do
   p <- Trans.lift BitGet.bool
-  if p then Just <$> bitGet version limit classes else pure Nothing
+  if p then fmap Just $ bitGet version limit classes else pure Nothing
 
 bitGet
   :: Version.Version
@@ -68,4 +68,4 @@ bitGet
        Replication
 bitGet version limit classes = do
   actor <- Trans.lift (CompressedWord.bitGet limit)
-  Replication actor <$> ReplicationValue.bitGet version classes actor
+  fmap (Replication actor) $ ReplicationValue.bitGet version classes actor
