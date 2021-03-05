@@ -62,152 +62,92 @@ jobs:
         with:
           path: artifact
 
-  # brittany:
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - run: echo '::add-matcher::config/brittany-problem-matcher.json'
-  #     - run: git ls-files '*.hs' | xargs docker run --volume "$PWD:$PWD" --workdir "$PWD" itprotv/brittany:64830d767a4eb58aff4e1f1d72fcb489be367893 brittany --check-mode --config-file config/brittany.yaml
-
-  # hlint:
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - run: curl --location --output hlint.tar.gz https://github.com/ndmitchell/hlint/releases/download/v3.2.7/hlint-3.2.7-x86_64-linux.tar.gz
-  #     - run: gzip --decompress hlint.tar.gz
-  #     - run: tar --extract --file hlint.tar
-  #     - run: echo '::add-matcher::config/hlint-problem-matcher.json'
-  #     - run: hlint-3.2.7/hlint --hint config/hlint.yaml src
-
-  artifact:
-    needs: build
+  brittany:
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/checkout@v2
+      - run: echo '::add-matcher::config/brittany-problem-matcher.json'
+      - run: git ls-files '*.hs' | xargs docker run --volume "$PWD:$PWD" --workdir "$PWD" itprotv/brittany:64830d767a4eb58aff4e1f1d72fcb489be367893 brittany --check-mode --config-file config/brittany.yaml
+
+  hlint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: curl --location --output hlint.tar.gz https://github.com/ndmitchell/hlint/releases/download/v3.2.7/hlint-3.2.7-x86_64-linux.tar.gz
+      - run: gzip --decompress hlint.tar.gz
+      - run: tar --extract --file hlint.tar
+      - run: echo '::add-matcher::config/hlint-problem-matcher.json'
+      - run: hlint-3.2.7/hlint --hint config/hlint.yaml src
+
+  release:
+    needs: build
+    if: github.event_name == 'release'
+    runs-os: ubuntu-20.04
+    steps:
+
       - uses: actions/download-artifact@v2
         with:
           name: artifact
-      - run: ls -R .
 
-  # asset-linux:
-  #   needs: build
-  #   if: github.event_name == 'release'
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/download-artifact@v2
-  #       with:
-  #         name: rattletrap-executable-${{ github.sha }}-ubuntu-20.04
-  #         path: output
-  #     - uses: actions/upload-release-asset@v1
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         asset_content_type: application/octet-stream
-  #         asset_name: rattletrap-${{ github.event.release.tag_name }}-ubuntu-20.04
-  #         asset_path: output/rattletrap-executable-${{ github.sha }}-ubuntu-20.04
-  #         upload_url: ${{ github.event.release.upload_url }}
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/octet-stream
+          asset_name: rattletrap-${{ github.event.release.tag_name }}-ubuntu
+          asset_path: artifact/ubuntu-20.04/rattletrap
+          upload_url: ${{ github.event.release.upload_url }}
 
-  # asset-macos:
-  #   needs: build
-  #   if: github.event_name == 'release'
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/download-artifact@v2
-  #       with:
-  #         name: rattletrap-executable-${{ github.sha }}-macos-10.15
-  #         path: output
-  #     - uses: actions/upload-release-asset@v1
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         asset_content_type: application/octet-stream
-  #         asset_name: rattletrap-${{ github.event.release.tag_name }}-macos-10.15
-  #         asset_path: output/rattletrap-executable-${{ github.sha }}-macos-10.15
-  #         upload_url: ${{ github.event.release.upload_url }}
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/octet-stream
+          asset_name: rattletrap-${{ github.event.release.tag_name }}-macos
+          asset_path: artifact/macos-10.15/rattletrap
+          upload_url: ${{ github.event.release.upload_url }}
 
-  # asset-windows:
-  #   needs: build
-  #   if: github.event_name == 'release'
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/download-artifact@v2
-  #       with:
-  #         name: rattletrap-executable-${{ github.sha }}-windows-2019
-  #         path: output
-  #     - uses: actions/upload-release-asset@v1
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         asset_content_type: application/octet-stream
-  #         asset_name: rattletrap-${{ github.event.release.tag_name }}-windows-2019.exe
-  #         asset_path: output/rattletrap-executable-${{ github.sha }}-windows-2019
-  #         upload_url: ${{ github.event.release.upload_url }}
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/octet-stream
+          asset_name: rattletrap-${{ github.event.release.tag_name }}-windows.exe
+          asset_path: artifact/windows-2019/rattletrap
+          upload_url: ${{ github.event.release.upload_url }}
 
-  # asset-tarball:
-  #   needs: build
-  #   if: github.event_name == 'release'
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/download-artifact@v2
-  #       with:
-  #         name: rattletrap-package-${{ github.sha }}-ubuntu-20.04.tar.gz
-  #         path: output
-  #     - uses: actions/upload-release-asset@v1
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         asset_content_type: application/gzip
-  #         asset_name: rattletrap-${{ github.event.release.tag_name }}.tar.gz
-  #         asset_path: output/rattletrap-package-${{ github.sha }}-ubuntu-20.04.tar.gz
-  #         upload_url: ${{ github.event.release.upload_url }}
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/gzip
+          asset_name: rattletrap-${{ github.event.release.tag_name }}.tar.gz
+          asset_path: artifact/ubuntu-20.04/rattletrap-${{ github.event.release.tag_name }}.tar.gz
+          upload_url: ${{ github.event.release.upload_url }}
 
-  # asset-schema:
-  #   needs: build
-  #   if: github.event_name == 'release'
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/download-artifact@v2
-  #       with:
-  #         name: rattletrap-schema-${{ github.sha }}-ubuntu-20.04.json
-  #         path: output
-  #     - uses: actions/upload-release-asset@v1
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         asset_content_type: application/json
-  #         asset_name: rattletrap-${{ github.event.release.tag_name }}-schema.json
-  #         asset_path: output/rattletrap-schema-${{ github.sha }}-ubuntu-20.04.json
-  #         upload_url: ${{ github.event.release.upload_url }}
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/json
+          asset_name: rattletrap-${{ github.event.release.tag_name }}-schema.json
+          asset_path: artifact/ubuntu-20.04/schema.json
+          upload_url: ${{ github.event.release.upload_url }}
 
-  # docker:
-  #   needs: build
-  #   if: github.event_name == 'release'
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/download-artifact@v2
-  #       with:
-  #         name: rattletrap-executable-${{ github.sha }}-ubuntu-20.04
-  #         path: output
-  #     - run: mv output/rattletrap-executable-${{ github.sha }}-ubuntu-20.04 docker/rattletrap
-  #     - uses: docker/setup-buildx-action@v1
-  #     - uses: docker/login-action@v1
-  #       with:
-  #         username: ${{ secrets.DOCKER_USERNAME }}
-  #         password: ${{ secrets.DOCKER_PASSWORD }}
-  #     - uses: docker/build-push-action@v2
-  #       with:
-  #         context: docker
-  #         file: docker/Dockerfile
-  #         tags: taylorfausak/rattletrap:version-${{ github.event.release.tag_name }}
-  #         push: true
+      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' artifact/ubuntu-20.04/rattletrap-${{ github.event.release.tag_name }}.tar.gz
 
-  # hackage:
-  #   needs: build
-  #   if: github.event_name == 'release'
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/download-artifact@v2
-  #       with:
-  #         name: rattletrap-package-${{ github.sha }}-ubuntu-20.04.tar.gz
-  #         path: output
-  #     - run: mv output/rattletrap-package-${{ github.sha }}-ubuntu-20.04.tar.gz rattletrap-${{ github.event.release.tag_name }}.tar.gz
-  #     - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' rattletrap-${{ github.event.release.tag_name }}.tar.gz
+      - run: mv artifact/ubuntu-20.04/rattletrap docker/rattletrap
+
+      - uses: docker/setup-buildx-action@v1
+
+      - uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - uses: docker/build-push-action@v2
+        with:
+          context: docker
+          file: docker/Dockerfile
+          tags: taylorfausak/rattletrap:version-${{ github.event.release.tag_name }}
+          push: true
