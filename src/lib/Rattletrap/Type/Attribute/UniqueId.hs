@@ -44,5 +44,7 @@ bitPut uniqueIdAttribute =
 
 bitGet :: Version.Version -> BitGet.BitGet UniqueId
 bitGet version = do
-  systemId_ <- U8.bitGet
-  UniqueId systemId_ <$> RemoteId.bitGet version systemId_ <*> U8.bitGet
+  systemId <- U8.bitGet
+  remoteId <- RemoteId.bitGet version systemId
+  localId <- U8.bitGet
+  pure UniqueId { systemId, remoteId, localId }

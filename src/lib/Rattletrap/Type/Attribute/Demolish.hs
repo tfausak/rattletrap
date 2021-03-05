@@ -65,11 +65,18 @@ bitPut demolishAttribute =
     <> Vector.bitPut (victimVelocity demolishAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet Demolish
-bitGet version =
-  Demolish
-    <$> BitGet.bool
-    <*> U32.bitGet
-    <*> BitGet.bool
-    <*> U32.bitGet
-    <*> Vector.bitGet version
-    <*> Vector.bitGet version
+bitGet version = do
+  attackerFlag <- BitGet.bool
+  attackerActorId <- U32.bitGet
+  victimFlag <- BitGet.bool
+  victimActorId <- U32.bitGet
+  attackerVelocity <- Vector.bitGet version
+  victimVelocity <- Vector.bitGet version
+  pure Demolish
+    { attackerFlag
+    , attackerActorId
+    , victimFlag
+    , victimActorId
+    , attackerVelocity
+    , victimVelocity
+    }

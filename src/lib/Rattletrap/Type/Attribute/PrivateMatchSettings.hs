@@ -64,11 +64,18 @@ bitPut privateMatchSettingsAttribute =
     <> BitPut.bool (flag privateMatchSettingsAttribute)
 
 bitGet :: BitGet.BitGet PrivateMatchSettings
-bitGet =
-  PrivateMatchSettings
-    <$> Str.bitGet
-    <*> U32.bitGet
-    <*> U32.bitGet
-    <*> Str.bitGet
-    <*> Str.bitGet
-    <*> BitGet.bool
+bitGet = do
+  mutators <- Str.bitGet
+  joinableBy <- U32.bitGet
+  maxPlayers <- U32.bitGet
+  gameName <- Str.bitGet
+  password <- Str.bitGet
+  flag <- BitGet.bool
+  pure PrivateMatchSettings
+    { mutators
+    , joinableBy
+    , maxPlayers
+    , gameName
+    , password
+    , flag
+    }

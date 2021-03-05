@@ -63,13 +63,13 @@ bitPut reservationAttribute =
 
 bitGet :: Version.Version -> BitGet.BitGet Reservation
 bitGet version = do
-  number_ <- CompressedWord.bitGet 7
-  uniqueId_ <- UniqueId.bitGet version
-  Reservation number_ uniqueId_
-    <$> whenMaybe (UniqueId.systemId uniqueId_ /= U8.fromWord8 0) Str.bitGet
-    <*> BitGet.bool
-    <*> BitGet.bool
-    <*> whenMaybe (hasUnknown3 version) (BitGet.word8 6)
+  number <- CompressedWord.bitGet 7
+  uniqueId <- UniqueId.bitGet version
+  name <- whenMaybe (UniqueId.systemId uniqueId /= U8.fromWord8 0) Str.bitGet
+  unknown1 <- BitGet.bool
+  unknown2 <- BitGet.bool
+  unknown3 <- whenMaybe (hasUnknown3 version) (BitGet.word8 6)
+  pure Reservation { number, uniqueId, name, unknown1, unknown2, unknown3 }
 
 hasUnknown3 :: Version.Version -> Bool
 hasUnknown3 v =

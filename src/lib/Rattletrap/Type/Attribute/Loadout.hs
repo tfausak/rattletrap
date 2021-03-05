@@ -133,21 +133,39 @@ bitPut loadoutAttribute =
 
 bitGet :: BitGet.BitGet Loadout
 bitGet = do
-  version_ <- U8.bitGet
-  Loadout version_
-    <$> U32.bitGet
-    <*> U32.bitGet
-    <*> U32.bitGet
-    <*> U32.bitGet
-    <*> U32.bitGet
-    <*> U32.bitGet
-    <*> U32.bitGet
-    <*> whenMaybe (U8.toWord8 version_ >= 11) U32.bitGet
-    <*> whenMaybe (U8.toWord8 version_ >= 16) U32.bitGet
-    <*> whenMaybe (U8.toWord8 version_ >= 16) U32.bitGet
-    <*> whenMaybe (U8.toWord8 version_ >= 16) U32.bitGet
-    <*> whenMaybe (U8.toWord8 version_ >= 17) U32.bitGet
-    <*> whenMaybe (U8.toWord8 version_ >= 19) U32.bitGet
-    <*> whenMaybe (U8.toWord8 version_ >= 22) U32.bitGet
-    <*> whenMaybe (U8.toWord8 version_ >= 22) U32.bitGet
-    <*> whenMaybe (U8.toWord8 version_ >= 22) U32.bitGet
+  version <- U8.bitGet
+  body <- U32.bitGet
+  decal <- U32.bitGet
+  wheels <- U32.bitGet
+  rocketTrail <- U32.bitGet
+  antenna <- U32.bitGet
+  topper <- U32.bitGet
+  unknown1 <- U32.bitGet
+  unknown2 <- whenMaybe (U8.toWord8 version >= 11) U32.bitGet
+  engineAudio <- whenMaybe (U8.toWord8 version >= 16) U32.bitGet
+  trail <- whenMaybe (U8.toWord8 version >= 16) U32.bitGet
+  goalExplosion <- whenMaybe (U8.toWord8 version >= 16) U32.bitGet
+  banner <- whenMaybe (U8.toWord8 version >= 17) U32.bitGet
+  unknown3 <- whenMaybe (U8.toWord8 version >= 19) U32.bitGet
+  unknown4 <- whenMaybe (U8.toWord8 version >= 22) U32.bitGet
+  unknown5 <- whenMaybe (U8.toWord8 version >= 22) U32.bitGet
+  unknown6 <- whenMaybe (U8.toWord8 version >= 22) U32.bitGet
+  pure Loadout
+    { version
+    , body
+    , decal
+    , wheels
+    , rocketTrail
+    , antenna
+    , topper
+    , unknown1
+    , unknown2
+    , engineAudio
+    , trail
+    , goalExplosion
+    , banner
+    , unknown3
+    , unknown4
+    , unknown5
+    , unknown6
+    }

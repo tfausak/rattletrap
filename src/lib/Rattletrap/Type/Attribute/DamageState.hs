@@ -66,11 +66,18 @@ bitPut damageStateAttribute =
     <> BitPut.bool (unknown6 damageStateAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet DamageState
-bitGet version =
-  DamageState
-    <$> U8.bitGet
-    <*> BitGet.bool
-    <*> I32.bitGet
-    <*> Vector.bitGet version
-    <*> BitGet.bool
-    <*> BitGet.bool
+bitGet version = do
+  unknown1 <- U8.bitGet
+  unknown2 <- BitGet.bool
+  unknown3 <- I32.bitGet
+  unknown4 <- Vector.bitGet version
+  unknown5 <- BitGet.bool
+  unknown6 <- BitGet.bool
+  pure DamageState
+    { unknown1
+    , unknown2
+    , unknown3
+    , unknown4
+    , unknown5
+    , unknown6
+    }

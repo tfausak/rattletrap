@@ -44,7 +44,9 @@ bitPut x = U8.bitPut (systemId x) <> foldMap
 
 bitGet :: Version.Version -> BitGet.BitGet PartyLeader
 bitGet version = do
-  systemId_ <- U8.bitGet
-  PartyLeader systemId_ <$> whenMaybe
-    (systemId_ /= U8.fromWord8 0)
-    ((,) <$> RemoteId.bitGet version systemId_ <*> U8.bitGet)
+  systemId <- U8.bitGet
+  id <- whenMaybe (systemId /= U8.fromWord8 0) $ do
+    remoteId <- RemoteId.bitGet version systemId
+    u8 <- U8.bitGet
+    pure (remoteId, u8)
+  pure PartyLeader { systemId, Rattletrap.Type.Attribute.PartyLeader.id }

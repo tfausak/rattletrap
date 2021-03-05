@@ -34,5 +34,7 @@ bitPut :: ExtendedExplosion -> BitPut.BitPut
 bitPut x = Explosion.bitPut (explosion x) <> FlaggedInt.bitPut (unknown x)
 
 bitGet :: Version.Version -> BitGet.BitGet ExtendedExplosion
-bitGet version =
-  ExtendedExplosion <$> Explosion.bitGet version <*> FlaggedInt.bitGet
+bitGet version = do
+  explosion <- Explosion.bitGet version
+  unknown <- FlaggedInt.bitGet
+  pure ExtendedExplosion { explosion, unknown }

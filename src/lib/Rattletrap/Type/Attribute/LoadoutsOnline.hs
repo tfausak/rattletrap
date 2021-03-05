@@ -52,9 +52,9 @@ bitPut loadoutsOnlineAttribute =
 
 bitGet
   :: Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet LoadoutsOnline
-bitGet version objectMap =
-  LoadoutsOnline
-    <$> LoadoutOnline.bitGet version objectMap
-    <*> LoadoutOnline.bitGet version objectMap
-    <*> BitGet.bool
-    <*> BitGet.bool
+bitGet version objectMap = do
+  blue <- LoadoutOnline.bitGet version objectMap
+  orange <- LoadoutOnline.bitGet version objectMap
+  unknown1 <- BitGet.bool
+  unknown2 <- BitGet.bool
+  pure LoadoutsOnline { blue, orange, unknown1, unknown2 }

@@ -32,4 +32,7 @@ bitPut flaggedIntAttribute = BitPut.bool (flag flaggedIntAttribute)
   <> I32.bitPut (int flaggedIntAttribute)
 
 bitGet :: BitGet.BitGet FlaggedInt
-bitGet = FlaggedInt <$> BitGet.bool <*> I32.bitGet
+bitGet = do
+  flag <- BitGet.bool
+  int <- I32.bitGet
+  pure FlaggedInt { flag, int }

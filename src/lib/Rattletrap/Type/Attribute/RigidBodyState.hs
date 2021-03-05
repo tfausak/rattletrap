@@ -65,9 +65,15 @@ bitPut rigidBodyStateAttribute =
 
 bitGet :: Version.Version -> BitGet.BitGet RigidBodyState
 bitGet version = do
-  sleeping_ <- BitGet.bool
-  RigidBodyState sleeping_
-    <$> Vector.bitGet version
-    <*> Rotation.bitGet version
-    <*> whenMaybe (not sleeping_) (Vector.bitGet version)
-    <*> whenMaybe (not sleeping_) (Vector.bitGet version)
+  sleeping <- BitGet.bool
+  location <- Vector.bitGet version
+  rotation <- Rotation.bitGet version
+  linearVelocity <- whenMaybe (not sleeping) (Vector.bitGet version)
+  angularVelocity <- whenMaybe (not sleeping) (Vector.bitGet version)
+  pure RigidBodyState
+    { sleeping
+    , location
+    , rotation
+    , linearVelocity
+    , angularVelocity
+    }
