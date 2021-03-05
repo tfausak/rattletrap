@@ -38,7 +38,7 @@ bitPut :: I8 -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut
 
 byteGet :: ByteGet.ByteGet I8
-byteGet = fromInt8 <$> ByteGet.int8
+byteGet = fmap fromInt8 ByteGet.int8
 
 bitGet :: BitGet.BitGet I8
 bitGet = BitGet.fromByteGet byteGet 1

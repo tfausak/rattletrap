@@ -38,7 +38,7 @@ bitPut :: I32 -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut
 
 byteGet :: ByteGet.ByteGet I32
-byteGet = fromInt32 <$> ByteGet.int32
+byteGet = fmap fromInt32 ByteGet.int32
 
 bitGet :: BitGet.BitGet I32
 bitGet = BitGet.fromByteGet byteGet 4

@@ -66,7 +66,9 @@ getMaxBits x =
   in if x < 1024 && x == 2 ^ n then n + 1 else n
 
 bitGet :: Word -> BitGet.BitGet CompressedWord
-bitGet limit_ = CompressedWord limit_ <$> step limit_ (getMaxBits_ limit_) 0 0
+bitGet limit = do
+  value <- step limit (getMaxBits_ limit) 0 0
+  pure CompressedWord { limit, value }
 
 getMaxBits_ :: Word -> Word
 getMaxBits_ x = do

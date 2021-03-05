@@ -57,13 +57,13 @@ bitGet
 bitGet version classes actors actor = do
   attributes <- lookupAttributeMap classes actors actor
   limit <- lookupAttributeIdLimit attributes actor
-  attribute <- CompressedWord.bitGet limit
-  name_ <- lookupAttributeName classes attributes attribute
-  Attribute attribute name_
-    <$> AttributeValue.bitGet
-          version
-          (ClassAttributeMap.objectMap classes)
-          name_
+  id <- CompressedWord.bitGet limit
+  name <- lookupAttributeName classes attributes id
+  value <- AttributeValue.bitGet
+    version
+    (ClassAttributeMap.objectMap classes)
+    name
+  pure Attribute { id, name, value }
 
 lookupAttributeMap
   :: ClassAttributeMap.ClassAttributeMap

@@ -92,43 +92,43 @@ data AttributeValue
 
 instance Json.FromJSON AttributeValue where
   parseJSON = Json.withObject "AttributeValue" $ \object -> Foldable.asum
-    [ AppliedDamage <$> Json.required object "applied_damage"
-    , Boolean <$> Json.required object "boolean"
-    , Byte <$> Json.required object "byte"
-    , CamSettings <$> Json.required object "cam_settings"
-    , ClubColors <$> Json.required object "club_colors"
-    , CustomDemolish <$> Json.required object "custom_demolish"
-    , DamageState <$> Json.required object "damage_state"
-    , Demolish <$> Json.required object "demolish"
-    , Enum <$> Json.required object "enum"
-    , Explosion <$> Json.required object "explosion"
-    , ExtendedExplosion <$> Json.required object "extended_explosion"
-    , FlaggedByte <$> Json.required object "flagged_byte"
-    , FlaggedInt <$> Json.required object "flagged_int"
-    , Float <$> Json.required object "float"
-    , GameMode <$> Json.required object "game_mode"
-    , Int <$> Json.required object "int"
-    , Int64 <$> Json.required object "int64"
-    , Loadout <$> Json.required object "loadout"
-    , LoadoutOnline <$> Json.required object "loadout_online"
-    , Loadouts <$> Json.required object "loadouts"
-    , LoadoutsOnline <$> Json.required object "loadouts_online"
-    , Location <$> Json.required object "location"
-    , MusicStinger <$> Json.required object "music_stinger"
-    , PartyLeader <$> Json.required object "party_leader"
-    , Pickup <$> Json.required object "pickup"
-    , PickupNew <$> Json.required object "pickup_new"
-    , PlayerHistoryKey <$> Json.required object "player_history_key"
-    , PrivateMatchSettings <$> Json.required object "private_match_settings"
-    , QWord <$> Json.required object "q_word"
-    , Reservation <$> Json.required object "reservation"
-    , RigidBodyState <$> Json.required object "rigid_body_state"
-    , StatEvent <$> Json.required object "stat_event"
-    , String <$> Json.required object "string"
-    , TeamPaint <$> Json.required object "team_paint"
-    , Title <$> Json.required object "title"
-    , UniqueId <$> Json.required object "unique_id"
-    , WeldedInfo <$> Json.required object "welded_info"
+    [ fmap AppliedDamage $ Json.required object "applied_damage"
+    , fmap Boolean $ Json.required object "boolean"
+    , fmap Byte $ Json.required object "byte"
+    , fmap CamSettings $ Json.required object "cam_settings"
+    , fmap ClubColors $ Json.required object "club_colors"
+    , fmap CustomDemolish $ Json.required object "custom_demolish"
+    , fmap DamageState $ Json.required object "damage_state"
+    , fmap Demolish $ Json.required object "demolish"
+    , fmap Enum $ Json.required object "enum"
+    , fmap Explosion $ Json.required object "explosion"
+    , fmap ExtendedExplosion $ Json.required object "extended_explosion"
+    , fmap FlaggedByte $ Json.required object "flagged_byte"
+    , fmap FlaggedInt $ Json.required object "flagged_int"
+    , fmap Float $ Json.required object "float"
+    , fmap GameMode $ Json.required object "game_mode"
+    , fmap Int $ Json.required object "int"
+    , fmap Int64 $ Json.required object "int64"
+    , fmap Loadout $ Json.required object "loadout"
+    , fmap LoadoutOnline $ Json.required object "loadout_online"
+    , fmap Loadouts $ Json.required object "loadouts"
+    , fmap LoadoutsOnline $ Json.required object "loadouts_online"
+    , fmap Location $ Json.required object "location"
+    , fmap MusicStinger $ Json.required object "music_stinger"
+    , fmap PartyLeader $ Json.required object "party_leader"
+    , fmap Pickup $ Json.required object "pickup"
+    , fmap PickupNew $ Json.required object "pickup_new"
+    , fmap PlayerHistoryKey $ Json.required object "player_history_key"
+    , fmap PrivateMatchSettings $ Json.required object "private_match_settings"
+    , fmap QWord $ Json.required object "q_word"
+    , fmap Reservation $ Json.required object "reservation"
+    , fmap RigidBodyState $ Json.required object "rigid_body_state"
+    , fmap StatEvent $ Json.required object "stat_event"
+    , fmap String $ Json.required object "string"
+    , fmap TeamPaint $ Json.required object "team_paint"
+    , fmap Title $ Json.required object "title"
+    , fmap UniqueId $ Json.required object "unique_id"
+    , fmap WeldedInfo $ Json.required object "welded_info"
     ]
 
 instance Json.ToJSON AttributeValue where
@@ -266,47 +266,47 @@ bitGet version objectMap name = do
     (Map.lookup (Str.toText name) Data.attributeTypes)
   case constructor of
     AttributeType.AppliedDamage ->
-      AppliedDamage <$> AppliedDamage.bitGet version
-    AttributeType.Boolean -> Boolean <$> Boolean.bitGet
-    AttributeType.Byte -> Byte <$> Byte.bitGet
-    AttributeType.CamSettings -> CamSettings <$> CamSettings.bitGet version
-    AttributeType.ClubColors -> ClubColors <$> ClubColors.bitGet
+      fmap AppliedDamage $ AppliedDamage.bitGet version
+    AttributeType.Boolean -> fmap Boolean Boolean.bitGet
+    AttributeType.Byte -> fmap Byte Byte.bitGet
+    AttributeType.CamSettings -> fmap CamSettings $ CamSettings.bitGet version
+    AttributeType.ClubColors -> fmap ClubColors ClubColors.bitGet
     AttributeType.CustomDemolish ->
-      CustomDemolish <$> CustomDemolish.bitGet version
-    AttributeType.DamageState -> DamageState <$> DamageState.bitGet version
-    AttributeType.Demolish -> Demolish <$> Demolish.bitGet version
-    AttributeType.Enum -> Enum <$> Enum.bitGet
-    AttributeType.Explosion -> Explosion <$> Explosion.bitGet version
+      fmap CustomDemolish $ CustomDemolish.bitGet version
+    AttributeType.DamageState -> fmap DamageState $ DamageState.bitGet version
+    AttributeType.Demolish -> fmap Demolish $ Demolish.bitGet version
+    AttributeType.Enum -> fmap Enum Enum.bitGet
+    AttributeType.Explosion -> fmap Explosion $ Explosion.bitGet version
     AttributeType.ExtendedExplosion ->
-      ExtendedExplosion <$> ExtendedExplosion.bitGet version
-    AttributeType.FlaggedInt -> FlaggedInt <$> FlaggedInt.bitGet
-    AttributeType.FlaggedByte -> FlaggedByte <$> FlaggedByte.bitGet
-    AttributeType.Float -> Float <$> Float.bitGet
-    AttributeType.GameMode -> GameMode <$> GameMode.bitGet version
-    AttributeType.Int -> Int <$> Int.bitGet
-    AttributeType.Int64 -> Int64 <$> Int64.bitGet
-    AttributeType.Loadout -> Loadout <$> Loadout.bitGet
+      fmap ExtendedExplosion $ ExtendedExplosion.bitGet version
+    AttributeType.FlaggedInt -> fmap FlaggedInt FlaggedInt.bitGet
+    AttributeType.FlaggedByte -> fmap FlaggedByte FlaggedByte.bitGet
+    AttributeType.Float -> fmap Float Float.bitGet
+    AttributeType.GameMode -> fmap GameMode $ GameMode.bitGet version
+    AttributeType.Int -> fmap Int Int.bitGet
+    AttributeType.Int64 -> fmap Int64 Int64.bitGet
+    AttributeType.Loadout -> fmap Loadout Loadout.bitGet
     AttributeType.LoadoutOnline ->
-      LoadoutOnline <$> LoadoutOnline.bitGet version objectMap
-    AttributeType.Loadouts -> Loadouts <$> Loadouts.bitGet
+      fmap LoadoutOnline $ LoadoutOnline.bitGet version objectMap
+    AttributeType.Loadouts -> fmap Loadouts Loadouts.bitGet
     AttributeType.LoadoutsOnline ->
-      LoadoutsOnline <$> LoadoutsOnline.bitGet version objectMap
-    AttributeType.Location -> Location <$> Location.bitGet version
-    AttributeType.MusicStinger -> MusicStinger <$> MusicStinger.bitGet
-    AttributeType.PartyLeader -> PartyLeader <$> PartyLeader.bitGet version
-    AttributeType.Pickup -> Pickup <$> Pickup.bitGet
-    AttributeType.PickupNew -> PickupNew <$> PickupNew.bitGet
+      fmap LoadoutsOnline $ LoadoutsOnline.bitGet version objectMap
+    AttributeType.Location -> fmap Location $ Location.bitGet version
+    AttributeType.MusicStinger -> fmap MusicStinger MusicStinger.bitGet
+    AttributeType.PartyLeader -> fmap PartyLeader $ PartyLeader.bitGet version
+    AttributeType.Pickup -> fmap Pickup Pickup.bitGet
+    AttributeType.PickupNew -> fmap PickupNew PickupNew.bitGet
     AttributeType.PlayerHistoryKey ->
-      PlayerHistoryKey <$> PlayerHistoryKey.bitGet
+      fmap PlayerHistoryKey PlayerHistoryKey.bitGet
     AttributeType.PrivateMatchSettings ->
-      PrivateMatchSettings <$> PrivateMatchSettings.bitGet
-    AttributeType.QWord -> QWord <$> QWord.bitGet
-    AttributeType.Reservation -> Reservation <$> Reservation.bitGet version
+      fmap PrivateMatchSettings PrivateMatchSettings.bitGet
+    AttributeType.QWord -> fmap QWord QWord.bitGet
+    AttributeType.Reservation -> fmap Reservation $ Reservation.bitGet version
     AttributeType.RigidBodyState ->
-      RigidBodyState <$> RigidBodyState.bitGet version
-    AttributeType.StatEvent -> StatEvent <$> StatEvent.bitGet
-    AttributeType.String -> String <$> String.bitGet
-    AttributeType.TeamPaint -> TeamPaint <$> TeamPaint.bitGet
-    AttributeType.Title -> Title <$> Title.bitGet
-    AttributeType.UniqueId -> UniqueId <$> UniqueId.bitGet version
-    AttributeType.WeldedInfo -> WeldedInfo <$> WeldedInfo.bitGet version
+      fmap RigidBodyState $ RigidBodyState.bitGet version
+    AttributeType.StatEvent -> fmap StatEvent StatEvent.bitGet
+    AttributeType.String -> fmap String String.bitGet
+    AttributeType.TeamPaint -> fmap TeamPaint TeamPaint.bitGet
+    AttributeType.Title -> fmap Title Title.bitGet
+    AttributeType.UniqueId -> fmap UniqueId $ UniqueId.bitGet version
+    AttributeType.WeldedInfo -> fmap WeldedInfo $ WeldedInfo.bitGet version

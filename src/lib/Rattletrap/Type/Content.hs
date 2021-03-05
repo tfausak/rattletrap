@@ -210,7 +210,7 @@ byteGet version numFrames maxChannels = do
   frames <-
     either fail pure . ByteGet.run (BitGet.toByteGet bitGet) $ reverseBytes
       stream
-  unknown <- LazyBytes.unpack <$> ByteGet.remaining
+  unknown <- fmap LazyBytes.unpack ByteGet.remaining
   pure Content
     { levels
     , keyFrames

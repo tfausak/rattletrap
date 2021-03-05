@@ -162,4 +162,4 @@ decodeComponent = do
     y_ -> fail ("[RT08] invalid component: " <> show y_)
 
 decodePart :: BitGet.BitGet Double
-decodePart = decompressPart <$> CompressedWord.bitGet maxCompressedValue
+decodePart = fmap decompressPart $ CompressedWord.bitGet maxCompressedValue
