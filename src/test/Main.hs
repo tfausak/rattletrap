@@ -68,7 +68,7 @@ directory :: FilePath
 directory = "output"
 
 replays :: [(String, String)]
-replays = take 1
+replays =
   [ ("0008", "a flip time")
   , ("000b", "nintendo switch")
   , ("0416", "v1.78 demolition")
