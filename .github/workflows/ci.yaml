@@ -42,30 +42,28 @@ jobs:
 
       - run: cabal build
 
+      - run: cabal test --test-show-details direct
+
+      - run: cabal check
+
+      - run: cabal sdist --output-dir output
+
       - run: cabal exec runghc src/util/copy-executable.hs
 
       - run: strip docker/rattletrap
 
-      - uses: actions/upload-artifact@v2
-        with:
-          path: docker/rattletrap
-          name: rattletrap-executable-${{ github.sha }}-${{ matrix.os }}
+      - run: mkdir artifact
 
-      - run: cabal test --test-show-details direct
+      - run: cp docker/rattletrap artifact
 
-      - uses: actions/upload-artifact@v2
-        with:
-          path: output/schema.json
-          name: rattletrap-schema-${{ github.sha }}-${{ matrix.os }}.json
+      - run: cp output/schema.json artifact
 
-      - run: cabal sdist --output-dir output
+      - run: cp output/rattletrap-*.tar.gz artifact
 
       - uses: actions/upload-artifact@v2
         with:
-          path: output/rattletrap-*.tar.gz
-          name: rattletrap-package-${{ github.sha }}-${{ matrix.os }}.tar.gz
-
-      - run: cabal check
+          path: artifact
+          name: artifact-${{ matrix.os }}
 
   brittany:
     runs-on: ubuntu-20.04
@@ -90,10 +88,9 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: rattletrap-executable-${{ github.sha }}-ubuntu-20.04
-          path: output
+          name: artifact-ubuntu-20.04
       - run: ls -R .
-      - run: ls -R output
+      - run: ls -R artifact
 
   asset-linux:
     needs: build
