@@ -86,8 +86,6 @@ jobs:
     steps:
 
       - uses: actions/download-artifact@v2
-        with:
-          path: artifact
 
       - run: ls -R .
 
