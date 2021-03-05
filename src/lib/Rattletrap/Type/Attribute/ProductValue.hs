@@ -104,7 +104,7 @@ decodeTeamEdition version = if hasNewPainted version
 
 decodeColor :: Version.Version -> BitGet.BitGet ProductValue
 decodeColor version = if hasNewColor version
-  then fmap UserColorNew $ U32.bitGet
+  then fmap UserColorNew U32.bitGet
   else do
     hasValue <- BitGet.bool
     fmap UserColorOld $ whenMaybe hasValue (BitGet.bits 31)

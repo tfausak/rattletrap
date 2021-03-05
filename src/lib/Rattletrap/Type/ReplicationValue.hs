@@ -69,6 +69,9 @@ bitGet version classAttributeMap actorId = do
       isNew <- Trans.lift BitGet.bool
       if isNew
         then fmap Spawned $ Spawned.bitGet version classAttributeMap actorId
-        else fmap Updated . Trans.lift
-          $ Updated.bitGet version classAttributeMap actorMap actorId
+        else fmap Updated . Trans.lift $ Updated.bitGet
+          version
+          classAttributeMap
+          actorMap
+          actorId
     else fmap Destroyed $ Trans.lift Destroyed.bitGet
