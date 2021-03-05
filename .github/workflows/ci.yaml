@@ -46,21 +46,17 @@ jobs:
 
       - run: cabal check
 
-      - run: cabal sdist --output-dir output
-
-      - run: cabal exec runghc src/util/copy-executable.hs
-
-      - run: strip docker/rattletrap
-
       - run: mkdir artifact
 
       - run: mkdir artifact/${{ matrix.os }}
 
-      - run: cp docker/rattletrap artifact/${{ matrix.os }}
+      - run: cabal sdist --output-dir artifact/${{ matrix.os }}
+
+      - run: cabal exec runghc src/util/copy-executable.hs artifact/${{ matrix.os }}
+
+      - run: strip artifact/${{ matrix.os }}/rattletrap
 
       - run: cp output/schema.json artifact/${{ matrix.os }}
-
-      - run: cp output/rattletrap-*.tar.gz artifact/${{ matrix.os }}
 
       - uses: actions/upload-artifact@v2
         with:
