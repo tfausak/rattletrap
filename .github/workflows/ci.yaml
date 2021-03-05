@@ -59,7 +59,7 @@ jobs:
 
       - run: cabal build
 
-      - run: cabal test --test-show-details direct
+      - run: cabal test
 
       - run: cabal check
 
