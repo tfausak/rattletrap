@@ -11,6 +11,23 @@ on:
       - created
 jobs:
 
+  hlint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: curl --location --output hlint.tar.gz https://github.com/ndmitchell/hlint/releases/download/v3.2.7/hlint-3.2.7-x86_64-linux.tar.gz
+      - run: gzip --decompress hlint.tar.gz
+      - run: tar --extract --file hlint.tar
+      - run: echo '::add-matcher::config/hlint-problem-matcher.json'
+      - run: hlint-3.2.7/hlint --hint config/hlint.yaml src
+
+  brittany:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo '::add-matcher::config/brittany-problem-matcher.json'
+      - run: git ls-files '*.hs' | xargs docker run --volume "$PWD:$PWD" --workdir "$PWD" itprotv/brittany:64830d767a4eb58aff4e1f1d72fcb489be367893 brittany --check-mode --config-file config/brittany.yaml
+
   build:
     strategy:
       matrix:
@@ -62,23 +79,6 @@ jobs:
         with:
           path: artifact
 
-  brittany:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - run: echo '::add-matcher::config/brittany-problem-matcher.json'
-      - run: git ls-files '*.hs' | xargs docker run --volume "$PWD:$PWD" --workdir "$PWD" itprotv/brittany:64830d767a4eb58aff4e1f1d72fcb489be367893 brittany --check-mode --config-file config/brittany.yaml
-
-  hlint:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - run: curl --location --output hlint.tar.gz https://github.com/ndmitchell/hlint/releases/download/v3.2.7/hlint-3.2.7-x86_64-linux.tar.gz
-      - run: gzip --decompress hlint.tar.gz
-      - run: tar --extract --file hlint.tar
-      - run: echo '::add-matcher::config/hlint-problem-matcher.json'
-      - run: hlint-3.2.7/hlint --hint config/hlint.yaml src
-
   release:
     needs: build
     if: github.event_name == 'release'
@@ -86,8 +86,6 @@ jobs:
     steps:
 
       - uses: actions/download-artifact@v2
-        with:
-          name: artifact
 
       - uses: actions/upload-release-asset@v1
         env:
