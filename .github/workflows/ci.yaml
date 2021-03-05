@@ -81,73 +81,71 @@ jobs:
 
   release:
     needs: build
-    # if: github.event_name == 'release'
+    if: github.event_name == 'release'
     runs-on: ubuntu-20.04
     steps:
 
       - uses: actions/download-artifact@v2
 
-      - run: ls -R .
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/octet-stream
+          asset_name: rattletrap-${{ github.event.release.tag_name }}-ubuntu
+          asset_path: artifact/ubuntu-20.04/rattletrap
+          upload_url: ${{ github.event.release.upload_url }}
 
-      # - uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     asset_content_type: application/octet-stream
-      #     asset_name: rattletrap-${{ github.event.release.tag_name }}-ubuntu
-      #     asset_path: artifact/ubuntu-20.04/rattletrap
-      #     upload_url: ${{ github.event.release.upload_url }}
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/octet-stream
+          asset_name: rattletrap-${{ github.event.release.tag_name }}-macos
+          asset_path: artifact/macos-10.15/rattletrap
+          upload_url: ${{ github.event.release.upload_url }}
 
-      # - uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     asset_content_type: application/octet-stream
-      #     asset_name: rattletrap-${{ github.event.release.tag_name }}-macos
-      #     asset_path: artifact/macos-10.15/rattletrap
-      #     upload_url: ${{ github.event.release.upload_url }}
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/octet-stream
+          asset_name: rattletrap-${{ github.event.release.tag_name }}-windows.exe
+          asset_path: artifact/windows-2019/rattletrap
+          upload_url: ${{ github.event.release.upload_url }}
 
-      # - uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     asset_content_type: application/octet-stream
-      #     asset_name: rattletrap-${{ github.event.release.tag_name }}-windows.exe
-      #     asset_path: artifact/windows-2019/rattletrap
-      #     upload_url: ${{ github.event.release.upload_url }}
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/gzip
+          asset_name: rattletrap-${{ github.event.release.tag_name }}.tar.gz
+          asset_path: artifact/ubuntu-20.04/rattletrap-${{ github.event.release.tag_name }}.tar.gz
+          upload_url: ${{ github.event.release.upload_url }}
 
-      # - uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     asset_content_type: application/gzip
-      #     asset_name: rattletrap-${{ github.event.release.tag_name }}.tar.gz
-      #     asset_path: artifact/ubuntu-20.04/rattletrap-${{ github.event.release.tag_name }}.tar.gz
-      #     upload_url: ${{ github.event.release.upload_url }}
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/json
+          asset_name: rattletrap-${{ github.event.release.tag_name }}-schema.json
+          asset_path: artifact/ubuntu-20.04/schema.json
+          upload_url: ${{ github.event.release.upload_url }}
 
-      # - uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     asset_content_type: application/json
-      #     asset_name: rattletrap-${{ github.event.release.tag_name }}-schema.json
-      #     asset_path: artifact/ubuntu-20.04/schema.json
-      #     upload_url: ${{ github.event.release.upload_url }}
+      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' artifact/ubuntu-20.04/rattletrap-${{ github.event.release.tag_name }}.tar.gz
 
-      # - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' artifact/ubuntu-20.04/rattletrap-${{ github.event.release.tag_name }}.tar.gz
+      - run: mv artifact/ubuntu-20.04/rattletrap docker/rattletrap
 
-      # - run: mv artifact/ubuntu-20.04/rattletrap docker/rattletrap
+      - uses: docker/setup-buildx-action@v1
 
-      # - uses: docker/setup-buildx-action@v1
+      - uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # - uses: docker/login-action@v1
-      #   with:
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
-
-      # - uses: docker/build-push-action@v2
-      #   with:
-      #     context: docker
-      #     file: docker/Dockerfile
-      #     tags: taylorfausak/rattletrap:version-${{ github.event.release.tag_name }}
-      #     push: true
+      - uses: docker/build-push-action@v2
+        with:
+          context: docker
+          file: docker/Dockerfile
+          tags: taylorfausak/rattletrap:version-${{ github.event.release.tag_name }}
+          push: true
