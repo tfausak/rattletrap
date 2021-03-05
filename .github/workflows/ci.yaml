@@ -59,7 +59,7 @@ jobs:
 
       - run: cabal build
 
-      - run: cabal test --test-show-details direct
+      - run: cabal test
 
       - run: cabal check
 
@@ -84,6 +84,8 @@ jobs:
     if: github.event_name == 'release'
     runs-on: ubuntu-20.04
     steps:
+      
+      - uses: actions/checkout@v2
 
       - uses: actions/download-artifact@v2
 
