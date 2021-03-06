@@ -5,11 +5,11 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.RemoteId.Epic as Epic
 import qualified Rattletrap.Type.RemoteId.PlayStation as PlayStation
+import qualified Rattletrap.Type.RemoteId.PsyNet as PsyNet
 import qualified Rattletrap.Type.RemoteId.Splitscreen as Splitscreen
 import qualified Rattletrap.Type.RemoteId.Steam as Steam
 import qualified Rattletrap.Type.RemoteId.Switch as Switch
 import qualified Rattletrap.Type.RemoteId.Xbox as Xbox
-import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
@@ -18,7 +18,7 @@ import qualified Data.Foldable as Foldable
 
 data RemoteId
   = PlayStation PlayStation.PlayStation
-  | PsyNet (Either U64.U64 (U64.U64, U64.U64, U64.U64, U64.U64))
+  | PsyNet PsyNet.PsyNet
   | Splitscreen Splitscreen.Splitscreen
   -- ^ Really only 24 bits.
   | Steam Steam.Steam
@@ -52,17 +52,7 @@ schema :: Schema.Schema
 schema = Schema.named "remote-id" . Schema.oneOf $ fmap
   (\(k, v) -> Schema.object [(Json.pair k v, True)])
   [ ("play_station", Schema.ref PlayStation.schema)
-  , ( "psy_net"
-    , Schema.oneOf
-      [ Schema.object [(Json.pair "Left" $ Schema.ref U64.schema, True)]
-      , Schema.object
-        [ ( Json.pair "Right" . Schema.tuple . replicate 4 $ Schema.ref
-            U64.schema
-          , True
-          )
-        ]
-      ]
-    )
+  , ("psy_net", Schema.ref PsyNet.schema)
   , ("splitscreen", Schema.ref Splitscreen.schema)
   , ("steam", Schema.ref Steam.schema)
   , ("switch", Schema.ref Switch.schema)
@@ -73,18 +63,12 @@ schema = Schema.named "remote-id" . Schema.oneOf $ fmap
 bitPut :: RemoteId -> BitPut.BitPut
 bitPut remoteId = case remoteId of
   PlayStation x -> PlayStation.bitPut x
-  PsyNet e -> case e of
-    Left l -> U64.bitPut l
-    Right (a, b, c, d) -> putWord256 a b c d
+  PsyNet x -> PsyNet.bitPut x
   Splitscreen x -> Splitscreen.bitPut x
   Steam x -> Steam.bitPut x
   Switch x -> Switch.bitPut x
   Xbox x -> Xbox.bitPut x
   Epic x -> Epic.bitPut x
-
-putWord256 :: U64.U64 -> U64.U64 -> U64.U64 -> U64.U64 -> BitPut.BitPut
-putWord256 a b c d =
-  U64.bitPut a <> U64.bitPut b <> U64.bitPut c <> U64.bitPut d
 
 bitGet :: Version.Version -> U8.U8 -> BitGet.BitGet RemoteId
 bitGet version systemId = case U8.toWord8 systemId of
@@ -93,16 +77,6 @@ bitGet version systemId = case U8.toWord8 systemId of
   2 -> fmap PlayStation $ PlayStation.bitGet version
   4 -> fmap Xbox Xbox.bitGet
   6 -> fmap Switch Switch.bitGet
-  7 -> fmap PsyNet $ if Version.atLeast 868 24 10 version
-    then fmap Left U64.bitGet
-    else fmap Right getWord256
+  7 -> fmap PsyNet $ PsyNet.bitGet version
   11 -> fmap Epic Epic.bitGet
   _ -> fail ("[RT09] unknown system id " <> show systemId)
-
-getWord256 :: BitGet.BitGet (U64.U64, U64.U64, U64.U64, U64.U64)
-getWord256 = do
-  a <- U64.bitGet
-  b <- U64.bitGet
-  c <- U64.bitGet
-  d <- U64.bitGet
-  pure (a, b, c, d)
