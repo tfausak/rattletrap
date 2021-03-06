@@ -106,15 +106,11 @@ bitGet version systemId = case U8.toWord8 systemId of
   6 -> do
     (a, b, c, d) <- getWord256
     pure $ Switch a b c d
-  7 -> fmap PsyNet $ if psyNetIsU64 version
+  7 -> fmap PsyNet $ if Version.atLeast 868 24 10 version
     then fmap Left U64.bitGet
     else fmap Right getWord256
   11 -> fmap Epic Str.bitGet
   _ -> fail ("[RT09] unknown system id " <> show systemId)
-
-psyNetIsU64 :: Version.Version -> Bool
-psyNetIsU64 v =
-  Version.major v >= 868 && Version.minor v >= 24 && Version.patch v >= 10
 
 decodePsName :: BitGet.BitGet Text.Text
 decodePsName = fmap
@@ -123,13 +119,9 @@ decodePsName = fmap
 
 decodePsBytes :: Version.Version -> BitGet.BitGet [Word.Word8]
 decodePsBytes version =
-  fmap Bytes.unpack . BitGet.byteString $ if playStationIsU24 version
+  fmap Bytes.unpack . BitGet.byteString $ if Version.atLeast 868 20 1 version
     then 24
     else 16
-
-playStationIsU24 :: Version.Version -> Bool
-playStationIsU24 v =
-  Version.major v >= 868 && Version.minor v >= 20 && Version.patch v >= 1
 
 getWord256 :: BitGet.BitGet (U64.U64, U64.U64, U64.U64, U64.U64)
 getWord256 = do

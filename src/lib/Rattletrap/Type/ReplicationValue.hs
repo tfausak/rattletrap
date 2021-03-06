@@ -8,6 +8,7 @@ import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Replication.Destroyed as Destroyed
 import qualified Rattletrap.Type.Replication.Spawned as Spawned
 import qualified Rattletrap.Type.Replication.Updated as Updated
+import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
@@ -54,21 +55,23 @@ bitPut value = case value of
   Destroyed x -> BitPut.bool False <> Destroyed.bitPut x
 
 bitGet
-  :: Version.Version
+  :: Maybe Str.Str
+  -> Version.Version
   -> ClassAttributeMap.ClassAttributeMap
   -> CompressedWord.CompressedWord
   -> State.StateT
        (Map.Map CompressedWord.CompressedWord U32.U32)
        BitGet.BitGet
        ReplicationValue
-bitGet version classAttributeMap actorId = do
+bitGet matchType version classAttributeMap actorId = do
   actorMap <- State.get
   isOpen <- Trans.lift BitGet.bool
   if isOpen
     then do
       isNew <- Trans.lift BitGet.bool
       if isNew
-        then fmap Spawned $ Spawned.bitGet version classAttributeMap actorId
+        then fmap Spawned
+          $ Spawned.bitGet matchType version classAttributeMap actorId
         else fmap Updated . Trans.lift $ Updated.bitGet
           version
           classAttributeMap

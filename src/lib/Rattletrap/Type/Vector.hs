@@ -67,7 +67,8 @@ bitPut vector =
 
 bitGet :: Version.Version -> BitGet.BitGet Vector
 bitGet version = do
-  size <- CompressedWord.bitGet (if has21Bits version then 21 else 19)
+  size <- CompressedWord.bitGet
+    $ if Version.atLeast 868 22 7 version then 21 else 19
   let
     limit = getLimit size
     bias = getBias size
@@ -78,10 +79,6 @@ bitGet version = do
 
 getPart :: Word -> Word -> BitGet.BitGet Int
 getPart limit bias = fmap (fromDelta bias) (CompressedWord.bitGet limit)
-
-has21Bits :: Version.Version -> Bool
-has21Bits v =
-  Version.major v >= 868 && Version.minor v >= 22 && Version.patch v >= 7
 
 getLimit :: CompressedWord.CompressedWord -> Word
 getLimit = (2 ^) . (+ 2) . CompressedWord.value

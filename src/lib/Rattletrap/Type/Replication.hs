@@ -7,6 +7,7 @@ import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
+import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
@@ -47,25 +48,30 @@ bitPut replication = CompressedWord.bitPut (actorId replication)
   <> ReplicationValue.bitPut (value replication)
 
 decodeReplicationsBits
-  :: Version.Version
+  :: Maybe Str.Str
+  -> Version.Version
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord.CompressedWord U32.U32)
        BitGet.BitGet
        (List.List Replication)
-decodeReplicationsBits version limit classes = List.untilM $ do
+decodeReplicationsBits matchType version limit classes = List.untilM $ do
   p <- Trans.lift BitGet.bool
-  if p then fmap Just $ bitGet version limit classes else pure Nothing
+  if p
+    then fmap Just $ bitGet matchType version limit classes
+    else pure Nothing
 
 bitGet
-  :: Version.Version
+  :: Maybe Str.Str
+  -> Version.Version
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord.CompressedWord U32.U32)
        BitGet.BitGet
        Replication
-bitGet version limit classes = do
+bitGet matchType version limit classes = do
   actor <- Trans.lift (CompressedWord.bitGet limit)
-  fmap (Replication actor) $ ReplicationValue.bitGet version classes actor
+  fmap (Replication actor)
+    $ ReplicationValue.bitGet matchType version classes actor
