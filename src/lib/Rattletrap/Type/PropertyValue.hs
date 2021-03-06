@@ -6,11 +6,11 @@ import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Dictionary as Dictionary
+import qualified Rattletrap.Type.Property.Float as Property.Float
 import qualified Rattletrap.Type.Property.Int as Property.Int
 import qualified Rattletrap.Type.Property.Name as Property.Name
 import qualified Rattletrap.Type.Property.QWord as Property.QWord
 import qualified Rattletrap.Type.Property.Str as Property.Str
-import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U8 as U8
@@ -24,7 +24,7 @@ data PropertyValue a
   | Bool U8.U8
   | Byte Str.Str (Maybe Str.Str)
   -- ^ This is a strange name for essentially a key-value pair.
-  | Float F32.F32
+  | Float Property.Float.Float
   | Int Property.Int.Int
   | Name Property.Name.Name
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.
@@ -67,7 +67,7 @@ schema s =
           , Schema.tuple
             [Schema.ref Str.schema, Schema.json $ Schema.maybe Str.schema]
           )
-        , ("float", Schema.ref F32.schema)
+        , ("float", Schema.ref Property.Float.schema)
         , ("int", Schema.ref Property.Int.schema)
         , ("name", Schema.ref Property.Name.schema)
         , ("q_word", Schema.ref Property.QWord.schema)
@@ -79,7 +79,7 @@ bytePut putProperty value = case value of
   Array x -> List.bytePut (Dictionary.bytePut putProperty) x
   Bool x -> U8.bytePut x
   Byte k mv -> Str.bytePut k <> foldMap Str.bytePut mv
-  Float x -> F32.bytePut x
+  Float x -> Property.Float.bytePut x
   Int x -> Property.Int.bytePut x
   Name x -> Property.Name.bytePut x
   QWord x -> Property.QWord.bytePut x
@@ -94,7 +94,7 @@ byteGet getProperty kind = case Str.toString kind of
     k <- Str.byteGet
     v <- whenMaybe (Str.toString k /= "OnlinePlatform_Steam") Str.byteGet
     pure $ Byte k v
-  "FloatProperty" -> fmap Float F32.byteGet
+  "FloatProperty" -> fmap Float Property.Float.byteGet
   "IntProperty" -> fmap Int Property.Int.byteGet
   "NameProperty" -> fmap Name Property.Name.byteGet
   "QWordProperty" -> fmap QWord Property.QWord.byteGet
