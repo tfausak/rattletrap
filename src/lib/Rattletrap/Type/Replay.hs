@@ -90,23 +90,8 @@ getVersion :: Header.Header -> Version.Version
 getVersion x = Version.Version
   { Version.major = Header.engineVersion x
   , Version.minor = Header.licenseeVersion x
-  , Version.patch = getPatchVersion x
+  , Version.patch = Header.patchVersion x
   }
-
-getPatchVersion :: Header.Header -> Int
-getPatchVersion header_ = case Header.patchVersion header_ of
-  Just version -> fromIntegral (U32.toWord32 version)
-  Nothing ->
-    case
-        Dictionary.lookup
-          (Str.fromString "MatchType")
-          (Header.properties header_)
-      of
-      -- This is an ugly, ugly hack to handle replays from season 2 of RLCS.
-      -- See `decodeSpawnedReplicationBits` and #85.
-        Just Property.Property { Property.value = PropertyValue.Name str }
-          | Str.toString str == "Lan" -> -1
-        _ -> 0
 
 getNumFrames :: Header.Header -> Int
 getNumFrames header_ =

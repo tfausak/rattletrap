@@ -118,7 +118,8 @@ bitGet matchType version classAttributeMap actorId = do
     )
 
 hasNameIndex :: Maybe Str.Str -> Version.Version -> Bool
-hasNameIndex _ = Version.atLeast 868 14 0
+hasNameIndex matchType version = Version.atLeast 868 14 0 version
+  && matchType /= Just (Str.fromString "Lan")
 
 lookupName
   :: ClassAttributeMap.ClassAttributeMap
