@@ -6,6 +6,7 @@ import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Dictionary as Dictionary
+import qualified Rattletrap.Type.Property.Bool as Property.Bool
 import qualified Rattletrap.Type.Property.Byte as Property.Byte
 import qualified Rattletrap.Type.Property.Float as Property.Float
 import qualified Rattletrap.Type.Property.Int as Property.Int
@@ -14,14 +15,13 @@ import qualified Rattletrap.Type.Property.QWord as Property.QWord
 import qualified Rattletrap.Type.Property.Str as Property.Str
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
 
 data PropertyValue a
   = Array (List.List (Dictionary.Dictionary a))
   -- ^ Yes, a list of dictionaries. No, it doesn't make sense. These usually
   -- only have one element.
-  | Bool U8.U8
+  | Bool Property.Bool.Bool
   | Byte Property.Byte.Byte
   -- ^ This is a strange name for essentially a key-value pair.
   | Float Property.Float.Float
@@ -62,7 +62,7 @@ schema s =
     $ fmap
         (\(k, v) -> Schema.object [(Json.pair k v, True)])
         [ ("array", Schema.json . List.schema $ Dictionary.schema s)
-        , ("bool", Schema.ref U8.schema)
+        , ("bool", Schema.ref Property.Bool.schema)
         , ("byte", Schema.ref Property.Byte.schema)
         , ("float", Schema.ref Property.Float.schema)
         , ("int", Schema.ref Property.Int.schema)
@@ -74,7 +74,7 @@ schema s =
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
 bytePut putProperty value = case value of
   Array x -> List.bytePut (Dictionary.bytePut putProperty) x
-  Bool x -> U8.bytePut x
+  Bool x -> Property.Bool.bytePut x
   Byte x -> Property.Byte.bytePut x
   Float x -> Property.Float.bytePut x
   Int x -> Property.Int.bytePut x
@@ -86,7 +86,7 @@ byteGet :: ByteGet.ByteGet a -> Str.Str -> ByteGet.ByteGet (PropertyValue a)
 byteGet getProperty kind = case Str.toString kind of
   "ArrayProperty" ->
     fmap Array $ List.byteGet (Dictionary.byteGet getProperty)
-  "BoolProperty" -> fmap Bool U8.byteGet
+  "BoolProperty" -> fmap Bool Property.Bool.byteGet
   "ByteProperty" -> fmap Byte Property.Byte.byteGet
   "FloatProperty" -> fmap Float Property.Float.byteGet
   "IntProperty" -> fmap Int Property.Int.byteGet
