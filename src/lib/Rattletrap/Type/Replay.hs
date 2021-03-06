@@ -12,7 +12,6 @@ import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Version as Version
 
@@ -77,7 +76,7 @@ byteGet fast skip = do
 
 getContent :: Header.Header -> ByteGet.ByteGet Content.Content
 getContent h =
-  Content.byteGet (getMatchType h) (getVersion h) (getNumFrames h) (getMaxChannels h)
+  Content.byteGet (getMatchType h) (Header.version h) (getNumFrames h) (getMaxChannels h)
 
 getMatchType :: Header.Header -> Maybe Str.Str
 getMatchType header = do
@@ -85,13 +84,6 @@ getMatchType header = do
   case value of
     PropertyValue.Name x -> Just x
     _ -> Nothing
-
-getVersion :: Header.Header -> Version.Version
-getVersion x = Version.Version
-  { Version.major = Header.engineVersion x
-  , Version.minor = Header.licenseeVersion x
-  , Version.patch = Header.patchVersion x
-  }
 
 getNumFrames :: Header.Header -> Int
 getNumFrames header_ =

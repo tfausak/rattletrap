@@ -7,17 +7,12 @@ import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
+import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
-  { engineVersion :: U32.U32
-  -- ^ The "major" ("engine") version number.
-  , licenseeVersion :: U32.U32
-  -- ^ The "minor" ("licensee") version number.
-  , patchVersion :: Maybe U32.U32
-  -- ^ The "patch" ("net") version number.
+  { version :: Version.Version
   , label :: Str.Str
   -- ^ Always @TAGame.Replay_Soccar_TA@.
   , properties :: Dictionary.Dictionary Property.Property
@@ -60,24 +55,22 @@ data Header = Header
 
 instance Json.FromJSON Header where
   parseJSON = Json.withObject "Header" $ \object -> do
-    engineVersion <- Json.required object "engine_version"
-    licenseeVersion <- Json.required object "licensee_version"
-    patchVersion <- Json.optional object "patch_version"
+    major <- Json.required object "engine_version"
+    minor <- Json.required object "licensee_version"
+    patch <- Json.optional object "patch_version"
     label <- Json.required object "label"
     properties <- Json.required object "properties"
     pure Header
-      { engineVersion
-      , licenseeVersion
-      , patchVersion
+      { version = Version.Version { Version.major, Version.minor, Version.patch }
       , label
       , properties
       }
 
 instance Json.ToJSON Header where
   toJSON x = Json.object
-    [ Json.pair "engine_version" $ engineVersion x
-    , Json.pair "licensee_version" $ licenseeVersion x
-    , Json.pair "patch_version" $ patchVersion x
+    [ Json.pair "engine_version" . Version.major $ version x
+    , Json.pair "licensee_version" . Version.minor $ version x
+    , Json.pair "patch_version" . Version.patch $ version x
     , Json.pair "label" $ label x
     , Json.pair "properties" $ properties x
     ]
@@ -95,25 +88,17 @@ schema = Schema.named "header" $ Schema.object
 
 bytePut :: Header -> BytePut.BytePut
 bytePut x =
-  U32.bytePut (engineVersion x)
-    <> U32.bytePut (licenseeVersion x)
-    <> foldMap U32.bytePut (patchVersion x)
+  Version.bytePut (version x)
     <> Str.bytePut (label x)
     <> Dictionary.bytePut Property.bytePut (properties x)
 
 byteGet :: ByteGet.ByteGet Header
 byteGet = do
-  engineVersion <- U32.byteGet
-  licenseeVersion <- U32.byteGet
-  patchVersion <- whenMaybe
-    (U32.toWord32 engineVersion >= 868 && U32.toWord32 licenseeVersion >= 18)
-    U32.byteGet
+  version <- Version.byteGet
   label <- Str.byteGet
   properties <- Dictionary.byteGet Property.byteGet
   pure Header
-    { engineVersion
-    , licenseeVersion
-    , patchVersion
+    { version
     , label
     , properties
     }
