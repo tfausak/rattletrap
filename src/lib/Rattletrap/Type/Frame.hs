@@ -8,6 +8,7 @@ import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Replication as Replication
+import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
@@ -59,7 +60,8 @@ bitPut frame =
     <> Replication.putReplications (replications frame)
 
 decodeFramesBits
-  :: Version.Version
+  :: Maybe Str.Str
+  -> Version.Version
   -> Int
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
@@ -67,19 +69,20 @@ decodeFramesBits
        (Map.Map CompressedWord.CompressedWord U32.U32)
        BitGet.BitGet
        (List.List Frame)
-decodeFramesBits version count limit classes =
-  List.replicateM count $ bitGet version limit classes
+decodeFramesBits matchType version count limit classes =
+  List.replicateM count $ bitGet matchType version limit classes
 
 bitGet
-  :: Version.Version
+  :: Maybe Str.Str
+  -> Version.Version
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> State.StateT
        (Map.Map CompressedWord.CompressedWord U32.U32)
        BitGet.BitGet
        Frame
-bitGet version limit classes = do
+bitGet matchType version limit classes = do
   time <- Trans.lift F32.bitGet
   delta <- Trans.lift F32.bitGet
-  replications <- Replication.decodeReplicationsBits version limit classes
+  replications <- Replication.decodeReplicationsBits matchType version limit classes
   pure Frame { time, delta, replications }

@@ -180,7 +180,8 @@ putFrames x =
     (reverseBytes (padBytes (U32.toWord32 streamSize_) stream))
 
 byteGet
-  :: Version.Version
+  :: Maybe Str.Str
+  -> Version.Version
   -- ^ Version numbers, usually from 'Rattletrap.Header.getVersion'.
   -> Int
   -- ^ The number of frames in the stream, usually from
@@ -189,7 +190,7 @@ byteGet
   -- ^ The maximum number of channels in the stream, usually from
   -- 'Rattletrap.Header.getMaxChannels'.
   -> ByteGet.ByteGet Content
-byteGet version numFrames maxChannels = do
+byteGet matchType version numFrames maxChannels = do
   levels <- List.byteGet Str.byteGet
   keyframes <- List.byteGet Keyframe.byteGet
   streamSize <- U32.byteGet
@@ -205,7 +206,7 @@ byteGet version numFrames maxChannels = do
     classAttributeMap =
       ClassAttributeMap.make objects classMappings caches names
     bitGet = State.evalStateT
-      (Frame.decodeFramesBits version numFrames maxChannels classAttributeMap)
+      (Frame.decodeFramesBits matchType version numFrames maxChannels classAttributeMap)
       mempty
   frames <-
     either fail pure . ByteGet.run (BitGet.toByteGet bitGet) $ reverseBytes
