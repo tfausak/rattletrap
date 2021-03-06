@@ -110,7 +110,7 @@ decodeColor version = if Version.atLeast 868 23 8 version
     fmap UserColorOld $ whenMaybe hasValue (BitGet.bits 31)
 
 hasNewPainted :: Version.Version -> Bool
-hasNewPainted = Version.atLeast 868 10 0
+hasNewPainted = Version.atLeast 868 18 0
 
 decodeTitle :: BitGet.BitGet ProductValue
 decodeTitle = fmap TitleId Str.bitGet
