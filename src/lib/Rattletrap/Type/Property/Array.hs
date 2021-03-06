@@ -24,8 +24,9 @@ instance Json.ToJSON a => Json.ToJSON (Array a) where
   toJSON = Json.toJSON . toList
 
 schema :: Schema.Schema -> Schema.Schema
-schema s = Schema.named "property-array"
-  . Schema.json . List.schema $ Dictionary.schema s
+schema s =
+  Schema.named "property-array" . Schema.json . List.schema $ Dictionary.schema
+    s
 
 bytePut :: (a -> BytePut.BytePut) -> Array a -> BytePut.BytePut
 bytePut f = List.bytePut (Dictionary.bytePut f) . toList

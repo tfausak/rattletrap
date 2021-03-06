@@ -31,6 +31,7 @@ bytePut byte = Str.bytePut (key byte) <> foldMap Str.bytePut (value byte)
 byteGet :: ByteGet.ByteGet Byte
 byteGet = do
   key <- Str.byteGet
-  value <- Monad.whenMaybe (Str.toString key /= "OnlinePlatform_Steam")
+  value <- Monad.whenMaybe
+    (Str.toString key /= "OnlinePlatform_Steam")
     Str.byteGet
   pure Byte { key, value }

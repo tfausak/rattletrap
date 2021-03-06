@@ -54,20 +54,17 @@ instance Json.ToJSON a => Json.ToJSON (PropertyValue a) where
     Str y -> Json.object [Json.pair "str" y]
 
 schema :: Schema.Schema -> Schema.Schema
-schema s =
-  Schema.named "property-value"
-    . Schema.oneOf
-    $ fmap
-        (\(k, v) -> Schema.object [(Json.pair k v, True)])
-        [ ("array", Schema.ref $ Property.Array.schema s)
-        , ("bool", Schema.ref Property.Bool.schema)
-        , ("byte", Schema.ref Property.Byte.schema)
-        , ("float", Schema.ref Property.Float.schema)
-        , ("int", Schema.ref Property.Int.schema)
-        , ("name", Schema.ref Property.Name.schema)
-        , ("q_word", Schema.ref Property.QWord.schema)
-        , ("str", Schema.ref Property.Str.schema)
-        ]
+schema s = Schema.named "property-value" . Schema.oneOf $ fmap
+  (\(k, v) -> Schema.object [(Json.pair k v, True)])
+  [ ("array", Schema.ref $ Property.Array.schema s)
+  , ("bool", Schema.ref Property.Bool.schema)
+  , ("byte", Schema.ref Property.Byte.schema)
+  , ("float", Schema.ref Property.Float.schema)
+  , ("int", Schema.ref Property.Int.schema)
+  , ("name", Schema.ref Property.Name.schema)
+  , ("q_word", Schema.ref Property.QWord.schema)
+  , ("str", Schema.ref Property.Str.schema)
+  ]
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
 bytePut putProperty value = case value of
