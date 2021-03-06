@@ -63,8 +63,8 @@ schema = Schema.named "remote-id" . Schema.oneOf $ fmap
         ]
       ]
     )
-  , ("splitscreen", Schema.ref Schema.integer)
-  , ("steam", Schema.ref Splitscreen.schema)
+  , ("splitscreen", Schema.ref Splitscreen.schema)
+  , ("steam", Schema.ref Steam.schema)
   , ("switch", Schema.ref Switch.schema)
   , ("xbox", Schema.ref Xbox.schema)
   , ("epic", Schema.ref Epic.schema)
