@@ -81,8 +81,8 @@ getContent h =
 
 getVersion :: Header.Header -> Version.Version
 getVersion x = Version.Version
-  { Version.major = fromIntegral . U32.toWord32 $ Header.engineVersion x
-  , Version.minor = fromIntegral . U32.toWord32 $ Header.licenseeVersion x
+  { Version.major = Header.engineVersion x
+  , Version.minor = Header.licenseeVersion x
   , Version.patch = getPatchVersion x
   }
 
