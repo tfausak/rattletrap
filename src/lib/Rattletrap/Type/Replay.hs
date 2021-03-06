@@ -8,6 +8,7 @@ import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.Header as Header
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Property as Property
+import qualified Rattletrap.Type.Property.Name as Property.Name
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
@@ -97,8 +98,8 @@ getPatchVersion header_ = case Header.patchVersion header_ of
       of
       -- This is an ugly, ugly hack to handle replays from season 2 of RLCS.
       -- See `decodeSpawnedReplicationBits` and #85.
-        Just Property.Property { Property.value = PropertyValue.Name str }
-          | Str.toString str == "Lan" -> -1
+        Just Property.Property { Property.value = PropertyValue.Name name }
+          | Str.toString (Property.Name.toStr name) == "Lan" -> -1
         _ -> 0
 
 getNumFrames :: Header.Header -> Int
