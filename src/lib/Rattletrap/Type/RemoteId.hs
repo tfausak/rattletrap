@@ -3,8 +3,8 @@ module Rattletrap.Type.RemoteId where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Type.RemoteId.Epic as Epic
 import qualified Rattletrap.Type.RemoteId.PlayStation as PlayStation
-import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
@@ -21,7 +21,7 @@ data RemoteId
   | Steam U64.U64
   | Switch U64.U64 U64.U64 U64.U64 U64.U64
   | Xbox U64.U64
-  | Epic Str.Str
+  | Epic Epic.Epic
   deriving (Eq, Show)
 
 instance Json.FromJSON RemoteId where
@@ -67,7 +67,7 @@ schema = Schema.named "remote-id" . Schema.oneOf $ fmap
   , ("steam", Schema.ref U64.schema)
   , ("switch", Schema.tuple . replicate 4 $ Schema.ref U64.schema)
   , ("xbox", Schema.ref U64.schema)
-  , ("epic", Schema.ref Str.schema)
+  , ("epic", Schema.ref Epic.schema)
   ]
 
 bitPut :: RemoteId -> BitPut.BitPut
@@ -80,7 +80,7 @@ bitPut remoteId = case remoteId of
   Steam word64 -> U64.bitPut word64
   Switch a b c d -> putWord256 a b c d
   Xbox word64 -> U64.bitPut word64
-  Epic str -> Str.bitPut str
+  Epic x -> Epic.bitPut x
 
 putWord256 :: U64.U64 -> U64.U64 -> U64.U64 -> U64.U64 -> BitPut.BitPut
 putWord256 a b c d =
@@ -98,7 +98,7 @@ bitGet version systemId = case U8.toWord8 systemId of
   7 -> fmap PsyNet $ if Version.atLeast 868 24 10 version
     then fmap Left U64.bitGet
     else fmap Right getWord256
-  11 -> fmap Epic Str.bitGet
+  11 -> fmap Epic Epic.bitGet
   _ -> fail ("[RT09] unknown system id " <> show systemId)
 
 getWord256 :: BitGet.BitGet (U64.U64, U64.U64, U64.U64, U64.U64)
