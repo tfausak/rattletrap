@@ -127,6 +127,7 @@ library
     Rattletrap.Type.RemoteId.PlayStation
     Rattletrap.Type.RemoteId.Splitscreen
     Rattletrap.Type.RemoteId.Steam
+    Rattletrap.Type.RemoteId.Switch
     Rattletrap.Type.RemoteId.Xbox
     Rattletrap.Type.Replay
     Rattletrap.Type.Replication

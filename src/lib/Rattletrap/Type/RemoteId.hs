@@ -7,6 +7,7 @@ import qualified Rattletrap.Type.RemoteId.Epic as Epic
 import qualified Rattletrap.Type.RemoteId.PlayStation as PlayStation
 import qualified Rattletrap.Type.RemoteId.Splitscreen as Splitscreen
 import qualified Rattletrap.Type.RemoteId.Steam as Steam
+import qualified Rattletrap.Type.RemoteId.Switch as Switch
 import qualified Rattletrap.Type.RemoteId.Xbox as Xbox
 import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
@@ -21,7 +22,7 @@ data RemoteId
   | Splitscreen Splitscreen.Splitscreen
   -- ^ Really only 24 bits.
   | Steam Steam.Steam
-  | Switch U64.U64 U64.U64 U64.U64 U64.U64
+  | Switch Switch.Switch
   | Xbox Xbox.Xbox
   | Epic Epic.Epic
   deriving (Eq, Show)
@@ -32,13 +33,10 @@ instance Json.FromJSON RemoteId where
     , fmap PsyNet $ Json.required object "psy_net"
     , fmap Splitscreen $ Json.required object "splitscreen"
     , fmap Steam $ Json.required object "steam"
-    , fmap (uncurry4 Switch) $ Json.required object "switch"
+    , fmap Switch $ Json.required object "switch"
     , fmap Xbox $ Json.required object "xbox"
     , fmap Epic $ Json.required object "epic"
     ]
-
-uncurry4 :: (a -> b -> c -> d -> e) -> (a, b, c, d) -> e
-uncurry4 f (a, b, c, d) = f a b c d
 
 instance Json.ToJSON RemoteId where
   toJSON x = case x of
@@ -46,7 +44,7 @@ instance Json.ToJSON RemoteId where
     PsyNet y -> Json.object [Json.pair "psy_net" y]
     Splitscreen y -> Json.object [Json.pair "splitscreen" y]
     Steam y -> Json.object [Json.pair "steam" y]
-    Switch y z a b -> Json.object [Json.pair "switch" (y, z, a, b)]
+    Switch y -> Json.object [Json.pair "switch" y]
     Xbox y -> Json.object [Json.pair "xbox" y]
     Epic y -> Json.object [Json.pair "epic" y]
 
@@ -67,7 +65,7 @@ schema = Schema.named "remote-id" . Schema.oneOf $ fmap
     )
   , ("splitscreen", Schema.ref Schema.integer)
   , ("steam", Schema.ref Splitscreen.schema)
-  , ("switch", Schema.tuple . replicate 4 $ Schema.ref U64.schema)
+  , ("switch", Schema.ref Switch.schema)
   , ("xbox", Schema.ref Xbox.schema)
   , ("epic", Schema.ref Epic.schema)
   ]
@@ -80,7 +78,7 @@ bitPut remoteId = case remoteId of
     Right (a, b, c, d) -> putWord256 a b c d
   Splitscreen x -> Splitscreen.bitPut x
   Steam x -> Steam.bitPut x
-  Switch a b c d -> putWord256 a b c d
+  Switch x -> Switch.bitPut x
   Xbox x -> Xbox.bitPut x
   Epic x -> Epic.bitPut x
 
@@ -94,9 +92,7 @@ bitGet version systemId = case U8.toWord8 systemId of
   1 -> fmap Steam Steam.bitGet
   2 -> fmap PlayStation $ PlayStation.bitGet version
   4 -> fmap Xbox Xbox.bitGet
-  6 -> do
-    (a, b, c, d) <- getWord256
-    pure $ Switch a b c d
+  6 -> fmap Switch Switch.bitGet
   7 -> fmap PsyNet $ if Version.atLeast 868 24 10 version
     then fmap Left U64.bitGet
     else fmap Right getWord256
