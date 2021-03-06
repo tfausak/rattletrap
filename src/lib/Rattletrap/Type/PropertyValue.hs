@@ -6,6 +6,7 @@ import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Dictionary as Dictionary
+import qualified Rattletrap.Type.Property.Byte as Property.Byte
 import qualified Rattletrap.Type.Property.Float as Property.Float
 import qualified Rattletrap.Type.Property.Int as Property.Int
 import qualified Rattletrap.Type.Property.Name as Property.Name
@@ -15,14 +16,13 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
 
 data PropertyValue a
   = Array (List.List (Dictionary.Dictionary a))
   -- ^ Yes, a list of dictionaries. No, it doesn't make sense. These usually
   -- only have one element.
   | Bool U8.U8
-  | Byte Str.Str (Maybe Str.Str)
+  | Byte Property.Byte.Byte
   -- ^ This is a strange name for essentially a key-value pair.
   | Float Property.Float.Float
   | Int Property.Int.Int
@@ -36,7 +36,7 @@ instance Json.FromJSON a => Json.FromJSON (PropertyValue a) where
   parseJSON = Json.withObject "PropertyValue" $ \object -> Foldable.asum
     [ fmap Array $ Json.required object "array"
     , fmap Bool $ Json.required object "bool"
-    , fmap (uncurry Byte) $ Json.required object "byte"
+    , fmap Byte $ Json.required object "byte"
     , fmap Float $ Json.required object "float"
     , fmap Int $ Json.required object "int"
     , fmap Name $ Json.required object "name"
@@ -48,7 +48,7 @@ instance Json.ToJSON a => Json.ToJSON (PropertyValue a) where
   toJSON x = case x of
     Array y -> Json.object [Json.pair "array" y]
     Bool y -> Json.object [Json.pair "bool" y]
-    Byte y z -> Json.object [Json.pair "byte" (y, z)]
+    Byte y -> Json.object [Json.pair "byte" y]
     Float y -> Json.object [Json.pair "float" y]
     Int y -> Json.object [Json.pair "int" y]
     Name y -> Json.object [Json.pair "name" y]
@@ -63,10 +63,7 @@ schema s =
         (\(k, v) -> Schema.object [(Json.pair k v, True)])
         [ ("array", Schema.json . List.schema $ Dictionary.schema s)
         , ("bool", Schema.ref U8.schema)
-        , ( "byte"
-          , Schema.tuple
-            [Schema.ref Str.schema, Schema.json $ Schema.maybe Str.schema]
-          )
+        , ("byte", Schema.ref Property.Byte.schema)
         , ("float", Schema.ref Property.Float.schema)
         , ("int", Schema.ref Property.Int.schema)
         , ("name", Schema.ref Property.Name.schema)
@@ -78,7 +75,7 @@ bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
 bytePut putProperty value = case value of
   Array x -> List.bytePut (Dictionary.bytePut putProperty) x
   Bool x -> U8.bytePut x
-  Byte k mv -> Str.bytePut k <> foldMap Str.bytePut mv
+  Byte x -> Property.Byte.bytePut x
   Float x -> Property.Float.bytePut x
   Int x -> Property.Int.bytePut x
   Name x -> Property.Name.bytePut x
@@ -90,10 +87,7 @@ byteGet getProperty kind = case Str.toString kind of
   "ArrayProperty" ->
     fmap Array $ List.byteGet (Dictionary.byteGet getProperty)
   "BoolProperty" -> fmap Bool U8.byteGet
-  "ByteProperty" -> do
-    k <- Str.byteGet
-    v <- whenMaybe (Str.toString k /= "OnlinePlatform_Steam") Str.byteGet
-    pure $ Byte k v
+  "ByteProperty" -> fmap Byte Property.Byte.byteGet
   "FloatProperty" -> fmap Float Property.Float.byteGet
   "IntProperty" -> fmap Int Property.Int.byteGet
   "NameProperty" -> fmap Name Property.Name.byteGet

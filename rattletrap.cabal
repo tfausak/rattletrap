@@ -112,6 +112,7 @@ library
     Rattletrap.Type.Mark
     Rattletrap.Type.Message
     Rattletrap.Type.Property
+    Rattletrap.Type.Property.Byte
     Rattletrap.Type.Property.Float
     Rattletrap.Type.Property.Int
     Rattletrap.Type.Property.Name
