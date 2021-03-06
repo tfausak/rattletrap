@@ -5,6 +5,7 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.RemoteId.Epic as Epic
 import qualified Rattletrap.Type.RemoteId.PlayStation as PlayStation
+import qualified Rattletrap.Type.RemoteId.Xbox as Xbox
 import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
@@ -20,7 +21,7 @@ data RemoteId
   -- ^ Really only 24 bits.
   | Steam U64.U64
   | Switch U64.U64 U64.U64 U64.U64 U64.U64
-  | Xbox U64.U64
+  | Xbox Xbox.Xbox
   | Epic Epic.Epic
   deriving (Eq, Show)
 
@@ -66,7 +67,7 @@ schema = Schema.named "remote-id" . Schema.oneOf $ fmap
   , ("splitscreen", Schema.ref Schema.integer)
   , ("steam", Schema.ref U64.schema)
   , ("switch", Schema.tuple . replicate 4 $ Schema.ref U64.schema)
-  , ("xbox", Schema.ref U64.schema)
+  , ("xbox", Schema.ref Xbox.schema)
   , ("epic", Schema.ref Epic.schema)
   ]
 
@@ -79,7 +80,7 @@ bitPut remoteId = case remoteId of
   Splitscreen word24 -> BitPut.bits 24 word24
   Steam word64 -> U64.bitPut word64
   Switch a b c d -> putWord256 a b c d
-  Xbox word64 -> U64.bitPut word64
+  Xbox x -> Xbox.bitPut x
   Epic x -> Epic.bitPut x
 
 putWord256 :: U64.U64 -> U64.U64 -> U64.U64 -> U64.U64 -> BitPut.BitPut
@@ -91,7 +92,7 @@ bitGet version systemId = case U8.toWord8 systemId of
   0 -> fmap Splitscreen $ BitGet.bits 24
   1 -> fmap Steam U64.bitGet
   2 -> fmap PlayStation $ PlayStation.bitGet version
-  4 -> fmap Xbox U64.bitGet
+  4 -> fmap Xbox Xbox.bitGet
   6 -> do
     (a, b, c, d) <- getWord256
     pure $ Switch a b c d
