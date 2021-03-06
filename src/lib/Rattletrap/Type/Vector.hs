@@ -67,7 +67,8 @@ bitPut vector =
 
 bitGet :: Version.Version -> BitGet.BitGet Vector
 bitGet version = do
-  size <- CompressedWord.bitGet $ if Version.atLeast 868 22 7 version then 21 else 19
+  size <- CompressedWord.bitGet
+    $ if Version.atLeast 868 22 7 version then 21 else 19
   let
     limit = getLimit size
     bias = getBias size

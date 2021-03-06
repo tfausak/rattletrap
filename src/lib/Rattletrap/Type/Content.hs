@@ -206,7 +206,13 @@ byteGet matchType version numFrames maxChannels = do
     classAttributeMap =
       ClassAttributeMap.make objects classMappings caches names
     bitGet = State.evalStateT
-      (Frame.decodeFramesBits matchType version numFrames maxChannels classAttributeMap)
+      (Frame.decodeFramesBits
+        matchType
+        version
+        numFrames
+        maxChannels
+        classAttributeMap
+      )
       mempty
   frames <-
     either fail pure . ByteGet.run (BitGet.toByteGet bitGet) $ reverseBytes

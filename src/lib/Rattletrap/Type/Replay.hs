@@ -75,12 +75,16 @@ byteGet fast skip = do
     }
 
 getContent :: Header.Header -> ByteGet.ByteGet Content.Content
-getContent h =
-  Content.byteGet (getMatchType h) (Header.version h) (getNumFrames h) (getMaxChannels h)
+getContent h = Content.byteGet
+  (getMatchType h)
+  (Header.version h)
+  (getNumFrames h)
+  (getMaxChannels h)
 
 getMatchType :: Header.Header -> Maybe Str.Str
 getMatchType header = do
-  Property.Property { Property.value } <- Dictionary.lookup (Str.fromString "MatchType") $ Header.properties header
+  Property.Property { Property.value } <-
+    Dictionary.lookup (Str.fromString "MatchType") $ Header.properties header
   case value of
     PropertyValue.Name x -> Just x
     _ -> Nothing

@@ -61,7 +61,11 @@ instance Json.FromJSON Header where
     label <- Json.required object "label"
     properties <- Json.required object "properties"
     pure Header
-      { version = Version.Version { Version.major, Version.minor, Version.patch }
+      { version = Version.Version
+        { Version.major
+        , Version.minor
+        , Version.patch
+        }
       , label
       , properties
       }
@@ -88,17 +92,13 @@ schema = Schema.named "header" $ Schema.object
 
 bytePut :: Header -> BytePut.BytePut
 bytePut x =
-  Version.bytePut (version x)
-    <> Str.bytePut (label x)
-    <> Dictionary.bytePut Property.bytePut (properties x)
+  Version.bytePut (version x) <> Str.bytePut (label x) <> Dictionary.bytePut
+    Property.bytePut
+    (properties x)
 
 byteGet :: ByteGet.ByteGet Header
 byteGet = do
   version <- Version.byteGet
   label <- Str.byteGet
   properties <- Dictionary.byteGet Property.byteGet
-  pure Header
-    { version
-    , label
-    , properties
-    }
+  pure Header { version, label, properties }

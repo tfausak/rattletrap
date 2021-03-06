@@ -93,7 +93,8 @@ bitGet
        Spawned
 bitGet matchType version classAttributeMap actorId = do
   flag_ <- Trans.lift BitGet.bool
-  nameIndex_ <- whenMaybe (hasNameIndex matchType version) $ Trans.lift U32.bitGet
+  nameIndex_ <- whenMaybe (hasNameIndex matchType version)
+    $ Trans.lift U32.bitGet
   name_ <- either fail pure (lookupName classAttributeMap nameIndex_)
   objectId_ <- Trans.lift U32.bitGet
   State.modify (Map.insert actorId objectId_)
@@ -118,8 +119,8 @@ bitGet matchType version classAttributeMap actorId = do
     )
 
 hasNameIndex :: Maybe Str.Str -> Version.Version -> Bool
-hasNameIndex matchType version = Version.atLeast 868 14 0 version
-  && matchType /= Just (Str.fromString "Lan")
+hasNameIndex matchType version =
+  Version.atLeast 868 14 0 version && matchType /= Just (Str.fromString "Lan")
 
 lookupName
   :: ClassAttributeMap.ClassAttributeMap

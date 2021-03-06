@@ -58,7 +58,9 @@ decodeReplicationsBits
        (List.List Replication)
 decodeReplicationsBits matchType version limit classes = List.untilM $ do
   p <- Trans.lift BitGet.bool
-  if p then fmap Just $ bitGet matchType version limit classes else pure Nothing
+  if p
+    then fmap Just $ bitGet matchType version limit classes
+    else pure Nothing
 
 bitGet
   :: Maybe Str.Str
@@ -71,4 +73,5 @@ bitGet
        Replication
 bitGet matchType version limit classes = do
   actor <- Trans.lift (CompressedWord.bitGet limit)
-  fmap (Replication actor) $ ReplicationValue.bitGet matchType version classes actor
+  fmap (Replication actor)
+    $ ReplicationValue.bitGet matchType version classes actor
