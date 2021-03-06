@@ -12,7 +12,6 @@ import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Version as Version
 
@@ -76,30 +75,19 @@ byteGet fast skip = do
     }
 
 getContent :: Header.Header -> ByteGet.ByteGet Content.Content
-getContent h =
-  Content.byteGet (getVersion h) (getNumFrames h) (getMaxChannels h)
+getContent h = Content.byteGet
+  (getMatchType h)
+  (Header.version h)
+  (getNumFrames h)
+  (getMaxChannels h)
 
-getVersion :: Header.Header -> Version.Version
-getVersion x = Version.Version
-  { Version.major = fromIntegral . U32.toWord32 $ Header.engineVersion x
-  , Version.minor = fromIntegral . U32.toWord32 $ Header.licenseeVersion x
-  , Version.patch = getPatchVersion x
-  }
-
-getPatchVersion :: Header.Header -> Int
-getPatchVersion header_ = case Header.patchVersion header_ of
-  Just version -> fromIntegral (U32.toWord32 version)
-  Nothing ->
-    case
-        Dictionary.lookup
-          (Str.fromString "MatchType")
-          (Header.properties header_)
-      of
-      -- This is an ugly, ugly hack to handle replays from season 2 of RLCS.
-      -- See `decodeSpawnedReplicationBits` and #85.
-        Just Property.Property { Property.value = PropertyValue.Name str }
-          | Str.toString str == "Lan" -> -1
-        _ -> 0
+getMatchType :: Header.Header -> Maybe Str.Str
+getMatchType header = do
+  Property.Property { Property.value } <-
+    Dictionary.lookup (Str.fromString "MatchType") $ Header.properties header
+  case value of
+    PropertyValue.Name x -> Just x
+    _ -> Nothing
 
 getNumFrames :: Header.Header -> Int
 getNumFrames header_ =

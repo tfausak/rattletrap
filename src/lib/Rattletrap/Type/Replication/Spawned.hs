@@ -83,16 +83,18 @@ bitPut spawnedReplication =
     <> Initialization.bitPut (initialization spawnedReplication)
 
 bitGet
-  :: Version.Version
+  :: Maybe Str.Str
+  -> Version.Version
   -> ClassAttributeMap.ClassAttributeMap
   -> CompressedWord.CompressedWord
   -> State.StateT
        (Map.Map CompressedWord.CompressedWord U32.U32)
        BitGet.BitGet
        Spawned
-bitGet version classAttributeMap actorId = do
+bitGet matchType version classAttributeMap actorId = do
   flag_ <- Trans.lift BitGet.bool
-  nameIndex_ <- whenMaybe (hasNameIndex version) (Trans.lift U32.bitGet)
+  nameIndex_ <- whenMaybe (hasNameIndex matchType version)
+    $ Trans.lift U32.bitGet
   name_ <- either fail pure (lookupName classAttributeMap nameIndex_)
   objectId_ <- Trans.lift U32.bitGet
   State.modify (Map.insert actorId objectId_)
@@ -116,9 +118,9 @@ bitGet version classAttributeMap actorId = do
       initialization_
     )
 
-hasNameIndex :: Version.Version -> Bool
-hasNameIndex v =
-  Version.major v >= 868 && Version.minor v >= 14 && Version.patch v >= 0
+hasNameIndex :: Maybe Str.Str -> Version.Version -> Bool
+hasNameIndex matchType version =
+  Version.atLeast 868 14 0 version && matchType /= Just (Str.fromString "Lan")
 
 lookupName
   :: ClassAttributeMap.ClassAttributeMap

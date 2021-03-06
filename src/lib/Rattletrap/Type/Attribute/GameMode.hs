@@ -39,10 +39,6 @@ bitPut gameModeAttribute = do
 
 bitGet :: Version.Version -> BitGet.BitGet GameMode
 bitGet version = do
-  let numBits = if has8Bits version then 8 else 2 :: Int
+  let numBits = if Version.atLeast 868 12 0 version then 8 else 2 :: Int
   word <- BitGet.word8 numBits
   pure GameMode { numBits, word }
-
-has8Bits :: Version.Version -> Bool
-has8Bits v =
-  Version.major v >= 868 && Version.minor v >= 12 && Version.patch v >= 0

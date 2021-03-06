@@ -39,10 +39,6 @@ bitPut r = case r of
   Quaternion q -> Quaternion.bitPut q
 
 bitGet :: Version.Version -> BitGet.BitGet Rotation
-bitGet version = if isQuaternion version
+bitGet version = if Version.atLeast 868 22 7 version
   then fmap Quaternion Quaternion.bitGet
   else fmap CompressedWordVector CompressedWordVector.bitGet
-
-isQuaternion :: Version.Version -> Bool
-isQuaternion v =
-  Version.major v >= 868 && Version.minor v >= 22 && Version.patch v >= 7
