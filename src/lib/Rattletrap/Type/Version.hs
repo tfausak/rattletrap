@@ -6,3 +6,6 @@ data Version = Version
   , patch :: Int
   }
   deriving (Eq, Show)
+
+atLeast :: Int -> Int -> Int -> Version -> Bool
+atLeast m n p v = major v >= m && minor v >= n && patch v >= p

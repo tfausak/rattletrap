@@ -103,19 +103,14 @@ decodeTeamEdition version = if hasNewPainted version
   else fmap TeamEditionOld $ CompressedWord.bitGet 13
 
 decodeColor :: Version.Version -> BitGet.BitGet ProductValue
-decodeColor version = if hasNewColor version
+decodeColor version = if Version.atLeast 868 23 8 version
   then fmap UserColorNew U32.bitGet
   else do
     hasValue <- BitGet.bool
     fmap UserColorOld $ whenMaybe hasValue (BitGet.bits 31)
 
 hasNewPainted :: Version.Version -> Bool
-hasNewPainted v =
-  Version.major v >= 868 && Version.minor v >= 18 && Version.patch v >= 0
-
-hasNewColor :: Version.Version -> Bool
-hasNewColor v =
-  Version.major v >= 868 && Version.minor v >= 23 && Version.patch v >= 8
+hasNewPainted = Version.atLeast 868 10 0
 
 decodeTitle :: BitGet.BitGet ProductValue
 decodeTitle = fmap TitleId Str.bitGet
