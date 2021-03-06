@@ -6,6 +6,7 @@ import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Dictionary as Dictionary
+import qualified Rattletrap.Type.Property.Str as Property.Str
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.List as List
@@ -27,7 +28,7 @@ data PropertyValue a
   | Name Str.Str
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.
   | QWord U64.U64
-  | Str Str.Str
+  | Str Property.Str.Str
   deriving (Eq, Show)
 
 instance Json.FromJSON a => Json.FromJSON (PropertyValue a) where
@@ -69,7 +70,7 @@ schema s =
         , ("int", Schema.ref I32.schema)
         , ("name", Schema.ref Str.schema)
         , ("q_word", Schema.ref U64.schema)
-        , ("str", Schema.ref Str.schema)
+        , ("str", Schema.ref Property.Str.schema)
         ]
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
@@ -81,7 +82,7 @@ bytePut putProperty value = case value of
   Int x -> I32.bytePut x
   Name x -> Str.bytePut x
   QWord x -> U64.bytePut x
-  Str x -> Str.bytePut x
+  Str x -> Property.Str.bytePut x
 
 byteGet :: ByteGet.ByteGet a -> Str.Str -> ByteGet.ByteGet (PropertyValue a)
 byteGet getProperty kind = case Str.toString kind of
@@ -96,5 +97,5 @@ byteGet getProperty kind = case Str.toString kind of
   "IntProperty" -> fmap Int I32.byteGet
   "NameProperty" -> fmap Name Str.byteGet
   "QWordProperty" -> fmap QWord U64.byteGet
-  "StrProperty" -> fmap Str Str.byteGet
+  "StrProperty" -> fmap Str Property.Str.byteGet
   _ -> fail ("[RT07] don't know how to read property value " <> show kind)
