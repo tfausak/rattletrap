@@ -125,6 +125,7 @@ library
     Rattletrap.Type.RemoteId
     Rattletrap.Type.RemoteId.Epic
     Rattletrap.Type.RemoteId.PlayStation
+    Rattletrap.Type.RemoteId.Splitscreen
     Rattletrap.Type.RemoteId.Steam
     Rattletrap.Type.RemoteId.Xbox
     Rattletrap.Type.Replay

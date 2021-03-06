@@ -5,6 +5,7 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.RemoteId.Epic as Epic
 import qualified Rattletrap.Type.RemoteId.PlayStation as PlayStation
+import qualified Rattletrap.Type.RemoteId.Splitscreen as Splitscreen
 import qualified Rattletrap.Type.RemoteId.Steam as Steam
 import qualified Rattletrap.Type.RemoteId.Xbox as Xbox
 import qualified Rattletrap.Type.U64 as U64
@@ -13,12 +14,11 @@ import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
 import qualified Data.Foldable as Foldable
-import qualified Data.Word as Word
 
 data RemoteId
   = PlayStation PlayStation.PlayStation
   | PsyNet (Either U64.U64 (U64.U64, U64.U64, U64.U64, U64.U64))
-  | Splitscreen Word.Word32
+  | Splitscreen Splitscreen.Splitscreen
   -- ^ Really only 24 bits.
   | Steam Steam.Steam
   | Switch U64.U64 U64.U64 U64.U64 U64.U64
@@ -66,7 +66,7 @@ schema = Schema.named "remote-id" . Schema.oneOf $ fmap
       ]
     )
   , ("splitscreen", Schema.ref Schema.integer)
-  , ("steam", Schema.ref Steam.schema)
+  , ("steam", Schema.ref Splitscreen.schema)
   , ("switch", Schema.tuple . replicate 4 $ Schema.ref U64.schema)
   , ("xbox", Schema.ref Xbox.schema)
   , ("epic", Schema.ref Epic.schema)
@@ -78,7 +78,7 @@ bitPut remoteId = case remoteId of
   PsyNet e -> case e of
     Left l -> U64.bitPut l
     Right (a, b, c, d) -> putWord256 a b c d
-  Splitscreen word24 -> BitPut.bits 24 word24
+  Splitscreen x -> Splitscreen.bitPut x
   Steam x -> Steam.bitPut x
   Switch a b c d -> putWord256 a b c d
   Xbox x -> Xbox.bitPut x
@@ -90,7 +90,7 @@ putWord256 a b c d =
 
 bitGet :: Version.Version -> U8.U8 -> BitGet.BitGet RemoteId
 bitGet version systemId = case U8.toWord8 systemId of
-  0 -> fmap Splitscreen $ BitGet.bits 24
+  0 -> fmap Splitscreen Splitscreen.bitGet
   1 -> fmap Steam Steam.bitGet
   2 -> fmap PlayStation $ PlayStation.bitGet version
   4 -> fmap Xbox Xbox.bitGet
