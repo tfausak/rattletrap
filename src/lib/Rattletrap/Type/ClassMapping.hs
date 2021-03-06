@@ -33,4 +33,7 @@ bytePut :: ClassMapping -> BytePut.BytePut
 bytePut x = Str.bytePut (name x) <> U32.bytePut (streamId x)
 
 byteGet :: ByteGet.ByteGet ClassMapping
-byteGet = ClassMapping <$> Str.byteGet <*> U32.byteGet
+byteGet = do
+  name <- Str.byteGet
+  streamId <- U32.byteGet
+  pure ClassMapping { name, streamId }

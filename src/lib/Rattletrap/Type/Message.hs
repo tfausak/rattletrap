@@ -40,10 +40,11 @@ schema = Schema.named "message" $ Schema.object
 
 bytePut :: Message -> BytePut.BytePut
 bytePut x =
-  do
-      U32.bytePut (frame x)
-    <> Str.bytePut (name x)
-    <> Str.bytePut (value x)
+  U32.bytePut (frame x) <> Str.bytePut (name x) <> Str.bytePut (value x)
 
 byteGet :: ByteGet.ByteGet Message
-byteGet = Message <$> U32.byteGet <*> Str.byteGet <*> Str.byteGet
+byteGet = do
+  frame <- U32.byteGet
+  name <- Str.byteGet
+  value <- Str.byteGet
+  pure Message { frame, name, value }

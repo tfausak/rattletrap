@@ -38,11 +38,11 @@ bitPut compressedWordVector =
     <> CompressedWord.bitPut (z compressedWordVector)
 
 bitGet :: BitGet.BitGet CompressedWordVector
-bitGet =
-  CompressedWordVector
-    <$> CompressedWord.bitGet limit
-    <*> CompressedWord.bitGet limit
-    <*> CompressedWord.bitGet limit
+bitGet = do
+  x <- CompressedWord.bitGet limit
+  y <- CompressedWord.bitGet limit
+  z <- CompressedWord.bitGet limit
+  pure CompressedWordVector { x, y, z }
 
 limit :: Word
 limit = 65536

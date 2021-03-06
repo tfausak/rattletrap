@@ -42,7 +42,7 @@ bitPut :: I64 -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut
 
 byteGet :: ByteGet.ByteGet I64
-byteGet = fromInt64 <$> ByteGet.int64
+byteGet = fmap fromInt64 ByteGet.int64
 
 bitGet :: BitGet.BitGet I64
 bitGet = BitGet.fromByteGet byteGet 8

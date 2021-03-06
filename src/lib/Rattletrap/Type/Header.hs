@@ -103,10 +103,17 @@ bytePut x =
 
 byteGet :: ByteGet.ByteGet Header
 byteGet = do
-  (major, minor) <- (,) <$> U32.byteGet <*> U32.byteGet
-  Header major minor
-    <$> whenMaybe
-          (U32.toWord32 major >= 868 && U32.toWord32 minor >= 18)
-          U32.byteGet
-    <*> Str.byteGet
-    <*> Dictionary.byteGet Property.byteGet
+  engineVersion <- U32.byteGet
+  licenseeVersion <- U32.byteGet
+  patchVersion <- whenMaybe
+    (U32.toWord32 engineVersion >= 868 && U32.toWord32 licenseeVersion >= 18)
+    U32.byteGet
+  label <- Str.byteGet
+  properties <- Dictionary.byteGet Property.byteGet
+  pure Header
+    { engineVersion
+    , licenseeVersion
+    , patchVersion
+    , label
+    , properties
+    }

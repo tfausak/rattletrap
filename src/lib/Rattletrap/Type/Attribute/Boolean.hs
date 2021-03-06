@@ -22,4 +22,6 @@ bitPut :: Boolean -> BitPut.BitPut
 bitPut booleanAttribute = BitPut.bool (value booleanAttribute)
 
 bitGet :: BitGet.BitGet Boolean
-bitGet = Boolean <$> BitGet.bool
+bitGet = do
+  value <- BitGet.bool
+  pure Boolean { value }

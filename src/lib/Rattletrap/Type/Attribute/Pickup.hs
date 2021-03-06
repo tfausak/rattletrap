@@ -42,4 +42,6 @@ bitPut x =
 bitGet :: BitGet.BitGet Pickup
 bitGet = do
   instigator <- BitGet.bool
-  Pickup <$> whenMaybe instigator U32.bitGet <*> BitGet.bool
+  instigatorId <- whenMaybe instigator U32.bitGet
+  pickedUp <- BitGet.bool
+  pure Pickup { instigatorId, pickedUp }

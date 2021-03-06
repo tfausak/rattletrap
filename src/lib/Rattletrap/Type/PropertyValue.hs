@@ -32,14 +32,14 @@ data PropertyValue a
 
 instance Json.FromJSON a => Json.FromJSON (PropertyValue a) where
   parseJSON = Json.withObject "PropertyValue" $ \object -> Foldable.asum
-    [ Array <$> Json.required object "array"
-    , Bool <$> Json.required object "bool"
-    , uncurry Byte <$> Json.required object "byte"
-    , Float <$> Json.required object "float"
-    , Int <$> Json.required object "int"
-    , Name <$> Json.required object "name"
-    , QWord <$> Json.required object "q_word"
-    , Str <$> Json.required object "str"
+    [ fmap Array $ Json.required object "array"
+    , fmap Bool $ Json.required object "bool"
+    , fmap (uncurry Byte) $ Json.required object "byte"
+    , fmap Float $ Json.required object "float"
+    , fmap Int $ Json.required object "int"
+    , fmap Name $ Json.required object "name"
+    , fmap QWord $ Json.required object "q_word"
+    , fmap Str $ Json.required object "str"
     ]
 
 instance Json.ToJSON a => Json.ToJSON (PropertyValue a) where
@@ -85,14 +85,16 @@ bytePut putProperty value = case value of
 
 byteGet :: ByteGet.ByteGet a -> Str.Str -> ByteGet.ByteGet (PropertyValue a)
 byteGet getProperty kind = case Str.toString kind of
-  "ArrayProperty" -> Array <$> List.byteGet (Dictionary.byteGet getProperty)
-  "BoolProperty" -> Bool <$> U8.byteGet
+  "ArrayProperty" ->
+    fmap Array $ List.byteGet (Dictionary.byteGet getProperty)
+  "BoolProperty" -> fmap Bool U8.byteGet
   "ByteProperty" -> do
     k <- Str.byteGet
-    Byte k <$> whenMaybe (Str.toString k /= "OnlinePlatform_Steam") Str.byteGet
-  "FloatProperty" -> Float <$> F32.byteGet
-  "IntProperty" -> Int <$> I32.byteGet
-  "NameProperty" -> Name <$> Str.byteGet
-  "QWordProperty" -> QWord <$> U64.byteGet
-  "StrProperty" -> Str <$> Str.byteGet
+    v <- whenMaybe (Str.toString k /= "OnlinePlatform_Steam") Str.byteGet
+    pure $ Byte k v
+  "FloatProperty" -> fmap Float F32.byteGet
+  "IntProperty" -> fmap Int I32.byteGet
+  "NameProperty" -> fmap Name Str.byteGet
+  "QWordProperty" -> fmap QWord U64.byteGet
+  "StrProperty" -> fmap Str Str.byteGet
   _ -> fail ("[RT07] don't know how to read property value " <> show kind)

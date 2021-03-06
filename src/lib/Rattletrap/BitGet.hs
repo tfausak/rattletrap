@@ -31,12 +31,12 @@ fromByteGet f n = do
   either fail pure . ByteGet.run f $ Utility.reverseBytes x
 
 bits :: Bits.Bits a => Int -> BitGet a
-bits n =
-  foldr
-      (\bit x -> let y = Bits.shiftL x 1 in if bit then Bits.setBit y 0 else y
-      )
-      Bits.zeroBits
-    <$> Monad.replicateM n bool
+bits n = do
+  let
+    f :: Bits.Bits a => Bool -> a -> a
+    f bit x = let y = Bits.shiftL x 1 in if bit then Bits.setBit y 0 else y
+  xs <- Monad.replicateM n bool
+  pure $ foldr f Bits.zeroBits xs
 
 bool :: BitGet Bool
 bool = BinaryBits.getBool

@@ -44,8 +44,11 @@ putInt8VectorField maybeField = case maybeField of
   Just field -> BitPut.bool True <> I8.bitPut field
 
 bitGet :: BitGet.BitGet Int8Vector
-bitGet =
-  Int8Vector <$> decodeFieldBits <*> decodeFieldBits <*> decodeFieldBits
+bitGet = do
+  x <- decodeFieldBits
+  y <- decodeFieldBits
+  z <- decodeFieldBits
+  pure Int8Vector { x, y, z }
 
 decodeFieldBits :: BitGet.BitGet (Maybe I8.I8)
 decodeFieldBits = do

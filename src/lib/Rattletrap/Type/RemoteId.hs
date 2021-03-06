@@ -29,13 +29,13 @@ data RemoteId
 
 instance Json.FromJSON RemoteId where
   parseJSON = Json.withObject "RemoteId" $ \object -> Foldable.asum
-    [ uncurry PlayStation <$> Json.required object "play_station"
-    , PsyNet <$> Json.required object "psy_net"
-    , Splitscreen <$> Json.required object "splitscreen"
-    , Steam <$> Json.required object "steam"
-    , uncurry4 Switch <$> Json.required object "switch"
-    , Xbox <$> Json.required object "xbox"
-    , Epic <$> Json.required object "epic"
+    [ fmap (uncurry PlayStation) $ Json.required object "play_station"
+    , fmap PsyNet $ Json.required object "psy_net"
+    , fmap Splitscreen $ Json.required object "splitscreen"
+    , fmap Steam $ Json.required object "steam"
+    , fmap (uncurry4 Switch) $ Json.required object "switch"
+    , fmap Xbox $ Json.required object "xbox"
+    , fmap Epic $ Json.required object "epic"
     ]
 
 uncurry4 :: (a -> b -> c -> d -> e) -> (a, b, c, d) -> e
@@ -96,17 +96,20 @@ putWord256 a b c d =
 
 bitGet :: Version.Version -> U8.U8 -> BitGet.BitGet RemoteId
 bitGet version systemId = case U8.toWord8 systemId of
-  0 -> Splitscreen <$> BitGet.bits 24
-  1 -> Steam <$> U64.bitGet
-  2 -> PlayStation <$> decodePsName <*> decodePsBytes version
-  4 -> Xbox <$> U64.bitGet
+  0 -> fmap Splitscreen $ BitGet.bits 24
+  1 -> fmap Steam U64.bitGet
+  2 -> do
+    name <- decodePsName
+    bytes <- decodePsBytes version
+    pure $ PlayStation name bytes
+  4 -> fmap Xbox U64.bitGet
   6 -> do
     (a, b, c, d) <- getWord256
     pure $ Switch a b c d
-  7 -> if psyNetIsU64 version
-    then PsyNet . Left <$> U64.bitGet
-    else PsyNet . Right <$> getWord256
-  11 -> Epic <$> Str.bitGet
+  7 -> fmap PsyNet $ if psyNetIsU64 version
+    then fmap Left U64.bitGet
+    else fmap Right getWord256
+  11 -> fmap Epic Str.bitGet
   _ -> fail ("[RT09] unknown system id " <> show systemId)
 
 psyNetIsU64 :: Version.Version -> Bool
@@ -119,8 +122,10 @@ decodePsName = fmap
   (BitGet.byteString 16)
 
 decodePsBytes :: Version.Version -> BitGet.BitGet [Word.Word8]
-decodePsBytes version = Bytes.unpack
-  <$> BitGet.byteString (if playStationIsU24 version then 24 else 16)
+decodePsBytes version =
+  fmap Bytes.unpack . BitGet.byteString $ if playStationIsU24 version
+    then 24
+    else 16
 
 playStationIsU24 :: Version.Version -> Bool
 playStationIsU24 v =

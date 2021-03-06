@@ -262,11 +262,9 @@ getObjectName :: Map.Map U32.U32 Str.Str -> U32.U32 -> Maybe Str.Str
 getObjectName objectMap_ objectId = Map.lookup objectId objectMap_
 
 getClassName :: Str.Str -> Maybe Str.Str
-getClassName rawObjectName =
-  Str.fromText
-    <$> Map.lookup
-          (Str.toText $ normalizeObjectName rawObjectName)
-          Data.objectClasses
+getClassName rawObjectName = fmap Str.fromText $ Map.lookup
+  (Str.toText $ normalizeObjectName rawObjectName)
+  Data.objectClasses
 
 normalizeObjectName :: Str.Str -> Str.Str
 normalizeObjectName objectName =

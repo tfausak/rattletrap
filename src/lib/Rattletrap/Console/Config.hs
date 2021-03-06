@@ -47,8 +47,8 @@ applyFlag config flag = case flag of
 getMode :: Config -> Mode.Mode
 getMode config =
   let
-    i = FilePath.takeExtension <$> input config
-    o = FilePath.takeExtension <$> output config
+    i = fmap FilePath.takeExtension $ input config
+    o = fmap FilePath.takeExtension $ output config
   in case (i, o) of
     (Just ".json", _) -> Mode.Encode
     (Just ".replay", _) -> Mode.Decode

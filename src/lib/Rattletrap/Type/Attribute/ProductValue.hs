@@ -25,14 +25,14 @@ data ProductValue
 
 instance Json.FromJSON ProductValue where
   parseJSON = Json.withObject "ProductValue" $ \object -> Foldable.asum
-    [ PaintedOld <$> Json.required object "painted_old"
-    , PaintedNew <$> Json.required object "painted_new"
-    , TeamEditionOld <$> Json.required object "team_edition_old"
-    , TeamEditionNew <$> Json.required object "team_edition_new"
-    , SpecialEdition <$> Json.required object "special_edition"
-    , UserColorOld <$> Json.required object "user_color_old"
-    , UserColorNew <$> Json.required object "user_color_new"
-    , TitleId <$> Json.required object "title_id"
+    [ fmap PaintedOld $ Json.required object "painted_old"
+    , fmap PaintedNew $ Json.required object "painted_new"
+    , fmap TeamEditionOld $ Json.required object "team_edition_old"
+    , fmap TeamEditionNew $ Json.required object "team_edition_new"
+    , fmap SpecialEdition $ Json.required object "special_edition"
+    , fmap UserColorOld $ Json.required object "user_color_old"
+    , fmap UserColorNew $ Json.required object "user_color_new"
+    , fmap TitleId $ Json.required object "title_id"
     ]
 
 instance Json.ToJSON ProductValue where
@@ -75,7 +75,7 @@ bitPut val = case val of
 bitGet
   :: Version.Version -> U32.U32 -> Maybe Str.Str -> BitGet.BitGet ProductValue
 bitGet version objectId maybeObjectName =
-  case Str.toString <$> maybeObjectName of
+  case fmap Str.toString maybeObjectName of
     Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
     Just "TAGame.ProductAttribute_SpecialEdition_TA" -> decodeSpecialEdition
     Just "TAGame.ProductAttribute_TeamEdition_TA" -> decodeTeamEdition version
@@ -90,24 +90,24 @@ bitGet version objectId maybeObjectName =
     Nothing -> fail ("[RT06] missing object name for ID " <> show objectId)
 
 decodeSpecialEdition :: BitGet.BitGet ProductValue
-decodeSpecialEdition = SpecialEdition <$> BitGet.bits 31
+decodeSpecialEdition = fmap SpecialEdition $ BitGet.bits 31
 
 decodePainted :: Version.Version -> BitGet.BitGet ProductValue
 decodePainted version = if hasNewPainted version
-  then PaintedNew <$> BitGet.bits 31
-  else PaintedOld <$> CompressedWord.bitGet 13
+  then fmap PaintedNew $ BitGet.bits 31
+  else fmap PaintedOld $ CompressedWord.bitGet 13
 
 decodeTeamEdition :: Version.Version -> BitGet.BitGet ProductValue
 decodeTeamEdition version = if hasNewPainted version
-  then TeamEditionNew <$> BitGet.bits 31
-  else TeamEditionOld <$> CompressedWord.bitGet 13
+  then fmap TeamEditionNew $ BitGet.bits 31
+  else fmap TeamEditionOld $ CompressedWord.bitGet 13
 
 decodeColor :: Version.Version -> BitGet.BitGet ProductValue
 decodeColor version = if hasNewColor version
-  then UserColorNew <$> U32.bitGet
+  then fmap UserColorNew U32.bitGet
   else do
     hasValue <- BitGet.bool
-    UserColorOld <$> whenMaybe hasValue (BitGet.bits 31)
+    fmap UserColorOld $ whenMaybe hasValue (BitGet.bits 31)
 
 hasNewPainted :: Version.Version -> Bool
 hasNewPainted v =
@@ -118,4 +118,4 @@ hasNewColor v =
   Version.major v >= 868 && Version.minor v >= 23 && Version.patch v >= 8
 
 decodeTitle :: BitGet.BitGet ProductValue
-decodeTitle = TitleId <$> Str.bitGet
+decodeTitle = fmap TitleId Str.bitGet

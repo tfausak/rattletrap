@@ -43,5 +43,5 @@ bitGet
 bitGet version classes actors actor = fmap Updated . List.untilM $ do
   p <- BitGet.bool
   if p
-    then Just <$> Attribute.bitGet version classes actors actor
+    then fmap Just $ Attribute.bitGet version classes actors actor
     else pure Nothing

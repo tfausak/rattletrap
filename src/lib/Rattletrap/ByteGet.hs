@@ -22,16 +22,16 @@ byteString n = do
   pure x
 
 float :: ByteGet Float
-float = Float.castWord32ToFloat <$> word32
+float = fmap Float.castWord32ToFloat word32
 
 int8 :: ByteGet Int.Int8
-int8 = fromIntegral <$> word8
+int8 = fmap fromIntegral word8
 
 int32 :: ByteGet Int.Int32
-int32 = fromIntegral <$> word32
+int32 = fmap fromIntegral word32
 
 int64 :: ByteGet Int.Int64
-int64 = fromIntegral <$> word64
+int64 = fmap fromIntegral word64
 
 remaining :: ByteGet LazyByteString.ByteString
 remaining = do
@@ -40,7 +40,7 @@ remaining = do
   pure $ LazyByteString.fromStrict x
 
 word8 :: ByteGet Word.Word8
-word8 = ByteString.head <$> byteString 1
+word8 = fmap ByteString.head $ byteString 1
 
 word32 :: ByteGet Word.Word32
 word32 = do

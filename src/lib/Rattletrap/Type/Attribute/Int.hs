@@ -24,4 +24,6 @@ bitPut :: Int -> BitPut.BitPut
 bitPut intAttribute = I32.bitPut (value intAttribute)
 
 bitGet :: BitGet.BitGet Int
-bitGet = Int <$> I32.bitGet
+bitGet = do
+  value <- I32.bitGet
+  pure Int { value }

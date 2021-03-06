@@ -16,8 +16,8 @@ data Rotation
 
 instance Json.FromJSON Rotation where
   parseJSON = Json.withObject "Rotation" $ \object -> Foldable.asum
-    [ CompressedWordVector <$> Json.required object "compressed_word_vector"
-    , Quaternion <$> Json.required object "quaternion"
+    [ fmap CompressedWordVector $ Json.required object "compressed_word_vector"
+    , fmap Quaternion $ Json.required object "quaternion"
     ]
 
 instance Json.ToJSON Rotation where
@@ -40,8 +40,8 @@ bitPut r = case r of
 
 bitGet :: Version.Version -> BitGet.BitGet Rotation
 bitGet version = if isQuaternion version
-  then Quaternion <$> Quaternion.bitGet
-  else CompressedWordVector <$> CompressedWordVector.bitGet
+  then fmap Quaternion Quaternion.bitGet
+  else fmap CompressedWordVector CompressedWordVector.bitGet
 
 isQuaternion :: Version.Version -> Bool
 isQuaternion v =

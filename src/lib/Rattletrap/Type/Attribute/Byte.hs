@@ -23,4 +23,6 @@ bitPut :: Byte -> BitPut.BitPut
 bitPut byteAttribute = U8.bitPut (value byteAttribute)
 
 bitGet :: BitGet.BitGet Byte
-bitGet = Byte <$> U8.bitGet
+bitGet = do
+  value <- U8.bitGet
+  pure Byte { value }
