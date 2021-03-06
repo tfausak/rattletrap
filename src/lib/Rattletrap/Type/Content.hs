@@ -9,7 +9,7 @@ import qualified Rattletrap.Type.Cache as Cache
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.ClassMapping as ClassMapping
 import qualified Rattletrap.Type.Frame as Frame
-import qualified Rattletrap.Type.KeyFrame as KeyFrame
+import qualified Rattletrap.Type.Keyframe as Keyframe
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
@@ -31,7 +31,7 @@ type Content = ContentWith (List.List Frame.Frame)
 data ContentWith frames = Content
   { levels :: List.List Str.Str
   -- ^ This typically only has one element, like @stadium_oob_audio_map@.
-  , keyFrames :: List.List KeyFrame.KeyFrame
+  , keyframes :: List.List Keyframe.Keyframe
   -- ^ A list of which frames are key frames. Although they aren't necessary
   -- for replay, key frames are frames that replicate every actor. They
   -- typically happen once every 10 seconds.
@@ -66,7 +66,7 @@ data ContentWith frames = Content
 instance Json.FromJSON frames => Json.FromJSON (ContentWith frames) where
   parseJSON = Json.withObject "Content" $ \object -> do
     levels <- Json.required object "levels"
-    keyFrames <- Json.required object "key_frames"
+    keyframes <- Json.required object "key_frames"
     streamSize <- Json.required object "stream_size"
     frames <- Json.required object "frames"
     messages <- Json.required object "messages"
@@ -79,7 +79,7 @@ instance Json.FromJSON frames => Json.FromJSON (ContentWith frames) where
     unknown <- Json.required object "unknown"
     pure Content
       { levels
-      , keyFrames
+      , keyframes
       , streamSize
       , frames
       , messages
@@ -95,7 +95,7 @@ instance Json.FromJSON frames => Json.FromJSON (ContentWith frames) where
 instance Json.ToJSON frames => Json.ToJSON (ContentWith frames) where
   toJSON x = Json.object
     [ Json.pair "levels" $ levels x
-    , Json.pair "key_frames" $ keyFrames x
+    , Json.pair "key_frames" $ keyframes x
     , Json.pair "stream_size" $ streamSize x
     , Json.pair "frames" $ frames x
     , Json.pair "messages" $ messages x
@@ -111,7 +111,7 @@ instance Json.ToJSON frames => Json.ToJSON (ContentWith frames) where
 schema :: Schema.Schema -> Schema.Schema
 schema s = Schema.named "content" $ Schema.object
   [ (Json.pair "levels" . Schema.json $ List.schema Str.schema, True)
-  , (Json.pair "key_frames" . Schema.json $ List.schema KeyFrame.schema, True)
+  , (Json.pair "key_frames" . Schema.json $ List.schema Keyframe.schema, True)
   , (Json.pair "stream_size" $ Schema.ref U32.schema, True)
   , (Json.pair "frames" $ Schema.json s, True)
   , (Json.pair "messages" . Schema.json $ List.schema Message.schema, True)
@@ -130,7 +130,7 @@ schema s = Schema.named "content" $ Schema.object
 empty :: Content
 empty = Content
   { levels = List.empty
-  , keyFrames = List.empty
+  , keyframes = List.empty
   , streamSize = U32.fromWord32 0
   , frames = List.empty
   , messages = List.empty
@@ -146,7 +146,7 @@ empty = Content
 bytePut :: Content -> BytePut.BytePut
 bytePut x =
   List.bytePut Str.bytePut (levels x)
-    <> List.bytePut KeyFrame.bytePut (keyFrames x)
+    <> List.bytePut Keyframe.bytePut (keyframes x)
     <> putFrames x
     <> List.bytePut Message.bytePut (messages x)
     <> List.bytePut Mark.bytePut (marks x)
@@ -191,7 +191,7 @@ byteGet
   -> ByteGet.ByteGet Content
 byteGet version numFrames maxChannels = do
   levels <- List.byteGet Str.byteGet
-  keyFrames <- List.byteGet KeyFrame.byteGet
+  keyframes <- List.byteGet Keyframe.byteGet
   streamSize <- U32.byteGet
   stream <- ByteGet.byteString . fromIntegral $ U32.toWord32 streamSize
   messages <- List.byteGet Message.byteGet
@@ -213,7 +213,7 @@ byteGet version numFrames maxChannels = do
   unknown <- fmap LazyBytes.unpack ByteGet.remaining
   pure Content
     { levels
-    , keyFrames
+    , keyframes
     , streamSize
     , frames
     , messages

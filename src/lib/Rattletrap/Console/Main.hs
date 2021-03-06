@@ -70,7 +70,7 @@ import qualified Rattletrap.Type.I64 as I64
 import qualified Rattletrap.Type.I8 as I8
 import qualified Rattletrap.Type.Initialization as Initialization
 import qualified Rattletrap.Type.Int8Vector as Int8Vector
-import qualified Rattletrap.Type.KeyFrame as KeyFrame
+import qualified Rattletrap.Type.Keyframe as Keyframe
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
@@ -214,7 +214,7 @@ schema =
         , I8.schema
         , Initialization.schema
         , Int8Vector.schema
-        , KeyFrame.schema
+        , Keyframe.schema
         , List.schema Attribute.Product.schema
         , Mark.schema
         , Message.schema
