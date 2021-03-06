@@ -3,21 +3,18 @@ module Rattletrap.Type.RemoteId where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Type.RemoteId.PlayStation as PlayStation
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
-import Rattletrap.Utility.Bytes
 import qualified Rattletrap.Utility.Json as Json
 
-import qualified Data.ByteString as Bytes
 import qualified Data.Foldable as Foldable
-import qualified Data.Text as Text
-import qualified Data.Text.Encoding as Text
 import qualified Data.Word as Word
 
 data RemoteId
-  = PlayStation Text.Text [Word.Word8]
+  = PlayStation PlayStation.PlayStation
   | PsyNet (Either U64.U64 (U64.U64, U64.U64, U64.U64, U64.U64))
   | Splitscreen Word.Word32
   -- ^ Really only 24 bits.
@@ -29,7 +26,7 @@ data RemoteId
 
 instance Json.FromJSON RemoteId where
   parseJSON = Json.withObject "RemoteId" $ \object -> Foldable.asum
-    [ fmap (uncurry PlayStation) $ Json.required object "play_station"
+    [ fmap PlayStation $ Json.required object "play_station"
     , fmap PsyNet $ Json.required object "psy_net"
     , fmap Splitscreen $ Json.required object "splitscreen"
     , fmap Steam $ Json.required object "steam"
@@ -43,7 +40,7 @@ uncurry4 f (a, b, c, d) = f a b c d
 
 instance Json.ToJSON RemoteId where
   toJSON x = case x of
-    PlayStation y z -> Json.object [Json.pair "play_station" (y, z)]
+    PlayStation y -> Json.object [Json.pair "play_station" y]
     PsyNet y -> Json.object [Json.pair "psy_net" y]
     Splitscreen y -> Json.object [Json.pair "splitscreen" y]
     Steam y -> Json.object [Json.pair "steam" y]
@@ -54,10 +51,7 @@ instance Json.ToJSON RemoteId where
 schema :: Schema.Schema
 schema = Schema.named "remote-id" . Schema.oneOf $ fmap
   (\(k, v) -> Schema.object [(Json.pair k v, True)])
-  [ ( "play_station"
-    , Schema.tuple
-      [Schema.ref Schema.string, Schema.json $ Schema.array Schema.number]
-    )
+  [ ("play_station", Schema.ref PlayStation.schema)
   , ( "psy_net"
     , Schema.oneOf
       [ Schema.object [(Json.pair "Left" $ Schema.ref U64.schema, True)]
@@ -78,9 +72,7 @@ schema = Schema.named "remote-id" . Schema.oneOf $ fmap
 
 bitPut :: RemoteId -> BitPut.BitPut
 bitPut remoteId = case remoteId of
-  PlayStation name bytes ->
-    let rawName = reverseBytes (padBytes (16 :: Int) (encodeLatin1 name))
-    in BitPut.byteString rawName <> BitPut.byteString (Bytes.pack bytes)
+  PlayStation x -> PlayStation.bitPut x
   PsyNet e -> case e of
     Left l -> U64.bitPut l
     Right (a, b, c, d) -> putWord256 a b c d
@@ -98,10 +90,7 @@ bitGet :: Version.Version -> U8.U8 -> BitGet.BitGet RemoteId
 bitGet version systemId = case U8.toWord8 systemId of
   0 -> fmap Splitscreen $ BitGet.bits 24
   1 -> fmap Steam U64.bitGet
-  2 -> do
-    name <- decodePsName
-    bytes <- decodePsBytes version
-    pure $ PlayStation name bytes
+  2 -> fmap PlayStation $ PlayStation.bitGet version
   4 -> fmap Xbox U64.bitGet
   6 -> do
     (a, b, c, d) <- getWord256
@@ -111,17 +100,6 @@ bitGet version systemId = case U8.toWord8 systemId of
     else fmap Right getWord256
   11 -> fmap Epic Str.bitGet
   _ -> fail ("[RT09] unknown system id " <> show systemId)
-
-decodePsName :: BitGet.BitGet Text.Text
-decodePsName = fmap
-  (Text.dropWhileEnd (== '\x00') . Text.decodeLatin1 . reverseBytes)
-  (BitGet.byteString 16)
-
-decodePsBytes :: Version.Version -> BitGet.BitGet [Word.Word8]
-decodePsBytes version =
-  fmap Bytes.unpack . BitGet.byteString $ if Version.atLeast 868 20 1 version
-    then 24
-    else 16
 
 getWord256 :: BitGet.BitGet (U64.U64, U64.U64, U64.U64, U64.U64)
 getWord256 = do

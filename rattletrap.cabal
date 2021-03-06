@@ -123,6 +123,7 @@ library
     Rattletrap.Type.PropertyValue
     Rattletrap.Type.Quaternion
     Rattletrap.Type.RemoteId
+    Rattletrap.Type.RemoteId.PlayStation
     Rattletrap.Type.Replay
     Rattletrap.Type.Replication
     Rattletrap.Type.Replication.Destroyed
