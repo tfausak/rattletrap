@@ -1,11 +1,10 @@
 module Rattletrap.Type.PropertyValue where
 
 import qualified Data.Foldable as Foldable
-import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Type.Dictionary as Dictionary
+import qualified Rattletrap.Type.Property.Array as Property.Array
 import qualified Rattletrap.Type.Property.Bool as Property.Bool
 import qualified Rattletrap.Type.Property.Byte as Property.Byte
 import qualified Rattletrap.Type.Property.Float as Property.Float
@@ -13,12 +12,11 @@ import qualified Rattletrap.Type.Property.Int as Property.Int
 import qualified Rattletrap.Type.Property.Name as Property.Name
 import qualified Rattletrap.Type.Property.QWord as Property.QWord
 import qualified Rattletrap.Type.Property.Str as Property.Str
-import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Utility.Json as Json
 
 data PropertyValue a
-  = Array (List.List (Dictionary.Dictionary a))
+  = Array (Property.Array.Array a)
   -- ^ Yes, a list of dictionaries. No, it doesn't make sense. These usually
   -- only have one element.
   | Bool Property.Bool.Bool
@@ -57,11 +55,11 @@ instance Json.ToJSON a => Json.ToJSON (PropertyValue a) where
 
 schema :: Schema.Schema -> Schema.Schema
 schema s =
-  Schema.named ("property-value-" <> Text.unpack (Schema.name s))
+  Schema.named "property-value"
     . Schema.oneOf
     $ fmap
         (\(k, v) -> Schema.object [(Json.pair k v, True)])
-        [ ("array", Schema.json . List.schema $ Dictionary.schema s)
+        [ ("array", Schema.ref $ Property.Array.schema s)
         , ("bool", Schema.ref Property.Bool.schema)
         , ("byte", Schema.ref Property.Byte.schema)
         , ("float", Schema.ref Property.Float.schema)
@@ -73,7 +71,7 @@ schema s =
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
 bytePut putProperty value = case value of
-  Array x -> List.bytePut (Dictionary.bytePut putProperty) x
+  Array x -> Property.Array.bytePut putProperty x
   Bool x -> Property.Bool.bytePut x
   Byte x -> Property.Byte.bytePut x
   Float x -> Property.Float.bytePut x
@@ -84,8 +82,7 @@ bytePut putProperty value = case value of
 
 byteGet :: ByteGet.ByteGet a -> Str.Str -> ByteGet.ByteGet (PropertyValue a)
 byteGet getProperty kind = case Str.toString kind of
-  "ArrayProperty" ->
-    fmap Array $ List.byteGet (Dictionary.byteGet getProperty)
+  "ArrayProperty" -> fmap Array $ Property.Array.byteGet getProperty
   "BoolProperty" -> fmap Bool Property.Bool.byteGet
   "ByteProperty" -> fmap Byte Property.Byte.byteGet
   "FloatProperty" -> fmap Float Property.Float.byteGet
