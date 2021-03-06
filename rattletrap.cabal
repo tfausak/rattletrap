@@ -112,6 +112,14 @@ library
     Rattletrap.Type.Mark
     Rattletrap.Type.Message
     Rattletrap.Type.Property
+    Rattletrap.Type.Property.Array
+    Rattletrap.Type.Property.Bool
+    Rattletrap.Type.Property.Byte
+    Rattletrap.Type.Property.Float
+    Rattletrap.Type.Property.Int
+    Rattletrap.Type.Property.Name
+    Rattletrap.Type.Property.QWord
+    Rattletrap.Type.Property.Str
     Rattletrap.Type.PropertyValue
     Rattletrap.Type.Quaternion
     Rattletrap.Type.RemoteId

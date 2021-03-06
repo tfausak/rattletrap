@@ -8,6 +8,8 @@ import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.Header as Header
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Property as Property
+import qualified Rattletrap.Type.Property.Int as Property.Int
+import qualified Rattletrap.Type.Property.Name as Property.Name
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
@@ -86,7 +88,7 @@ getMatchType header = do
   Property.Property { Property.value } <-
     Dictionary.lookup (Str.fromString "MatchType") $ Header.properties header
   case value of
-    PropertyValue.Name x -> Just x
+    PropertyValue.Name x -> Just $ Property.Name.toStr x
     _ -> Nothing
 
 getNumFrames :: Header.Header -> Int
@@ -97,7 +99,7 @@ getNumFrames header_ =
         (Header.properties header_)
     of
       Just (Property.Property _ _ (PropertyValue.Int numFrames)) ->
-        fromIntegral (I32.toInt32 numFrames)
+        fromIntegral (I32.toInt32 (Property.Int.toI32 numFrames))
       _ -> 0
 
 getMaxChannels :: Header.Header -> Word
@@ -107,6 +109,6 @@ getMaxChannels header_ =
         (Str.fromString "MaxChannels")
         (Header.properties header_)
     of
-      Just (Property.Property _ _ (PropertyValue.Int numFrames)) ->
-        fromIntegral (I32.toInt32 numFrames)
+      Just (Property.Property _ _ (PropertyValue.Int maxChannels)) ->
+        fromIntegral (I32.toInt32 (Property.Int.toI32 maxChannels))
       _ -> 1023
