@@ -107,7 +107,7 @@ library
     Rattletrap.Type.I8
     Rattletrap.Type.Initialization
     Rattletrap.Type.Int8Vector
-    Rattletrap.Type.KeyFrame
+    Rattletrap.Type.Keyframe
     Rattletrap.Type.List
     Rattletrap.Type.Mark
     Rattletrap.Type.Message
