@@ -75,9 +75,14 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Property as Property
+import qualified Rattletrap.Type.Property.Array as Property.Array
+import qualified Rattletrap.Type.Property.Byte as Property.Byte
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Quaternion as Quaternion
 import qualified Rattletrap.Type.RemoteId as RemoteId
+import qualified Rattletrap.Type.RemoteId.PlayStation as RemoteId.PlayStation
+import qualified Rattletrap.Type.RemoteId.PsyNet as RemoteId.PsyNet
+import qualified Rattletrap.Type.RemoteId.Switch as RemoteId.Switch
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Replication as Replication
 import qualified Rattletrap.Type.Replication.Destroyed as Replication.Destroyed
@@ -153,7 +158,7 @@ schema =
   let contentSchema = Content.schema $ List.schema Frame.schema
   in
     Aeson.object
-      [ Json.pair "$schema" "https://json-schema.org/draft-07/schema"
+      [ Json.pair "$schema" "http://json-schema.org/draft-07/schema"
       , Json.pair "$id" Replay.schemaUrl
       , Json.pair "$ref" "#/definitions/replay"
       , Json.pair "definitions" . Aeson.object $ fmap
@@ -219,9 +224,14 @@ schema =
         , Mark.schema
         , Message.schema
         , Property.schema
+        , Property.Array.schema Property.schema
+        , Property.Byte.schema
         , PropertyValue.schema Property.schema
         , Quaternion.schema
         , RemoteId.schema
+        , RemoteId.PlayStation.schema
+        , RemoteId.PsyNet.schema
+        , RemoteId.Switch.schema
         , Replay.schema (Section.schema Header.schema)
         . Section.schema
         $ contentSchema
