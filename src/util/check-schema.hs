@@ -7,9 +7,18 @@ import qualified System.Process as Process
 main :: IO ()
 main = do
   entries <- Directory.listDirectory output
-  Monad.forM_ (List.sort entries) $ \entry -> do
-    Monad.when (isJson entry && not (isSchema entry)) $ do
-      ajv (FilePath.combine output schema) (FilePath.combine output entry)
+  Process.callCommand
+    . unwords
+    $ "npx"
+    : "ajv"
+    : "-s"
+    : FilePath.combine output schema
+    : concatMap
+        (\entry -> if isJson entry && not (isSchema entry)
+          then ["-d", FilePath.combine output entry]
+          else []
+        )
+        (List.sort entries)
 
 output :: FilePath
 output = "output"
@@ -22,6 +31,3 @@ isSchema = (== schema) . FilePath.takeFileName
 
 schema :: FilePath
 schema = "schema.json"
-
-ajv :: FilePath -> FilePath -> IO ()
-ajv s d = Process.callCommand $ unwords ["npx", "ajv", "-s", s, "-d", d]
