@@ -61,10 +61,9 @@ jobs:
 
       - run: cabal test
 
-      - if: matrix.os == 'ubuntu-20.04'
-        run: npm install ajv-cli
-      - if: matrix.os == 'ubuntu-20.04'
-        run: for f in output/????.json; do echo $f; npx ajv -s output/schema -d $f; done
+      - run: npm install ajv-cli
+
+      - run: cabal exec runghc src/util/check-schema.hs
 
       - run: cabal check
 
