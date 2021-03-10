@@ -214,9 +214,7 @@ byteGet matchType version numFrames maxChannels = do
         classAttributeMap
       )
       mempty
-  frames <-
-    either fail pure . ByteGet.run (BitGet.toByteGet bitGet) $ reverseBytes
-      stream
+  frames <- either fail pure $ ByteGet.run (BitGet.toByteGet bitGet) stream
   unknown <- fmap LazyBytes.unpack ByteGet.remaining
   pure Content
     { levels

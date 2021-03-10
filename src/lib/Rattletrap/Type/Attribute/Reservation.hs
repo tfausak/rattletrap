@@ -68,5 +68,5 @@ bitGet version = do
   name <- whenMaybe (UniqueId.systemId uniqueId /= U8.fromWord8 0) Str.bitGet
   unknown1 <- BitGet.bool
   unknown2 <- BitGet.bool
-  unknown3 <- whenMaybe (Version.atLeast 868 12 0 version) $ BitGet.word8 6
+  unknown3 <- whenMaybe (Version.atLeast 868 12 0 version) $ BitGet.bits 6
   pure Reservation { number, uniqueId, name, unknown1, unknown2, unknown3 }

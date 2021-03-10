@@ -39,6 +39,7 @@ library
     Rattletrap
     Rattletrap.BitGet
     Rattletrap.BitPut
+    Rattletrap.BitString
     Rattletrap.ByteGet
     Rattletrap.BytePut
     Rattletrap.Console.Config

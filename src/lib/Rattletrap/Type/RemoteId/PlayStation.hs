@@ -48,7 +48,7 @@ bitGet version = do
 
 getCode :: BitGet.BitGet Text.Text
 getCode =
-  fmap (Text.dropWhileEnd (== '\x00') . Text.decodeLatin1 . Bytes.reverseBytes)
+  fmap (Text.dropWhileEnd (== '\x00') . Text.decodeLatin1)
     $ BitGet.byteString 16
 
 getName :: Version.Version -> BitGet.BitGet [Word.Word8]

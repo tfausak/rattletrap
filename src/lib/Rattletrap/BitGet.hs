@@ -1,34 +1,28 @@
 module Rattletrap.BitGet where
 
 import qualified Control.Monad as Monad
-import qualified Data.Binary.Bits.Get as BinaryBits
-import qualified Data.Binary.Get as Binary
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as ByteString
-import qualified Data.ByteString.Lazy as LazyByteString
-import qualified Data.Word as Word
+import qualified Data.Functor.Identity as Identity
+import qualified Rattletrap.BitString as BitString
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.Get as Get
-import qualified Rattletrap.Utility.Bytes as Utility
 
-type BitGet = BinaryBits.BitGet
+type BitGet = Get.Get BitString.BitString Identity.Identity
 
 toByteGet :: BitGet a -> ByteGet.ByteGet a
-toByteGet = binaryGetToByteGet . BinaryBits.runBitGet
-
-binaryGetToByteGet :: Binary.Get a -> ByteGet.ByteGet a
-binaryGetToByteGet g = do
+toByteGet g = do
   s1 <- Get.get
-  case Binary.runGetOrFail g $ LazyByteString.fromStrict s1 of
-    Left (_, _, x) -> fail x
-    Right (s2, _, x) -> do
-      Get.put $ LazyByteString.toStrict s2
+  case Identity.runIdentity . Get.run g $ BitString.fromByteString s1 of
+    Left e -> fail e
+    Right (s2, x) -> do
+      Get.put $ BitString.byteString s2
       pure x
 
 fromByteGet :: ByteGet.ByteGet a -> Int -> BitGet a
 fromByteGet f n = do
-  x <- BinaryBits.getByteString n
-  either fail pure . ByteGet.run f $ Utility.reverseBytes x
+  x <- byteString n
+  either fail pure $ ByteGet.run f x
 
 bits :: Bits.Bits a => Int -> BitGet a
 bits n = do
@@ -39,10 +33,13 @@ bits n = do
   pure $ foldr f Bits.zeroBits xs
 
 bool :: BitGet Bool
-bool = BinaryBits.getBool
+bool = do
+  s1 <- Get.get
+  case BitString.pop s1 of
+    Nothing -> fail "BitGet.bool"
+    Just (x, s2) -> do
+      Get.put s2
+      pure x
 
 byteString :: Int -> BitGet ByteString.ByteString
-byteString = BinaryBits.getByteString
-
-word8 :: Int -> BitGet Word.Word8
-word8 = BinaryBits.getWord8
+byteString n = fmap ByteString.pack . Monad.replicateM n $ bits 8
