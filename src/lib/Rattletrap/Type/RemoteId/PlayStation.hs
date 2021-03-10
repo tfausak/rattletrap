@@ -47,9 +47,8 @@ bitGet version = do
   pure PlayStation { name, code }
 
 getCode :: BitGet.BitGet Text.Text
-getCode =
-  fmap (Text.dropWhileEnd (== '\x00') . Text.decodeLatin1)
-    $ BitGet.byteString 16
+getCode = fmap (Text.dropWhileEnd (== '\x00') . Text.decodeLatin1)
+  $ BitGet.byteString 16
 
 getName :: Version.Version -> BitGet.BitGet [Word.Word8]
 getName version =
