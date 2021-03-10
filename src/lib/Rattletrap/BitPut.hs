@@ -4,7 +4,6 @@ import qualified Data.Binary.Bits.Put as BinaryBits
 import qualified Data.Binary.Put as Binary
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as ByteString
-import qualified Data.Word as Word
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Utility.Bytes as Utility
 
@@ -36,6 +35,3 @@ bool = fromBinaryBits . BinaryBits.putBool
 
 byteString :: ByteString.ByteString -> BitPut
 byteString = fromBinaryBits . BinaryBits.putByteString
-
-word8 :: Int -> Word.Word8 -> BitPut
-word8 n = fromBinaryBits . BinaryBits.putWord8 n

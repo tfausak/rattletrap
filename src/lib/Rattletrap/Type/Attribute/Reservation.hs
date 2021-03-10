@@ -59,7 +59,7 @@ bitPut reservationAttribute =
     <> foldMap Str.bitPut (name reservationAttribute)
     <> BitPut.bool (unknown1 reservationAttribute)
     <> BitPut.bool (unknown2 reservationAttribute)
-    <> foldMap (BitPut.word8 6) (unknown3 reservationAttribute)
+    <> foldMap (BitPut.bits 6) (unknown3 reservationAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet Reservation
 bitGet version = do

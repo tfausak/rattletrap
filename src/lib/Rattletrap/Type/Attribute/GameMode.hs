@@ -35,7 +35,7 @@ schema = Schema.named "attribute-game-mode" $ Schema.object
 
 bitPut :: GameMode -> BitPut.BitPut
 bitPut gameModeAttribute = do
-  BitPut.word8 (numBits gameModeAttribute) (word gameModeAttribute)
+  BitPut.bits (numBits gameModeAttribute) (word gameModeAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet GameMode
 bitGet version = do
