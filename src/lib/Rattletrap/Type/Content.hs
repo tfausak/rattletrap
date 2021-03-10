@@ -176,8 +176,8 @@ putFrames x =
     actualStreamSize = U32.fromWord32 . fromIntegral $ Bytes.length stream
     streamSize_ = U32.fromWord32
       $ max (U32.toWord32 expectedStreamSize) (U32.toWord32 actualStreamSize)
-  in U32.bytePut streamSize_ <> BytePut.byteString
-    (reverseBytes (padBytes (U32.toWord32 streamSize_) stream))
+  in U32.bytePut streamSize_
+    <> BytePut.byteString (padBytes (U32.toWord32 streamSize_) stream)
 
 byteGet
   :: Maybe Str.Str

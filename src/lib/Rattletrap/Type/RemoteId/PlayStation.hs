@@ -32,11 +32,7 @@ schema = Schema.named "remote-id-play-station" $ Schema.tuple
 bitPut :: PlayStation -> BitPut.BitPut
 bitPut x =
   let
-    nameBytes =
-      Bytes.reverseBytes
-        . Bytes.padBytes (16 :: Int)
-        . Bytes.encodeLatin1
-        $ name x
+    nameBytes = Bytes.padBytes (16 :: Int) . Bytes.encodeLatin1 $ name x
     codeBytes = ByteString.pack $ code x
   in BitPut.byteString nameBytes <> BitPut.byteString codeBytes
 

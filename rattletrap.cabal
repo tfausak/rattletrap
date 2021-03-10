@@ -37,6 +37,7 @@ library
   exposed-modules:
     Paths_rattletrap
     Rattletrap
+    Rattletrap.BitBuilder
     Rattletrap.BitGet
     Rattletrap.BitPut
     Rattletrap.BitString
