@@ -1,41 +1,32 @@
 module Rattletrap.BitPut where
 
-import qualified Data.Binary.Bits.Put as BinaryBits
-import qualified Data.Binary.Put as Binary
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as ByteString
-import qualified Data.Word as Word
+import qualified Rattletrap.BitBuilder as BitBuilder
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Utility.Bytes as Utility
 
-newtype BitPut = BitPut (BinaryBits.BitPut ())
+newtype BitPut = BitPut (BitBuilder.BitBuilder -> BitBuilder.BitBuilder)
 
 instance Semigroup BitPut where
-  x <> y = fromBinaryBits $ toBinaryBits x >> toBinaryBits y
+  f1 <> f2 = BitPut $ run f2 . run f1
 
 instance Monoid BitPut where
-  mempty = fromBinaryBits $ pure ()
+  mempty = BitPut id
 
-fromBinaryBits :: BinaryBits.BitPut () -> BitPut
-fromBinaryBits = BitPut
-
-toBinaryBits :: BitPut -> BinaryBits.BitPut ()
-toBinaryBits (BitPut x) = x
+run :: BitPut -> BitBuilder.BitBuilder -> BitBuilder.BitBuilder
+run (BitPut f) = f
 
 toBytePut :: BitPut -> BytePut.BytePut
-toBytePut = Binary.execPut . BinaryBits.runBitPut . toBinaryBits
+toBytePut b = BitBuilder.toBuilder $ run b BitBuilder.empty
 
 fromBytePut :: BytePut.BytePut -> BitPut
-fromBytePut = byteString . Utility.reverseBytes . BytePut.toByteString
+fromBytePut = byteString . BytePut.toByteString
 
 bits :: Bits.Bits a => Int -> a -> BitPut
 bits n x = foldMap (bool . Bits.testBit x) [0 .. n - 1]
 
 bool :: Bool -> BitPut
-bool = fromBinaryBits . BinaryBits.putBool
+bool = BitPut . BitBuilder.push
 
 byteString :: ByteString.ByteString -> BitPut
-byteString = fromBinaryBits . BinaryBits.putByteString
-
-word8 :: Int -> Word.Word8 -> BitPut
-word8 n = fromBinaryBits . BinaryBits.putWord8 n
+byteString = foldMap (bits 8) . ByteString.unpack

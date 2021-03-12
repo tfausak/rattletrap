@@ -32,11 +32,7 @@ schema = Schema.named "remote-id-play-station" $ Schema.tuple
 bitPut :: PlayStation -> BitPut.BitPut
 bitPut x =
   let
-    nameBytes =
-      Bytes.reverseBytes
-        . Bytes.padBytes (16 :: Int)
-        . Bytes.encodeLatin1
-        $ name x
+    nameBytes = Bytes.padBytes (16 :: Int) . Bytes.encodeLatin1 $ name x
     codeBytes = ByteString.pack $ code x
   in BitPut.byteString nameBytes <> BitPut.byteString codeBytes
 
@@ -47,9 +43,8 @@ bitGet version = do
   pure PlayStation { name, code }
 
 getCode :: BitGet.BitGet Text.Text
-getCode =
-  fmap (Text.dropWhileEnd (== '\x00') . Text.decodeLatin1 . Bytes.reverseBytes)
-    $ BitGet.byteString 16
+getCode = fmap (Text.dropWhileEnd (== '\x00') . Text.decodeLatin1)
+  $ BitGet.byteString 16
 
 getName :: Version.Version -> BitGet.BitGet [Word.Word8]
 getName version =

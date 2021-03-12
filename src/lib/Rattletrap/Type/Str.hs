@@ -82,7 +82,7 @@ bitGet :: BitGet.BitGet Str
 bitGet = do
   rawSize <- I32.bitGet
   bytes <- BitGet.byteString (normalizeTextSize rawSize)
-  pure (fromText (dropNull (getTextDecoder rawSize (reverseBytes bytes))))
+  pure (fromText (dropNull (getTextDecoder rawSize bytes)))
 
 normalizeTextSize :: Integral a => I32.I32 -> a
 normalizeTextSize size = case I32.toInt32 size of
