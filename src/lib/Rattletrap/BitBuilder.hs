@@ -1,3 +1,5 @@
+{-# LANGUAGE BangPatterns #-}
+
 module Rattletrap.BitBuilder where
 
 import qualified Data.Bits as Bits
@@ -15,7 +17,7 @@ empty = BitBuilder { buffer = 0x00, builder = mempty, offset = 0 }
 
 push :: Bool -> BitBuilder -> BitBuilder
 push b x =
-  let newBuffer = if b then Bits.setBit (buffer x) (offset x) else buffer x
+  let !newBuffer = if b then Bits.setBit (buffer x) (offset x) else buffer x
   in
     if offset x == 7
       then BitBuilder
