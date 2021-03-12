@@ -1,3 +1,4 @@
+{- hlint ignore "Avoid restricted extensions" -}
 {-# LANGUAGE BangPatterns #-}
 
 module Rattletrap.BitBuilder where
