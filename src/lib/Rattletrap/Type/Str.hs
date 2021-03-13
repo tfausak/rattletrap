@@ -9,7 +9,7 @@ import qualified Rattletrap.Type.I32 as I32
 import Rattletrap.Utility.Bytes
 import qualified Rattletrap.Utility.Json as Json
 
-import qualified Data.ByteString as Bytes
+import qualified Data.ByteString as ByteString
 import qualified Data.Char as Char
 import qualified Data.Int as Int
 import qualified Data.Text as Text
@@ -65,7 +65,7 @@ getTextSize text =
       else scale * rawSize :: Int.Int32
   in I32.fromInt32 size
 
-getTextEncoder :: I32.I32 -> Text.Text -> Bytes.ByteString
+getTextEncoder :: I32.I32 -> Text.Text -> ByteString.ByteString
 getTextEncoder size text =
   if I32.toInt32 size < 0 then Text.encodeUtf16LE text else encodeLatin1 text
 
@@ -89,7 +89,7 @@ normalizeTextSize size = case I32.toInt32 size of
   0x05000000 -> 8
   x -> if x < 0 then (-2 * fromIntegral x) else fromIntegral x
 
-getTextDecoder :: I32.I32 -> Bytes.ByteString -> Text.Text
+getTextDecoder :: I32.I32 -> ByteString.ByteString -> Text.Text
 getTextDecoder size bytes =
   let
     decode = if I32.toInt32 size < 0

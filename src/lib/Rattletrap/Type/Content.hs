@@ -21,8 +21,8 @@ import Rattletrap.Utility.Bytes
 import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad.Trans.State as State
-import qualified Data.ByteString as Bytes
-import qualified Data.ByteString.Lazy as LazyBytes
+import qualified Data.ByteString as ByteString
+import qualified Data.ByteString.Lazy as LazyByteString
 import qualified Data.Word as Word
 
 type Content = ContentWith (List.List Frame.Frame)
@@ -173,7 +173,7 @@ putFrames x =
     -- Unforunately that isn't currently known. See this issue for details:
     -- <https://github.com/tfausak/rattletrap/issues/171>.
     expectedStreamSize = streamSize x
-    actualStreamSize = U32.fromWord32 . fromIntegral $ Bytes.length stream
+    actualStreamSize = U32.fromWord32 . fromIntegral $ ByteString.length stream
     streamSize_ = U32.fromWord32
       $ max (U32.toWord32 expectedStreamSize) (U32.toWord32 actualStreamSize)
   in U32.bytePut streamSize_
@@ -215,7 +215,7 @@ byteGet matchType version numFrames maxChannels = do
       )
       mempty
   frames <- either fail pure $ ByteGet.run (BitGet.toByteGet bitGet) stream
-  unknown <- fmap LazyBytes.unpack ByteGet.remaining
+  unknown <- fmap LazyByteString.unpack ByteGet.remaining
   pure Content
     { levels
     , keyframes

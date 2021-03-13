@@ -8,7 +8,7 @@ import qualified Rattletrap.Utility.Crc as Crc
 import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad as Monad
-import qualified Data.ByteString as Bytes
+import qualified Data.ByteString as ByteString
 import qualified Data.Text as Text
 
 -- | A section is a large piece of a 'Rattletrap.Replay.Replay'. It has a
@@ -52,7 +52,7 @@ create encode body_ =
   let bytes = BytePut.toByteString $ encode body_
   in
     Section
-      { size = U32.fromWord32 . fromIntegral $ Bytes.length bytes
+      { size = U32.fromWord32 . fromIntegral $ ByteString.length bytes
       , crc = U32.fromWord32 $ Crc.compute bytes
       , body = body_
       }
@@ -63,7 +63,7 @@ bytePut :: (a -> BytePut.BytePut) -> Section a -> BytePut.BytePut
 bytePut putBody section =
   let
     rawBody = BytePut.toByteString . putBody $ body section
-    size_ = Bytes.length rawBody
+    size_ = ByteString.length rawBody
     crc_ = Crc.compute rawBody
   in
     U32.bytePut (U32.fromWord32 (fromIntegral size_))
