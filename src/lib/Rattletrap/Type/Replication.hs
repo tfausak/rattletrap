@@ -11,7 +11,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Monad as Monad
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -59,7 +59,7 @@ decodeReplicationsBits
        (List.List Replication)
 decodeReplicationsBits matchType version limit classes = List.untilM $ do
   p <- Trans.lift BitGet.bool
-  whenMaybe p $ bitGet matchType version limit classes
+  Monad.whenMaybe p $ bitGet matchType version limit classes
 
 bitGet
   :: Maybe Str.Str

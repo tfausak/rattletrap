@@ -6,7 +6,7 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Monad as Monad
 
 data PickupNew = PickupNew
   { instigatorId :: Maybe U32.U32
@@ -43,6 +43,6 @@ bitPut x =
 bitGet :: BitGet.BitGet PickupNew
 bitGet = do
   instigator <- BitGet.bool
-  instigatorId <- whenMaybe instigator U32.bitGet
+  instigatorId <- Monad.whenMaybe instigator U32.bitGet
   pickedUp <- U8.bitGet
   pure PickupNew { instigatorId, pickedUp }

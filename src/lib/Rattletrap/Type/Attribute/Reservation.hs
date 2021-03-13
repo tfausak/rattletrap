@@ -10,7 +10,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Monad as Monad
 
 data Reservation = Reservation
   { number :: CompressedWord.CompressedWord
@@ -65,8 +65,8 @@ bitGet :: Version.Version -> BitGet.BitGet Reservation
 bitGet version = do
   number <- CompressedWord.bitGet 7
   uniqueId <- UniqueId.bitGet version
-  name <- whenMaybe (UniqueId.systemId uniqueId /= U8.fromWord8 0) Str.bitGet
+  name <- Monad.whenMaybe (UniqueId.systemId uniqueId /= U8.fromWord8 0) Str.bitGet
   unknown1 <- BitGet.bool
   unknown2 <- BitGet.bool
-  unknown3 <- whenMaybe (Version.atLeast 868 12 0 version) $ BitGet.bits 6
+  unknown3 <- Monad.whenMaybe (Version.atLeast 868 12 0 version) $ BitGet.bits 6
   pure Reservation { number, uniqueId, name, unknown1, unknown2, unknown3 }

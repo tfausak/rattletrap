@@ -10,7 +10,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Monad as Monad
 
 data ProductValue
   = PaintedOld CompressedWord.CompressedWord
@@ -107,7 +107,7 @@ decodeColor version = if Version.atLeast 868 23 8 version
   then fmap UserColorNew U32.bitGet
   else do
     hasValue <- BitGet.bool
-    fmap UserColorOld $ whenMaybe hasValue (BitGet.bits 31)
+    fmap UserColorOld $ Monad.whenMaybe hasValue (BitGet.bits 31)
 
 hasNewPainted :: Version.Version -> Bool
 hasNewPainted = Version.atLeast 868 18 0

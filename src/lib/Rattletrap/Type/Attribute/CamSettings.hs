@@ -6,7 +6,7 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Monad as Monad
 
 data CamSettings = CamSettings
   { fov :: F32.F32
@@ -80,7 +80,7 @@ bitGet version = do
   distance <- F32.bitGet
   stiffness <- F32.bitGet
   swivelSpeed <- F32.bitGet
-  transitionSpeed <- whenMaybe (Version.atLeast 868 20 0 version) F32.bitGet
+  transitionSpeed <- Monad.whenMaybe (Version.atLeast 868 20 0 version) F32.bitGet
   pure CamSettings
     { fov
     , height

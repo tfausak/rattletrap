@@ -10,7 +10,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Monad as Monad
 
 import qualified Control.Monad.Trans.Class as Trans
 import qualified Control.Monad.Trans.State as State
@@ -93,7 +93,7 @@ bitGet
        Spawned
 bitGet matchType version classAttributeMap actorId = do
   flag_ <- Trans.lift BitGet.bool
-  nameIndex_ <- whenMaybe (hasNameIndex matchType version)
+  nameIndex_ <- Monad.whenMaybe (hasNameIndex matchType version)
     $ Trans.lift U32.bitGet
   name_ <- either fail pure (lookupName classAttributeMap nameIndex_)
   objectId_ <- Trans.lift U32.bitGet

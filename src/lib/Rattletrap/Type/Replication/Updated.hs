@@ -10,7 +10,7 @@ import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Monad as Monad
 
 import qualified Data.Map as Map
 
@@ -43,4 +43,4 @@ bitGet
   -> BitGet.BitGet Updated
 bitGet version classes actors actor = fmap Updated . List.untilM $ do
   p <- BitGet.bool
-  whenMaybe p $ Attribute.bitGet version classes actors actor
+  Monad.whenMaybe p $ Attribute.bitGet version classes actors actor
