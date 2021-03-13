@@ -269,7 +269,7 @@ putOutput =
   maybe LazyByteString.putStr LazyByteString.writeFile . Config.output
 
 encodeJson :: Json.ToJSON a => Config.Config -> a -> LazyByteString.ByteString
-encodeJson = Bool.bool Json.encode Json.encodePretty . Config.compact
+encodeJson = Bool.bool Json.encodePretty Json.encode . Config.compact
 
 getConfig :: [String] -> IO Config.Config
 getConfig arguments = do
