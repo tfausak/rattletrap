@@ -1,6 +1,7 @@
 module Rattletrap.Console.Main where
 
 import qualified Control.Monad as Monad
+import qualified Data.Bool as Bool
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
 import qualified Data.Text as Text
@@ -128,11 +129,7 @@ versionMain = do
   putStrLn Version.string
 
 schemaMain :: Config.Config -> IO ()
-schemaMain config = do
-  let json = Json.encodePretty schema
-  case Config.output config of
-    Nothing -> LazyByteString.putStr json
-    Just file -> LazyByteString.writeFile file json
+schemaMain config = putOutput config $ encodeJson config schema
 
 defaultMain :: Config.Config -> IO ()
 defaultMain config = do
@@ -254,8 +251,7 @@ getDecoder config = case Config.getMode config of
 
 getEncoder :: Config.Config -> Replay.Replay -> LazyByteString.ByteString
 getEncoder config = case Config.getMode config of
-  Mode.Decode ->
-    if Config.compact config then Json.encode else Rattletrap.encodeReplayJson
+  Mode.Decode -> encodeJson config
   Mode.Encode -> Rattletrap.encodeReplayFile $ Config.fast config
 
 getInput :: Config.Config -> IO ByteString.ByteString
@@ -271,6 +267,9 @@ getInput config = case Config.input config of
 putOutput :: Config.Config -> LazyByteString.ByteString -> IO ()
 putOutput =
   maybe LazyByteString.putStr LazyByteString.writeFile . Config.output
+
+encodeJson :: Json.ToJSON a => Config.Config -> a -> LazyByteString.ByteString
+encodeJson = Bool.bool Json.encode Json.encodePretty . Config.compact
 
 getConfig :: [String] -> IO Config.Config
 getConfig arguments = do
