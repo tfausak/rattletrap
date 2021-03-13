@@ -1,7 +1,3 @@
-module Main
-  ( main
-  ) where
-
 import qualified Control.Monad as Monad
 import qualified Data.ByteString as ByteString
 import qualified GHC.Clock as Clock

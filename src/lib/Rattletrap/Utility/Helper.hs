@@ -1,11 +1,6 @@
 -- | This module provides helper functions for converting replays to and from
 -- both their binary format and JSON.
-module Rattletrap.Utility.Helper
-  ( decodeReplayFile
-  , encodeReplayJson
-  , decodeReplayJson
-  , encodeReplayFile
-  ) where
+module Rattletrap.Utility.Helper where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut

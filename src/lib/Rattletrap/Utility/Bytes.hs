@@ -1,7 +1,4 @@
-module Rattletrap.Utility.Bytes
-  ( encodeLatin1
-  , padBytes
-  ) where
+module Rattletrap.Utility.Bytes where
 
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Char8 as Latin1

@@ -1,7 +1,4 @@
-module Rattletrap.Console.Main
-  ( main
-  , rattletrap
-  ) where
+module Rattletrap.Console.Main where
 
 import qualified Control.Monad as Monad
 import qualified Data.Aeson as Aeson

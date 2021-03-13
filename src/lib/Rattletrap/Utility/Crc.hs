@@ -1,6 +1,4 @@
-module Rattletrap.Utility.Crc
-  ( compute
-  ) where
+module Rattletrap.Utility.Crc where
 
 import qualified Data.Array.Unboxed as Array
 import qualified Data.Bits as Bits
