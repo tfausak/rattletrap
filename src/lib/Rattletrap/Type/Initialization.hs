@@ -7,7 +7,7 @@ import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Monad as Monad
 
 data Initialization = Initialization
   { location :: Maybe Vector.Vector
@@ -44,6 +44,6 @@ bitPut initialization =
 
 bitGet :: Version.Version -> Bool -> Bool -> BitGet.BitGet Initialization
 bitGet version hasLocation hasRotation = do
-  location <- whenMaybe hasLocation (Vector.bitGet version)
-  rotation <- whenMaybe hasRotation Int8Vector.bitGet
+  location <- Monad.whenMaybe hasLocation (Vector.bitGet version)
+  rotation <- Monad.whenMaybe hasRotation Int8Vector.bitGet
   pure Initialization { location, rotation }

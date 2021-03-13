@@ -5,7 +5,7 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I8 as I8
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Monad as Monad
 
 data Int8Vector = Int8Vector
   { x :: Maybe I8.I8
@@ -53,4 +53,4 @@ bitGet = do
 decodeFieldBits :: BitGet.BitGet (Maybe I8.I8)
 decodeFieldBits = do
   hasField <- BitGet.bool
-  whenMaybe hasField I8.bitGet
+  Monad.whenMaybe hasField I8.bitGet

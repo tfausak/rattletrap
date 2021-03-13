@@ -1,42 +1,32 @@
 -- | This module provides helper functions for converting replays to and from
 -- both their binary format and JSON.
-module Rattletrap.Utility.Helper
-  ( decodeReplayFile
-  , encodeReplayJson
-  , decodeReplayJson
-  , encodeReplayFile
-  ) where
+module Rattletrap.Utility.Helper where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Section as Section
+import qualified Rattletrap.Utility.Json as Json
 
-import qualified Data.Aeson as Aeson
-import qualified Data.Aeson.Encode.Pretty as Aeson
-import qualified Data.ByteString as Bytes
-import qualified Data.ByteString.Lazy as LazyBytes
+import qualified Data.ByteString as ByteString
+import qualified Data.ByteString.Lazy as LazyByteString
 
 -- | Parses a raw replay.
 decodeReplayFile
-  :: Bool -> Bool -> Bytes.ByteString -> Either String Replay.Replay
+  :: Bool -> Bool -> ByteString.ByteString -> Either String Replay.Replay
 decodeReplayFile fast = ByteGet.run . Replay.byteGet fast
 
 -- | Encodes a replay as JSON.
-encodeReplayJson :: Replay.Replay -> LazyBytes.ByteString
-encodeReplayJson = Aeson.encodePretty' Aeson.defConfig
-  { Aeson.confCompare = compare
-  , Aeson.confIndent = Aeson.Tab
-  , Aeson.confTrailingNewline = True
-  }
+encodeReplayJson :: Replay.Replay -> LazyByteString.ByteString
+encodeReplayJson = Json.encodePretty
 
 -- | Parses a JSON replay.
-decodeReplayJson :: Bytes.ByteString -> Either String Replay.Replay
-decodeReplayJson = Aeson.eitherDecodeStrict'
+decodeReplayJson :: ByteString.ByteString -> Either String Replay.Replay
+decodeReplayJson = Json.decode
 
 -- | Encodes a raw replay.
-encodeReplayFile :: Bool -> Replay.Replay -> LazyBytes.ByteString
+encodeReplayFile :: Bool -> Replay.Replay -> LazyByteString.ByteString
 encodeReplayFile fast replay =
   BytePut.toLazyByteString . Replay.bytePut $ if fast
     then replay

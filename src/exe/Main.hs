@@ -1,5 +1,4 @@
-module Main
-  ( main
-  ) where
+import qualified Rattletrap
 
-import Rattletrap (main)
+main :: IO ()
+main = Rattletrap.main

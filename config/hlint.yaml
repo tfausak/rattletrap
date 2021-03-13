@@ -10,3 +10,48 @@
 - ignore: { name: Use <|> }
 - ignore: { name: Use lambda-case }
 - ignore: { name: Use <$> }
+- modules:
+  - { name: Control.Applicative, as: Applicative }
+  - { name: Control.Monad, as: Monad }
+  - { name: Control.Monad.Trans.Class, as: Trans }
+  - { name: Control.Monad.Trans.State, as: State }
+  - { name: Data.Aeson, as: Aeson }
+  - { name: Data.Aeson.Encode.Pretty, as: Aeson }
+  - { name: Data.Aeson.Types, as: Aeson }
+  - { name: Data.Array.Unboxed, as: Array }
+  - { name: Data.Bifunctor, as: Bifunctor }
+  - { name: Data.Bits, as: Bits }
+  - { name: Data.ByteString, as: ByteString }
+  - { name: Data.ByteString.Builder, as: Builder }
+  - { name: Data.ByteString.Char8, as: Latin1 }
+  - { name: Data.ByteString.Lazy, as: LazyByteString }
+  - { name: Data.Char, as: Char }
+  - { name: Data.Foldable, as: Foldable }
+  - { name: Data.Functor.Identity, as: Identity }
+  - { name: Data.Int, as: Int }
+  - { name: Data.IntMap, as: IntMap }
+  - { name: Data.List, as: List }
+  - { name: Data.Map, as: Map }
+  - { name: Data.Maybe, as: Maybe }
+  - { name: Data.Ord, as: Ord }
+  - { name: Data.Set, as: Set }
+  - { name: Data.Text, as: Text }
+  - { name: Data.Text.Encoding, as: Text }
+  - { name: Data.Text.Encoding.Error, as: Text }
+  - { name: Data.Tuple, as: Tuple }
+  - { name: Data.Version, as: Version }
+  - { name: Data.Word, as: Word }
+  - { name: GHC.Clock, as: Clock }
+  - { name: GHC.Float, as: Float }
+  - { name: Network.HTTP.Client, as: Client }
+  - { name: Network.HTTP.Client.TLS, as: Client }
+  - { name: System.Console.GetOpt, as: Console }
+  - { name: System.Directory, as: Directory }
+  - { name: System.Environment, as: Environment }
+  - { name: System.Exit, as: Exit }
+  - { name: System.FilePath, as: FilePath }
+  - { name: System.IO, as: IO }
+  - { name: System.Process, as: Process }
+  - { name: Test.HUnit, as: Test }
+  - { name: Text.Printf, as: Printf }
+  - { name: Text.Read, as: Read }

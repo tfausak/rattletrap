@@ -1,15 +1,4 @@
-module Rattletrap.Type.ClassAttributeMap
-  ( ClassAttributeMap(..)
-  , classHasLocation
-  , classHasRotation
-  , getAttributeIdLimit
-  , getAttributeMap
-  , getAttributeName
-  , getClassName
-  , getName
-  , getObjectName
-  , make
-  ) where
+module Rattletrap.Type.ClassAttributeMap where
 
 import qualified Rattletrap.Data as Data
 import qualified Rattletrap.Type.AttributeMapping as AttributeMapping

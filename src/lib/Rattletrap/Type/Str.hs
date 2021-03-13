@@ -6,16 +6,15 @@ import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I32 as I32
-import Rattletrap.Utility.Bytes
+import qualified Rattletrap.Utility.Bytes as Bytes
 import qualified Rattletrap.Utility.Json as Json
 
-import qualified Data.ByteString as Bytes
+import qualified Data.ByteString as ByteString
 import qualified Data.Char as Char
 import qualified Data.Int as Int
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Text.Encoding.Error as Text
-import qualified Debug.Trace as Debug
 
 newtype Str
   = Str Text.Text
@@ -65,9 +64,10 @@ getTextSize text =
       else scale * rawSize :: Int.Int32
   in I32.fromInt32 size
 
-getTextEncoder :: I32.I32 -> Text.Text -> Bytes.ByteString
-getTextEncoder size text =
-  if I32.toInt32 size < 0 then Text.encodeUtf16LE text else encodeLatin1 text
+getTextEncoder :: I32.I32 -> Text.Text -> ByteString.ByteString
+getTextEncoder size text = if I32.toInt32 size < 0
+  then Text.encodeUtf16LE text
+  else Bytes.encodeLatin1 text
 
 addNull :: Text.Text -> Text.Text
 addNull text = if Text.null text then text else Text.snoc text '\x00'
@@ -89,13 +89,11 @@ normalizeTextSize size = case I32.toInt32 size of
   0x05000000 -> 8
   x -> if x < 0 then (-2 * fromIntegral x) else fromIntegral x
 
-getTextDecoder :: I32.I32 -> Bytes.ByteString -> Text.Text
+getTextDecoder :: I32.I32 -> ByteString.ByteString -> Text.Text
 getTextDecoder size bytes =
   let
     decode = if I32.toInt32 size < 0
-      then Text.decodeUtf16LEWith $ \message input -> do
-        Debug.traceM $ "WARNING: " <> show (Text.DecodeError message input)
-        Text.lenientDecode message input
+      then Text.decodeUtf16LEWith Text.lenientDecode
       else Text.decodeLatin1
   in decode bytes
 

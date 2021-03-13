@@ -1,10 +1,8 @@
-module Rattletrap.Utility.Crc
-  ( compute
-  ) where
+module Rattletrap.Utility.Crc where
 
 import qualified Data.Array.Unboxed as Array
 import qualified Data.Bits as Bits
-import qualified Data.ByteString as Bytes
+import qualified Data.ByteString as ByteString
 import qualified Data.Word as Word
 
 -- | Computes the CRC32 of some bytes. This is done to ensure that the bytes
@@ -16,8 +14,8 @@ import qualified Data.Word as Word
 --
 -- This CRC uses an initial value of @0xefcbf201@ and a polynomial of
 -- @0x04c11db7@.
-compute :: Bytes.ByteString -> Word.Word32
-compute = Bits.complement . Bytes.foldl' update initial
+compute :: ByteString.ByteString -> Word.Word32
+compute = Bits.complement . ByteString.foldl' update initial
 
 update :: Word.Word32 -> Word.Word8 -> Word.Word32
 update crc byte =

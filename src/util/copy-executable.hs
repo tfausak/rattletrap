@@ -1,7 +1,3 @@
-module Main
-  ( main
-  ) where
-
 import qualified Data.Char as Char
 import qualified Data.List as List
 import qualified System.Directory as Directory

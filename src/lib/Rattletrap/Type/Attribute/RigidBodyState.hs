@@ -7,7 +7,7 @@ import qualified Rattletrap.Type.Rotation as Rotation
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Monad as Monad
 
 data RigidBodyState = RigidBodyState
   { sleeping :: Bool
@@ -68,8 +68,8 @@ bitGet version = do
   sleeping <- BitGet.bool
   location <- Vector.bitGet version
   rotation <- Rotation.bitGet version
-  linearVelocity <- whenMaybe (not sleeping) (Vector.bitGet version)
-  angularVelocity <- whenMaybe (not sleeping) (Vector.bitGet version)
+  linearVelocity <- Monad.whenMaybe (not sleeping) (Vector.bitGet version)
+  angularVelocity <- Monad.whenMaybe (not sleeping) (Vector.bitGet version)
   pure RigidBodyState
     { sleeping
     , location

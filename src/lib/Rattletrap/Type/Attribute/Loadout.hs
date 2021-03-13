@@ -6,7 +6,7 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
-import Rattletrap.Utility.Monad
+import qualified Rattletrap.Utility.Monad as Monad
 
 data Loadout = Loadout
   { version :: U8.U8
@@ -141,15 +141,15 @@ bitGet = do
   antenna <- U32.bitGet
   topper <- U32.bitGet
   unknown1 <- U32.bitGet
-  unknown2 <- whenMaybe (U8.toWord8 version >= 11) U32.bitGet
-  engineAudio <- whenMaybe (U8.toWord8 version >= 16) U32.bitGet
-  trail <- whenMaybe (U8.toWord8 version >= 16) U32.bitGet
-  goalExplosion <- whenMaybe (U8.toWord8 version >= 16) U32.bitGet
-  banner <- whenMaybe (U8.toWord8 version >= 17) U32.bitGet
-  unknown3 <- whenMaybe (U8.toWord8 version >= 19) U32.bitGet
-  unknown4 <- whenMaybe (U8.toWord8 version >= 22) U32.bitGet
-  unknown5 <- whenMaybe (U8.toWord8 version >= 22) U32.bitGet
-  unknown6 <- whenMaybe (U8.toWord8 version >= 22) U32.bitGet
+  unknown2 <- Monad.whenMaybe (U8.toWord8 version >= 11) U32.bitGet
+  engineAudio <- Monad.whenMaybe (U8.toWord8 version >= 16) U32.bitGet
+  trail <- Monad.whenMaybe (U8.toWord8 version >= 16) U32.bitGet
+  goalExplosion <- Monad.whenMaybe (U8.toWord8 version >= 16) U32.bitGet
+  banner <- Monad.whenMaybe (U8.toWord8 version >= 17) U32.bitGet
+  unknown3 <- Monad.whenMaybe (U8.toWord8 version >= 19) U32.bitGet
+  unknown4 <- Monad.whenMaybe (U8.toWord8 version >= 22) U32.bitGet
+  unknown5 <- Monad.whenMaybe (U8.toWord8 version >= 22) U32.bitGet
+  unknown6 <- Monad.whenMaybe (U8.toWord8 version >= 22) U32.bitGet
   pure Loadout
     { version
     , body

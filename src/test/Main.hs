@@ -1,13 +1,9 @@
-module Main
-  ( main
-  ) where
-
 import qualified Control.Monad as Monad
-import qualified Data.ByteString as Bytes
+import qualified Data.ByteString as ByteString
 import qualified GHC.Clock as Clock
 import qualified Rattletrap
 import qualified System.Exit as Exit
-import qualified System.FilePath as Path
+import qualified System.FilePath as FilePath
 import qualified Test.HUnit as Test
 import qualified Text.Printf as Printf
 
@@ -18,7 +14,7 @@ runTests :: Test.Test -> IO ()
 runTests test = do
   Rattletrap.rattletrap
     ""
-    ["--schema", "--output", Path.combine directory "schema.json"]
+    ["--schema", "--output", FilePath.combine directory "schema.json"]
   (result, elapsed) <- withElapsed $ Test.runTestTT test
   Printf.printf "Total time: %.3f seconds\n" elapsed
   Monad.when
@@ -38,16 +34,15 @@ toLabel uuid name = uuid <> ": " <> name
 toAssertion :: String -> Test.Assertion
 toAssertion uuid = do
   let
-    inputFile = Path.combine "replays" $ uuid <> ".replay"
-    jsonFile = Path.combine directory $ uuid <> ".json"
-    outputFile = Path.combine directory $ uuid <> ".replay"
-  input <- Bytes.readFile inputFile
+    inputFile = FilePath.combine "replays" $ uuid <> ".replay"
+    jsonFile = FilePath.combine directory $ uuid <> ".json"
+    outputFile = FilePath.combine directory $ uuid <> ".replay"
+  input <- ByteString.readFile inputFile
   decode inputFile jsonFile
   encode jsonFile outputFile
-  output <- Bytes.readFile outputFile
-  Monad.unless
-    (output == input)
-    (Test.assertFailure "output does not match input")
+  output <- ByteString.readFile outputFile
+  Monad.when (output /= input)
+    $ Test.assertFailure "output does not match input"
 
 decode :: FilePath -> FilePath -> IO ()
 decode input output =
