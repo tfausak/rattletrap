@@ -173,7 +173,8 @@ putFrames x =
     -- Unforunately that isn't currently known. See this issue for details:
     -- <https://github.com/tfausak/rattletrap/issues/171>.
     expectedStreamSize = streamSize x
-    actualStreamSize = U32.fromWord32 . fromIntegral $ ByteString.length stream
+    actualStreamSize =
+      U32.fromWord32 . fromIntegral $ ByteString.length stream
     streamSize_ = U32.fromWord32
       $ max (U32.toWord32 expectedStreamSize) (U32.toWord32 actualStreamSize)
   in U32.bytePut streamSize_

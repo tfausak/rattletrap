@@ -65,8 +65,7 @@ getTextSize text =
   in I32.fromInt32 size
 
 getTextEncoder :: I32.I32 -> Text.Text -> ByteString.ByteString
-getTextEncoder size text =
-  if I32.toInt32 size < 0
+getTextEncoder size text = if I32.toInt32 size < 0
   then Text.encodeUtf16LE text
   else Bytes.encodeLatin1 text
 
