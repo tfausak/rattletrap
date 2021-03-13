@@ -1,10 +1,9 @@
 module Rattletrap.Console.Main where
 
 import qualified Control.Monad as Monad
-import qualified Data.Aeson as Aeson
-import qualified Data.Aeson.Encode.Pretty as Aeson
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
+import qualified Data.Text as Text
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified Rattletrap.Console.Config as Config
@@ -130,14 +129,7 @@ versionMain = do
 
 schemaMain :: Config.Config -> IO ()
 schemaMain config = do
-  let
-    json = Aeson.encodePretty'
-      Aeson.defConfig
-        { Aeson.confCompare = compare
-        , Aeson.confIndent = Aeson.Tab
-        , Aeson.confTrailingNewline = True
-        }
-      schema
+  let json = Json.encodePretty schema
   case Config.output config of
     Nothing -> LazyByteString.putStr json
     Just file -> LazyByteString.writeFile file json
@@ -150,16 +142,16 @@ defaultMain config = do
   let encode = getEncoder config
   putOutput config (encode replay)
 
-schema :: Aeson.Value
+schema :: Json.Value
 schema =
   let contentSchema = Content.schema $ List.schema Frame.schema
   in
-    Aeson.object
+    Json.object
       [ Json.pair "$schema" "http://json-schema.org/draft-07/schema"
       , Json.pair "$id" Replay.schemaUrl
       , Json.pair "$ref" "#/definitions/replay"
-      , Json.pair "definitions" . Aeson.object $ fmap
-        (\s -> Schema.name s Aeson..= Schema.json s)
+      , Json.pair "definitions" . Json.object $ fmap
+        (\s -> Json.pair (Text.unpack $ Schema.name s) $ Schema.json s)
         [ Attribute.schema
         , Attribute.AppliedDamage.schema
         , Attribute.Boolean.schema
@@ -263,7 +255,7 @@ getDecoder config = case Config.getMode config of
 getEncoder :: Config.Config -> Replay.Replay -> LazyByteString.ByteString
 getEncoder config = case Config.getMode config of
   Mode.Decode ->
-    if Config.compact config then Aeson.encode else Rattletrap.encodeReplayJson
+    if Config.compact config then Json.encode else Rattletrap.encodeReplayJson
   Mode.Encode -> Rattletrap.encodeReplayFile $ Config.fast config
 
 getInput :: Config.Config -> IO ByteString.ByteString

@@ -41,9 +41,8 @@ toAssertion uuid = do
   decode inputFile jsonFile
   encode jsonFile outputFile
   output <- ByteString.readFile outputFile
-  Monad.unless
-    (output == input)
-    (Test.assertFailure "output does not match input")
+  Monad.when (output /= input)
+    $ Test.assertFailure "output does not match input"
 
 decode :: FilePath -> FilePath -> IO ()
 decode input output =

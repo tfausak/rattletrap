@@ -7,9 +7,8 @@ import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Section as Section
+import qualified Rattletrap.Utility.Json as Json
 
-import qualified Data.Aeson as Aeson
-import qualified Data.Aeson.Encode.Pretty as Aeson
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
 
@@ -20,15 +19,11 @@ decodeReplayFile fast = ByteGet.run . Replay.byteGet fast
 
 -- | Encodes a replay as JSON.
 encodeReplayJson :: Replay.Replay -> LazyByteString.ByteString
-encodeReplayJson = Aeson.encodePretty' Aeson.defConfig
-  { Aeson.confCompare = compare
-  , Aeson.confIndent = Aeson.Tab
-  , Aeson.confTrailingNewline = True
-  }
+encodeReplayJson = Json.encodePretty
 
 -- | Parses a JSON replay.
 decodeReplayJson :: ByteString.ByteString -> Either String Replay.Replay
-decodeReplayJson = Aeson.eitherDecodeStrict'
+decodeReplayJson = Json.decode
 
 -- | Encodes a raw replay.
 encodeReplayFile :: Bool -> Replay.Replay -> LazyByteString.ByteString
