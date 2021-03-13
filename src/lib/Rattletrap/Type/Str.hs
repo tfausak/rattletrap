@@ -15,7 +15,6 @@ import qualified Data.Int as Int
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Text.Encoding.Error as Text
-import qualified Debug.Trace as Debug
 
 newtype Str
   = Str Text.Text
@@ -93,9 +92,7 @@ getTextDecoder :: I32.I32 -> ByteString.ByteString -> Text.Text
 getTextDecoder size bytes =
   let
     decode = if I32.toInt32 size < 0
-      then Text.decodeUtf16LEWith $ \message input -> do
-        Debug.traceM $ "WARNING: " <> show (Text.DecodeError message input)
-        Text.lenientDecode message input
+      then Text.decodeUtf16LEWith Text.lenientDecode
       else Text.decodeLatin1
   in decode bytes
 
