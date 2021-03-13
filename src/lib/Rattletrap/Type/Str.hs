@@ -6,7 +6,7 @@ import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I32 as I32
-import Rattletrap.Utility.Bytes
+import qualified Rattletrap.Utility.Bytes as Bytes
 import qualified Rattletrap.Utility.Json as Json
 
 import qualified Data.ByteString as ByteString
@@ -66,7 +66,9 @@ getTextSize text =
 
 getTextEncoder :: I32.I32 -> Text.Text -> ByteString.ByteString
 getTextEncoder size text =
-  if I32.toInt32 size < 0 then Text.encodeUtf16LE text else encodeLatin1 text
+  if I32.toInt32 size < 0
+  then Text.encodeUtf16LE text
+  else Bytes.encodeLatin1 text
 
 addNull :: Text.Text -> Text.Text
 addNull text = if Text.null text then text else Text.snoc text '\x00'

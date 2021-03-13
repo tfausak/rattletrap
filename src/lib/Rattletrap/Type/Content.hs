@@ -17,7 +17,7 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
-import Rattletrap.Utility.Bytes
+import qualified Rattletrap.Utility.Bytes as Bytes
 import qualified Rattletrap.Utility.Json as Json
 
 import qualified Control.Monad.Trans.State as State
@@ -177,7 +177,7 @@ putFrames x =
     streamSize_ = U32.fromWord32
       $ max (U32.toWord32 expectedStreamSize) (U32.toWord32 actualStreamSize)
   in U32.bytePut streamSize_
-    <> BytePut.byteString (padBytes (U32.toWord32 streamSize_) stream)
+    <> BytePut.byteString (Bytes.padBytes (U32.toWord32 streamSize_) stream)
 
 byteGet
   :: Maybe Str.Str
