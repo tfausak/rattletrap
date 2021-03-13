@@ -80,7 +80,9 @@ bitGet version = do
   distance <- F32.bitGet
   stiffness <- F32.bitGet
   swivelSpeed <- F32.bitGet
-  transitionSpeed <- Monad.whenMaybe (Version.atLeast 868 20 0 version) F32.bitGet
+  transitionSpeed <- Monad.whenMaybe
+    (Version.atLeast 868 20 0 version)
+    F32.bitGet
   pure CamSettings
     { fov
     , height
