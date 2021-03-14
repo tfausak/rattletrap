@@ -3,6 +3,7 @@ module Rattletrap.Type.AttributeValue where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Data as Data
+import qualified Rattletrap.Exception.UnknownAttribute as UnknownAttribute
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.AppliedDamage as AppliedDamage
 import qualified Rattletrap.Type.Attribute.Boolean as Boolean
@@ -260,10 +261,10 @@ bitGet
   -> Str.Str
   -> BitGet.BitGet AttributeValue
 bitGet version objectMap name = do
-  constructor <- maybe
-    (fail ("[RT04] don't know how to get attribute value " <> show name))
-    pure
-    (Map.lookup (Str.toText name) Data.attributeTypes)
+  constructor <- case Map.lookup (Str.toText name) Data.attributeTypes of
+    Nothing ->
+      BitGet.throw . UnknownAttribute.UnknownAttribute $ Str.toString name
+    Just x -> pure x
   case constructor of
     AttributeType.AppliedDamage ->
       fmap AppliedDamage $ AppliedDamage.bitGet version

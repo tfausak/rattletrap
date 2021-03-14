@@ -52,6 +52,7 @@ library
     Rattletrap.Exception.Fail
     Rattletrap.Exception.InvalidJson
     Rattletrap.Exception.NotEnoughInput
+    Rattletrap.Exception.UnknownAttribute
     Rattletrap.Exception.UnknownProperty
     Rattletrap.Get
     Rattletrap.Schema
