@@ -8,6 +8,7 @@ import qualified Data.Functor.Identity as Identity
 import qualified Data.Int as Int
 import qualified Data.Word as Word
 import qualified GHC.Float as Float
+import qualified Rattletrap.Exception.NotEnoughInput as NotEnoughInput
 import qualified Rattletrap.Get as Get
 
 type ByteGet = Get.Get ByteString.ByteString Identity.Identity
@@ -19,8 +20,11 @@ byteString :: Int -> ByteGet ByteString.ByteString
 byteString n = do
   s1 <- Get.get
   let (x, s2) = ByteString.splitAt n s1
-  Get.put s2
-  pure x
+  if ByteString.length x == n
+    then do
+      Get.put s2
+      pure x
+    else throw NotEnoughInput.NotEnoughInput
 
 float :: ByteGet Float
 float = fmap Float.castWord32ToFloat word32

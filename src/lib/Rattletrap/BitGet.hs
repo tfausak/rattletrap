@@ -7,6 +7,7 @@ import qualified Data.ByteString as ByteString
 import qualified Data.Functor.Identity as Identity
 import qualified Rattletrap.BitString as BitString
 import qualified Rattletrap.ByteGet as ByteGet
+import qualified Rattletrap.Exception.NotEnoughInput as NotEnoughInput
 import qualified Rattletrap.Get as Get
 
 type BitGet = Get.Get BitString.BitString Identity.Identity
@@ -37,7 +38,7 @@ bool :: BitGet Bool
 bool = do
   s1 <- Get.get
   case BitString.pop s1 of
-    Nothing -> fail "BitGet.bool"
+    Nothing -> throw NotEnoughInput.NotEnoughInput
     Just (x, s2) -> do
       Get.put s2
       pure x

@@ -50,6 +50,7 @@ library
     Rattletrap.Exception.Empty
     Rattletrap.Exception.Fail
     Rattletrap.Exception.InvalidJson
+    Rattletrap.Exception.NotEnoughInput
     Rattletrap.Get
     Rattletrap.Schema
     Rattletrap.Type.Attribute
