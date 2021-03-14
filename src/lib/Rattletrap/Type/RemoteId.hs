@@ -2,6 +2,7 @@ module Rattletrap.Type.RemoteId where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Exception.UnknownSystemId as UnknownSystemId
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.RemoteId.Epic as Epic
 import qualified Rattletrap.Type.RemoteId.PlayStation as PlayStation
@@ -79,4 +80,4 @@ bitGet version systemId = case U8.toWord8 systemId of
   6 -> fmap Switch Switch.bitGet
   7 -> fmap PsyNet $ PsyNet.bitGet version
   11 -> fmap Epic Epic.bitGet
-  _ -> fail ("[RT09] unknown system id " <> show systemId)
+  x -> BitGet.throw $ UnknownSystemId.UnknownSystemId x

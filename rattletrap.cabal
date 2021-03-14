@@ -54,6 +54,7 @@ library
     Rattletrap.Exception.NotEnoughInput
     Rattletrap.Exception.UnknownAttribute
     Rattletrap.Exception.UnknownProperty
+    Rattletrap.Exception.UnknownSystemId
     Rattletrap.Get
     Rattletrap.Schema
     Rattletrap.Type.Attribute
