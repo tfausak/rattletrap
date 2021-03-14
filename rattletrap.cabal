@@ -50,6 +50,7 @@ library
     Rattletrap.Exception.CrcMismatch
     Rattletrap.Exception.Empty
     Rattletrap.Exception.Fail
+    Rattletrap.Exception.InvalidComponent
     Rattletrap.Exception.InvalidJson
     Rattletrap.Exception.NotEnoughInput
     Rattletrap.Exception.UnknownAttribute
