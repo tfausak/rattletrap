@@ -5,6 +5,9 @@ import qualified Data.Map as Map
 import Prelude hiding (id)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Exception.MissingAttributeLimit as MissingAttributeLimit
+import qualified Rattletrap.Exception.MissingAttributeName as MissingAttributeName
+import qualified Rattletrap.Exception.UnknownActor as UnknownActor
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.AttributeValue as AttributeValue
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
@@ -72,7 +75,7 @@ lookupAttributeMap
   -> CompressedWord.CompressedWord
   -> BitGet.BitGet (Map.Map U32.U32 U32.U32)
 lookupAttributeMap classes actors actor = fromMaybe
-  (userError $ "[RT01] could not get attribute map for " <> show actor)
+  (UnknownActor.UnknownActor $ CompressedWord.value actor)
   (ClassAttributeMap.getAttributeMap classes actors actor)
 
 lookupAttributeIdLimit
@@ -80,7 +83,7 @@ lookupAttributeIdLimit
   -> CompressedWord.CompressedWord
   -> BitGet.BitGet Word
 lookupAttributeIdLimit attributes actor = fromMaybe
-  (userError $ "[RT02] could not get attribute ID limit for " <> show actor)
+  (MissingAttributeLimit.MissingAttributeLimit $ CompressedWord.value actor)
   (ClassAttributeMap.getAttributeIdLimit attributes)
 
 lookupAttributeName
@@ -89,7 +92,7 @@ lookupAttributeName
   -> CompressedWord.CompressedWord
   -> BitGet.BitGet Str.Str
 lookupAttributeName classes attributes attribute = fromMaybe
-  (userError $ "[RT03] could not get attribute name for " <> show attribute)
+  (MissingAttributeName.MissingAttributeName $ CompressedWord.value attribute)
   (ClassAttributeMap.getAttributeName classes attributes attribute)
 
 fromMaybe :: Exception.Exception e => e -> Maybe a -> BitGet.BitGet a

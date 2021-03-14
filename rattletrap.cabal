@@ -52,8 +52,16 @@ library
     Rattletrap.Exception.Fail
     Rattletrap.Exception.InvalidComponent
     Rattletrap.Exception.InvalidJson
+    Rattletrap.Exception.MissingAttributeLimit
+    Rattletrap.Exception.MissingAttributeName
+    Rattletrap.Exception.MissingClassName
+    Rattletrap.Exception.MissingObjectName
+    Rattletrap.Exception.MissingProductName
     Rattletrap.Exception.NotEnoughInput
+    Rattletrap.Exception.UnknownActor
     Rattletrap.Exception.UnknownAttribute
+    Rattletrap.Exception.UnknownName
+    Rattletrap.Exception.UnknownProduct
     Rattletrap.Exception.UnknownProperty
     Rattletrap.Exception.UnknownSystemId
     Rattletrap.Get

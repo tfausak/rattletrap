@@ -2,6 +2,9 @@ module Rattletrap.Type.Replication.Spawned where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Exception.MissingClassName as MissingClassName
+import qualified Rattletrap.Exception.MissingObjectName as MissingObjectName
+import qualified Rattletrap.Exception.UnknownName as UnknownName
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
@@ -133,9 +136,8 @@ lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
       of
         Nothing ->
           BitGet.throw
-            . userError
-            $ "[RT11] could not get name for index "
-            <> show nameIndex_
+            . UnknownName.UnknownName
+            $ U32.toWord32 nameIndex_
         Just name_ -> pure (Just name_)
 
 lookupObjectName
@@ -148,9 +150,8 @@ lookupObjectName classAttributeMap objectId_ =
     of
       Nothing ->
         BitGet.throw
-          . userError
-          $ "[RT12] could not get object name for id "
-          <> show objectId_
+          . MissingObjectName.MissingObjectName
+          $ U32.toWord32 objectId_
       Just objectName_ -> pure objectName_
 
 lookupClassName :: Str.Str -> BitGet.BitGet Str.Str
@@ -158,7 +159,6 @@ lookupClassName objectName_ =
   case ClassAttributeMap.getClassName objectName_ of
     Nothing ->
       BitGet.throw
-        . userError
-        $ "[RT13] could not get class name for object "
-        <> show objectName_
+        . MissingClassName.MissingClassName
+        $ Str.toString objectName_
     Just className_ -> pure className_

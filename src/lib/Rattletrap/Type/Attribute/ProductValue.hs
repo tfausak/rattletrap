@@ -4,6 +4,8 @@ import qualified Data.Foldable as Foldable
 import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Exception.MissingProductName as MissingProductName
+import qualified Rattletrap.Exception.UnknownProduct as UnknownProduct
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
@@ -81,18 +83,8 @@ bitGet version objectId maybeObjectName =
     Just "TAGame.ProductAttribute_TeamEdition_TA" -> decodeTeamEdition version
     Just "TAGame.ProductAttribute_TitleID_TA" -> decodeTitle
     Just "TAGame.ProductAttribute_UserColor_TA" -> decodeColor version
-    Just objectName ->
-      BitGet.throw
-        . userError
-        $ "[RT05] unknown object name "
-        <> show objectName
-        <> " for ID "
-        <> show objectId
-    Nothing ->
-      BitGet.throw
-        . userError
-        $ "[RT06] missing object name for ID "
-        <> show objectId
+    Just x -> BitGet.throw $ UnknownProduct.UnknownProduct x
+    Nothing -> BitGet.throw . MissingProductName.MissingProductName $ U32.toWord32 objectId
 
 decodeSpecialEdition :: BitGet.BitGet ProductValue
 decodeSpecialEdition = fmap SpecialEdition $ BitGet.bits 31
