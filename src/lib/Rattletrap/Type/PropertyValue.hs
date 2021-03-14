@@ -3,6 +3,7 @@ module Rattletrap.Type.PropertyValue where
 import qualified Data.Foldable as Foldable
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Exception.UnknownProperty as UnknownProperty
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Property.Array as Property.Array
 import qualified Rattletrap.Type.Property.Bool as Property.Bool
@@ -87,4 +88,4 @@ byteGet getProperty kind = case Str.toString kind of
   "NameProperty" -> fmap Name Property.Name.byteGet
   "QWordProperty" -> fmap QWord Property.QWord.byteGet
   "StrProperty" -> fmap Str Property.Str.byteGet
-  _ -> fail ("[RT07] don't know how to read property value " <> show kind)
+  x -> ByteGet.throw $ UnknownProperty.UnknownProperty x
