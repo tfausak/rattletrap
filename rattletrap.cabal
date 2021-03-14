@@ -47,6 +47,7 @@ library
     Rattletrap.Console.Mode
     Rattletrap.Console.Option
     Rattletrap.Data
+    Rattletrap.Exception.CrcMismatch
     Rattletrap.Exception.Empty
     Rattletrap.Exception.Fail
     Rattletrap.Exception.InvalidJson

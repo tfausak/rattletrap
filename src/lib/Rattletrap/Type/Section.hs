@@ -2,6 +2,7 @@ module Rattletrap.Type.Section where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Exception.CrcMismatch as CrcMismatch
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Crc as Crc
@@ -78,7 +79,9 @@ byteGet skip getBody = do
   rawBody <- ByteGet.byteString (fromIntegral (U32.toWord32 size_))
   Monad.unless skip $ do
     let actualCrc = U32.fromWord32 (Crc.compute rawBody)
-    Monad.when (actualCrc /= crc_) (fail (crcMessage actualCrc crc_))
+    Monad.when (actualCrc /= crc_) . ByteGet.throw $ CrcMismatch.CrcMismatch
+      (U32.toWord32 crc_)
+      (U32.toWord32 actualCrc)
   body_ <- ByteGet.embed (getBody size_) rawBody
   pure (Section size_ crc_ body_)
 
