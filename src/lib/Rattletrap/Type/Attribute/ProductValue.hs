@@ -81,13 +81,18 @@ bitGet version objectId maybeObjectName =
     Just "TAGame.ProductAttribute_TeamEdition_TA" -> decodeTeamEdition version
     Just "TAGame.ProductAttribute_TitleID_TA" -> decodeTitle
     Just "TAGame.ProductAttribute_UserColor_TA" -> decodeColor version
-    Just objectName -> fail
-      ("[RT05] unknown object name "
-      <> show objectName
-      <> " for ID "
-      <> show objectId
-      )
-    Nothing -> fail ("[RT06] missing object name for ID " <> show objectId)
+    Just objectName ->
+      BitGet.throw
+        . userError
+        $ "[RT05] unknown object name "
+        <> show objectName
+        <> " for ID "
+        <> show objectId
+    Nothing ->
+      BitGet.throw
+        . userError
+        $ "[RT06] missing object name for ID "
+        <> show objectId
 
 decodeSpecialEdition :: BitGet.BitGet ProductValue
 decodeSpecialEdition = fmap SpecialEdition $ BitGet.bits 31
