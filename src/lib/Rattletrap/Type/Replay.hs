@@ -66,12 +66,11 @@ bytePut x = Section.bytePut Header.bytePut (header x)
 byteGet :: Bool -> Bool -> ByteGet.ByteGet Replay
 byteGet fast skip = do
   hs <- Section.byteGet skip $ ByteGet.byteString . fromIntegral . U32.toWord32
-  h <- either ByteGet.throw pure . ByteGet.run Header.byteGet $ Section.body hs
+  h <- ByteGet.embed Header.byteGet $ Section.body hs
   cs <- Section.byteGet skip $ ByteGet.byteString . fromIntegral . U32.toWord32
   c <- if fast
     then pure Content.empty
-    else either ByteGet.throw pure . ByteGet.run (getContent h) $ Section.body
-      cs
+    else ByteGet.embed (getContent h) $ Section.body cs
   pure Replay
     { header = hs { Section.body = h }
     , content = cs { Section.body = c }

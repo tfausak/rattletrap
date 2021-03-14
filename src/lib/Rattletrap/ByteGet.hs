@@ -67,3 +67,6 @@ word64 = do
 
 throw :: Exception.Exception e => e -> ByteGet a
 throw = Get.throw
+
+embed :: ByteGet a -> ByteString.ByteString -> ByteGet a
+embed = Get.embed

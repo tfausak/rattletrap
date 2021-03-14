@@ -23,7 +23,7 @@ toByteGet g = do
 fromByteGet :: ByteGet.ByteGet a -> Int -> BitGet a
 fromByteGet f n = do
   x <- byteString n
-  either throw pure $ ByteGet.run f x
+  Get.embed f x
 
 bits :: Bits.Bits a => Int -> BitGet a
 bits n = do

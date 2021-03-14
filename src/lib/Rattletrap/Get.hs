@@ -50,3 +50,10 @@ lift m = Get $ \s -> fmap (\x -> Right (s, x)) m
 
 throw :: (Exception.Exception e, Applicative m) => e -> Get s m a
 throw = Get . const . pure . Left . Exception.toException
+
+embed :: Monad m => Get s m a -> s -> Get t m a
+embed g s = do
+  r <- lift $ run g s
+  case r of
+    Left e -> throw e
+    Right (_, x) -> pure x
