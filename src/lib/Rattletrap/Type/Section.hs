@@ -79,7 +79,7 @@ byteGet skip getBody = do
   Monad.unless skip $ do
     let actualCrc = U32.fromWord32 (Crc.compute rawBody)
     Monad.when (actualCrc /= crc_) (fail (crcMessage actualCrc crc_))
-  body_ <- either fail pure $ ByteGet.run (getBody size_) rawBody
+  body_ <- either ByteGet.throw pure $ ByteGet.run (getBody size_) rawBody
   pure (Section size_ crc_ body_)
 
 crcMessage :: U32.U32 -> U32.U32 -> String

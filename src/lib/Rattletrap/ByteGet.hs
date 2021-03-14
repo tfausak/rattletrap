@@ -1,5 +1,6 @@
 module Rattletrap.ByteGet where
 
+import qualified Control.Exception as Exception
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
@@ -11,7 +12,7 @@ import qualified Rattletrap.Get as Get
 
 type ByteGet = Get.Get ByteString.ByteString Identity.Identity
 
-run :: ByteGet a -> ByteString.ByteString -> Either String a
+run :: ByteGet a -> ByteString.ByteString -> Either Exception.SomeException a
 run g = fmap snd . Identity.runIdentity . Get.run g
 
 byteString :: Int -> ByteGet ByteString.ByteString
@@ -63,3 +64,6 @@ word64 = do
     + Bits.shiftL (fromIntegral $ ByteString.index x 5) 40
     + Bits.shiftL (fromIntegral $ ByteString.index x 6) 48
     + Bits.shiftL (fromIntegral $ ByteString.index x 7) 56
+
+throw :: Exception.Exception e => e -> ByteGet a
+throw = Get.throw

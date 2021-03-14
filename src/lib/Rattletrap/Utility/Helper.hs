@@ -9,12 +9,17 @@ import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Utility.Json as Json
 
+import qualified Control.Exception as Exception
+import qualified Data.Bifunctor as Bifunctor
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
 
 -- | Parses a raw replay.
 decodeReplayFile
-  :: Bool -> Bool -> ByteString.ByteString -> Either String Replay.Replay
+  :: Bool
+  -> Bool
+  -> ByteString.ByteString
+  -> Either Exception.SomeException Replay.Replay
 decodeReplayFile fast = ByteGet.run . Replay.byteGet fast
 
 -- | Encodes a replay as JSON.
@@ -22,8 +27,10 @@ encodeReplayJson :: Replay.Replay -> LazyByteString.ByteString
 encodeReplayJson = Json.encodePretty
 
 -- | Parses a JSON replay.
-decodeReplayJson :: ByteString.ByteString -> Either String Replay.Replay
-decodeReplayJson = Json.decode
+decodeReplayJson
+  :: ByteString.ByteString -> Either Exception.SomeException Replay.Replay
+decodeReplayJson =
+  Bifunctor.first (Exception.toException . userError) . Json.decode
 
 -- | Encodes a raw replay.
 encodeReplayFile :: Bool -> Replay.Replay -> LazyByteString.ByteString

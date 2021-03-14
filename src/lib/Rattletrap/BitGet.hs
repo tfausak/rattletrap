@@ -1,5 +1,6 @@
 module Rattletrap.BitGet where
 
+import qualified Control.Exception as Exception
 import qualified Control.Monad as Monad
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as ByteString
@@ -14,7 +15,7 @@ toByteGet :: BitGet a -> ByteGet.ByteGet a
 toByteGet g = do
   s1 <- Get.get
   case Identity.runIdentity . Get.run g $ BitString.fromByteString s1 of
-    Left e -> fail e
+    Left e -> ByteGet.throw e
     Right (s2, x) -> do
       Get.put $ BitString.byteString s2
       pure x
@@ -22,7 +23,7 @@ toByteGet g = do
 fromByteGet :: ByteGet.ByteGet a -> Int -> BitGet a
 fromByteGet f n = do
   x <- byteString n
-  either fail pure $ ByteGet.run f x
+  either throw pure $ ByteGet.run f x
 
 bits :: Bits.Bits a => Int -> BitGet a
 bits n = do
@@ -43,3 +44,6 @@ bool = do
 
 byteString :: Int -> BitGet ByteString.ByteString
 byteString n = fmap ByteString.pack . Monad.replicateM n $ bits 8
+
+throw :: Exception.Exception e => e -> BitGet a
+throw = Get.throw

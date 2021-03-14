@@ -1,8 +1,9 @@
 module Rattletrap.Get where
 
 import qualified Control.Applicative as Applicative
+import qualified Control.Exception as Exception
 
-newtype Get s m a = Get (s -> m (Either String (s, a)))
+newtype Get s m a = Get (s -> m (Either Exception.SomeException  (s, a)))
 
 instance Functor m => Functor (Get s m) where
   fmap f g = Get $ fmap (fmap (fmap f)) . run g
@@ -24,7 +25,7 @@ instance Monad m => Monad (Get s m) where
       Right (s2, x) -> run (f x) s2
 
 instance Monad m => MonadFail (Get s m) where
-  fail = Get . const . pure . Left
+  fail = throw . userError
 
 instance Monad m => Applicative.Alternative (Get s m) where
   empty = fail "empty"
@@ -35,7 +36,7 @@ instance Monad m => Applicative.Alternative (Get s m) where
       Left _ -> run gy s
       Right x -> pure $ Right x
 
-run :: Get s m a -> s -> m (Either String (s, a))
+run :: Get s m a -> s -> m (Either Exception.SomeException (s, a))
 run (Get f) = f
 
 get :: Applicative m => Get s m s
@@ -46,3 +47,6 @@ put s = Get $ \_ -> pure $ Right (s, ())
 
 lift :: Functor m => m a -> Get s m a
 lift m = Get $ \s -> fmap (\x -> Right (s, x)) m
+
+throw :: (Exception.Exception e, Applicative m) => e -> Get s m a
+throw = Get . const . pure . Left . Exception.toException

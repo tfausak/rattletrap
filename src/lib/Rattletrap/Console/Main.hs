@@ -1,5 +1,6 @@
 module Rattletrap.Console.Main where
 
+import qualified Control.Exception as Exception
 import qualified Control.Monad as Monad
 import qualified Data.Bool as Bool
 import qualified Data.ByteString as ByteString
@@ -135,7 +136,7 @@ defaultMain :: Config.Config -> IO ()
 defaultMain config = do
   input <- getInput config
   let decode = getDecoder config
-  replay <- either fail pure (decode input)
+  replay <- either Exception.throwIO pure (decode input)
   let encode = getEncoder config
   putOutput config (encode replay)
 
@@ -243,7 +244,9 @@ schema =
       ]
 
 getDecoder
-  :: Config.Config -> ByteString.ByteString -> Either String Replay.Replay
+  :: Config.Config
+  -> ByteString.ByteString
+  -> Either Exception.SomeException Replay.Replay
 getDecoder config = case Config.getMode config of
   Mode.Decode ->
     Rattletrap.decodeReplayFile (Config.fast config) (Config.skipCrc config)
