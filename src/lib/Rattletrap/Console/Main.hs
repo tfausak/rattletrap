@@ -136,7 +136,15 @@ defaultMain :: Config.Config -> IO ()
 defaultMain config = do
   input <- getInput config
   let decode = getDecoder config
-  replay <- either Exception.throwIO pure (decode input)
+  replay <- case decode input of
+    Left e -> do
+      IO.hPutStr IO.stderr $ unlines
+        [ "ERROR: " <> Exception.displayException e
+        , "# You are using Rattletrap version " <> Version.string
+        , "# Please report this problem at https://github.com/tfausak/rattletrap/issues/new"
+        ]
+      Exit.exitFailure
+    Right x -> pure x
   let encode = getEncoder config
   putOutput config (encode replay)
 

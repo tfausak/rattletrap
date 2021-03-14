@@ -6,4 +6,5 @@ newtype Fail
   = Fail String
   deriving (Eq, Show)
 
-instance Exception.Exception Fail
+instance Exception.Exception Fail where
+  displayException (Fail x) = x
