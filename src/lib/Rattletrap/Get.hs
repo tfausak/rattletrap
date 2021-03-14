@@ -2,6 +2,8 @@ module Rattletrap.Get where
 
 import qualified Control.Applicative as Applicative
 import qualified Control.Exception as Exception
+import qualified Rattletrap.Exception.Empty as Empty
+import qualified Rattletrap.Exception.Fail as Fail
 
 newtype Get s m a = Get (s -> m (Either Exception.SomeException  (s, a)))
 
@@ -25,10 +27,10 @@ instance Monad m => Monad (Get s m) where
       Right (s2, x) -> run (f x) s2
 
 instance Monad m => MonadFail (Get s m) where
-  fail = throw . userError
+  fail = throw . Fail.Fail
 
 instance Monad m => Applicative.Alternative (Get s m) where
-  empty = fail "empty"
+  empty = throw Empty.Empty
 
   gx <|> gy = Get $ \s -> do
     r <- run gx s

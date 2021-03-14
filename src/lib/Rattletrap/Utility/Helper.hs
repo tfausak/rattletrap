@@ -4,6 +4,7 @@ module Rattletrap.Utility.Helper where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
+import qualified Rattletrap.Exception.InvalidJson as InvalidJson
 import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Section as Section
@@ -30,7 +31,8 @@ encodeReplayJson = Json.encodePretty
 decodeReplayJson
   :: ByteString.ByteString -> Either Exception.SomeException Replay.Replay
 decodeReplayJson =
-  Bifunctor.first (Exception.toException . userError) . Json.decode
+  Bifunctor.first (Exception.toException . InvalidJson.InvalidJson)
+    . Json.decode
 
 -- | Encodes a raw replay.
 encodeReplayFile :: Bool -> Replay.Replay -> LazyByteString.ByteString
