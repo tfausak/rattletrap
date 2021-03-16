@@ -29,4 +29,4 @@ bytePut :: QWord -> BytePut.BytePut
 bytePut = U64.bytePut . toU64
 
 byteGet :: ByteGet.ByteGet QWord
-byteGet = fmap fromU64 U64.byteGet
+byteGet = ByteGet.label "QWord" $ fmap fromU64 U64.byteGet

@@ -38,7 +38,7 @@ bitPut :: U32 -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut
 
 byteGet :: ByteGet.ByteGet U32
-byteGet = fmap fromWord32 ByteGet.word32
+byteGet = ByteGet.label "U32" $ fmap fromWord32 ByteGet.word32
 
 bitGet :: BitGet.BitGet U32
 bitGet = BitGet.fromByteGet byteGet 4

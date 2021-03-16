@@ -29,4 +29,4 @@ bytePut :: Name -> BytePut.BytePut
 bytePut = Str.bytePut . toStr
 
 byteGet :: ByteGet.ByteGet Name
-byteGet = fmap fromStr Str.byteGet
+byteGet = ByteGet.label "Name" $ fmap fromStr Str.byteGet

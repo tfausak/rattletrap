@@ -30,4 +30,4 @@ bytePut :: Bool -> BytePut.BytePut
 bytePut = U8.bytePut . toU8
 
 byteGet :: ByteGet.ByteGet Bool
-byteGet = fmap fromU8 U8.byteGet
+byteGet = ByteGet.label "Bool" $ fmap fromU8 U8.byteGet

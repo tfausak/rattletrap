@@ -73,10 +73,10 @@ addNull :: Text.Text -> Text.Text
 addNull text = if Text.null text then text else Text.snoc text '\x00'
 
 byteGet :: ByteGet.ByteGet Str
-byteGet = do
-  rawSize <- I32.byteGet
-  bytes <- ByteGet.byteString (normalizeTextSize rawSize)
-  pure (fromText (dropNull (getTextDecoder rawSize bytes)))
+byteGet = ByteGet.label "Str" $ do
+  size <- ByteGet.label "size" I32.byteGet
+  bytes <- ByteGet.label "value" . ByteGet.byteString $ normalizeTextSize size
+  pure . fromText . dropNull $ getTextDecoder size bytes
 
 bitGet :: BitGet.BitGet Str
 bitGet = do

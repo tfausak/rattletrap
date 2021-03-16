@@ -73,17 +73,20 @@ bytePut putBody section =
 
 byteGet
   :: Bool -> (U32.U32 -> ByteGet.ByteGet a) -> ByteGet.ByteGet (Section a)
-byteGet skip getBody = do
-  size_ <- U32.byteGet
-  crc_ <- U32.byteGet
-  rawBody <- ByteGet.byteString (fromIntegral (U32.toWord32 size_))
-  Monad.unless skip $ do
-    let actualCrc = U32.fromWord32 (Crc.compute rawBody)
-    Monad.when (actualCrc /= crc_) . ByteGet.throw $ CrcMismatch.CrcMismatch
-      (U32.toWord32 crc_)
-      (U32.toWord32 actualCrc)
-  body_ <- ByteGet.embed (getBody size_) rawBody
-  pure (Section size_ crc_ body_)
+byteGet skip getBody = ByteGet.label "Section" $ do
+  size <- ByteGet.label "size" U32.byteGet
+  crc <- ByteGet.label "crc" U32.byteGet
+  body <- ByteGet.label "body" $ do
+    rawBody <- ByteGet.byteString . fromIntegral $ U32.toWord32 size
+    Monad.unless skip $ do
+      let
+        expected = U32.toWord32 crc
+        actual = Crc.compute rawBody
+      Monad.when (actual /= expected) . ByteGet.throw $ CrcMismatch.CrcMismatch
+        expected
+        actual
+    ByteGet.embed (getBody size) rawBody
+  pure Section { size, crc, body }
 
 crcMessage :: U32.U32 -> U32.U32 -> String
 crcMessage actual expected = unwords

@@ -71,7 +71,7 @@ bytePut f x =
     <> Str.bytePut (lastKey x)
 
 byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (Dictionary a)
-byteGet = byteGetWith 0 []
+byteGet = ByteGet.label "Dictionary" . byteGetWith 0 []
 
 byteGetWith
   :: Int
@@ -79,14 +79,14 @@ byteGetWith
   -> ByteGet.ByteGet a
   -> ByteGet.ByteGet (Dictionary a)
 byteGetWith i xs f = do
-  k <- Str.byteGet
+  k <- ByteGet.label ("key (" <> show i <> ")") Str.byteGet
   if isNone k
     then pure Dictionary
       { elements = List.fromList . reverse $ fmap snd xs
       , lastKey = k
       }
     else do
-      v <- f
+      v <- ByteGet.label ("value (" <> Str.toString k <> ")") f
       byteGetWith (i + 1) ((i, (k, v)) : xs) f
 
 isNone :: Str.Str -> Bool

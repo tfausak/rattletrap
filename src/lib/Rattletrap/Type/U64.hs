@@ -42,7 +42,7 @@ bitPut :: U64 -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut
 
 byteGet :: ByteGet.ByteGet U64
-byteGet = fmap fromWord64 ByteGet.word64
+byteGet = ByteGet.label "U64" $ fmap fromWord64 ByteGet.word64
 
 bitGet :: BitGet.BitGet U64
 bitGet = BitGet.fromByteGet byteGet 8
