@@ -24,8 +24,8 @@ bytePut x = U32.bytePut (major x) <> U32.bytePut (minor x) <> foldMap
   (patch x)
 
 byteGet :: ByteGet.ByteGet Version
-byteGet = ByteGet.label "Version" $ do
-  major <- ByteGet.label "major" U32.byteGet
+byteGet = do
+  major <- U32.byteGet
   minor <- U32.byteGet
   patch <- Monad.whenMaybe
     (U32.toWord32 major >= 868 && U32.toWord32 minor >= 18)

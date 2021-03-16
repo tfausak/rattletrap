@@ -36,4 +36,4 @@ byteGet :: ByteGet.ByteGet F32
 byteGet = fmap fromFloat ByteGet.float
 
 bitGet :: BitGet.BitGet F32
-bitGet = BitGet.label "F32" $ BitGet.fromByteGet byteGet 4
+bitGet = BitGet.fromByteGet byteGet 4

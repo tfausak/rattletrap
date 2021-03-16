@@ -82,7 +82,7 @@ bitGet
        BitGet.BitGet
        Frame
 bitGet matchType version limit classes = do
-  time <- Trans.lift $ BitGet.label "time" F32.bitGet
+  time <- Trans.lift F32.bitGet
   delta <- Trans.lift F32.bitGet
   replications <- Replication.decodeReplicationsBits
     matchType
