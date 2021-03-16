@@ -1,5 +1,6 @@
 module Rattletrap.ByteGet where
 
+import qualified Control.Exception as Exception
 import qualified Data.Bits as Bits
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
@@ -7,19 +8,26 @@ import qualified Data.Functor.Identity as Identity
 import qualified Data.Int as Int
 import qualified Data.Word as Word
 import qualified GHC.Float as Float
+import qualified Rattletrap.Exception.NotEnoughInput as NotEnoughInput
 import qualified Rattletrap.Get as Get
 
 type ByteGet = Get.Get ByteString.ByteString Identity.Identity
 
-run :: ByteGet a -> ByteString.ByteString -> Either String a
+run
+  :: ByteGet a
+  -> ByteString.ByteString
+  -> Either ([String], Exception.SomeException) a
 run g = fmap snd . Identity.runIdentity . Get.run g
 
 byteString :: Int -> ByteGet ByteString.ByteString
 byteString n = do
   s1 <- Get.get
   let (x, s2) = ByteString.splitAt n s1
-  Get.put s2
-  pure x
+  if ByteString.length x == n
+    then do
+      Get.put s2
+      pure x
+    else throw NotEnoughInput.NotEnoughInput
 
 float :: ByteGet Float
 float = fmap Float.castWord32ToFloat word32
@@ -63,3 +71,12 @@ word64 = do
     + Bits.shiftL (fromIntegral $ ByteString.index x 5) 40
     + Bits.shiftL (fromIntegral $ ByteString.index x 6) 48
     + Bits.shiftL (fromIntegral $ ByteString.index x 7) 56
+
+throw :: Exception.Exception e => e -> ByteGet a
+throw = Get.throw
+
+embed :: ByteGet a -> ByteString.ByteString -> ByteGet a
+embed = Get.embed
+
+label :: String -> ByteGet a -> ByteGet a
+label = Get.label

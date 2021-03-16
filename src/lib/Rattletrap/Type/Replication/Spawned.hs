@@ -2,6 +2,9 @@ module Rattletrap.Type.Replication.Spawned where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Exception.MissingClassName as MissingClassName
+import qualified Rattletrap.Exception.MissingObjectName as MissingObjectName
+import qualified Rattletrap.Exception.UnknownName as UnknownName
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
@@ -95,14 +98,11 @@ bitGet matchType version classAttributeMap actorId = do
   flag_ <- Trans.lift BitGet.bool
   nameIndex_ <- Monad.whenMaybe (hasNameIndex matchType version)
     $ Trans.lift U32.bitGet
-  name_ <- either fail pure (lookupName classAttributeMap nameIndex_)
+  name_ <- Trans.lift $ lookupName classAttributeMap nameIndex_
   objectId_ <- Trans.lift U32.bitGet
   State.modify (Map.insert actorId objectId_)
-  objectName_ <- either
-    fail
-    pure
-    (lookupObjectName classAttributeMap objectId_)
-  className_ <- either fail pure (lookupClassName objectName_)
+  objectName_ <- Trans.lift $ lookupObjectName classAttributeMap objectId_
+  className_ <- Trans.lift $ lookupClassName objectName_
   let hasLocation = ClassAttributeMap.classHasLocation className_
   let hasRotation = ClassAttributeMap.classHasRotation className_
   initialization_ <- Trans.lift
@@ -125,9 +125,9 @@ hasNameIndex matchType version =
 lookupName
   :: ClassAttributeMap.ClassAttributeMap
   -> Maybe U32.U32
-  -> Either String (Maybe Str.Str)
+  -> BitGet.BitGet (Maybe Str.Str)
 lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
-  Nothing -> Right Nothing
+  Nothing -> pure Nothing
   Just nameIndex_ ->
     case
         ClassAttributeMap.getName
@@ -135,11 +135,11 @@ lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
           nameIndex_
       of
         Nothing ->
-          Left ("[RT11] could not get name for index " <> show nameIndex_)
-        Just name_ -> Right (Just name_)
+          BitGet.throw . UnknownName.UnknownName $ U32.toWord32 nameIndex_
+        Just name_ -> pure (Just name_)
 
 lookupObjectName
-  :: ClassAttributeMap.ClassAttributeMap -> U32.U32 -> Either String Str.Str
+  :: ClassAttributeMap.ClassAttributeMap -> U32.U32 -> BitGet.BitGet Str.Str
 lookupObjectName classAttributeMap objectId_ =
   case
       ClassAttributeMap.getObjectName
@@ -147,12 +147,13 @@ lookupObjectName classAttributeMap objectId_ =
         objectId_
     of
       Nothing ->
-        Left ("[RT12] could not get object name for id " <> show objectId_)
-      Just objectName_ -> Right objectName_
+        BitGet.throw . MissingObjectName.MissingObjectName $ U32.toWord32
+          objectId_
+      Just objectName_ -> pure objectName_
 
-lookupClassName :: Str.Str -> Either String Str.Str
+lookupClassName :: Str.Str -> BitGet.BitGet Str.Str
 lookupClassName objectName_ =
   case ClassAttributeMap.getClassName objectName_ of
-    Nothing ->
-      Left ("[RT13] could not get class name for object " <> show objectName_)
-    Just className_ -> Right className_
+    Nothing -> BitGet.throw . MissingClassName.MissingClassName $ Str.toString
+      objectName_
+    Just className_ -> pure className_

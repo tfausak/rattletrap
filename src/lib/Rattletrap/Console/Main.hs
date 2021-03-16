@@ -1,9 +1,11 @@
 module Rattletrap.Console.Main where
 
+import qualified Control.Exception as Exception
 import qualified Control.Monad as Monad
 import qualified Data.Bool as Bool
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
+import qualified Data.List as List
 import qualified Data.Text as Text
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
@@ -135,7 +137,16 @@ defaultMain :: Config.Config -> IO ()
 defaultMain config = do
   input <- getInput config
   let decode = getDecoder config
-  replay <- either fail pure (decode input)
+  replay <- case decode input of
+    Left (ls, e) -> do
+      IO.hPutStr IO.stderr $ unlines
+        [ "ERROR: " <> Exception.displayException e
+        , "# Context: " <> List.intercalate " -> " ls
+        , "# You are using Rattletrap version " <> Version.string
+        , "# Please report this problem at https://github.com/tfausak/rattletrap/issues/new"
+        ]
+      Exit.exitFailure
+    Right x -> pure x
   let encode = getEncoder config
   putOutput config (encode replay)
 
@@ -243,7 +254,9 @@ schema =
       ]
 
 getDecoder
-  :: Config.Config -> ByteString.ByteString -> Either String Replay.Replay
+  :: Config.Config
+  -> ByteString.ByteString
+  -> Either ([String], Exception.SomeException) Replay.Replay
 getDecoder config = case Config.getMode config of
   Mode.Decode ->
     Rattletrap.decodeReplayFile (Config.fast config) (Config.skipCrc config)

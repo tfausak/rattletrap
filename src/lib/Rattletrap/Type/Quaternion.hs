@@ -2,6 +2,7 @@ module Rattletrap.Type.Quaternion where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
+import qualified Rattletrap.Exception.InvalidComponent as InvalidComponent
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Utility.Json as Json
@@ -159,7 +160,7 @@ decodeComponent = do
     1 -> pure Y
     2 -> pure Z
     3 -> pure W
-    y_ -> fail ("[RT08] invalid component: " <> show y_)
+    y_ -> BitGet.throw $ InvalidComponent.InvalidComponent y_
 
 decodePart :: BitGet.BitGet Double
 decodePart = fmap decompressPart $ CompressedWord.bitGet maxCompressedValue

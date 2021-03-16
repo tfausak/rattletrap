@@ -1,8 +1,12 @@
 module Rattletrap.Get where
 
 import qualified Control.Applicative as Applicative
+import qualified Control.Exception as Exception
+import qualified Data.Bifunctor as Bifunctor
+import qualified Rattletrap.Exception.Empty as Empty
+import qualified Rattletrap.Exception.Fail as Fail
 
-newtype Get s m a = Get (s -> m (Either String (s, a)))
+newtype Get s m a = Get (s -> m (Either ([String], Exception.SomeException)  (s, a)))
 
 instance Functor m => Functor (Get s m) where
   fmap f g = Get $ fmap (fmap (fmap f)) . run g
@@ -24,10 +28,10 @@ instance Monad m => Monad (Get s m) where
       Right (s2, x) -> run (f x) s2
 
 instance Monad m => MonadFail (Get s m) where
-  fail = Get . const . pure . Left
+  fail = throw . Fail.Fail
 
 instance Monad m => Applicative.Alternative (Get s m) where
-  empty = fail "empty"
+  empty = throw Empty.Empty
 
   gx <|> gy = Get $ \s -> do
     r <- run gx s
@@ -35,7 +39,7 @@ instance Monad m => Applicative.Alternative (Get s m) where
       Left _ -> run gy s
       Right x -> pure $ Right x
 
-run :: Get s m a -> s -> m (Either String (s, a))
+run :: Get s m a -> s -> m (Either ([String], Exception.SomeException) (s, a))
 run (Get f) = f
 
 get :: Applicative m => Get s m s
@@ -46,3 +50,19 @@ put s = Get $ \_ -> pure $ Right (s, ())
 
 lift :: Functor m => m a -> Get s m a
 lift m = Get $ \s -> fmap (\x -> Right (s, x)) m
+
+throw :: (Exception.Exception e, Applicative m) => e -> Get s m a
+throw = Get . const . pure . Left . (,) [] . Exception.toException
+
+embed :: Monad m => Get s m a -> s -> Get t m a
+embed g s = do
+  r <- lift $ run g s
+  case r of
+    Left (ls, e) -> labels ls $ throw e
+    Right (_, x) -> pure x
+
+labels :: Functor m => [String] -> Get s m a -> Get s m a
+labels ls g = Get $ fmap (Bifunctor.first $ Bifunctor.first (ls <>)) . run g
+
+label :: Functor m => String -> Get s m a -> Get s m a
+label = labels . pure
