@@ -84,7 +84,9 @@ bitGet version objectId maybeObjectName =
     Just "TAGame.ProductAttribute_TitleID_TA" -> decodeTitle
     Just "TAGame.ProductAttribute_UserColor_TA" -> decodeColor version
     Just x -> BitGet.throw $ UnknownProduct.UnknownProduct x
-    Nothing -> BitGet.throw . MissingProductName.MissingProductName $ U32.toWord32 objectId
+    Nothing ->
+      BitGet.throw . MissingProductName.MissingProductName $ U32.toWord32
+        objectId
 
 decodeSpecialEdition :: BitGet.BitGet ProductValue
 decodeSpecialEdition = fmap SpecialEdition $ BitGet.bits 31

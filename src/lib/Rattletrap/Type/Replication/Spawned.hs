@@ -135,9 +135,7 @@ lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
           nameIndex_
       of
         Nothing ->
-          BitGet.throw
-            . UnknownName.UnknownName
-            $ U32.toWord32 nameIndex_
+          BitGet.throw . UnknownName.UnknownName $ U32.toWord32 nameIndex_
         Just name_ -> pure (Just name_)
 
 lookupObjectName
@@ -149,16 +147,13 @@ lookupObjectName classAttributeMap objectId_ =
         objectId_
     of
       Nothing ->
-        BitGet.throw
-          . MissingObjectName.MissingObjectName
-          $ U32.toWord32 objectId_
+        BitGet.throw . MissingObjectName.MissingObjectName $ U32.toWord32
+          objectId_
       Just objectName_ -> pure objectName_
 
 lookupClassName :: Str.Str -> BitGet.BitGet Str.Str
 lookupClassName objectName_ =
   case ClassAttributeMap.getClassName objectName_ of
-    Nothing ->
-      BitGet.throw
-        . MissingClassName.MissingClassName
-        $ Str.toString objectName_
+    Nothing -> BitGet.throw . MissingClassName.MissingClassName $ Str.toString
+      objectName_
     Just className_ -> pure className_

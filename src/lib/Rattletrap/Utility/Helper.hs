@@ -29,7 +29,8 @@ encodeReplayJson = Json.encodePretty
 
 -- | Parses a JSON replay.
 decodeReplayJson
-  :: ByteString.ByteString -> Either ([String], Exception.SomeException) Replay.Replay
+  :: ByteString.ByteString
+  -> Either ([String], Exception.SomeException) Replay.Replay
 decodeReplayJson =
   Bifunctor.first ((,) [] . Exception.toException . InvalidJson.InvalidJson)
     . Json.decode

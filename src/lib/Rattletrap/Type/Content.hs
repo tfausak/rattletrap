@@ -215,7 +215,8 @@ byteGet matchType version numFrames maxChannels = ByteGet.label "Content" $ do
         classAttributeMap
       )
       mempty
-  frames <- ByteGet.label "frames" $ ByteGet.embed (BitGet.toByteGet bitGet) stream
+  frames <- ByteGet.label "frames"
+    $ ByteGet.embed (BitGet.toByteGet bitGet) stream
   unknown <- fmap LazyByteString.unpack ByteGet.remaining
   pure Content
     { levels
