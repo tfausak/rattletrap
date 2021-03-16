@@ -42,7 +42,7 @@ byteGet f = ByteGet.label "List" $ do
     $ \i -> ByteGet.label ("element (" <> show i <> ")") f
 
 generateM :: Monad m => Int -> (Int -> m a) -> m (List a)
-generateM n f = fmap fromList $ mapM f [0 .. n]
+generateM n f = fmap fromList $ mapM f [0 .. n - 1]
 
 replicateM :: Monad m => Int -> m a -> m (List a)
 replicateM n = fmap fromList . Monad.replicateM n
