@@ -191,7 +191,7 @@ byteGet
   -- ^ The maximum number of channels in the stream, usually from
   -- 'Rattletrap.Header.getMaxChannels'.
   -> ByteGet.ByteGet Content
-byteGet matchType version numFrames maxChannels = do
+byteGet matchType version numFrames maxChannels = ByteGet.label "Content" $ do
   levels <- List.byteGet Str.byteGet
   keyframes <- List.byteGet Keyframe.byteGet
   streamSize <- U32.byteGet
@@ -215,7 +215,7 @@ byteGet matchType version numFrames maxChannels = do
         classAttributeMap
       )
       mempty
-  frames <- ByteGet.embed (BitGet.toByteGet bitGet) stream
+  frames <- ByteGet.label "frames" $ ByteGet.embed (BitGet.toByteGet bitGet) stream
   unknown <- fmap LazyByteString.unpack ByteGet.remaining
   pure Content
     { levels

@@ -20,7 +20,7 @@ decodeReplayFile
   :: Bool
   -> Bool
   -> ByteString.ByteString
-  -> Either Exception.SomeException Replay.Replay
+  -> Either ([String], Exception.SomeException) Replay.Replay
 decodeReplayFile fast = ByteGet.run . Replay.byteGet fast
 
 -- | Encodes a replay as JSON.
@@ -29,9 +29,9 @@ encodeReplayJson = Json.encodePretty
 
 -- | Parses a JSON replay.
 decodeReplayJson
-  :: ByteString.ByteString -> Either Exception.SomeException Replay.Replay
+  :: ByteString.ByteString -> Either ([String], Exception.SomeException) Replay.Replay
 decodeReplayJson =
-  Bifunctor.first (Exception.toException . InvalidJson.InvalidJson)
+  Bifunctor.first ((,) [] . Exception.toException . InvalidJson.InvalidJson)
     . Json.decode
 
 -- | Encodes a raw replay.

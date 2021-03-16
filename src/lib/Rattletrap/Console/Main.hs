@@ -5,6 +5,7 @@ import qualified Control.Monad as Monad
 import qualified Data.Bool as Bool
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
+import qualified Data.List as List
 import qualified Data.Text as Text
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
@@ -137,9 +138,10 @@ defaultMain config = do
   input <- getInput config
   let decode = getDecoder config
   replay <- case decode input of
-    Left e -> do
+    Left (ls, e) -> do
       IO.hPutStr IO.stderr $ unlines
         [ "ERROR: " <> Exception.displayException e
+        , "# Context: " <> List.intercalate " -> " ls
         , "# You are using Rattletrap version " <> Version.string
         , "# Please report this problem at https://github.com/tfausak/rattletrap/issues/new"
         ]
@@ -254,7 +256,7 @@ schema =
 getDecoder
   :: Config.Config
   -> ByteString.ByteString
-  -> Either Exception.SomeException Replay.Replay
+  -> Either ([String], Exception.SomeException) Replay.Replay
 getDecoder config = case Config.getMode config of
   Mode.Decode ->
     Rattletrap.decodeReplayFile (Config.fast config) (Config.skipCrc config)

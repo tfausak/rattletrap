@@ -13,7 +13,7 @@ import qualified Rattletrap.Get as Get
 
 type ByteGet = Get.Get ByteString.ByteString Identity.Identity
 
-run :: ByteGet a -> ByteString.ByteString -> Either Exception.SomeException a
+run :: ByteGet a -> ByteString.ByteString -> Either ([String], Exception.SomeException) a
 run g = fmap snd . Identity.runIdentity . Get.run g
 
 byteString :: Int -> ByteGet ByteString.ByteString
@@ -74,3 +74,6 @@ throw = Get.throw
 
 embed :: ByteGet a -> ByteString.ByteString -> ByteGet a
 embed = Get.embed
+
+label :: String -> ByteGet a -> ByteGet a
+label = Get.label
