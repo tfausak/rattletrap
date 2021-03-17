@@ -51,9 +51,9 @@ bytePut x =
     <> List.bytePut AttributeMapping.bytePut (attributeMappings x)
 
 byteGet :: ByteGet.ByteGet Cache
-byteGet = do
-  classId <- U32.byteGet
-  parentCacheId <- U32.byteGet
-  cacheId <- U32.byteGet
-  attributeMappings <- List.byteGet AttributeMapping.byteGet
+byteGet = ByteGet.label "Cache" $ do
+  classId <- ByteGet.label "classId" U32.byteGet
+  parentCacheId <- ByteGet.label "parentCacheId" U32.byteGet
+  cacheId <- ByteGet.label "cacheId" U32.byteGet
+  attributeMappings <- ByteGet.label "attributeMappings" $ List.byteGet AttributeMapping.byteGet
   pure Cache { classId, parentCacheId, cacheId, attributeMappings }

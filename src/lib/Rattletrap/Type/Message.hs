@@ -43,8 +43,8 @@ bytePut x =
   U32.bytePut (frame x) <> Str.bytePut (name x) <> Str.bytePut (value x)
 
 byteGet :: ByteGet.ByteGet Message
-byteGet = do
-  frame <- U32.byteGet
-  name <- Str.byteGet
-  value <- Str.byteGet
+byteGet = ByteGet.label "Message" $ do
+  frame <- ByteGet.label "frame" U32.byteGet
+  name <- ByteGet.label "name" Str.byteGet
+  value <- ByteGet.label "value" Str.byteGet
   pure Message { frame, name, value }
