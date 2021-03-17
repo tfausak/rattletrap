@@ -1,3 +1,4 @@
+-- rebuild me
 module Rattletrap
   ( Rattletrap.Console.Main.main
   , Rattletrap.Console.Main.rattletrap
