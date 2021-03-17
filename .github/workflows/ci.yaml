@@ -60,7 +60,7 @@ jobs:
           restore-keys: ${{ matrix.os }}-${{ matrix.ghc }}-
           
       - if: matrix.os == 'ubuntu-20.04'
-        run: apt-get update && apt-get install --assume-yes git-restore-mtime && git restore-mtime
+        run: sudo apt-get update && sudo apt-get install --assume-yes git-restore-mtime && git restore-mtime
 
       - run: cabal build
 
