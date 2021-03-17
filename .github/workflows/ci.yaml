@@ -56,6 +56,10 @@ jobs:
           path: ${{ steps.setup-haskell.outputs.cabal-store }}
           key: ${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}
           restore-keys: ${{ matrix.os }}-${{ matrix.ghc }}-
+          
+      - run: apt-get update && apt-get install --assume-yes git-restore-mtime
+      
+      - run: git restore-mtime
 
       - run: cabal build
 
