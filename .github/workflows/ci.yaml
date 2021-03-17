@@ -53,7 +53,9 @@ jobs:
 
       - uses: actions/cache@v2
         with:
-          path: ${{ steps.setup-haskell.outputs.cabal-store }}
+          path: |
+            ${{ steps.setup-haskell.outputs.cabal-store }}
+            .dist-newstyle
           key: ${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}
           restore-keys: ${{ matrix.os }}-${{ matrix.ghc }}-
           
