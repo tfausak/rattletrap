@@ -55,5 +55,6 @@ byteGet = ByteGet.label "Cache" $ do
   classId <- ByteGet.label "classId" U32.byteGet
   parentCacheId <- ByteGet.label "parentCacheId" U32.byteGet
   cacheId <- ByteGet.label "cacheId" U32.byteGet
-  attributeMappings <- ByteGet.label "attributeMappings" $ List.byteGet AttributeMapping.byteGet
+  attributeMappings <- ByteGet.label "attributeMappings"
+    $ List.byteGet AttributeMapping.byteGet
   pure Cache { classId, parentCacheId, cacheId, attributeMappings }
