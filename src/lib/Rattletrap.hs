@@ -1,4 +1,4 @@
--- rebuild me
+-- rebuild me again
 module Rattletrap
   ( Rattletrap.Console.Main.main
   , Rattletrap.Console.Main.rattletrap
