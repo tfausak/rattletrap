@@ -35,7 +35,7 @@ bytePut :: Mark -> BytePut.BytePut
 bytePut x = Str.bytePut (value x) <> U32.bytePut (frame x)
 
 byteGet :: ByteGet.ByteGet Mark
-byteGet = do
-  value <- Str.byteGet
-  frame <- U32.byteGet
+byteGet = ByteGet.label "Mark" $ do
+  value <- ByteGet.label "value" Str.byteGet
+  frame <- ByteGet.label "frame" U32.byteGet
   pure Mark { value, frame }

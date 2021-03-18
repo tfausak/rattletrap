@@ -38,7 +38,7 @@ bitPut :: U8 -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut
 
 byteGet :: ByteGet.ByteGet U8
-byteGet = fmap fromWord8 ByteGet.word8
+byteGet = ByteGet.label "U8" $ fmap fromWord8 ByteGet.word8
 
 bitGet :: BitGet.BitGet U8
 bitGet = BitGet.fromByteGet byteGet 1

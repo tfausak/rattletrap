@@ -97,8 +97,9 @@ bytePut x =
     (properties x)
 
 byteGet :: ByteGet.ByteGet Header
-byteGet = do
-  version <- Version.byteGet
-  label <- Str.byteGet
-  properties <- Dictionary.byteGet Property.byteGet
+byteGet = ByteGet.label "Header" $ do
+  version <- ByteGet.label "version" Version.byteGet
+  label <- ByteGet.label "label" Str.byteGet
+  properties <- ByteGet.label "properties"
+    $ Dictionary.byteGet Property.byteGet
   pure Header { version, label, properties }

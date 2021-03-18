@@ -43,8 +43,8 @@ bytePut x =
   F32.bytePut (time x) <> U32.bytePut (frame x) <> U32.bytePut (position x)
 
 byteGet :: ByteGet.ByteGet Keyframe
-byteGet = do
-  time <- F32.byteGet
-  frame <- U32.byteGet
-  position <- U32.byteGet
+byteGet = ByteGet.label "Keyframe" $ do
+  time <- ByteGet.label "time" F32.byteGet
+  frame <- ByteGet.label "frame" U32.byteGet
+  position <- ByteGet.label "position" U32.byteGet
   pure Keyframe { time, frame, position }

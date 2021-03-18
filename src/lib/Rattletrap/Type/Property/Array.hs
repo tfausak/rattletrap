@@ -32,4 +32,5 @@ bytePut :: (a -> BytePut.BytePut) -> Array a -> BytePut.BytePut
 bytePut f = List.bytePut (Dictionary.bytePut f) . toList
 
 byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (Array a)
-byteGet f = fmap fromList $ List.byteGet (Dictionary.byteGet f)
+byteGet =
+  ByteGet.label "Array" . fmap fromList . List.byteGet . Dictionary.byteGet

@@ -36,9 +36,13 @@ bytePut f x =
   in (U32.bytePut . U32.fromWord32 . fromIntegral $ length v) <> foldMap f v
 
 byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (List a)
-byteGet f = do
-  size <- U32.byteGet
-  replicateM (fromIntegral $ U32.toWord32 size) f
+byteGet f = ByteGet.label "List" $ do
+  size <- ByteGet.label "size" U32.byteGet
+  generateM (fromIntegral $ U32.toWord32 size)
+    $ \i -> ByteGet.label ("element (" <> show i <> ")") f
+
+generateM :: Monad m => Int -> (Int -> m a) -> m (List a)
+generateM n f = fmap fromList $ mapM f [0 .. n - 1]
 
 replicateM :: Monad m => Int -> m a -> m (List a)
 replicateM n = fmap fromList . Monad.replicateM n

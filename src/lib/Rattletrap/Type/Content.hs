@@ -191,18 +191,21 @@ byteGet
   -- ^ The maximum number of channels in the stream, usually from
   -- 'Rattletrap.Header.getMaxChannels'.
   -> ByteGet.ByteGet Content
-byteGet matchType version numFrames maxChannels = do
-  levels <- List.byteGet Str.byteGet
-  keyframes <- List.byteGet Keyframe.byteGet
-  streamSize <- U32.byteGet
-  stream <- ByteGet.byteString . fromIntegral $ U32.toWord32 streamSize
-  messages <- List.byteGet Message.byteGet
-  marks <- List.byteGet Mark.byteGet
-  packages <- List.byteGet Str.byteGet
-  objects <- List.byteGet Str.byteGet
-  names <- List.byteGet Str.byteGet
-  classMappings <- List.byteGet ClassMapping.byteGet
-  caches <- List.byteGet Cache.byteGet
+byteGet matchType version numFrames maxChannels = ByteGet.label "Content" $ do
+  levels <- ByteGet.label "levels" $ List.byteGet Str.byteGet
+  keyframes <- ByteGet.label "keyframes" $ List.byteGet Keyframe.byteGet
+  streamSize <- ByteGet.label "streamSize" U32.byteGet
+  stream <-
+    ByteGet.label "stream" . ByteGet.byteString . fromIntegral $ U32.toWord32
+      streamSize
+  messages <- ByteGet.label "messages" $ List.byteGet Message.byteGet
+  marks <- ByteGet.label "marks" $ List.byteGet Mark.byteGet
+  packages <- ByteGet.label "packages" $ List.byteGet Str.byteGet
+  objects <- ByteGet.label "objects" $ List.byteGet Str.byteGet
+  names <- ByteGet.label "names" $ List.byteGet Str.byteGet
+  classMappings <- ByteGet.label "classMappings"
+    $ List.byteGet ClassMapping.byteGet
+  caches <- ByteGet.label "caches" $ List.byteGet Cache.byteGet
   let
     classAttributeMap =
       ClassAttributeMap.make objects classMappings caches names
@@ -215,8 +218,10 @@ byteGet matchType version numFrames maxChannels = do
         classAttributeMap
       )
       mempty
-  frames <- ByteGet.embed (BitGet.toByteGet bitGet) stream
-  unknown <- fmap LazyByteString.unpack ByteGet.remaining
+  frames <- ByteGet.label "frames"
+    $ ByteGet.embed (BitGet.toByteGet bitGet) stream
+  unknown <- ByteGet.label "unknown"
+    $ fmap LazyByteString.unpack ByteGet.remaining
   pure Content
     { levels
     , keyframes

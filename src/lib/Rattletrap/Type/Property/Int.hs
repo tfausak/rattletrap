@@ -30,4 +30,4 @@ bytePut :: Int -> BytePut.BytePut
 bytePut = I32.bytePut . toI32
 
 byteGet :: ByteGet.ByteGet Int
-byteGet = fmap fromI32 I32.byteGet
+byteGet = ByteGet.label "I32" $ fmap fromI32 I32.byteGet

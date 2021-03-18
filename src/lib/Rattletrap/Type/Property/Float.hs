@@ -30,4 +30,4 @@ bytePut :: Float -> BytePut.BytePut
 bytePut = F32.bytePut . toF32
 
 byteGet :: ByteGet.ByteGet Float
-byteGet = fmap fromF32 F32.byteGet
+byteGet = ByteGet.label "Float" $ fmap fromF32 F32.byteGet

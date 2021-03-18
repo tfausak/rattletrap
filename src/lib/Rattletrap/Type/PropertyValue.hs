@@ -79,13 +79,14 @@ bytePut putProperty value = case value of
   Str x -> Property.Str.bytePut x
 
 byteGet :: ByteGet.ByteGet a -> Str.Str -> ByteGet.ByteGet (PropertyValue a)
-byteGet getProperty kind = case Str.toString kind of
-  "ArrayProperty" -> fmap Array $ Property.Array.byteGet getProperty
-  "BoolProperty" -> fmap Bool Property.Bool.byteGet
-  "ByteProperty" -> fmap Byte Property.Byte.byteGet
-  "FloatProperty" -> fmap Float Property.Float.byteGet
-  "IntProperty" -> fmap Int Property.Int.byteGet
-  "NameProperty" -> fmap Name Property.Name.byteGet
-  "QWordProperty" -> fmap QWord Property.QWord.byteGet
-  "StrProperty" -> fmap Str Property.Str.byteGet
-  x -> ByteGet.throw $ UnknownProperty.UnknownProperty x
+byteGet getProperty kind =
+  ByteGet.label "PropertyValue" $ case Str.toString kind of
+    "ArrayProperty" -> fmap Array $ Property.Array.byteGet getProperty
+    "BoolProperty" -> fmap Bool Property.Bool.byteGet
+    "ByteProperty" -> fmap Byte Property.Byte.byteGet
+    "FloatProperty" -> fmap Float Property.Float.byteGet
+    "IntProperty" -> fmap Int Property.Int.byteGet
+    "NameProperty" -> fmap Name Property.Name.byteGet
+    "QWordProperty" -> fmap QWord Property.QWord.byteGet
+    "StrProperty" -> fmap Str Property.Str.byteGet
+    x -> ByteGet.throw $ UnknownProperty.UnknownProperty x

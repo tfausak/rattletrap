@@ -33,7 +33,7 @@ bitPut :: F32 -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut
 
 byteGet :: ByteGet.ByteGet F32
-byteGet = fmap fromFloat ByteGet.float
+byteGet = ByteGet.label "F32" $ fmap fromFloat ByteGet.float
 
 bitGet :: BitGet.BitGet F32
 bitGet = BitGet.fromByteGet byteGet 4
