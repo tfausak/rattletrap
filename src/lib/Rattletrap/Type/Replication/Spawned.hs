@@ -90,17 +90,17 @@ bitGet
   -> CompressedWord.CompressedWord
   -> Map.Map CompressedWord.CompressedWord U32.U32
   -> BitGet.BitGet (Map.Map CompressedWord.CompressedWord U32.U32, Spawned)
-bitGet matchType version classAttributeMap actorId actorMap = do
-  flag_ <- BitGet.bool
-  nameIndex_ <- Monad.whenMaybe (hasNameIndex matchType version)
+bitGet matchType version classAttributeMap actorId actorMap = BitGet.label "Spawned" $ do
+  flag_ <- BitGet.label "flag" BitGet.bool
+  nameIndex_ <- BitGet.label "nameIndex" $ Monad.whenMaybe (hasNameIndex matchType version)
     U32.bitGet
   name_ <- lookupName classAttributeMap nameIndex_
-  objectId_ <- U32.bitGet
+  objectId_ <- BitGet.label "objectId" U32.bitGet
   objectName_ <- lookupObjectName classAttributeMap objectId_
   className_ <- lookupClassName objectName_
   let hasLocation = ClassAttributeMap.classHasLocation className_
   let hasRotation = ClassAttributeMap.classHasRotation className_
-  initialization_ <-
+  initialization_ <- BitGet.label "initialization"
     (Initialization.bitGet version hasLocation hasRotation)
   pure
     ( Map.insert actorId objectId_ actorMap
