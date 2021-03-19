@@ -59,21 +59,29 @@ decodeReplicationsBits
        (List.List Replication)
 decodeReplicationsBits matchType version limit classes = List.untilM $ do
   p <- Trans.lift BitGet.bool
-  Monad.whenMaybe p $ bitGet matchType version limit classes
+  Monad.whenMaybe p $ do
+    actorMap <- State.get
+    (newActorMap, replication) <- Trans.lift
+      $ bitGet matchType version limit classes actorMap
+    State.put newActorMap
+    pure replication
 
 bitGet
   :: Maybe Str.Str
   -> Version.Version
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
-  -> State.StateT
-       (Map.Map CompressedWord.CompressedWord U32.U32)
-       BitGet.BitGet
-       Replication
-bitGet matchType version limit classes = do
-  actorId <- Trans.lift (CompressedWord.bitGet limit)
-  actorMap <- State.get
-  (newActorMap, value) <- Trans.lift
-    $ ReplicationValue.bitGet matchType version classes actorId actorMap
-  State.put newActorMap
-  pure Replication { actorId, value }
+  -> Map.Map CompressedWord.CompressedWord U32.U32
+  -> BitGet.BitGet
+       ( Map.Map CompressedWord.CompressedWord U32.U32
+       , Replication
+       )
+bitGet matchType version limit classes actorMap = do
+  actorId <- CompressedWord.bitGet limit
+  (newActorMap, value) <- ReplicationValue.bitGet
+    matchType
+    version
+    classes
+    actorId
+    actorMap
+  pure (newActorMap, Replication { actorId, value })
