@@ -15,8 +15,6 @@ import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
 
-import qualified Control.Monad.Trans.Class as Trans
-import qualified Control.Monad.Trans.State as State
 import qualified Data.Map as Map
 
 data Spawned = Spawned
@@ -90,25 +88,23 @@ bitGet
   -> Version.Version
   -> ClassAttributeMap.ClassAttributeMap
   -> CompressedWord.CompressedWord
-  -> State.StateT
-       (Map.Map CompressedWord.CompressedWord U32.U32)
-       BitGet.BitGet
-       Spawned
-bitGet matchType version classAttributeMap actorId = do
-  flag_ <- Trans.lift BitGet.bool
+  -> Map.Map CompressedWord.CompressedWord U32.U32
+  -> BitGet.BitGet (Map.Map CompressedWord.CompressedWord U32.U32, Spawned)
+bitGet matchType version classAttributeMap actorId actorMap = do
+  flag_ <- BitGet.bool
   nameIndex_ <- Monad.whenMaybe (hasNameIndex matchType version)
-    $ Trans.lift U32.bitGet
-  name_ <- Trans.lift $ lookupName classAttributeMap nameIndex_
-  objectId_ <- Trans.lift U32.bitGet
-  State.modify (Map.insert actorId objectId_)
-  objectName_ <- Trans.lift $ lookupObjectName classAttributeMap objectId_
-  className_ <- Trans.lift $ lookupClassName objectName_
+    U32.bitGet
+  name_ <- lookupName classAttributeMap nameIndex_
+  objectId_ <- U32.bitGet
+  objectName_ <- lookupObjectName classAttributeMap objectId_
+  className_ <- lookupClassName objectName_
   let hasLocation = ClassAttributeMap.classHasLocation className_
   let hasRotation = ClassAttributeMap.classHasRotation className_
-  initialization_ <- Trans.lift
+  initialization_ <-
     (Initialization.bitGet version hasLocation hasRotation)
   pure
-    (Spawned
+    ( Map.insert actorId objectId_ actorMap
+    , Spawned
       flag_
       nameIndex_
       name_
