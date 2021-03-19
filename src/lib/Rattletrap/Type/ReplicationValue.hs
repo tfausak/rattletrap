@@ -71,7 +71,12 @@ bitGet matchType version classAttributeMap actorId = do
       isNew <- Trans.lift BitGet.bool
       if isNew
         then do
-          (newActorMap, spawned) <- Trans.lift $ Spawned.bitGet matchType version classAttributeMap actorId actorMap
+          (newActorMap, spawned) <- Trans.lift $ Spawned.bitGet
+            matchType
+            version
+            classAttributeMap
+            actorId
+            actorMap
           State.put newActorMap
           pure $ Spawned spawned
         else fmap Updated . Trans.lift $ Updated.bitGet
