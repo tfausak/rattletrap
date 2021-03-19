@@ -13,8 +13,6 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
-import qualified Control.Monad.Trans.Class as Trans
-import qualified Control.Monad.Trans.State as State
 import qualified Data.Foldable as Foldable
 import qualified Data.Map as Map
 
@@ -59,29 +57,28 @@ bitGet
   -> Version.Version
   -> ClassAttributeMap.ClassAttributeMap
   -> CompressedWord.CompressedWord
-  -> State.StateT
-       (Map.Map CompressedWord.CompressedWord U32.U32)
-       BitGet.BitGet
-       ReplicationValue
-bitGet matchType version classAttributeMap actorId = do
-  actorMap <- State.get
-  isOpen <- Trans.lift BitGet.bool
+  -> Map.Map CompressedWord.CompressedWord U32.U32
+  -> BitGet.BitGet
+       ( Map.Map CompressedWord.CompressedWord U32.U32
+       , ReplicationValue
+       )
+bitGet matchType version classAttributeMap actorId actorMap = do
+  isOpen <- BitGet.bool
   if isOpen
     then do
-      isNew <- Trans.lift BitGet.bool
+      isNew <- BitGet.bool
       if isNew
         then do
-          (newActorMap, spawned) <- Trans.lift $ Spawned.bitGet
+          (newActorMap, spawned) <- Spawned.bitGet
             matchType
             version
             classAttributeMap
             actorId
             actorMap
-          State.put newActorMap
-          pure $ Spawned spawned
-        else fmap Updated . Trans.lift $ Updated.bitGet
-          version
-          classAttributeMap
-          actorMap
-          actorId
-    else fmap Destroyed $ Trans.lift Destroyed.bitGet
+          pure (newActorMap, Spawned spawned)
+        else do
+          updated <- Updated.bitGet version classAttributeMap actorMap actorId
+          pure (actorMap, Updated updated)
+    else do
+      destroyed <- Destroyed.bitGet
+      pure (actorMap, Destroyed destroyed)

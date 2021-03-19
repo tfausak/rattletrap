@@ -71,6 +71,9 @@ bitGet
        BitGet.BitGet
        Replication
 bitGet matchType version limit classes = do
-  actor <- Trans.lift (CompressedWord.bitGet limit)
-  fmap (Replication actor)
-    $ ReplicationValue.bitGet matchType version classes actor
+  actorId <- Trans.lift (CompressedWord.bitGet limit)
+  actorMap <- State.get
+  (newActorMap, value) <- Trans.lift
+    $ ReplicationValue.bitGet matchType version classes actorId actorMap
+  State.put newActorMap
+  pure Replication { actorId, value }
