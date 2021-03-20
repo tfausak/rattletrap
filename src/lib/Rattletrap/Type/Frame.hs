@@ -18,10 +18,10 @@ import qualified Rattletrap.Utility.Json as Json
 
 data Frame = Frame
   { time :: F32.F32
-  -- ^ Time in seconds since the beginning of the match.
+  -- ^ Time in seconds since the beginning of the match.
   , delta :: F32.F32
-  -- ^ Time in seconds since the last frame. Usually about 0.03 since there
-  -- are 30 frames per second.
+  -- ^ Time in seconds since the last frame. Usually about 0.03 since there
+  -- are 30 frames per second.
   , replications :: List.List Replication.Replication
   }
   deriving (Eq, Show)
@@ -69,27 +69,28 @@ decodeFramesBits
        BitGet.BitGet
        (List.List Frame)
 decodeFramesBits matchType version count limit classes =
-  List.replicateM count $ bitGet matchType version limit classes
+  List.replicateM count $ do
+    actorMap <- State.get
+    (newActorMap, frame) <- Trans.lift
+      $ bitGet matchType version limit classes actorMap
+    State.put newActorMap
+    pure frame
 
 bitGet
   :: Maybe Str.Str
   -> Version.Version
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
-  -> State.StateT
-       (Map.Map CompressedWord.CompressedWord U32.U32)
-       BitGet.BitGet
-       Frame
-bitGet matchType version limit classes = do
-  time <- Trans.lift F32.bitGet
-  delta <- Trans.lift F32.bitGet
-  actorMap <- State.get
-  (newActorMap, replications) <-
-    Trans.lift $ Replication.decodeReplicationsBits
-      matchType
-      version
-      limit
-      classes
-      actorMap
-  State.put newActorMap
-  pure Frame { time, delta, replications }
+  -> Map.Map CompressedWord.CompressedWord U32.U32
+  -> BitGet.BitGet
+       (Map.Map CompressedWord.CompressedWord U32.U32, Frame)
+bitGet matchType version limit classes actorMap = do
+  time <- F32.bitGet
+  delta <- F32.bitGet
+  (newActorMap, replications) <- Replication.decodeReplicationsBits
+    matchType
+    version
+    limit
+    classes
+    actorMap
+  pure (newActorMap, Frame { time, delta, replications })
