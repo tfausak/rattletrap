@@ -55,10 +55,10 @@ bitPut weldedInfoAttribute =
     <> Int8Vector.bitPut (rotation weldedInfoAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet WeldedInfo
-bitGet version = do
-  active <- BitGet.bool
-  actorId <- I32.bitGet
-  offset <- Vector.bitGet version
-  mass <- F32.bitGet
-  rotation <- Int8Vector.bitGet
+bitGet version = BitGet.label "WeldedInfo" $ do
+  active <- BitGet.label "active" BitGet.bool
+  actorId <- BitGet.label "actorId" I32.bitGet
+  offset <- BitGet.label "offset" $ Vector.bitGet version
+  mass <- BitGet.label "mass" F32.bitGet
+  rotation <- BitGet.label "rotation" Int8Vector.bitGet
   pure WeldedInfo { active, actorId, offset, mass, rotation }

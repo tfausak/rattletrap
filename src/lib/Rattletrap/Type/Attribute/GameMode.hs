@@ -38,7 +38,7 @@ bitPut gameModeAttribute = do
   BitPut.bits (numBits gameModeAttribute) (word gameModeAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet GameMode
-bitGet version = do
+bitGet version = BitGet.label "GameMode" $ do
   let numBits = if Version.atLeast 868 12 0 version then 8 else 2 :: Int
-  word <- BitGet.bits numBits
+  word <- BitGet.label "word" $ BitGet.bits numBits
   pure GameMode { numBits, word }

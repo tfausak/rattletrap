@@ -23,6 +23,6 @@ bitPut :: QWord -> BitPut.BitPut
 bitPut qWordAttribute = U64.bitPut (value qWordAttribute)
 
 bitGet :: BitGet.BitGet QWord
-bitGet = do
-  value <- U64.bitGet
+bitGet = BitGet.label "QWord" $ do
+  value <- BitGet.label "value" U64.bitGet
   pure QWord { value }

@@ -24,6 +24,6 @@ bitPut :: Float -> BitPut.BitPut
 bitPut floatAttribute = F32.bitPut (value floatAttribute)
 
 bitGet :: BitGet.BitGet Float
-bitGet = do
-  value <- F32.bitGet
+bitGet = BitGet.label "Float" $ do
+  value <- BitGet.label "value" F32.bitGet
   pure Float { value }

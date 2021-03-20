@@ -77,7 +77,7 @@ bitPut val = case val of
 bitGet
   :: Version.Version -> U32.U32 -> Maybe Str.Str -> BitGet.BitGet ProductValue
 bitGet version objectId maybeObjectName =
-  case fmap Str.toString maybeObjectName of
+  BitGet.label "ProductValue" $ case fmap Str.toString maybeObjectName of
     Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
     Just "TAGame.ProductAttribute_SpecialEdition_TA" -> decodeSpecialEdition
     Just "TAGame.ProductAttribute_TeamEdition_TA" -> decodeTeamEdition version
@@ -89,27 +89,30 @@ bitGet version objectId maybeObjectName =
         objectId
 
 decodeSpecialEdition :: BitGet.BitGet ProductValue
-decodeSpecialEdition = fmap SpecialEdition $ BitGet.bits 31
+decodeSpecialEdition =
+  BitGet.label "SpecialEdition" . fmap SpecialEdition $ BitGet.bits 31
 
 decodePainted :: Version.Version -> BitGet.BitGet ProductValue
-decodePainted version = if hasNewPainted version
+decodePainted version = BitGet.label "Painted" $ if hasNewPainted version
   then fmap PaintedNew $ BitGet.bits 31
   else fmap PaintedOld $ CompressedWord.bitGet 13
 
 decodeTeamEdition :: Version.Version -> BitGet.BitGet ProductValue
-decodeTeamEdition version = if hasNewPainted version
-  then fmap TeamEditionNew $ BitGet.bits 31
-  else fmap TeamEditionOld $ CompressedWord.bitGet 13
+decodeTeamEdition version =
+  BitGet.label "TeamEdition" $ if hasNewPainted version
+    then fmap TeamEditionNew $ BitGet.bits 31
+    else fmap TeamEditionOld $ CompressedWord.bitGet 13
 
 decodeColor :: Version.Version -> BitGet.BitGet ProductValue
-decodeColor version = if Version.atLeast 868 23 8 version
-  then fmap UserColorNew U32.bitGet
-  else do
-    hasValue <- BitGet.bool
-    fmap UserColorOld $ Monad.whenMaybe hasValue (BitGet.bits 31)
+decodeColor version =
+  BitGet.label "UserColor" $ if Version.atLeast 868 23 8 version
+    then fmap UserColorNew U32.bitGet
+    else do
+      hasValue <- BitGet.bool
+      fmap UserColorOld $ Monad.whenMaybe hasValue (BitGet.bits 31)
 
 hasNewPainted :: Version.Version -> Bool
 hasNewPainted = Version.atLeast 868 18 0
 
 decodeTitle :: BitGet.BitGet ProductValue
-decodeTitle = fmap TitleId Str.bitGet
+decodeTitle = BitGet.label "Title" $ fmap TitleId Str.bitGet

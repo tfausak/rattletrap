@@ -40,11 +40,14 @@ bitPut x = case toEither x of
     U64.bitPut a <> U64.bitPut b <> U64.bitPut c <> U64.bitPut d
 
 bitGet :: Version.Version -> BitGet.BitGet PsyNet
-bitGet version = fmap fromEither $ if Version.atLeast 868 24 10 version
-  then fmap Left U64.bitGet
-  else fmap Right $ do
-    a <- U64.bitGet
-    b <- U64.bitGet
-    c <- U64.bitGet
-    d <- U64.bitGet
-    pure (a, b, c, d)
+bitGet version =
+  BitGet.label "PsyNet"
+    . fmap fromEither
+    $ if Version.atLeast 868 24 10 version
+        then BitGet.label "new" $ fmap Left U64.bitGet
+        else BitGet.label "old" . fmap Right $ do
+          a <- U64.bitGet
+          b <- U64.bitGet
+          c <- U64.bitGet
+          d <- U64.bitGet
+          pure (a, b, c, d)

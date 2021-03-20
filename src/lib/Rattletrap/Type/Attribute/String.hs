@@ -24,6 +24,6 @@ bitPut :: String -> BitPut.BitPut
 bitPut stringAttribute = Str.bitPut (value stringAttribute)
 
 bitGet :: BitGet.BitGet String
-bitGet = do
-  value <- Str.bitGet
+bitGet = BitGet.label "String" $ do
+  value <- BitGet.label "value" Str.bitGet
   pure String { value }

@@ -38,9 +38,10 @@ bitPut loadoutAttribute =
 
 bitGet
   :: Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet LoadoutOnline
-bitGet version objectMap = do
-  size <- U8.bitGet
+bitGet version objectMap = BitGet.label "LoadoutOnline" $ do
+  size <- BitGet.label "size" U8.bitGet
   value <-
-    List.replicateM (fromIntegral $ U8.toWord8 size)
-      $ Product.decodeProductAttributesBits version objectMap
+    BitGet.label "value"
+    . List.replicateM (fromIntegral $ U8.toWord8 size)
+    $ Product.decodeProductAttributesBits version objectMap
   pure LoadoutOnline { value }

@@ -33,7 +33,7 @@ bitPut statEventAttribute = BitPut.bool (unknown statEventAttribute)
   <> I32.bitPut (objectId statEventAttribute)
 
 bitGet :: BitGet.BitGet StatEvent
-bitGet = do
-  unknown <- BitGet.bool
-  objectId <- I32.bitGet
+bitGet = BitGet.label "StatEvent" $ do
+  unknown <- BitGet.label "unknown" BitGet.bool
+  objectId <- BitGet.label "objectId" I32.bitGet
   pure StatEvent { unknown, objectId }

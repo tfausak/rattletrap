@@ -66,13 +66,13 @@ bitPut damageStateAttribute =
     <> BitPut.bool (unknown6 damageStateAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet DamageState
-bitGet version = do
-  unknown1 <- U8.bitGet
-  unknown2 <- BitGet.bool
-  unknown3 <- I32.bitGet
-  unknown4 <- Vector.bitGet version
-  unknown5 <- BitGet.bool
-  unknown6 <- BitGet.bool
+bitGet version = BitGet.label "CustomDemolish" $ do
+  unknown1 <- BitGet.label "unknown1" U8.bitGet
+  unknown2 <- BitGet.label "unknown2" BitGet.bool
+  unknown3 <- BitGet.label "unknown3" I32.bitGet
+  unknown4 <- BitGet.label "unknown4" $ Vector.bitGet version
+  unknown5 <- BitGet.label "unknown5" BitGet.bool
+  unknown6 <- BitGet.label "unknown6" BitGet.bool
   pure DamageState
     { unknown1
     , unknown2

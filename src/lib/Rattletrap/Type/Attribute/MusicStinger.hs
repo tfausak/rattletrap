@@ -42,8 +42,8 @@ bitPut musicStingerAttribute =
     <> U8.bitPut (trigger musicStingerAttribute)
 
 bitGet :: BitGet.BitGet MusicStinger
-bitGet = do
-  flag <- BitGet.bool
-  cue <- U32.bitGet
-  trigger <- U8.bitGet
+bitGet = BitGet.label "MusicStinger" $ do
+  flag <- BitGet.label "flag" BitGet.bool
+  cue <- BitGet.label "cue" U32.bitGet
+  trigger <- BitGet.label "trigger" U8.bitGet
   pure MusicStinger { flag, cue, trigger }

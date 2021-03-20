@@ -132,24 +132,33 @@ bitPut loadoutAttribute =
     <> foldMap U32.bitPut (unknown6 loadoutAttribute)
 
 bitGet :: BitGet.BitGet Loadout
-bitGet = do
-  version <- U8.bitGet
-  body <- U32.bitGet
-  decal <- U32.bitGet
-  wheels <- U32.bitGet
-  rocketTrail <- U32.bitGet
-  antenna <- U32.bitGet
-  topper <- U32.bitGet
-  unknown1 <- U32.bitGet
-  unknown2 <- Monad.whenMaybe (U8.toWord8 version >= 11) U32.bitGet
-  engineAudio <- Monad.whenMaybe (U8.toWord8 version >= 16) U32.bitGet
-  trail <- Monad.whenMaybe (U8.toWord8 version >= 16) U32.bitGet
-  goalExplosion <- Monad.whenMaybe (U8.toWord8 version >= 16) U32.bitGet
-  banner <- Monad.whenMaybe (U8.toWord8 version >= 17) U32.bitGet
-  unknown3 <- Monad.whenMaybe (U8.toWord8 version >= 19) U32.bitGet
-  unknown4 <- Monad.whenMaybe (U8.toWord8 version >= 22) U32.bitGet
-  unknown5 <- Monad.whenMaybe (U8.toWord8 version >= 22) U32.bitGet
-  unknown6 <- Monad.whenMaybe (U8.toWord8 version >= 22) U32.bitGet
+bitGet = BitGet.label "Loadout" $ do
+  version <- BitGet.label "version" U8.bitGet
+  body <- BitGet.label "body" U32.bitGet
+  decal <- BitGet.label "decal" U32.bitGet
+  wheels <- BitGet.label "wheels" U32.bitGet
+  rocketTrail <- BitGet.label "rocketTrail" U32.bitGet
+  antenna <- BitGet.label "antenna" U32.bitGet
+  topper <- BitGet.label "topper" U32.bitGet
+  unknown1 <- BitGet.label "unknown1" U32.bitGet
+  unknown2 <- BitGet.label "unknown2"
+    $ Monad.whenMaybe (U8.toWord8 version >= 11) U32.bitGet
+  engineAudio <- BitGet.label "engineAudio"
+    $ Monad.whenMaybe (U8.toWord8 version >= 16) U32.bitGet
+  trail <- BitGet.label "trail"
+    $ Monad.whenMaybe (U8.toWord8 version >= 16) U32.bitGet
+  goalExplosion <- BitGet.label "goalExplosion"
+    $ Monad.whenMaybe (U8.toWord8 version >= 16) U32.bitGet
+  banner <- BitGet.label "banner"
+    $ Monad.whenMaybe (U8.toWord8 version >= 17) U32.bitGet
+  unknown3 <- BitGet.label "unknown3"
+    $ Monad.whenMaybe (U8.toWord8 version >= 19) U32.bitGet
+  unknown4 <- BitGet.label "unknown4"
+    $ Monad.whenMaybe (U8.toWord8 version >= 22) U32.bitGet
+  unknown5 <- BitGet.label "unknown5"
+    $ Monad.whenMaybe (U8.toWord8 version >= 22) U32.bitGet
+  unknown6 <- BitGet.label "unknown6"
+    $ Monad.whenMaybe (U8.toWord8 version >= 22) U32.bitGet
   pure Loadout
     { version
     , body

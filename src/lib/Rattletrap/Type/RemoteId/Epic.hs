@@ -29,4 +29,4 @@ bitPut :: Epic -> BitPut.BitPut
 bitPut = Str.bitPut . toStr
 
 bitGet :: BitGet.BitGet Epic
-bitGet = fmap fromStr Str.bitGet
+bitGet = BitGet.label "Epic" $ fmap fromStr Str.bitGet

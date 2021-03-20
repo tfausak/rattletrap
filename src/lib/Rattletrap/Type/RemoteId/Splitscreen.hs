@@ -29,4 +29,4 @@ bitPut :: Splitscreen -> BitPut.BitPut
 bitPut = BitPut.bits 24 . toWord32
 
 bitGet :: BitGet.BitGet Splitscreen
-bitGet = fmap fromWord32 $ BitGet.bits 24
+bitGet = BitGet.label "Splitscreen" . fmap fromWord32 $ BitGet.bits 24

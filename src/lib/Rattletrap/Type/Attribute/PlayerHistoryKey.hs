@@ -24,6 +24,6 @@ bitPut :: PlayerHistoryKey -> BitPut.BitPut
 bitPut = BitPut.bits 14 . unknown
 
 bitGet :: BitGet.BitGet PlayerHistoryKey
-bitGet = do
-  unknown <- BitGet.bits 14
+bitGet = BitGet.label "PlayerHistoryKey" $ do
+  unknown <- BitGet.label "unknown" $ BitGet.bits 14
   pure PlayerHistoryKey { unknown }

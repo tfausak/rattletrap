@@ -24,6 +24,6 @@ bitPut :: Location -> BitPut.BitPut
 bitPut locationAttribute = Vector.bitPut (value locationAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet Location
-bitGet version = do
-  value <- Vector.bitGet version
+bitGet version = BitGet.label "Location" $ do
+  value <- BitGet.label "value" $ Vector.bitGet version
   pure Location { value }

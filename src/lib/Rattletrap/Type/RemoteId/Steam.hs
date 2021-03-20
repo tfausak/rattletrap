@@ -29,4 +29,4 @@ bitPut :: Steam -> BitPut.BitPut
 bitPut = U64.bitPut . toU64
 
 bitGet :: BitGet.BitGet Steam
-bitGet = fmap fromU64 U64.bitGet
+bitGet = BitGet.label "Steam" $ fmap fromU64 U64.bitGet
