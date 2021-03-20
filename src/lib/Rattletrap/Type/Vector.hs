@@ -66,15 +66,17 @@ bitPut vector =
     <> CompressedWord.bitPut (CompressedWord.CompressedWord limit dz)
 
 bitGet :: Version.Version -> BitGet.BitGet Vector
-bitGet version = do
-  size <- CompressedWord.bitGet
+bitGet version = BitGet.label "Vector" $ do
+  size <-
+    BitGet.label "size"
+    . CompressedWord.bitGet
     $ if Version.atLeast 868 22 7 version then 21 else 19
   let
     limit = getLimit size
     bias = getBias size
-  x <- getPart limit bias
-  y <- getPart limit bias
-  z <- getPart limit bias
+  x <- BitGet.label "x" $ getPart limit bias
+  y <- BitGet.label "y" $ getPart limit bias
+  z <- BitGet.label "z" $ getPart limit bias
   pure Vector { size, bias, x, y, z }
 
 getPart :: Word -> Word -> BitGet.BitGet Int

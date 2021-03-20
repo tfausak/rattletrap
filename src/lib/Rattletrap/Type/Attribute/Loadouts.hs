@@ -33,7 +33,7 @@ bitPut loadoutsAttribute = Loadout.bitPut (blue loadoutsAttribute)
   <> Loadout.bitPut (orange loadoutsAttribute)
 
 bitGet :: BitGet.BitGet Loadouts
-bitGet = do
-  blue <- Loadout.bitGet
-  orange <- Loadout.bitGet
+bitGet = BitGet.label "Loadouts" $ do
+  blue <- BitGet.label "blue" Loadout.bitGet
+  orange <- BitGet.label "orange" Loadout.bitGet
   pure Loadouts { blue, orange }

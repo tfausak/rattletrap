@@ -44,10 +44,10 @@ bitPut x =
     <> Demolish.bitPut (demolish x)
 
 bitGet :: Version.Version -> BitGet.BitGet CustomDemolish
-bitGet version = do
-  flag <- BitGet.bool
-  id <- I32.bitGet
-  demolish <- Demolish.bitGet version
+bitGet version = BitGet.label "CustomDemolish" $ do
+  flag <- BitGet.label "flag" BitGet.bool
+  id <- BitGet.label "id" I32.bitGet
+  demolish <- BitGet.label "demolish" $ Demolish.bitGet version
   pure CustomDemolish
     { flag
     , Rattletrap.Type.Attribute.CustomDemolish.id

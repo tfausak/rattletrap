@@ -1,5 +1,6 @@
 module Rattletrap.Type.Replication.Spawned where
 
+import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Exception.MissingClassName as MissingClassName
@@ -14,10 +15,6 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
-
-import qualified Control.Monad.Trans.Class as Trans
-import qualified Control.Monad.Trans.State as State
-import qualified Data.Map as Map
 
 data Spawned = Spawned
   { flag :: Bool
@@ -90,33 +87,34 @@ bitGet
   -> Version.Version
   -> ClassAttributeMap.ClassAttributeMap
   -> CompressedWord.CompressedWord
-  -> State.StateT
-       (Map.Map CompressedWord.CompressedWord U32.U32)
-       BitGet.BitGet
-       Spawned
-bitGet matchType version classAttributeMap actorId = do
-  flag_ <- Trans.lift BitGet.bool
-  nameIndex_ <- Monad.whenMaybe (hasNameIndex matchType version)
-    $ Trans.lift U32.bitGet
-  name_ <- Trans.lift $ lookupName classAttributeMap nameIndex_
-  objectId_ <- Trans.lift U32.bitGet
-  State.modify (Map.insert actorId objectId_)
-  objectName_ <- Trans.lift $ lookupObjectName classAttributeMap objectId_
-  className_ <- Trans.lift $ lookupClassName objectName_
-  let hasLocation = ClassAttributeMap.classHasLocation className_
-  let hasRotation = ClassAttributeMap.classHasRotation className_
-  initialization_ <- Trans.lift
-    (Initialization.bitGet version hasLocation hasRotation)
-  pure
-    (Spawned
-      flag_
-      nameIndex_
-      name_
-      objectId_
-      objectName_
-      className_
-      initialization_
-    )
+  -> Map.Map CompressedWord.CompressedWord U32.U32
+  -> BitGet.BitGet
+       (Map.Map CompressedWord.CompressedWord U32.U32, Spawned)
+bitGet matchType version classAttributeMap actorId actorMap =
+  BitGet.label "Spawned" $ do
+    flag <- BitGet.label "flag" BitGet.bool
+    nameIndex <- BitGet.label "nameIndex"
+      $ Monad.whenMaybe (hasNameIndex matchType version) U32.bitGet
+    name <- lookupName classAttributeMap nameIndex
+    objectId <- BitGet.label "objectId" U32.bitGet
+    objectName <- lookupObjectName classAttributeMap objectId
+    className <- lookupClassName objectName
+    let hasLocation = ClassAttributeMap.classHasLocation className
+    let hasRotation = ClassAttributeMap.classHasRotation className
+    initialization <- BitGet.label "initialization"
+      $ Initialization.bitGet version hasLocation hasRotation
+    pure
+      ( Map.insert actorId objectId actorMap
+      , Spawned
+        { flag
+        , nameIndex
+        , name
+        , objectId
+        , objectName
+        , className
+        , initialization
+        }
+      )
 
 hasNameIndex :: Maybe Str.Str -> Version.Version -> Bool
 hasNameIndex matchType version =

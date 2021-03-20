@@ -33,7 +33,7 @@ bitPut flaggedByteAttribute = BitPut.bool (flag flaggedByteAttribute)
   <> U8.bitPut (byte flaggedByteAttribute)
 
 bitGet :: BitGet.BitGet FlaggedByte
-bitGet = do
-  flag <- BitGet.bool
-  byte <- U8.bitGet
+bitGet = BitGet.label "FlaggedByte" $ do
+  flag <- BitGet.label "flag" BitGet.bool
+  byte <- BitGet.label "byte" U8.bitGet
   pure FlaggedByte { flag, byte }

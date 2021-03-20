@@ -24,6 +24,6 @@ bitPut :: Enum -> BitPut.BitPut
 bitPut enumAttribute = BitPut.bits 11 (value enumAttribute)
 
 bitGet :: BitGet.BitGet Enum
-bitGet = do
-  value <- BitGet.bits 11
+bitGet = BitGet.label "Enum" $ do
+  value <- BitGet.label "value" $ BitGet.bits 11
   pure Enum { value }

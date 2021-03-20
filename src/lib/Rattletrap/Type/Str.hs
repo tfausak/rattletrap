@@ -1,5 +1,11 @@
 module Rattletrap.Type.Str where
 
+import qualified Data.ByteString as ByteString
+import qualified Data.Char as Char
+import qualified Data.Int as Int
+import qualified Data.Text as Text
+import qualified Data.Text.Encoding as Text
+import qualified Data.Text.Encoding.Error as Text
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
@@ -8,13 +14,6 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Utility.Bytes as Bytes
 import qualified Rattletrap.Utility.Json as Json
-
-import qualified Data.ByteString as ByteString
-import qualified Data.Char as Char
-import qualified Data.Int as Int
-import qualified Data.Text as Text
-import qualified Data.Text.Encoding as Text
-import qualified Data.Text.Encoding.Error as Text
 
 newtype Str
   = Str Text.Text

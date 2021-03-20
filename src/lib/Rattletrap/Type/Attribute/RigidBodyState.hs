@@ -64,12 +64,14 @@ bitPut rigidBodyStateAttribute =
     <> foldMap Vector.bitPut (angularVelocity rigidBodyStateAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet RigidBodyState
-bitGet version = do
-  sleeping <- BitGet.bool
-  location <- Vector.bitGet version
-  rotation <- Rotation.bitGet version
-  linearVelocity <- Monad.whenMaybe (not sleeping) (Vector.bitGet version)
-  angularVelocity <- Monad.whenMaybe (not sleeping) (Vector.bitGet version)
+bitGet version = BitGet.label "RigidBodyState" $ do
+  sleeping <- BitGet.label "sleeping" BitGet.bool
+  location <- BitGet.label "location" $ Vector.bitGet version
+  rotation <- BitGet.label "rotation" $ Rotation.bitGet version
+  linearVelocity <- BitGet.label "linearVelocity"
+    $ Monad.whenMaybe (not sleeping) (Vector.bitGet version)
+  angularVelocity <- BitGet.label "angularVelocity"
+    $ Monad.whenMaybe (not sleeping) (Vector.bitGet version)
   pure RigidBodyState
     { sleeping
     , location

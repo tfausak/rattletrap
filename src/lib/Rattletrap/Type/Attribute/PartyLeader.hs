@@ -51,12 +51,12 @@ bitPut x =
     (localId x)
 
 bitGet :: Version.Version -> BitGet.BitGet PartyLeader
-bitGet version = do
-  systemId <- U8.bitGet
+bitGet version = BitGet.label "PartyLeader" $ do
+  systemId <- BitGet.label "systemId" U8.bitGet
   (remoteId, localId) <- if systemId == U8.fromWord8 0
     then pure (Nothing, Nothing)
     else do
-      remoteId <- RemoteId.bitGet version systemId
-      localId <- U8.bitGet
+      remoteId <- BitGet.label "remoteId" $ RemoteId.bitGet version systemId
+      localId <- BitGet.label "localId" U8.bitGet
       pure (Just remoteId, Just localId)
   pure PartyLeader { systemId, remoteId, localId }

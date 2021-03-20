@@ -43,8 +43,8 @@ bitPut uniqueIdAttribute =
     <> U8.bitPut (localId uniqueIdAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet UniqueId
-bitGet version = do
-  systemId <- U8.bitGet
-  remoteId <- RemoteId.bitGet version systemId
-  localId <- U8.bitGet
+bitGet version = BitGet.label "UniqueId" $ do
+  systemId <- BitGet.label "systemId" U8.bitGet
+  remoteId <- BitGet.label "remoteId" $ RemoteId.bitGet version systemId
+  localId <- BitGet.label "localId" U8.bitGet
   pure UniqueId { systemId, remoteId, localId }

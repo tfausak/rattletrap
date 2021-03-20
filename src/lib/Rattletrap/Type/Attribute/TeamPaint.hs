@@ -58,12 +58,12 @@ bitPut teamPaintAttribute =
     <> U32.bitPut (accentFinish teamPaintAttribute)
 
 bitGet :: BitGet.BitGet TeamPaint
-bitGet = do
-  team <- U8.bitGet
-  primaryColor <- U8.bitGet
-  accentColor <- U8.bitGet
-  primaryFinish <- U32.bitGet
-  accentFinish <- U32.bitGet
+bitGet = BitGet.label "TeamPaint" $ do
+  team <- BitGet.label "team" U8.bitGet
+  primaryColor <- BitGet.label "primaryColor" U8.bitGet
+  accentColor <- BitGet.label "accentColor" U8.bitGet
+  primaryFinish <- BitGet.label "primaryFinish" U32.bitGet
+  accentFinish <- BitGet.label "accentFinish" U32.bitGet
   pure TeamPaint
     { team
     , primaryColor

@@ -1,15 +1,14 @@
 module Rattletrap.Type.Dictionary where
 
+import qualified Data.Bifunctor as Bifunctor
+import qualified Data.Map as Map
+import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Utility.Json as Json
-
-import qualified Data.Bifunctor as Bifunctor
-import qualified Data.Map as Map
-import qualified Data.Text as Text
 
 data Dictionary a = Dictionary
   { elements :: List.List (Str.Str, a)

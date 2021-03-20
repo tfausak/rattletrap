@@ -29,4 +29,4 @@ bitPut :: Xbox -> BitPut.BitPut
 bitPut = U64.bitPut . toU64
 
 bitGet :: BitGet.BitGet Xbox
-bitGet = fmap fromU64 U64.bitGet
+bitGet = BitGet.label "Xbox" $ fmap fromU64 U64.bitGet

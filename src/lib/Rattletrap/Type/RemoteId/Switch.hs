@@ -32,7 +32,7 @@ bitPut x =
   U64.bitPut (a x) <> U64.bitPut (b x) <> U64.bitPut (c x) <> U64.bitPut (d x)
 
 bitGet :: BitGet.BitGet Switch
-bitGet = do
+bitGet = BitGet.label "Switch" $ do
   a <- U64.bitGet
   b <- U64.bitGet
   c <- U64.bitGet

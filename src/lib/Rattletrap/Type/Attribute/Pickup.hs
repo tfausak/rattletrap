@@ -40,8 +40,9 @@ bitPut x =
     <> BitPut.bool (pickedUp x)
 
 bitGet :: BitGet.BitGet Pickup
-bitGet = do
-  instigator <- BitGet.bool
-  instigatorId <- Monad.whenMaybe instigator U32.bitGet
-  pickedUp <- BitGet.bool
+bitGet = BitGet.label "Pickup" $ do
+  instigator <- BitGet.label "instigator" BitGet.bool
+  instigatorId <- BitGet.label "instigatorId"
+    $ Monad.whenMaybe instigator U32.bitGet
+  pickedUp <- BitGet.label "pickedUp" BitGet.bool
   pure Pickup { instigatorId, pickedUp }

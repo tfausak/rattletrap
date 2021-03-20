@@ -23,6 +23,6 @@ putInt64Attribute :: Int64 -> BitPut.BitPut
 putInt64Attribute int64Attribute = I64.bitPut (value int64Attribute)
 
 bitGet :: BitGet.BitGet Int64
-bitGet = do
-  value <- I64.bitGet
+bitGet = BitGet.label "Int64" $ do
+  value <- BitGet.label "value" I64.bitGet
   pure Int64 { value }

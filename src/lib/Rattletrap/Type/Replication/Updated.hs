@@ -1,5 +1,6 @@
 module Rattletrap.Type.Replication.Updated where
 
+import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
@@ -11,8 +12,6 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
-
-import qualified Data.Map as Map
 
 newtype Updated = Updated
   { attributes :: List.List Attribute.Attribute
@@ -41,6 +40,7 @@ bitGet
   -> Map.Map CompressedWord.CompressedWord U32.U32
   -> CompressedWord.CompressedWord
   -> BitGet.BitGet Updated
-bitGet version classes actors actor = fmap Updated . List.untilM $ do
-  p <- BitGet.bool
-  Monad.whenMaybe p $ Attribute.bitGet version classes actors actor
+bitGet version classes actors actor =
+  BitGet.label "Updated" . fmap Updated . List.untilM $ do
+    p <- BitGet.bool
+    Monad.whenMaybe p $ Attribute.bitGet version classes actors actor

@@ -37,9 +37,9 @@ bitPut x =
   in BitPut.byteString nameBytes <> BitPut.byteString codeBytes
 
 bitGet :: Version.Version -> BitGet.BitGet PlayStation
-bitGet version = do
-  name <- getCode
-  code <- getName version
+bitGet version = BitGet.label "PlayStation" $ do
+  name <- BitGet.label "name" getCode
+  code <- BitGet.label "code" $ getName version
   pure PlayStation { name, code }
 
 getCode :: BitGet.BitGet Text.Text

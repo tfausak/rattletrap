@@ -1,14 +1,13 @@
 module Rattletrap.Type.I64 where
 
+import qualified Data.Int as Int
+import qualified Data.Text as Text
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Utility.Json as Json
-
-import qualified Data.Int as Int
-import qualified Data.Text as Text
 import qualified Text.Read as Read
 
 newtype I64

@@ -46,9 +46,9 @@ bitPut clubColorsAttribute =
     <> U8.bitPut (orangeColor clubColorsAttribute)
 
 bitGet :: BitGet.BitGet ClubColors
-bitGet = do
-  blueFlag <- BitGet.bool
-  blueColor <- U8.bitGet
-  orangeFlag <- BitGet.bool
-  orangeColor <- U8.bitGet
+bitGet = BitGet.label "ClubColors" $ do
+  blueFlag <- BitGet.label "blueFlag" BitGet.bool
+  blueColor <- BitGet.label "blueColor" U8.bitGet
+  orangeFlag <- BitGet.label "orangeFlag" BitGet.bool
+  orangeColor <- BitGet.label "orangeColor" U8.bitGet
   pure ClubColors { blueFlag, blueColor, orangeFlag, orangeColor }

@@ -41,8 +41,9 @@ bitPut x =
     <> U8.bitPut (pickedUp x)
 
 bitGet :: BitGet.BitGet PickupNew
-bitGet = do
-  instigator <- BitGet.bool
-  instigatorId <- Monad.whenMaybe instigator U32.bitGet
-  pickedUp <- U8.bitGet
+bitGet = BitGet.label "PickupNew" $ do
+  instigator <- BitGet.label "instigator" BitGet.bool
+  instigatorId <- BitGet.label "instigatorId"
+    $ Monad.whenMaybe instigator U32.bitGet
+  pickedUp <- BitGet.label "pickedUp" U8.bitGet
   pure PickupNew { instigatorId, pickedUp }

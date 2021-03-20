@@ -1,12 +1,11 @@
 module Rattletrap.Type.List where
 
+import qualified Control.Monad as Monad
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
-
-import qualified Control.Monad as Monad
 
 newtype List a
   = List [a]

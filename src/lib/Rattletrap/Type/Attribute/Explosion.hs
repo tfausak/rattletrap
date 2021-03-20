@@ -43,8 +43,8 @@ bitPut explosionAttribute =
     <> Vector.bitPut (location explosionAttribute)
 
 bitGet :: Version.Version -> BitGet.BitGet Explosion
-bitGet version = do
-  flag <- BitGet.bool
-  actorId <- I32.bitGet
-  location <- Vector.bitGet version
+bitGet version = BitGet.label "Explosion" $ do
+  flag <- BitGet.label "flag" BitGet.bool
+  actorId <- BitGet.label "actorId" I32.bitGet
+  location <- BitGet.label "location" $ Vector.bitGet version
   pure Explosion { flag, actorId, location }

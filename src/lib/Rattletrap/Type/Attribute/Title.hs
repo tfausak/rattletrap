@@ -75,15 +75,15 @@ bitPut titleAttribute =
     <> BitPut.bool (unknown8 titleAttribute)
 
 bitGet :: BitGet.BitGet Title
-bitGet = do
-  unknown1 <- BitGet.bool
-  unknown2 <- BitGet.bool
-  unknown3 <- U32.bitGet
-  unknown4 <- U32.bitGet
-  unknown5 <- U32.bitGet
-  unknown6 <- U32.bitGet
-  unknown7 <- U32.bitGet
-  unknown8 <- BitGet.bool
+bitGet = BitGet.label "Title" $ do
+  unknown1 <- BitGet.label "unknown1" BitGet.bool
+  unknown2 <- BitGet.label "unknown2" BitGet.bool
+  unknown3 <- BitGet.label "unknown3" U32.bitGet
+  unknown4 <- BitGet.label "unknown4" U32.bitGet
+  unknown5 <- BitGet.label "unknown5" U32.bitGet
+  unknown6 <- BitGet.label "unknown6" U32.bitGet
+  unknown7 <- BitGet.label "unknown7" U32.bitGet
+  unknown8 <- BitGet.label "unknown8" BitGet.bool
   pure Title
     { unknown1
     , unknown2

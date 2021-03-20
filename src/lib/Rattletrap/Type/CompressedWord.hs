@@ -1,11 +1,10 @@
 module Rattletrap.Type.CompressedWord where
 
+import qualified Data.Bits as Bits
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Utility.Json as Json
-
-import qualified Data.Bits as Bits
 
 -- | Although there's no guarantee that these values will not overflow, it's
 -- exceptionally unlikely. Most 'CompressedWord's are very small.
