@@ -1,5 +1,9 @@
 module Rattletrap.Type.Content where
 
+import qualified Control.Monad.Trans.State as State
+import qualified Data.ByteString as ByteString
+import qualified Data.ByteString.Lazy as LazyByteString
+import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
@@ -19,11 +23,6 @@ import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Bytes as Bytes
 import qualified Rattletrap.Utility.Json as Json
-
-import qualified Control.Monad.Trans.State as State
-import qualified Data.ByteString as ByteString
-import qualified Data.ByteString.Lazy as LazyByteString
-import qualified Data.Word as Word
 
 type Content = ContentWith (List.List Frame.Frame)
 

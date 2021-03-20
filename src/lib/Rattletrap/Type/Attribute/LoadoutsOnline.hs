@@ -1,5 +1,6 @@
 module Rattletrap.Type.Attribute.LoadoutsOnline where
 
+import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
@@ -8,8 +9,6 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-
-import qualified Data.Map as Map
 
 data LoadoutsOnline = LoadoutsOnline
   { blue :: LoadoutOnline.LoadoutOnline

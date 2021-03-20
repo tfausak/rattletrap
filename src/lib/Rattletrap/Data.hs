@@ -1,12 +1,11 @@
 -- brittany --columns 120
 module Rattletrap.Data where
 
-import qualified Rattletrap.Type.AttributeType as AttributeType
-
 import qualified Data.Bifunctor as Bifunctor
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import qualified Data.Text as Text
+import qualified Rattletrap.Type.AttributeType as AttributeType
 
 parentClasses :: Map.Map Text.Text Text.Text
 parentClasses = Map.fromList $ fmap

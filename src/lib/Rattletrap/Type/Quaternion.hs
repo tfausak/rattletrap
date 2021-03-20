@@ -1,15 +1,14 @@
 module Rattletrap.Type.Quaternion where
 
+import qualified Data.List as List
+import qualified Data.Maybe as Maybe
+import qualified Data.Ord as Ord
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Exception.InvalidComponent as InvalidComponent
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Utility.Json as Json
-
-import qualified Data.List as List
-import qualified Data.Maybe as Maybe
-import qualified Data.Ord as Ord
 
 data Quaternion = Quaternion
   { x :: Double

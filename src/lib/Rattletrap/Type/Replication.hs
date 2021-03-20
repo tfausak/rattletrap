@@ -1,5 +1,8 @@
 module Rattletrap.Type.Replication where
 
+import qualified Control.Monad.Trans.Class as Trans
+import qualified Control.Monad.Trans.State as State
+import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
@@ -12,10 +15,6 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
-
-import qualified Control.Monad.Trans.Class as Trans
-import qualified Control.Monad.Trans.State as State
-import qualified Data.Map as Map
 
 data Replication = Replication
   { actorId :: CompressedWord.CompressedWord

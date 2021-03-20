@@ -1,5 +1,8 @@
 module Rattletrap.Type.Section where
 
+import qualified Control.Monad as Monad
+import qualified Data.ByteString as ByteString
+import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Exception.CrcMismatch as CrcMismatch
@@ -7,10 +10,6 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Crc as Crc
 import qualified Rattletrap.Utility.Json as Json
-
-import qualified Control.Monad as Monad
-import qualified Data.ByteString as ByteString
-import qualified Data.Text as Text
 
 -- | A section is a large piece of a 'Rattletrap.Replay.Replay'. It has a
 -- 32-bit size (in bytes), a 32-bit CRC (see "Rattletrap.Utility.Crc"), and then a

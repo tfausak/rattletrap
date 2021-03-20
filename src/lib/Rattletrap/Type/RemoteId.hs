@@ -1,5 +1,6 @@
 module Rattletrap.Type.RemoteId where
 
+import qualified Data.Foldable as Foldable
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Exception.UnknownSystemId as UnknownSystemId
@@ -14,8 +15,6 @@ import qualified Rattletrap.Type.RemoteId.Xbox as Xbox
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-
-import qualified Data.Foldable as Foldable
 
 data RemoteId
   = PlayStation PlayStation.PlayStation

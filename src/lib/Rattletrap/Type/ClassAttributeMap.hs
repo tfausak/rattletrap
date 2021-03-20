@@ -1,5 +1,12 @@
 module Rattletrap.Type.ClassAttributeMap where
 
+import qualified Data.IntMap as IntMap
+import qualified Data.List as List
+import qualified Data.Map as Map
+import qualified Data.Maybe as Maybe
+import qualified Data.Set as Set
+import qualified Data.Text as Text
+import qualified Data.Tuple as Tuple
 import qualified Rattletrap.Data as Data
 import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
 import qualified Rattletrap.Type.Cache as Cache
@@ -8,14 +15,6 @@ import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-
-import qualified Data.IntMap as IntMap
-import qualified Data.List as List
-import qualified Data.Map as Map
-import qualified Data.Maybe as Maybe
-import qualified Data.Set as Set
-import qualified Data.Text as Text
-import qualified Data.Tuple as Tuple
 
 -- | This data structure holds all the information about classes, objects, and
 -- attributes in the replay. The class hierarchy is not fixed; it is encoded
