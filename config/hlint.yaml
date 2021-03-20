@@ -13,8 +13,6 @@
 - modules:
   - { name: Control.Applicative, as: Applicative }
   - { name: Control.Monad, as: Monad }
-  - { name: Control.Monad.Trans.Class, as: Trans }
-  - { name: Control.Monad.Trans.State, as: State }
   - { name: Data.Aeson, as: Aeson }
   - { name: Data.Aeson.Encode.Pretty, as: Aeson }
   - { name: Data.Aeson.Types, as: Aeson }
