@@ -1,7 +1,5 @@
 module Rattletrap.Type.Replication where
 
-import qualified Control.Monad.Trans.Class as Trans
-import qualified Control.Monad.Trans.State as State
 import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
@@ -14,7 +12,6 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import qualified Rattletrap.Utility.Monad as Monad
 
 data Replication = Replication
   { actorId :: CompressedWord.CompressedWord
@@ -52,18 +49,40 @@ decodeReplicationsBits
   -> Version.Version
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
-  -> State.StateT
-       (Map.Map CompressedWord.CompressedWord U32.U32)
-       BitGet.BitGet
-       (List.List Replication)
-decodeReplicationsBits matchType version limit classes = List.untilM $ do
-  p <- Trans.lift BitGet.bool
-  Monad.whenMaybe p $ do
-    actorMap <- State.get
-    (newActorMap, replication) <- Trans.lift
-      $ bitGet matchType version limit classes actorMap
-    State.put newActorMap
-    pure replication
+  -> Map.Map CompressedWord.CompressedWord U32.U32
+  -> BitGet.BitGet
+       ( Map.Map CompressedWord.CompressedWord U32.U32
+       , List.List Replication
+       )
+decodeReplicationsBits matchType version limit classes actorMap =
+  decodeReplicationsBitsWith matchType version limit classes actorMap []
+
+decodeReplicationsBitsWith
+  :: Maybe Str.Str
+  -> Version.Version
+  -> Word
+  -> ClassAttributeMap.ClassAttributeMap
+  -> Map.Map CompressedWord.CompressedWord U32.U32
+  -> [Replication]
+  -> BitGet.BitGet
+       ( Map.Map CompressedWord.CompressedWord U32.U32
+       , List.List Replication
+       )
+decodeReplicationsBitsWith matchType version limit classes actorMap replications
+  = do
+    hasReplication <- BitGet.bool
+    if hasReplication
+      then do
+        (newActorMap, replication) <- bitGet
+          matchType
+          version
+          limit
+          classes
+          actorMap
+        decodeReplicationsBitsWith matchType version limit classes newActorMap
+          $ replication
+          : replications
+      else pure (actorMap, List.fromList $ reverse replications)
 
 bitGet
   :: Maybe Str.Str

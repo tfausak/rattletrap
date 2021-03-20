@@ -18,10 +18,10 @@ import qualified Rattletrap.Utility.Json as Json
 
 data Frame = Frame
   { time :: F32.F32
-  -- ^ Time in seconds since the beginning of the match.
+  -- ^ Time in seconds since the beginning of the match.
   , delta :: F32.F32
-  -- ^ Time in seconds since the last frame. Usually about 0.03 since there
-  -- are 30 frames per second.
+  -- ^ Time in seconds since the last frame. Usually about 0.03 since there
+  -- are 30 frames per second.
   , replications :: List.List Replication.Replication
   }
   deriving (Eq, Show)
@@ -83,9 +83,13 @@ bitGet
 bitGet matchType version limit classes = do
   time <- Trans.lift F32.bitGet
   delta <- Trans.lift F32.bitGet
-  replications <- Replication.decodeReplicationsBits
-    matchType
-    version
-    limit
-    classes
+  actorMap <- State.get
+  (newActorMap, replications) <-
+    Trans.lift $ Replication.decodeReplicationsBits
+      matchType
+      version
+      limit
+      classes
+      actorMap
+  State.put newActorMap
   pure Frame { time, delta, replications }
