@@ -1,6 +1,5 @@
 module Rattletrap.Type.Content where
 
-import qualified Control.Monad.Trans.State as State
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
 import qualified Data.Word as Word
@@ -208,17 +207,13 @@ byteGet matchType version numFrames maxChannels = ByteGet.label "Content" $ do
   let
     classAttributeMap =
       ClassAttributeMap.make objects classMappings caches names
-    bitGet = State.evalStateT
-      (Frame.decodeFramesBits
+    getFrames = BitGet.toByteGet $ Frame.decodeFramesBits
         matchType
         version
         numFrames
         maxChannels
         classAttributeMap
-      )
-      mempty
-  frames <- ByteGet.label "frames"
-    $ ByteGet.embed (BitGet.toByteGet bitGet) stream
+  frames <- ByteGet.label "frames" $ ByteGet.embed getFrames stream
   unknown <- ByteGet.label "unknown"
     $ fmap LazyByteString.unpack ByteGet.remaining
   pure Content

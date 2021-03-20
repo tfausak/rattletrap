@@ -1,7 +1,5 @@
 module Rattletrap.Type.Frame where
 
-import qualified Control.Monad.Trans.Class as Trans
-import qualified Control.Monad.Trans.State as State
 import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
@@ -64,17 +62,46 @@ decodeFramesBits
   -> Int
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
-  -> State.StateT
-       (Map.Map CompressedWord.CompressedWord U32.U32)
-       BitGet.BitGet
-       (List.List Frame)
+  -> BitGet.BitGet (List.List Frame)
 decodeFramesBits matchType version count limit classes =
-  List.replicateM count $ do
-    actorMap <- State.get
-    (newActorMap, frame) <- Trans.lift
-      $ bitGet matchType version limit classes actorMap
-    State.put newActorMap
-    pure frame
+  fmap snd $ decodeFramesBitsWith
+    matchType
+    version
+    count
+    limit
+    classes
+    Map.empty
+    0
+    []
+
+decodeFramesBitsWith
+  :: Maybe Str.Str
+  -> Version.Version
+  -> Int
+  -> Word
+  -> ClassAttributeMap.ClassAttributeMap
+  -> Map.Map CompressedWord.CompressedWord U32.U32
+  -> Int
+  -> [Frame]
+  -> BitGet.BitGet
+       ( Map.Map CompressedWord.CompressedWord U32.U32
+       , List.List Frame
+       )
+decodeFramesBitsWith matchType version count limit classes actorMap index frames
+  = if index >= count
+    then pure (actorMap, List.fromList $ reverse frames)
+    else do
+      (newActorMap, frame) <- bitGet matchType version limit classes actorMap
+      decodeFramesBitsWith
+          matchType
+          version
+          count
+          limit
+          classes
+          newActorMap
+          (index + 1)
+        $ frame
+        : frames
 
 bitGet
   :: Maybe Str.Str
