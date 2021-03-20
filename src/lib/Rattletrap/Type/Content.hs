@@ -208,11 +208,11 @@ byteGet matchType version numFrames maxChannels = ByteGet.label "Content" $ do
     classAttributeMap =
       ClassAttributeMap.make objects classMappings caches names
     getFrames = BitGet.toByteGet $ Frame.decodeFramesBits
-        matchType
-        version
-        numFrames
-        maxChannels
-        classAttributeMap
+      matchType
+      version
+      numFrames
+      maxChannels
+      classAttributeMap
   frames <- ByteGet.label "frames" $ ByteGet.embed getFrames stream
   unknown <- ByteGet.label "unknown"
     $ fmap LazyByteString.unpack ByteGet.remaining
