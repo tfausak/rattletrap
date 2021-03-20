@@ -58,12 +58,12 @@ bitGet
   -> Map.Map CompressedWord.CompressedWord U32.U32
   -> CompressedWord.CompressedWord
   -> BitGet.BitGet Attribute
-bitGet version classes actors actor = do
+bitGet version classes actors actor = BitGet.label "Attribute" $ do
   attributes <- lookupAttributeMap classes actors actor
   limit <- lookupAttributeIdLimit attributes actor
-  id <- CompressedWord.bitGet limit
+  id <- BitGet.label "id" $ CompressedWord.bitGet limit
   name <- lookupAttributeName classes attributes id
-  value <- AttributeValue.bitGet
+  value <- BitGet.label "value" $ AttributeValue.bitGet
     version
     (ClassAttributeMap.objectMap classes)
     name

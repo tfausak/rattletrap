@@ -61,23 +61,28 @@ bitGet
        ( Map.Map CompressedWord.CompressedWord U32.U32
        , ReplicationValue
        )
-bitGet matchType version classAttributeMap actorId actorMap = do
-  isOpen <- BitGet.bool
-  if isOpen
-    then do
-      isNew <- BitGet.bool
-      if isNew
-        then do
-          (newActorMap, spawned) <- Spawned.bitGet
-            matchType
-            version
-            classAttributeMap
-            actorId
-            actorMap
-          pure (newActorMap, Spawned spawned)
-        else do
-          updated <- Updated.bitGet version classAttributeMap actorMap actorId
-          pure (actorMap, Updated updated)
-    else do
-      destroyed <- Destroyed.bitGet
-      pure (actorMap, Destroyed destroyed)
+bitGet matchType version classAttributeMap actorId actorMap =
+  BitGet.label "ReplicationValue" $ do
+    isOpen <- BitGet.bool
+    if isOpen
+      then do
+        isNew <- BitGet.bool
+        if isNew
+          then do
+            (newActorMap, spawned) <- Spawned.bitGet
+              matchType
+              version
+              classAttributeMap
+              actorId
+              actorMap
+            pure (newActorMap, Spawned spawned)
+          else do
+            updated <- Updated.bitGet
+              version
+              classAttributeMap
+              actorMap
+              actorId
+            pure (actorMap, Updated updated)
+      else do
+        destroyed <- Destroyed.bitGet
+        pure (actorMap, Destroyed destroyed)

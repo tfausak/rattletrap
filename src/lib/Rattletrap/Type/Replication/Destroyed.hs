@@ -27,4 +27,4 @@ bitPut :: Destroyed -> BitPut.BitPut
 bitPut _ = mempty
 
 bitGet :: BitGet.BitGet Destroyed
-bitGet = pure Destroyed
+bitGet = BitGet.label "Destroyed" $ pure Destroyed

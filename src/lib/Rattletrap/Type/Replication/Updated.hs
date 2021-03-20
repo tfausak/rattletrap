@@ -40,6 +40,7 @@ bitGet
   -> Map.Map CompressedWord.CompressedWord U32.U32
   -> CompressedWord.CompressedWord
   -> BitGet.BitGet Updated
-bitGet version classes actors actor = fmap Updated . List.untilM $ do
-  p <- BitGet.bool
-  Monad.whenMaybe p $ Attribute.bitGet version classes actors actor
+bitGet version classes actors actor =
+  BitGet.label "Updated" . fmap Updated . List.untilM $ do
+    p <- BitGet.bool
+    Monad.whenMaybe p $ Attribute.bitGet version classes actors actor

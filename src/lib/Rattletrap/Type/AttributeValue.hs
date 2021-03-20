@@ -259,7 +259,7 @@ bitGet
   -> Map.Map U32.U32 Str.Str
   -> Str.Str
   -> BitGet.BitGet AttributeValue
-bitGet version objectMap name = do
+bitGet version objectMap name = BitGet.label "AttributeValue" $ do
   constructor <- case Map.lookup (Str.toText name) Data.attributeTypes of
     Nothing ->
       BitGet.throw . UnknownAttribute.UnknownAttribute $ Str.toString name

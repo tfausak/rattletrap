@@ -55,7 +55,7 @@ decodeReplicationsBits
        , List.List Replication
        )
 decodeReplicationsBits matchType version limit classes actorMap =
-  decodeReplicationsBitsWith matchType version limit classes actorMap []
+  decodeReplicationsBitsWith matchType version limit classes actorMap 0 []
 
 decodeReplicationsBitsWith
   :: Maybe Str.Str
@@ -63,23 +63,27 @@ decodeReplicationsBitsWith
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> Map.Map CompressedWord.CompressedWord U32.U32
+  -> Int
   -> [Replication]
   -> BitGet.BitGet
        ( Map.Map CompressedWord.CompressedWord U32.U32
        , List.List Replication
        )
-decodeReplicationsBitsWith matchType version limit classes actorMap replications
+decodeReplicationsBitsWith matchType version limit classes actorMap index replications
   = do
     hasReplication <- BitGet.bool
     if hasReplication
       then do
-        (newActorMap, replication) <- bitGet
-          matchType
-          version
-          limit
-          classes
-          actorMap
-        decodeReplicationsBitsWith matchType version limit classes newActorMap
+        (newActorMap, replication) <-
+          BitGet.label ("element (" <> show index <> ")")
+            $ bitGet matchType version limit classes actorMap
+        decodeReplicationsBitsWith
+            matchType
+            version
+            limit
+            classes
+            newActorMap
+            (index + 1)
           $ replication
           : replications
       else pure (actorMap, List.fromList $ reverse replications)
@@ -94,12 +98,9 @@ bitGet
        ( Map.Map CompressedWord.CompressedWord U32.U32
        , Replication
        )
-bitGet matchType version limit classes actorMap = do
-  actorId <- CompressedWord.bitGet limit
-  (newActorMap, value) <- ReplicationValue.bitGet
-    matchType
-    version
-    classes
-    actorId
-    actorMap
-  pure (newActorMap, Replication { actorId, value })
+bitGet matchType version limit classes actorMap =
+  BitGet.label "Replication" $ do
+    actorId <- BitGet.label "actorId" $ CompressedWord.bitGet limit
+    (newActorMap, value) <- BitGet.label "value"
+      $ ReplicationValue.bitGet matchType version classes actorId actorMap
+    pure (newActorMap, Replication { actorId, value })
