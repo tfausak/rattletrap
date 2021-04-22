@@ -124,6 +124,7 @@ replays =
   , ("9704", "a batarang")
   , ("98e5", "a player using behind view")
   , ("9a2c", "ghost hunt")
+  , ("9d72", "v1.95 rumble")
   , ("9e35", "spike rush")
   , ("9eaa", "newer replay without trailing bytes")
   , ("a09e", "a tournament")
