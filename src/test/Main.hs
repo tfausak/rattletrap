@@ -69,6 +69,7 @@ replays =
   , ("0416", "v1.78 demolition")
   , ("07e9", "a game mode before Neo Tokyo")
   , ("0ad2", "some Latin-1 text")
+  , ("0e76", "v1.95 rumble")
   , ("1205", "rumble mode")
   , ("160c", "a dedicated server IP")
   , ("16d5", "new property types")

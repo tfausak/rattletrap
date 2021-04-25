@@ -91,6 +91,7 @@ library
     Rattletrap.Type.Attribute.MusicStinger
     Rattletrap.Type.Attribute.PartyLeader
     Rattletrap.Type.Attribute.Pickup
+    Rattletrap.Type.Attribute.PickupInfo
     Rattletrap.Type.Attribute.PickupNew
     Rattletrap.Type.Attribute.PlayerHistoryKey
     Rattletrap.Type.Attribute.PrivateMatchSettings

@@ -107,6 +107,7 @@ classesWithLocation = Set.fromList $ fmap
   , "TAGame.GameEvent_SoccarSplitscreen_TA"
   , "TAGame.GRI_TA"
   , "TAGame.MaxTimeWarningData_TA"
+  , "TAGame.PickupTimer_TA"
   , "TAGame.PRI_TA"
   , "TAGame.RumblePickups_TA"
   , "TAGame.SpecialPickup_BallCarSpring_TA"
@@ -219,6 +220,7 @@ objectClasses = Map.fromList $ fmap
   , ("ProjectX.Default__NetModeReplicator_X", "ProjectX.NetModeReplicator")
   , ("TAGame.Default__CameraSettingsActor_TA", "TAGame.CameraSettingsActor_TA")
   , ("TAGame.Default__MaxTimeWarningData_TA", "TAGame.MaxTimeWarningData_TA")
+  , ("TAGame.Default__PickupTimer_TA", "TAGame.PickupTimer_TA")
   , ("TAGame.Default__PRI_TA", "TAGame.PRI_TA")
   , ("TAGame.Default__RumblePickups_TA", "TAGame.RumblePickups_TA")
   , ("TheWorld:PersistentLevel.BreakOutActor_Platform_TA", "TAGame.BreakOutActor_Platform_TA")
@@ -392,6 +394,7 @@ attributeTypes = Map.fromList $ fmap
   , ("TAGame.RBActor_TA:WeldedInfo", AttributeType.WeldedInfo)
   , ("TAGame.RumblePickups_TA:AttachedPickup", AttributeType.FlaggedInt)
   , ("TAGame.RumblePickups_TA:ConcurrentItemCount", AttributeType.Int)
+  , ("TAGame.RumblePickups_TA:PickupInfo", AttributeType.PickupInfo)
   , ("TAGame.SpecialPickup_BallFreeze_TA:RepOrigSpeed", AttributeType.Float)
   , ("TAGame.SpecialPickup_BallVelcro_TA:AttachTime", AttributeType.Float)
   , ("TAGame.SpecialPickup_BallVelcro_TA:bBroken", AttributeType.Boolean)
