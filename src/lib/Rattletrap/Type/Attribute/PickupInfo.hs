@@ -3,8 +3,8 @@ module Rattletrap.Type.Attribute.PickupInfo where
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.I32 as I32
+import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
 
 data PickupInfo = PickupInfo
@@ -27,7 +27,15 @@ instance Json.FromJSON PickupInfo where
     unknown5 <- Json.required object "unknown5"
     unknown6 <- Json.required object "unknown6"
     unknown7 <- Json.required object "unknown7"
-    pure PickupInfo { unknown1, unknown2, unknown3, unknown4, unknown5, unknown6, unknown7 }
+    pure PickupInfo
+      { unknown1
+      , unknown2
+      , unknown3
+      , unknown4
+      , unknown5
+      , unknown6
+      , unknown7
+      }
 
 instance Json.ToJSON PickupInfo where
   toJSON x = Json.object
@@ -54,12 +62,12 @@ schema = Schema.named "pickup-info" $ Schema.object
 bitPut :: PickupInfo -> BitPut.BitPut
 bitPut x =
   BitPut.bool (unknown1 x)
-  <> BitPut.bool (unknown2 x)
-  <> U32.bitPut (unknown3 x)
-  <> I32.bitPut (unknown4 x)
-  <> I32.bitPut (unknown5 x)
-  <> BitPut.bool (unknown6 x)
-  <> BitPut.bool (unknown7 x)
+    <> BitPut.bool (unknown2 x)
+    <> U32.bitPut (unknown3 x)
+    <> I32.bitPut (unknown4 x)
+    <> I32.bitPut (unknown5 x)
+    <> BitPut.bool (unknown6 x)
+    <> BitPut.bool (unknown7 x)
 
 bitGet :: BitGet.BitGet PickupInfo
 bitGet = BitGet.label "PickupInfo" $ do
@@ -70,4 +78,12 @@ bitGet = BitGet.label "PickupInfo" $ do
   unknown5 <- BitGet.label "unknown5" I32.bitGet
   unknown6 <- BitGet.label "unknown6" BitGet.bool
   unknown7 <- BitGet.label "unknown7" BitGet.bool
-  pure PickupInfo { unknown1, unknown2, unknown3, unknown4, unknown5, unknown6, unknown7 }
+  pure PickupInfo
+    { unknown1
+    , unknown2
+    , unknown3
+    , unknown4
+    , unknown5
+    , unknown6
+    , unknown7
+    }
