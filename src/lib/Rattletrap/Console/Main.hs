@@ -39,6 +39,7 @@ import qualified Rattletrap.Type.Attribute.Location as Attribute.Location
 import qualified Rattletrap.Type.Attribute.MusicStinger as Attribute.MusicStinger
 import qualified Rattletrap.Type.Attribute.PartyLeader as Attribute.PartyLeader
 import qualified Rattletrap.Type.Attribute.Pickup as Attribute.Pickup
+import qualified Rattletrap.Type.Attribute.PickupInfo as Attribute.PickupInfo
 import qualified Rattletrap.Type.Attribute.PickupNew as Attribute.PickupNew
 import qualified Rattletrap.Type.Attribute.PlayerHistoryKey as Attribute.PlayerHistoryKey
 import qualified Rattletrap.Type.Attribute.PrivateMatchSettings as Attribute.PrivateMatchSettings
@@ -186,6 +187,7 @@ schema =
         , Attribute.MusicStinger.schema
         , Attribute.PartyLeader.schema
         , Attribute.Pickup.schema
+        , Attribute.PickupInfo.schema
         , Attribute.PickupNew.schema
         , Attribute.PlayerHistoryKey.schema
         , Attribute.PrivateMatchSettings.schema

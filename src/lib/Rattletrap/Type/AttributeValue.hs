@@ -32,6 +32,7 @@ import qualified Rattletrap.Type.Attribute.Location as Location
 import qualified Rattletrap.Type.Attribute.MusicStinger as MusicStinger
 import qualified Rattletrap.Type.Attribute.PartyLeader as PartyLeader
 import qualified Rattletrap.Type.Attribute.Pickup as Pickup
+import qualified Rattletrap.Type.Attribute.PickupInfo as PickupInfo
 import qualified Rattletrap.Type.Attribute.PickupNew as PickupNew
 import qualified Rattletrap.Type.Attribute.PlayerHistoryKey as PlayerHistoryKey
 import qualified Rattletrap.Type.Attribute.PrivateMatchSettings as PrivateMatchSettings
@@ -76,6 +77,7 @@ data AttributeValue
   | MusicStinger MusicStinger.MusicStinger
   | PartyLeader PartyLeader.PartyLeader
   | Pickup Pickup.Pickup
+  | PickupInfo PickupInfo.PickupInfo
   | PickupNew PickupNew.PickupNew
   | PlayerHistoryKey PlayerHistoryKey.PlayerHistoryKey
   | PrivateMatchSettings PrivateMatchSettings.PrivateMatchSettings
@@ -117,6 +119,7 @@ instance Json.FromJSON AttributeValue where
     , fmap MusicStinger $ Json.required object "music_stinger"
     , fmap PartyLeader $ Json.required object "party_leader"
     , fmap Pickup $ Json.required object "pickup"
+    , fmap PickupInfo $ Json.required object "pickup_info"
     , fmap PickupNew $ Json.required object "pickup_new"
     , fmap PlayerHistoryKey $ Json.required object "player_history_key"
     , fmap PrivateMatchSettings $ Json.required object "private_match_settings"
@@ -158,6 +161,7 @@ instance Json.ToJSON AttributeValue where
     MusicStinger y -> Json.object [Json.pair "music_stinger" y]
     PartyLeader y -> Json.object [Json.pair "party_leader" y]
     Pickup y -> Json.object [Json.pair "pickup" y]
+    PickupInfo y -> Json.object [Json.pair "pickup_info" y]
     PickupNew y -> Json.object [Json.pair "pickup_new" y]
     PlayerHistoryKey y -> Json.object [Json.pair "player_history_key" y]
     PrivateMatchSettings y ->
@@ -199,6 +203,7 @@ schema = Schema.named "attribute-value" . Schema.oneOf $ fmap
   , ("location", Location.schema)
   , ("music_stinger", MusicStinger.schema)
   , ("party_leader", PartyLeader.schema)
+  , ("pickup_info", PickupInfo.schema)
   , ("pickup_new", PickupNew.schema)
   , ("pickup", Pickup.schema)
   , ("player_history_key", PlayerHistoryKey.schema)
@@ -241,6 +246,7 @@ bitPut value = case value of
   MusicStinger x -> MusicStinger.bitPut x
   PartyLeader x -> PartyLeader.bitPut x
   Pickup x -> Pickup.bitPut x
+  PickupInfo x -> PickupInfo.bitPut x
   PickupNew x -> PickupNew.bitPut x
   PlayerHistoryKey x -> PlayerHistoryKey.bitPut x
   PrivateMatchSettings x -> PrivateMatchSettings.bitPut x
@@ -295,6 +301,7 @@ bitGet version objectMap name = BitGet.label "AttributeValue" $ do
     AttributeType.MusicStinger -> fmap MusicStinger MusicStinger.bitGet
     AttributeType.PartyLeader -> fmap PartyLeader $ PartyLeader.bitGet version
     AttributeType.Pickup -> fmap Pickup Pickup.bitGet
+    AttributeType.PickupInfo -> fmap PickupInfo PickupInfo.bitGet
     AttributeType.PickupNew -> fmap PickupNew PickupNew.bitGet
     AttributeType.PlayerHistoryKey ->
       fmap PlayerHistoryKey PlayerHistoryKey.bitGet

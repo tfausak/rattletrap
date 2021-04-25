@@ -26,6 +26,7 @@ data AttributeType
   | MusicStinger
   | PartyLeader
   | Pickup
+  | PickupInfo
   | PickupNew
   | PlayerHistoryKey
   | PrivateMatchSettings

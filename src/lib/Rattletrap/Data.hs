@@ -394,6 +394,7 @@ attributeTypes = Map.fromList $ fmap
   , ("TAGame.RBActor_TA:WeldedInfo", AttributeType.WeldedInfo)
   , ("TAGame.RumblePickups_TA:AttachedPickup", AttributeType.FlaggedInt)
   , ("TAGame.RumblePickups_TA:ConcurrentItemCount", AttributeType.Int)
+  , ("TAGame.RumblePickups_TA:PickupInfo", AttributeType.PickupInfo)
   , ("TAGame.SpecialPickup_BallFreeze_TA:RepOrigSpeed", AttributeType.Float)
   , ("TAGame.SpecialPickup_BallVelcro_TA:AttachTime", AttributeType.Float)
   , ("TAGame.SpecialPickup_BallVelcro_TA:bBroken", AttributeType.Boolean)
