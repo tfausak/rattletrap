@@ -107,6 +107,7 @@ classesWithLocation = Set.fromList $ fmap
   , "TAGame.GameEvent_SoccarSplitscreen_TA"
   , "TAGame.GRI_TA"
   , "TAGame.MaxTimeWarningData_TA"
+  , "TAGame.PickupTimer_TA"
   , "TAGame.PRI_TA"
   , "TAGame.RumblePickups_TA"
   , "TAGame.SpecialPickup_BallCarSpring_TA"
@@ -219,6 +220,7 @@ objectClasses = Map.fromList $ fmap
   , ("ProjectX.Default__NetModeReplicator_X", "ProjectX.NetModeReplicator")
   , ("TAGame.Default__CameraSettingsActor_TA", "TAGame.CameraSettingsActor_TA")
   , ("TAGame.Default__MaxTimeWarningData_TA", "TAGame.MaxTimeWarningData_TA")
+  , ("TAGame.Default__PickupTimer_TA", "TAGame.PickupTimer_TA")
   , ("TAGame.Default__PRI_TA", "TAGame.PRI_TA")
   , ("TAGame.Default__RumblePickups_TA", "TAGame.RumblePickups_TA")
   , ("TheWorld:PersistentLevel.BreakOutActor_Platform_TA", "TAGame.BreakOutActor_Platform_TA")
