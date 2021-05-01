@@ -1,0 +1,9 @@
+{
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "extensions": [
+    "taylorfausak.purple-yolk"
+  ],
+  "postCreateCommand": "cabal update"
+}
