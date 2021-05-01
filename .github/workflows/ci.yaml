@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: curl --location --output hlint.tar.gz https://github.com/ndmitchell/hlint/releases/download/v3.2.7/hlint-3.2.7-x86_64-linux.tar.gz
+      - run: curl --location --output hlint.tar.gz https://github.com/ndmitchell/hlint/releases/download/v3.3.1/hlint-3.3.1-x86_64-linux.tar.gz
       - run: gzip --decompress hlint.tar.gz
       - run: tar --extract --file hlint.tar
       - run: echo '::add-matcher::config/hlint-problem-matcher.json'
-      - run: hlint-3.2.7/hlint --hint config/hlint.yaml src
+      - run: hlint-3.3.1/hlint --hint config/hlint.yaml src
 
   brittany:
     runs-on: ubuntu-20.04
@@ -75,7 +75,10 @@ jobs:
 
       - run: cabal exec runghc src/util/copy-executable.hs artifact/${{ matrix.os }}
 
-      - run: strip artifact/${{ matrix.os }}/rattletrap
+      - uses: svenstaro/upx-action
+        with:
+          file: artifact/${{ matrix.os }}/rattletrap
+          args: --best
 
       - run: cp output/schema.json artifact/${{ matrix.os }}
 
