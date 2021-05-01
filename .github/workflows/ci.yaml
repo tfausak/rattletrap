@@ -75,7 +75,7 @@ jobs:
 
       - run: cabal exec runghc src/util/copy-executable.hs artifact/${{ matrix.os }}
 
-      - uses: svenstaro/upx-action
+      - uses: svenstaro/upx-action@v2
         with:
           file: artifact/${{ matrix.os }}/rattletrap
           args: --best
