@@ -27,7 +27,7 @@ Get Rattletrap by downloading [the latest release][] for your platform.
 Rattletrap is also available as [a Docker image][docker].
 
 To build Rattletrap from source, install [Stack][]. Then run
-`stack --resolver lts-14.25 install rattletrap`.
+`stack --resolver nightly-2021-05-01 install rattletrap`.
 
 ## Replays
 
