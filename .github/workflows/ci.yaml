@@ -59,7 +59,7 @@ jobs:
 
       - run: cabal build
 
-      - run: cabal test
+      - run: cabal test --test-options '+RTS -s -RTS'
 
       - run: npm install ajv-cli
 
