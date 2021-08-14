@@ -89,6 +89,7 @@ replays =
   , ("29f5", "frames")
   , ("2cfe", "a new playstation id")
   , ("3381", "patch 1.37")
+  , ("35f6", "heatseeker v2.01")
   , ("372d", "a camera yaw attribute")
   , ("383e", "older unknown content field")
   , ("387f", "a frozen attribute")
