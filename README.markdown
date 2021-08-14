@@ -10,15 +10,20 @@ and points, or low-level details like positions and cameras. Generating replays
 can be used to modify replays in order to force everyone into the same car or
 change the map a game was played on.
 
-Rattletrap supports every version of Rocket League up to [1.95][], which was
-released on 2021-04-14. If a replay can be played by the Rocket League client,
+Rattletrap supports every version of Rocket League up to [2.01][], which was
+released on 2021-08-10. If a replay can be played by the Rocket League client,
 it can be parsed by Rattletrap. (If not, that's a bug. Please report it!)
 
 Rattletrap is a command-line application. You should only use it if you're
 comfortable running things in terminals or command prompts. Otherwise consider
-using another tool like [Ball Chasing][]. Rattletrap is written in [Haskell][].
-If you'd like to use a program written in a different language, consider
-@jjbott's [C# parser][] or @nickbabcock's [Rust parser][].
+using another tool like [Ball Chasing][].
+
+Rattletrap is written in [Haskell][]. If you'd like to use a program written in
+a different language, consider one of the following:
+
+- <https://github.com/jjbott/RocketLeagueReplayParser> (C#)
+- <https://github.com/nickbabcock/rrrocket> (Rust)
+- <https://github.com/Bakkes/CPPRP> (C++)
 
 ## Install
 
@@ -53,7 +58,7 @@ $ rattletrap --help
 ```
 
 ```
-rattletrap version 10.0.0
+rattletrap version 11.2.0
   -c           --compact         minify JSON output
   -f           --fast            only encode or decode the header
   -h           --help            show the help
@@ -133,10 +138,8 @@ $ rattletrap -i input.replay |
 [Docker badge]: https://img.shields.io/docker/v/taylorfausak/rattletrap?label=docker&logo=docker&logoColor=white
 [docker]: https://hub.docker.com/r/taylorfausak/rattletrap
 [Rocket League]: https://www.rocketleague.com
-[1.95]: https://www.rocketleague.com/news/patch-notes-v1-95/
+[2.01]: https://www.rocketleague.com/news/patch-notes-v2-01-season-4-update/
 [Ball Chasing]: https://ballchasing.com
 [Haskell]: https://www.haskell.org
-[C# parser]: https://github.com/jjbott/RocketLeagueReplayParser
-[Rust parser]: https://github.com/nickbabcock/rrrocket
 [the latest release]: https://github.com/tfausak/rattletrap/releases/latest
 [Stack]: https://docs.haskellstack.org/en/stable/README/
