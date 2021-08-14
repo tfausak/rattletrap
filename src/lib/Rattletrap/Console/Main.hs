@@ -142,9 +142,9 @@ defaultMain config = do
     Left (ls, e) -> do
       IO.hPutStr IO.stderr $ unlines
         [ "ERROR: " <> Exception.displayException e
-        , "# Context: " <> List.intercalate " -> " ls
-        , "# You are using Rattletrap version " <> Version.string
-        , "# Please report this problem at https://github.com/tfausak/rattletrap/issues/new"
+        , "-- Context: " <> List.intercalate ", " ls
+        , "-- You are using Rattletrap version " <> Version.string
+        , "-- Please report this problem at https://github.com/tfausak/rattletrap/issues/new"
         ]
       Exit.exitFailure
     Right x -> pure x
