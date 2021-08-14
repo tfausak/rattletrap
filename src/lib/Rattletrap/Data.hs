@@ -298,6 +298,7 @@ attributeTypes = Map.fromList $ fmap
   , ("TAGame.Car_TA:ClubColors", AttributeType.ClubColors)
   , ("TAGame.Car_TA:ReplicatedDemolish_CustomFX", AttributeType.CustomDemolish)
   , ("TAGame.Car_TA:ReplicatedDemolish", AttributeType.Demolish)
+  , ("TAGame.Car_TA:ReplicatedDemolishGoalExplosion", AttributeType.CustomDemolish)
   , ("TAGame.Car_TA:RumblePickups", AttributeType.FlaggedInt)
   , ("TAGame.Car_TA:TeamPaint", AttributeType.TeamPaint)
   , ("TAGame.CarComponent_Boost_TA:bNoBoost", AttributeType.Boolean)
