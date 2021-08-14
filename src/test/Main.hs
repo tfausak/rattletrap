@@ -87,6 +87,7 @@ replays =
   , ("22ba", "a vote to forfeit")
   , ("27b6", "some UTF-16 text")
   , ("29f5", "frames")
+  , ("2cf8", "demo v2.01")
   , ("2cfe", "a new playstation id")
   , ("3381", "patch 1.37")
   , ("35f6", "heatseeker v2.01")
