@@ -64,109 +64,109 @@ directory = "output"
 
 replays :: [(String, String)]
 replays =
-  [ ("0008", "a flip time")
-  , ("000b", "nintendo switch")
-  , ("0416", "v1.78 demolition")
-  , ("07e9", "a game mode before Neo Tokyo")
-  , ("0ad2", "some Latin-1 text")
-  , ("0e76", "v1.95 rumble")
-  , ("1205", "rumble mode")
-  , ("160c", "a dedicated server IP")
-  , ("16d5", "new property types")
-  , ("18d6", "an online loadout attribute")
-  , ("1a12", "overtime")
-  , ("1ae4", "a game time")
-  , ("1bc2", "no padding after the frames")
-  , ("1d1d", "a camera pitch")
-  , ("1ec9", "a V1.63 match")
-  , ("1ef9", "a private hoops match")
-  , ("1f37", "splitscreen players")
-  , ("2114", "a match save")
-  , ("21a8", "v1.66")
-  , ("2266", "dropshot")
-  , ("22ba", "a vote to forfeit")
-  , ("27b6", "some UTF-16 text")
-  , ("29f5", "frames")
-  , ("2cf8", "demo v2.01")
-  , ("2cfe", "a new playstation id")
-  , ("3381", "patch 1.37")
-  , ("35f6", "heatseeker v2.01")
-  , ("372d", "a camera yaw attribute")
-  , ("383e", "older unknown content field")
-  , ("387f", "a frozen attribute")
-  , ("3abd", "rlcs")
-  , ("3ea1", "a custom team name")
-  , ("4126", "a game mode after Neo Tokyo")
-  , ("419a", "a club match")
-  , ("42f0", "reservations after Neo Tokyo")
-  , ("42f2", "anniversary ball")
-  , ("4bc3", "with timed out attribute")
-  , ("504e", "some messages")
-  , ("520e", "no pickup attribute")
-  , ("524f", "quat edge case")
-  , ("52aa", "a match-ending attribute")
-  , ("540d", "a demolish attribute")
-  , ("551c", "private match settings")
-  , ("5a06", "esports items")
-  , ("6210", "different player history key")
-  , ("6320", "a forfeit attribute")
-  , ("6688", "a malformed byte property")
-  , ("6b0d", "patch 1.37")
-  , ("6d1b", "a flip right")
-  , ("6f7c", "a map with numbers")
-  , ("7083", "weird basketball capitalization")
-  , ("7109", "a boost modifier")
-  , ("7256", "special edition")
-  , ("75ce", "primary and secondary titles")
-  , ("7bf6", "an online loadouts attribute")
-  , ("81d1", "gridiron")
-  , ("89cb", "remote user data")
-  , ("8ae5", "new painted items")
-  , ("92a6", "with server performance state")
-  , ("946f", "patch 1.43")
-  , ("9704", "a batarang")
-  , ("98e5", "a player using behind view")
-  , ("9a2c", "ghost hunt")
-  , ("9e35", "spike rush")
-  , ("9eaa", "newer replay without trailing bytes")
-  , ("a09e", "a tournament")
-  , ("a128", "a round count down")
-  , ("a184", "max score")
-  , ("a1c0", "epic system id")
-  , ("a52f", "some more mutators")
-  , ("a558", "extended explosion data")
-  , ("a671", "a waiting player")
-  , ("a676", "new user color")
-  , ("a7f0", "a ready attribute")
-  , ("a9df", "salty shores patch 1.45")
-  , ("aa70", "patch 1.50 - TitleID attribute")
-  , ("afb1", "patch 1.37")
-  , ("b9f9", "a party leader")
-  , ("c14f", "some mutators")
-  , ("c23b", "new psynet id")
-  , ("c837", "a spectator")
-  , ("cc4c", "after Starbase ARC")
-  , ("d044", "hoops mutators")
-  , ("d1d5", "v1.68")
-  , ("d236", "rlcs s2")
-  , ("d428", "a private hockey match")
-  , ("d44c", "ranked tournament")
-  , ("d52e", "psynet system id")
-  , ("d7fb", "an explosion attribute")
-  , ("d818", "heatseeker")
-  , ("db70", "new lag indicator")
-  , ("dcab", "weird ball attribute value")
-  , ("dcb3", "a pawn type attribute")
-  , ("dd14", "v1.88")
-  , ("de56", "a problematic product attribute")
-  , ("e80d", "unlimited time")
-  , ("e978", "distracted")
-  , ("eae3", "an actor/object ID collision")
-  , ("eae8", "custom team colors")
-  , ("edbb", "remote role")
-  , ("f299", "a location attribute")
-  , ("f7b9", "a hockey game event")
-  , ("f811", "no frames")
-  , ("fdc7", "an MVP")
-  , ("ffb7", "with difficulty")
+  [ ("0008", "a flip time") -- https://github.com/tfausak/rattletrap/commit/ee7afa0
+  , ("000b", "nintendo switch") -- https://github.com/tfausak/rattletrap/pull/60
+  , ("0416", "v1.78 demolition") -- https://github.com/tfausak/rattletrap/pull/164
+  , ("07e9", "a game mode before Neo Tokyo") -- https://github.com/tfausak/rattletrap/commit/b806f9b
+  , ("0ad2", "some Latin-1 text") -- https://github.com/tfausak/rattletrap/commit/13a8b2d
+  , ("0e76", "v1.95 rumble") -- https://github.com/tfausak/rattletrap/pull/237
+  , ("1205", "rumble mode") -- https://github.com/tfausak/rattletrap/commit/5256500
+  , ("160c", "a dedicated server IP") -- https://github.com/tfausak/rattletrap/commit/5c64a6d
+  , ("16d5", "new property types") -- https://github.com/tfausak/rattletrap/pull/41
+  , ("18d6", "an online loadout attribute") -- https://github.com/tfausak/rattletrap/commit/a9900e7
+  , ("1a12", "overtime") -- https://github.com/tfausak/rattletrap/commit/ada6053
+  , ("1ae4", "a game time") -- https://github.com/tfausak/rattletrap/commit/d08176e
+  , ("1bc2", "no padding after the frames") -- https://github.com/tfausak/rattletrap/commit/c9a2dd8
+  , ("1d1d", "a camera pitch") -- https://github.com/tfausak/rattletrap/commit/ee7afa0
+  , ("1ec9", "a V1.63 match") -- https://github.com/tfausak/rattletrap/pull/132
+  , ("1ef9", "a private hoops match") -- https://github.com/tfausak/rattletrap/commit/5570839
+  , ("1f37", "splitscreen players") -- https://github.com/tfausak/rattletrap/commit/c4d2f32
+  , ("2114", "a match save") -- https://github.com/tfausak/rattletrap/commit/ee7afa0
+  , ("21a8", "v1.66") -- https://github.com/tfausak/rattletrap/pull/142
+  , ("2266", "dropshot") -- https://github.com/tfausak/rattletrap/pull/36
+  , ("22ba", "a vote to forfeit") -- https://github.com/tfausak/rattletrap/commit/86656bb
+  , ("27b6", "some UTF-16 text") -- https://github.com/tfausak/rattletrap/commit/c4d2f32
+  , ("29f5", "frames") -- https://github.com/tfausak/rattletrap/commit/bf4b6af
+  , ("2cf8", "demo v2.01") -- https://github.com/tfausak/rattletrap/pull/243
+  , ("2cfe", "a new playstation id") -- https://github.com/tfausak/rattletrap/issues/51
+  , ("3381", "patch 1.37") -- https://github.com/tfausak/rattletrap/pull/48
+  , ("35f6", "heatseeker v2.01") -- https://github.com/tfausak/rattletrap/commit/57d86c2
+  , ("372d", "a camera yaw attribute") -- https://github.com/tfausak/rattletrap/commit/9c1516c
+  , ("383e", "older unknown content field") -- https://github.com/tfausak/rattletrap/pull/123
+  , ("387f", "a frozen attribute") -- https://github.com/tfausak/rattletrap/commit/93ce196
+  , ("3abd", "rlcs") -- https://github.com/tfausak/rattletrap/pull/86
+  , ("3ea1", "a custom team name") -- https://github.com/tfausak/rattletrap/commit/cf4d145
+  , ("4126", "a game mode after Neo Tokyo") -- https://github.com/tfausak/rattletrap/commit/a1cf21e
+  , ("419a", "a club match") -- https://github.com/tfausak/rattletrap/commit/8e35043
+  , ("42f0", "reservations after Neo Tokyo") -- https://github.com/tfausak/rattletrap/commit/163684f
+  , ("42f2", "anniversary ball") -- https://github.com/tfausak/rattletrap/issues/147
+  , ("4bc3", "with timed out attribute") -- https://github.com/tfausak/rattletrap/pull/98
+  , ("504e", "some messages") -- https://github.com/tfausak/rattletrap/commit/1d4a538
+  , ("520e", "no pickup attribute") -- https://github.com/tfausak/rattletrap/pull/38
+  , ("524f", "quat edge case") -- https://github.com/tfausak/rattletrap/pull/87
+  , ("52aa", "a match-ending attribute") -- https://github.com/tfausak/rattletrap/commit/5c64a6d
+  , ("540d", "a demolish attribute") -- https://github.com/tfausak/rattletrap/commit/65ce033
+  , ("551c", "private match settings") -- https://github.com/tfausak/rattletrap/commit/5c9ebfc
+  , ("5a06", "esports items") -- https://github.com/tfausak/rattletrap/pull/114
+  , ("6210", "different player history key") -- https://github.com/tfausak/rattletrap/pull/63
+  , ("6320", "a forfeit attribute") -- https://github.com/tfausak/rattletrap/pull/20
+  , ("6688", "a malformed byte property") -- https://github.com/tfausak/rattletrap/commit/b1ec18b
+  , ("6b0d", "patch 1.37") -- https://github.com/tfausak/rattletrap/pull/48
+  , ("6d1b", "a flip right") -- https://github.com/tfausak/rattletrap/commit/ee7afa0
+  , ("6f7c", "a map with numbers") -- https://github.com/tfausak/rattletrap/commit/2629511
+  , ("7083", "weird basketball capitalization") -- https://github.com/tfausak/rattletrap/pull/63
+  , ("7109", "a boost modifier") -- https://github.com/tfausak/rattletrap/commit/ee7afa0
+  , ("7256", "special edition") -- https://github.com/tfausak/rattletrap/pull/103
+  , ("75ce", "primary and secondary titles") -- https://github.com/tfausak/rattletrap/pull/69
+  , ("7bf6", "an online loadouts attribute") -- https://github.com/tfausak/rattletrap/commit/89d02f7
+  , ("81d1", "gridiron") -- https://github.com/tfausak/rattletrap/pull/180
+  , ("89cb", "remote user data") -- https://github.com/tfausak/rattletrap/commit/163684f
+  , ("8ae5", "new painted items") -- https://github.com/tfausak/rattletrap/pull/43
+  , ("92a6", "with server performance state") -- https://github.com/tfausak/rattletrap/pull/93
+  , ("946f", "patch 1.43") -- https://github.com/tfausak/rattletrap/pull/69
+  , ("9704", "a batarang") -- https://github.com/tfausak/rattletrap/commit/5958e5c
+  , ("98e5", "a player using behind view") -- https://github.com/tfausak/rattletrap/commit/163684f
+  , ("9a2c", "ghost hunt") -- https://github.com/tfausak/rattletrap/pull/160
+  , ("9e35", "spike rush") -- https://github.com/tfausak/rattletrap/pull/160
+  , ("9eaa", "newer replay without trailing bytes") -- https://github.com/tfausak/rattletrap/pull/126
+  , ("a09e", "a tournament") -- https://github.com/tfausak/rattletrap/pull/69
+  , ("a128", "a round count down") -- https://github.com/tfausak/rattletrap/commit/8bb778d
+  , ("a184", "max score") -- https://github.com/tfausak/rattletrap/pull/158
+  , ("a1c0", "epic system id") -- https://github.com/tfausak/rattletrap/pull/167
+  , ("a52f", "some more mutators") -- https://github.com/tfausak/rattletrap/commit/ee7afa0
+  , ("a558", "extended explosion data") -- https://github.com/tfausak/rattletrap/pull/44
+  , ("a671", "a waiting player") -- https://github.com/tfausak/rattletrap/commit/163684f
+  , ("a676", "new user color") -- https://github.com/tfausak/rattletrap/pull/93
+  , ("a7f0", "a ready attribute") -- https://github.com/tfausak/rattletrap/commit/78af1fd
+  , ("a9df", "salty shores patch 1.45") -- https://github.com/tfausak/rattletrap/pull/78
+  , ("aa70", "patch 1.50 - TitleID attribute") -- https://github.com/tfausak/rattletrap/pull/93
+  , ("afb1", "patch 1.37") -- https://github.com/tfausak/rattletrap/pull/48
+  , ("b9f9", "a party leader") -- https://github.com/tfausak/rattletrap/commit/bba2cfd
+  , ("c14f", "some mutators") -- https://github.com/tfausak/rattletrap/commit/bba2cfd
+  , ("c23b", "new psynet id") -- https://github.com/tfausak/rattletrap/pull/118
+  , ("c837", "a spectator") -- https://github.com/tfausak/rattletrap/commit/bba2cfd
+  , ("cc4c", "after Starbase ARC") -- https://github.com/tfausak/rattletrap/pull/20
+  , ("d044", "hoops mutators") -- https://github.com/tfausak/rattletrap/pull/34
+  , ("d1d5", "v1.68") -- https://github.com/tfausak/rattletrap/pull/146
+  , ("d236", "rlcs s2") -- https://github.com/tfausak/rattletrap/pull/88
+  , ("d428", "a private hockey match") -- https://github.com/tfausak/rattletrap/commit/4c104b2
+  , ("d44c", "ranked tournament") -- https://github.com/tfausak/rattletrap/pull/167
+  , ("d52e", "psynet system id") -- https://github.com/tfausak/rattletrap/pull/99
+  , ("d7fb", "an explosion attribute") -- https://github.com/tfausak/rattletrap/commit/c554e3e
+  , ("d818", "heatseeker") -- https://github.com/tfausak/rattletrap/pull/160
+  , ("db70", "new lag indicator") -- https://github.com/tfausak/rattletrap/pull/69
+  , ("dcab", "weird ball attribute value") -- https://github.com/tfausak/rattletrap/issues/149
+  , ("dcb3", "a pawn type attribute") -- https://github.com/tfausak/rattletrap/commit/7d7f438
+  , ("dd14", "v1.88") -- https://github.com/tfausak/rattletrap/pull/170
+  , ("de56", "a problematic product attribute") -- https://github.com/tfausak/rattletrap/issues/51
+  , ("e80d", "unlimited time") -- https://github.com/tfausak/rattletrap/pull/76
+  , ("e978", "distracted") -- https://github.com/tfausak/rattletrap/issues/156
+  , ("eae3", "an actor/object ID collision") -- https://github.com/tfausak/rattletrap/commit/d8fad06
+  , ("eae8", "custom team colors") -- https://github.com/tfausak/rattletrap/commit/809240f
+  , ("edbb", "remote role") -- https://github.com/tfausak/rattletrap/pull/106
+  , ("f299", "a location attribute") -- https://github.com/tfausak/rattletrap/commit/21b09c5
+  , ("f7b9", "a hockey game event") -- https://github.com/tfausak/rattletrap/commit/3e16d7f
+  , ("f811", "no frames") -- https://github.com/tfausak/rattletrap/commit/bf4b6af
+  , ("fdc7", "an MVP") -- https://github.com/tfausak/rattletrap/commit/65019d2
+  , ("ffb7", "with difficulty") -- https://github.com/tfausak/rattletrap/pull/167
   ]
