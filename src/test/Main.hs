@@ -2,47 +2,43 @@ import qualified Control.Monad as Monad
 import qualified Data.ByteString as ByteString
 import qualified GHC.Clock as Clock
 import qualified Rattletrap
-import qualified System.Exit as Exit
 import qualified System.FilePath as FilePath
-import qualified Test.HUnit as Test
 import qualified Text.Printf as Printf
 
 main :: IO ()
-main = runTests makeTests
+main = do
+  let directory = "output"
+  generateSchema directory
+  mapM_ (testReplay directory) replays
 
-runTests :: Test.Test -> IO ()
-runTests test = do
-  Rattletrap.rattletrap
-    ""
-    ["--schema", "--output", FilePath.combine directory "schema.json"]
-  (result, elapsed) <- withElapsed $ Test.runTestTT test
-  Printf.printf "Total time: %.3f seconds\n" elapsed
-  Monad.when
-    (Test.errors result > 0 || Test.failures result > 0)
-    Exit.exitFailure
+generateSchema :: FilePath -> IO ()
+generateSchema directory = Rattletrap.rattletrap
+  ""
+  ["--schema", "--output", FilePath.combine directory "schema.json"]
 
-makeTests :: Test.Test
-makeTests = Test.TestList $ fmap toTest replays
-
-toTest :: (String, String) -> Test.Test
-toTest (uuid, name) =
-  Test.TestLabel (toLabel uuid name) . Test.TestCase $ toAssertion uuid
-
-toLabel :: String -> String -> String
-toLabel uuid name = uuid <> ": " <> name
-
-toAssertion :: String -> Test.Assertion
-toAssertion uuid = do
-  let
-    inputFile = FilePath.combine "replays" $ uuid <> ".replay"
-    jsonFile = FilePath.combine directory $ uuid <> ".json"
-    outputFile = FilePath.combine directory $ uuid <> ".replay"
+testReplay :: FilePath -> (FilePath, String) -> IO ()
+testReplay directory (uuid, name) = do
+  let inputFile = FilePath.combine "replays" $ uuid <> ".replay"
   input <- ByteString.readFile inputFile
-  decode inputFile jsonFile
-  encode jsonFile outputFile
+  let mb = fromIntegral (ByteString.length input) / (1024 * 1024 :: Double)
+  Printf.printf "- replay: %s %s (%.3f mb)\n" uuid name mb
+  let jsonFile = FilePath.combine directory $ uuid <> ".json"
+  do
+    (s, ()) <- withDuration $ decode inputFile jsonFile
+    Printf.printf "  decode: %.3f s @ %.3f mb/s\n" s (mb / s)
+  let outputFile = FilePath.combine directory $ uuid <> ".replay"
+  do
+    (s, ()) <- withDuration $ encode jsonFile outputFile
+    Printf.printf "  encode: %.3f s @ %.3f mb/s\n" s (mb / s)
   output <- ByteString.readFile outputFile
-  Monad.when (output /= input)
-    $ Test.assertFailure "output does not match input"
+  Monad.when (output /= input) $ fail "output does not match input"
+
+withDuration :: IO a -> IO (Double, a)
+withDuration action = do
+  before <- Clock.getMonotonicTime
+  result <- action
+  after <- Clock.getMonotonicTime
+  pure (after - before, result)
 
 decode :: FilePath -> FilePath -> IO ()
 decode input output =
@@ -51,16 +47,6 @@ decode input output =
 encode :: FilePath -> FilePath -> IO ()
 encode input output =
   Rattletrap.rattletrap "" ["--input", input, "--output", output]
-
-withElapsed :: IO a -> IO (a, Double)
-withElapsed action = do
-  before <- Clock.getMonotonicTime
-  result <- action
-  after <- Clock.getMonotonicTime
-  pure (result, after - before)
-
-directory :: FilePath
-directory = "output"
 
 replays :: [(String, String)]
 replays =
