@@ -14,25 +14,23 @@ Rattletrap supports every version of Rocket League up to [2.01][], which was
 released on 2021-08-10. If a replay can be played by the Rocket League client,
 it can be parsed by Rattletrap. (If not, that's a bug. Please report it!)
 
+## Install
+
 Rattletrap is a command-line application. You should only use it if you're
 comfortable running things in terminals or command prompts. Otherwise consider
 using another tool like [Ball Chasing][].
 
-Rattletrap is written in [Haskell][]. If you'd like to use a program written in
-a different language, consider one of the following:
+The best way to get Rattletrap is by downloading [the latest release][] for
+your platform. Rattletrap is also available as [a Docker image][docker].
+
+Rattletrap is written in [Haskell][]. To build Rattletrap from source, install
+[Stack][]. Then run `stack --resolver nightly-2021-08-14 install rattletrap`.
+If you'd like to use a program written in a different language, consider one of
+the following:
 
 - <https://github.com/jjbott/RocketLeagueReplayParser> (C#)
 - <https://github.com/nickbabcock/rrrocket> (Rust)
 - <https://github.com/Bakkes/CPPRP> (C++)
-
-## Install
-
-Get Rattletrap by downloading [the latest release][] for your platform.
-
-Rattletrap is also available as [a Docker image][docker].
-
-To build Rattletrap from source, install [Stack][]. Then run
-`stack --resolver nightly-2021-08-14 install rattletrap`.
 
 ## Replays
 
