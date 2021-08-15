@@ -144,6 +144,7 @@ defaultMain config = do
         [ "ERROR: " <> Exception.displayException e
         , "-- Context: " <> List.intercalate ", " ls
         , "-- You are using Rattletrap version " <> Version.string
+        , "-- " <> show config
         , "-- Please report this problem at https://github.com/tfausak/rattletrap/issues/new"
         ]
       Exit.exitFailure
