@@ -3,5 +3,5 @@ packages: .
 test-show-details: direct
 
 package rattletrap
-  ghc-options: -O2 -Werror
+  ghc-options: -Werror
   tests: True
