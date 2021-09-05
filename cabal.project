@@ -1,4 +1,7 @@
 jobs: $ncpus
 packages: .
 test-show-details: direct
-tests: True
+
+package rattletrap
+  ghc-options: -O2 -Werror
+  tests: True
