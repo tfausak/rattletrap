@@ -10,7 +10,6 @@ module Rattletrap.Utility.Json
   ) where
 
 import qualified Data.Aeson as Aeson
-import qualified Data.Aeson.Encode.Pretty as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
@@ -34,8 +33,4 @@ decode :: Aeson.FromJSON a => ByteString.ByteString -> Either String a
 decode = Aeson.eitherDecodeStrict'
 
 encodePretty :: Aeson.ToJSON a => a -> LazyByteString.ByteString
-encodePretty = Aeson.encodePretty' Aeson.defConfig
-  { Aeson.confCompare = compare
-  , Aeson.confIndent = Aeson.Tab
-  , Aeson.confTrailingNewline = True
-  }
+encodePretty = Aeson.encode
