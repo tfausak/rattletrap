@@ -14,7 +14,7 @@ data PsyNet
   deriving (Eq, Show)
 
 instance Json.FromJSON PsyNet where
-  parseJSON = Json.withObject "PsyNet" $ \ object -> do
+  parseJSON = Json.withObject "PsyNet" $ \object -> do
     let
       new = fmap New $ Json.required object "Left"
       old = do
@@ -40,17 +40,14 @@ schema = Schema.named "remote-id-psy-net" $ Schema.oneOf
 bitPut :: PsyNet -> BitPut.BitPut
 bitPut x = case x of
   New l -> U64.bitPut l
-  Old a b c d ->
-    U64.bitPut a <> U64.bitPut b <> U64.bitPut c <> U64.bitPut d
+  Old a b c d -> U64.bitPut a <> U64.bitPut b <> U64.bitPut c <> U64.bitPut d
 
 bitGet :: Version.Version -> BitGet.BitGet PsyNet
-bitGet version =
-  BitGet.label "PsyNet"
-    $ if Version.atLeast 868 24 10 version
-        then BitGet.label "New" $ fmap New U64.bitGet
-        else BitGet.label "Old" $ do
-          a <- U64.bitGet
-          b <- U64.bitGet
-          c <- U64.bitGet
-          d <- U64.bitGet
-          pure $ Old a b c d
+bitGet version = BitGet.label "PsyNet" $ if Version.atLeast 868 24 10 version
+  then BitGet.label "New" $ fmap New U64.bitGet
+  else BitGet.label "Old" $ do
+    a <- U64.bitGet
+    b <- U64.bitGet
+    c <- U64.bitGet
+    d <- U64.bitGet
+    pure $ Old a b c d
