@@ -63,7 +63,20 @@ library
     Rattletrap.Exception.UnknownProperty
     Rattletrap.Exception.UnknownSystemId
     Rattletrap.Get
+    Rattletrap.Json
+    Rattletrap.Json.Array
+    Rattletrap.Json.Boolean
+    Rattletrap.Json.FromJson
+    Rattletrap.Json.Null
+    Rattletrap.Json.Number
+    Rattletrap.Json.Object
+    Rattletrap.Json.Pair
+    Rattletrap.Json.String
+    Rattletrap.Json.ToJson
+    Rattletrap.Json.Value
     Rattletrap.Schema
+    Rattletrap.TextGet
+    Rattletrap.TextPut
     Rattletrap.Type.Attribute
     Rattletrap.Type.Attribute.AppliedDamage
     Rattletrap.Type.Attribute.Boolean

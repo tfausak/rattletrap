@@ -14,6 +14,7 @@ import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
 import qualified Data.Text as Text
+import Rattletrap.Json () -- TODO
 
 required
   :: Aeson.FromJSON value => Aeson.Object -> String -> Aeson.Parser value
