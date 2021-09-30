@@ -61,11 +61,9 @@ class FromJSON a where
   parseJSON :: Value -> Parser a
 
 instance FromJSON () where
-  parseJSON x = case x of
-    Json.Array (Array.Array y) -> if Data.Array.elems y == []
-      then pure ()
-      else fail $ "parseJSON @() " <> show x
-    _ -> fail $ "parseJSON @() " <> show x
+  parseJSON = withArray "()" $ \ (Array.Array y) -> if Data.Array.elems y == []
+    then pure ()
+    else Applicative.empty
 
 instance FromJSON Bool where
   parseJSON x = case x of
@@ -73,36 +71,24 @@ instance FromJSON Bool where
     _ -> fail $ "parseJSON @Bool " <> show x
 
 instance FromJSON Double where
-  parseJSON x = case x of
-    Json.Number y -> pure . realToFrac $ Number.toRational y
-    _ -> fail $ "parseJSON @Double " <> show x
+  parseJSON = withNumber "Double" $ pure . realToFrac . Number.toRational
 
 instance FromJSON Float where
-  parseJSON x = case x of
-    Json.Number y -> pure . realToFrac $ Number.toRational y
-    _ -> fail $ "parseJSON @Float " <> show x
+  parseJSON = withNumber "Float" $ pure . realToFrac . Number.toRational
 
 instance FromJSON Int where
-  parseJSON x = case x of
-    Json.Number y -> maybe (fail $ "parseJSON @Int " <> show x) (pure . fromInteger) $ Number.toInteger y
-    _ -> fail $ "parseJSON @Int " <> show x
+  parseJSON = withNumber "Int" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
 
 instance FromJSON Int.Int8 where
-  parseJSON x = case x of
-    Json.Number y -> maybe (fail $ "parseJSON @Int " <> show x) (pure . fromInteger) $ Number.toInteger y
-    _ -> fail $ "parseJSON @Int8 " <> show x
+  parseJSON = withNumber "Int8" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
 
 instance FromJSON Int.Int32 where
-  parseJSON x = case x of
-    Json.Number y -> maybe (fail $ "parseJSON @Int " <> show x) (pure . fromInteger) $ Number.toInteger y
-    _ -> fail $ "parseJSON @Int32 " <> show x
+  parseJSON = withNumber "Int32" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
 
 instance FromJSON a => FromJSON (Map.Map Text.Text a) where
-  parseJSON x = case x of
-    Json.Object (Object.Object y) -> fmap Map.fromList
-      . traverse (\ (Pair.Pair (String.String k) v) -> (,) k <$> parseJSON v)
-      $ Data.Array.elems y
-    _ -> fail $ "parseJSON @Map " <> show x
+  parseJSON = withObject "Map" $ \ (Object.Object y) -> fmap Map.fromList
+    . traverse (\ (Pair.Pair (String.String k) v) -> (,) k <$> parseJSON v)
+    $ Data.Array.elems y
 
 instance FromJSON a => FromJSON (Maybe a) where
   parseJSON x = case x of
@@ -110,40 +96,28 @@ instance FromJSON a => FromJSON (Maybe a) where
     _ -> Just <$> parseJSON x
 
 instance {-# OVERLAPPING #-} FromJSON String where
-  parseJSON = fmap Text.unpack . parseJSON
+  parseJSON = withText "String" $ pure . Text.unpack
 
 instance FromJSON Text.Text where
-  parseJSON x = case x of
-    Json.String (String.String y) -> pure y
-    _ -> fail $ "parseJSON @Text " <> show x
+  parseJSON = withText "Text" pure
 
 instance FromJSON Json.Value where
   parseJSON = pure
 
 instance FromJSON Word where
-  parseJSON x = case x of
-    Json.Number y -> maybe (fail $ "parseJSON @Int " <> show x) (pure . fromInteger) $ Number.toInteger y
-    _ -> fail $ "parseJSON @Word " <> show x
+  parseJSON = withNumber "Word" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
 
 instance FromJSON Word.Word8 where
-  parseJSON x = case x of
-    Json.Number y -> maybe (fail $ "parseJSON @Int " <> show x) (pure . fromInteger) $ Number.toInteger y
-    _ -> fail $ "parseJSON @Word8 " <> show x
+  parseJSON = withNumber "Word8" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
 
 instance FromJSON Word.Word16 where
-  parseJSON x = case x of
-    Json.Number y -> maybe (fail $ "parseJSON @Int " <> show x) (pure . fromInteger) $ Number.toInteger y
-    _ -> fail $ "parseJSON @Word16 " <> show x
+  parseJSON = withNumber "Word16" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
 
 instance FromJSON Word.Word32 where
-  parseJSON x = case x of
-    Json.Number y -> maybe (fail $ "parseJSON @Int " <> show x) (pure . fromInteger) $ Number.toInteger y
-    _ -> fail $ "parseJSON @Word32 " <> show x
+  parseJSON = withNumber "Word32" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
 
 instance FromJSON a => FromJSON [a] where
-  parseJSON x = case x of
-    Json.Array (Array.Array y) -> traverse parseJSON $ Data.Array.elems y
-    _ -> fail $ "parseJSON @[] " <> show x
+  parseJSON = withArray "[]" $ \ (Array.Array y) -> traverse parseJSON $ Data.Array.elems y
 
 instance (FromJSON a, FromJSON b) => FromJSON (a, b) where
   parseJSON x = do
@@ -160,9 +134,6 @@ instance ToJSON () where
 
 instance ToJSON Bool where
   toJSON = Json.Boolean . Boolean.Boolean
-
-instance ToJSON Char where
-  toJSON = toJSON . Text.singleton
 
 instance ToJSON Double where
   toJSON = Json.Number . Number.fromRational . toRational
@@ -228,9 +199,9 @@ encodePretty = encode
 
 decode :: FromJSON a => ByteString.ByteString -> Either String a
 decode b = case Text.decodeUtf8' b of
-  Left e -> Left $ show e
+  Left e -> Left $ "invalid UTF-8: " <> show e
   Right t -> case TextGet.run Json.get t of
-    Left e -> Left $ show e
+    Left e -> Left $ "invalid JSON: " <> show e
     Right x -> case parseJSON x of
       Fail e -> Left e
       Pure y -> pure y
@@ -256,9 +227,13 @@ listToArray xs = if null xs
   else Data.Array.array (0, fromIntegral $ length xs - 1) (zip [0 ..] xs)
 
 required :: FromJSON a => Object.Object (Pair.Pair String.String Value) -> String -> Parser a
-required o k = do
-  m <- optional o k
-  maybe (Fail "") Pure m
+required (Object.Object o) k =
+  let
+    key = String.String $ Text.pack k
+    tuples = fmap (\ (Pair.Pair x y) -> (x, y)) $ Data.Array.elems o
+  in case lookup key tuples of
+    Nothing -> Applicative.empty
+    Just value -> parseJSON value
 
 optional :: FromJSON a => Object.Object (Pair.Pair String.String Value) -> String -> Parser (Maybe a)
 optional (Object.Object o) k =
@@ -279,3 +254,13 @@ withObject :: String -> (Object.Object (Pair.Pair String.String Value) -> Parser
 withObject _ f x = case x of
   Json.Object y -> f y
   _ -> fail "withObject"
+
+withNumber :: String -> (Number.Number -> Parser a) -> Value -> Parser a
+withNumber _ f x = case x of
+  Json.Number y -> f y
+  _ -> fail "withNumber"
+
+withArray :: String -> (Array.Array Value -> Parser a) -> Value -> Parser a
+withArray _ f x = case x of
+  Json.Array y -> f y
+  _ -> fail "withArray"
