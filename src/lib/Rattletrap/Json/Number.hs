@@ -3,12 +3,40 @@ module Rattletrap.Json.Number where
 import qualified Control.Monad as Monad
 import qualified Data.Char as Char
 import qualified Data.Maybe as Maybe
+import qualified Data.Ratio as Ratio
 import qualified Rattletrap.TextGet as TextGet
 import qualified Rattletrap.TextPut as TextPut
 
 data Number
     = Number Integer Integer
     deriving (Eq, Show)
+
+toRational :: Number -> Rational
+toRational (Number x y) = if y < 0 then x Ratio.% 10 ^ negate y else fromInteger $ x * 10 ^ y
+
+toInteger :: Number -> Maybe Integer
+toInteger (Number x y) = if y < 0 then Nothing else Just $ x * 10 ^ y
+
+fromRational :: Rational -> Number
+fromRational r =
+    let
+        n = Ratio.numerator r
+        d1 = Ratio.denominator r
+        a :: Integer
+        (a, d2) = factor 2 0 d1
+        b :: Integer
+        (b, d3) = factor 5 0 d2
+        e = max a b
+    in if d3 == 1
+    then normalize $ Number (fromInteger n * 2 ^ (e - a) * 5 ^ (e - b)) (negate e)
+    else error $ "fromRational: " <> show r
+
+factor :: (Num a, Integral b) => b -> a -> b -> (a, b)
+factor d c n =
+    let (q, r) = quotRem n d
+    in if n /= 0 && r == 0
+    then factor d (c + 1) q
+    else (c, n)
 
 get :: TextGet.TextGet Number
 get = do

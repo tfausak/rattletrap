@@ -1,9 +1,11 @@
 module Rattletrap.TextPut where
 
 import qualified Data.Array as Array
+import qualified Data.ByteString.Lazy as LazyByteString
 import qualified Data.List as List
 import qualified Data.Text.Lazy.Builder as Builder
 import qualified Data.Text.Lazy.Builder.Int as Builder
+import qualified Data.Text.Lazy.Encoding as LazyText
 
 type TextPut = Builder.Builder
 
@@ -24,3 +26,6 @@ integer = Builder.decimal
 
 string :: String -> TextPut
 string = Builder.fromString
+
+toLazyByteString :: TextPut -> LazyByteString.ByteString
+toLazyByteString = LazyText.encodeUtf8 . Builder.toLazyText

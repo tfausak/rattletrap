@@ -20,7 +20,6 @@ library
   autogen-modules: Paths_rattletrap
   build-depends:
     base >= 4.15.0 && < 4.16
-    , aeson >= 1.5.6 && < 1.6
     , array >= 0.5.4 && < 0.6
     , bytestring >= 0.10.12 && < 0.12
     , containers >= 0.6.4 && < 0.7
@@ -66,13 +65,11 @@ library
     Rattletrap.Json
     Rattletrap.Json.Array
     Rattletrap.Json.Boolean
-    Rattletrap.Json.FromJson
     Rattletrap.Json.Null
     Rattletrap.Json.Number
     Rattletrap.Json.Object
     Rattletrap.Json.Pair
     Rattletrap.Json.String
-    Rattletrap.Json.ToJson
     Rattletrap.Json.Value
     Rattletrap.Schema
     Rattletrap.TextGet

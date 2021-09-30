@@ -18,14 +18,14 @@ instance Json.FromJSON PsyNet where
     let
       new = fmap New $ Json.required object "Left"
       old = do
-        (a, b, c, d) <- Json.required object "Right"
+        [a, b, c, d] <- Json.required object "Right"
         pure $ Old a b c d
     new Applicative.<|> old
 
 instance Json.ToJSON PsyNet where
   toJSON x = case x of
     New a -> Json.object [Json.pair "Left" a]
-    Old a b c d -> Json.object [Json.pair "Right" (a, b, c, d)]
+    Old a b c d -> Json.object [Json.pair "Right" [a, b, c, d]]
 
 schema :: Schema.Schema
 schema = Schema.named "remote-id-psy-net" $ Schema.oneOf

@@ -16,11 +16,11 @@ data Switch = Switch
 
 instance Json.FromJSON Switch where
   parseJSON json = do
-    (a, b, c, d) <- Json.parseJSON json
+    [a, b, c, d] <- Json.parseJSON json
     pure Switch { a, b, c, d }
 
 instance Json.ToJSON Switch where
-  toJSON x = Json.toJSON (a x, b x, c x, d x)
+  toJSON x = Json.toJSON [a x, b x, c x, d x]
 
 schema :: Schema.Schema
 schema =
