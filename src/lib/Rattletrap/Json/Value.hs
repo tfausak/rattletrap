@@ -11,12 +11,12 @@ import qualified Rattletrap.TextGet as TextGet
 import qualified Rattletrap.TextPut as TextPut
 
 data Value
-    = Null Null.Null
-    | Boolean Boolean.Boolean
-    | Number Number.Number
-    | String String.String
-    | Array (Array.Array Value)
-    | Object (Object.Object (Pair.Pair String.String Value))
+    = Null !Null.Null
+    | Boolean !Boolean.Boolean
+    | Number !Number.Number
+    | String !String.String
+    | Array !(Array.Array Value)
+    | Object !(Object.Object (Pair.Pair String.String Value))
     deriving (Eq, Show)
 
 get :: TextGet.TextGet Value

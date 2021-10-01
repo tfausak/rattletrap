@@ -4,7 +4,7 @@ import qualified Rattletrap.TextGet as TextGet
 import qualified Rattletrap.TextPut as TextPut
 
 data Pair k v
-    = Pair k v
+    = Pair !k !v
     deriving (Eq, Show)
 
 get :: TextGet.TextGet k -> TextGet.TextGet v -> TextGet.TextGet (Pair k v)

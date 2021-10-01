@@ -8,7 +8,7 @@ import qualified Rattletrap.TextGet as TextGet
 import qualified Rattletrap.TextPut as TextPut
 
 data Number
-    = Number Integer Integer
+    = Number !Integer !Integer
     deriving (Eq, Show)
 
 toRational :: Number -> Rational
