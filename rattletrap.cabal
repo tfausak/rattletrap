@@ -1,4 +1,4 @@
-cabal-version: 2.0
+cabal-version: 2.2
 
 name: rattletrap
 version: 11.2.1
@@ -20,10 +20,37 @@ flag pedantic
   default: False
   manual: True
 
+common library
+  build-depends: base >= 4.15.0 && < 4.16
+  default-extensions: NamedFieldPuns
+  default-language: Haskell2010
+  ghc-options:
+    -Weverything
+    -Wno-all-missed-specialisations
+    -Wno-implicit-prelude
+    -Wno-missing-deriving-strategies
+    -Wno-missing-export-lists
+    -Wno-missing-exported-signatures
+    -Wno-missing-import-lists
+    -Wno-missing-safe-haskell-mode
+    -Wno-prepositive-qualified-module
+    -Wno-safe
+    -Wno-unsafe
+
+  if flag(pedantic)
+    ghc-options: -Werror
+
+common executable
+  import: library
+
+  build-depends: rattletrap
+  ghc-options: -rtsopts -threaded
+
 library
+  import: library
+
   autogen-modules: Paths_rattletrap
   build-depends:
-    base >= 4.15.0 && < 4.16
     , aeson >= 1.5.6 && < 1.6
     , aeson-pretty >= 0.8.8 && < 0.9
     , array >= 0.5.4 && < 0.6
@@ -33,8 +60,6 @@ library
     , http-client >= 0.7.8 && < 0.8
     , http-client-tls >= 0.3.5 && < 0.4
     , text >= 1.2.4 && < 1.3
-  default-extensions: NamedFieldPuns
-  default-language: Haskell2010
   exposed-modules:
     Paths_rattletrap
     Rattletrap
@@ -171,38 +196,18 @@ library
     Rattletrap.Utility.Json
     Rattletrap.Utility.Monad
     Rattletrap.Version
-  ghc-options:
-    -Weverything
-    -Wno-all-missed-specialisations
-    -Wno-implicit-prelude
-    -Wno-missing-deriving-strategies
-    -Wno-missing-export-lists
-    -Wno-missing-exported-signatures
-    -Wno-missing-import-lists
-    -Wno-missing-safe-haskell-mode
-    -Wno-prepositive-qualified-module
-    -Wno-safe
-    -Wno-unsafe
   hs-source-dirs: src/lib
 
-  if flag(pedantic)
-    ghc-options: -Werror
-
 executable rattletrap
-  build-depends: base, rattletrap
-  default-language: Haskell2010
-  ghc-options: -rtsopts -threaded
+  import: executable
+
   hs-source-dirs: src/exe
   main-is: Main.hs
 
 test-suite test
-  build-depends:
-    base
-    , bytestring
-    , filepath
-    , rattletrap
-  default-language: Haskell2010
-  ghc-options: -rtsopts -threaded
+  import: executable
+
+  build-depends: bytestring, filepath
   hs-source-dirs: src/test
   main-is: Main.hs
   type: exitcode-stdio-1.0
