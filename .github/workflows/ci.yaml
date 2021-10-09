@@ -34,7 +34,7 @@ jobs:
         include:
           - os: ubuntu-20.04
             ghc: 9.0.1
-          - os: macos-10.15
+          - os: macos-11
             ghc: 9.0.1
           - os: windows-2019
             ghc: 9.0.1
@@ -48,6 +48,8 @@ jobs:
         uses: haskell/actions/setup@v1
         with:
           ghc-version: ${{ matrix.ghc }}
+
+      - run: cabal configure --enable-tests --flags pedantic --jobs --test-show-details direct
 
       - run: cabal freeze && cat cabal.project.freeze
 

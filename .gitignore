@@ -8,3 +8,4 @@
 *.tix
 /dist-newstyle/
 /.vscode/
+/cabal.project.local
