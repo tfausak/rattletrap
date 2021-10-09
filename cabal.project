@@ -3,5 +3,5 @@ packages: .
 test-show-details: direct
 
 package rattletrap
-  ghc-options: -Werror
+  flags: +pedantic
   tests: True

@@ -16,6 +16,10 @@ source-repository head
   type: git
   location: https://github.com/tfausak/rattletrap
 
+flag pedantic
+  default: False
+  manual: True
+
 library
   autogen-modules: Paths_rattletrap
   build-depends:
@@ -180,6 +184,9 @@ library
     -Wno-safe
     -Wno-unsafe
   hs-source-dirs: src/lib
+
+  if flag(pedantic)
+    ghc-options: -Werror
 
 executable rattletrap
   build-depends: base, rattletrap
