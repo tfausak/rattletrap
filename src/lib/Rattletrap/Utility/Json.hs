@@ -1,4 +1,7 @@
+{- hlint ignore "Avoid restricted flags" -}
 {-# OPTIONS_GHC -Wno-orphans #-}
+
+{- hlint ignore "Avoid restricted extensions" -}
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
 
