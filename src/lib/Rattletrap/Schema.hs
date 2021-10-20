@@ -18,7 +18,9 @@ ref s = Json.object [Json.pair "$ref" $ Text.pack "#/definitions/" <> name s]
 object :: [((Text.Text, Json.Value), Bool)] -> Json.Value
 object xs = Json.object
   [ Json.pair "type" "object"
-  , Json.pair "properties" . Json.object $ fmap (\ ((k, v), _) -> Json.pair (Text.unpack k) v) xs
+  , Json.pair "properties" . Json.object $ fmap
+    (\((k, v), _) -> Json.pair (Text.unpack k) v)
+    xs
   , Json.pair "required" . fmap (fst . fst) $ filter snd xs
   ]
 

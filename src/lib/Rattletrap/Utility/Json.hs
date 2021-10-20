@@ -53,13 +53,15 @@ object :: [(Text.Text, Argo.Value)] -> Argo.Value
 object = Argo.Object . listToArray . fmap (uncurry Argo.Pair)
 
 optional :: Argo.FromValue a => Argo.Object -> String -> Parser (Maybe a)
-optional o ks = mapFailure (show ks <>) $
-  let kt = Text.pack ks
-  in case List.find (\ (Argo.Pair k _) -> k == kt) $ Array.elems o of
-    Just (Argo.Pair _ v) -> case v of
-      Argo.Null -> pure Nothing
-      _ -> Just <$> Argo.fromValue v
-    Nothing -> pure Nothing
+optional o ks =
+  mapFailure (show ks <>)
+    $ let kt = Text.pack ks
+      in
+        case List.find (\(Argo.Pair k _) -> k == kt) $ Array.elems o of
+          Just (Argo.Pair _ v) -> case v of
+            Argo.Null -> pure Nothing
+            _ -> Just <$> Argo.fromValue v
+          Nothing -> pure Nothing
 
 pair :: Argo.ToValue a => String -> a -> (Text.Text, Argo.Value)
 pair k v = (Text.pack k, Argo.toValue v)
@@ -67,7 +69,7 @@ pair k v = (Text.pack k, Argo.toValue v)
 required :: Argo.FromValue a => Argo.Object -> String -> Parser a
 required o ks = mapFailure (show ks <>) $ do
   let kt = Text.pack ks
-  case List.find (\ (Argo.Pair k _) -> k == kt) $ Array.elems o of
+  case List.find (\(Argo.Pair k _) -> k == kt) $ Array.elems o of
     Nothing -> Argo.Failure $ "missing required key " <> show kt
     Just (Argo.Pair _ v) -> Argo.fromValue v
 
