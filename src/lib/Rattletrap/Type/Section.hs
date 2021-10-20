@@ -25,15 +25,15 @@ data Section a = Section
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON a => Json.FromJSON (Section a) where
-  parseJSON = Json.withObject "Section" $ \object -> do
+instance Json.FromValue a => Json.FromValue (Section a) where
+  fromValue = Json.withObject "Section" $ \object -> do
     size <- Json.required object "size"
     crc <- Json.required object "crc"
     body <- Json.required object "body"
     pure Section { size, crc, body }
 
-instance Json.ToJSON a => Json.ToJSON (Section a) where
-  toJSON x = Json.object
+instance Json.ToValue a => Json.ToValue (Section a) where
+  toValue x = Json.object
     [ Json.pair "size" $ size x
     , Json.pair "crc" $ crc x
     , Json.pair "body" $ body x

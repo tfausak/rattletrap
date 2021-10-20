@@ -9,11 +9,11 @@ newtype Boolean = Boolean
   { value :: Bool
   } deriving (Eq, Show)
 
-instance Json.FromJSON Boolean where
-  parseJSON = fmap Boolean . Json.parseJSON
+instance Json.FromValue Boolean where
+  fromValue = fmap Boolean . Json.fromValue
 
-instance Json.ToJSON Boolean where
-  toJSON = Json.toJSON . value
+instance Json.ToValue Boolean where
+  toValue = Json.toValue . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-boolean" $ Schema.ref Schema.boolean

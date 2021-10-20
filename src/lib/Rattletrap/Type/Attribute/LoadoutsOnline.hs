@@ -18,16 +18,16 @@ data LoadoutsOnline = LoadoutsOnline
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON LoadoutsOnline where
-  parseJSON = Json.withObject "LoadoutsOnline" $ \object -> do
+instance Json.FromValue LoadoutsOnline where
+  fromValue = Json.withObject "LoadoutsOnline" $ \object -> do
     blue <- Json.required object "blue"
     orange <- Json.required object "orange"
     unknown1 <- Json.required object "unknown1"
     unknown2 <- Json.required object "unknown2"
     pure LoadoutsOnline { blue, orange, unknown1, unknown2 }
 
-instance Json.ToJSON LoadoutsOnline where
-  toJSON x = Json.object
+instance Json.ToValue LoadoutsOnline where
+  toValue x = Json.object
     [ Json.pair "blue" $ blue x
     , Json.pair "orange" $ orange x
     , Json.pair "unknown1" $ unknown1 x

@@ -17,15 +17,15 @@ data Keyframe = Keyframe
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Keyframe where
-  parseJSON = Json.withObject "Keyframe" $ \object -> do
+instance Json.FromValue Keyframe where
+  fromValue = Json.withObject "Keyframe" $ \object -> do
     time <- Json.required object "time"
     frame <- Json.required object "frame"
     position <- Json.required object "position"
     pure Keyframe { time, frame, position }
 
-instance Json.ToJSON Keyframe where
-  toJSON x = Json.object
+instance Json.ToValue Keyframe where
+  toValue x = Json.object
     [ Json.pair "time" $ time x
     , Json.pair "frame" $ frame x
     , Json.pair "position" $ position x

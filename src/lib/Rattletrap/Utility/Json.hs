@@ -1,266 +1,82 @@
 {-# LANGUAGE FlexibleInstances #-}
 
-module Rattletrap.Utility.Json where
+module Rattletrap.Utility.Json
+  ( Argo.Value
+  , Argo.FromValue(..)
+  , Argo.ToValue(..)
+  , decode
+  , encode
+  , encodePretty
+  , object
+  , optional
+  , pair
+  , required
+  , Argo.withArray
+  , Argo.withBoolean
+  , withNull
+  , Argo.withNumber
+  , Argo.withObject
+  , Argo.withString
+  ) where
 
-import qualified Control.Applicative as Applicative
-import qualified Data.Array
+import qualified Argo
+import qualified Argo.Class.FromValue as Argo
+import qualified Data.Array as Array
 import qualified Data.ByteString as ByteString
+import qualified Data.ByteString.Builder as Builder
 import qualified Data.ByteString.Lazy as LazyByteString
-import qualified Data.Int as Int
-import qualified Data.Map as Map
+import qualified Data.List as List
 import qualified Data.Text as Text
-import qualified Data.Text.Encoding as Text
-import qualified Data.Word as Word
-import qualified Rattletrap.Json as Json
-import qualified Rattletrap.Json.Array as Array
-import qualified Rattletrap.Json.Boolean as Boolean
-import qualified Rattletrap.Json.Null as Null
-import qualified Rattletrap.Json.Number as Number
-import qualified Rattletrap.Json.Object as Object
-import qualified Rattletrap.Json.Pair as Pair
-import qualified Rattletrap.Json.String as String
-import qualified Rattletrap.TextGet as TextGet
-import qualified Rattletrap.TextPut as TextPut
 
-type Value = Json.Value
+type Parser = Argo.Result
 
-data Parser a
-  = Fail String
-  | Pure a
-  deriving (Eq, Show)
+decode :: Argo.FromValue a => ByteString.ByteString -> Either String a
+decode x = case Argo.decode x of
+  Argo.Failure e -> Left e
+  Argo.Success y -> Right y
 
-instance Functor Parser where
-  fmap f p = case p of
-    Fail e -> Fail e
-    Pure x -> Pure $ f x
+encode :: Argo.ToValue a => a -> LazyByteString.ByteString
+encode = Builder.toLazyByteString . Argo.encode
 
-instance Applicative Parser where
-  pure = Pure
-  pf <*> px = case (pf, px) of
-    (Pure f, Pure x) -> Pure $ f x
-    (Fail e, _) -> Fail e
-    (_, Fail e) -> Fail e
-
-instance Monad Parser where
-  p >>= f = case p of
-    Fail e -> Fail e
-    Pure x -> f x
-
-instance MonadFail Parser where
-  fail = Fail
-
-instance Applicative.Alternative Parser where
-  empty = fail "empty"
-  px <|> py = case px of
-    Pure x -> Pure x
-    _ -> py
-
--- FromJSON -------------------------------------------------------------------
-
-class FromJSON a where
-  parseJSON :: Value -> Parser a
-
-instance FromJSON () where
-  parseJSON = withArray "()" $ \ (Array.Array y) -> if Data.Array.elems y == []
-    then pure ()
-    else Applicative.empty
-
-instance FromJSON Bool where
-  parseJSON x = case x of
-    Json.Boolean (Boolean.Boolean y) -> pure y
-    _ -> fail $ "parseJSON @Bool " <> show x
-
-instance FromJSON Double where
-  parseJSON = withNumber "Double" $ pure . realToFrac . Number.toRational
-
-instance FromJSON Float where
-  parseJSON = withNumber "Float" $ pure . realToFrac . Number.toRational
-
-instance FromJSON Int where
-  parseJSON = withNumber "Int" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
-
-instance FromJSON Int.Int8 where
-  parseJSON = withNumber "Int8" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
-
-instance FromJSON Int.Int32 where
-  parseJSON = withNumber "Int32" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
-
-instance FromJSON a => FromJSON (Map.Map Text.Text a) where
-  parseJSON = withObject "Map" $ \ (Object.Object y) -> fmap Map.fromList
-    . traverse (\ (Pair.Pair (String.String k) v) -> (,) k <$> parseJSON v)
-    $ Data.Array.elems y
-
-instance FromJSON a => FromJSON (Maybe a) where
-  parseJSON x = case x of
-    Json.Null _ -> pure Nothing
-    _ -> Just <$> parseJSON x
-
-instance {-# OVERLAPPING #-} FromJSON String where
-  parseJSON = withText "String" $ pure . Text.unpack
-
-instance FromJSON Text.Text where
-  parseJSON = withText "Text" pure
-
-instance FromJSON Json.Value where
-  parseJSON = pure
-
-instance FromJSON Word where
-  parseJSON = withNumber "Word" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
-
-instance FromJSON Word.Word8 where
-  parseJSON = withNumber "Word8" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
-
-instance FromJSON Word.Word16 where
-  parseJSON = withNumber "Word16" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
-
-instance FromJSON Word.Word32 where
-  parseJSON = withNumber "Word32" $ maybe Applicative.empty (pure . fromInteger) . Number.toInteger
-
-instance FromJSON a => FromJSON [a] where
-  parseJSON = withArray "[]" $ \ (Array.Array y) -> traverse parseJSON $ Data.Array.elems y
-
-instance (FromJSON a, FromJSON b) => FromJSON (a, b) where
-  parseJSON x = do
-    [y, z] <- parseJSON x
-    (,) <$> parseJSON y <*> parseJSON z
-
--- ToJSON ---------------------------------------------------------------------
-
-class ToJSON a where
-  toJSON :: a -> Value
-
-instance ToJSON () where
-  toJSON = const . Json.Array . Array.Array $ listToArray []
-
-instance ToJSON Bool where
-  toJSON = Json.Boolean . Boolean.Boolean
-
-instance ToJSON Double where
-  toJSON = Json.Number . Number.fromRational . toRational
-
-instance ToJSON Float where
-  toJSON = Json.Number . Number.fromRational . toRational
-
-instance ToJSON Int where
-  toJSON = Json.Number . integralToNumber
-
-instance ToJSON Int.Int8 where
-  toJSON = Json.Number . integralToNumber
-
-instance ToJSON Int.Int32 where
-  toJSON = Json.Number . integralToNumber
-
-instance ToJSON a => ToJSON (Map.Map Text.Text a) where
-  toJSON = Json.Object . Object.Object . listToArray . fmap (uncurry (.=)) . Map.toAscList
-
-instance ToJSON a => ToJSON (Maybe a) where
-  toJSON = maybe (Json.Null Null.Null) toJSON
-
-instance {-# OVERLAPPING #-} ToJSON String where
-  toJSON = toJSON . Text.pack
-
-instance ToJSON String.String where
-  toJSON = Json.String
-
-instance ToJSON Text.Text where
-  toJSON = toJSON . String.String
-
-instance ToJSON Json.Value where
-  toJSON = id
-
-instance ToJSON Word where
-  toJSON = Json.Number . integralToNumber
-
-instance ToJSON Word.Word8 where
-  toJSON = Json.Number . integralToNumber
-
-instance ToJSON Word.Word16 where
-  toJSON = Json.Number . integralToNumber
-
-instance ToJSON Word.Word32 where
-  toJSON = Json.Number . integralToNumber
-
-instance ToJSON a => ToJSON [a] where
-  toJSON = Json.Array . Array.Array . fmap toJSON . listToArray
-
-instance (ToJSON a, ToJSON b) => ToJSON (a, b) where
-  toJSON (x, y) = toJSON [toJSON x, toJSON y]
-
--------------------------------------------------------------------------------
-
-integralToNumber :: Integral a => a -> Number.Number
-integralToNumber = Number.normalize . flip Number.Number 0 . fromIntegral
-
-encode :: ToJSON a => a -> LazyByteString.ByteString
-encode = TextPut.toLazyByteString . Json.put . toJSON
-
-encodePretty :: ToJSON a => a -> LazyByteString.ByteString
+encodePretty :: Argo.ToValue a => a -> LazyByteString.ByteString
 encodePretty = encode
 
-decode :: FromJSON a => ByteString.ByteString -> Either String a
-decode b = case Text.decodeUtf8' b of
-  Left e -> Left $ "invalid UTF-8: " <> show e
-  Right t -> case TextGet.run Json.get t of
-    Left e -> Left $ "invalid JSON: " <> show e
-    Right x -> case parseJSON x of
-      Fail e -> Left e
-      Pure y -> pure y
+listToArray :: [a] -> Array.Array Int a
+listToArray = listToArrayWith 0 []
 
-pair :: (KeyValue kv, ToJSON v) => String -> v -> kv
-pair k v = Text.pack k .= v
+listToArrayWith :: Int -> [(Int, a)] -> [a] -> Array.Array Int a
+listToArrayWith i ts xs = case xs of
+  [] -> Array.array (0, i - 1) ts
+  x : ys -> listToArrayWith (i + 1) ((i, x) : ts) ys
 
-class KeyValue kv where
-  (.=) :: ToJSON v => Text.Text -> v -> kv
+object :: [(Text.Text, Argo.Value)] -> Argo.Value
+object = Argo.Object . listToArray . fmap (uncurry Argo.Pair)
 
-instance KeyValue (Pair.Pair String.String Value) where
-  k .= v = Pair.Pair (String.String k) (toJSON v)
-
-instance KeyValue (Text.Text, Value) where
-  k .= v = (k, toJSON v)
-
-object :: [Pair.Pair String.String Value] -> Value
-object = Json.Object . Object.Object . listToArray
-
-listToArray :: [a] -> Data.Array.Array Word a
-listToArray xs = if null xs
-  then Data.Array.array (1, 0) []
-  else Data.Array.array (0, fromIntegral $ length xs - 1) (zip [0 ..] xs)
-
-required :: FromJSON a => Object.Object (Pair.Pair String.String Value) -> String -> Parser a
-required (Object.Object o) k =
-  let
-    key = String.String $ Text.pack k
-    tuples = fmap (\ (Pair.Pair x y) -> (x, y)) $ Data.Array.elems o
-  in case lookup key tuples of
-    Nothing -> Applicative.empty
-    Just value -> parseJSON value
-
-optional :: FromJSON a => Object.Object (Pair.Pair String.String Value) -> String -> Parser (Maybe a)
-optional (Object.Object o) k =
-  let
-    key = String.String $ Text.pack k
-    tuples = fmap (\ (Pair.Pair x y) -> (x, y)) $ Data.Array.elems o
-  in case lookup key tuples of
+optional :: Argo.FromValue a => Argo.Object -> String -> Parser (Maybe a)
+optional o ks = mapFailure (show ks <>) $
+  let kt = Text.pack ks
+  in case List.find (\ (Argo.Pair k _) -> k == kt) $ Array.elems o of
+    Just (Argo.Pair _ v) -> case v of
+      Argo.Null -> pure Nothing
+      _ -> Just <$> Argo.fromValue v
     Nothing -> pure Nothing
-    Just (Json.Null _) -> pure Nothing
-    Just value -> Just <$> parseJSON value
 
-withText :: String -> (Text.Text -> Parser a) -> Value -> Parser a
-withText _ f x = case x of
-  Json.String (String.String y) -> f y
-  _ -> fail "withText"
+pair :: Argo.ToValue a => String -> a -> (Text.Text, Argo.Value)
+pair k v = (Text.pack k, Argo.toValue v)
 
-withObject :: String -> (Object.Object (Pair.Pair String.String Value) -> Parser a) -> Value -> Parser a
-withObject _ f x = case x of
-  Json.Object y -> f y
-  _ -> fail "withObject"
+required :: Argo.FromValue a => Argo.Object -> String -> Parser a
+required o ks = mapFailure (show ks <>) $ do
+  let kt = Text.pack ks
+  case List.find (\ (Argo.Pair k _) -> k == kt) $ Array.elems o of
+    Nothing -> Argo.Failure $ "missing required key " <> show kt
+    Just (Argo.Pair _ v) -> Argo.fromValue v
 
-withNumber :: String -> (Number.Number -> Parser a) -> Value -> Parser a
-withNumber _ f x = case x of
-  Json.Number y -> f y
-  _ -> fail "withNumber"
+withNull :: String -> Parser a -> Argo.Value -> Parser a
+withNull s f v = case v of
+  Argo.Null -> f
+  _ -> fail s
 
-withArray :: String -> (Array.Array Value -> Parser a) -> Value -> Parser a
-withArray _ f x = case x of
-  Json.Array y -> f y
-  _ -> fail "withArray"
+mapFailure :: (String -> String) -> Parser a -> Parser a
+mapFailure f r = case r of
+  Argo.Failure e -> Argo.Failure $ f e
+  Argo.Success x -> Argo.Success x

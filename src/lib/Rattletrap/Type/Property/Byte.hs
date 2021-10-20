@@ -13,13 +13,13 @@ data Byte = Byte
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Byte where
-  parseJSON json = do
-    (key, value) <- Json.parseJSON json
+instance Json.FromValue Byte where
+  fromValue json = do
+    (key, value) <- Json.fromValue json
     pure Byte { key, value }
 
-instance Json.ToJSON Byte where
-  toJSON byte = Json.toJSON (key byte, value byte)
+instance Json.ToValue Byte where
+  toValue byte = Json.toValue (key byte, value byte)
 
 schema :: Schema.Schema
 schema = Schema.named "property-byte" $ Schema.tuple

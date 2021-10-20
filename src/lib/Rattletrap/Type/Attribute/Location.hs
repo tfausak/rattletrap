@@ -11,11 +11,11 @@ newtype Location = Location
   { value :: Vector.Vector
   } deriving (Eq, Show)
 
-instance Json.FromJSON Location where
-  parseJSON = fmap Location . Json.parseJSON
+instance Json.FromValue Location where
+  fromValue = fmap Location . Json.fromValue
 
-instance Json.ToJSON Location where
-  toJSON = Json.toJSON . value
+instance Json.ToValue Location where
+  toValue = Json.toValue . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-location" $ Schema.ref Vector.schema

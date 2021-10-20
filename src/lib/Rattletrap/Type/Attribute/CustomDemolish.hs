@@ -16,15 +16,15 @@ data CustomDemolish = CustomDemolish
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON CustomDemolish where
-  parseJSON = Json.withObject "CustomDemolish" $ \object -> do
+instance Json.FromValue CustomDemolish where
+  fromValue = Json.withObject "CustomDemolish" $ \object -> do
     flag <- Json.required object "flag"
     id <- Json.required object "id"
     demolish <- Json.required object "demolish"
     pure CustomDemolish { flag, id, demolish }
 
-instance Json.ToJSON CustomDemolish where
-  toJSON x = Json.object
+instance Json.ToValue CustomDemolish where
+  toValue x = Json.object
     [ Json.pair "flag" $ flag x
     , Json.pair "id" $ id x
     , Json.pair "demolish" $ demolish x

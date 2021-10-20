@@ -30,8 +30,8 @@ data Loadout = Loadout
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Loadout where
-  parseJSON = Json.withObject "Loadout" $ \object -> do
+instance Json.FromValue Loadout where
+  fromValue = Json.withObject "Loadout" $ \object -> do
     version <- Json.required object "version"
     body <- Json.required object "body"
     decal <- Json.required object "decal"
@@ -69,8 +69,8 @@ instance Json.FromJSON Loadout where
       , unknown6
       }
 
-instance Json.ToJSON Loadout where
-  toJSON x = Json.object
+instance Json.ToValue Loadout where
+  toValue x = Json.object
     [ Json.pair "version" $ version x
     , Json.pair "body" $ body x
     , Json.pair "decal" $ decal x

@@ -23,8 +23,8 @@ data Vector = Vector
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Vector where
-  parseJSON = Json.withObject "Vector" $ \object -> do
+instance Json.FromValue Vector where
+  fromValue = Json.withObject "Vector" $ \object -> do
     size <- Json.required object "size"
     bias <- Json.required object "bias"
     x <- Json.required object "x"
@@ -32,8 +32,8 @@ instance Json.FromJSON Vector where
     z <- Json.required object "z"
     pure Vector { size, bias, x, y, z }
 
-instance Json.ToJSON Vector where
-  toJSON a = Json.object
+instance Json.ToValue Vector where
+  toValue a = Json.object
     [ Json.pair "size" $ size a
     , Json.pair "bias" $ bias a
     , Json.pair "x" $ x a

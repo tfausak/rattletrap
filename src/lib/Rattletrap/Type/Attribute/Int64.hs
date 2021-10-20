@@ -10,11 +10,11 @@ newtype Int64 = Int64
   { value :: I64.I64
   } deriving (Eq, Show)
 
-instance Json.FromJSON Int64 where
-  parseJSON = fmap Int64 . Json.parseJSON
+instance Json.FromValue Int64 where
+  fromValue = fmap Int64 . Json.fromValue
 
-instance Json.ToJSON Int64 where
-  toJSON = Json.toJSON . value
+instance Json.ToValue Int64 where
+  toValue = Json.toValue . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-int64" $ Schema.ref I64.schema

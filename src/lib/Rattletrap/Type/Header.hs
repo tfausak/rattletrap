@@ -53,8 +53,8 @@ data Header = Header
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Header where
-  parseJSON = Json.withObject "Header" $ \object -> do
+instance Json.FromValue Header where
+  fromValue = Json.withObject "Header" $ \object -> do
     major <- Json.required object "engine_version"
     minor <- Json.required object "licensee_version"
     patch <- Json.optional object "patch_version"
@@ -70,8 +70,8 @@ instance Json.FromJSON Header where
       , properties
       }
 
-instance Json.ToJSON Header where
-  toJSON x = Json.object
+instance Json.ToValue Header where
+  toValue x = Json.object
     [ Json.pair "engine_version" . Version.major $ version x
     , Json.pair "licensee_version" . Version.minor $ version x
     , Json.pair "patch_version" . Version.patch $ version x

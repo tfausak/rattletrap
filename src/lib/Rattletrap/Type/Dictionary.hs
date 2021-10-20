@@ -16,8 +16,8 @@ data Dictionary a = Dictionary
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
-  parseJSON = Json.withObject "Dictionary" $ \o -> do
+instance Json.FromValue a => Json.FromValue (Dictionary a) where
+  fromValue = Json.withObject "Dictionary" $ \o -> do
     keys <- Json.required o "keys"
     lastKey_ <- Json.required o "last_key"
     value <- Json.required o "value"
@@ -37,8 +37,8 @@ instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
     elements_ <- build value 0 [] keys
     pure Dictionary { elements = elements_, lastKey = lastKey_ }
 
-instance Json.ToJSON a => Json.ToJSON (Dictionary a) where
-  toJSON x = Json.object
+instance Json.ToValue a => Json.ToValue (Dictionary a) where
+  toValue x = Json.object
     [ Json.pair "keys" . fmap fst . List.toList $ elements x
     , Json.pair "last_key" $ lastKey x
     , Json.pair "value"

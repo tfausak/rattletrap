@@ -16,15 +16,15 @@ data Property = Property
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Property where
-  parseJSON = Json.withObject "Property" $ \object -> do
+instance Json.FromValue Property where
+  fromValue = Json.withObject "Property" $ \object -> do
     kind <- Json.required object "kind"
     size <- Json.required object "size"
     value <- Json.required object "value"
     pure Property { kind, size, value }
 
-instance Json.ToJSON Property where
-  toJSON x = Json.object
+instance Json.ToValue Property where
+  toValue x = Json.object
     [ Json.pair "kind" $ kind x
     , Json.pair "size" $ size x
     , Json.pair "value" $ value x

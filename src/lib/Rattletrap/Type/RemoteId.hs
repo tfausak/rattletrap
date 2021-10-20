@@ -27,8 +27,8 @@ data RemoteId
   | Epic Epic.Epic
   deriving (Eq, Show)
 
-instance Json.FromJSON RemoteId where
-  parseJSON = Json.withObject "RemoteId" $ \object -> Foldable.asum
+instance Json.FromValue RemoteId where
+  fromValue = Json.withObject "RemoteId" $ \object -> Foldable.asum
     [ fmap PlayStation $ Json.required object "play_station"
     , fmap PsyNet $ Json.required object "psy_net"
     , fmap Splitscreen $ Json.required object "splitscreen"
@@ -38,8 +38,8 @@ instance Json.FromJSON RemoteId where
     , fmap Epic $ Json.required object "epic"
     ]
 
-instance Json.ToJSON RemoteId where
-  toJSON x = case x of
+instance Json.ToValue RemoteId where
+  toValue x = case x of
     PlayStation y -> Json.object [Json.pair "play_station" y]
     PsyNet y -> Json.object [Json.pair "psy_net" y]
     Splitscreen y -> Json.object [Json.pair "splitscreen" y]

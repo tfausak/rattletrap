@@ -24,15 +24,15 @@ data Frame = Frame
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Frame where
-  parseJSON = Json.withObject "Frame" $ \object -> do
+instance Json.FromValue Frame where
+  fromValue = Json.withObject "Frame" $ \object -> do
     time <- Json.required object "time"
     delta <- Json.required object "delta"
     replications <- Json.required object "replications"
     pure Frame { time, delta, replications }
 
-instance Json.ToJSON Frame where
-  toJSON x = Json.object
+instance Json.ToValue Frame where
+  toValue x = Json.object
     [ Json.pair "time" $ time x
     , Json.pair "delta" $ delta x
     , Json.pair "replications" $ replications x

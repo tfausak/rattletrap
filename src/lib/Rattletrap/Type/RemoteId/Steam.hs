@@ -10,11 +10,11 @@ newtype Steam
   = Steam U64.U64
   deriving (Eq, Show)
 
-instance Json.FromJSON Steam where
-  parseJSON = fmap fromU64 . Json.parseJSON
+instance Json.FromValue Steam where
+  fromValue = fmap fromU64 . Json.fromValue
 
-instance Json.ToJSON Steam where
-  toJSON = Json.toJSON . toU64
+instance Json.ToValue Steam where
+  toValue = Json.toValue . toU64
 
 fromU64 :: U64.U64 -> Steam
 fromU64 = Steam

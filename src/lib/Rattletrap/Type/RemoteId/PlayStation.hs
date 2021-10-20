@@ -17,13 +17,13 @@ data PlayStation = PlayStation
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON PlayStation where
-  parseJSON json = do
-    (name, code) <- Json.parseJSON json
+instance Json.FromValue PlayStation where
+  fromValue json = do
+    (name, code) <- Json.fromValue json
     pure PlayStation { name, code }
 
-instance Json.ToJSON PlayStation where
-  toJSON x = Json.toJSON (name x, code x)
+instance Json.ToValue PlayStation where
+  toValue x = Json.toValue (name x, code x)
 
 schema :: Schema.Schema
 schema = Schema.named "remote-id-play-station" $ Schema.tuple

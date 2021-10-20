@@ -12,11 +12,11 @@ newtype U32
   = U32 Word.Word32
   deriving (Eq, Ord, Show)
 
-instance Json.FromJSON U32 where
-  parseJSON = fmap fromWord32 . Json.parseJSON
+instance Json.FromValue U32 where
+  fromValue = fmap fromWord32 . Json.fromValue
 
-instance Json.ToJSON U32 where
-  toJSON = Json.toJSON . toWord32
+instance Json.ToValue U32 where
+  toValue = Json.toValue . toWord32
 
 schema :: Schema.Schema
 schema = Schema.named "u32" $ Json.object

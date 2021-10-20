@@ -25,8 +25,8 @@ data ProductValue
   | TitleId Str.Str
   deriving (Eq, Show)
 
-instance Json.FromJSON ProductValue where
-  parseJSON = Json.withObject "ProductValue" $ \object -> Foldable.asum
+instance Json.FromValue ProductValue where
+  fromValue = Json.withObject "ProductValue" $ \object -> Foldable.asum
     [ fmap PaintedOld $ Json.required object "painted_old"
     , fmap PaintedNew $ Json.required object "painted_new"
     , fmap TeamEditionOld $ Json.required object "team_edition_old"
@@ -37,8 +37,8 @@ instance Json.FromJSON ProductValue where
     , fmap TitleId $ Json.required object "title_id"
     ]
 
-instance Json.ToJSON ProductValue where
-  toJSON x = case x of
+instance Json.ToValue ProductValue where
+  toValue x = case x of
     PaintedOld y -> Json.object [Json.pair "painted_old" y]
     PaintedNew y -> Json.object [Json.pair "painted_new" y]
     TeamEditionOld y -> Json.object [Json.pair "team_edition_old" y]

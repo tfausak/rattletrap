@@ -92,8 +92,8 @@ data AttributeValue
   | WeldedInfo WeldedInfo.WeldedInfo
   deriving (Eq, Show)
 
-instance Json.FromJSON AttributeValue where
-  parseJSON = Json.withObject "AttributeValue" $ \object -> Foldable.asum
+instance Json.FromValue AttributeValue where
+  fromValue = Json.withObject "AttributeValue" $ \object -> Foldable.asum
     [ fmap AppliedDamage $ Json.required object "applied_damage"
     , fmap Boolean $ Json.required object "boolean"
     , fmap Byte $ Json.required object "byte"
@@ -134,8 +134,8 @@ instance Json.FromJSON AttributeValue where
     , fmap WeldedInfo $ Json.required object "welded_info"
     ]
 
-instance Json.ToJSON AttributeValue where
-  toJSON x = case x of
+instance Json.ToValue AttributeValue where
+  toValue x = case x of
     AppliedDamage y -> Json.object [Json.pair "applied_damage" y]
     Boolean y -> Json.object [Json.pair "boolean" y]
     Byte y -> Json.object [Json.pair "byte" y]

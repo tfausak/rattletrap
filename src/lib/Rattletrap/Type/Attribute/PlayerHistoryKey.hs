@@ -10,11 +10,11 @@ newtype PlayerHistoryKey = PlayerHistoryKey
   { unknown :: Word.Word16
   } deriving (Eq, Show)
 
-instance Json.FromJSON PlayerHistoryKey where
-  parseJSON = fmap PlayerHistoryKey . Json.parseJSON
+instance Json.FromValue PlayerHistoryKey where
+  fromValue = fmap PlayerHistoryKey . Json.fromValue
 
-instance Json.ToJSON PlayerHistoryKey where
-  toJSON = Json.toJSON . unknown
+instance Json.ToValue PlayerHistoryKey where
+  toValue = Json.toValue . unknown
 
 schema :: Schema.Schema
 schema =

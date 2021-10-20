@@ -11,13 +11,13 @@ import qualified Rattletrap.Utility.Json as Json
 data Destroyed = Destroyed
   deriving (Eq, Show)
 
-instance Json.FromJSON Destroyed where
-  parseJSON json = do
-    () <- Json.parseJSON json
+instance Json.FromValue Destroyed where
+  fromValue json = do
+    () <- Json.fromValue json
     pure Destroyed
 
-instance Json.ToJSON Destroyed where
-  toJSON = const $ Json.toJSON ()
+instance Json.ToValue Destroyed where
+  toValue = const $ Json.toValue ()
 
 schema :: Schema.Schema
 schema =

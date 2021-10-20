@@ -16,11 +16,11 @@ newtype LoadoutOnline = LoadoutOnline
   { value :: List.List (List.List Product.Product)
   } deriving (Eq, Show)
 
-instance Json.FromJSON LoadoutOnline where
-  parseJSON = fmap LoadoutOnline . Json.parseJSON
+instance Json.FromValue LoadoutOnline where
+  fromValue = fmap LoadoutOnline . Json.fromValue
 
-instance Json.ToJSON LoadoutOnline where
-  toJSON = Json.toJSON . value
+instance Json.ToValue LoadoutOnline where
+  toValue = Json.toValue . value
 
 schema :: Schema.Schema
 schema =

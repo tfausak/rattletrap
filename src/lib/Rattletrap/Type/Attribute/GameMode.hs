@@ -17,14 +17,14 @@ data GameMode = GameMode
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON GameMode where
-  parseJSON = Json.withObject "GameMode" $ \object -> do
+instance Json.FromValue GameMode where
+  fromValue = Json.withObject "GameMode" $ \object -> do
     numBits <- Json.required object "num_bits"
     word <- Json.required object "word"
     pure GameMode { numBits, word }
 
-instance Json.ToJSON GameMode where
-  toJSON x =
+instance Json.ToValue GameMode where
+  toValue x =
     Json.object [Json.pair "num_bits" $ numBits x, Json.pair "word" $ word x]
 
 schema :: Schema.Schema

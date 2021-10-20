@@ -11,11 +11,11 @@ newtype Int = Int
   { value :: I32.I32
   } deriving (Eq, Show)
 
-instance Json.FromJSON Int where
-  parseJSON = fmap Int . Json.parseJSON
+instance Json.FromValue Int where
+  fromValue = fmap Int . Json.fromValue
 
-instance Json.ToJSON Int where
-  toJSON = Json.toJSON . value
+instance Json.ToValue Int where
+  toValue = Json.toValue . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-int" $ Schema.ref I32.schema

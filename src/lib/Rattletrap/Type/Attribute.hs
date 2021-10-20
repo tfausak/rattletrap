@@ -26,15 +26,15 @@ data Attribute = Attribute
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Attribute where
-  parseJSON = Json.withObject "Attribute" $ \object -> do
+instance Json.FromValue Attribute where
+  fromValue = Json.withObject "Attribute" $ \object -> do
     id <- Json.required object "id"
     name <- Json.required object "name"
     value <- Json.required object "value"
     pure Attribute { id, name, value }
 
-instance Json.ToJSON Attribute where
-  toJSON x = Json.object
+instance Json.ToValue Attribute where
+  toValue x = Json.object
     [ Json.pair "id" $ id x
     , Json.pair "name" $ name x
     , Json.pair "value" $ value x

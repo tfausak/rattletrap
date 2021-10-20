@@ -16,8 +16,8 @@ data TeamPaint = TeamPaint
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON TeamPaint where
-  parseJSON = Json.withObject "TeamPaint" $ \object -> do
+instance Json.FromValue TeamPaint where
+  fromValue = Json.withObject "TeamPaint" $ \object -> do
     team <- Json.required object "team"
     primaryColor <- Json.required object "primary_color"
     accentColor <- Json.required object "accent_color"
@@ -31,8 +31,8 @@ instance Json.FromJSON TeamPaint where
       , accentFinish
       }
 
-instance Json.ToJSON TeamPaint where
-  toJSON x = Json.object
+instance Json.ToValue TeamPaint where
+  toValue x = Json.object
     [ Json.pair "team" $ team x
     , Json.pair "primary_color" $ primaryColor x
     , Json.pair "accent_color" $ accentColor x

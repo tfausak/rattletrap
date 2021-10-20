@@ -14,14 +14,14 @@ data CompressedWord = CompressedWord
   }
   deriving (Eq, Ord, Show)
 
-instance Json.FromJSON CompressedWord where
-  parseJSON = Json.withObject "CompressedWord" $ \object -> do
+instance Json.FromValue CompressedWord where
+  fromValue = Json.withObject "CompressedWord" $ \object -> do
     limit <- Json.required object "limit"
     value <- Json.required object "value"
     pure CompressedWord { limit, value }
 
-instance Json.ToJSON CompressedWord where
-  toJSON x =
+instance Json.ToValue CompressedWord where
+  toValue x =
     Json.object [Json.pair "limit" $ limit x, Json.pair "value" $ value x]
 
 schema :: Schema.Schema

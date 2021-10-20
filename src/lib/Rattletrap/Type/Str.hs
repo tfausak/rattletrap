@@ -19,11 +19,11 @@ newtype Str
   = Str Text.Text
   deriving (Eq, Ord, Show)
 
-instance Json.FromJSON Str where
-  parseJSON = fmap fromText . Json.parseJSON
+instance Json.FromValue Str where
+  fromValue = fmap fromText . Json.fromValue
 
-instance Json.ToJSON Str where
-  toJSON = Json.toJSON . toText
+instance Json.ToValue Str where
+  toValue = Json.toValue . toText
 
 schema :: Schema.Schema
 schema = Schema.named "str" $ Json.object [Json.pair "type" "string"]

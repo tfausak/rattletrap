@@ -11,11 +11,11 @@ newtype Enum = Enum
   { value :: Word.Word16
   } deriving (Eq, Show)
 
-instance Json.FromJSON Enum where
-  parseJSON = fmap Enum . Json.parseJSON
+instance Json.FromValue Enum where
+  fromValue = fmap Enum . Json.fromValue
 
-instance Json.ToJSON Enum where
-  toJSON = Json.toJSON . value
+instance Json.ToValue Enum where
+  toValue = Json.toValue . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-enum" $ Schema.ref Schema.integer

@@ -18,16 +18,16 @@ data Quaternion = Quaternion
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Quaternion where
-  parseJSON = Json.withObject "Quaternion" $ \object -> do
+instance Json.FromValue Quaternion where
+  fromValue = Json.withObject "Quaternion" $ \object -> do
     x <- Json.required object "x"
     y <- Json.required object "y"
     z <- Json.required object "z"
     w <- Json.required object "w"
     pure Quaternion { x, y, z, w }
 
-instance Json.ToJSON Quaternion where
-  toJSON a = Json.object
+instance Json.ToValue Quaternion where
+  toValue a = Json.object
     [ Json.pair "x" $ x a
     , Json.pair "y" $ y a
     , Json.pair "z" $ z a

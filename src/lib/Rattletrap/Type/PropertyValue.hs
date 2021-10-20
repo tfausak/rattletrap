@@ -31,8 +31,8 @@ data PropertyValue a
   | Str Property.Str.Str
   deriving (Eq, Show)
 
-instance Json.FromJSON a => Json.FromJSON (PropertyValue a) where
-  parseJSON = Json.withObject "PropertyValue" $ \object -> Foldable.asum
+instance Json.FromValue a => Json.FromValue (PropertyValue a) where
+  fromValue = Json.withObject "PropertyValue" $ \object -> Foldable.asum
     [ fmap Array $ Json.required object "array"
     , fmap Bool $ Json.required object "bool"
     , fmap Byte $ Json.required object "byte"
@@ -43,8 +43,8 @@ instance Json.FromJSON a => Json.FromJSON (PropertyValue a) where
     , fmap Str $ Json.required object "str"
     ]
 
-instance Json.ToJSON a => Json.ToJSON (PropertyValue a) where
-  toJSON x = case x of
+instance Json.ToValue a => Json.ToValue (PropertyValue a) where
+  toValue x = case x of
     Array y -> Json.object [Json.pair "array" y]
     Bool y -> Json.object [Json.pair "bool" y]
     Byte y -> Json.object [Json.pair "byte" y]

@@ -19,14 +19,14 @@ data Replication = Replication
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Replication where
-  parseJSON = Json.withObject "Replication" $ \object -> do
+instance Json.FromValue Replication where
+  fromValue = Json.withObject "Replication" $ \object -> do
     actorId <- Json.required object "actor_id"
     value <- Json.required object "value"
     pure Replication { actorId, value }
 
-instance Json.ToJSON Replication where
-  toJSON x =
+instance Json.ToValue Replication where
+  toValue x =
     Json.object [Json.pair "actor_id" $ actorId x, Json.pair "value" $ value x]
 
 schema :: Schema.Schema

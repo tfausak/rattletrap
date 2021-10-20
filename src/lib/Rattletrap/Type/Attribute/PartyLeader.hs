@@ -15,8 +15,8 @@ data PartyLeader = PartyLeader
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON PartyLeader where
-  parseJSON = Json.withObject "PartyLeader" $ \object -> do
+instance Json.FromValue PartyLeader where
+  fromValue = Json.withObject "PartyLeader" $ \object -> do
     systemId <- Json.required object "system_id"
     maybeId <- Json.optional object "id"
     pure PartyLeader
@@ -25,8 +25,8 @@ instance Json.FromJSON PartyLeader where
       , localId = fmap snd maybeId
       }
 
-instance Json.ToJSON PartyLeader where
-  toJSON x = Json.object
+instance Json.ToValue PartyLeader where
+  toValue x = Json.object
     [ Json.pair "system_id" $ systemId x
     , Json.pair "id" $ case (remoteId x, localId x) of
       (Just r, Just l) -> Just (r, l)

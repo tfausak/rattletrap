@@ -11,11 +11,11 @@ newtype F32
   = F32 Float
   deriving (Eq, Show)
 
-instance Json.FromJSON F32 where
-  parseJSON = fmap fromFloat . Json.parseJSON
+instance Json.FromValue F32 where
+  fromValue = fmap fromFloat . Json.fromValue
 
-instance Json.ToJSON F32 where
-  toJSON = Json.toJSON . toFloat
+instance Json.ToValue F32 where
+  toValue = Json.toValue . toFloat
 
 schema :: Schema.Schema
 schema = Schema.named "f32" $ Json.object [Json.pair "type" "number"]

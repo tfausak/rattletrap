@@ -61,8 +61,8 @@ data ContentWith frames = Content
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON frames => Json.FromJSON (ContentWith frames) where
-  parseJSON = Json.withObject "Content" $ \object -> do
+instance Json.FromValue frames => Json.FromValue (ContentWith frames) where
+  fromValue = Json.withObject "Content" $ \object -> do
     levels <- Json.required object "levels"
     keyframes <- Json.required object "key_frames"
     streamSize <- Json.required object "stream_size"
@@ -90,8 +90,8 @@ instance Json.FromJSON frames => Json.FromJSON (ContentWith frames) where
       , unknown
       }
 
-instance Json.ToJSON frames => Json.ToJSON (ContentWith frames) where
-  toJSON x = Json.object
+instance Json.ToValue frames => Json.ToValue (ContentWith frames) where
+  toValue x = Json.object
     [ Json.pair "levels" $ levels x
     , Json.pair "key_frames" $ keyframes x
     , Json.pair "stream_size" $ streamSize x

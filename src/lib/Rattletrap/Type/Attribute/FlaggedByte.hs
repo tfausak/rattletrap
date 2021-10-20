@@ -12,14 +12,14 @@ data FlaggedByte = FlaggedByte
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON FlaggedByte where
-  parseJSON = Json.withObject "FlaggedByte" $ \object -> do
+instance Json.FromValue FlaggedByte where
+  fromValue = Json.withObject "FlaggedByte" $ \object -> do
     flag <- Json.required object "flag"
     byte <- Json.required object "byte"
     pure FlaggedByte { flag, byte }
 
-instance Json.ToJSON FlaggedByte where
-  toJSON x =
+instance Json.ToValue FlaggedByte where
+  toValue x =
     Json.object [Json.pair "flag" $ flag x, Json.pair "byte" $ byte x]
 
 schema :: Schema.Schema

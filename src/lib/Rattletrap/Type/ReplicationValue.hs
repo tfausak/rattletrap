@@ -24,15 +24,15 @@ data ReplicationValue
   -- ^ Destroys an existing actor.
   deriving (Eq, Show)
 
-instance Json.FromJSON ReplicationValue where
-  parseJSON = Json.withObject "ReplicationValue" $ \object -> Foldable.asum
+instance Json.FromValue ReplicationValue where
+  fromValue = Json.withObject "ReplicationValue" $ \object -> Foldable.asum
     [ fmap Spawned $ Json.required object "spawned"
     , fmap Updated $ Json.required object "updated"
     , fmap Destroyed $ Json.required object "destroyed"
     ]
 
-instance Json.ToJSON ReplicationValue where
-  toJSON x = case x of
+instance Json.ToValue ReplicationValue where
+  toValue x = case x of
     Spawned y -> Json.object [Json.pair "spawned" y]
     Updated y -> Json.object [Json.pair "updated" y]
     Destroyed y -> Json.object [Json.pair "destroyed" y]

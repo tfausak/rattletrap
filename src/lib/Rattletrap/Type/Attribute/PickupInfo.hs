@@ -18,8 +18,8 @@ data PickupInfo = PickupInfo
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON PickupInfo where
-  parseJSON = Json.withObject "PickupInfo" $ \object -> do
+instance Json.FromValue PickupInfo where
+  fromValue = Json.withObject "PickupInfo" $ \object -> do
     unknown1 <- Json.required object "unknown1"
     unknown2 <- Json.required object "unknown2"
     unknown3 <- Json.required object "unknown3"
@@ -37,8 +37,8 @@ instance Json.FromJSON PickupInfo where
       , unknown7
       }
 
-instance Json.ToJSON PickupInfo where
-  toJSON x = Json.object
+instance Json.ToValue PickupInfo where
+  toValue x = Json.object
     [ Json.pair "unknown1" $ unknown1 x
     , Json.pair "unknown2" $ unknown2 x
     , Json.pair "unknown3" $ unknown3 x

@@ -14,15 +14,15 @@ data MusicStinger = MusicStinger
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON MusicStinger where
-  parseJSON = Json.withObject "MusicStinger" $ \object -> do
+instance Json.FromValue MusicStinger where
+  fromValue = Json.withObject "MusicStinger" $ \object -> do
     flag <- Json.required object "flag"
     cue <- Json.required object "cue"
     trigger <- Json.required object "trigger"
     pure MusicStinger { flag, cue, trigger }
 
-instance Json.ToJSON MusicStinger where
-  toJSON x = Json.object
+instance Json.ToValue MusicStinger where
+  toValue x = Json.object
     [ Json.pair "flag" $ flag x
     , Json.pair "cue" $ cue x
     , Json.pair "trigger" $ trigger x

@@ -17,11 +17,11 @@ fromList = Array
 toList :: Array a -> List.List (Dictionary.Dictionary a)
 toList (Array x) = x
 
-instance Json.FromJSON a => Json.FromJSON (Array a) where
-  parseJSON = fmap fromList . Json.parseJSON
+instance Json.FromValue a => Json.FromValue (Array a) where
+  fromValue = fmap fromList . Json.fromValue
 
-instance Json.ToJSON a => Json.ToJSON (Array a) where
-  toJSON = Json.toJSON . toList
+instance Json.ToValue a => Json.ToValue (Array a) where
+  toValue = Json.toValue . toList
 
 schema :: Schema.Schema -> Schema.Schema
 schema s =

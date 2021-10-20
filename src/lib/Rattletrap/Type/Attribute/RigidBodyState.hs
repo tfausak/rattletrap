@@ -18,8 +18,8 @@ data RigidBodyState = RigidBodyState
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON RigidBodyState where
-  parseJSON = Json.withObject "RigidBodyState" $ \object -> do
+instance Json.FromValue RigidBodyState where
+  fromValue = Json.withObject "RigidBodyState" $ \object -> do
     sleeping <- Json.required object "sleeping"
     location <- Json.required object "location"
     rotation <- Json.required object "rotation"
@@ -33,8 +33,8 @@ instance Json.FromJSON RigidBodyState where
       , angularVelocity
       }
 
-instance Json.ToJSON RigidBodyState where
-  toJSON x = Json.object
+instance Json.ToValue RigidBodyState where
+  toValue x = Json.object
     [ Json.pair "sleeping" $ sleeping x
     , Json.pair "location" $ location x
     , Json.pair "rotation" $ rotation x

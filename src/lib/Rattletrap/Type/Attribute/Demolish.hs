@@ -18,8 +18,8 @@ data Demolish = Demolish
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Demolish where
-  parseJSON = Json.withObject "Demolish" $ \object -> do
+instance Json.FromValue Demolish where
+  fromValue = Json.withObject "Demolish" $ \object -> do
     attackerFlag <- Json.required object "attacker_flag"
     attackerActorId <- Json.required object "attacker_actor_id"
     victimFlag <- Json.required object "victim_flag"
@@ -35,8 +35,8 @@ instance Json.FromJSON Demolish where
       , victimVelocity
       }
 
-instance Json.ToJSON Demolish where
-  toJSON x = Json.object
+instance Json.ToValue Demolish where
+  toValue x = Json.object
     [ Json.pair "attacker_flag" $ attackerFlag x
     , Json.pair "attacker_actor_id" $ attackerActorId x
     , Json.pair "victim_flag" $ victimFlag x

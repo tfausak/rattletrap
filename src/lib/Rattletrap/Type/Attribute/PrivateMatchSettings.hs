@@ -17,8 +17,8 @@ data PrivateMatchSettings = PrivateMatchSettings
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON PrivateMatchSettings where
-  parseJSON = Json.withObject "PrivateMatchSettings" $ \object -> do
+instance Json.FromValue PrivateMatchSettings where
+  fromValue = Json.withObject "PrivateMatchSettings" $ \object -> do
     mutators <- Json.required object "mutators"
     joinableBy <- Json.required object "joinable_by"
     maxPlayers <- Json.required object "max_players"
@@ -34,8 +34,8 @@ instance Json.FromJSON PrivateMatchSettings where
       , flag
       }
 
-instance Json.ToJSON PrivateMatchSettings where
-  toJSON x = Json.object
+instance Json.ToValue PrivateMatchSettings where
+  toValue x = Json.object
     [ Json.pair "mutators" $ mutators x
     , Json.pair "joinable_by" $ joinableBy x
     , Json.pair "max_players" $ maxPlayers x

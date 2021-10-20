@@ -14,14 +14,14 @@ data PickupNew = PickupNew
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON PickupNew where
-  parseJSON = Json.withObject "PickupNew" $ \object -> do
+instance Json.FromValue PickupNew where
+  fromValue = Json.withObject "PickupNew" $ \object -> do
     instigatorId <- Json.optional object "instigator_id"
     pickedUp <- Json.required object "picked_up"
     pure PickupNew { instigatorId, pickedUp }
 
-instance Json.ToJSON PickupNew where
-  toJSON x = Json.object
+instance Json.ToValue PickupNew where
+  toValue x = Json.object
     [ Json.pair "instigator_id" $ instigatorId x
     , Json.pair "picked_up" $ pickedUp x
     ]

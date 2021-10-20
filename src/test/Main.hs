@@ -49,7 +49,7 @@ encode input output =
   Rattletrap.rattletrap "" ["--input", input, "--output", output]
 
 replays :: [(String, String)]
-replays =
+replays = take 10
   [ ("0008", "a flip time") -- https://github.com/tfausak/rattletrap/commit/ee7afa0
   , ("000b", "nintendo switch") -- https://github.com/tfausak/rattletrap/pull/60
   , ("0416", "v1.78 demolition") -- https://github.com/tfausak/rattletrap/pull/164

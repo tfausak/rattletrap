@@ -34,8 +34,8 @@ data Spawned = Spawned
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Spawned where
-  parseJSON = Json.withObject "Spawned" $ \object -> do
+instance Json.FromValue Spawned where
+  fromValue = Json.withObject "Spawned" $ \object -> do
     flag <- Json.required object "flag"
     nameIndex <- Json.optional object "name_index"
     name <- Json.optional object "name"
@@ -53,8 +53,8 @@ instance Json.FromJSON Spawned where
       , initialization
       }
 
-instance Json.ToJSON Spawned where
-  toJSON x = Json.object
+instance Json.ToValue Spawned where
+  toValue x = Json.object
     [ Json.pair "flag" $ flag x
     , Json.pair "name_index" $ nameIndex x
     , Json.pair "name" $ name x

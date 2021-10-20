@@ -11,11 +11,11 @@ newtype List a
   = List [a]
   deriving (Eq, Show)
 
-instance Json.FromJSON a => Json.FromJSON (List a) where
-  parseJSON = fmap fromList . Json.parseJSON
+instance Json.FromValue a => Json.FromValue (List a) where
+  fromValue = fmap fromList . Json.fromValue
 
-instance Json.ToJSON a => Json.ToJSON (List a) where
-  toJSON = Json.toJSON . toList
+instance Json.ToValue a => Json.ToValue (List a) where
+  toValue = Json.toValue . toList
 
 schema :: Schema.Schema -> Schema.Schema
 schema = Schema.array

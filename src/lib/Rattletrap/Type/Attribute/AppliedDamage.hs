@@ -17,16 +17,16 @@ data AppliedDamage = AppliedDamage
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON AppliedDamage where
-  parseJSON = Json.withObject "AppliedDamage" $ \object -> do
+instance Json.FromValue AppliedDamage where
+  fromValue = Json.withObject "AppliedDamage" $ \object -> do
     unknown1 <- Json.required object "unknown1"
     location <- Json.required object "location"
     unknown3 <- Json.required object "unknown3"
     unknown4 <- Json.required object "unknown4"
     pure AppliedDamage { unknown1, location, unknown3, unknown4 }
 
-instance Json.ToJSON AppliedDamage where
-  toJSON x = Json.object
+instance Json.ToValue AppliedDamage where
+  toValue x = Json.object
     [ Json.pair "unknown1" $ unknown1 x
     , Json.pair "location" $ location x
     , Json.pair "unknown3" $ unknown3 x

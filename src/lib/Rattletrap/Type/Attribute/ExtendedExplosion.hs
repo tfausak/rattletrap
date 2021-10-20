@@ -14,14 +14,14 @@ data ExtendedExplosion = ExtendedExplosion
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON ExtendedExplosion where
-  parseJSON = Json.withObject "ExtendedExplosion" $ \object -> do
+instance Json.FromValue ExtendedExplosion where
+  fromValue = Json.withObject "ExtendedExplosion" $ \object -> do
     explosion <- Json.required object "explosion"
     unknown <- Json.required object "unknown"
     pure ExtendedExplosion { explosion, unknown }
 
-instance Json.ToJSON ExtendedExplosion where
-  toJSON x = Json.object
+instance Json.ToValue ExtendedExplosion where
+  toValue x = Json.object
     [Json.pair "explosion" $ explosion x, Json.pair "unknown" $ unknown x]
 
 schema :: Schema.Schema

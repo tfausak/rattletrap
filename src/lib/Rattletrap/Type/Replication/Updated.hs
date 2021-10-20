@@ -17,11 +17,11 @@ newtype Updated = Updated
   { attributes :: List.List Attribute.Attribute
   } deriving (Eq, Show)
 
-instance Json.FromJSON Updated where
-  parseJSON = fmap Updated . Json.parseJSON
+instance Json.FromValue Updated where
+  fromValue = fmap Updated . Json.fromValue
 
-instance Json.ToJSON Updated where
-  toJSON = Json.toJSON . attributes
+instance Json.ToValue Updated where
+  toValue = Json.toValue . attributes
 
 schema :: Schema.Schema
 schema = Schema.named "replication-updated" . Schema.json $ List.schema

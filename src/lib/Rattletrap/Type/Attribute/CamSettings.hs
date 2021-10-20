@@ -19,8 +19,8 @@ data CamSettings = CamSettings
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON CamSettings where
-  parseJSON = Json.withObject "CamSettings" $ \object -> do
+instance Json.FromValue CamSettings where
+  fromValue = Json.withObject "CamSettings" $ \object -> do
     fov <- Json.required object "fov"
     height <- Json.required object "height"
     angle <- Json.required object "angle"
@@ -38,8 +38,8 @@ instance Json.FromJSON CamSettings where
       , transitionSpeed
       }
 
-instance Json.ToJSON CamSettings where
-  toJSON x = Json.object
+instance Json.ToValue CamSettings where
+  toValue x = Json.object
     [ Json.pair "fov" $ fov x
     , Json.pair "height" $ height x
     , Json.pair "angle" $ angle x

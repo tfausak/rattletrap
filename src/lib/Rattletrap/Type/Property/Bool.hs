@@ -17,11 +17,11 @@ fromU8 = Bool
 toU8 :: Bool -> U8.U8
 toU8 (Bool x) = x
 
-instance Json.FromJSON Bool where
-  parseJSON = fmap fromU8 . Json.parseJSON
+instance Json.FromValue Bool where
+  fromValue = fmap fromU8 . Json.fromValue
 
-instance Json.ToJSON Bool where
-  toJSON = Json.toJSON . toU8
+instance Json.ToValue Bool where
+  toValue = Json.toValue . toU8
 
 schema :: Schema.Schema
 schema = U8.schema

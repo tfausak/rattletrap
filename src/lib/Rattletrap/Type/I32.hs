@@ -12,11 +12,11 @@ newtype I32
   = I32 Int.Int32
   deriving (Eq, Show)
 
-instance Json.FromJSON I32 where
-  parseJSON = fmap fromInt32 . Json.parseJSON
+instance Json.FromValue I32 where
+  fromValue = fmap fromInt32 . Json.fromValue
 
-instance Json.ToJSON I32 where
-  toJSON = Json.toJSON . toInt32
+instance Json.ToValue I32 where
+  toValue = Json.toValue . toInt32
 
 schema :: Schema.Schema
 schema = Schema.named "i32" $ Json.object

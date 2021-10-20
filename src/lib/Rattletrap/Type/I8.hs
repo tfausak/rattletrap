@@ -12,11 +12,11 @@ newtype I8
   = I8 Int.Int8
   deriving (Eq, Show)
 
-instance Json.FromJSON I8 where
-  parseJSON = fmap fromInt8 . Json.parseJSON
+instance Json.FromValue I8 where
+  fromValue = fmap fromInt8 . Json.fromValue
 
-instance Json.ToJSON I8 where
-  toJSON = Json.toJSON . toInt8
+instance Json.ToValue I8 where
+  toValue = Json.toValue . toInt8
 
 schema :: Schema.Schema
 schema = Schema.named "i8" $ Json.object

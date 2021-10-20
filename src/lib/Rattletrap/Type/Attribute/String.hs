@@ -11,11 +11,11 @@ newtype String = String
   { value :: Str.Str
   } deriving (Eq, Show)
 
-instance Json.FromJSON String where
-  parseJSON = fmap String . Json.parseJSON
+instance Json.FromValue String where
+  fromValue = fmap String . Json.fromValue
 
-instance Json.ToJSON String where
-  toJSON = Json.toJSON . value
+instance Json.ToValue String where
+  toValue = Json.toValue . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-string" $ Schema.ref Str.schema

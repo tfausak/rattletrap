@@ -15,15 +15,15 @@ data UniqueId = UniqueId
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON UniqueId where
-  parseJSON = Json.withObject "UniqueId" $ \object -> do
+instance Json.FromValue UniqueId where
+  fromValue = Json.withObject "UniqueId" $ \object -> do
     systemId <- Json.required object "system_id"
     remoteId <- Json.required object "remote_id"
     localId <- Json.required object "local_id"
     pure UniqueId { systemId, remoteId, localId }
 
-instance Json.ToJSON UniqueId where
-  toJSON x = Json.object
+instance Json.ToValue UniqueId where
+  toValue x = Json.object
     [ Json.pair "system_id" $ systemId x
     , Json.pair "remote_id" $ remoteId x
     , Json.pair "local_id" $ localId x

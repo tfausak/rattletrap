@@ -16,16 +16,16 @@ data Cache = Cache
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Cache where
-  parseJSON = Json.withObject "Cache" $ \object -> do
+instance Json.FromValue Cache where
+  fromValue = Json.withObject "Cache" $ \object -> do
     classId <- Json.required object "class_id"
     parentCacheId <- Json.required object "parent_cache_id"
     cacheId <- Json.required object "cache_id"
     attributeMappings <- Json.required object "attribute_mappings"
     pure Cache { classId, parentCacheId, cacheId, attributeMappings }
 
-instance Json.ToJSON Cache where
-  toJSON x = Json.object
+instance Json.ToValue Cache where
+  toValue x = Json.object
     [ Json.pair "class_id" $ classId x
     , Json.pair "parent_cache_id" $ parentCacheId x
     , Json.pair "cache_id" $ cacheId x

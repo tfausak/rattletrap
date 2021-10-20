@@ -12,14 +12,14 @@ data FlaggedInt = FlaggedInt
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON FlaggedInt where
-  parseJSON = Json.withObject "FlaggedInt" $ \object -> do
+instance Json.FromValue FlaggedInt where
+  fromValue = Json.withObject "FlaggedInt" $ \object -> do
     flag <- Json.required object "flag"
     int <- Json.required object "int"
     pure FlaggedInt { flag, int }
 
-instance Json.ToJSON FlaggedInt where
-  toJSON x = Json.object [Json.pair "flag" $ flag x, Json.pair "int" $ int x]
+instance Json.ToValue FlaggedInt where
+  toValue x = Json.object [Json.pair "flag" $ flag x, Json.pair "int" $ int x]
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-flagged-int" $ Schema.object

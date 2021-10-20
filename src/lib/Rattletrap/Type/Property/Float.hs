@@ -17,11 +17,11 @@ fromF32 = Float
 toF32 :: Float -> F32.F32
 toF32 (Float x) = x
 
-instance Json.FromJSON Float where
-  parseJSON = fmap fromF32 . Json.parseJSON
+instance Json.FromValue Float where
+  fromValue = fmap fromF32 . Json.fromValue
 
-instance Json.ToJSON Float where
-  toJSON = Json.toJSON . toF32
+instance Json.ToValue Float where
+  toValue = Json.toValue . toF32
 
 schema :: Schema.Schema
 schema = F32.schema

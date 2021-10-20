@@ -10,11 +10,11 @@ newtype Xbox
   = Xbox U64.U64
   deriving (Eq, Show)
 
-instance Json.FromJSON Xbox where
-  parseJSON = fmap fromU64 . Json.parseJSON
+instance Json.FromValue Xbox where
+  fromValue = fmap fromU64 . Json.fromValue
 
-instance Json.ToJSON Xbox where
-  toJSON = Json.toJSON . toU64
+instance Json.ToValue Xbox where
+  toValue = Json.toValue . toU64
 
 fromU64 :: U64.U64 -> Xbox
 fromU64 = Xbox

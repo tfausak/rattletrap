@@ -11,11 +11,11 @@ newtype Float = Float
   { value :: F32.F32
   } deriving (Eq, Show)
 
-instance Json.FromJSON Float where
-  parseJSON = fmap Float . Json.parseJSON
+instance Json.FromValue Float where
+  fromValue = fmap Float . Json.fromValue
 
-instance Json.ToJSON Float where
-  toJSON = Json.toJSON . value
+instance Json.ToValue Float where
+  toValue = Json.toValue . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-float" $ Schema.ref F32.schema

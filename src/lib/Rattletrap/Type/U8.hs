@@ -12,11 +12,11 @@ newtype U8
   = U8 Word.Word8
   deriving (Eq, Show)
 
-instance Json.FromJSON U8 where
-  parseJSON = fmap fromWord8 . Json.parseJSON
+instance Json.FromValue U8 where
+  fromValue = fmap fromWord8 . Json.fromValue
 
-instance Json.ToJSON U8 where
-  toJSON = Json.toJSON . toWord8
+instance Json.ToValue U8 where
+  toValue = Json.toValue . toWord8
 
 schema :: Schema.Schema
 schema = Schema.named "u8" $ Json.object

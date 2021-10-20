@@ -10,11 +10,11 @@ newtype Epic
   = Epic Str.Str
   deriving (Eq, Show)
 
-instance Json.FromJSON Epic where
-  parseJSON = fmap fromStr . Json.parseJSON
+instance Json.FromValue Epic where
+  fromValue = fmap fromStr . Json.fromValue
 
-instance Json.ToJSON Epic where
-  toJSON = Json.toJSON . toStr
+instance Json.ToValue Epic where
+  toValue = Json.toValue . toStr
 
 fromStr :: Str.Str -> Epic
 fromStr = Epic

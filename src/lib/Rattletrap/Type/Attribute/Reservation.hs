@@ -22,8 +22,8 @@ data Reservation = Reservation
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Reservation where
-  parseJSON = Json.withObject "Reservation" $ \object -> do
+instance Json.FromValue Reservation where
+  fromValue = Json.withObject "Reservation" $ \object -> do
     number <- Json.required object "number"
     uniqueId <- Json.required object "unique_id"
     name <- Json.optional object "name"
@@ -32,8 +32,8 @@ instance Json.FromJSON Reservation where
     unknown3 <- Json.optional object "unknown3"
     pure Reservation { number, uniqueId, name, unknown1, unknown2, unknown3 }
 
-instance Json.ToJSON Reservation where
-  toJSON x = Json.object
+instance Json.ToValue Reservation where
+  toValue x = Json.object
     [ Json.pair "number" $ number x
     , Json.pair "unique_id" $ uniqueId x
     , Json.pair "name" $ name x

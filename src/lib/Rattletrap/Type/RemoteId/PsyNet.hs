@@ -13,8 +13,8 @@ data PsyNet
   | Old U64.U64 U64.U64 U64.U64 U64.U64
   deriving (Eq, Show)
 
-instance Json.FromJSON PsyNet where
-  parseJSON = Json.withObject "PsyNet" $ \object -> do
+instance Json.FromValue PsyNet where
+  fromValue = Json.withObject "PsyNet" $ \object -> do
     let
       new = fmap New $ Json.required object "Left"
       old = do
@@ -22,8 +22,8 @@ instance Json.FromJSON PsyNet where
         pure $ Old a b c d
     new Applicative.<|> old
 
-instance Json.ToJSON PsyNet where
-  toJSON x = case x of
+instance Json.ToValue PsyNet where
+  toValue x = case x of
     New a -> Json.object [Json.pair "Left" a]
     Old a b c d -> Json.object [Json.pair "Right" [a, b, c, d]]
 

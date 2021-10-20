@@ -14,15 +14,15 @@ newtype U64
   = U64 Word.Word64
   deriving (Eq, Show)
 
-instance Json.FromJSON U64 where
-  parseJSON =
-    Json.withText "U64"
+instance Json.FromValue U64 where
+  fromValue =
+    Json.withString "U64"
       $ either fail (pure . fromWord64)
       . Read.readEither
       . Text.unpack
 
-instance Json.ToJSON U64 where
-  toJSON = Json.toJSON . show . toWord64
+instance Json.ToValue U64 where
+  toValue = Json.toValue . show . toWord64
 
 schema :: Schema.Schema
 schema = Schema.named "u64"

@@ -18,8 +18,8 @@ data Title = Title
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Title where
-  parseJSON = Json.withObject "Title" $ \object -> do
+instance Json.FromValue Title where
+  fromValue = Json.withObject "Title" $ \object -> do
     unknown1 <- Json.required object "unknown1"
     unknown2 <- Json.required object "unknown2"
     unknown3 <- Json.required object "unknown3"
@@ -39,8 +39,8 @@ instance Json.FromJSON Title where
       , unknown8
       }
 
-instance Json.ToJSON Title where
-  toJSON x = Json.object
+instance Json.ToValue Title where
+  toValue x = Json.object
     [ Json.pair "unknown1" $ unknown1 x
     , Json.pair "unknown2" $ unknown2 x
     , Json.pair "unknown3" $ unknown3 x

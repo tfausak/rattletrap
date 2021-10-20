@@ -14,15 +14,15 @@ newtype I64
   = I64 Int.Int64
   deriving (Eq, Show)
 
-instance Json.FromJSON I64 where
-  parseJSON =
-    Json.withText "I64"
+instance Json.FromValue I64 where
+  fromValue =
+    Json.withString "I64"
       $ either fail (pure . fromInt64)
       . Read.readEither
       . Text.unpack
 
-instance Json.ToJSON I64 where
-  toJSON = Json.toJSON . show . toInt64
+instance Json.ToValue I64 where
+  toValue = Json.toValue . show . toInt64
 
 schema :: Schema.Schema
 schema = Schema.named "i64"

@@ -10,11 +10,11 @@ newtype Byte = Byte
   { value :: U8.U8
   } deriving (Eq, Show)
 
-instance Json.FromJSON Byte where
-  parseJSON = fmap Byte . Json.parseJSON
+instance Json.FromValue Byte where
+  fromValue = fmap Byte . Json.fromValue
 
-instance Json.ToJSON Byte where
-  toJSON = Json.toJSON . value
+instance Json.ToValue Byte where
+  toValue = Json.toValue . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-byte" $ Schema.ref U8.schema

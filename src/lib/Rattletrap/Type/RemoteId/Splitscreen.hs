@@ -10,11 +10,11 @@ newtype Splitscreen
   = Splitscreen Word.Word32
   deriving (Eq, Show)
 
-instance Json.FromJSON Splitscreen where
-  parseJSON = fmap fromWord32 . Json.parseJSON
+instance Json.FromValue Splitscreen where
+  fromValue = fmap fromWord32 . Json.fromValue
 
-instance Json.ToJSON Splitscreen where
-  toJSON = Json.toJSON . toWord32
+instance Json.ToValue Splitscreen where
+  toValue = Json.toValue . toWord32
 
 fromWord32 :: Word.Word32 -> Splitscreen
 fromWord32 = Splitscreen

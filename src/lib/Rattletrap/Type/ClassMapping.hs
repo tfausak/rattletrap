@@ -13,14 +13,14 @@ data ClassMapping = ClassMapping
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON ClassMapping where
-  parseJSON = Json.withObject "ClassMapping" $ \object -> do
+instance Json.FromValue ClassMapping where
+  fromValue = Json.withObject "ClassMapping" $ \object -> do
     name <- Json.required object "name"
     streamId <- Json.required object "stream_id"
     pure ClassMapping { name, streamId }
 
-instance Json.ToJSON ClassMapping where
-  toJSON x =
+instance Json.ToValue ClassMapping where
+  toValue x =
     Json.object [Json.pair "name" $ name x, Json.pair "stream_id" $ streamId x]
 
 schema :: Schema.Schema

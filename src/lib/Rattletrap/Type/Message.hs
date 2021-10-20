@@ -17,15 +17,15 @@ data Message = Message
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Message where
-  parseJSON = Json.withObject "Message" $ \object -> do
+instance Json.FromValue Message where
+  fromValue = Json.withObject "Message" $ \object -> do
     frame <- Json.required object "frame"
     name <- Json.required object "name"
     value <- Json.required object "value"
     pure Message { frame, name, value }
 
-instance Json.ToJSON Message where
-  toJSON x = Json.object
+instance Json.ToValue Message where
+  toValue x = Json.object
     [ Json.pair "frame" $ frame x
     , Json.pair "name" $ name x
     , Json.pair "value" $ value x

@@ -12,14 +12,14 @@ data StatEvent = StatEvent
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON StatEvent where
-  parseJSON = Json.withObject "StatEvent" $ \object -> do
+instance Json.FromValue StatEvent where
+  fromValue = Json.withObject "StatEvent" $ \object -> do
     unknown <- Json.required object "unknown"
     objectId <- Json.required object "object_id"
     pure StatEvent { unknown, objectId }
 
-instance Json.ToJSON StatEvent where
-  toJSON x = Json.object
+instance Json.ToValue StatEvent where
+  toValue x = Json.object
     [Json.pair "unknown" $ unknown x, Json.pair "object_id" $ objectId x]
 
 schema :: Schema.Schema

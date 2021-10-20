@@ -51,6 +51,7 @@ library
 
   autogen-modules: Paths_rattletrap
   build-depends:
+    , argo
     , array ^>= 0.5.4
     , bytestring ^>= 0.10.12
     , containers ^>= 0.6.4
@@ -91,15 +92,6 @@ library
     Rattletrap.Exception.UnknownProperty
     Rattletrap.Exception.UnknownSystemId
     Rattletrap.Get
-    Rattletrap.Json
-    Rattletrap.Json.Array
-    Rattletrap.Json.Boolean
-    Rattletrap.Json.Null
-    Rattletrap.Json.Number
-    Rattletrap.Json.Object
-    Rattletrap.Json.Pair
-    Rattletrap.Json.String
-    Rattletrap.Json.Value
     Rattletrap.Schema
     Rattletrap.TextGet
     Rattletrap.TextPut

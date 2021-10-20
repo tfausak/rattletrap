@@ -14,14 +14,14 @@ data Rotation
   | Quaternion Quaternion.Quaternion
   deriving (Eq, Show)
 
-instance Json.FromJSON Rotation where
-  parseJSON = Json.withObject "Rotation" $ \object -> Foldable.asum
+instance Json.FromValue Rotation where
+  fromValue = Json.withObject "Rotation" $ \object -> Foldable.asum
     [ fmap CompressedWordVector $ Json.required object "compressed_word_vector"
     , fmap Quaternion $ Json.required object "quaternion"
     ]
 
-instance Json.ToJSON Rotation where
-  toJSON x = case x of
+instance Json.ToValue Rotation where
+  toValue x = case x of
     CompressedWordVector y ->
       Json.object [Json.pair "compressed_word_vector" y]
     Quaternion y -> Json.object [Json.pair "quaternion" y]

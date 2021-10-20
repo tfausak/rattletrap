@@ -14,13 +14,13 @@ data Switch = Switch
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Switch where
-  parseJSON json = do
-    [a, b, c, d] <- Json.parseJSON json
+instance Json.FromValue Switch where
+  fromValue json = do
+    [a, b, c, d] <- Json.fromValue json
     pure Switch { a, b, c, d }
 
-instance Json.ToJSON Switch where
-  toJSON x = Json.toJSON [a x, b x, c x, d x]
+instance Json.ToValue Switch where
+  toValue x = Json.toValue [a x, b x, c x, d x]
 
 schema :: Schema.Schema
 schema =

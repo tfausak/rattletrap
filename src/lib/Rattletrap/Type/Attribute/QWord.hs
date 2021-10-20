@@ -10,11 +10,11 @@ newtype QWord = QWord
   { value :: U64.U64
   } deriving (Eq, Show)
 
-instance Json.FromJSON QWord where
-  parseJSON = fmap QWord . Json.parseJSON
+instance Json.FromValue QWord where
+  fromValue = fmap QWord . Json.fromValue
 
-instance Json.ToJSON QWord where
-  toJSON = Json.toJSON . value
+instance Json.ToValue QWord where
+  toValue = Json.toValue . value
 
 schema :: Schema.Schema
 schema = Schema.named "attribute-q-word" $ Schema.ref U64.schema

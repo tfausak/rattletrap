@@ -16,11 +16,11 @@ fromStr = Str
 toStr :: Str -> Str.Str
 toStr (Str x) = x
 
-instance Json.FromJSON Str where
-  parseJSON = fmap fromStr . Json.parseJSON
+instance Json.FromValue Str where
+  fromValue = fmap fromStr . Json.fromValue
 
-instance Json.ToJSON Str where
-  toJSON = Json.toJSON . toStr
+instance Json.ToValue Str where
+  toValue = Json.toValue . toStr
 
 schema :: Schema.Schema
 schema = Str.schema

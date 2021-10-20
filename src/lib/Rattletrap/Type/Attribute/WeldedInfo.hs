@@ -19,8 +19,8 @@ data WeldedInfo = WeldedInfo
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON WeldedInfo where
-  parseJSON = Json.withObject "WeldedInfo" $ \object -> do
+instance Json.FromValue WeldedInfo where
+  fromValue = Json.withObject "WeldedInfo" $ \object -> do
     active <- Json.required object "active"
     actorId <- Json.required object "actor_id"
     offset <- Json.required object "offset"
@@ -28,8 +28,8 @@ instance Json.FromJSON WeldedInfo where
     rotation <- Json.required object "rotation"
     pure WeldedInfo { active, actorId, offset, mass, rotation }
 
-instance Json.ToJSON WeldedInfo where
-  toJSON x = Json.object
+instance Json.ToValue WeldedInfo where
+  toValue x = Json.object
     [ Json.pair "active" $ active x
     , Json.pair "actor_id" $ actorId x
     , Json.pair "offset" $ offset x

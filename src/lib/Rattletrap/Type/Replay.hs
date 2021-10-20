@@ -31,14 +31,14 @@ data ReplayWith header content = Replay
   }
   deriving (Eq, Show)
 
-instance (Json.FromJSON h, Json.FromJSON c) => Json.FromJSON (ReplayWith h c) where
-  parseJSON = Json.withObject "Replay" $ \object -> do
+instance (Json.FromValue h, Json.FromValue c) => Json.FromValue (ReplayWith h c) where
+  fromValue = Json.withObject "Replay" $ \object -> do
     header <- Json.required object "header"
     content <- Json.required object "content"
     pure Replay { header, content }
 
-instance (Json.ToJSON h, Json.ToJSON c) => Json.ToJSON (ReplayWith h c) where
-  toJSON x = Json.object
+instance (Json.ToValue h, Json.ToValue c) => Json.ToValue (ReplayWith h c) where
+  toValue x = Json.object
     [ Json.pair "$schema" schemaUrl
     , Json.pair "header" $ header x
     , Json.pair "content" $ content x

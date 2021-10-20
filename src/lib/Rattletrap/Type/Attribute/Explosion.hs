@@ -15,15 +15,15 @@ data Explosion = Explosion
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Explosion where
-  parseJSON = Json.withObject "Explosion" $ \object -> do
+instance Json.FromValue Explosion where
+  fromValue = Json.withObject "Explosion" $ \object -> do
     flag <- Json.required object "flag"
     actorId <- Json.required object "actor_id"
     location <- Json.required object "location"
     pure Explosion { flag, actorId, location }
 
-instance Json.ToJSON Explosion where
-  toJSON x = Json.object
+instance Json.ToValue Explosion where
+  toValue x = Json.object
     [ Json.pair "flag" $ flag x
     , Json.pair "actor_id" $ actorId x
     , Json.pair "location" $ location x

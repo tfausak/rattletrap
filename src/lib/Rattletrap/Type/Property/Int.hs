@@ -17,11 +17,11 @@ fromI32 = Int
 toI32 :: Int -> I32.I32
 toI32 (Int x) = x
 
-instance Json.FromJSON Int where
-  parseJSON = fmap fromI32 . Json.parseJSON
+instance Json.FromValue Int where
+  fromValue = fmap fromI32 . Json.fromValue
 
-instance Json.ToJSON Int where
-  toJSON = Json.toJSON . toI32
+instance Json.ToValue Int where
+  toValue = Json.toValue . toI32
 
 schema :: Schema.Schema
 schema = I32.schema

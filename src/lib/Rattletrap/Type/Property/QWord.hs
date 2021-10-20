@@ -16,11 +16,11 @@ fromU64 = QWord
 toU64 :: QWord -> U64.U64
 toU64 (QWord x) = x
 
-instance Json.FromJSON QWord where
-  parseJSON = fmap fromU64 . Json.parseJSON
+instance Json.FromValue QWord where
+  fromValue = fmap fromU64 . Json.fromValue
 
-instance Json.ToJSON QWord where
-  toJSON = Json.toJSON . toU64
+instance Json.ToValue QWord where
+  toValue = Json.toValue . toU64
 
 schema :: Schema.Schema
 schema = U64.schema

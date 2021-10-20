@@ -12,14 +12,14 @@ data Loadouts = Loadouts
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Loadouts where
-  parseJSON = Json.withObject "Loadouts" $ \object -> do
+instance Json.FromValue Loadouts where
+  fromValue = Json.withObject "Loadouts" $ \object -> do
     blue <- Json.required object "blue"
     orange <- Json.required object "orange"
     pure Loadouts { blue, orange }
 
-instance Json.ToJSON Loadouts where
-  toJSON x =
+instance Json.ToValue Loadouts where
+  toValue x =
     Json.object [Json.pair "blue" $ blue x, Json.pair "orange" $ orange x]
 
 schema :: Schema.Schema

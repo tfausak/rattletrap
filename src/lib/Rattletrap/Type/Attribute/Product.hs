@@ -21,16 +21,16 @@ data Product = Product
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Product where
-  parseJSON = Json.withObject "Product" $ \object -> do
+instance Json.FromValue Product where
+  fromValue = Json.withObject "Product" $ \object -> do
     unknown <- Json.required object "unknown"
     objectId <- Json.required object "object_id"
     objectName <- Json.optional object "object_name"
     value <- Json.required object "value"
     pure Product { unknown, objectId, objectName, value }
 
-instance Json.ToJSON Product where
-  toJSON x = Json.object
+instance Json.ToValue Product where
+  toValue x = Json.object
     [ Json.pair "unknown" $ unknown x
     , Json.pair "object_id" $ objectId x
     , Json.pair "object_name" $ objectName x

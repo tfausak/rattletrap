@@ -14,16 +14,16 @@ data ClubColors = ClubColors
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON ClubColors where
-  parseJSON = Json.withObject "ClubColors" $ \object -> do
+instance Json.FromValue ClubColors where
+  fromValue = Json.withObject "ClubColors" $ \object -> do
     blueFlag <- Json.required object "blue_flag"
     blueColor <- Json.required object "blue_color"
     orangeFlag <- Json.required object "orange_flag"
     orangeColor <- Json.required object "orange_color"
     pure ClubColors { blueFlag, blueColor, orangeFlag, orangeColor }
 
-instance Json.ToJSON ClubColors where
-  toJSON x = Json.object
+instance Json.ToValue ClubColors where
+  toValue x = Json.object
     [ Json.pair "blue_flag" $ blueFlag x
     , Json.pair "blue_color" $ blueColor x
     , Json.pair "orange_flag" $ orangeFlag x

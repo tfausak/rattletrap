@@ -19,8 +19,8 @@ data DamageState = DamageState
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON DamageState where
-  parseJSON = Json.withObject "DamageState" $ \object -> do
+instance Json.FromValue DamageState where
+  fromValue = Json.withObject "DamageState" $ \object -> do
     unknown1 <- Json.required object "unknown1"
     unknown2 <- Json.required object "unknown2"
     unknown3 <- Json.required object "unknown3"
@@ -36,8 +36,8 @@ instance Json.FromJSON DamageState where
       , unknown6
       }
 
-instance Json.ToJSON DamageState where
-  toJSON x = Json.object
+instance Json.ToValue DamageState where
+  toValue x = Json.object
     [ Json.pair "unknown1" $ unknown1 x
     , Json.pair "unknown2" $ unknown2 x
     , Json.pair "unknown3" $ unknown3 x
