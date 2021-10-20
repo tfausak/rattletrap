@@ -93,8 +93,6 @@ library
     Rattletrap.Exception.UnknownSystemId
     Rattletrap.Get
     Rattletrap.Schema
-    Rattletrap.TextGet
-    Rattletrap.TextPut
     Rattletrap.Type.Attribute
     Rattletrap.Type.Attribute.AppliedDamage
     Rattletrap.Type.Attribute.Boolean

@@ -1,3 +1,4 @@
+{- hlint ignore "Avoid restricted extensions" -}
 {-# LANGUAGE FlexibleInstances #-}
 
 module Rattletrap.Utility.Json
@@ -13,7 +14,6 @@ module Rattletrap.Utility.Json
   , required
   , Argo.withArray
   , Argo.withBoolean
-  , withNull
   , Argo.withNumber
   , Argo.withObject
   , Argo.withString
@@ -70,11 +70,6 @@ required o ks = mapFailure (show ks <>) $ do
   case List.find (\ (Argo.Pair k _) -> k == kt) $ Array.elems o of
     Nothing -> Argo.Failure $ "missing required key " <> show kt
     Just (Argo.Pair _ v) -> Argo.fromValue v
-
-withNull :: String -> Parser a -> Argo.Value -> Parser a
-withNull s f v = case v of
-  Argo.Null -> f
-  _ -> fail s
 
 mapFailure :: (String -> String) -> Parser a -> Parser a
 mapFailure f r = case r of
