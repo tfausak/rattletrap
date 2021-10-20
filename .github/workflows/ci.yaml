@@ -113,7 +113,7 @@ jobs:
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-macos
-          asset_path: artifact/macos-10.15/rattletrap
+          asset_path: artifact/macos-11/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
