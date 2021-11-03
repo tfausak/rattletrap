@@ -21,7 +21,6 @@ module Rattletrap.Utility.Json
 
 import qualified Argo
 import qualified Argo.Class.FromValue as Argo
-import qualified Data.Array as Array
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Builder as Builder
 import qualified Data.ByteString.Lazy as LazyByteString
@@ -41,24 +40,16 @@ encode = Builder.toLazyByteString . Argo.encode
 encodePretty :: Argo.ToValue a => a -> LazyByteString.ByteString
 encodePretty = encode
 
-listToArray :: [a] -> Array.Array Int a
-listToArray = listToArrayWith 0 []
-
-listToArrayWith :: Int -> [(Int, a)] -> [a] -> Array.Array Int a
-listToArrayWith i ts xs = case xs of
-  [] -> Array.array (0, i - 1) ts
-  x : ys -> listToArrayWith (i + 1) ((i, x) : ts) ys
-
 object :: [(Text.Text, Argo.Value)] -> Argo.Value
-object = Argo.Object . listToArray . fmap (uncurry Argo.Pair)
+object = Argo.Object . fmap (\ (k, v) -> Argo.Member (Argo.Name k) v)
 
 optional :: Argo.FromValue a => Argo.Object -> String -> Parser (Maybe a)
 optional o ks =
   mapFailure (show ks <>)
     $ let kt = Text.pack ks
       in
-        case List.find (\(Argo.Pair k _) -> k == kt) $ Array.elems o of
-          Just (Argo.Pair _ v) -> case v of
+        case List.find (\(Argo.Member (Argo.Name k) _) -> k == kt) o of
+          Just (Argo.Member _ v) -> case v of
             Argo.Null -> pure Nothing
             _ -> Just <$> Argo.fromValue v
           Nothing -> pure Nothing
@@ -69,9 +60,9 @@ pair k v = (Text.pack k, Argo.toValue v)
 required :: Argo.FromValue a => Argo.Object -> String -> Parser a
 required o ks = mapFailure (show ks <>) $ do
   let kt = Text.pack ks
-  case List.find (\(Argo.Pair k _) -> k == kt) $ Array.elems o of
+  case List.find (\(Argo.Member (Argo.Name k) _) -> k == kt) o of
     Nothing -> Argo.Failure $ "missing required key " <> show kt
-    Just (Argo.Pair _ v) -> Argo.fromValue v
+    Just (Argo.Member _ v) -> Argo.fromValue v
 
 mapFailure :: (String -> String) -> Parser a -> Parser a
 mapFailure f r = case r of
