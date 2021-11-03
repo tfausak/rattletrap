@@ -1,5 +1,9 @@
 module Rattletrap.Type.U32 where
 
+import qualified Argo as Argo
+import qualified Argo.Codec
+import qualified Argo.Json.Number
+import qualified Control.Applicative as Applicative
 import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
@@ -17,6 +21,21 @@ instance Json.FromValue U32 where
 
 instance Json.ToValue U32 where
   toValue = Json.toValue . toWord32
+
+codec :: Argo.Codec.ValueCodec U32
+codec = Argo.Codec.dimap fromWord32 toWord32 word32Codec
+
+word32Codec :: Argo.Codec.ValueCodec Word.Word32
+word32Codec = Argo.Codec.Codec
+  { Argo.Codec.decode = do
+    Argo.Json.Number.Number s e <- Argo.Codec.decode Argo.Codec.numberCodec
+    if e < 0
+      then Applicative.empty
+      else pure . fromIntegral $ s * 10 ^ e
+  , Argo.Codec.encode = \ x -> do
+    _ <- Argo.Codec.encode Argo.Codec.numberCodec $ Argo.Json.Number.number (fromIntegral x) 0
+    pure x
+  }
 
 schema :: Schema.Schema
 schema = Schema.named "u32" $ Json.object

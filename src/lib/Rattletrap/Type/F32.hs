@@ -1,5 +1,8 @@
 module Rattletrap.Type.F32 where
 
+import qualified Argo as Argo
+import qualified Argo.Codec as Argo
+import qualified Argo.Json.Number as Argo.Number
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
@@ -16,6 +19,15 @@ instance Json.FromValue F32 where
 
 instance Json.ToValue F32 where
   toValue = Json.toValue . toFloat
+
+codec :: Argo.ValueCodec F32
+codec = Argo.dimap fromFloat toFloat floatCodec
+
+floatCodec :: Argo.ValueCodec Float
+floatCodec = Argo.mapBoth
+  (fromRational . Argo.Number.toRational)
+  (Argo.Number.fromRational . toRational)
+  Argo.numberCodec
 
 schema :: Schema.Schema
 schema = Schema.named "f32" $ Json.object [Json.pair "type" "number"]

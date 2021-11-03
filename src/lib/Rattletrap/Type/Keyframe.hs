@@ -1,5 +1,8 @@
 module Rattletrap.Type.Keyframe where
 
+import qualified Argo as Argo
+import qualified Argo.Codec as Argo
+import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
@@ -30,6 +33,12 @@ instance Json.ToValue Keyframe where
     , Json.pair "frame" $ frame x
     , Json.pair "position" $ position x
     ]
+
+codec :: Argo.ValueCodec Keyframe
+codec = Argo.fromObjectCodec Argo.Allow $ Keyframe
+  <$> Argo.project time (Argo.required (Argo.Name $ Text.pack "time") F32.codec)
+  <*> Argo.project frame (Argo.required (Argo.Name $ Text.pack "frame") U32.codec)
+  <*> Argo.project position (Argo.required (Argo.Name $ Text.pack "position") U32.codec)
 
 schema :: Schema.Schema
 schema = Schema.named "keyframe" $ Schema.object
