@@ -82,6 +82,7 @@ replays =
   , ("387f", "a frozen attribute") -- https://github.com/tfausak/rattletrap/commit/93ce196
   , ("3abd", "rlcs") -- https://github.com/tfausak/rattletrap/pull/86
   , ("3ea1", "a custom team name") -- https://github.com/tfausak/rattletrap/commit/cf4d145
+  , ("4050", "v2.08 dodge impulse") -- https://github.com/tfausak/rattletrap/issues/247
   , ("4126", "a game mode after Neo Tokyo") -- https://github.com/tfausak/rattletrap/commit/a1cf21e
   , ("419a", "a club match") -- https://github.com/tfausak/rattletrap/commit/8e35043
   , ("42f0", "reservations after Neo Tokyo") -- https://github.com/tfausak/rattletrap/commit/163684f

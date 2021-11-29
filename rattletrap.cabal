@@ -28,6 +28,7 @@ common library
     -Weverything
     -Wno-all-missed-specialisations
     -Wno-implicit-prelude
+    -Wno-missed-specialisations
     -Wno-missing-deriving-strategies
     -Wno-missing-export-lists
     -Wno-missing-exported-signatures
