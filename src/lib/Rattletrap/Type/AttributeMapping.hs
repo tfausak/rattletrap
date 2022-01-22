@@ -12,9 +12,15 @@ data AttributeMapping = AttributeMapping
   deriving (Eq, Show)
 
 instance Argo.HasCodec AttributeMapping where
-  codec = Argo.fromObjectCodec Argo.Allow $ AttributeMapping
-    <$> Argo.project objectId (Argo.required (Argo.fromString "object_id") Argo.codec)
-    <*> Argo.project streamId (Argo.required (Argo.fromString "stream_id") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ AttributeMapping
+      <$> Argo.project
+            objectId
+            (Argo.required (Argo.fromString "object_id") Argo.codec)
+      <*> Argo.project
+            streamId
+            (Argo.required (Argo.fromString "stream_id") Argo.codec)
 
 bytePut :: AttributeMapping -> BytePut.BytePut
 bytePut x = U32.bytePut (objectId x) <> U32.bytePut (streamId x)

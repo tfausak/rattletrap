@@ -19,9 +19,15 @@ data Initialization = Initialization
   deriving (Eq, Show)
 
 instance Argo.HasCodec Initialization where
-  codec = Argo.fromObjectCodec Argo.Allow $ Initialization
-    <$> Argo.project location (Argo.optional (Argo.fromString "location") Argo.codec)
-    <*> Argo.project rotation (Argo.optional (Argo.fromString "rotation") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Initialization
+      <$> Argo.project
+            location
+            (Argo.optional (Argo.fromString "location") Argo.codec)
+      <*> Argo.project
+            rotation
+            (Argo.optional (Argo.fromString "rotation") Argo.codec)
 
 bitPut :: Initialization -> BitPut.BitPut
 bitPut initialization =

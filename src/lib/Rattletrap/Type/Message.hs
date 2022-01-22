@@ -17,10 +17,16 @@ data Message = Message
   deriving (Eq, Show)
 
 instance Argo.HasCodec Message where
-  codec = Argo.fromObjectCodec Argo.Allow $ Message
-    <$> Argo.project frame (Argo.required (Argo.fromString "frame") Argo.codec)
-    <*> Argo.project name (Argo.required (Argo.fromString "name") Argo.codec)
-    <*> Argo.project value (Argo.required (Argo.fromString "value") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Message
+      <$> Argo.project
+            frame
+            (Argo.required (Argo.fromString "frame") Argo.codec)
+      <*> Argo.project name (Argo.required (Argo.fromString "name") Argo.codec)
+      <*> Argo.project
+            value
+            (Argo.required (Argo.fromString "value") Argo.codec)
 
 bytePut :: Message -> BytePut.BytePut
 bytePut x =

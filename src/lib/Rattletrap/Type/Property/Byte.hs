@@ -13,9 +13,11 @@ data Byte = Byte
   deriving (Eq, Show)
 
 instance Argo.HasCodec Byte where
-  codec = Argo.fromArrayCodec Argo.Forbid $ Byte
-    <$> Argo.project key (Argo.element Argo.codec)
-    <*> Argo.project value (Argo.element Argo.codec)
+  codec =
+    Argo.fromArrayCodec Argo.Forbid
+      $ Byte
+      <$> Argo.project key (Argo.element Argo.codec)
+      <*> Argo.project value (Argo.element Argo.codec)
 
 bytePut :: Byte -> BytePut.BytePut
 bytePut byte = Str.bytePut (key byte) <> foldMap Str.bytePut (value byte)

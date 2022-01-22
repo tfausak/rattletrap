@@ -12,9 +12,11 @@ data FlaggedInt = FlaggedInt
   deriving (Eq, Show)
 
 instance Argo.HasCodec FlaggedInt where
-  codec = Argo.fromObjectCodec Argo.Allow $ FlaggedInt
-    <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
-    <*> Argo.project int (Argo.required (Argo.fromString "int") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ FlaggedInt
+      <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
+      <*> Argo.project int (Argo.required (Argo.fromString "int") Argo.codec)
 
 bitPut :: FlaggedInt -> BitPut.BitPut
 bitPut flaggedIntAttribute = BitPut.bool (flag flaggedIntAttribute)

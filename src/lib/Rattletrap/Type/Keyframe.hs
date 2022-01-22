@@ -17,10 +17,16 @@ data Keyframe = Keyframe
   deriving (Eq, Show)
 
 instance Argo.HasCodec Keyframe where
-  codec = Argo.fromObjectCodec Argo.Allow $ Keyframe
-    <$> Argo.project time (Argo.required (Argo.fromString "time") Argo.codec)
-    <*> Argo.project frame (Argo.required (Argo.fromString "frame") Argo.codec)
-    <*> Argo.project position (Argo.required (Argo.fromString "position") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Keyframe
+      <$> Argo.project time (Argo.required (Argo.fromString "time") Argo.codec)
+      <*> Argo.project
+            frame
+            (Argo.required (Argo.fromString "frame") Argo.codec)
+      <*> Argo.project
+            position
+            (Argo.required (Argo.fromString "position") Argo.codec)
 
 bytePut :: Keyframe -> BytePut.BytePut
 bytePut x =

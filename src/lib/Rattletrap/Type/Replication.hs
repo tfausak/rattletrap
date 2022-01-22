@@ -19,9 +19,15 @@ data Replication = Replication
   deriving (Eq, Show)
 
 instance Argo.HasCodec Replication where
-  codec = Argo.fromObjectCodec Argo.Allow $ Replication
-    <$> Argo.project actorId (Argo.required (Argo.fromString "actor_id") Argo.codec)
-    <*> Argo.project value (Argo.required (Argo.fromString "value") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Replication
+      <$> Argo.project
+            actorId
+            (Argo.required (Argo.fromString "actor_id") Argo.codec)
+      <*> Argo.project
+            value
+            (Argo.required (Argo.fromString "value") Argo.codec)
 
 putReplications :: List.List Replication -> BitPut.BitPut
 putReplications xs =

@@ -12,9 +12,11 @@ data FlaggedByte = FlaggedByte
   deriving (Eq, Show)
 
 instance Argo.HasCodec FlaggedByte where
-  codec = Argo.fromObjectCodec Argo.Allow $ FlaggedByte
-    <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
-    <*> Argo.project byte (Argo.required (Argo.fromString "byte") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ FlaggedByte
+      <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
+      <*> Argo.project byte (Argo.required (Argo.fromString "byte") Argo.codec)
 
 bitPut :: FlaggedByte -> BitPut.BitPut
 bitPut flaggedByteAttribute = BitPut.bool (flag flaggedByteAttribute)

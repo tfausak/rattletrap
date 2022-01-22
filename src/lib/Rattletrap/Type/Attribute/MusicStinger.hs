@@ -14,10 +14,14 @@ data MusicStinger = MusicStinger
   deriving (Eq, Show)
 
 instance Argo.HasCodec MusicStinger where
-  codec = Argo.fromObjectCodec Argo.Allow $ MusicStinger
-    <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
-    <*> Argo.project cue (Argo.required (Argo.fromString "cue") Argo.codec)
-    <*> Argo.project trigger (Argo.required (Argo.fromString "trigger") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ MusicStinger
+      <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
+      <*> Argo.project cue (Argo.required (Argo.fromString "cue") Argo.codec)
+      <*> Argo.project
+            trigger
+            (Argo.required (Argo.fromString "trigger") Argo.codec)
 
 bitPut :: MusicStinger -> BitPut.BitPut
 bitPut musicStingerAttribute =

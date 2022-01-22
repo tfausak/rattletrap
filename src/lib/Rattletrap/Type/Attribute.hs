@@ -26,10 +26,14 @@ data Attribute = Attribute
   deriving (Eq, Show)
 
 instance Argo.HasCodec Attribute where
-  codec = Argo.fromObjectCodec Argo.Allow $ Attribute
-    <$> Argo.project id (Argo.required (Argo.fromString "id") Argo.codec)
-    <*> Argo.project name (Argo.required (Argo.fromString "name") Argo.codec)
-    <*> Argo.project value (Argo.required (Argo.fromString "value") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Attribute
+      <$> Argo.project id (Argo.required (Argo.fromString "id") Argo.codec)
+      <*> Argo.project name (Argo.required (Argo.fromString "name") Argo.codec)
+      <*> Argo.project
+            value
+            (Argo.required (Argo.fromString "value") Argo.codec)
 
 bitPut :: Attribute -> BitPut.BitPut
 bitPut attribute =

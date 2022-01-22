@@ -15,20 +15,35 @@ data Dictionary a = Dictionary
   deriving (Eq, Show)
 
 instance Argo.HasCodec a => Argo.HasCodec (Dictionary a) where
-  codec = Argo.mapMaybe
-    (\ (keys, lastKey, value) -> Dictionary
-      <$> fmap List.fromList (mapM (\ k -> fmap ((,) (Str.fromText k)) $ Map.lookup k value) keys)
-      <*> pure lastKey)
-    (\ x -> Just
-      ( fmap (Str.toText . fst) . List.toList $ elements x
-      , lastKey x
-      , Map.mapKeys Str.toText . Map.fromList . List.toList $ elements x
-      ))
-    . Argo.fromObjectCodec Argo.Allow
-    $ (,,)
-    <$> Argo.project (\ (x, _, _) -> x) (Argo.required (Argo.fromString "keys") Argo.codec)
-    <*> Argo.project (\ (_, x, _) -> x) (Argo.required (Argo.fromString "last_key") Argo.codec)
-    <*> Argo.project (\ (_, _, x) -> x) (Argo.required (Argo.fromString "value") Argo.codec)
+  codec =
+    Argo.mapMaybe
+        (\(keys, lastKey, value) ->
+          Dictionary
+            <$> fmap
+                  List.fromList
+                  (mapM
+                    (\k -> fmap ((,) (Str.fromText k)) $ Map.lookup k value)
+                    keys
+                  )
+            <*> pure lastKey
+        )
+        (\x -> Just
+          ( fmap (Str.toText . fst) . List.toList $ elements x
+          , lastKey x
+          , Map.mapKeys Str.toText . Map.fromList . List.toList $ elements x
+          )
+        )
+      . Argo.fromObjectCodec Argo.Allow
+      $ (,,)
+      <$> Argo.project
+            (\(x, _, _) -> x)
+            (Argo.required (Argo.fromString "keys") Argo.codec)
+      <*> Argo.project
+            (\(_, x, _) -> x)
+            (Argo.required (Argo.fromString "last_key") Argo.codec)
+      <*> Argo.project
+            (\(_, _, x) -> x)
+            (Argo.required (Argo.fromString "value") Argo.codec)
 
 lookup :: Str.Str -> Dictionary a -> Maybe a
 lookup k = Prelude.lookup k . List.toList . elements

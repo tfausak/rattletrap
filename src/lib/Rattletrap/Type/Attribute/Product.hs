@@ -21,11 +21,21 @@ data Product = Product
   deriving (Eq, Show)
 
 instance Argo.HasCodec Product where
-  codec = Argo.fromObjectCodec Argo.Allow $ Product
-    <$> Argo.project unknown (Argo.required (Argo.fromString "unknown") Argo.codec)
-    <*> Argo.project objectId (Argo.required (Argo.fromString "object_id") Argo.codec)
-    <*> Argo.project objectName (Argo.optional (Argo.fromString "object_name") Argo.codec)
-    <*> Argo.project value (Argo.required (Argo.fromString "value") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Product
+      <$> Argo.project
+            unknown
+            (Argo.required (Argo.fromString "unknown") Argo.codec)
+      <*> Argo.project
+            objectId
+            (Argo.required (Argo.fromString "object_id") Argo.codec)
+      <*> Argo.project
+            objectName
+            (Argo.optional (Argo.fromString "object_name") Argo.codec)
+      <*> Argo.project
+            value
+            (Argo.required (Argo.fromString "value") Argo.codec)
 
 putProductAttributes :: List.List Product -> BitPut.BitPut
 putProductAttributes attributes =

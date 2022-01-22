@@ -18,15 +18,33 @@ data Title = Title
   deriving (Eq, Show)
 
 instance Argo.HasCodec Title where
-  codec = Argo.fromObjectCodec Argo.Allow $ Title
-    <$> Argo.project unknown1 (Argo.required (Argo.fromString "unknown1") Argo.codec)
-    <*> Argo.project unknown2 (Argo.required (Argo.fromString "unknown2") Argo.codec)
-    <*> Argo.project unknown3 (Argo.required (Argo.fromString "unknown3") Argo.codec)
-    <*> Argo.project unknown4 (Argo.required (Argo.fromString "unknown4") Argo.codec)
-    <*> Argo.project unknown5 (Argo.required (Argo.fromString "unknown5") Argo.codec)
-    <*> Argo.project unknown6 (Argo.required (Argo.fromString "unknown6") Argo.codec)
-    <*> Argo.project unknown7 (Argo.required (Argo.fromString "unknown7") Argo.codec)
-    <*> Argo.project unknown8 (Argo.required (Argo.fromString "unknown8") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Title
+      <$> Argo.project
+            unknown1
+            (Argo.required (Argo.fromString "unknown1") Argo.codec)
+      <*> Argo.project
+            unknown2
+            (Argo.required (Argo.fromString "unknown2") Argo.codec)
+      <*> Argo.project
+            unknown3
+            (Argo.required (Argo.fromString "unknown3") Argo.codec)
+      <*> Argo.project
+            unknown4
+            (Argo.required (Argo.fromString "unknown4") Argo.codec)
+      <*> Argo.project
+            unknown5
+            (Argo.required (Argo.fromString "unknown5") Argo.codec)
+      <*> Argo.project
+            unknown6
+            (Argo.required (Argo.fromString "unknown6") Argo.codec)
+      <*> Argo.project
+            unknown7
+            (Argo.required (Argo.fromString "unknown7") Argo.codec)
+      <*> Argo.project
+            unknown8
+            (Argo.required (Argo.fromString "unknown8") Argo.codec)
 
 bitPut :: Title -> BitPut.BitPut
 bitPut titleAttribute =

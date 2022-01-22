@@ -12,9 +12,15 @@ data StatEvent = StatEvent
   deriving (Eq, Show)
 
 instance Argo.HasCodec StatEvent where
-  codec = Argo.fromObjectCodec Argo.Allow $ StatEvent
-    <$> Argo.project unknown (Argo.required (Argo.fromString "unknown") Argo.codec)
-    <*> Argo.project objectId (Argo.required (Argo.fromString "object_id") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ StatEvent
+      <$> Argo.project
+            unknown
+            (Argo.required (Argo.fromString "unknown") Argo.codec)
+      <*> Argo.project
+            objectId
+            (Argo.required (Argo.fromString "object_id") Argo.codec)
 
 bitPut :: StatEvent -> BitPut.BitPut
 bitPut statEventAttribute = BitPut.bool (unknown statEventAttribute)

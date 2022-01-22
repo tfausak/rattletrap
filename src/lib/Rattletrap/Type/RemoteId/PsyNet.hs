@@ -13,8 +13,26 @@ data PsyNet
 
 instance Argo.HasCodec PsyNet where
   codec =
-    Argo.mapMaybe (Just . New) (\ x -> case x of { New y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "Left") Argo.codec))
-    Argo.<|> Argo.mapMaybe (\ (a, b, c, d) -> Just $ Old a b c d) (\ x -> case x of { Old a b c d -> Just (a, b, c, d); _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "Right") Argo.codec))
+    Argo.mapMaybe
+        (Just . New)
+        (\x -> case x of
+          New y -> Just y
+          _ -> Nothing
+        )
+        (Argo.fromObjectCodec
+          Argo.Allow
+          (Argo.required (Argo.fromString "Left") Argo.codec)
+        )
+      Argo.<|> Argo.mapMaybe
+                 (\(a, b, c, d) -> Just $ Old a b c d)
+                 (\x -> case x of
+                   Old a b c d -> Just (a, b, c, d)
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "Right") Argo.codec)
+                 )
 
 bitPut :: PsyNet -> BitPut.BitPut
 bitPut x = case x of

@@ -60,19 +60,45 @@ data ContentWith frames = Content
   deriving (Eq, Show)
 
 instance Argo.HasCodec f => Argo.HasCodec (ContentWith f) where
-  codec = Argo.fromObjectCodec Argo.Allow $ Content
-    <$> Argo.project levels (Argo.required (Argo.fromString "levels") Argo.codec)
-    <*> Argo.project keyframes (Argo.required (Argo.fromString "key_frames") Argo.codec)
-    <*> Argo.project streamSize (Argo.required (Argo.fromString "stream_size") Argo.codec)
-    <*> Argo.project frames (Argo.required (Argo.fromString "frames") Argo.codec)
-    <*> Argo.project messages (Argo.required (Argo.fromString "messages") Argo.codec)
-    <*> Argo.project marks (Argo.required (Argo.fromString "marks") Argo.codec)
-    <*> Argo.project packages (Argo.required (Argo.fromString "packages") Argo.codec)
-    <*> Argo.project objects (Argo.required (Argo.fromString "objects") Argo.codec)
-    <*> Argo.project names (Argo.required (Argo.fromString "names") Argo.codec)
-    <*> Argo.project classMappings (Argo.required (Argo.fromString "class_mappings") Argo.codec)
-    <*> Argo.project caches (Argo.required (Argo.fromString "caches") Argo.codec)
-    <*> Argo.project unknown (Argo.required (Argo.fromString "unknown") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Content
+      <$> Argo.project
+            levels
+            (Argo.required (Argo.fromString "levels") Argo.codec)
+      <*> Argo.project
+            keyframes
+            (Argo.required (Argo.fromString "key_frames") Argo.codec)
+      <*> Argo.project
+            streamSize
+            (Argo.required (Argo.fromString "stream_size") Argo.codec)
+      <*> Argo.project
+            frames
+            (Argo.required (Argo.fromString "frames") Argo.codec)
+      <*> Argo.project
+            messages
+            (Argo.required (Argo.fromString "messages") Argo.codec)
+      <*> Argo.project
+            marks
+            (Argo.required (Argo.fromString "marks") Argo.codec)
+      <*> Argo.project
+            packages
+            (Argo.required (Argo.fromString "packages") Argo.codec)
+      <*> Argo.project
+            objects
+            (Argo.required (Argo.fromString "objects") Argo.codec)
+      <*> Argo.project
+            names
+            (Argo.required (Argo.fromString "names") Argo.codec)
+      <*> Argo.project
+            classMappings
+            (Argo.required (Argo.fromString "class_mappings") Argo.codec)
+      <*> Argo.project
+            caches
+            (Argo.required (Argo.fromString "caches") Argo.codec)
+      <*> Argo.project
+            unknown
+            (Argo.required (Argo.fromString "unknown") Argo.codec)
 
 empty :: Content
 empty = Content

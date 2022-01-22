@@ -13,8 +13,8 @@ import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Version as Version
 import qualified Rattletrap.Vendor.Argo as Argo
+import qualified Rattletrap.Version as Version
 
 type Replay
   = ReplayWith
@@ -31,9 +31,15 @@ data ReplayWith header content = Replay
   deriving (Eq, Show)
 
 instance (Argo.HasCodec h, Argo.HasCodec c) => Argo.HasCodec (ReplayWith h c) where
-  codec = Argo.fromObjectCodec Argo.Allow $ Replay
-    <$> Argo.project header (Argo.required (Argo.fromString "header") Argo.codec)
-    <*> Argo.project content (Argo.required (Argo.fromString "content") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Replay
+      <$> Argo.project
+            header
+            (Argo.required (Argo.fromString "header") Argo.codec)
+      <*> Argo.project
+            content
+            (Argo.required (Argo.fromString "content") Argo.codec)
 
 schemaUrl :: String
 schemaUrl = mconcat

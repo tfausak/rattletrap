@@ -27,13 +27,76 @@ data RemoteId
 
 instance Argo.HasCodec RemoteId where
   codec =
-    Argo.mapMaybe (Just . PlayStation) (\ x -> case x of { PlayStation y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "play_station") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . PsyNet) (\ x -> case x of { PsyNet y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "psy_net") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Splitscreen) (\ x -> case x of { Splitscreen y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "splitscreen") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Steam) (\ x -> case x of { Steam y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "steam") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Switch) (\ x -> case x of { Switch y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "switch") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Xbox) (\ x -> case x of { Xbox y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "xbox") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Epic) (\ x -> case x of { Epic y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "epic") Argo.codec))
+    Argo.mapMaybe
+        (Just . PlayStation)
+        (\x -> case x of
+          PlayStation y -> Just y
+          _ -> Nothing
+        )
+        (Argo.fromObjectCodec
+          Argo.Allow
+          (Argo.required (Argo.fromString "play_station") Argo.codec)
+        )
+      Argo.<|> Argo.mapMaybe
+                 (Just . PsyNet)
+                 (\x -> case x of
+                   PsyNet y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "psy_net") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Splitscreen)
+                 (\x -> case x of
+                   Splitscreen y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "splitscreen") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Steam)
+                 (\x -> case x of
+                   Steam y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "steam") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Switch)
+                 (\x -> case x of
+                   Switch y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "switch") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Xbox)
+                 (\x -> case x of
+                   Xbox y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "xbox") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Epic)
+                 (\x -> case x of
+                   Epic y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "epic") Argo.codec)
+                 )
 
 bitPut :: RemoteId -> BitPut.BitPut
 bitPut remoteId = case remoteId of

@@ -15,9 +15,16 @@ data PartyLeader = PartyLeader
   deriving (Eq, Show)
 
 instance Argo.HasCodec PartyLeader where
-  codec = Argo.map (\ (x, y) -> PartyLeader x (fmap fst y) (fmap snd y)) (\ x -> (systemId x, (,) <$> remoteId x <*> localId x)) . Argo.fromObjectCodec Argo.Allow $ (,)
-    <$> Argo.project fst (Argo.required (Argo.fromString "system_id") Argo.codec)
-    <*> Argo.project snd (Argo.optional (Argo.fromString "id") Argo.codec)
+  codec =
+    Argo.map
+        (\(x, y) -> PartyLeader x (fmap fst y) (fmap snd y))
+        (\x -> (systemId x, (,) <$> remoteId x <*> localId x))
+      . Argo.fromObjectCodec Argo.Allow
+      $ (,)
+      <$> Argo.project
+            fst
+            (Argo.required (Argo.fromString "system_id") Argo.codec)
+      <*> Argo.project snd (Argo.optional (Argo.fromString "id") Argo.codec)
 
 bitPut :: PartyLeader -> BitPut.BitPut
 bitPut x =

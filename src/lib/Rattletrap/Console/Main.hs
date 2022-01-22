@@ -16,12 +16,12 @@ import qualified Rattletrap.Console.Mode as Mode
 import qualified Rattletrap.Console.Option as Option
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Utility.Helper as Rattletrap
+import qualified Rattletrap.Vendor.Argo as Argo
 import qualified Rattletrap.Version as Version
 import qualified System.Console.GetOpt as Console
 import qualified System.Environment as Environment
 import qualified System.Exit as Exit
 import qualified System.IO as IO
-import qualified Rattletrap.Vendor.Argo as Argo
 
 main :: IO ()
 main = do
@@ -51,9 +51,8 @@ versionMain = do
   putStrLn Version.string
 
 schemaMain :: Config.Config -> IO ()
-schemaMain config = putOutput config
-  . encodeJson config
-  $ Argo.schema (Argo.codec @Argo.Value) -- TODO: https://github.com/tfausak/argo/issues/46
+schemaMain config =
+  putOutput config . encodeJson config $ Argo.schema (Argo.codec @Argo.Value) -- TODO: https://github.com/tfausak/argo/issues/46
 
 defaultMain :: Config.Config -> IO ()
 defaultMain config = do
@@ -101,7 +100,8 @@ putOutput :: Config.Config -> LazyByteString.ByteString -> IO ()
 putOutput =
   maybe LazyByteString.putStr LazyByteString.writeFile . Config.output
 
-encodeJson :: Argo.HasCodec a => Config.Config -> a -> LazyByteString.ByteString
+encodeJson
+  :: Argo.HasCodec a => Config.Config -> a -> LazyByteString.ByteString
 encodeJson config = Builder.toLazyByteString
   . if Config.compact config then Argo.encode else Argo.encodeWith Argo.Tab
 

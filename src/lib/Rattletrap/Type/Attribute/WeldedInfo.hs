@@ -19,12 +19,22 @@ data WeldedInfo = WeldedInfo
   deriving (Eq, Show)
 
 instance Argo.HasCodec WeldedInfo where
-  codec = Argo.fromObjectCodec Argo.Allow $ WeldedInfo
-    <$> Argo.project active (Argo.required (Argo.fromString "active") Argo.codec)
-    <*> Argo.project actorId (Argo.required (Argo.fromString "actor_id") Argo.codec)
-    <*> Argo.project offset (Argo.required (Argo.fromString "offset") Argo.codec)
-    <*> Argo.project mass (Argo.required (Argo.fromString "mass") Argo.codec)
-    <*> Argo.project rotation (Argo.required (Argo.fromString "rotation") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ WeldedInfo
+      <$> Argo.project
+            active
+            (Argo.required (Argo.fromString "active") Argo.codec)
+      <*> Argo.project
+            actorId
+            (Argo.required (Argo.fromString "actor_id") Argo.codec)
+      <*> Argo.project
+            offset
+            (Argo.required (Argo.fromString "offset") Argo.codec)
+      <*> Argo.project mass (Argo.required (Argo.fromString "mass") Argo.codec)
+      <*> Argo.project
+            rotation
+            (Argo.required (Argo.fromString "rotation") Argo.codec)
 
 bitPut :: WeldedInfo -> BitPut.BitPut
 bitPut weldedInfoAttribute =

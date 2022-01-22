@@ -17,11 +17,21 @@ data AppliedDamage = AppliedDamage
   deriving (Eq, Show)
 
 instance Argo.HasCodec AppliedDamage where
-  codec = Argo.fromObjectCodec Argo.Allow $ AppliedDamage
-    <$> Argo.project unknown1 (Argo.required (Argo.fromString "unknown1") Argo.codec)
-    <*> Argo.project location (Argo.required (Argo.fromString "location") Argo.codec)
-    <*> Argo.project unknown3 (Argo.required (Argo.fromString "unknown3") Argo.codec)
-    <*> Argo.project unknown4 (Argo.required (Argo.fromString "unknown4") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ AppliedDamage
+      <$> Argo.project
+            unknown1
+            (Argo.required (Argo.fromString "unknown1") Argo.codec)
+      <*> Argo.project
+            location
+            (Argo.required (Argo.fromString "location") Argo.codec)
+      <*> Argo.project
+            unknown3
+            (Argo.required (Argo.fromString "unknown3") Argo.codec)
+      <*> Argo.project
+            unknown4
+            (Argo.required (Argo.fromString "unknown4") Argo.codec)
 
 bitPut :: AppliedDamage -> BitPut.BitPut
 bitPut appliedDamageAttribute =

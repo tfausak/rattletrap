@@ -92,44 +92,405 @@ data AttributeValue
 
 instance Argo.HasCodec AttributeValue where
   codec =
-    Argo.mapMaybe (Just . AppliedDamage) (\ x -> case x of { AppliedDamage y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "applied_damage") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Boolean) (\ x -> case x of { Boolean y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "boolean") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Byte) (\ x -> case x of { Byte y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "byte") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . CamSettings) (\ x -> case x of { CamSettings y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "cam_settings") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . ClubColors) (\ x -> case x of { ClubColors y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "club_colors") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . CustomDemolish) (\ x -> case x of { CustomDemolish y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "custom_demolish") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . DamageState) (\ x -> case x of { DamageState y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "damage_state") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Demolish) (\ x -> case x of { Demolish y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "demolish") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Enum) (\ x -> case x of { Enum y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "enum") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Explosion) (\ x -> case x of { Explosion y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "explosion") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . ExtendedExplosion) (\ x -> case x of { ExtendedExplosion y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "extended_explosion") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . FlaggedInt) (\ x -> case x of { FlaggedInt y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "flagged_int") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . FlaggedByte) (\ x -> case x of { FlaggedByte y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "flagged_byte") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Float) (\ x -> case x of { Float y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "float") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . GameMode) (\ x -> case x of { GameMode y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "game_mode") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Int) (\ x -> case x of { Int y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "int") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Int64) (\ x -> case x of { Int64 y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "int64") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Loadout) (\ x -> case x of { Loadout y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "loadout") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . LoadoutOnline) (\ x -> case x of { LoadoutOnline y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "loadout_online") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Loadouts) (\ x -> case x of { Loadouts y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "loadouts") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . LoadoutsOnline) (\ x -> case x of { LoadoutsOnline y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "loadouts_online") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Location) (\ x -> case x of { Location y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "location") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . MusicStinger) (\ x -> case x of { MusicStinger y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "music_stinger") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . PartyLeader) (\ x -> case x of { PartyLeader y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "party_leader") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Pickup) (\ x -> case x of { Pickup y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "pickup") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . PickupInfo) (\ x -> case x of { PickupInfo y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "pickup_info") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . PickupNew) (\ x -> case x of { PickupNew y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "pickup_new") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . PlayerHistoryKey) (\ x -> case x of { PlayerHistoryKey y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "player_history_key") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . PrivateMatchSettings) (\ x -> case x of { PrivateMatchSettings y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "private_match_settings") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . QWord) (\ x -> case x of { QWord y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "q_word") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Reservation) (\ x -> case x of { Reservation y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "reservation") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . RigidBodyState) (\ x -> case x of { RigidBodyState y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "rigid_body_state") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . StatEvent) (\ x -> case x of { StatEvent y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "stat_event") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . String) (\ x -> case x of { String y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "string") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . TeamPaint) (\ x -> case x of { TeamPaint y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "team_paint") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Title) (\ x -> case x of { Title y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "title") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . UniqueId) (\ x -> case x of { UniqueId y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "unique_id") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . WeldedInfo) (\ x -> case x of { WeldedInfo y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "welded_info") Argo.codec))
+    Argo.mapMaybe
+        (Just . AppliedDamage)
+        (\x -> case x of
+          AppliedDamage y -> Just y
+          _ -> Nothing
+        )
+        (Argo.fromObjectCodec
+          Argo.Allow
+          (Argo.required (Argo.fromString "applied_damage") Argo.codec)
+        )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Boolean)
+                 (\x -> case x of
+                   Boolean y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "boolean") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Byte)
+                 (\x -> case x of
+                   Byte y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "byte") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . CamSettings)
+                 (\x -> case x of
+                   CamSettings y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "cam_settings") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . ClubColors)
+                 (\x -> case x of
+                   ClubColors y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "club_colors") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . CustomDemolish)
+                 (\x -> case x of
+                   CustomDemolish y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required
+                     (Argo.fromString "custom_demolish")
+                     Argo.codec
+                   )
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . DamageState)
+                 (\x -> case x of
+                   DamageState y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "damage_state") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Demolish)
+                 (\x -> case x of
+                   Demolish y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "demolish") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Enum)
+                 (\x -> case x of
+                   Enum y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "enum") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Explosion)
+                 (\x -> case x of
+                   Explosion y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "explosion") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . ExtendedExplosion)
+                 (\x -> case x of
+                   ExtendedExplosion y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required
+                     (Argo.fromString "extended_explosion")
+                     Argo.codec
+                   )
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . FlaggedInt)
+                 (\x -> case x of
+                   FlaggedInt y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "flagged_int") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . FlaggedByte)
+                 (\x -> case x of
+                   FlaggedByte y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "flagged_byte") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Float)
+                 (\x -> case x of
+                   Float y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "float") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . GameMode)
+                 (\x -> case x of
+                   GameMode y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "game_mode") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Int)
+                 (\x -> case x of
+                   Int y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "int") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Int64)
+                 (\x -> case x of
+                   Int64 y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "int64") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Loadout)
+                 (\x -> case x of
+                   Loadout y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "loadout") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . LoadoutOnline)
+                 (\x -> case x of
+                   LoadoutOnline y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "loadout_online") Argo.codec
+                   )
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Loadouts)
+                 (\x -> case x of
+                   Loadouts y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "loadouts") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . LoadoutsOnline)
+                 (\x -> case x of
+                   LoadoutsOnline y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required
+                     (Argo.fromString "loadouts_online")
+                     Argo.codec
+                   )
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Location)
+                 (\x -> case x of
+                   Location y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "location") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . MusicStinger)
+                 (\x -> case x of
+                   MusicStinger y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "music_stinger") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . PartyLeader)
+                 (\x -> case x of
+                   PartyLeader y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "party_leader") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Pickup)
+                 (\x -> case x of
+                   Pickup y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "pickup") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . PickupInfo)
+                 (\x -> case x of
+                   PickupInfo y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "pickup_info") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . PickupNew)
+                 (\x -> case x of
+                   PickupNew y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "pickup_new") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . PlayerHistoryKey)
+                 (\x -> case x of
+                   PlayerHistoryKey y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required
+                     (Argo.fromString "player_history_key")
+                     Argo.codec
+                   )
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . PrivateMatchSettings)
+                 (\x -> case x of
+                   PrivateMatchSettings y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required
+                     (Argo.fromString "private_match_settings")
+                     Argo.codec
+                   )
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . QWord)
+                 (\x -> case x of
+                   QWord y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "q_word") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Reservation)
+                 (\x -> case x of
+                   Reservation y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "reservation") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . RigidBodyState)
+                 (\x -> case x of
+                   RigidBodyState y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required
+                     (Argo.fromString "rigid_body_state")
+                     Argo.codec
+                   )
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . StatEvent)
+                 (\x -> case x of
+                   StatEvent y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "stat_event") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . String)
+                 (\x -> case x of
+                   String y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "string") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . TeamPaint)
+                 (\x -> case x of
+                   TeamPaint y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "team_paint") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Title)
+                 (\x -> case x of
+                   Title y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "title") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . UniqueId)
+                 (\x -> case x of
+                   UniqueId y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "unique_id") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . WeldedInfo)
+                 (\x -> case x of
+                   WeldedInfo y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "welded_info") Argo.codec)
+                 )
 
 bitPut :: AttributeValue -> BitPut.BitPut
 bitPut value = case value of

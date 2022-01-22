@@ -15,10 +15,18 @@ data UniqueId = UniqueId
   deriving (Eq, Show)
 
 instance Argo.HasCodec UniqueId where
-  codec = Argo.fromObjectCodec Argo.Allow $ UniqueId
-    <$> Argo.project systemId (Argo.required (Argo.fromString "system_id") Argo.codec)
-    <*> Argo.project remoteId (Argo.required (Argo.fromString "remote_id") Argo.codec)
-    <*> Argo.project localId (Argo.required (Argo.fromString "local_id") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ UniqueId
+      <$> Argo.project
+            systemId
+            (Argo.required (Argo.fromString "system_id") Argo.codec)
+      <*> Argo.project
+            remoteId
+            (Argo.required (Argo.fromString "remote_id") Argo.codec)
+      <*> Argo.project
+            localId
+            (Argo.required (Argo.fromString "local_id") Argo.codec)
 
 bitPut :: UniqueId -> BitPut.BitPut
 bitPut uniqueIdAttribute =

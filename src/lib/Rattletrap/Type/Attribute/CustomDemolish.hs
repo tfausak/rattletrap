@@ -16,10 +16,14 @@ data CustomDemolish = CustomDemolish
   deriving (Eq, Show)
 
 instance Argo.HasCodec CustomDemolish where
-  codec = Argo.fromObjectCodec Argo.Allow $ CustomDemolish
-    <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
-    <*> Argo.project id (Argo.required (Argo.fromString "id") Argo.codec)
-    <*> Argo.project demolish (Argo.required (Argo.fromString "demolish") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ CustomDemolish
+      <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
+      <*> Argo.project id (Argo.required (Argo.fromString "id") Argo.codec)
+      <*> Argo.project
+            demolish
+            (Argo.required (Argo.fromString "demolish") Argo.codec)
 
 bitPut :: CustomDemolish -> BitPut.BitPut
 bitPut x =

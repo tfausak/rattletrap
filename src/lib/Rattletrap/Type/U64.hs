@@ -5,15 +5,18 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Text.Read as Read
 import qualified Rattletrap.Vendor.Argo as Argo
+import qualified Text.Read as Read
 
 newtype U64
   = U64 Word.Word64
   deriving (Eq, Show)
 
 instance Argo.HasCodec U64 where
-  codec = Argo.mapMaybe (fmap fromWord64 . Read.readMaybe) (Just . show . toWord64) Argo.codec
+  codec = Argo.mapMaybe
+    (fmap fromWord64 . Read.readMaybe)
+    (Just . show . toWord64)
+    Argo.codec
 
 fromWord64 :: Word.Word64 -> U64
 fromWord64 = U64

@@ -24,9 +24,36 @@ data ReplicationValue
 
 instance Argo.HasCodec ReplicationValue where
   codec =
-    Argo.mapMaybe (Just . Spawned) (\ x -> case x of { Spawned y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "spawned") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Updated) (\ x -> case x of { Updated y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "updated") Argo.codec))
-    Argo.<|> Argo.mapMaybe (Just . Destroyed) (\ x -> case x of { Destroyed y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "destroyed") Argo.codec))
+    Argo.mapMaybe
+        (Just . Spawned)
+        (\x -> case x of
+          Spawned y -> Just y
+          _ -> Nothing
+        )
+        (Argo.fromObjectCodec
+          Argo.Allow
+          (Argo.required (Argo.fromString "spawned") Argo.codec)
+        )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Updated)
+                 (\x -> case x of
+                   Updated y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "updated") Argo.codec)
+                 )
+      Argo.<|> Argo.mapMaybe
+                 (Just . Destroyed)
+                 (\x -> case x of
+                   Destroyed y -> Just y
+                   _ -> Nothing
+                 )
+                 (Argo.fromObjectCodec
+                   Argo.Allow
+                   (Argo.required (Argo.fromString "destroyed") Argo.codec)
+                 )
 
 bitPut :: ReplicationValue -> BitPut.BitPut
 bitPut value = case value of

@@ -24,10 +24,12 @@ data Section a = Section
   deriving (Eq, Show)
 
 instance Argo.HasCodec a => Argo.HasCodec (Section a) where
-  codec = Argo.fromObjectCodec Argo.Allow $ Section
-    <$> Argo.project size (Argo.required (Argo.fromString "size") Argo.codec)
-    <*> Argo.project crc (Argo.required (Argo.fromString "crc") Argo.codec)
-    <*> Argo.project body (Argo.required (Argo.fromString "body") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Section
+      <$> Argo.project size (Argo.required (Argo.fromString "size") Argo.codec)
+      <*> Argo.project crc (Argo.required (Argo.fromString "crc") Argo.codec)
+      <*> Argo.project body (Argo.required (Argo.fromString "body") Argo.codec)
 
 create :: (a -> BytePut.BytePut) -> a -> Section a
 create encode body_ =

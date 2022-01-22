@@ -19,14 +19,28 @@ data CamSettings = CamSettings
   deriving (Eq, Show)
 
 instance Argo.HasCodec CamSettings where
-  codec = Argo.fromObjectCodec Argo.Allow $ CamSettings
-    <$> Argo.project fov (Argo.required (Argo.fromString "fov") Argo.codec)
-    <*> Argo.project height (Argo.required (Argo.fromString "height") Argo.codec)
-    <*> Argo.project angle (Argo.required (Argo.fromString "angle") Argo.codec)
-    <*> Argo.project distance (Argo.required (Argo.fromString "distance") Argo.codec)
-    <*> Argo.project stiffness (Argo.required (Argo.fromString "stiffness") Argo.codec)
-    <*> Argo.project swivelSpeed (Argo.required (Argo.fromString "swivel_speed") Argo.codec)
-    <*> Argo.project transitionSpeed (Argo.optional (Argo.fromString "transition_speed") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ CamSettings
+      <$> Argo.project fov (Argo.required (Argo.fromString "fov") Argo.codec)
+      <*> Argo.project
+            height
+            (Argo.required (Argo.fromString "height") Argo.codec)
+      <*> Argo.project
+            angle
+            (Argo.required (Argo.fromString "angle") Argo.codec)
+      <*> Argo.project
+            distance
+            (Argo.required (Argo.fromString "distance") Argo.codec)
+      <*> Argo.project
+            stiffness
+            (Argo.required (Argo.fromString "stiffness") Argo.codec)
+      <*> Argo.project
+            swivelSpeed
+            (Argo.required (Argo.fromString "swivel_speed") Argo.codec)
+      <*> Argo.project
+            transitionSpeed
+            (Argo.optional (Argo.fromString "transition_speed") Argo.codec)
 
 bitPut :: CamSettings -> BitPut.BitPut
 bitPut camSettingsAttribute =

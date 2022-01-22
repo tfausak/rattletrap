@@ -17,9 +17,11 @@ data PlayStation = PlayStation
   deriving (Eq, Show)
 
 instance Argo.HasCodec PlayStation where
-  codec = Argo.fromArrayCodec Argo.Allow $ PlayStation
-    <$> Argo.project name (Argo.element Argo.codec)
-    <*> Argo.project code (Argo.element Argo.codec)
+  codec =
+    Argo.fromArrayCodec Argo.Allow
+      $ PlayStation
+      <$> Argo.project name (Argo.element Argo.codec)
+      <*> Argo.project code (Argo.element Argo.codec)
 
 bitPut :: PlayStation -> BitPut.BitPut
 bitPut x =

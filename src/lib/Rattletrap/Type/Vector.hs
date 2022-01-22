@@ -23,12 +23,14 @@ data Vector = Vector
   deriving (Eq, Show)
 
 instance Argo.HasCodec Vector where
-  codec = Argo.fromObjectCodec Argo.Allow $ Vector
-    <$> Argo.project size (Argo.required (Argo.fromString "size") Argo.codec)
-    <*> Argo.project bias (Argo.required (Argo.fromString "bias") Argo.codec)
-    <*> Argo.project x (Argo.required (Argo.fromString "x") Argo.codec)
-    <*> Argo.project y (Argo.required (Argo.fromString "y") Argo.codec)
-    <*> Argo.project z (Argo.required (Argo.fromString "z") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Vector
+      <$> Argo.project size (Argo.required (Argo.fromString "size") Argo.codec)
+      <*> Argo.project bias (Argo.required (Argo.fromString "bias") Argo.codec)
+      <*> Argo.project x (Argo.required (Argo.fromString "x") Argo.codec)
+      <*> Argo.project y (Argo.required (Argo.fromString "y") Argo.codec)
+      <*> Argo.project z (Argo.required (Argo.fromString "z") Argo.codec)
 
 bitPut :: Vector -> BitPut.BitPut
 bitPut vector =

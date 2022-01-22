@@ -52,15 +52,39 @@ data Header = Header
   deriving (Eq, Show)
 
 instance Argo.HasCodec Header where
-  codec = Argo.map
-    (\ (a, b, c, d, e) -> Header { version = Version.Version a b c, label = d, properties = e })
-    (\ x -> (Version.major $ version x, Version.minor $ version x, Version.patch $ version x, label x, properties x))
-    . Argo.fromObjectCodec Argo.Allow $ (,,,,)
-    <$> Argo.project (\ (x, _, _, _, _) -> x) (Argo.required (Argo.fromString "engine_version") Argo.codec)
-    <*> Argo.project (\ (_, x, _, _, _) -> x) (Argo.required (Argo.fromString "licensee_version") Argo.codec)
-    <*> Argo.project (\ (_, _, x, _, _) -> x) (Argo.optional (Argo.fromString "patch_version") Argo.codec)
-    <*> Argo.project (\ (_, _, _, x, _) -> x) (Argo.required (Argo.fromString "label") Argo.codec)
-    <*> Argo.project (\ (_, _, _, _, x) -> x) (Argo.required (Argo.fromString "properties") Argo.codec)
+  codec =
+    Argo.map
+        (\(a, b, c, d, e) -> Header
+          { version = Version.Version a b c
+          , label = d
+          , properties = e
+          }
+        )
+        (\x ->
+          ( Version.major $ version x
+          , Version.minor $ version x
+          , Version.patch $ version x
+          , label x
+          , properties x
+          )
+        )
+      . Argo.fromObjectCodec Argo.Allow
+      $ (,,,,)
+      <$> Argo.project
+            (\(x, _, _, _, _) -> x)
+            (Argo.required (Argo.fromString "engine_version") Argo.codec)
+      <*> Argo.project
+            (\(_, x, _, _, _) -> x)
+            (Argo.required (Argo.fromString "licensee_version") Argo.codec)
+      <*> Argo.project
+            (\(_, _, x, _, _) -> x)
+            (Argo.optional (Argo.fromString "patch_version") Argo.codec)
+      <*> Argo.project
+            (\(_, _, _, x, _) -> x)
+            (Argo.required (Argo.fromString "label") Argo.codec)
+      <*> Argo.project
+            (\(_, _, _, _, x) -> x)
+            (Argo.required (Argo.fromString "properties") Argo.codec)
 
 bytePut :: Header -> BytePut.BytePut
 bytePut x =

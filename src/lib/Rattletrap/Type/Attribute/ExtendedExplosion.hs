@@ -14,9 +14,15 @@ data ExtendedExplosion = ExtendedExplosion
   deriving (Eq, Show)
 
 instance Argo.HasCodec ExtendedExplosion where
-  codec = Argo.fromObjectCodec Argo.Allow $ ExtendedExplosion
-    <$> Argo.project explosion (Argo.required (Argo.fromString "explosion") Argo.codec)
-    <*> Argo.project unknown (Argo.required (Argo.fromString "unknown") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ ExtendedExplosion
+      <$> Argo.project
+            explosion
+            (Argo.required (Argo.fromString "explosion") Argo.codec)
+      <*> Argo.project
+            unknown
+            (Argo.required (Argo.fromString "unknown") Argo.codec)
 
 bitPut :: ExtendedExplosion -> BitPut.BitPut
 bitPut x = Explosion.bitPut (explosion x) <> FlaggedInt.bitPut (unknown x)

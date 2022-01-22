@@ -16,12 +16,22 @@ data TeamPaint = TeamPaint
   deriving (Eq, Show)
 
 instance Argo.HasCodec TeamPaint where
-  codec = Argo.fromObjectCodec Argo.Allow $ TeamPaint
-    <$> Argo.project team (Argo.required (Argo.fromString "team") Argo.codec)
-    <*> Argo.project primaryColor (Argo.required (Argo.fromString "primary_color") Argo.codec)
-    <*> Argo.project accentColor (Argo.required (Argo.fromString "accent_color") Argo.codec)
-    <*> Argo.project primaryFinish (Argo.required (Argo.fromString "primary_finish") Argo.codec)
-    <*> Argo.project accentFinish (Argo.required (Argo.fromString "accent_finish") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ TeamPaint
+      <$> Argo.project team (Argo.required (Argo.fromString "team") Argo.codec)
+      <*> Argo.project
+            primaryColor
+            (Argo.required (Argo.fromString "primary_color") Argo.codec)
+      <*> Argo.project
+            accentColor
+            (Argo.required (Argo.fromString "accent_color") Argo.codec)
+      <*> Argo.project
+            primaryFinish
+            (Argo.required (Argo.fromString "primary_finish") Argo.codec)
+      <*> Argo.project
+            accentFinish
+            (Argo.required (Argo.fromString "accent_finish") Argo.codec)
 
 bitPut :: TeamPaint -> BitPut.BitPut
 bitPut teamPaintAttribute =

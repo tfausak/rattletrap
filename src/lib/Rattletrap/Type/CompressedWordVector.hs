@@ -13,10 +13,12 @@ data CompressedWordVector = CompressedWordVector
   deriving (Eq, Show)
 
 instance Argo.HasCodec CompressedWordVector where
-  codec = Argo.fromObjectCodec Argo.Allow $ CompressedWordVector
-    <$> Argo.project x (Argo.required (Argo.fromString "x") Argo.codec)
-    <*> Argo.project y (Argo.required (Argo.fromString "y") Argo.codec)
-    <*> Argo.project z (Argo.required (Argo.fromString "z") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ CompressedWordVector
+      <$> Argo.project x (Argo.required (Argo.fromString "x") Argo.codec)
+      <*> Argo.project y (Argo.required (Argo.fromString "y") Argo.codec)
+      <*> Argo.project z (Argo.required (Argo.fromString "z") Argo.codec)
 
 bitPut :: CompressedWordVector -> BitPut.BitPut
 bitPut compressedWordVector =

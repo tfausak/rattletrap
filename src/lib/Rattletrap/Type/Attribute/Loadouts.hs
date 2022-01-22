@@ -12,9 +12,13 @@ data Loadouts = Loadouts
   deriving (Eq, Show)
 
 instance Argo.HasCodec Loadouts where
-  codec = Argo.fromObjectCodec Argo.Allow $ Loadouts
-    <$> Argo.project blue (Argo.required (Argo.fromString "blue") Argo.codec)
-    <*> Argo.project orange (Argo.required (Argo.fromString "orange") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Loadouts
+      <$> Argo.project blue (Argo.required (Argo.fromString "blue") Argo.codec)
+      <*> Argo.project
+            orange
+            (Argo.required (Argo.fromString "orange") Argo.codec)
 
 bitPut :: Loadouts -> BitPut.BitPut
 bitPut loadoutsAttribute = Loadout.bitPut (blue loadoutsAttribute)

@@ -14,11 +14,21 @@ data ClubColors = ClubColors
   deriving (Eq, Show)
 
 instance Argo.HasCodec ClubColors where
-  codec = Argo.fromObjectCodec Argo.Allow $ ClubColors
-    <$> Argo.project blueFlag (Argo.required (Argo.fromString "blue_flag") Argo.codec)
-    <*> Argo.project blueColor (Argo.required (Argo.fromString "blue_color") Argo.codec)
-    <*> Argo.project orangeFlag (Argo.required (Argo.fromString "orange_flag") Argo.codec)
-    <*> Argo.project orangeColor (Argo.required (Argo.fromString "orange_color") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ ClubColors
+      <$> Argo.project
+            blueFlag
+            (Argo.required (Argo.fromString "blue_flag") Argo.codec)
+      <*> Argo.project
+            blueColor
+            (Argo.required (Argo.fromString "blue_color") Argo.codec)
+      <*> Argo.project
+            orangeFlag
+            (Argo.required (Argo.fromString "orange_flag") Argo.codec)
+      <*> Argo.project
+            orangeColor
+            (Argo.required (Argo.fromString "orange_color") Argo.codec)
 
 bitPut :: ClubColors -> BitPut.BitPut
 bitPut clubColorsAttribute =

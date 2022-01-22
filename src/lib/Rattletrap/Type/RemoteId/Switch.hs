@@ -14,7 +14,10 @@ data Switch = Switch
   deriving (Eq, Show)
 
 instance Argo.HasCodec Switch where
-  codec = Argo.map (\ (a, b, c, d) -> Switch { a, b, c, d }) (\ Switch { a, b, c, d } -> (a, b, c, d)) Argo.codec
+  codec = Argo.map
+    (\(a, b, c, d) -> Switch { a, b, c, d })
+    (\Switch { a, b, c, d } -> (a, b, c, d))
+    Argo.codec
 
 bitPut :: Switch -> BitPut.BitPut
 bitPut x =

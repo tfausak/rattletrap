@@ -34,14 +34,26 @@ data Spawned = Spawned
   deriving (Eq, Show)
 
 instance Argo.HasCodec Spawned where
-  codec = Argo.fromObjectCodec Argo.Allow $ Spawned
-    <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
-    <*> Argo.project nameIndex (Argo.optional (Argo.fromString "name_index") Argo.codec)
-    <*> Argo.project name (Argo.optional (Argo.fromString "name") Argo.codec)
-    <*> Argo.project objectId (Argo.required (Argo.fromString "object_id") Argo.codec)
-    <*> Argo.project objectName (Argo.required (Argo.fromString "object_name") Argo.codec)
-    <*> Argo.project className (Argo.required (Argo.fromString "class_name") Argo.codec)
-    <*> Argo.project initialization (Argo.required (Argo.fromString "initialization") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Spawned
+      <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
+      <*> Argo.project
+            nameIndex
+            (Argo.optional (Argo.fromString "name_index") Argo.codec)
+      <*> Argo.project name (Argo.optional (Argo.fromString "name") Argo.codec)
+      <*> Argo.project
+            objectId
+            (Argo.required (Argo.fromString "object_id") Argo.codec)
+      <*> Argo.project
+            objectName
+            (Argo.required (Argo.fromString "object_name") Argo.codec)
+      <*> Argo.project
+            className
+            (Argo.required (Argo.fromString "class_name") Argo.codec)
+      <*> Argo.project
+            initialization
+            (Argo.required (Argo.fromString "initialization") Argo.codec)
 
 bitPut :: Spawned -> BitPut.BitPut
 bitPut spawnedReplication =

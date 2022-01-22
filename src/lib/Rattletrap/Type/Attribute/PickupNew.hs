@@ -14,9 +14,15 @@ data PickupNew = PickupNew
   deriving (Eq, Show)
 
 instance Argo.HasCodec PickupNew where
-  codec = Argo.fromObjectCodec Argo.Allow $ PickupNew
-    <$> Argo.project instigatorId (Argo.optional (Argo.fromString "instigator_id") Argo.codec)
-    <*> Argo.project pickedUp (Argo.required (Argo.fromString "picked_up") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ PickupNew
+      <$> Argo.project
+            instigatorId
+            (Argo.optional (Argo.fromString "instigator_id") Argo.codec)
+      <*> Argo.project
+            pickedUp
+            (Argo.required (Argo.fromString "picked_up") Argo.codec)
 
 bitPut :: PickupNew -> BitPut.BitPut
 bitPut x =

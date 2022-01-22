@@ -17,9 +17,13 @@ data GameMode = GameMode
   deriving (Eq, Show)
 
 instance Argo.HasCodec GameMode where
-  codec = Argo.fromObjectCodec Argo.Allow $ GameMode
-    <$> Argo.project numBits (Argo.required (Argo.fromString "num_bits") Argo.codec)
-    <*> Argo.project word (Argo.required (Argo.fromString "word") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ GameMode
+      <$> Argo.project
+            numBits
+            (Argo.required (Argo.fromString "num_bits") Argo.codec)
+      <*> Argo.project word (Argo.required (Argo.fromString "word") Argo.codec)
 
 bitPut :: GameMode -> BitPut.BitPut
 bitPut gameModeAttribute = do

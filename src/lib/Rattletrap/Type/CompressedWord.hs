@@ -14,9 +14,15 @@ data CompressedWord = CompressedWord
   deriving (Eq, Ord, Show)
 
 instance Argo.HasCodec CompressedWord where
-  codec = Argo.fromObjectCodec Argo.Allow $ CompressedWord
-    <$> Argo.project limit (Argo.required (Argo.fromString "limit") Argo.codec)
-    <*> Argo.project value (Argo.required (Argo.fromString "value") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ CompressedWord
+      <$> Argo.project
+            limit
+            (Argo.required (Argo.fromString "limit") Argo.codec)
+      <*> Argo.project
+            value
+            (Argo.required (Argo.fromString "value") Argo.codec)
 
 bitPut :: CompressedWord -> BitPut.BitPut
 bitPut compressedWord =

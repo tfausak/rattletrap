@@ -18,13 +18,27 @@ data Demolish = Demolish
   deriving (Eq, Show)
 
 instance Argo.HasCodec Demolish where
-  codec = Argo.fromObjectCodec Argo.Allow $ Demolish
-    <$> Argo.project attackerFlag (Argo.required (Argo.fromString "attacker_flag") Argo.codec)
-    <*> Argo.project attackerActorId (Argo.required (Argo.fromString "attacker_actor_id") Argo.codec)
-    <*> Argo.project victimFlag (Argo.required (Argo.fromString "victim_flag") Argo.codec)
-    <*> Argo.project victimActorId (Argo.required (Argo.fromString "victim_actor_id") Argo.codec)
-    <*> Argo.project attackerVelocity (Argo.required (Argo.fromString "attacker_velocity") Argo.codec)
-    <*> Argo.project victimVelocity (Argo.required (Argo.fromString "victim_velocity") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Demolish
+      <$> Argo.project
+            attackerFlag
+            (Argo.required (Argo.fromString "attacker_flag") Argo.codec)
+      <*> Argo.project
+            attackerActorId
+            (Argo.required (Argo.fromString "attacker_actor_id") Argo.codec)
+      <*> Argo.project
+            victimFlag
+            (Argo.required (Argo.fromString "victim_flag") Argo.codec)
+      <*> Argo.project
+            victimActorId
+            (Argo.required (Argo.fromString "victim_actor_id") Argo.codec)
+      <*> Argo.project
+            attackerVelocity
+            (Argo.required (Argo.fromString "attacker_velocity") Argo.codec)
+      <*> Argo.project
+            victimVelocity
+            (Argo.required (Argo.fromString "victim_velocity") Argo.codec)
 
 bitPut :: Demolish -> BitPut.BitPut
 bitPut demolishAttribute =

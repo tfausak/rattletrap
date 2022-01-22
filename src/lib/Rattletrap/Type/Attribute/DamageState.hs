@@ -19,13 +19,27 @@ data DamageState = DamageState
   deriving (Eq, Show)
 
 instance Argo.HasCodec DamageState where
-  codec = Argo.fromObjectCodec Argo.Allow $ DamageState
-    <$> Argo.project unknown1 (Argo.required (Argo.fromString "unknown1") Argo.codec)
-    <*> Argo.project unknown2 (Argo.required (Argo.fromString "unknown2") Argo.codec)
-    <*> Argo.project unknown3 (Argo.required (Argo.fromString "unknown3") Argo.codec)
-    <*> Argo.project unknown4 (Argo.required (Argo.fromString "unknown4") Argo.codec)
-    <*> Argo.project unknown5 (Argo.required (Argo.fromString "unknown5") Argo.codec)
-    <*> Argo.project unknown6 (Argo.required (Argo.fromString "unknown6") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ DamageState
+      <$> Argo.project
+            unknown1
+            (Argo.required (Argo.fromString "unknown1") Argo.codec)
+      <*> Argo.project
+            unknown2
+            (Argo.required (Argo.fromString "unknown2") Argo.codec)
+      <*> Argo.project
+            unknown3
+            (Argo.required (Argo.fromString "unknown3") Argo.codec)
+      <*> Argo.project
+            unknown4
+            (Argo.required (Argo.fromString "unknown4") Argo.codec)
+      <*> Argo.project
+            unknown5
+            (Argo.required (Argo.fromString "unknown5") Argo.codec)
+      <*> Argo.project
+            unknown6
+            (Argo.required (Argo.fromString "unknown6") Argo.codec)
 
 bitPut :: DamageState -> BitPut.BitPut
 bitPut damageStateAttribute =

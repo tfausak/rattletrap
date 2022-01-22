@@ -13,8 +13,8 @@ import qualified Rattletrap.Vendor.Argo as Argo
 import qualified Control.Exception as Exception
 import qualified Data.Bifunctor as Bifunctor
 import qualified Data.ByteString as ByteString
-import qualified Data.ByteString.Lazy as LazyByteString
 import qualified Data.ByteString.Builder as Builder
+import qualified Data.ByteString.Lazy as LazyByteString
 
 -- | Parses a raw replay.
 decodeReplayFile

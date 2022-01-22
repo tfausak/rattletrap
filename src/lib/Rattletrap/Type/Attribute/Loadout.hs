@@ -30,24 +30,58 @@ data Loadout = Loadout
   deriving (Eq, Show)
 
 instance Argo.HasCodec Loadout where
-  codec = Argo.fromObjectCodec Argo.Allow $ Loadout
-    <$> Argo.project version (Argo.required (Argo.fromString "version") Argo.codec)
-    <*> Argo.project body (Argo.required (Argo.fromString "body") Argo.codec)
-    <*> Argo.project decal (Argo.required (Argo.fromString "decal") Argo.codec)
-    <*> Argo.project wheels (Argo.required (Argo.fromString "wheels") Argo.codec)
-    <*> Argo.project rocketTrail (Argo.required (Argo.fromString "rocket_trail") Argo.codec)
-    <*> Argo.project antenna (Argo.required (Argo.fromString "antenna") Argo.codec)
-    <*> Argo.project topper (Argo.required (Argo.fromString "topper") Argo.codec)
-    <*> Argo.project unknown1 (Argo.required (Argo.fromString "unknown1") Argo.codec)
-    <*> Argo.project unknown2 (Argo.optional (Argo.fromString "unknown2") Argo.codec)
-    <*> Argo.project engineAudio (Argo.optional (Argo.fromString "engine_audio") Argo.codec)
-    <*> Argo.project trail (Argo.optional (Argo.fromString "trail") Argo.codec)
-    <*> Argo.project goalExplosion (Argo.optional (Argo.fromString "goal_explosion") Argo.codec)
-    <*> Argo.project banner (Argo.optional (Argo.fromString "banner") Argo.codec)
-    <*> Argo.project unknown3 (Argo.optional (Argo.fromString "unknown3") Argo.codec)
-    <*> Argo.project unknown4 (Argo.optional (Argo.fromString "unknown4") Argo.codec)
-    <*> Argo.project unknown5 (Argo.optional (Argo.fromString "unknown5") Argo.codec)
-    <*> Argo.project unknown6 (Argo.optional (Argo.fromString "unknown6") Argo.codec)
+  codec =
+    Argo.fromObjectCodec Argo.Allow
+      $ Loadout
+      <$> Argo.project
+            version
+            (Argo.required (Argo.fromString "version") Argo.codec)
+      <*> Argo.project body (Argo.required (Argo.fromString "body") Argo.codec)
+      <*> Argo.project
+            decal
+            (Argo.required (Argo.fromString "decal") Argo.codec)
+      <*> Argo.project
+            wheels
+            (Argo.required (Argo.fromString "wheels") Argo.codec)
+      <*> Argo.project
+            rocketTrail
+            (Argo.required (Argo.fromString "rocket_trail") Argo.codec)
+      <*> Argo.project
+            antenna
+            (Argo.required (Argo.fromString "antenna") Argo.codec)
+      <*> Argo.project
+            topper
+            (Argo.required (Argo.fromString "topper") Argo.codec)
+      <*> Argo.project
+            unknown1
+            (Argo.required (Argo.fromString "unknown1") Argo.codec)
+      <*> Argo.project
+            unknown2
+            (Argo.optional (Argo.fromString "unknown2") Argo.codec)
+      <*> Argo.project
+            engineAudio
+            (Argo.optional (Argo.fromString "engine_audio") Argo.codec)
+      <*> Argo.project
+            trail
+            (Argo.optional (Argo.fromString "trail") Argo.codec)
+      <*> Argo.project
+            goalExplosion
+            (Argo.optional (Argo.fromString "goal_explosion") Argo.codec)
+      <*> Argo.project
+            banner
+            (Argo.optional (Argo.fromString "banner") Argo.codec)
+      <*> Argo.project
+            unknown3
+            (Argo.optional (Argo.fromString "unknown3") Argo.codec)
+      <*> Argo.project
+            unknown4
+            (Argo.optional (Argo.fromString "unknown4") Argo.codec)
+      <*> Argo.project
+            unknown5
+            (Argo.optional (Argo.fromString "unknown5") Argo.codec)
+      <*> Argo.project
+            unknown6
+            (Argo.optional (Argo.fromString "unknown6") Argo.codec)
 
 bitPut :: Loadout -> BitPut.BitPut
 bitPut loadoutAttribute =
