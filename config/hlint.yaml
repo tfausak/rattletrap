@@ -10,6 +10,7 @@
 - ignore: { name: Use <|> }
 - ignore: { name: Use lambda-case }
 - ignore: { name: Use <$> }
+- ignore: { name: Use tuple-section }
 - modules:
   - { name: Control.Applicative, as: Applicative }
   - { name: Control.Monad, as: Monad }
