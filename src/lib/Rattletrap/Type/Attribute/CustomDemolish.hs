@@ -3,11 +3,10 @@ module Rattletrap.Type.Attribute.CustomDemolish where
 import Prelude hiding (id)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.Demolish as Demolish
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data CustomDemolish = CustomDemolish
   { flag :: Bool
@@ -16,26 +15,11 @@ data CustomDemolish = CustomDemolish
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON CustomDemolish where
-  parseJSON = Json.withObject "CustomDemolish" $ \object -> do
-    flag <- Json.required object "flag"
-    id <- Json.required object "id"
-    demolish <- Json.required object "demolish"
-    pure CustomDemolish { flag, id, demolish }
-
-instance Json.ToJSON CustomDemolish where
-  toJSON x = Json.object
-    [ Json.pair "flag" $ flag x
-    , Json.pair "id" $ id x
-    , Json.pair "demolish" $ demolish x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-custom-demolish" $ Schema.object
-  [ (Json.pair "flag" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "id" $ Schema.ref I32.schema, True)
-  , (Json.pair "demolish" $ Schema.ref Demolish.schema, True)
-  ]
+instance Argo.HasCodec CustomDemolish where
+  codec = Argo.fromObjectCodec Argo.Allow $ CustomDemolish
+    <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
+    <*> Argo.project id (Argo.required (Argo.fromString "id") Argo.codec)
+    <*> Argo.project demolish (Argo.required (Argo.fromString "demolish") Argo.codec)
 
 bitPut :: CustomDemolish -> BitPut.BitPut
 bitPut x =

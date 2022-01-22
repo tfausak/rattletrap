@@ -2,11 +2,10 @@ module Rattletrap.Type.Attribute.ExtendedExplosion where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.Explosion as Explosion
 import qualified Rattletrap.Type.Attribute.FlaggedInt as FlaggedInt
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data ExtendedExplosion = ExtendedExplosion
   { explosion :: Explosion.Explosion
@@ -14,21 +13,10 @@ data ExtendedExplosion = ExtendedExplosion
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON ExtendedExplosion where
-  parseJSON = Json.withObject "ExtendedExplosion" $ \object -> do
-    explosion <- Json.required object "explosion"
-    unknown <- Json.required object "unknown"
-    pure ExtendedExplosion { explosion, unknown }
-
-instance Json.ToJSON ExtendedExplosion where
-  toJSON x = Json.object
-    [Json.pair "explosion" $ explosion x, Json.pair "unknown" $ unknown x]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-extended-explosion" $ Schema.object
-  [ (Json.pair "explosion" $ Schema.ref Explosion.schema, True)
-  , (Json.pair "unknown" $ Schema.ref FlaggedInt.schema, True)
-  ]
+instance Argo.HasCodec ExtendedExplosion where
+  codec = Argo.fromObjectCodec Argo.Allow $ ExtendedExplosion
+    <$> Argo.project explosion (Argo.required (Argo.fromString "explosion") Argo.codec)
+    <*> Argo.project unknown (Argo.required (Argo.fromString "unknown") Argo.codec)
 
 bitPut :: ExtendedExplosion -> BitPut.BitPut
 bitPut x = Explosion.bitPut (explosion x) <> FlaggedInt.bitPut (unknown x)

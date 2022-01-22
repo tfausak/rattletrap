@@ -2,10 +2,9 @@ module Rattletrap.Type.Int8Vector where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I8 as I8
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Int8Vector = Int8Vector
   { x :: Maybe I8.I8
@@ -14,23 +13,11 @@ data Int8Vector = Int8Vector
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Int8Vector where
-  parseJSON = Json.withObject "Int8Vector" $ \object -> do
-    x <- Json.optional object "x"
-    y <- Json.optional object "y"
-    z <- Json.optional object "z"
-    pure Int8Vector { x, y, z }
-
-instance Json.ToJSON Int8Vector where
-  toJSON a =
-    Json.object [Json.pair "x" $ x a, Json.pair "y" $ y a, Json.pair "z" $ z a]
-
-schema :: Schema.Schema
-schema = Schema.named "int8Vector" $ Schema.object
-  [ (Json.pair "x" . Schema.json $ Schema.maybe I8.schema, False)
-  , (Json.pair "y" . Schema.json $ Schema.maybe I8.schema, False)
-  , (Json.pair "z" . Schema.json $ Schema.maybe I8.schema, False)
-  ]
+instance Argo.HasCodec Int8Vector where
+  codec = Argo.fromObjectCodec Argo.Allow $ Int8Vector
+    <$> Argo.project x (Argo.optional (Argo.fromString "x") Argo.codec)
+    <*> Argo.project y (Argo.optional (Argo.fromString "y") Argo.codec)
+    <*> Argo.project z (Argo.optional (Argo.fromString "z") Argo.codec)
 
 bitPut :: Int8Vector -> BitPut.BitPut
 bitPut int8Vector =

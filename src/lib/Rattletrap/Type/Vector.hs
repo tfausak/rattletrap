@@ -2,10 +2,9 @@ module Rattletrap.Type.Vector where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Vector = Vector
   { size :: CompressedWord.CompressedWord
@@ -23,32 +22,13 @@ data Vector = Vector
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Vector where
-  parseJSON = Json.withObject "Vector" $ \object -> do
-    size <- Json.required object "size"
-    bias <- Json.required object "bias"
-    x <- Json.required object "x"
-    y <- Json.required object "y"
-    z <- Json.required object "z"
-    pure Vector { size, bias, x, y, z }
-
-instance Json.ToJSON Vector where
-  toJSON a = Json.object
-    [ Json.pair "size" $ size a
-    , Json.pair "bias" $ bias a
-    , Json.pair "x" $ x a
-    , Json.pair "y" $ y a
-    , Json.pair "z" $ z a
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "vector" $ Schema.object
-  [ (Json.pair "size" $ Schema.ref CompressedWord.schema, True)
-  , (Json.pair "bias" $ Schema.ref Schema.integer, True)
-  , (Json.pair "x" $ Schema.ref Schema.integer, True)
-  , (Json.pair "y" $ Schema.ref Schema.integer, True)
-  , (Json.pair "z" $ Schema.ref Schema.integer, True)
-  ]
+instance Argo.HasCodec Vector where
+  codec = Argo.fromObjectCodec Argo.Allow $ Vector
+    <$> Argo.project size (Argo.required (Argo.fromString "size") Argo.codec)
+    <*> Argo.project bias (Argo.required (Argo.fromString "bias") Argo.codec)
+    <*> Argo.project x (Argo.required (Argo.fromString "x") Argo.codec)
+    <*> Argo.project y (Argo.required (Argo.fromString "y") Argo.codec)
+    <*> Argo.project z (Argo.required (Argo.fromString "z") Argo.codec)
 
 bitPut :: Vector -> BitPut.BitPut
 bitPut vector =

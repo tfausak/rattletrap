@@ -2,11 +2,10 @@ module Rattletrap.Type.Attribute.Loadout where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Loadout = Loadout
   { version :: U8.U8
@@ -30,86 +29,25 @@ data Loadout = Loadout
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Loadout where
-  parseJSON = Json.withObject "Loadout" $ \object -> do
-    version <- Json.required object "version"
-    body <- Json.required object "body"
-    decal <- Json.required object "decal"
-    wheels <- Json.required object "wheels"
-    rocketTrail <- Json.required object "rocket_trail"
-    antenna <- Json.required object "antenna"
-    topper <- Json.required object "topper"
-    unknown1 <- Json.required object "unknown1"
-    unknown2 <- Json.optional object "unknown2"
-    engineAudio <- Json.optional object "engine_audio"
-    trail <- Json.optional object "trail"
-    goalExplosion <- Json.optional object "goal_explosion"
-    banner <- Json.optional object "banner"
-    unknown3 <- Json.optional object "unknown3"
-    unknown4 <- Json.optional object "unknown4"
-    unknown5 <- Json.optional object "unknown5"
-    unknown6 <- Json.optional object "unknown6"
-    pure Loadout
-      { version
-      , body
-      , decal
-      , wheels
-      , rocketTrail
-      , antenna
-      , topper
-      , unknown1
-      , unknown2
-      , engineAudio
-      , trail
-      , goalExplosion
-      , banner
-      , unknown3
-      , unknown4
-      , unknown5
-      , unknown6
-      }
-
-instance Json.ToJSON Loadout where
-  toJSON x = Json.object
-    [ Json.pair "version" $ version x
-    , Json.pair "body" $ body x
-    , Json.pair "decal" $ decal x
-    , Json.pair "wheels" $ wheels x
-    , Json.pair "rocket_trail" $ rocketTrail x
-    , Json.pair "antenna" $ antenna x
-    , Json.pair "topper" $ topper x
-    , Json.pair "unknown1" $ unknown1 x
-    , Json.pair "unknown2" $ unknown2 x
-    , Json.pair "engine_audio" $ engineAudio x
-    , Json.pair "trail" $ trail x
-    , Json.pair "goal_explosion" $ goalExplosion x
-    , Json.pair "banner" $ banner x
-    , Json.pair "unknown3" $ unknown3 x
-    , Json.pair "unknown4" $ unknown4 x
-    , Json.pair "unknown5" $ unknown5 x
-    , Json.pair "unknown6" $ unknown6 x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-loadout" $ Schema.object
-  [ (Json.pair "version" $ Schema.ref U8.schema, True)
-  , (Json.pair "body" $ Schema.ref U32.schema, True)
-  , (Json.pair "decal" $ Schema.ref U32.schema, True)
-  , (Json.pair "wheels" $ Schema.ref U32.schema, True)
-  , (Json.pair "rocket_trail" $ Schema.ref U32.schema, True)
-  , (Json.pair "antenna" $ Schema.ref U32.schema, True)
-  , (Json.pair "topper" $ Schema.ref U32.schema, True)
-  , (Json.pair "unknown1" $ Schema.ref U32.schema, True)
-  , (Json.pair "unknown2" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "engine_audio" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "trail" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "goal_explosion" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "banner" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "unknown3" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "unknown4" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "unknown5" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "unknown6" . Schema.json $ Schema.maybe U32.schema, False)
-  ]
+instance Argo.HasCodec Loadout where
+  codec = Argo.fromObjectCodec Argo.Allow $ Loadout
+    <$> Argo.project version (Argo.required (Argo.fromString "version") Argo.codec)
+    <*> Argo.project body (Argo.required (Argo.fromString "body") Argo.codec)
+    <*> Argo.project decal (Argo.required (Argo.fromString "decal") Argo.codec)
+    <*> Argo.project wheels (Argo.required (Argo.fromString "wheels") Argo.codec)
+    <*> Argo.project rocketTrail (Argo.required (Argo.fromString "rocket_trail") Argo.codec)
+    <*> Argo.project antenna (Argo.required (Argo.fromString "antenna") Argo.codec)
+    <*> Argo.project topper (Argo.required (Argo.fromString "topper") Argo.codec)
+    <*> Argo.project unknown1 (Argo.required (Argo.fromString "unknown1") Argo.codec)
+    <*> Argo.project unknown2 (Argo.optional (Argo.fromString "unknown2") Argo.codec)
+    <*> Argo.project engineAudio (Argo.optional (Argo.fromString "engine_audio") Argo.codec)
+    <*> Argo.project trail (Argo.optional (Argo.fromString "trail") Argo.codec)
+    <*> Argo.project goalExplosion (Argo.optional (Argo.fromString "goal_explosion") Argo.codec)
+    <*> Argo.project banner (Argo.optional (Argo.fromString "banner") Argo.codec)
+    <*> Argo.project unknown3 (Argo.optional (Argo.fromString "unknown3") Argo.codec)
+    <*> Argo.project unknown4 (Argo.optional (Argo.fromString "unknown4") Argo.codec)
+    <*> Argo.project unknown5 (Argo.optional (Argo.fromString "unknown5") Argo.codec)
+    <*> Argo.project unknown6 (Argo.optional (Argo.fromString "unknown6") Argo.codec)
 
 bitPut :: Loadout -> BitPut.BitPut
 bitPut loadoutAttribute =

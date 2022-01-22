@@ -3,7 +3,6 @@ module Rattletrap.Type.Replication where
 import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as List
@@ -11,7 +10,7 @@ import qualified Rattletrap.Type.ReplicationValue as ReplicationValue
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Replication = Replication
   { actorId :: CompressedWord.CompressedWord
@@ -19,21 +18,10 @@ data Replication = Replication
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Replication where
-  parseJSON = Json.withObject "Replication" $ \object -> do
-    actorId <- Json.required object "actor_id"
-    value <- Json.required object "value"
-    pure Replication { actorId, value }
-
-instance Json.ToJSON Replication where
-  toJSON x =
-    Json.object [Json.pair "actor_id" $ actorId x, Json.pair "value" $ value x]
-
-schema :: Schema.Schema
-schema = Schema.named "replication" $ Schema.object
-  [ (Json.pair "actor_id" $ Schema.ref CompressedWord.schema, True)
-  , (Json.pair "value" $ Schema.ref ReplicationValue.schema, True)
-  ]
+instance Argo.HasCodec Replication where
+  codec = Argo.fromObjectCodec Argo.Allow $ Replication
+    <$> Argo.project actorId (Argo.required (Argo.fromString "actor_id") Argo.codec)
+    <*> Argo.project value (Argo.required (Argo.fromString "value") Argo.codec)
 
 putReplications :: List.List Replication -> BitPut.BitPut
 putReplications xs =

@@ -2,10 +2,9 @@ module Rattletrap.Type.Property.Byte where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Byte = Byte
   { key :: Str.Str
@@ -13,17 +12,10 @@ data Byte = Byte
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Byte where
-  parseJSON json = do
-    (key, value) <- Json.parseJSON json
-    pure Byte { key, value }
-
-instance Json.ToJSON Byte where
-  toJSON byte = Json.toJSON (key byte, value byte)
-
-schema :: Schema.Schema
-schema = Schema.named "property-byte" $ Schema.tuple
-  [Schema.ref Str.schema, Schema.json $ Schema.maybe Str.schema]
+instance Argo.HasCodec Byte where
+  codec = Argo.fromArrayCodec Argo.Forbid $ Byte
+    <$> Argo.project key (Argo.element Argo.codec)
+    <*> Argo.project value (Argo.element Argo.codec)
 
 bytePut :: Byte -> BytePut.BytePut
 bytePut byte = Str.bytePut (key byte) <> foldMap Str.bytePut (value byte)

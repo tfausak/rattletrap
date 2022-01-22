@@ -13,9 +13,6 @@
 - modules:
   - { name: Control.Applicative, as: Applicative }
   - { name: Control.Monad, as: Monad }
-  - { name: Data.Aeson, as: Aeson }
-  - { name: Data.Aeson.Encode.Pretty, as: Aeson }
-  - { name: Data.Aeson.Types, as: Aeson }
   - { name: Data.Array.Unboxed, as: Array }
   - { name: Data.Bifunctor, as: Bifunctor }
   - { name: Data.Bits, as: Bits }

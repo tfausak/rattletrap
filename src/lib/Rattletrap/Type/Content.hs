@@ -7,7 +7,6 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Cache as Cache
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.ClassMapping as ClassMapping
@@ -18,10 +17,9 @@ import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Bytes as Bytes
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 type Content = ContentWith (List.List Frame.Frame)
 
@@ -61,69 +59,20 @@ data ContentWith frames = Content
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON frames => Json.FromJSON (ContentWith frames) where
-  parseJSON = Json.withObject "Content" $ \object -> do
-    levels <- Json.required object "levels"
-    keyframes <- Json.required object "key_frames"
-    streamSize <- Json.required object "stream_size"
-    frames <- Json.required object "frames"
-    messages <- Json.required object "messages"
-    marks <- Json.required object "marks"
-    packages <- Json.required object "packages"
-    objects <- Json.required object "objects"
-    names <- Json.required object "names"
-    classMappings <- Json.required object "class_mappings"
-    caches <- Json.required object "caches"
-    unknown <- Json.required object "unknown"
-    pure Content
-      { levels
-      , keyframes
-      , streamSize
-      , frames
-      , messages
-      , marks
-      , packages
-      , objects
-      , names
-      , classMappings
-      , caches
-      , unknown
-      }
-
-instance Json.ToJSON frames => Json.ToJSON (ContentWith frames) where
-  toJSON x = Json.object
-    [ Json.pair "levels" $ levels x
-    , Json.pair "key_frames" $ keyframes x
-    , Json.pair "stream_size" $ streamSize x
-    , Json.pair "frames" $ frames x
-    , Json.pair "messages" $ messages x
-    , Json.pair "marks" $ marks x
-    , Json.pair "packages" $ packages x
-    , Json.pair "objects" $ objects x
-    , Json.pair "names" $ names x
-    , Json.pair "class_mappings" $ classMappings x
-    , Json.pair "caches" $ caches x
-    , Json.pair "unknown" $ unknown x
-    ]
-
-schema :: Schema.Schema -> Schema.Schema
-schema s = Schema.named "content" $ Schema.object
-  [ (Json.pair "levels" . Schema.json $ List.schema Str.schema, True)
-  , (Json.pair "key_frames" . Schema.json $ List.schema Keyframe.schema, True)
-  , (Json.pair "stream_size" $ Schema.ref U32.schema, True)
-  , (Json.pair "frames" $ Schema.json s, True)
-  , (Json.pair "messages" . Schema.json $ List.schema Message.schema, True)
-  , (Json.pair "marks" . Schema.json $ List.schema Mark.schema, True)
-  , (Json.pair "packages" . Schema.json $ List.schema Str.schema, True)
-  , (Json.pair "objects" . Schema.json $ List.schema Str.schema, True)
-  , (Json.pair "names" . Schema.json $ List.schema Str.schema, True)
-  , ( Json.pair "class_mappings" . Schema.json $ List.schema
-      ClassMapping.schema
-    , True
-    )
-  , (Json.pair "caches" . Schema.json $ List.schema Cache.schema, True)
-  , (Json.pair "unknown" . Schema.json $ Schema.array U8.schema, True)
-  ]
+instance Argo.HasCodec f => Argo.HasCodec (ContentWith f) where
+  codec = Argo.fromObjectCodec Argo.Allow $ Content
+    <$> Argo.project levels (Argo.required (Argo.fromString "levels") Argo.codec)
+    <*> Argo.project keyframes (Argo.required (Argo.fromString "key_frames") Argo.codec)
+    <*> Argo.project streamSize (Argo.required (Argo.fromString "stream_size") Argo.codec)
+    <*> Argo.project frames (Argo.required (Argo.fromString "frames") Argo.codec)
+    <*> Argo.project messages (Argo.required (Argo.fromString "messages") Argo.codec)
+    <*> Argo.project marks (Argo.required (Argo.fromString "marks") Argo.codec)
+    <*> Argo.project packages (Argo.required (Argo.fromString "packages") Argo.codec)
+    <*> Argo.project objects (Argo.required (Argo.fromString "objects") Argo.codec)
+    <*> Argo.project names (Argo.required (Argo.fromString "names") Argo.codec)
+    <*> Argo.project classMappings (Argo.required (Argo.fromString "class_mappings") Argo.codec)
+    <*> Argo.project caches (Argo.required (Argo.fromString "caches") Argo.codec)
+    <*> Argo.project unknown (Argo.required (Argo.fromString "unknown") Argo.codec)
 
 empty :: Content
 empty = Content

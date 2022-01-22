@@ -2,13 +2,11 @@ module Rattletrap.Type.Header where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 -- | Contains high-level metadata about a 'Rattletrap.Replay.Replay'.
 data Header = Header
@@ -53,42 +51,16 @@ data Header = Header
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Header where
-  parseJSON = Json.withObject "Header" $ \object -> do
-    major <- Json.required object "engine_version"
-    minor <- Json.required object "licensee_version"
-    patch <- Json.optional object "patch_version"
-    label <- Json.required object "label"
-    properties <- Json.required object "properties"
-    pure Header
-      { version = Version.Version
-        { Version.major
-        , Version.minor
-        , Version.patch
-        }
-      , label
-      , properties
-      }
-
-instance Json.ToJSON Header where
-  toJSON x = Json.object
-    [ Json.pair "engine_version" . Version.major $ version x
-    , Json.pair "licensee_version" . Version.minor $ version x
-    , Json.pair "patch_version" . Version.patch $ version x
-    , Json.pair "label" $ label x
-    , Json.pair "properties" $ properties x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "header" $ Schema.object
-  [ (Json.pair "engine_version" $ Schema.ref U32.schema, True)
-  , (Json.pair "licensee_version" $ Schema.ref U32.schema, True)
-  , (Json.pair "patch_version" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "label" $ Schema.ref Str.schema, True)
-  , ( Json.pair "properties" . Schema.json $ Dictionary.schema Property.schema
-    , True
-    )
-  ]
+instance Argo.HasCodec Header where
+  codec = Argo.map
+    (\ (a, b, c, d, e) -> Header { version = Version.Version a b c, label = d, properties = e })
+    (\ x -> (Version.major $ version x, Version.minor $ version x, Version.patch $ version x, label x, properties x))
+    . Argo.fromObjectCodec Argo.Allow $ (,,,,)
+    <$> Argo.project (\ (x, _, _, _, _) -> x) (Argo.required (Argo.fromString "engine_version") Argo.codec)
+    <*> Argo.project (\ (_, x, _, _, _) -> x) (Argo.required (Argo.fromString "licensee_version") Argo.codec)
+    <*> Argo.project (\ (_, _, x, _, _) -> x) (Argo.optional (Argo.fromString "patch_version") Argo.codec)
+    <*> Argo.project (\ (_, _, _, x, _) -> x) (Argo.required (Argo.fromString "label") Argo.codec)
+    <*> Argo.project (\ (_, _, _, _, x) -> x) (Argo.required (Argo.fromString "properties") Argo.codec)
 
 bytePut :: Header -> BytePut.BytePut
 bytePut x =

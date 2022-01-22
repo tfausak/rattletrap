@@ -1,37 +1,21 @@
 module Rattletrap.Type.Rotation where
 
-import qualified Data.Foldable as Foldable
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.CompressedWordVector as CompressedWordVector
 import qualified Rattletrap.Type.Quaternion as Quaternion
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Rotation
   = CompressedWordVector CompressedWordVector.CompressedWordVector
   | Quaternion Quaternion.Quaternion
   deriving (Eq, Show)
 
-instance Json.FromJSON Rotation where
-  parseJSON = Json.withObject "Rotation" $ \object -> Foldable.asum
-    [ fmap CompressedWordVector $ Json.required object "compressed_word_vector"
-    , fmap Quaternion $ Json.required object "quaternion"
-    ]
-
-instance Json.ToJSON Rotation where
-  toJSON x = case x of
-    CompressedWordVector y ->
-      Json.object [Json.pair "compressed_word_vector" y]
-    Quaternion y -> Json.object [Json.pair "quaternion" y]
-
-schema :: Schema.Schema
-schema = Schema.named "rotation" . Schema.oneOf $ fmap
-  (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
-  [ ("compressed_word_vector", CompressedWordVector.schema)
-  , ("quaternion", Quaternion.schema)
-  ]
+instance Argo.HasCodec Rotation where
+  codec =
+    Argo.mapMaybe (Just . CompressedWordVector) (\ x -> case x of { CompressedWordVector y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "compressed_word_vector") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Quaternion) (\ x -> case x of { Quaternion y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "quaternion") Argo.codec))
 
 bitPut :: Rotation -> BitPut.BitPut
 bitPut r = case r of

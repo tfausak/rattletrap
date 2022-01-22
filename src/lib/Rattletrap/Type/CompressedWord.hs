@@ -3,8 +3,7 @@ module Rattletrap.Type.CompressedWord where
 import qualified Data.Bits as Bits
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 -- | Although there's no guarantee that these values will not overflow, it's
 -- exceptionally unlikely. Most 'CompressedWord's are very small.
@@ -14,21 +13,10 @@ data CompressedWord = CompressedWord
   }
   deriving (Eq, Ord, Show)
 
-instance Json.FromJSON CompressedWord where
-  parseJSON = Json.withObject "CompressedWord" $ \object -> do
-    limit <- Json.required object "limit"
-    value <- Json.required object "value"
-    pure CompressedWord { limit, value }
-
-instance Json.ToJSON CompressedWord where
-  toJSON x =
-    Json.object [Json.pair "limit" $ limit x, Json.pair "value" $ value x]
-
-schema :: Schema.Schema
-schema = Schema.named "compressedWord" $ Schema.object
-  [ (Json.pair "limit" $ Json.object [Json.pair "type" "integer"], True)
-  , (Json.pair "value" $ Json.object [Json.pair "type" "integer"], True)
-  ]
+instance Argo.HasCodec CompressedWord where
+  codec = Argo.fromObjectCodec Argo.Allow $ CompressedWord
+    <$> Argo.project limit (Argo.required (Argo.fromString "limit") Argo.codec)
+    <*> Argo.project value (Argo.required (Argo.fromString "value") Argo.codec)
 
 bitPut :: CompressedWord -> BitPut.BitPut
 bitPut compressedWord =

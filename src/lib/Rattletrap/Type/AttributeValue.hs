@@ -1,12 +1,10 @@
 module Rattletrap.Type.AttributeValue where
 
-import qualified Data.Foldable as Foldable
 import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Data as Data
 import qualified Rattletrap.Exception.UnknownAttribute as UnknownAttribute
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.AppliedDamage as AppliedDamage
 import qualified Rattletrap.Type.Attribute.Boolean as Boolean
 import qualified Rattletrap.Type.Attribute.Byte as Byte
@@ -49,7 +47,7 @@ import qualified Rattletrap.Type.AttributeType as AttributeType
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data AttributeValue
   = AppliedDamage AppliedDamage.AppliedDamage
@@ -92,132 +90,46 @@ data AttributeValue
   | WeldedInfo WeldedInfo.WeldedInfo
   deriving (Eq, Show)
 
-instance Json.FromJSON AttributeValue where
-  parseJSON = Json.withObject "AttributeValue" $ \object -> Foldable.asum
-    [ fmap AppliedDamage $ Json.required object "applied_damage"
-    , fmap Boolean $ Json.required object "boolean"
-    , fmap Byte $ Json.required object "byte"
-    , fmap CamSettings $ Json.required object "cam_settings"
-    , fmap ClubColors $ Json.required object "club_colors"
-    , fmap CustomDemolish $ Json.required object "custom_demolish"
-    , fmap DamageState $ Json.required object "damage_state"
-    , fmap Demolish $ Json.required object "demolish"
-    , fmap Enum $ Json.required object "enum"
-    , fmap Explosion $ Json.required object "explosion"
-    , fmap ExtendedExplosion $ Json.required object "extended_explosion"
-    , fmap FlaggedByte $ Json.required object "flagged_byte"
-    , fmap FlaggedInt $ Json.required object "flagged_int"
-    , fmap Float $ Json.required object "float"
-    , fmap GameMode $ Json.required object "game_mode"
-    , fmap Int $ Json.required object "int"
-    , fmap Int64 $ Json.required object "int64"
-    , fmap Loadout $ Json.required object "loadout"
-    , fmap LoadoutOnline $ Json.required object "loadout_online"
-    , fmap Loadouts $ Json.required object "loadouts"
-    , fmap LoadoutsOnline $ Json.required object "loadouts_online"
-    , fmap Location $ Json.required object "location"
-    , fmap MusicStinger $ Json.required object "music_stinger"
-    , fmap PartyLeader $ Json.required object "party_leader"
-    , fmap Pickup $ Json.required object "pickup"
-    , fmap PickupInfo $ Json.required object "pickup_info"
-    , fmap PickupNew $ Json.required object "pickup_new"
-    , fmap PlayerHistoryKey $ Json.required object "player_history_key"
-    , fmap PrivateMatchSettings $ Json.required object "private_match_settings"
-    , fmap QWord $ Json.required object "q_word"
-    , fmap Reservation $ Json.required object "reservation"
-    , fmap RigidBodyState $ Json.required object "rigid_body_state"
-    , fmap StatEvent $ Json.required object "stat_event"
-    , fmap String $ Json.required object "string"
-    , fmap TeamPaint $ Json.required object "team_paint"
-    , fmap Title $ Json.required object "title"
-    , fmap UniqueId $ Json.required object "unique_id"
-    , fmap WeldedInfo $ Json.required object "welded_info"
-    ]
-
-instance Json.ToJSON AttributeValue where
-  toJSON x = case x of
-    AppliedDamage y -> Json.object [Json.pair "applied_damage" y]
-    Boolean y -> Json.object [Json.pair "boolean" y]
-    Byte y -> Json.object [Json.pair "byte" y]
-    CamSettings y -> Json.object [Json.pair "cam_settings" y]
-    ClubColors y -> Json.object [Json.pair "club_colors" y]
-    CustomDemolish y -> Json.object [Json.pair "custom_demolish" y]
-    DamageState y -> Json.object [Json.pair "damage_state" y]
-    Demolish y -> Json.object [Json.pair "demolish" y]
-    Enum y -> Json.object [Json.pair "enum" y]
-    Explosion y -> Json.object [Json.pair "explosion" y]
-    ExtendedExplosion y -> Json.object [Json.pair "extended_explosion" y]
-    FlaggedByte y -> Json.object [Json.pair "flagged_byte" y]
-    FlaggedInt y -> Json.object [Json.pair "flagged_int" y]
-    Float y -> Json.object [Json.pair "float" y]
-    GameMode y -> Json.object [Json.pair "game_mode" y]
-    Int y -> Json.object [Json.pair "int" y]
-    Int64 y -> Json.object [Json.pair "int64" y]
-    Loadout y -> Json.object [Json.pair "loadout" y]
-    LoadoutOnline y -> Json.object [Json.pair "loadout_online" y]
-    Loadouts y -> Json.object [Json.pair "loadouts" y]
-    LoadoutsOnline y -> Json.object [Json.pair "loadouts_online" y]
-    Location y -> Json.object [Json.pair "location" y]
-    MusicStinger y -> Json.object [Json.pair "music_stinger" y]
-    PartyLeader y -> Json.object [Json.pair "party_leader" y]
-    Pickup y -> Json.object [Json.pair "pickup" y]
-    PickupInfo y -> Json.object [Json.pair "pickup_info" y]
-    PickupNew y -> Json.object [Json.pair "pickup_new" y]
-    PlayerHistoryKey y -> Json.object [Json.pair "player_history_key" y]
-    PrivateMatchSettings y ->
-      Json.object [Json.pair "private_match_settings" y]
-    QWord y -> Json.object [Json.pair "q_word" y]
-    Reservation y -> Json.object [Json.pair "reservation" y]
-    RigidBodyState y -> Json.object [Json.pair "rigid_body_state" y]
-    StatEvent y -> Json.object [Json.pair "stat_event" y]
-    String y -> Json.object [Json.pair "string" y]
-    TeamPaint y -> Json.object [Json.pair "team_paint" y]
-    Title y -> Json.object [Json.pair "title" y]
-    UniqueId y -> Json.object [Json.pair "unique_id" y]
-    WeldedInfo y -> Json.object [Json.pair "welded_info" y]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-value" . Schema.oneOf $ fmap
-  (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
-  [ ("applied_damage", AppliedDamage.schema)
-  , ("boolean", Boolean.schema)
-  , ("byte", Byte.schema)
-  , ("cam_settings", CamSettings.schema)
-  , ("club_colors", ClubColors.schema)
-  , ("custom_demolish", CustomDemolish.schema)
-  , ("damage_state", DamageState.schema)
-  , ("demolish", Demolish.schema)
-  , ("enum", Enum.schema)
-  , ("explosion", Explosion.schema)
-  , ("extended_explosion", ExtendedExplosion.schema)
-  , ("flagged_byte", FlaggedByte.schema)
-  , ("flagged_int", FlaggedInt.schema)
-  , ("float", Float.schema)
-  , ("game_mode", GameMode.schema)
-  , ("int", Int.schema)
-  , ("int64", Int64.schema)
-  , ("loadout_online", LoadoutOnline.schema)
-  , ("loadout", Loadout.schema)
-  , ("loadouts_online", LoadoutsOnline.schema)
-  , ("loadouts", Loadouts.schema)
-  , ("location", Location.schema)
-  , ("music_stinger", MusicStinger.schema)
-  , ("party_leader", PartyLeader.schema)
-  , ("pickup_info", PickupInfo.schema)
-  , ("pickup_new", PickupNew.schema)
-  , ("pickup", Pickup.schema)
-  , ("player_history_key", PlayerHistoryKey.schema)
-  , ("private_match_settings", PrivateMatchSettings.schema)
-  , ("q_word", QWord.schema)
-  , ("reservation", Reservation.schema)
-  , ("rigid_body_state", RigidBodyState.schema)
-  , ("stat_event", StatEvent.schema)
-  , ("string", String.schema)
-  , ("team_paint", TeamPaint.schema)
-  , ("title", Title.schema)
-  , ("unique_id", UniqueId.schema)
-  , ("welded_info", WeldedInfo.schema)
-  ]
+instance Argo.HasCodec AttributeValue where
+  codec =
+    Argo.mapMaybe (Just . AppliedDamage) (\ x -> case x of { AppliedDamage y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "applied_damage") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Boolean) (\ x -> case x of { Boolean y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "boolean") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Byte) (\ x -> case x of { Byte y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "byte") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . CamSettings) (\ x -> case x of { CamSettings y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "cam_settings") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . ClubColors) (\ x -> case x of { ClubColors y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "club_colors") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . CustomDemolish) (\ x -> case x of { CustomDemolish y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "custom_demolish") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . DamageState) (\ x -> case x of { DamageState y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "damage_state") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Demolish) (\ x -> case x of { Demolish y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "demolish") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Enum) (\ x -> case x of { Enum y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "enum") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Explosion) (\ x -> case x of { Explosion y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "explosion") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . ExtendedExplosion) (\ x -> case x of { ExtendedExplosion y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "extended_explosion") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . FlaggedInt) (\ x -> case x of { FlaggedInt y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "flagged_int") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . FlaggedByte) (\ x -> case x of { FlaggedByte y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "flagged_byte") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Float) (\ x -> case x of { Float y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "float") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . GameMode) (\ x -> case x of { GameMode y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "game_mode") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Int) (\ x -> case x of { Int y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "int") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Int64) (\ x -> case x of { Int64 y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "int64") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Loadout) (\ x -> case x of { Loadout y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "loadout") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . LoadoutOnline) (\ x -> case x of { LoadoutOnline y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "loadout_online") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Loadouts) (\ x -> case x of { Loadouts y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "loadouts") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . LoadoutsOnline) (\ x -> case x of { LoadoutsOnline y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "loadouts_online") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Location) (\ x -> case x of { Location y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "location") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . MusicStinger) (\ x -> case x of { MusicStinger y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "music_stinger") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . PartyLeader) (\ x -> case x of { PartyLeader y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "party_leader") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Pickup) (\ x -> case x of { Pickup y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "pickup") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . PickupInfo) (\ x -> case x of { PickupInfo y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "pickup_info") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . PickupNew) (\ x -> case x of { PickupNew y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "pickup_new") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . PlayerHistoryKey) (\ x -> case x of { PlayerHistoryKey y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "player_history_key") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . PrivateMatchSettings) (\ x -> case x of { PrivateMatchSettings y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "private_match_settings") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . QWord) (\ x -> case x of { QWord y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "q_word") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Reservation) (\ x -> case x of { Reservation y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "reservation") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . RigidBodyState) (\ x -> case x of { RigidBodyState y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "rigid_body_state") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . StatEvent) (\ x -> case x of { StatEvent y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "stat_event") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . String) (\ x -> case x of { String y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "string") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . TeamPaint) (\ x -> case x of { TeamPaint y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "team_paint") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Title) (\ x -> case x of { Title y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "title") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . UniqueId) (\ x -> case x of { UniqueId y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "unique_id") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . WeldedInfo) (\ x -> case x of { WeldedInfo y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "welded_info") Argo.codec))
 
 bitPut :: AttributeValue -> BitPut.BitPut
 bitPut value = case value of

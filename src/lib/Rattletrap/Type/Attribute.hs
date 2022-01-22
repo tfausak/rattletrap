@@ -8,14 +8,13 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Exception.MissingAttributeLimit as MissingAttributeLimit
 import qualified Rattletrap.Exception.MissingAttributeName as MissingAttributeName
 import qualified Rattletrap.Exception.UnknownActor as UnknownActor
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.AttributeValue as AttributeValue
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Attribute = Attribute
   { id :: CompressedWord.CompressedWord
@@ -26,26 +25,11 @@ data Attribute = Attribute
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Attribute where
-  parseJSON = Json.withObject "Attribute" $ \object -> do
-    id <- Json.required object "id"
-    name <- Json.required object "name"
-    value <- Json.required object "value"
-    pure Attribute { id, name, value }
-
-instance Json.ToJSON Attribute where
-  toJSON x = Json.object
-    [ Json.pair "id" $ id x
-    , Json.pair "name" $ name x
-    , Json.pair "value" $ value x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute" $ Schema.object
-  [ (Json.pair "id" $ Schema.ref CompressedWord.schema, True)
-  , (Json.pair "name" $ Schema.ref Str.schema, True)
-  , (Json.pair "value" $ Schema.ref AttributeValue.schema, True)
-  ]
+instance Argo.HasCodec Attribute where
+  codec = Argo.fromObjectCodec Argo.Allow $ Attribute
+    <$> Argo.project id (Argo.required (Argo.fromString "id") Argo.codec)
+    <*> Argo.project name (Argo.required (Argo.fromString "name") Argo.codec)
+    <*> Argo.project value (Argo.required (Argo.fromString "value") Argo.codec)
 
 bitPut :: Attribute -> BitPut.BitPut
 bitPut attribute =

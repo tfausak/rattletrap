@@ -2,11 +2,10 @@ module Rattletrap.Type.Attribute.PartyLeader where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.RemoteId as RemoteId
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data PartyLeader = PartyLeader
   { systemId :: U8.U8
@@ -15,34 +14,10 @@ data PartyLeader = PartyLeader
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON PartyLeader where
-  parseJSON = Json.withObject "PartyLeader" $ \object -> do
-    systemId <- Json.required object "system_id"
-    maybeId <- Json.optional object "id"
-    pure PartyLeader
-      { systemId
-      , remoteId = fmap fst maybeId
-      , localId = fmap snd maybeId
-      }
-
-instance Json.ToJSON PartyLeader where
-  toJSON x = Json.object
-    [ Json.pair "system_id" $ systemId x
-    , Json.pair "id" $ case (remoteId x, localId x) of
-      (Just r, Just l) -> Just (r, l)
-      _ -> Nothing
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-party-leader" $ Schema.object
-  [ (Json.pair "system_id" $ Schema.ref U8.schema, True)
-  , ( Json.pair "id" $ Schema.oneOf
-      [ Schema.tuple [Schema.ref RemoteId.schema, Schema.ref U8.schema]
-      , Schema.ref Schema.null
-      ]
-    , False
-    )
-  ]
+instance Argo.HasCodec PartyLeader where
+  codec = Argo.map (\ (x, y) -> PartyLeader x (fmap fst y) (fmap snd y)) (\ x -> (systemId x, (,) <$> remoteId x <*> localId x)) . Argo.fromObjectCodec Argo.Allow $ (,)
+    <$> Argo.project fst (Argo.required (Argo.fromString "system_id") Argo.codec)
+    <*> Argo.project snd (Argo.optional (Argo.fromString "id") Argo.codec)
 
 bitPut :: PartyLeader -> BitPut.BitPut
 bitPut x =

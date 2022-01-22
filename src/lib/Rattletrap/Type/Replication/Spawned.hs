@@ -6,15 +6,14 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Exception.MissingClassName as MissingClassName
 import qualified Rattletrap.Exception.MissingObjectName as MissingObjectName
 import qualified Rattletrap.Exception.UnknownName as UnknownName
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Initialization as Initialization
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Spawned = Spawned
   { flag :: Bool
@@ -34,46 +33,15 @@ data Spawned = Spawned
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Spawned where
-  parseJSON = Json.withObject "Spawned" $ \object -> do
-    flag <- Json.required object "flag"
-    nameIndex <- Json.optional object "name_index"
-    name <- Json.optional object "name"
-    objectId <- Json.required object "object_id"
-    objectName <- Json.required object "object_name"
-    className <- Json.required object "class_name"
-    initialization <- Json.required object "initialization"
-    pure Spawned
-      { flag
-      , nameIndex
-      , name
-      , objectId
-      , objectName
-      , className
-      , initialization
-      }
-
-instance Json.ToJSON Spawned where
-  toJSON x = Json.object
-    [ Json.pair "flag" $ flag x
-    , Json.pair "name_index" $ nameIndex x
-    , Json.pair "name" $ name x
-    , Json.pair "object_id" $ objectId x
-    , Json.pair "object_name" $ objectName x
-    , Json.pair "class_name" $ className x
-    , Json.pair "initialization" $ initialization x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "replication-spawned" $ Schema.object
-  [ (Json.pair "flag" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "name_index" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "name" . Schema.json $ Schema.maybe Str.schema, False)
-  , (Json.pair "object_id" $ Schema.ref U32.schema, True)
-  , (Json.pair "object_name" $ Schema.ref Str.schema, True)
-  , (Json.pair "class_name" $ Schema.ref Str.schema, True)
-  , (Json.pair "initialization" $ Schema.ref Initialization.schema, True)
-  ]
+instance Argo.HasCodec Spawned where
+  codec = Argo.fromObjectCodec Argo.Allow $ Spawned
+    <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
+    <*> Argo.project nameIndex (Argo.optional (Argo.fromString "name_index") Argo.codec)
+    <*> Argo.project name (Argo.optional (Argo.fromString "name") Argo.codec)
+    <*> Argo.project objectId (Argo.required (Argo.fromString "object_id") Argo.codec)
+    <*> Argo.project objectName (Argo.required (Argo.fromString "object_name") Argo.codec)
+    <*> Argo.project className (Argo.required (Argo.fromString "class_name") Argo.codec)
+    <*> Argo.project initialization (Argo.required (Argo.fromString "initialization") Argo.codec)
 
 bitPut :: Spawned -> BitPut.BitPut
 bitPut spawnedReplication =

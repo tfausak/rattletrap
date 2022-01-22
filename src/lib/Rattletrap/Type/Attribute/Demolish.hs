@@ -2,11 +2,10 @@ module Rattletrap.Type.Attribute.Demolish where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Demolish = Demolish
   { attackerFlag :: Bool
@@ -18,42 +17,14 @@ data Demolish = Demolish
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Demolish where
-  parseJSON = Json.withObject "Demolish" $ \object -> do
-    attackerFlag <- Json.required object "attacker_flag"
-    attackerActorId <- Json.required object "attacker_actor_id"
-    victimFlag <- Json.required object "victim_flag"
-    victimActorId <- Json.required object "victim_actor_id"
-    attackerVelocity <- Json.required object "attacker_velocity"
-    victimVelocity <- Json.required object "victim_velocity"
-    pure Demolish
-      { attackerFlag
-      , attackerActorId
-      , victimFlag
-      , victimActorId
-      , attackerVelocity
-      , victimVelocity
-      }
-
-instance Json.ToJSON Demolish where
-  toJSON x = Json.object
-    [ Json.pair "attacker_flag" $ attackerFlag x
-    , Json.pair "attacker_actor_id" $ attackerActorId x
-    , Json.pair "victim_flag" $ victimFlag x
-    , Json.pair "victim_actor_id" $ victimActorId x
-    , Json.pair "attacker_velocity" $ attackerVelocity x
-    , Json.pair "victim_velocity" $ victimVelocity x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-demolish" $ Schema.object
-  [ (Json.pair "attacker_flag" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "attacker_actor_id" $ Schema.ref U32.schema, True)
-  , (Json.pair "victim_flag" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "victim_actor_id" $ Schema.ref U32.schema, True)
-  , (Json.pair "attacker_velocity" $ Schema.ref Vector.schema, True)
-  , (Json.pair "victim_velocity" $ Schema.ref Vector.schema, True)
-  ]
+instance Argo.HasCodec Demolish where
+  codec = Argo.fromObjectCodec Argo.Allow $ Demolish
+    <$> Argo.project attackerFlag (Argo.required (Argo.fromString "attacker_flag") Argo.codec)
+    <*> Argo.project attackerActorId (Argo.required (Argo.fromString "attacker_actor_id") Argo.codec)
+    <*> Argo.project victimFlag (Argo.required (Argo.fromString "victim_flag") Argo.codec)
+    <*> Argo.project victimActorId (Argo.required (Argo.fromString "victim_actor_id") Argo.codec)
+    <*> Argo.project attackerVelocity (Argo.required (Argo.fromString "attacker_velocity") Argo.codec)
+    <*> Argo.project victimVelocity (Argo.required (Argo.fromString "victim_velocity") Argo.codec)
 
 bitPut :: Demolish -> BitPut.BitPut
 bitPut demolishAttribute =

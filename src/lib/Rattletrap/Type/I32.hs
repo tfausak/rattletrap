@@ -5,25 +5,14 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 newtype I32
   = I32 Int.Int32
   deriving (Eq, Show)
 
-instance Json.FromJSON I32 where
-  parseJSON = fmap fromInt32 . Json.parseJSON
-
-instance Json.ToJSON I32 where
-  toJSON = Json.toJSON . toInt32
-
-schema :: Schema.Schema
-schema = Schema.named "i32" $ Json.object
-  [ Json.pair "type" "integer"
-  , Json.pair "minimum" (minBound :: Int.Int32)
-  , Json.pair "maximum" (maxBound :: Int.Int32)
-  ]
+instance Argo.HasCodec I32 where
+  codec = Argo.map fromInt32 toInt32 Argo.codec
 
 fromInt32 :: Int.Int32 -> I32
 fromInt32 = I32

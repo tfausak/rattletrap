@@ -2,14 +2,12 @@ module Rattletrap.Type.Section where
 
 import qualified Control.Monad as Monad
 import qualified Data.ByteString as ByteString
-import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Exception.CrcMismatch as CrcMismatch
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Crc as Crc
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 -- | A section is a large piece of a 'Rattletrap.Replay.Replay'. It has a
 -- 32-bit size (in bytes), a 32-bit CRC (see "Rattletrap.Utility.Crc"), and then a
@@ -25,27 +23,11 @@ data Section a = Section
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON a => Json.FromJSON (Section a) where
-  parseJSON = Json.withObject "Section" $ \object -> do
-    size <- Json.required object "size"
-    crc <- Json.required object "crc"
-    body <- Json.required object "body"
-    pure Section { size, crc, body }
-
-instance Json.ToJSON a => Json.ToJSON (Section a) where
-  toJSON x = Json.object
-    [ Json.pair "size" $ size x
-    , Json.pair "crc" $ crc x
-    , Json.pair "body" $ body x
-    ]
-
-schema :: Schema.Schema -> Schema.Schema
-schema s =
-  Schema.named ("section-" <> Text.unpack (Schema.name s)) $ Schema.object
-    [ (Json.pair "size" $ Schema.ref U32.schema, True)
-    , (Json.pair "crc" $ Schema.ref U32.schema, True)
-    , (Json.pair "body" $ Schema.ref s, True)
-    ]
+instance Argo.HasCodec a => Argo.HasCodec (Section a) where
+  codec = Argo.fromObjectCodec Argo.Allow $ Section
+    <$> Argo.project size (Argo.required (Argo.fromString "size") Argo.codec)
+    <*> Argo.project crc (Argo.required (Argo.fromString "crc") Argo.codec)
+    <*> Argo.project body (Argo.required (Argo.fromString "body") Argo.codec)
 
 create :: (a -> BytePut.BytePut) -> a -> Section a
 create encode body_ =

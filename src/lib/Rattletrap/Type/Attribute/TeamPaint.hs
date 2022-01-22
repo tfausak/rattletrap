@@ -2,10 +2,9 @@ module Rattletrap.Type.Attribute.TeamPaint where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data TeamPaint = TeamPaint
   { team :: U8.U8
@@ -16,38 +15,13 @@ data TeamPaint = TeamPaint
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON TeamPaint where
-  parseJSON = Json.withObject "TeamPaint" $ \object -> do
-    team <- Json.required object "team"
-    primaryColor <- Json.required object "primary_color"
-    accentColor <- Json.required object "accent_color"
-    primaryFinish <- Json.required object "primary_finish"
-    accentFinish <- Json.required object "accent_finish"
-    pure TeamPaint
-      { team
-      , primaryColor
-      , accentColor
-      , primaryFinish
-      , accentFinish
-      }
-
-instance Json.ToJSON TeamPaint where
-  toJSON x = Json.object
-    [ Json.pair "team" $ team x
-    , Json.pair "primary_color" $ primaryColor x
-    , Json.pair "accent_color" $ accentColor x
-    , Json.pair "primary_finish" $ primaryFinish x
-    , Json.pair "accent_finish" $ accentFinish x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-team-paint" $ Schema.object
-  [ (Json.pair "team" $ Schema.ref U8.schema, True)
-  , (Json.pair "primary_color" $ Schema.ref U8.schema, True)
-  , (Json.pair "accent_color" $ Schema.ref U8.schema, True)
-  , (Json.pair "primary_finish" $ Schema.ref U32.schema, True)
-  , (Json.pair "accent_finish" $ Schema.ref U32.schema, True)
-  ]
+instance Argo.HasCodec TeamPaint where
+  codec = Argo.fromObjectCodec Argo.Allow $ TeamPaint
+    <$> Argo.project team (Argo.required (Argo.fromString "team") Argo.codec)
+    <*> Argo.project primaryColor (Argo.required (Argo.fromString "primary_color") Argo.codec)
+    <*> Argo.project accentColor (Argo.required (Argo.fromString "accent_color") Argo.codec)
+    <*> Argo.project primaryFinish (Argo.required (Argo.fromString "primary_finish") Argo.codec)
+    <*> Argo.project accentFinish (Argo.required (Argo.fromString "accent_finish") Argo.codec)
 
 bitPut :: TeamPaint -> BitPut.BitPut
 bitPut teamPaintAttribute =

@@ -2,9 +2,8 @@ module Rattletrap.Type.Attribute.Loadouts where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.Loadout as Loadout
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Loadouts = Loadouts
   { blue :: Loadout.Loadout
@@ -12,21 +11,10 @@ data Loadouts = Loadouts
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Loadouts where
-  parseJSON = Json.withObject "Loadouts" $ \object -> do
-    blue <- Json.required object "blue"
-    orange <- Json.required object "orange"
-    pure Loadouts { blue, orange }
-
-instance Json.ToJSON Loadouts where
-  toJSON x =
-    Json.object [Json.pair "blue" $ blue x, Json.pair "orange" $ orange x]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-loadouts" $ Schema.object
-  [ (Json.pair "blue" $ Schema.ref Loadout.schema, True)
-  , (Json.pair "orange" $ Schema.ref Loadout.schema, True)
-  ]
+instance Argo.HasCodec Loadouts where
+  codec = Argo.fromObjectCodec Argo.Allow $ Loadouts
+    <$> Argo.project blue (Argo.required (Argo.fromString "blue") Argo.codec)
+    <*> Argo.project orange (Argo.required (Argo.fromString "orange") Argo.codec)
 
 bitPut :: Loadouts -> BitPut.BitPut
 bitPut loadoutsAttribute = Loadout.bitPut (blue loadoutsAttribute)

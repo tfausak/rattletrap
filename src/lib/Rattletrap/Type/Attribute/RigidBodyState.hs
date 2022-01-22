@@ -2,12 +2,11 @@ module Rattletrap.Type.Attribute.RigidBodyState where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Rotation as Rotation
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data RigidBodyState = RigidBodyState
   { sleeping :: Bool
@@ -18,42 +17,13 @@ data RigidBodyState = RigidBodyState
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON RigidBodyState where
-  parseJSON = Json.withObject "RigidBodyState" $ \object -> do
-    sleeping <- Json.required object "sleeping"
-    location <- Json.required object "location"
-    rotation <- Json.required object "rotation"
-    linearVelocity <- Json.optional object "linear_velocity"
-    angularVelocity <- Json.optional object "angular_velocity"
-    pure RigidBodyState
-      { sleeping
-      , location
-      , rotation
-      , linearVelocity
-      , angularVelocity
-      }
-
-instance Json.ToJSON RigidBodyState where
-  toJSON x = Json.object
-    [ Json.pair "sleeping" $ sleeping x
-    , Json.pair "location" $ location x
-    , Json.pair "rotation" $ rotation x
-    , Json.pair "linear_velocity" $ linearVelocity x
-    , Json.pair "angular_velocity" $ angularVelocity x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-rigid-body-state" $ Schema.object
-  [ (Json.pair "sleeping" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "location" $ Schema.ref Vector.schema, True)
-  , (Json.pair "rotation" $ Schema.ref Rotation.schema, True)
-  , ( Json.pair "linear_velocity" . Schema.json $ Schema.maybe Vector.schema
-    , False
-    )
-  , ( Json.pair "angular_velocity" . Schema.json $ Schema.maybe Vector.schema
-    , False
-    )
-  ]
+instance Argo.HasCodec RigidBodyState where
+  codec = Argo.fromObjectCodec Argo.Allow $ RigidBodyState
+    <$> Argo.project sleeping (Argo.required (Argo.fromString "sleeping") Argo.codec)
+    <*> Argo.project location (Argo.required (Argo.fromString "location") Argo.codec)
+    <*> Argo.project rotation (Argo.required (Argo.fromString "rotation") Argo.codec)
+    <*> Argo.project linearVelocity (Argo.optional (Argo.fromString "linear_velocity") Argo.codec)
+    <*> Argo.project angularVelocity (Argo.optional (Argo.fromString "angular_velocity") Argo.codec)
 
 bitPut :: RigidBodyState -> BitPut.BitPut
 bitPut rigidBodyStateAttribute =

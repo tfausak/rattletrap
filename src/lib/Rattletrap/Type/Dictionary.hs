@@ -1,14 +1,12 @@
 module Rattletrap.Type.Dictionary where
 
-import qualified Data.Bifunctor as Bifunctor
 import qualified Data.Map as Map
 import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Dictionary a = Dictionary
   { elements :: List.List (Str.Str, a)
@@ -16,50 +14,21 @@ data Dictionary a = Dictionary
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON a => Json.FromJSON (Dictionary a) where
-  parseJSON = Json.withObject "Dictionary" $ \o -> do
-    keys <- Json.required o "keys"
-    lastKey_ <- Json.required o "last_key"
-    value <- Json.required o "value"
-    let
-      build
-        :: MonadFail m
-        => Map.Map Text.Text a
-        -> Int
-        -> [(Int, (Str.Str, a))]
-        -> [Text.Text]
-        -> m (List.List (Str.Str, a))
-      build m i xs ks = case ks of
-        [] -> pure . List.fromList . reverse $ fmap snd xs
-        k : t -> case Map.lookup k m of
-          Nothing -> fail $ "missing required key " <> show k
-          Just v -> build m (i + 1) ((i, (Str.fromText k, v)) : xs) t
-    elements_ <- build value 0 [] keys
-    pure Dictionary { elements = elements_, lastKey = lastKey_ }
-
-instance Json.ToJSON a => Json.ToJSON (Dictionary a) where
-  toJSON x = Json.object
-    [ Json.pair "keys" . fmap fst . List.toList $ elements x
-    , Json.pair "last_key" $ lastKey x
-    , Json.pair "value"
-    . Map.fromList
-    . fmap (Bifunctor.first Str.toText)
-    . List.toList
-    $ elements x
-    ]
-
-schema :: Schema.Schema -> Schema.Schema
-schema s =
-  Schema.named ("dictionary-" <> Text.unpack (Schema.name s)) $ Schema.object
-    [ (Json.pair "keys" . Schema.json $ Schema.array Str.schema, True)
-    , (Json.pair "last_key" $ Schema.ref Str.schema, True)
-    , ( Json.pair "value" $ Json.object
-        [ Json.pair "type" "object"
-        , Json.pair "additionalProperties" $ Schema.ref s
-        ]
-      , True
-      )
-    ]
+instance Argo.HasCodec a => Argo.HasCodec (Dictionary a) where
+  codec = Argo.mapMaybe
+    (\ (keys, lastKey, value) -> Dictionary
+      <$> fmap List.fromList (mapM (\ k -> fmap ((,) (Str.fromText k)) $ Map.lookup k value) keys)
+      <*> pure lastKey)
+    (\ x -> Just
+      ( fmap (Str.toText . fst) . List.toList $ elements x
+      , lastKey x
+      , Map.mapKeys Str.toText . Map.fromList . List.toList $ elements x
+      ))
+    . Argo.fromObjectCodec Argo.Allow
+    $ (,,)
+    <$> Argo.project (\ (x, _, _) -> x) (Argo.required (Argo.fromString "keys") Argo.codec)
+    <*> Argo.project (\ (_, x, _) -> x) (Argo.required (Argo.fromString "last_key") Argo.codec)
+    <*> Argo.project (\ (_, _, x) -> x) (Argo.required (Argo.fromString "value") Argo.codec)
 
 lookup :: Str.Str -> Dictionary a -> Maybe a
 lookup k = Prelude.lookup k . List.toList . elements

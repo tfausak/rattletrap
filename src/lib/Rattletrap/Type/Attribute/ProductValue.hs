@@ -1,18 +1,16 @@
 module Rattletrap.Type.Attribute.ProductValue where
 
-import qualified Data.Foldable as Foldable
 import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Exception.MissingProductName as MissingProductName
 import qualified Rattletrap.Exception.UnknownProduct as UnknownProduct
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data ProductValue
   = PaintedOld CompressedWord.CompressedWord
@@ -25,41 +23,16 @@ data ProductValue
   | TitleId Str.Str
   deriving (Eq, Show)
 
-instance Json.FromJSON ProductValue where
-  parseJSON = Json.withObject "ProductValue" $ \object -> Foldable.asum
-    [ fmap PaintedOld $ Json.required object "painted_old"
-    , fmap PaintedNew $ Json.required object "painted_new"
-    , fmap TeamEditionOld $ Json.required object "team_edition_old"
-    , fmap TeamEditionNew $ Json.required object "team_edition_new"
-    , fmap SpecialEdition $ Json.required object "special_edition"
-    , fmap UserColorOld $ Json.required object "user_color_old"
-    , fmap UserColorNew $ Json.required object "user_color_new"
-    , fmap TitleId $ Json.required object "title_id"
-    ]
-
-instance Json.ToJSON ProductValue where
-  toJSON x = case x of
-    PaintedOld y -> Json.object [Json.pair "painted_old" y]
-    PaintedNew y -> Json.object [Json.pair "painted_new" y]
-    TeamEditionOld y -> Json.object [Json.pair "team_edition_old" y]
-    TeamEditionNew y -> Json.object [Json.pair "team_edition_new" y]
-    SpecialEdition y -> Json.object [Json.pair "special_edition" y]
-    UserColorOld y -> Json.object [Json.pair "user_color_old" y]
-    UserColorNew y -> Json.object [Json.pair "user_color_new" y]
-    TitleId y -> Json.object [Json.pair "title_id" y]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-product-value" . Schema.oneOf $ fmap
-  (\(k, v) -> Schema.object [(Json.pair k v, True)])
-  [ ("painted_old", Schema.ref CompressedWord.schema)
-  , ("painted_new", Schema.ref Schema.integer)
-  , ("team_edition_old", Schema.ref CompressedWord.schema)
-  , ("team_edition_new", Schema.ref Schema.integer)
-  , ("special_edition", Schema.ref Schema.integer)
-  , ("user_color_old", Schema.json $ Schema.maybe Schema.integer)
-  , ("user_color_new", Schema.ref U32.schema)
-  , ("title_id", Schema.ref Str.schema)
-  ]
+instance Argo.HasCodec ProductValue where
+  codec =
+    Argo.mapMaybe (Just . PaintedOld) (\ x -> case x of { PaintedOld y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "painted_old") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . PaintedNew) (\ x -> case x of { PaintedNew y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "painted_new") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . TeamEditionOld) (\ x -> case x of { TeamEditionOld y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "team_edition_old") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . TeamEditionNew) (\ x -> case x of { TeamEditionNew y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "team_edition_new") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . SpecialEdition) (\ x -> case x of { SpecialEdition y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "special_edition") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . UserColorOld) (\ x -> case x of { UserColorOld y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "user_color_old") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . UserColorNew) (\ x -> case x of { UserColorNew y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "user_color_new") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . TitleId) (\ x -> case x of { TitleId y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "title_id") Argo.codec))
 
 bitPut :: ProductValue -> BitPut.BitPut
 bitPut val = case val of

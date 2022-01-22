@@ -2,11 +2,10 @@ module Rattletrap.Type.Cache where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Cache = Cache
   { classId :: U32.U32
@@ -16,32 +15,12 @@ data Cache = Cache
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Cache where
-  parseJSON = Json.withObject "Cache" $ \object -> do
-    classId <- Json.required object "class_id"
-    parentCacheId <- Json.required object "parent_cache_id"
-    cacheId <- Json.required object "cache_id"
-    attributeMappings <- Json.required object "attribute_mappings"
-    pure Cache { classId, parentCacheId, cacheId, attributeMappings }
-
-instance Json.ToJSON Cache where
-  toJSON x = Json.object
-    [ Json.pair "class_id" $ classId x
-    , Json.pair "parent_cache_id" $ parentCacheId x
-    , Json.pair "cache_id" $ cacheId x
-    , Json.pair "attribute_mappings" $ attributeMappings x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "cache" $ Schema.object
-  [ (Json.pair "class_id" $ Schema.ref U32.schema, True)
-  , (Json.pair "parent_cache_id" $ Schema.ref U32.schema, True)
-  , (Json.pair "cache_id" $ Schema.ref U32.schema, True)
-  , ( Json.pair "attribute_mappings" . Schema.json $ List.schema
-      AttributeMapping.schema
-    , True
-    )
-  ]
+instance Argo.HasCodec Cache where
+  codec = Argo.fromObjectCodec Argo.Allow $ Cache
+    <$> Argo.project classId (Argo.required (Argo.fromString "class_id") Argo.codec)
+    <*> Argo.project parentCacheId (Argo.required (Argo.fromString "parent_cache_id") Argo.codec)
+    <*> Argo.project cacheId (Argo.required (Argo.fromString "cache_id") Argo.codec)
+    <*> Argo.project attributeMappings (Argo.required (Argo.fromString "attribute_mappings") Argo.codec)
 
 bytePut :: Cache -> BytePut.BytePut
 bytePut x =

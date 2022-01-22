@@ -1,10 +1,8 @@
 module Rattletrap.Type.ReplicationValue where
 
-import qualified Data.Foldable as Foldable
 import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Replication.Destroyed as Destroyed
@@ -13,7 +11,7 @@ import qualified Rattletrap.Type.Replication.Updated as Updated
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data ReplicationValue
   = Spawned Spawned.Spawned
@@ -24,26 +22,11 @@ data ReplicationValue
   -- ^ Destroys an existing actor.
   deriving (Eq, Show)
 
-instance Json.FromJSON ReplicationValue where
-  parseJSON = Json.withObject "ReplicationValue" $ \object -> Foldable.asum
-    [ fmap Spawned $ Json.required object "spawned"
-    , fmap Updated $ Json.required object "updated"
-    , fmap Destroyed $ Json.required object "destroyed"
-    ]
-
-instance Json.ToJSON ReplicationValue where
-  toJSON x = case x of
-    Spawned y -> Json.object [Json.pair "spawned" y]
-    Updated y -> Json.object [Json.pair "updated" y]
-    Destroyed y -> Json.object [Json.pair "destroyed" y]
-
-schema :: Schema.Schema
-schema = Schema.named "replicationValue" . Schema.oneOf $ fmap
-  (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
-  [ ("spawned", Spawned.schema)
-  , ("updated", Updated.schema)
-  , ("destroyed", Destroyed.schema)
-  ]
+instance Argo.HasCodec ReplicationValue where
+  codec =
+    Argo.mapMaybe (Just . Spawned) (\ x -> case x of { Spawned y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "spawned") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Updated) (\ x -> case x of { Updated y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "updated") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Destroyed) (\ x -> case x of { Destroyed y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "destroyed") Argo.codec))
 
 bitPut :: ReplicationValue -> BitPut.BitPut
 bitPut value = case value of

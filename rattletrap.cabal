@@ -52,8 +52,7 @@ library
 
   autogen-modules: Paths_rattletrap
   build-depends:
-    , aeson ^>= 1.5.6 || ^>= 2.0.0
-    , aeson-pretty ^>= 0.8.8
+    , argo ^>= 0.2022.1.15
     , array ^>= 0.5.4
     , bytestring ^>= 0.10.12
     , containers ^>= 0.6.4
@@ -94,7 +93,6 @@ library
     Rattletrap.Exception.UnknownProperty
     Rattletrap.Exception.UnknownSystemId
     Rattletrap.Get
-    Rattletrap.Schema
     Rattletrap.Type.Attribute
     Rattletrap.Type.Attribute.AppliedDamage
     Rattletrap.Type.Attribute.Boolean
@@ -194,8 +192,8 @@ library
     Rattletrap.Utility.Bytes
     Rattletrap.Utility.Crc
     Rattletrap.Utility.Helper
-    Rattletrap.Utility.Json
     Rattletrap.Utility.Monad
+    Rattletrap.Vendor.Argo
     Rattletrap.Version
   hs-source-dirs: src/lib
 

@@ -1,41 +1,20 @@
 module Rattletrap.Type.RemoteId.PsyNet where
 
-import qualified Control.Applicative as Applicative
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data PsyNet
   = New U64.U64
   | Old U64.U64 U64.U64 U64.U64 U64.U64
   deriving (Eq, Show)
 
-instance Json.FromJSON PsyNet where
-  parseJSON = Json.withObject "PsyNet" $ \object -> do
-    let
-      new = fmap New $ Json.required object "Left"
-      old = do
-        (a, b, c, d) <- Json.required object "Right"
-        pure $ Old a b c d
-    new Applicative.<|> old
-
-instance Json.ToJSON PsyNet where
-  toJSON x = case x of
-    New a -> Json.object [Json.pair "Left" a]
-    Old a b c d -> Json.object [Json.pair "Right" (a, b, c, d)]
-
-schema :: Schema.Schema
-schema = Schema.named "remote-id-psy-net" $ Schema.oneOf
-  [ Schema.object [(Json.pair "Left" $ Schema.ref U64.schema, True)]
-  , Schema.object
-    [ ( Json.pair "Right" . Schema.tuple . replicate 4 $ Schema.ref U64.schema
-      , True
-      )
-    ]
-  ]
+instance Argo.HasCodec PsyNet where
+  codec =
+    Argo.mapMaybe (Just . New) (\ x -> case x of { New y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "Left") Argo.codec))
+    Argo.<|> Argo.mapMaybe (\ (a, b, c, d) -> Just $ Old a b c d) (\ x -> case x of { Old a b c d -> Just (a, b, c, d); _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "Right") Argo.codec))
 
 bitPut :: PsyNet -> BitPut.BitPut
 bitPut x = case x of

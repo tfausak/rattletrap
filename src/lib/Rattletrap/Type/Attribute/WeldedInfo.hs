@@ -2,13 +2,12 @@ module Rattletrap.Type.Attribute.WeldedInfo where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data WeldedInfo = WeldedInfo
   { active :: Bool
@@ -19,32 +18,13 @@ data WeldedInfo = WeldedInfo
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON WeldedInfo where
-  parseJSON = Json.withObject "WeldedInfo" $ \object -> do
-    active <- Json.required object "active"
-    actorId <- Json.required object "actor_id"
-    offset <- Json.required object "offset"
-    mass <- Json.required object "mass"
-    rotation <- Json.required object "rotation"
-    pure WeldedInfo { active, actorId, offset, mass, rotation }
-
-instance Json.ToJSON WeldedInfo where
-  toJSON x = Json.object
-    [ Json.pair "active" $ active x
-    , Json.pair "actor_id" $ actorId x
-    , Json.pair "offset" $ offset x
-    , Json.pair "mass" $ mass x
-    , Json.pair "rotation" $ rotation x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-welded-info" $ Schema.object
-  [ (Json.pair "active" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "actor_id" $ Schema.ref I32.schema, True)
-  , (Json.pair "offset" $ Schema.ref Vector.schema, True)
-  , (Json.pair "mass" $ Schema.ref F32.schema, True)
-  , (Json.pair "rotation" $ Schema.ref Int8Vector.schema, True)
-  ]
+instance Argo.HasCodec WeldedInfo where
+  codec = Argo.fromObjectCodec Argo.Allow $ WeldedInfo
+    <$> Argo.project active (Argo.required (Argo.fromString "active") Argo.codec)
+    <*> Argo.project actorId (Argo.required (Argo.fromString "actor_id") Argo.codec)
+    <*> Argo.project offset (Argo.required (Argo.fromString "offset") Argo.codec)
+    <*> Argo.project mass (Argo.required (Argo.fromString "mass") Argo.codec)
+    <*> Argo.project rotation (Argo.required (Argo.fromString "rotation") Argo.codec)
 
 bitPut :: WeldedInfo -> BitPut.BitPut
 bitPut weldedInfoAttribute =

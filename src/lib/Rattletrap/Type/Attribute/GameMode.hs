@@ -3,9 +3,8 @@ module Rattletrap.Type.Attribute.GameMode where
 import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data GameMode = GameMode
   { numBits :: Int
@@ -17,21 +16,10 @@ data GameMode = GameMode
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON GameMode where
-  parseJSON = Json.withObject "GameMode" $ \object -> do
-    numBits <- Json.required object "num_bits"
-    word <- Json.required object "word"
-    pure GameMode { numBits, word }
-
-instance Json.ToJSON GameMode where
-  toJSON x =
-    Json.object [Json.pair "num_bits" $ numBits x, Json.pair "word" $ word x]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-game-mode" $ Schema.object
-  [ (Json.pair "num_bits" $ Schema.ref Schema.integer, True)
-  , (Json.pair "word" $ Schema.ref Schema.integer, True)
-  ]
+instance Argo.HasCodec GameMode where
+  codec = Argo.fromObjectCodec Argo.Allow $ GameMode
+    <$> Argo.project numBits (Argo.required (Argo.fromString "num_bits") Argo.codec)
+    <*> Argo.project word (Argo.required (Argo.fromString "word") Argo.codec)
 
 bitPut :: GameMode -> BitPut.BitPut
 bitPut gameModeAttribute = do

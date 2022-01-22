@@ -4,21 +4,14 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 newtype F32
   = F32 Float
   deriving (Eq, Show)
 
-instance Json.FromJSON F32 where
-  parseJSON = fmap fromFloat . Json.parseJSON
-
-instance Json.ToJSON F32 where
-  toJSON = Json.toJSON . toFloat
-
-schema :: Schema.Schema
-schema = Schema.named "f32" $ Json.object [Json.pair "type" "number"]
+instance Argo.HasCodec F32 where
+  codec = Argo.map fromFloat toFloat Argo.codec
 
 fromFloat :: Float -> F32
 fromFloat = F32

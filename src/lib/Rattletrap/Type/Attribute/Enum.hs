@@ -4,21 +4,14 @@ import qualified Data.Word as Word
 import Prelude hiding (Enum)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 newtype Enum = Enum
   { value :: Word.Word16
   } deriving (Eq, Show)
 
-instance Json.FromJSON Enum where
-  parseJSON = fmap Enum . Json.parseJSON
-
-instance Json.ToJSON Enum where
-  toJSON = Json.toJSON . value
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-enum" $ Schema.ref Schema.integer
+instance Argo.HasCodec Enum where
+  codec = Argo.map Enum value Argo.codec
 
 bitPut :: Enum -> BitPut.BitPut
 bitPut enumAttribute = BitPut.bits 11 (value enumAttribute)

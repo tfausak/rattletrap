@@ -3,14 +3,13 @@ module Rattletrap.Type.Attribute.Product where
 import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.ProductValue as ProductValue
 import qualified Rattletrap.Type.List as List
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Product = Product
   { unknown :: Bool
@@ -21,29 +20,12 @@ data Product = Product
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Product where
-  parseJSON = Json.withObject "Product" $ \object -> do
-    unknown <- Json.required object "unknown"
-    objectId <- Json.required object "object_id"
-    objectName <- Json.optional object "object_name"
-    value <- Json.required object "value"
-    pure Product { unknown, objectId, objectName, value }
-
-instance Json.ToJSON Product where
-  toJSON x = Json.object
-    [ Json.pair "unknown" $ unknown x
-    , Json.pair "object_id" $ objectId x
-    , Json.pair "object_name" $ objectName x
-    , Json.pair "value" $ value x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-product" $ Schema.object
-  [ (Json.pair "unknown" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "object_id" $ Schema.ref U32.schema, True)
-  , (Json.pair "object_name" . Schema.json $ Schema.maybe Str.schema, False)
-  , (Json.pair "value" $ Schema.ref ProductValue.schema, True)
-  ]
+instance Argo.HasCodec Product where
+  codec = Argo.fromObjectCodec Argo.Allow $ Product
+    <$> Argo.project unknown (Argo.required (Argo.fromString "unknown") Argo.codec)
+    <*> Argo.project objectId (Argo.required (Argo.fromString "object_id") Argo.codec)
+    <*> Argo.project objectName (Argo.optional (Argo.fromString "object_name") Argo.codec)
+    <*> Argo.project value (Argo.required (Argo.fromString "value") Argo.codec)
 
 putProductAttributes :: List.List Product -> BitPut.BitPut
 putProductAttributes attributes =

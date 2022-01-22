@@ -2,10 +2,9 @@ module Rattletrap.Type.Keyframe where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Keyframe = Keyframe
   { time :: F32.F32
@@ -17,26 +16,11 @@ data Keyframe = Keyframe
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Keyframe where
-  parseJSON = Json.withObject "Keyframe" $ \object -> do
-    time <- Json.required object "time"
-    frame <- Json.required object "frame"
-    position <- Json.required object "position"
-    pure Keyframe { time, frame, position }
-
-instance Json.ToJSON Keyframe where
-  toJSON x = Json.object
-    [ Json.pair "time" $ time x
-    , Json.pair "frame" $ frame x
-    , Json.pair "position" $ position x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "keyframe" $ Schema.object
-  [ (Json.pair "time" $ Schema.ref F32.schema, True)
-  , (Json.pair "frame" $ Schema.ref U32.schema, True)
-  , (Json.pair "position" $ Schema.ref U32.schema, True)
-  ]
+instance Argo.HasCodec Keyframe where
+  codec = Argo.fromObjectCodec Argo.Allow $ Keyframe
+    <$> Argo.project time (Argo.required (Argo.fromString "time") Argo.codec)
+    <*> Argo.project frame (Argo.required (Argo.fromString "frame") Argo.codec)
+    <*> Argo.project position (Argo.required (Argo.fromString "position") Argo.codec)
 
 bytePut :: Keyframe -> BytePut.BytePut
 bytePut x =

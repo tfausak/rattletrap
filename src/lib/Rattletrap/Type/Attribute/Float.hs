@@ -3,22 +3,15 @@ module Rattletrap.Type.Attribute.Float where
 import Prelude hiding (Float)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.F32 as F32
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 newtype Float = Float
   { value :: F32.F32
   } deriving (Eq, Show)
 
-instance Json.FromJSON Float where
-  parseJSON = fmap Float . Json.parseJSON
-
-instance Json.ToJSON Float where
-  toJSON = Json.toJSON . value
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-float" $ Schema.ref F32.schema
+instance Argo.HasCodec Float where
+  codec = Argo.map Float value Argo.codec
 
 bitPut :: Float -> BitPut.BitPut
 bitPut floatAttribute = F32.bitPut (value floatAttribute)

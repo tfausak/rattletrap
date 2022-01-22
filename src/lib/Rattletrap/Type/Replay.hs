@@ -2,7 +2,6 @@ module Rattletrap.Type.Replay where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Dictionary as Dictionary
 import qualified Rattletrap.Type.Header as Header
@@ -14,8 +13,8 @@ import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Version as Version
+import qualified Rattletrap.Vendor.Argo as Argo
 
 type Replay
   = ReplayWith
@@ -31,24 +30,10 @@ data ReplayWith header content = Replay
   }
   deriving (Eq, Show)
 
-instance (Json.FromJSON h, Json.FromJSON c) => Json.FromJSON (ReplayWith h c) where
-  parseJSON = Json.withObject "Replay" $ \object -> do
-    header <- Json.required object "header"
-    content <- Json.required object "content"
-    pure Replay { header, content }
-
-instance (Json.ToJSON h, Json.ToJSON c) => Json.ToJSON (ReplayWith h c) where
-  toJSON x = Json.object
-    [ Json.pair "$schema" schemaUrl
-    , Json.pair "header" $ header x
-    , Json.pair "content" $ content x
-    ]
-
-schema :: Schema.Schema -> Schema.Schema -> Schema.Schema
-schema h c = Schema.named "replay" $ Schema.object
-  [ (Json.pair "header" $ Schema.ref h, True)
-  , (Json.pair "content" $ Schema.ref c, True)
-  ]
+instance (Argo.HasCodec h, Argo.HasCodec c) => Argo.HasCodec (ReplayWith h c) where
+  codec = Argo.fromObjectCodec Argo.Allow $ Replay
+    <$> Argo.project header (Argo.required (Argo.fromString "header") Argo.codec)
+    <*> Argo.project content (Argo.required (Argo.fromString "content") Argo.codec)
 
 schemaUrl :: String
 schemaUrl = mconcat

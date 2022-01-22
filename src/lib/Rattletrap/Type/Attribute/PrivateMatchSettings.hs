@@ -2,10 +2,9 @@ module Rattletrap.Type.Attribute.PrivateMatchSettings where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data PrivateMatchSettings = PrivateMatchSettings
   { mutators :: Str.Str
@@ -17,42 +16,14 @@ data PrivateMatchSettings = PrivateMatchSettings
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON PrivateMatchSettings where
-  parseJSON = Json.withObject "PrivateMatchSettings" $ \object -> do
-    mutators <- Json.required object "mutators"
-    joinableBy <- Json.required object "joinable_by"
-    maxPlayers <- Json.required object "max_players"
-    gameName <- Json.required object "game_name"
-    password <- Json.required object "password"
-    flag <- Json.required object "flag"
-    pure PrivateMatchSettings
-      { mutators
-      , joinableBy
-      , maxPlayers
-      , gameName
-      , password
-      , flag
-      }
-
-instance Json.ToJSON PrivateMatchSettings where
-  toJSON x = Json.object
-    [ Json.pair "mutators" $ mutators x
-    , Json.pair "joinable_by" $ joinableBy x
-    , Json.pair "max_players" $ maxPlayers x
-    , Json.pair "game_name" $ gameName x
-    , Json.pair "password" $ password x
-    , Json.pair "flag" $ flag x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-private-match-settings" $ Schema.object
-  [ (Json.pair "mutators" $ Schema.ref Str.schema, True)
-  , (Json.pair "joinable_by" $ Schema.ref U32.schema, True)
-  , (Json.pair "max_players" $ Schema.ref U32.schema, True)
-  , (Json.pair "game_name" $ Schema.ref Str.schema, True)
-  , (Json.pair "password" $ Schema.ref Str.schema, True)
-  , (Json.pair "flag" $ Schema.ref Schema.boolean, True)
-  ]
+instance Argo.HasCodec PrivateMatchSettings where
+  codec = Argo.fromObjectCodec Argo.Allow $ PrivateMatchSettings
+    <$> Argo.project mutators (Argo.required (Argo.fromString "mutators") Argo.codec)
+    <*> Argo.project joinableBy (Argo.required (Argo.fromString "joinable_by") Argo.codec)
+    <*> Argo.project maxPlayers (Argo.required (Argo.fromString "max_players") Argo.codec)
+    <*> Argo.project gameName (Argo.required (Argo.fromString "game_name") Argo.codec)
+    <*> Argo.project password (Argo.required (Argo.fromString "password") Argo.codec)
+    <*> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
 
 bitPut :: PrivateMatchSettings -> BitPut.BitPut
 bitPut privateMatchSettingsAttribute =

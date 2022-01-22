@@ -2,11 +2,10 @@ module Rattletrap.Type.Attribute.CamSettings where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data CamSettings = CamSettings
   { fov :: F32.F32
@@ -19,48 +18,15 @@ data CamSettings = CamSettings
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON CamSettings where
-  parseJSON = Json.withObject "CamSettings" $ \object -> do
-    fov <- Json.required object "fov"
-    height <- Json.required object "height"
-    angle <- Json.required object "angle"
-    distance <- Json.required object "distance"
-    stiffness <- Json.required object "stiffness"
-    swivelSpeed <- Json.required object "swivel_speed"
-    transitionSpeed <- Json.optional object "transition_speed"
-    pure CamSettings
-      { fov
-      , height
-      , angle
-      , distance
-      , stiffness
-      , swivelSpeed
-      , transitionSpeed
-      }
-
-instance Json.ToJSON CamSettings where
-  toJSON x = Json.object
-    [ Json.pair "fov" $ fov x
-    , Json.pair "height" $ height x
-    , Json.pair "angle" $ angle x
-    , Json.pair "distance" $ distance x
-    , Json.pair "stiffness" $ stiffness x
-    , Json.pair "swivel_speed" $ swivelSpeed x
-    , Json.pair "transition_speed" $ transitionSpeed x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-cam-settings" $ Schema.object
-  [ (Json.pair "fov" $ Schema.ref F32.schema, True)
-  , (Json.pair "height" $ Schema.ref F32.schema, True)
-  , (Json.pair "angle" $ Schema.ref F32.schema, True)
-  , (Json.pair "distance" $ Schema.ref F32.schema, True)
-  , (Json.pair "stiffness" $ Schema.ref F32.schema, True)
-  , (Json.pair "swivel_speed" $ Schema.ref F32.schema, True)
-  , ( Json.pair "transition_speed" . Schema.json $ Schema.maybe F32.schema
-    , False
-    )
-  ]
+instance Argo.HasCodec CamSettings where
+  codec = Argo.fromObjectCodec Argo.Allow $ CamSettings
+    <$> Argo.project fov (Argo.required (Argo.fromString "fov") Argo.codec)
+    <*> Argo.project height (Argo.required (Argo.fromString "height") Argo.codec)
+    <*> Argo.project angle (Argo.required (Argo.fromString "angle") Argo.codec)
+    <*> Argo.project distance (Argo.required (Argo.fromString "distance") Argo.codec)
+    <*> Argo.project stiffness (Argo.required (Argo.fromString "stiffness") Argo.codec)
+    <*> Argo.project swivelSpeed (Argo.required (Argo.fromString "swivel_speed") Argo.codec)
+    <*> Argo.project transitionSpeed (Argo.optional (Argo.fromString "transition_speed") Argo.codec)
 
 bitPut :: CamSettings -> BitPut.BitPut
 bitPut camSettingsAttribute =

@@ -2,28 +2,21 @@ module Rattletrap.Type.Property.Str where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 newtype Str
   = Str Str.Str
   deriving (Eq, Show)
+
+instance Argo.HasCodec Str where
+  codec = Argo.map fromStr toStr Argo.codec
 
 fromStr :: Str.Str -> Str
 fromStr = Str
 
 toStr :: Str -> Str.Str
 toStr (Str x) = x
-
-instance Json.FromJSON Str where
-  parseJSON = fmap fromStr . Json.parseJSON
-
-instance Json.ToJSON Str where
-  toJSON = Json.toJSON . toStr
-
-schema :: Schema.Schema
-schema = Str.schema
 
 bytePut :: Str -> BytePut.BytePut
 bytePut = Str.bytePut . toStr

@@ -3,22 +3,15 @@ module Rattletrap.Type.List where
 import qualified Control.Monad as Monad
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 newtype List a
   = List [a]
   deriving (Eq, Show)
 
-instance Json.FromJSON a => Json.FromJSON (List a) where
-  parseJSON = fmap fromList . Json.parseJSON
-
-instance Json.ToJSON a => Json.ToJSON (List a) where
-  toJSON = Json.toJSON . toList
-
-schema :: Schema.Schema -> Schema.Schema
-schema = Schema.array
+instance Argo.HasCodec a => Argo.HasCodec (List a) where
+  codec = Argo.map fromList toList Argo.codec
 
 fromList :: [a] -> List a
 fromList = List

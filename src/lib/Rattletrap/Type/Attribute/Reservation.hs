@@ -3,14 +3,13 @@ module Rattletrap.Type.Attribute.Reservation where
 import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.UniqueId as UniqueId
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Reservation = Reservation
   { number :: CompressedWord.CompressedWord
@@ -22,35 +21,14 @@ data Reservation = Reservation
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Reservation where
-  parseJSON = Json.withObject "Reservation" $ \object -> do
-    number <- Json.required object "number"
-    uniqueId <- Json.required object "unique_id"
-    name <- Json.optional object "name"
-    unknown1 <- Json.required object "unknown1"
-    unknown2 <- Json.required object "unknown2"
-    unknown3 <- Json.optional object "unknown3"
-    pure Reservation { number, uniqueId, name, unknown1, unknown2, unknown3 }
-
-instance Json.ToJSON Reservation where
-  toJSON x = Json.object
-    [ Json.pair "number" $ number x
-    , Json.pair "unique_id" $ uniqueId x
-    , Json.pair "name" $ name x
-    , Json.pair "unknown1" $ unknown1 x
-    , Json.pair "unknown2" $ unknown2 x
-    , Json.pair "unknown3" $ unknown3 x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-reservation" $ Schema.object
-  [ (Json.pair "number" $ Schema.ref CompressedWord.schema, True)
-  , (Json.pair "unique_id" $ Schema.ref UniqueId.schema, True)
-  , (Json.pair "name" . Schema.json $ Schema.maybe Str.schema, False)
-  , (Json.pair "unknown1" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown2" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown3" . Schema.json $ Schema.maybe Schema.integer, False)
-  ]
+instance Argo.HasCodec Reservation where
+  codec = Argo.fromObjectCodec Argo.Allow $ Reservation
+    <$> Argo.project number (Argo.required (Argo.fromString "number") Argo.codec)
+    <*> Argo.project uniqueId (Argo.required (Argo.fromString "unique_id") Argo.codec)
+    <*> Argo.project name (Argo.optional (Argo.fromString "name") Argo.codec)
+    <*> Argo.project unknown1 (Argo.required (Argo.fromString "unknow1n") Argo.codec)
+    <*> Argo.project unknown2 (Argo.required (Argo.fromString "unknown2") Argo.codec)
+    <*> Argo.project unknown3 (Argo.required (Argo.fromString "unknown3") Argo.codec)
 
 bitPut :: Reservation -> BitPut.BitPut
 bitPut reservationAttribute =

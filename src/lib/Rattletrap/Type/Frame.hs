@@ -3,7 +3,6 @@ module Rattletrap.Type.Frame where
 import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.F32 as F32
@@ -12,7 +11,7 @@ import qualified Rattletrap.Type.Replication as Replication
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Frame = Frame
   { time :: F32.F32
@@ -24,28 +23,11 @@ data Frame = Frame
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Frame where
-  parseJSON = Json.withObject "Frame" $ \object -> do
-    time <- Json.required object "time"
-    delta <- Json.required object "delta"
-    replications <- Json.required object "replications"
-    pure Frame { time, delta, replications }
-
-instance Json.ToJSON Frame where
-  toJSON x = Json.object
-    [ Json.pair "time" $ time x
-    , Json.pair "delta" $ delta x
-    , Json.pair "replications" $ replications x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "frame" $ Schema.object
-  [ (Json.pair "time" $ Schema.ref F32.schema, True)
-  , (Json.pair "delta" $ Schema.ref F32.schema, True)
-  , ( Json.pair "replications" . Schema.json $ List.schema Replication.schema
-    , True
-    )
-  ]
+instance Argo.HasCodec Frame where
+  codec = Argo.fromObjectCodec Argo.Allow $ Frame
+    <$> Argo.project time (Argo.required (Argo.fromString "time") Argo.codec)
+    <*> Argo.project delta (Argo.required (Argo.fromString "delta") Argo.codec)
+    <*> Argo.project replications (Argo.required (Argo.fromString "replications") Argo.codec)
 
 putFrames :: List.List Frame -> BitPut.BitPut
 putFrames = foldMap bitPut . List.toList

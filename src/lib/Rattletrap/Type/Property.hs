@@ -2,11 +2,10 @@ module Rattletrap.Type.Property where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U64 as U64
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Property = Property
   { kind :: Str.Str
@@ -16,26 +15,11 @@ data Property = Property
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Property where
-  parseJSON = Json.withObject "Property" $ \object -> do
-    kind <- Json.required object "kind"
-    size <- Json.required object "size"
-    value <- Json.required object "value"
-    pure Property { kind, size, value }
-
-instance Json.ToJSON Property where
-  toJSON x = Json.object
-    [ Json.pair "kind" $ kind x
-    , Json.pair "size" $ size x
-    , Json.pair "value" $ value x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "property" $ Schema.object
-  [ (Json.pair "kind" $ Schema.ref Str.schema, True)
-  , (Json.pair "size" $ Schema.ref U64.schema, True)
-  , (Json.pair "value" . Schema.ref $ PropertyValue.schema schema, True)
-  ]
+instance Argo.HasCodec Property where
+  codec = Argo.fromObjectCodec Argo.Allow $ Property
+    <$> Argo.project kind (Argo.required (Argo.fromString "kind") Argo.codec)
+    <*> Argo.project size (Argo.required (Argo.fromString "size") Argo.codec)
+    <*> Argo.project value (Argo.required (Argo.fromString "value") Argo.codec)
 
 bytePut :: Property -> BytePut.BytePut
 bytePut x =

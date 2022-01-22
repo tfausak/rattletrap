@@ -2,11 +2,10 @@ module Rattletrap.Type.Attribute.PickupNew where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data PickupNew = PickupNew
   { instigatorId :: Maybe U32.U32
@@ -14,23 +13,10 @@ data PickupNew = PickupNew
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON PickupNew where
-  parseJSON = Json.withObject "PickupNew" $ \object -> do
-    instigatorId <- Json.optional object "instigator_id"
-    pickedUp <- Json.required object "picked_up"
-    pure PickupNew { instigatorId, pickedUp }
-
-instance Json.ToJSON PickupNew where
-  toJSON x = Json.object
-    [ Json.pair "instigator_id" $ instigatorId x
-    , Json.pair "picked_up" $ pickedUp x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-pickup-new" $ Schema.object
-  [ (Json.pair "instigator_id" . Schema.json $ Schema.maybe U32.schema, False)
-  , (Json.pair "picked_up" $ Schema.ref U8.schema, True)
-  ]
+instance Argo.HasCodec PickupNew where
+  codec = Argo.fromObjectCodec Argo.Allow $ PickupNew
+    <$> Argo.project instigatorId (Argo.optional (Argo.fromString "instigator_id") Argo.codec)
+    <*> Argo.project pickedUp (Argo.required (Argo.fromString "picked_up") Argo.codec)
 
 bitPut :: PickupNew -> BitPut.BitPut
 bitPut x =

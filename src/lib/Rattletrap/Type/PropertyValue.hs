@@ -1,10 +1,8 @@
 module Rattletrap.Type.PropertyValue where
 
-import qualified Data.Foldable as Foldable
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Exception.UnknownProperty as UnknownProperty
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Property.Array as Property.Array
 import qualified Rattletrap.Type.Property.Bool as Property.Bool
 import qualified Rattletrap.Type.Property.Byte as Property.Byte
@@ -14,7 +12,7 @@ import qualified Rattletrap.Type.Property.Name as Property.Name
 import qualified Rattletrap.Type.Property.QWord as Property.QWord
 import qualified Rattletrap.Type.Property.Str as Property.Str
 import qualified Rattletrap.Type.Str as Str
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data PropertyValue a
   = Array (Property.Array.Array a)
@@ -31,41 +29,16 @@ data PropertyValue a
   | Str Property.Str.Str
   deriving (Eq, Show)
 
-instance Json.FromJSON a => Json.FromJSON (PropertyValue a) where
-  parseJSON = Json.withObject "PropertyValue" $ \object -> Foldable.asum
-    [ fmap Array $ Json.required object "array"
-    , fmap Bool $ Json.required object "bool"
-    , fmap Byte $ Json.required object "byte"
-    , fmap Float $ Json.required object "float"
-    , fmap Int $ Json.required object "int"
-    , fmap Name $ Json.required object "name"
-    , fmap QWord $ Json.required object "q_word"
-    , fmap Str $ Json.required object "str"
-    ]
-
-instance Json.ToJSON a => Json.ToJSON (PropertyValue a) where
-  toJSON x = case x of
-    Array y -> Json.object [Json.pair "array" y]
-    Bool y -> Json.object [Json.pair "bool" y]
-    Byte y -> Json.object [Json.pair "byte" y]
-    Float y -> Json.object [Json.pair "float" y]
-    Int y -> Json.object [Json.pair "int" y]
-    Name y -> Json.object [Json.pair "name" y]
-    QWord y -> Json.object [Json.pair "q_word" y]
-    Str y -> Json.object [Json.pair "str" y]
-
-schema :: Schema.Schema -> Schema.Schema
-schema s = Schema.named "property-value" . Schema.oneOf $ fmap
-  (\(k, v) -> Schema.object [(Json.pair k v, True)])
-  [ ("array", Schema.ref $ Property.Array.schema s)
-  , ("bool", Schema.ref Property.Bool.schema)
-  , ("byte", Schema.ref Property.Byte.schema)
-  , ("float", Schema.ref Property.Float.schema)
-  , ("int", Schema.ref Property.Int.schema)
-  , ("name", Schema.ref Property.Name.schema)
-  , ("q_word", Schema.ref Property.QWord.schema)
-  , ("str", Schema.ref Property.Str.schema)
-  ]
+instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
+  codec =
+    Argo.mapMaybe (Just . Array) (\ x -> case x of { Array y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "array") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Bool) (\ x -> case x of { Bool y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "bool") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Byte) (\ x -> case x of { Byte y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "byte") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Float) (\ x -> case x of { Float y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "float") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Int) (\ x -> case x of { Int y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "int") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Name) (\ x -> case x of { Name y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "name") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . QWord) (\ x -> case x of { QWord y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "q_word") Argo.codec))
+    Argo.<|> Argo.mapMaybe (Just . Str) (\ x -> case x of { Str y -> Just y; _ -> Nothing }) (Argo.fromObjectCodec Argo.Allow (Argo.required (Argo.fromString "str") Argo.codec))
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
 bytePut putProperty value = case value of

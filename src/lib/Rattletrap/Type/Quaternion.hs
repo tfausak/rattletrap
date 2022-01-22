@@ -6,9 +6,8 @@ import qualified Data.Ord as Ord
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Exception.InvalidComponent as InvalidComponent
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Quaternion = Quaternion
   { x :: Double
@@ -18,29 +17,12 @@ data Quaternion = Quaternion
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Quaternion where
-  parseJSON = Json.withObject "Quaternion" $ \object -> do
-    x <- Json.required object "x"
-    y <- Json.required object "y"
-    z <- Json.required object "z"
-    w <- Json.required object "w"
-    pure Quaternion { x, y, z, w }
-
-instance Json.ToJSON Quaternion where
-  toJSON a = Json.object
-    [ Json.pair "x" $ x a
-    , Json.pair "y" $ y a
-    , Json.pair "z" $ z a
-    , Json.pair "w" $ w a
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "quaternion" $ Schema.object
-  [ (Json.pair "x" $ Schema.ref Schema.number, True)
-  , (Json.pair "y" $ Schema.ref Schema.number, True)
-  , (Json.pair "z" $ Schema.ref Schema.number, True)
-  , (Json.pair "w" $ Schema.ref Schema.number, True)
-  ]
+instance Argo.HasCodec Quaternion where
+  codec = Argo.fromObjectCodec Argo.Allow $ Quaternion
+    <$> Argo.project x (Argo.required (Argo.fromString "x") Argo.codec)
+    <*> Argo.project y (Argo.required (Argo.fromString "y") Argo.codec)
+    <*> Argo.project z (Argo.required (Argo.fromString "z") Argo.codec)
+    <*> Argo.project w (Argo.required (Argo.fromString "w") Argo.codec)
 
 data Component
   = X

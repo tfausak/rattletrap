@@ -2,10 +2,9 @@ module Rattletrap.Type.Message where
 
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Message = Message
   { frame :: U32.U32
@@ -17,26 +16,11 @@ data Message = Message
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Message where
-  parseJSON = Json.withObject "Message" $ \object -> do
-    frame <- Json.required object "frame"
-    name <- Json.required object "name"
-    value <- Json.required object "value"
-    pure Message { frame, name, value }
-
-instance Json.ToJSON Message where
-  toJSON x = Json.object
-    [ Json.pair "frame" $ frame x
-    , Json.pair "name" $ name x
-    , Json.pair "value" $ value x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "message" $ Schema.object
-  [ (Json.pair "frame" $ Schema.ref U32.schema, True)
-  , (Json.pair "name" $ Schema.ref Str.schema, True)
-  , (Json.pair "value" $ Schema.ref Str.schema, True)
-  ]
+instance Argo.HasCodec Message where
+  codec = Argo.fromObjectCodec Argo.Allow $ Message
+    <$> Argo.project frame (Argo.required (Argo.fromString "frame") Argo.codec)
+    <*> Argo.project name (Argo.required (Argo.fromString "name") Argo.codec)
+    <*> Argo.project value (Argo.required (Argo.fromString "value") Argo.codec)
 
 bytePut :: Message -> BytePut.BytePut
 bytePut x =

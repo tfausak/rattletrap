@@ -3,27 +3,20 @@ module Rattletrap.Type.RemoteId.Splitscreen where
 import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 newtype Splitscreen
   = Splitscreen Word.Word32
   deriving (Eq, Show)
 
-instance Json.FromJSON Splitscreen where
-  parseJSON = fmap fromWord32 . Json.parseJSON
-
-instance Json.ToJSON Splitscreen where
-  toJSON = Json.toJSON . toWord32
+instance Argo.HasCodec Splitscreen where
+  codec = Argo.map fromWord32 toWord32 Argo.codec
 
 fromWord32 :: Word.Word32 -> Splitscreen
 fromWord32 = Splitscreen
 
 toWord32 :: Splitscreen -> Word.Word32
 toWord32 (Splitscreen x) = x
-
-schema :: Schema.Schema
-schema = Schema.integer
 
 bitPut :: Splitscreen -> BitPut.BitPut
 bitPut = BitPut.bits 24 . toWord32

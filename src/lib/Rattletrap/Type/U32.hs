@@ -5,25 +5,14 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 newtype U32
   = U32 Word.Word32
   deriving (Eq, Ord, Show)
 
-instance Json.FromJSON U32 where
-  parseJSON = fmap fromWord32 . Json.parseJSON
-
-instance Json.ToJSON U32 where
-  toJSON = Json.toJSON . toWord32
-
-schema :: Schema.Schema
-schema = Schema.named "u32" $ Json.object
-  [ Json.pair "type" "integer"
-  , Json.pair "minimum" (minBound :: Word.Word32)
-  , Json.pair "maximum" (maxBound :: Word.Word32)
-  ]
+instance Argo.HasCodec U32 where
+  codec = Argo.map fromWord32 toWord32 Argo.codec
 
 fromWord32 :: Word.Word32 -> U32
 fromWord32 = U32

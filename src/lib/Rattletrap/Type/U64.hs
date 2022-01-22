@@ -1,32 +1,19 @@
 module Rattletrap.Type.U64 where
 
-import qualified Data.Text as Text
 import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Utility.Json as Json
 import qualified Text.Read as Read
+import qualified Rattletrap.Vendor.Argo as Argo
 
 newtype U64
   = U64 Word.Word64
   deriving (Eq, Show)
 
-instance Json.FromJSON U64 where
-  parseJSON =
-    Json.withText "U64"
-      $ either fail (pure . fromWord64)
-      . Read.readEither
-      . Text.unpack
-
-instance Json.ToJSON U64 where
-  toJSON = Json.toJSON . show . toWord64
-
-schema :: Schema.Schema
-schema = Schema.named "u64"
-  $ Json.object [Json.pair "type" "string", Json.pair "pattern" "^[0-9]+$"]
+instance Argo.HasCodec U64 where
+  codec = Argo.mapMaybe (fmap fromWord64 . Read.readMaybe) (Just . show . toWord64) Argo.codec
 
 fromWord64 :: Word.Word64 -> U64
 fromWord64 = U64

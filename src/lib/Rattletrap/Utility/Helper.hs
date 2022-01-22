@@ -8,12 +8,13 @@ import qualified Rattletrap.Exception.InvalidJson as InvalidJson
 import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Replay as Replay
 import qualified Rattletrap.Type.Section as Section
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 import qualified Control.Exception as Exception
 import qualified Data.Bifunctor as Bifunctor
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
+import qualified Data.ByteString.Builder as Builder
 
 -- | Parses a raw replay.
 decodeReplayFile
@@ -25,7 +26,7 @@ decodeReplayFile fast = ByteGet.run . Replay.byteGet fast
 
 -- | Encodes a replay as JSON.
 encodeReplayJson :: Replay.Replay -> LazyByteString.ByteString
-encodeReplayJson = Json.encodePretty
+encodeReplayJson = Builder.toLazyByteString . Argo.encodeWith Argo.Tab
 
 -- | Parses a JSON replay.
 decodeReplayJson
@@ -33,7 +34,7 @@ decodeReplayJson
   -> Either ([String], Exception.SomeException) Replay.Replay
 decodeReplayJson =
   Bifunctor.first ((,) [] . Exception.toException . InvalidJson.InvalidJson)
-    . Json.decode
+    . Argo.decode
 
 -- | Encodes a raw replay.
 encodeReplayFile :: Bool -> Replay.Replay -> LazyByteString.ByteString

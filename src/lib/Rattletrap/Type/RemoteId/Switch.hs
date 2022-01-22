@@ -2,9 +2,8 @@ module Rattletrap.Type.RemoteId.Switch where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U64 as U64
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Switch = Switch
   { a :: U64.U64
@@ -14,18 +13,8 @@ data Switch = Switch
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Switch where
-  parseJSON json = do
-    (a, b, c, d) <- Json.parseJSON json
-    pure Switch { a, b, c, d }
-
-instance Json.ToJSON Switch where
-  toJSON x = Json.toJSON (a x, b x, c x, d x)
-
-schema :: Schema.Schema
-schema =
-  Schema.named "remote-id-switch" . Schema.tuple . replicate 4 $ Schema.ref
-    U64.schema
+instance Argo.HasCodec Switch where
+  codec = Argo.map (\ (a, b, c, d) -> Switch { a, b, c, d }) (\ Switch { a, b, c, d } -> (a, b, c, d)) Argo.codec
 
 bitPut :: Switch -> BitPut.BitPut
 bitPut x =

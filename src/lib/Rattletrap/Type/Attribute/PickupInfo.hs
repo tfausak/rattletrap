@@ -2,10 +2,9 @@ module Rattletrap.Type.Attribute.PickupInfo where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.U32 as U32
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data PickupInfo = PickupInfo
   { unknown1 :: Bool
@@ -18,46 +17,15 @@ data PickupInfo = PickupInfo
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON PickupInfo where
-  parseJSON = Json.withObject "PickupInfo" $ \object -> do
-    unknown1 <- Json.required object "unknown1"
-    unknown2 <- Json.required object "unknown2"
-    unknown3 <- Json.required object "unknown3"
-    unknown4 <- Json.required object "unknown4"
-    unknown5 <- Json.required object "unknown5"
-    unknown6 <- Json.required object "unknown6"
-    unknown7 <- Json.required object "unknown7"
-    pure PickupInfo
-      { unknown1
-      , unknown2
-      , unknown3
-      , unknown4
-      , unknown5
-      , unknown6
-      , unknown7
-      }
-
-instance Json.ToJSON PickupInfo where
-  toJSON x = Json.object
-    [ Json.pair "unknown1" $ unknown1 x
-    , Json.pair "unknown2" $ unknown2 x
-    , Json.pair "unknown3" $ unknown3 x
-    , Json.pair "unknown4" $ unknown4 x
-    , Json.pair "unknown5" $ unknown5 x
-    , Json.pair "unknown6" $ unknown6 x
-    , Json.pair "unknown7" $ unknown7 x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "pickup-info" $ Schema.object
-  [ (Json.pair "unknown1" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown2" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown3" $ Schema.ref U32.schema, True)
-  , (Json.pair "unknown4" $ Schema.ref I32.schema, True)
-  , (Json.pair "unknown5" $ Schema.ref I32.schema, True)
-  , (Json.pair "unknown6" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown7" $ Schema.ref Schema.boolean, True)
-  ]
+instance Argo.HasCodec PickupInfo where
+  codec = Argo.fromObjectCodec Argo.Allow $ PickupInfo
+    <$> Argo.project unknown1 (Argo.required (Argo.fromString "unknown1") Argo.codec)
+    <*> Argo.project unknown2 (Argo.required (Argo.fromString "unknown2") Argo.codec)
+    <*> Argo.project unknown3 (Argo.required (Argo.fromString "unknown3") Argo.codec)
+    <*> Argo.project unknown4 (Argo.required (Argo.fromString "unknown4") Argo.codec)
+    <*> Argo.project unknown5 (Argo.required (Argo.fromString "unknown5") Argo.codec)
+    <*> Argo.project unknown6 (Argo.required (Argo.fromString "unknown6") Argo.codec)
+    <*> Argo.project unknown7 (Argo.required (Argo.fromString "unknown7") Argo.codec)
 
 bitPut :: PickupInfo -> BitPut.BitPut
 bitPut x =

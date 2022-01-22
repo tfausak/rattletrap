@@ -6,10 +6,9 @@ import qualified Data.Text.Encoding as Text
 import qualified Data.Word as Word
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Bytes as Bytes
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data PlayStation = PlayStation
   { name :: Text.Text
@@ -17,17 +16,10 @@ data PlayStation = PlayStation
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON PlayStation where
-  parseJSON json = do
-    (name, code) <- Json.parseJSON json
-    pure PlayStation { name, code }
-
-instance Json.ToJSON PlayStation where
-  toJSON x = Json.toJSON (name x, code x)
-
-schema :: Schema.Schema
-schema = Schema.named "remote-id-play-station" $ Schema.tuple
-  [Schema.ref Schema.string, Schema.json $ Schema.array Schema.number]
+instance Argo.HasCodec PlayStation where
+  codec = Argo.fromArrayCodec Argo.Allow $ PlayStation
+    <$> Argo.project name (Argo.element Argo.codec)
+    <*> Argo.project code (Argo.element Argo.codec)
 
 bitPut :: PlayStation -> BitPut.BitPut
 bitPut x =

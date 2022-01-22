@@ -2,12 +2,11 @@ module Rattletrap.Type.Initialization where
 
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Vector as Vector
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data Initialization = Initialization
   { location :: Maybe Vector.Vector
@@ -19,23 +18,10 @@ data Initialization = Initialization
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON Initialization where
-  parseJSON = Json.withObject "Initialization" $ \object -> do
-    location <- Json.optional object "location"
-    rotation <- Json.optional object "rotation"
-    pure Initialization { location, rotation }
-
-instance Json.ToJSON Initialization where
-  toJSON x = Json.object
-    [Json.pair "location" $ location x, Json.pair "rotation" $ rotation x]
-
-schema :: Schema.Schema
-schema = Schema.named "initialization" $ Schema.object
-  [ (Json.pair "location" . Schema.json $ Schema.maybe Vector.schema, False)
-  , ( Json.pair "rotation" . Schema.json $ Schema.maybe Int8Vector.schema
-    , False
-    )
-  ]
+instance Argo.HasCodec Initialization where
+  codec = Argo.fromObjectCodec Argo.Allow $ Initialization
+    <$> Argo.project location (Argo.optional (Argo.fromString "location") Argo.codec)
+    <*> Argo.project rotation (Argo.optional (Argo.fromString "rotation") Argo.codec)
 
 bitPut :: Initialization -> BitPut.BitPut
 bitPut initialization =

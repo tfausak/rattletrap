@@ -3,12 +3,11 @@ module Rattletrap.Type.Attribute.LoadoutsOnline where
 import qualified Data.Map as Map
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.LoadoutOnline as LoadoutOnline
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 data LoadoutsOnline = LoadoutsOnline
   { blue :: LoadoutOnline.LoadoutOnline
@@ -18,29 +17,12 @@ data LoadoutsOnline = LoadoutsOnline
   }
   deriving (Eq, Show)
 
-instance Json.FromJSON LoadoutsOnline where
-  parseJSON = Json.withObject "LoadoutsOnline" $ \object -> do
-    blue <- Json.required object "blue"
-    orange <- Json.required object "orange"
-    unknown1 <- Json.required object "unknown1"
-    unknown2 <- Json.required object "unknown2"
-    pure LoadoutsOnline { blue, orange, unknown1, unknown2 }
-
-instance Json.ToJSON LoadoutsOnline where
-  toJSON x = Json.object
-    [ Json.pair "blue" $ blue x
-    , Json.pair "orange" $ orange x
-    , Json.pair "unknown1" $ unknown1 x
-    , Json.pair "unknown2" $ unknown2 x
-    ]
-
-schema :: Schema.Schema
-schema = Schema.named "attribute-loadouts-online" $ Schema.object
-  [ (Json.pair "blue" $ Schema.ref LoadoutOnline.schema, True)
-  , (Json.pair "orange" $ Schema.ref LoadoutOnline.schema, True)
-  , (Json.pair "unknown1" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown2" $ Schema.ref Schema.boolean, True)
-  ]
+instance Argo.HasCodec LoadoutsOnline where
+  codec = Argo.fromObjectCodec Argo.Allow $ LoadoutsOnline
+    <$> Argo.project blue (Argo.required (Argo.fromString "blue") Argo.codec)
+    <*> Argo.project orange (Argo.required (Argo.fromString "orange") Argo.codec)
+    <*> Argo.project unknown1 (Argo.required (Argo.fromString "unknown1") Argo.codec)
+    <*> Argo.project unknown2 (Argo.required (Argo.fromString "unknown2") Argo.codec)
 
 bitPut :: LoadoutsOnline -> BitPut.BitPut
 bitPut loadoutsOnlineAttribute =

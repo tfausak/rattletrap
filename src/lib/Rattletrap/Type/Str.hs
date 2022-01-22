@@ -10,23 +10,16 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
-import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Utility.Bytes as Bytes
-import qualified Rattletrap.Utility.Json as Json
+import qualified Rattletrap.Vendor.Argo as Argo
 
 newtype Str
   = Str Text.Text
   deriving (Eq, Ord, Show)
 
-instance Json.FromJSON Str where
-  parseJSON = fmap fromText . Json.parseJSON
-
-instance Json.ToJSON Str where
-  toJSON = Json.toJSON . toText
-
-schema :: Schema.Schema
-schema = Schema.named "str" $ Json.object [Json.pair "type" "string"]
+instance Argo.HasCodec Str where
+  codec = Argo.map fromText toText Argo.codec
 
 fromText :: Text.Text -> Str
 fromText = Str
