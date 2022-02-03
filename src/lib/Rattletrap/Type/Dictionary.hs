@@ -2,6 +2,7 @@ module Rattletrap.Type.Dictionary where
 
 import qualified Data.Map as Map
 import qualified Data.Text as Text
+import qualified Data.Typeable as Typeable
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.List as List
@@ -14,25 +15,26 @@ data Dictionary a = Dictionary
   }
   deriving (Eq, Show)
 
-instance Argo.HasCodec a => Argo.HasCodec (Dictionary a) where
+instance (Argo.HasCodec a, Typeable.Typeable a) => Argo.HasCodec (Dictionary a) where
   codec =
-    Argo.mapMaybe
-        (\(keys, lastKey, value) ->
-          Dictionary
-            <$> fmap
-                  List.fromList
-                  (mapM
-                    (\k -> fmap ((,) (Str.fromText k)) $ Map.lookup k value)
-                    keys
-                  )
-            <*> pure lastKey
-        )
-        (\x -> Just
-          ( fmap (Str.toText . fst) . List.toList $ elements x
-          , lastKey x
-          , Map.mapKeys Str.toText . Map.fromList . List.toList $ elements x
+    Argo.identified
+      . Argo.mapMaybe
+          (\(keys, lastKey, value) ->
+            Dictionary
+              <$> fmap
+                    List.fromList
+                    (mapM
+                      (\k -> fmap ((,) (Str.fromText k)) $ Map.lookup k value)
+                      keys
+                    )
+              <*> pure lastKey
           )
-        )
+          (\x -> Just
+            ( fmap (Str.toText . fst) . List.toList $ elements x
+            , lastKey x
+            , Map.mapKeys Str.toText . Map.fromList . List.toList $ elements x
+            )
+          )
       . Argo.fromObjectCodec Argo.Allow
       $ (,,)
       <$> Argo.project

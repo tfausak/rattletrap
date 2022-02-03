@@ -17,7 +17,8 @@ data Property = Property
 
 instance Argo.HasCodec Property where
   codec =
-    Argo.fromObjectCodec Argo.Allow
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Property
       <$> Argo.project kind (Argo.required (Argo.fromString "kind") Argo.codec)
       <*> Argo.project size (Argo.required (Argo.fromString "size") Argo.codec)

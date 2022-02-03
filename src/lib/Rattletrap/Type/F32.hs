@@ -11,7 +11,7 @@ newtype F32
   deriving (Eq, Show)
 
 instance Argo.HasCodec F32 where
-  codec = Argo.map fromFloat toFloat Argo.codec
+  codec = Argo.identified $ Argo.map fromFloat toFloat Argo.codec
 
 fromFloat :: Float -> F32
 fromFloat = F32

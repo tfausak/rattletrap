@@ -53,21 +53,22 @@ data Header = Header
 
 instance Argo.HasCodec Header where
   codec =
-    Argo.map
-        (\(a, b, c, d, e) -> Header
-          { version = Version.Version a b c
-          , label = d
-          , properties = e
-          }
-        )
-        (\x ->
-          ( Version.major $ version x
-          , Version.minor $ version x
-          , Version.patch $ version x
-          , label x
-          , properties x
+    Argo.identified
+      . Argo.map
+          (\(a, b, c, d, e) -> Header
+            { version = Version.Version a b c
+            , label = d
+            , properties = e
+            }
           )
-        )
+          (\x ->
+            ( Version.major $ version x
+            , Version.minor $ version x
+            , Version.patch $ version x
+            , label x
+            , properties x
+            )
+          )
       . Argo.fromObjectCodec Argo.Allow
       $ (,,,,)
       <$> Argo.project

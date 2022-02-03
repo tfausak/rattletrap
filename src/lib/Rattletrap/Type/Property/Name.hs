@@ -10,7 +10,7 @@ newtype Name
   deriving (Eq, Show)
 
 instance Argo.HasCodec Name where
-  codec = Argo.map fromStr toStr Argo.codec
+  codec = Argo.identified $ Argo.map fromStr toStr Argo.codec
 
 fromStr :: Str.Str -> Name
 fromStr = Name

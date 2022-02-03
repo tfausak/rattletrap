@@ -1,5 +1,6 @@
 module Rattletrap.Type.Property.Array where
 
+import qualified Data.Typeable as Typeable
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.Dictionary as Dictionary
@@ -10,8 +11,8 @@ newtype Array a
   = Array (List.List (Dictionary.Dictionary a))
   deriving (Eq, Show)
 
-instance Argo.HasCodec a => Argo.HasCodec (Array a) where
-  codec = Argo.map fromList toList Argo.codec
+instance (Argo.HasCodec a, Typeable.Typeable a) => Argo.HasCodec (Array a) where
+  codec = Argo.identified $ Argo.map fromList toList Argo.codec
 
 fromList :: List.List (Dictionary.Dictionary a) -> Array a
 fromList = Array

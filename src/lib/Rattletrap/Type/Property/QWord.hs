@@ -10,7 +10,7 @@ newtype QWord
   deriving (Eq, Show)
 
 instance Argo.HasCodec QWord where
-  codec = Argo.map fromU64 toU64 Argo.codec
+  codec = Argo.identified $ Argo.map fromU64 toU64 Argo.codec
 
 fromU64 :: U64.U64 -> QWord
 fromU64 = QWord

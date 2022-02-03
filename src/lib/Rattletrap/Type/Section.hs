@@ -2,6 +2,7 @@ module Rattletrap.Type.Section where
 
 import qualified Control.Monad as Monad
 import qualified Data.ByteString as ByteString
+import qualified Data.Typeable as Typeable
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Exception.CrcMismatch as CrcMismatch
@@ -23,9 +24,10 @@ data Section a = Section
   }
   deriving (Eq, Show)
 
-instance Argo.HasCodec a => Argo.HasCodec (Section a) where
+instance (Argo.HasCodec a, Typeable.Typeable a) => Argo.HasCodec (Section a) where
   codec =
-    Argo.fromObjectCodec Argo.Allow
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Section
       <$> Argo.project size (Argo.required (Argo.fromString "size") Argo.codec)
       <*> Argo.project crc (Argo.required (Argo.fromString "crc") Argo.codec)

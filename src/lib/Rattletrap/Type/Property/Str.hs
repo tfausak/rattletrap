@@ -9,6 +9,7 @@ newtype Str
   = Str Str.Str
   deriving (Eq, Show)
 
+-- TODO: If this schema was identified, it would collide with the other `Str`.
 instance Argo.HasCodec Str where
   codec = Argo.map fromStr toStr Argo.codec
 

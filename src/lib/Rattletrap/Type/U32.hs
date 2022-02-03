@@ -12,7 +12,7 @@ newtype U32
   deriving (Eq, Ord, Show)
 
 instance Argo.HasCodec U32 where
-  codec = Argo.map fromWord32 toWord32 Argo.codec
+  codec = Argo.identified $ Argo.map fromWord32 toWord32 Argo.codec
 
 fromWord32 :: Word.Word32 -> U32
 fromWord32 = U32

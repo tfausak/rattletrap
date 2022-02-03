@@ -1,5 +1,6 @@
 module Rattletrap.Type.Replay where
 
+import qualified Data.Typeable as Typeable
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.Content as Content
@@ -30,9 +31,10 @@ data ReplayWith header content = Replay
   }
   deriving (Eq, Show)
 
-instance (Argo.HasCodec h, Argo.HasCodec c) => Argo.HasCodec (ReplayWith h c) where
+instance (Argo.HasCodec h, Argo.HasCodec c, Typeable.Typeable h, Typeable.Typeable c) => Argo.HasCodec (ReplayWith h c) where
   codec =
-    Argo.fromObjectCodec Argo.Allow
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Replay
       <$> Argo.project
             header

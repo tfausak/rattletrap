@@ -12,7 +12,7 @@ newtype U8
   deriving (Eq, Show)
 
 instance Argo.HasCodec U8 where
-  codec = Argo.map fromWord8 toWord8 Argo.codec
+  codec = Argo.identified $ Argo.map fromWord8 toWord8 Argo.codec
 
 fromWord8 :: Word.Word8 -> U8
 fromWord8 = U8

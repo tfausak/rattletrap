@@ -14,7 +14,8 @@ data Byte = Byte
 
 instance Argo.HasCodec Byte where
   codec =
-    Argo.fromArrayCodec Argo.Forbid
+    Argo.identified
+      . Argo.fromArrayCodec Argo.Forbid
       $ Byte
       <$> Argo.project key (Argo.element Argo.codec)
       <*> Argo.project value (Argo.element Argo.codec)

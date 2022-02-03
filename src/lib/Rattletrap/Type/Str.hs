@@ -19,7 +19,7 @@ newtype Str
   deriving (Eq, Ord, Show)
 
 instance Argo.HasCodec Str where
-  codec = Argo.map fromText toText Argo.codec
+  codec = Argo.identified $ Argo.map fromText toText Argo.codec
 
 fromText :: Text.Text -> Str
 fromText = Str

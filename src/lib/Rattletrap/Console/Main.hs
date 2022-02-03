@@ -5,10 +5,13 @@ module Rattletrap.Console.Main where
 
 import qualified Control.Exception as Exception
 import qualified Control.Monad as Monad
+import qualified Control.Monad.Trans.Accum as Accum
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Builder as Builder
 import qualified Data.ByteString.Lazy as LazyByteString
 import qualified Data.List as List
+import qualified Data.Map as Map
+import qualified Data.Text as Text
 import qualified Network.HTTP.Client as Client
 import qualified Network.HTTP.Client.TLS as Client
 import qualified Rattletrap.Console.Config as Config
@@ -51,8 +54,35 @@ versionMain = do
   putStrLn Version.string
 
 schemaMain :: Config.Config -> IO ()
-schemaMain config =
-  putOutput config . encodeJson config $ Argo.schema (Argo.codec @Argo.Value) -- TODO: https://github.com/tfausak/argo/issues/46
+schemaMain config = do
+  let
+    ((m, s), w) =
+      Accum.runAccum (Argo.schema $ Argo.codec @Replay.Replay) Map.empty
+  Argo.Identifier i <- maybe (fail "missing identifier") pure m
+  putOutput config . encodeJson config $ Argo.Object
+    [ Argo.Member (Argo.Name $ Text.pack "$schema") . Argo.String $ Text.pack
+      "http://json-schema.org/draft-07/schema"
+    , Argo.Member (Argo.Name $ Text.pack "$id")
+    . Argo.String
+    . Text.pack
+    $ mconcat
+        [ "https://github.com/tfausak/rattletrap/releases/download/"
+        , Version.string
+        , "/rattletrap-"
+        , Version.string
+        , "-schema.json"
+        ]
+    , Argo.Member (Argo.Name $ Text.pack "$ref")
+    . Argo.String
+    $ Text.pack "#/definitions/"
+    <> i
+    , Argo.Member (Argo.Name $ Text.pack "definitions")
+    . Argo.Object
+    . fmap
+        (\(Argo.Identifier k, v) -> Argo.Member (Argo.Name k) (Argo.toValue v))
+    . Map.toList
+    $ Map.insert (Argo.Identifier i) s w
+    ]
 
 defaultMain :: Config.Config -> IO ()
 defaultMain config = do

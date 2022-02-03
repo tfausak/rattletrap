@@ -11,7 +11,7 @@ newtype Int
   deriving (Eq, Show)
 
 instance Argo.HasCodec Int where
-  codec = Argo.map fromI32 toI32 Argo.codec
+  codec = Argo.identified $ Argo.map fromI32 toI32 Argo.codec
 
 fromI32 :: I32.I32 -> Int
 fromI32 = Int

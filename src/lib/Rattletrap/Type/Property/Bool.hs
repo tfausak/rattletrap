@@ -11,7 +11,7 @@ newtype Bool
   deriving (Eq, Show)
 
 instance Argo.HasCodec Bool where
-  codec = Argo.map fromU8 toU8 Argo.codec
+  codec = Argo.identified $ Argo.map fromU8 toU8 Argo.codec
 
 fromU8 :: U8.U8 -> Bool
 fromU8 = Bool
