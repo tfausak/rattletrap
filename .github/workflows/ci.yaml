@@ -63,9 +63,9 @@ jobs:
 
       - run: cabal test --test-options '+RTS -s -RTS'
 
-      - run: npm install ajv-cli
+      # - run: npm install ajv-cli
 
-      - run: cabal exec runghc src/util/check-schema.hs
+      # - run: cabal exec runghc src/util/check-schema.hs
 
       - run: cabal check
 
