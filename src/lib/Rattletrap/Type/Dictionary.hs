@@ -2,7 +2,6 @@ module Rattletrap.Type.Dictionary where
 
 import qualified Data.Map as Map
 import qualified Data.Text as Text
-import qualified Data.Typeable as Typeable
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.List as List
@@ -15,7 +14,7 @@ data Dictionary a = Dictionary
   }
   deriving (Eq, Show)
 
-instance (Argo.HasCodec a, Typeable.Typeable a) => Argo.HasCodec (Dictionary a) where
+instance Argo.HasCodec a => Argo.HasCodec (Dictionary a) where
   codec =
     Argo.identified
       . Argo.mapMaybe

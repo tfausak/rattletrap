@@ -1,6 +1,5 @@
 module Rattletrap.Type.PropertyValue where
 
-import qualified Data.Typeable as Typeable
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Exception.UnknownProperty as UnknownProperty
@@ -30,7 +29,7 @@ data PropertyValue a
   | Str Property.Str.Str
   deriving (Eq, Show)
 
-instance (Argo.HasCodec a, Typeable.Typeable a) => Argo.HasCodec (PropertyValue a) where
+instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
   codec =
     Argo.identified
       $ Argo.mapMaybe

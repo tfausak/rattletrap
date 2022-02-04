@@ -1,7 +1,6 @@
 module Rattletrap.Type.List where
 
 import qualified Control.Monad as Monad
-import qualified Data.Typeable as Typeable
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.U32 as U32
@@ -11,7 +10,7 @@ newtype List a
   = List [a]
   deriving (Eq, Show)
 
-instance (Argo.HasCodec a, Typeable.Typeable a) => Argo.HasCodec (List a) where
+instance Argo.HasCodec a => Argo.HasCodec (List a) where
   codec = Argo.identified $ Argo.map fromList toList Argo.codec
 
 fromList :: [a] -> List a
