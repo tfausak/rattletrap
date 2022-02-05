@@ -19,7 +19,7 @@ data Initialization = Initialization
   deriving (Eq, Show)
 
 instance Argo.HasCodec Initialization where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ Initialization
       <$> Argo.project

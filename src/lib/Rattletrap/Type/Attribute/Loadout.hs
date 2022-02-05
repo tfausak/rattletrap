@@ -30,7 +30,7 @@ data Loadout = Loadout
   deriving (Eq, Show)
 
 instance Argo.HasCodec Loadout where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ Loadout
       <$> Argo.project

@@ -19,7 +19,7 @@ data CamSettings = CamSettings
   deriving (Eq, Show)
 
 instance Argo.HasCodec CamSettings where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ CamSettings
       <$> Argo.project fov (Argo.required (Argo.fromString "fov") Argo.codec)

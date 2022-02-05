@@ -17,7 +17,7 @@ data PlayStation = PlayStation
   deriving (Eq, Show)
 
 instance Argo.HasCodec PlayStation where
-  codec =
+  codec = Argo.identified .
     Argo.fromArrayCodec Argo.Allow
       $ PlayStation
       <$> Argo.project name (Argo.element Argo.codec)

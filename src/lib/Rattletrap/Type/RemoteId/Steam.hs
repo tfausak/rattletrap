@@ -10,7 +10,7 @@ newtype Steam
   deriving (Eq, Show)
 
 instance Argo.HasCodec Steam where
-  codec = Argo.map fromU64 toU64 Argo.codec
+  codec = Argo.identified $ Argo.map fromU64 toU64 Argo.codec
 
 fromU64 :: U64.U64 -> Steam
 fromU64 = Steam

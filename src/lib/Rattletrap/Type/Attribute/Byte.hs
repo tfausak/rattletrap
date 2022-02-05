@@ -10,7 +10,7 @@ newtype Byte = Byte
   } deriving (Eq, Show)
 
 instance Argo.HasCodec Byte where
-  codec = Argo.map Byte value Argo.codec
+  codec = Argo.identified $ Argo.map Byte value Argo.codec
 
 bitPut :: Byte -> BitPut.BitPut
 bitPut byteAttribute = U8.bitPut (value byteAttribute)

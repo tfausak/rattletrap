@@ -10,7 +10,7 @@ newtype Epic
   deriving (Eq, Show)
 
 instance Argo.HasCodec Epic where
-  codec = Argo.map fromStr toStr Argo.codec
+  codec = Argo.identified $ Argo.map fromStr toStr Argo.codec
 
 fromStr :: Str.Str -> Epic
 fromStr = Epic

@@ -12,7 +12,7 @@ data StatEvent = StatEvent
   deriving (Eq, Show)
 
 instance Argo.HasCodec StatEvent where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ StatEvent
       <$> Argo.project

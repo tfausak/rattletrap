@@ -10,7 +10,7 @@ newtype PlayerHistoryKey = PlayerHistoryKey
   } deriving (Eq, Show)
 
 instance Argo.HasCodec PlayerHistoryKey where
-  codec = Argo.map PlayerHistoryKey unknown Argo.codec
+  codec = Argo.identified $ Argo.map PlayerHistoryKey unknown Argo.codec
 
 bitPut :: PlayerHistoryKey -> BitPut.BitPut
 bitPut = BitPut.bits 14 . unknown

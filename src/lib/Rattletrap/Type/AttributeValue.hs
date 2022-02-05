@@ -91,7 +91,7 @@ data AttributeValue
   deriving (Eq, Show)
 
 instance Argo.HasCodec AttributeValue where
-  codec =
+  codec = Argo.identified $
     Argo.mapMaybe
         (Just . AppliedDamage)
         (\x -> case x of

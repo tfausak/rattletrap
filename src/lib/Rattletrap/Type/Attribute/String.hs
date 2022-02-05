@@ -11,7 +11,7 @@ newtype String = String
   } deriving (Eq, Show)
 
 instance Argo.HasCodec String where
-  codec = Argo.map String value Argo.codec
+  codec = Argo.identified $ Argo.map String value Argo.codec
 
 bitPut :: String -> BitPut.BitPut
 bitPut stringAttribute = Str.bitPut (value stringAttribute)

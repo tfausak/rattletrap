@@ -24,7 +24,7 @@ data ProductValue
   deriving (Eq, Show)
 
 instance Argo.HasCodec ProductValue where
-  codec =
+  codec = Argo.identified $
     Argo.mapMaybe
         (Just . PaintedOld)
         (\x -> case x of

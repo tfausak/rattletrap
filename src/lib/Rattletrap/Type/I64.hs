@@ -13,7 +13,7 @@ newtype I64
   deriving (Eq, Show)
 
 instance Argo.HasCodec I64 where
-  codec = Argo.mapMaybe
+  codec = Argo.identified $ Argo.mapMaybe
     (fmap fromInt64 . Read.readMaybe)
     (Just . show . toInt64)
     Argo.codec

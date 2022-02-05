@@ -18,7 +18,7 @@ data Quaternion = Quaternion
   deriving (Eq, Show)
 
 instance Argo.HasCodec Quaternion where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ Quaternion
       <$> Argo.project x (Argo.required (Argo.fromString "x") Argo.codec)

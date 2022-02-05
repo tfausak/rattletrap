@@ -14,7 +14,7 @@ data Switch = Switch
   deriving (Eq, Show)
 
 instance Argo.HasCodec Switch where
-  codec = Argo.map
+  codec = Argo.identified $ Argo.map
     (\(a, b, c, d) -> Switch { a, b, c, d })
     (\Switch { a, b, c, d } -> (a, b, c, d))
     Argo.codec

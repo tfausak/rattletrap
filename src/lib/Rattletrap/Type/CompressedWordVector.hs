@@ -13,7 +13,7 @@ data CompressedWordVector = CompressedWordVector
   deriving (Eq, Show)
 
 instance Argo.HasCodec CompressedWordVector where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ CompressedWordVector
       <$> Argo.project x (Argo.required (Argo.fromString "x") Argo.codec)

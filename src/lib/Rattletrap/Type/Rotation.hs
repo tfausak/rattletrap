@@ -13,7 +13,7 @@ data Rotation
   deriving (Eq, Show)
 
 instance Argo.HasCodec Rotation where
-  codec =
+  codec = Argo.identified $
     Argo.mapMaybe
         (Just . CompressedWordVector)
         (\x -> case x of

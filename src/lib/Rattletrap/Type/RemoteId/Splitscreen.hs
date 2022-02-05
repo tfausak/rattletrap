@@ -10,7 +10,7 @@ newtype Splitscreen
   deriving (Eq, Show)
 
 instance Argo.HasCodec Splitscreen where
-  codec = Argo.map fromWord32 toWord32 Argo.codec
+  codec = Argo.identified $ Argo.map fromWord32 toWord32 Argo.codec
 
 fromWord32 :: Word.Word32 -> Splitscreen
 fromWord32 = Splitscreen

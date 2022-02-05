@@ -11,7 +11,7 @@ newtype Location = Location
   } deriving (Eq, Show)
 
 instance Argo.HasCodec Location where
-  codec = Argo.map Location value Argo.codec
+  codec = Argo.identified $ Argo.map Location value Argo.codec
 
 bitPut :: Location -> BitPut.BitPut
 bitPut locationAttribute = Vector.bitPut (value locationAttribute)

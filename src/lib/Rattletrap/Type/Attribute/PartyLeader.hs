@@ -15,7 +15,7 @@ data PartyLeader = PartyLeader
   deriving (Eq, Show)
 
 instance Argo.HasCodec PartyLeader where
-  codec =
+  codec = Argo.identified .
     Argo.map
         (\(x, y) -> PartyLeader x (fmap fst y) (fmap snd y))
         (\x -> (systemId x, (,) <$> remoteId x <*> localId x))

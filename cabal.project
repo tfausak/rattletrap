@@ -2,5 +2,5 @@ packages: .
 
 source-repository-package
     location: https://github.com/tfausak/argo
-    tag: 5584c030daef3114b5ad8e0219b87916720ca0f7
+    tag: 8db1c6a25e6fedceabea5460c55d776439f95da4
     type: git

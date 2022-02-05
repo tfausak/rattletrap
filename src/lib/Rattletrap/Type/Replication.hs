@@ -19,7 +19,7 @@ data Replication = Replication
   deriving (Eq, Show)
 
 instance Argo.HasCodec Replication where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ Replication
       <$> Argo.project

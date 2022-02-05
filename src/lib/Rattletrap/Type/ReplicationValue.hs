@@ -23,7 +23,7 @@ data ReplicationValue
   deriving (Eq, Show)
 
 instance Argo.HasCodec ReplicationValue where
-  codec =
+  codec = Argo.identified $
     Argo.mapMaybe
         (Just . Spawned)
         (\x -> case x of

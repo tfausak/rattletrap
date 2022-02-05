@@ -16,7 +16,7 @@ newtype LoadoutOnline = LoadoutOnline
   } deriving (Eq, Show)
 
 instance Argo.HasCodec LoadoutOnline where
-  codec = Argo.map LoadoutOnline value Argo.codec
+  codec = Argo.identified $ Argo.map LoadoutOnline value Argo.codec
 
 bitPut :: LoadoutOnline -> BitPut.BitPut
 bitPut loadoutAttribute =

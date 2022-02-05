@@ -15,7 +15,7 @@ data UniqueId = UniqueId
   deriving (Eq, Show)
 
 instance Argo.HasCodec UniqueId where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ UniqueId
       <$> Argo.project

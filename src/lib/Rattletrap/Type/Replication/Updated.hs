@@ -17,7 +17,7 @@ newtype Updated = Updated
   } deriving (Eq, Show)
 
 instance Argo.HasCodec Updated where
-  codec = Argo.map Updated attributes Argo.codec
+  codec = Argo.identified $ Argo.map Updated attributes Argo.codec
 
 bitPut :: Updated -> BitPut.BitPut
 bitPut x =

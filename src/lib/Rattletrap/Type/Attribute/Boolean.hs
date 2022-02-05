@@ -9,7 +9,7 @@ newtype Boolean = Boolean
   } deriving (Eq, Show)
 
 instance Argo.HasCodec Boolean where
-  codec = Argo.map Boolean value Argo.codec
+  codec = Argo.identified $ Argo.map Boolean value Argo.codec
 
 bitPut :: Boolean -> BitPut.BitPut
 bitPut booleanAttribute = BitPut.bool (value booleanAttribute)

@@ -14,7 +14,7 @@ data MusicStinger = MusicStinger
   deriving (Eq, Show)
 
 instance Argo.HasCodec MusicStinger where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ MusicStinger
       <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)

@@ -17,7 +17,7 @@ data GameMode = GameMode
   deriving (Eq, Show)
 
 instance Argo.HasCodec GameMode where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ GameMode
       <$> Argo.project

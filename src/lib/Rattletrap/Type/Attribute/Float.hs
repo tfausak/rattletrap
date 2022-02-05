@@ -11,7 +11,7 @@ newtype Float = Float
   } deriving (Eq, Show)
 
 instance Argo.HasCodec Float where
-  codec = Argo.map Float value Argo.codec
+  codec = Argo.identified $ Argo.map Float value Argo.codec
 
 bitPut :: Float -> BitPut.BitPut
 bitPut floatAttribute = F32.bitPut (value floatAttribute)

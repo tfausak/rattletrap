@@ -16,7 +16,7 @@ data Mark = Mark
 
 instance Argo.HasCodec Mark where
   codec =
-    Argo.fromObjectCodec Argo.Allow
+    Argo.identified . Argo.fromObjectCodec Argo.Allow
       $ Mark
       <$> Argo.project
             value

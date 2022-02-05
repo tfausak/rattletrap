@@ -12,7 +12,7 @@ data PsyNet
   deriving (Eq, Show)
 
 instance Argo.HasCodec PsyNet where
-  codec =
+  codec = Argo.identified $
     Argo.mapMaybe
         (Just . New)
         (\x -> case x of

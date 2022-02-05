@@ -12,7 +12,7 @@ newtype I8
   deriving (Eq, Show)
 
 instance Argo.HasCodec I8 where
-  codec = Argo.map fromInt8 toInt8 Argo.codec
+  codec = Argo.identified $ Argo.map fromInt8 toInt8 Argo.codec
 
 fromInt8 :: Int.Int8 -> I8
 fromInt8 = I8

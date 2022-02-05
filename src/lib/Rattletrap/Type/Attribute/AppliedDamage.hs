@@ -17,7 +17,7 @@ data AppliedDamage = AppliedDamage
   deriving (Eq, Show)
 
 instance Argo.HasCodec AppliedDamage where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ AppliedDamage
       <$> Argo.project

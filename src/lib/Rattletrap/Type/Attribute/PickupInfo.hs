@@ -18,7 +18,7 @@ data PickupInfo = PickupInfo
   deriving (Eq, Show)
 
 instance Argo.HasCodec PickupInfo where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ PickupInfo
       <$> Argo.project

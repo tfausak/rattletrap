@@ -10,7 +10,7 @@ newtype QWord = QWord
   } deriving (Eq, Show)
 
 instance Argo.HasCodec QWord where
-  codec = Argo.map QWord value Argo.codec
+  codec = Argo.identified $ Argo.map QWord value Argo.codec
 
 bitPut :: QWord -> BitPut.BitPut
 bitPut qWordAttribute = U64.bitPut (value qWordAttribute)

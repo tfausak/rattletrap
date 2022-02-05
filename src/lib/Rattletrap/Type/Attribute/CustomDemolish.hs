@@ -16,7 +16,7 @@ data CustomDemolish = CustomDemolish
   deriving (Eq, Show)
 
 instance Argo.HasCodec CustomDemolish where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ CustomDemolish
       <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)

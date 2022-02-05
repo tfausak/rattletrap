@@ -34,7 +34,7 @@ data Spawned = Spawned
   deriving (Eq, Show)
 
 instance Argo.HasCodec Spawned where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ Spawned
       <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)

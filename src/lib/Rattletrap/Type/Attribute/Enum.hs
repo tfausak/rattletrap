@@ -11,7 +11,7 @@ newtype Enum = Enum
   } deriving (Eq, Show)
 
 instance Argo.HasCodec Enum where
-  codec = Argo.map Enum value Argo.codec
+  codec = Argo.identified $ Argo.map Enum value Argo.codec
 
 bitPut :: Enum -> BitPut.BitPut
 bitPut enumAttribute = BitPut.bits 11 (value enumAttribute)

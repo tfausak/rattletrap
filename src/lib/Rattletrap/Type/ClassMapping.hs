@@ -13,7 +13,7 @@ data ClassMapping = ClassMapping
   deriving (Eq, Show)
 
 instance Argo.HasCodec ClassMapping where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ ClassMapping
       <$> Argo.project name (Argo.required (Argo.fromString "name") Argo.codec)

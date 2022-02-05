@@ -23,7 +23,7 @@ data Vector = Vector
   deriving (Eq, Show)
 
 instance Argo.HasCodec Vector where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ Vector
       <$> Argo.project size (Argo.required (Argo.fromString "size") Argo.codec)

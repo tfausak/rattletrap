@@ -12,7 +12,7 @@ data FlaggedInt = FlaggedInt
   deriving (Eq, Show)
 
 instance Argo.HasCodec FlaggedInt where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ FlaggedInt
       <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)

@@ -11,7 +11,7 @@ data Destroyed = Destroyed
   deriving (Eq, Show)
 
 instance Argo.HasCodec Destroyed where
-  codec = Argo.map (const Destroyed) (const ()) Argo.codec
+  codec = Argo.identified $ Argo.map (const Destroyed) (const ()) Argo.codec
 
 bitPut :: Destroyed -> BitPut.BitPut
 bitPut _ = mempty

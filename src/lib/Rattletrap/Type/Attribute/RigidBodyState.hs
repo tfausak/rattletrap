@@ -18,7 +18,7 @@ data RigidBodyState = RigidBodyState
   deriving (Eq, Show)
 
 instance Argo.HasCodec RigidBodyState where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ RigidBodyState
       <$> Argo.project

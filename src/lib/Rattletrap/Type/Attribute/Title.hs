@@ -18,7 +18,7 @@ data Title = Title
   deriving (Eq, Show)
 
 instance Argo.HasCodec Title where
-  codec =
+  codec = Argo.identified .
     Argo.fromObjectCodec Argo.Allow
       $ Title
       <$> Argo.project

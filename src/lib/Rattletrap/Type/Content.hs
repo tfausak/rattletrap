@@ -62,7 +62,7 @@ data ContentWith frames = Content
 -- TODO: Identify this schema and everything below it.
 instance Argo.HasCodec f => Argo.HasCodec (ContentWith f) where
   codec =
-    Argo.fromObjectCodec Argo.Allow
+    Argo.identified . Argo.fromObjectCodec Argo.Allow
       $ Content
       <$> Argo.project
             levels

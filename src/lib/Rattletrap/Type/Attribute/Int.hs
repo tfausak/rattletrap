@@ -11,7 +11,7 @@ newtype Int = Int
   } deriving (Eq, Show)
 
 instance Argo.HasCodec Int where
-  codec = Argo.map Int value Argo.codec
+  codec = Argo.identified $ Argo.map Int value Argo.codec
 
 bitPut :: Int -> BitPut.BitPut
 bitPut intAttribute = I32.bitPut (value intAttribute)
