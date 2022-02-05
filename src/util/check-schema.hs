@@ -11,7 +11,6 @@ main = do
     . unwords
     $ "npx"
     : "ajv"
-    : "--strict=log"
     : "-s"
     : FilePath.combine output schema
     : concatMap
