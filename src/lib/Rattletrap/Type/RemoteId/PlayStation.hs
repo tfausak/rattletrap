@@ -19,7 +19,7 @@ data PlayStation = PlayStation
 instance Argo.HasCodec PlayStation where
   codec =
     Argo.identified
-      . Argo.fromArrayCodec Argo.Allow
+      . Argo.fromArrayCodec Argo.Forbid
       $ PlayStation
       <$> Argo.project name (Argo.element Argo.codec)
       <*> Argo.project code (Argo.element Argo.codec)
