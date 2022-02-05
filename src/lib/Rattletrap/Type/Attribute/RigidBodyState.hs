@@ -18,8 +18,9 @@ data RigidBodyState = RigidBodyState
   deriving (Eq, Show)
 
 instance Argo.HasCodec RigidBodyState where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ RigidBodyState
       <$> Argo.project
             sleeping

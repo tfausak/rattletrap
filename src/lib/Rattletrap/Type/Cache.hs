@@ -16,8 +16,9 @@ data Cache = Cache
   deriving (Eq, Show)
 
 instance Argo.HasCodec Cache where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Cache
       <$> Argo.project
             classId

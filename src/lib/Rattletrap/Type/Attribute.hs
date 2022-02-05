@@ -26,8 +26,9 @@ data Attribute = Attribute
   deriving (Eq, Show)
 
 instance Argo.HasCodec Attribute where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Attribute
       <$> Argo.project id (Argo.required (Argo.fromString "id") Argo.codec)
       <*> Argo.project name (Argo.required (Argo.fromString "name") Argo.codec)

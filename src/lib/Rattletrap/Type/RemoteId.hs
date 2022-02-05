@@ -26,17 +26,18 @@ data RemoteId
   deriving (Eq, Show)
 
 instance Argo.HasCodec RemoteId where
-  codec = Argo.identified $
-    Argo.mapMaybe
-        (Just . PlayStation)
-        (\x -> case x of
-          PlayStation y -> Just y
-          _ -> Nothing
-        )
-        (Argo.fromObjectCodec
-          Argo.Allow
-          (Argo.required (Argo.fromString "play_station") Argo.codec)
-        )
+  codec =
+    Argo.identified
+      $ Argo.mapMaybe
+          (Just . PlayStation)
+          (\x -> case x of
+            PlayStation y -> Just y
+            _ -> Nothing
+          )
+          (Argo.fromObjectCodec
+            Argo.Allow
+            (Argo.required (Argo.fromString "play_station") Argo.codec)
+          )
       Argo.<|> Argo.mapMaybe
                  (Just . PsyNet)
                  (\x -> case x of

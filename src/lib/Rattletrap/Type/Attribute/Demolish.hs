@@ -18,8 +18,9 @@ data Demolish = Demolish
   deriving (Eq, Show)
 
 instance Argo.HasCodec Demolish where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Demolish
       <$> Argo.project
             attackerFlag

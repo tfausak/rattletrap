@@ -21,8 +21,9 @@ data Product = Product
   deriving (Eq, Show)
 
 instance Argo.HasCodec Product where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Product
       <$> Argo.project
             unknown

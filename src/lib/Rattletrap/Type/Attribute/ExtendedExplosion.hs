@@ -14,8 +14,9 @@ data ExtendedExplosion = ExtendedExplosion
   deriving (Eq, Show)
 
 instance Argo.HasCodec ExtendedExplosion where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ ExtendedExplosion
       <$> Argo.project
             explosion

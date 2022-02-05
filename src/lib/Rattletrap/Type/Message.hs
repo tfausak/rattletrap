@@ -18,7 +18,8 @@ data Message = Message
 
 instance Argo.HasCodec Message where
   codec =
-    Argo.identified . Argo.fromObjectCodec Argo.Allow
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Message
       <$> Argo.project
             frame

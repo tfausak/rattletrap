@@ -24,17 +24,18 @@ data ProductValue
   deriving (Eq, Show)
 
 instance Argo.HasCodec ProductValue where
-  codec = Argo.identified $
-    Argo.mapMaybe
-        (Just . PaintedOld)
-        (\x -> case x of
-          PaintedOld y -> Just y
-          _ -> Nothing
-        )
-        (Argo.fromObjectCodec
-          Argo.Allow
-          (Argo.required (Argo.fromString "painted_old") Argo.codec)
-        )
+  codec =
+    Argo.identified
+      $ Argo.mapMaybe
+          (Just . PaintedOld)
+          (\x -> case x of
+            PaintedOld y -> Just y
+            _ -> Nothing
+          )
+          (Argo.fromObjectCodec
+            Argo.Allow
+            (Argo.required (Argo.fromString "painted_old") Argo.codec)
+          )
       Argo.<|> Argo.mapMaybe
                  (Just . PaintedNew)
                  (\x -> case x of

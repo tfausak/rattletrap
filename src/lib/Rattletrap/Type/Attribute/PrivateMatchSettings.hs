@@ -17,8 +17,9 @@ data PrivateMatchSettings = PrivateMatchSettings
   deriving (Eq, Show)
 
 instance Argo.HasCodec PrivateMatchSettings where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ PrivateMatchSettings
       <$> Argo.project
             mutators

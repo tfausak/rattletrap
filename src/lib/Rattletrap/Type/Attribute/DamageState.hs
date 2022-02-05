@@ -19,8 +19,9 @@ data DamageState = DamageState
   deriving (Eq, Show)
 
 instance Argo.HasCodec DamageState where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ DamageState
       <$> Argo.project
             unknown1

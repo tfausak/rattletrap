@@ -24,8 +24,9 @@ data Frame = Frame
   deriving (Eq, Show)
 
 instance Argo.HasCodec Frame where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Frame
       <$> Argo.project time (Argo.required (Argo.fromString "time") Argo.codec)
       <*> Argo.project

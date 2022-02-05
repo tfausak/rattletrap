@@ -12,8 +12,9 @@ data AttributeMapping = AttributeMapping
   deriving (Eq, Show)
 
 instance Argo.HasCodec AttributeMapping where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ AttributeMapping
       <$> Argo.project
             objectId

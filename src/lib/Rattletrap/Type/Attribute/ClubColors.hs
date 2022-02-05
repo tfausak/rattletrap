@@ -14,8 +14,9 @@ data ClubColors = ClubColors
   deriving (Eq, Show)
 
 instance Argo.HasCodec ClubColors where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ ClubColors
       <$> Argo.project
             blueFlag

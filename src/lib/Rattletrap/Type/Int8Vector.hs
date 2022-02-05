@@ -14,8 +14,9 @@ data Int8Vector = Int8Vector
   deriving (Eq, Show)
 
 instance Argo.HasCodec Int8Vector where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Int8Vector
       <$> Argo.project x (Argo.optional (Argo.fromString "x") Argo.codec)
       <*> Argo.project y (Argo.optional (Argo.fromString "y") Argo.codec)

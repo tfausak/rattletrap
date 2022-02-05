@@ -15,8 +15,9 @@ data Explosion = Explosion
   deriving (Eq, Show)
 
 instance Argo.HasCodec Explosion where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Explosion
       <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
       <*> Argo.project

@@ -18,8 +18,9 @@ data LoadoutsOnline = LoadoutsOnline
   deriving (Eq, Show)
 
 instance Argo.HasCodec LoadoutsOnline where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ LoadoutsOnline
       <$> Argo.project blue (Argo.required (Argo.fromString "blue") Argo.codec)
       <*> Argo.project

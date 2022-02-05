@@ -16,8 +16,9 @@ data TeamPaint = TeamPaint
   deriving (Eq, Show)
 
 instance Argo.HasCodec TeamPaint where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ TeamPaint
       <$> Argo.project team (Argo.required (Argo.fromString "team") Argo.codec)
       <*> Argo.project

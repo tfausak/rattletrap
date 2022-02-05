@@ -23,17 +23,18 @@ data ReplicationValue
   deriving (Eq, Show)
 
 instance Argo.HasCodec ReplicationValue where
-  codec = Argo.identified $
-    Argo.mapMaybe
-        (Just . Spawned)
-        (\x -> case x of
-          Spawned y -> Just y
-          _ -> Nothing
-        )
-        (Argo.fromObjectCodec
-          Argo.Allow
-          (Argo.required (Argo.fromString "spawned") Argo.codec)
-        )
+  codec =
+    Argo.identified
+      $ Argo.mapMaybe
+          (Just . Spawned)
+          (\x -> case x of
+            Spawned y -> Just y
+            _ -> Nothing
+          )
+          (Argo.fromObjectCodec
+            Argo.Allow
+            (Argo.required (Argo.fromString "spawned") Argo.codec)
+          )
       Argo.<|> Argo.mapMaybe
                  (Just . Updated)
                  (\x -> case x of

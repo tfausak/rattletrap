@@ -22,8 +22,9 @@ data Reservation = Reservation
   deriving (Eq, Show)
 
 instance Argo.HasCodec Reservation where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ Reservation
       <$> Argo.project
             number

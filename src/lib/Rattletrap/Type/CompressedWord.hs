@@ -14,8 +14,9 @@ data CompressedWord = CompressedWord
   deriving (Eq, Ord, Show)
 
 instance Argo.HasCodec CompressedWord where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ CompressedWord
       <$> Argo.project
             limit

@@ -19,8 +19,9 @@ data WeldedInfo = WeldedInfo
   deriving (Eq, Show)
 
 instance Argo.HasCodec WeldedInfo where
-  codec = Argo.identified .
-    Argo.fromObjectCodec Argo.Allow
+  codec =
+    Argo.identified
+      . Argo.fromObjectCodec Argo.Allow
       $ WeldedInfo
       <$> Argo.project
             active
