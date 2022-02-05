@@ -52,7 +52,7 @@ import qualified Rattletrap.Vendor.Argo as Argo
 data AttributeValue
   = AppliedDamage AppliedDamage.AppliedDamage
   | Boolean Boolean.Boolean
-  | Byte Byte.Byte
+  | Byte Byte.ByteA
   | CamSettings CamSettings.CamSettings
   | ClubColors ClubColors.ClubColors
   | CustomDemolish CustomDemolish.CustomDemolish
@@ -65,8 +65,8 @@ data AttributeValue
   | FlaggedByte FlaggedByte.FlaggedByte
   | Float Float.Float
   | GameMode GameMode.GameMode
-  | Int Int.Int
-  | Int64 Int64.Int64
+  | Int Int.IntA
+  | Int64 Int64.Int64A
   | Loadout Loadout.Loadout
   | LoadoutOnline LoadoutOnline.LoadoutOnline
   | Loadouts Loadouts.Loadouts
@@ -83,7 +83,7 @@ data AttributeValue
   | Reservation Reservation.Reservation
   | RigidBodyState RigidBodyState.RigidBodyState
   | StatEvent StatEvent.StatEvent
-  | String String.String
+  | String String.StringA
   | TeamPaint TeamPaint.TeamPaint
   | Title Title.Title
   | UniqueId UniqueId.UniqueId

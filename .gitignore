@@ -1,5 +1,3 @@
-/.stack-work/
-/stack.yaml.lock
 *.aux
 *.exe
 *.hp

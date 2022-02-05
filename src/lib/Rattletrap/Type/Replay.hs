@@ -42,7 +42,7 @@ instance (Argo.HasCodec h, Argo.HasCodec c) => Argo.HasCodec (ReplayWith h c) wh
             content
             (Argo.required (Argo.fromString "content") Argo.codec)
 
-schemaUrl :: String
+schemaUrl :: String -- TODO: Add this to JSON output.
 schemaUrl = mconcat
   [ "https://github.com/tfausak/rattletrap/releases/download/"
   , Version.string

@@ -18,15 +18,15 @@ data PropertyValue a
   = Array (Property.Array.Array a)
   -- ^ Yes, a list of dictionaries. No, it doesn't make sense. These usually
   -- only have one element.
-  | Bool Property.Bool.Bool
-  | Byte Property.Byte.Byte
+  | Bool Property.Bool.BoolP
+  | Byte Property.Byte.ByteP
   -- ^ This is a strange name for essentially a key-value pair.
-  | Float Property.Float.Float
-  | Int Property.Int.Int
+  | Float Property.Float.FloatP
+  | Int Property.Int.IntP
   | Name Property.Name.Name
   -- ^ It's unclear how exactly this is different than a 'StrProperty'.
   | QWord Property.QWord.QWord
-  | Str Property.Str.Str
+  | Str Property.Str.StrP
   deriving (Eq, Show)
 
 instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where

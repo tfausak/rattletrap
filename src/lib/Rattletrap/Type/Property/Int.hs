@@ -6,21 +6,21 @@ import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Vendor.Argo as Argo
 
-newtype Int
+newtype IntP -- TODO
   = Int I32.I32
   deriving (Eq, Show)
 
-instance Argo.HasCodec Int where
+instance Argo.HasCodec IntP where
   codec = Argo.identified $ Argo.map fromI32 toI32 Argo.codec
 
-fromI32 :: I32.I32 -> Int
+fromI32 :: I32.I32 -> IntP
 fromI32 = Int
 
-toI32 :: Int -> I32.I32
+toI32 :: IntP -> I32.I32
 toI32 (Int x) = x
 
-bytePut :: Int -> BytePut.BytePut
+bytePut :: IntP -> BytePut.BytePut
 bytePut = I32.bytePut . toI32
 
-byteGet :: ByteGet.ByteGet Int
+byteGet :: ByteGet.ByteGet IntP
 byteGet = ByteGet.label "I32" $ fmap fromI32 I32.byteGet

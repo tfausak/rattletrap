@@ -6,13 +6,13 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Utility.Monad as Monad
 import qualified Rattletrap.Vendor.Argo as Argo
 
-data Byte = Byte
+data ByteP = Byte -- TODO
   { key :: Str.Str
   , value :: Maybe Str.Str
   }
   deriving (Eq, Show)
 
-instance Argo.HasCodec Byte where
+instance Argo.HasCodec ByteP where
   codec =
     Argo.identified
       . Argo.fromArrayCodec Argo.Forbid
@@ -20,10 +20,10 @@ instance Argo.HasCodec Byte where
       <$> Argo.project key (Argo.element Argo.codec)
       <*> Argo.project value (Argo.element Argo.codec)
 
-bytePut :: Byte -> BytePut.BytePut
+bytePut :: ByteP -> BytePut.BytePut
 bytePut byte = Str.bytePut (key byte) <> foldMap Str.bytePut (value byte)
 
-byteGet :: ByteGet.ByteGet Byte
+byteGet :: ByteGet.ByteGet ByteP
 byteGet = ByteGet.label "Byte" $ do
   key <- ByteGet.label "key" Str.byteGet
   value <- ByteGet.label "value" $ Monad.whenMaybe
