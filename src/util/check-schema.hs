@@ -11,7 +11,7 @@ main = do
     . unwords
     $ "npx"
     : "ajv"
-    : "-s"
+    -- : "-s"
     : FilePath.combine output schema
     : concatMap
         (\entry -> if isJson entry && not (isSchema entry)
