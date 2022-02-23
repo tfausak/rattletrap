@@ -7,6 +7,7 @@ module Rattletrap.Vendor.Argo
   , Argo.Codec.Object.required
   , optional
   , Argo.Codec.Value.identified
+  , withIdentifier
   , Argo.Schema.Identifier.Identifier(..)
   , toValue
   , Argo.Type.Permission.Permission(Allow, Forbid)
@@ -34,6 +35,7 @@ import qualified Argo.Schema.Identifier
 import qualified Argo.Type.Permission
 import qualified Control.Applicative
 import qualified Data.String
+import qualified Data.Text
 import qualified Data.Typeable
 
 optional
@@ -45,3 +47,10 @@ optional = Argo.Class.HasCodec.optionalNullable
 
 toValue :: Argo.HasCodec a => a -> Argo.Value
 toValue = Argo.Codec.Value.encodeWith Argo.codec
+
+withIdentifier
+  :: String -> Argo.Codec.Value.Value a -> Argo.Codec.Value.Value a
+withIdentifier =
+  Argo.Codec.Value.withIdentifier
+    . Argo.Schema.Identifier.fromText
+    . Data.Text.pack

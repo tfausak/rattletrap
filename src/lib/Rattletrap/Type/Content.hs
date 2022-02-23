@@ -59,7 +59,6 @@ data ContentWith frames = Content
   }
   deriving (Eq, Show)
 
--- TODO: Identify this schema and everything below it.
 instance Argo.HasCodec f => Argo.HasCodec (ContentWith f) where
   codec =
     Argo.identified

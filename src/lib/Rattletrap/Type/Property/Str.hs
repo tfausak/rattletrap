@@ -5,21 +5,22 @@ import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Vendor.Argo as Argo
 
-newtype StrP -- TODO
+newtype Str
   = Str Str.Str
   deriving (Eq, Show)
 
-instance Argo.HasCodec StrP where
-  codec = Argo.identified $ Argo.map fromStr toStr Argo.codec
+instance Argo.HasCodec Str where
+  codec =
+    Argo.withIdentifier "StrProperty" $ Argo.map fromStr toStr Argo.codec
 
-fromStr :: Str.Str -> StrP
+fromStr :: Str.Str -> Str
 fromStr = Str
 
-toStr :: StrP -> Str.Str
+toStr :: Str -> Str.Str
 toStr (Str x) = x
 
-bytePut :: StrP -> BytePut.BytePut
+bytePut :: Str -> BytePut.BytePut
 bytePut = Str.bytePut . toStr
 
-byteGet :: ByteGet.ByteGet StrP
+byteGet :: ByteGet.ByteGet Str
 byteGet = ByteGet.label "Str" $ fmap fromStr Str.byteGet
