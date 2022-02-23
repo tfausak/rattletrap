@@ -5,10 +5,10 @@ module Rattletrap.Vendor.Argo
   , Argo.Codec.Object.fromObjectCodec
   , Argo.Codec.Codec.project
   , Argo.Codec.Object.required
-  , Argo.Codec.Object.optional
+  , optional
   , Argo.Codec.Value.identified
   , Argo.Schema.Identifier.Identifier(..)
-  , Argo.Schema.Schema.toValue
+  , toValue
   , Argo.Type.Permission.Permission(Allow, Forbid)
   , Data.String.fromString
   , (Control.Applicative.<|>)
@@ -25,12 +25,19 @@ module Rattletrap.Vendor.Argo
   ) where
 
 import qualified Argo
+import qualified Argo.Class.HasCodec
 import qualified Argo.Codec.Array
 import qualified Argo.Codec.Codec
 import qualified Argo.Codec.Object
 import qualified Argo.Codec.Value
 import qualified Argo.Schema.Identifier
-import qualified Argo.Schema.Schema
 import qualified Argo.Type.Permission
 import qualified Control.Applicative
 import qualified Data.String
+import qualified Data.Typeable
+
+optional :: Data.Typeable.Typeable a => Argo.Name -> Argo.Codec.Value.Value a -> Argo.Codec.Object.Object (Maybe a)
+optional = Argo.Class.HasCodec.optionalNullable
+
+toValue :: Argo.HasCodec a => a -> Argo.Value
+toValue = Argo.Codec.Value.encodeWith Argo.codec
