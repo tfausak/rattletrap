@@ -36,7 +36,11 @@ import qualified Control.Applicative
 import qualified Data.String
 import qualified Data.Typeable
 
-optional :: Data.Typeable.Typeable a => Argo.Name -> Argo.Codec.Value.Value a -> Argo.Codec.Object.Object (Maybe a)
+optional
+  :: Data.Typeable.Typeable a
+  => Argo.Name
+  -> Argo.Codec.Value.Value a
+  -> Argo.Codec.Object.Object (Maybe a)
 optional = Argo.Class.HasCodec.optionalNullable
 
 toValue :: Argo.HasCodec a => a -> Argo.Value
