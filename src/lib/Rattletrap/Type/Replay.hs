@@ -14,7 +14,6 @@ import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Vendor.Argo as Argo
-import qualified Rattletrap.Version as Version
 
 type Replay
   = ReplayWith
@@ -41,15 +40,6 @@ instance (Argo.HasCodec h, Argo.HasCodec c) => Argo.HasCodec (ReplayWith h c) wh
       <*> Argo.project
             content
             (Argo.required (Argo.fromString "content") Argo.codec)
-
-schemaUrl :: String -- TODO: Add this to JSON output.
-schemaUrl = mconcat
-  [ "https://github.com/tfausak/rattletrap/releases/download/"
-  , Version.string
-  , "/rattletrap-"
-  , Version.string
-  , "-schema.json"
-  ]
 
 bytePut :: Replay -> BytePut.BytePut
 bytePut x = Section.bytePut Header.bytePut (header x)
