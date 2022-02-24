@@ -113,7 +113,9 @@ getDecoder config = case Config.getMode config of
 
 getEncoder :: Config.Config -> Replay.Replay -> LazyByteString.ByteString
 getEncoder config = case Config.getMode config of
-  Mode.Decode -> encodeJson config
+  Mode.Decode -> if Config.compact config
+    then Builder.toLazyByteString . Argo.encode
+    else Rattletrap.encodeReplayJson
   Mode.Encode -> Rattletrap.encodeReplayFile $ Config.fast config
 
 getInput :: Config.Config -> IO ByteString.ByteString

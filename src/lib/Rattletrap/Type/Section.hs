@@ -71,11 +71,3 @@ byteGet skip getBody = ByteGet.label "Section" $ do
         actual
     ByteGet.embed (getBody size) rawBody
   pure Section { size, crc, body }
-
-crcMessage :: U32.U32 -> U32.U32 -> String
-crcMessage actual expected = unwords
-  [ "[RT10] actual CRC"
-  , show actual
-  , "does not match expected CRC"
-  , show expected
-  ]
