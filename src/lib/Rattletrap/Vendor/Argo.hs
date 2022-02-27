@@ -24,7 +24,10 @@ module Rattletrap.Vendor.Argo
   ) where
 
 import qualified Argo
+import qualified Control.Applicative as Applicative
 import qualified Data.Foldable as Foldable
 
 oneOf :: Foldable t => t (Argo.Codec a) -> Argo.Codec a
-oneOf = Foldable.asum
+oneOf xs = case Foldable.toList xs of
+  [] -> Applicative.empty
+  x : ys -> foldr (Applicative.<|>) x ys
