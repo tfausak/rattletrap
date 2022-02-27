@@ -13,28 +13,25 @@ data Rotation
   deriving (Eq, Show)
 
 instance Argo.HasCodec Rotation where
-  codec =
-    Argo.identified
-      $ Argo.mapMaybe
-          (Just . CompressedWordVector)
-          (\x -> case x of
-            CompressedWordVector y -> Just y
-            _ -> Nothing
-          )
-          (Argo.fromObjectCodec
-            Argo.Allow
-            (Argo.required id "compressed_word_vector")
-          )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Quaternion)
-                 (\x -> case x of
-                   Quaternion y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required id "quaternion")
-                 )
+  codec = Argo.identified $ Argo.oneOf
+    [ Argo.mapMaybe
+      (Just . CompressedWordVector)
+      (\x -> case x of
+        CompressedWordVector y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec
+        Argo.Allow
+        (Argo.required id "compressed_word_vector")
+      )
+    , Argo.mapMaybe
+      (Just . Quaternion)
+      (\x -> case x of
+        Quaternion y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "quaternion"))
+    ]
 
 bitPut :: Rotation -> BitPut.BitPut
 bitPut r = case r of

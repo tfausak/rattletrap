@@ -30,64 +30,64 @@ data PropertyValue a
   deriving (Eq, Show)
 
 instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
-  codec =
-    Argo.identified
-      $ Argo.mapMaybe
-          (Just . Array)
-          (\x -> case x of
-            Array y -> Just y
-            _ -> Nothing
-          )
-          (Argo.fromObjectCodec Argo.Allow (Argo.required id "array"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . Bool)
-                 (\x -> case x of
-                   Bool y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "bool"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . Byte)
-                 (\x -> case x of
-                   Byte y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "byte"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . Float)
-                 (\x -> case x of
-                   Float y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "float"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . Int)
-                 (\x -> case x of
-                   Int y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "int"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . Name)
-                 (\x -> case x of
-                   Name y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "name"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . QWord)
-                 (\x -> case x of
-                   QWord y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "q_word"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . Str)
-                 (\x -> case x of
-                   Str y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "str"))
+  codec = Argo.identified $ Argo.oneOf
+    [ Argo.mapMaybe
+      (Just . Array)
+      (\x -> case x of
+        Array y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "array"))
+    , Argo.mapMaybe
+      (Just . Bool)
+      (\x -> case x of
+        Bool y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "bool"))
+    , Argo.mapMaybe
+      (Just . Byte)
+      (\x -> case x of
+        Byte y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "byte"))
+    , Argo.mapMaybe
+      (Just . Float)
+      (\x -> case x of
+        Float y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "float"))
+    , Argo.mapMaybe
+      (Just . Int)
+      (\x -> case x of
+        Int y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "int"))
+    , Argo.mapMaybe
+      (Just . Name)
+      (\x -> case x of
+        Name y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "name"))
+    , Argo.mapMaybe
+      (Just . QWord)
+      (\x -> case x of
+        QWord y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "q_word"))
+    , Argo.mapMaybe
+      (Just . Str)
+      (\x -> case x of
+        Str y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "str"))
+    ]
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
 bytePut putProperty value = case value of

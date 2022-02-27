@@ -11,7 +11,7 @@ module Rattletrap.Vendor.Argo
   , Argo.Identifier(..)
   , Argo.toValue
   , Argo.Permission(Allow, Forbid)
-  , (Control.Applicative.<|>)
+  , oneOf
   , Argo.fromArrayCodec
   , Argo.Internal.Codec.Array.element
   , Argo.schema
@@ -26,4 +26,7 @@ module Rattletrap.Vendor.Argo
 
 import qualified Argo
 import qualified Argo.Internal.Codec.Array
-import qualified Control.Applicative
+import qualified Data.Foldable as Foldable
+
+oneOf :: Foldable t => t (Argo.Codec a) -> Argo.Codec a
+oneOf = Foldable.asum

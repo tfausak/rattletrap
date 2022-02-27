@@ -24,83 +24,64 @@ data ProductValue
   deriving (Eq, Show)
 
 instance Argo.HasCodec ProductValue where
-  codec =
-    Argo.identified
-      $ Argo.mapMaybe
-          (Just . PaintedOld)
-          (\x -> case x of
-            PaintedOld y -> Just y
-            _ -> Nothing
-          )
-          (Argo.fromObjectCodec Argo.Allow (Argo.required id "painted_old"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . PaintedNew)
-                 (\x -> case x of
-                   PaintedNew y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required id "painted_new")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . TeamEditionOld)
-                 (\x -> case x of
-                   TeamEditionOld y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required id "team_edition_old")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . TeamEditionNew)
-                 (\x -> case x of
-                   TeamEditionNew y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required id "team_edition_new")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . SpecialEdition)
-                 (\x -> case x of
-                   SpecialEdition y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required id "special_edition")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . UserColorOld)
-                 (\x -> case x of
-                   UserColorOld y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required id "user_color_old")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . UserColorNew)
-                 (\x -> case x of
-                   UserColorNew y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required id "user_color_new")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . TitleId)
-                 (\x -> case x of
-                   TitleId y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "title_id")
-                 )
+  codec = Argo.identified $ Argo.oneOf
+    [ Argo.mapMaybe
+      (Just . PaintedOld)
+      (\x -> case x of
+        PaintedOld y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "painted_old"))
+    , Argo.mapMaybe
+      (Just . PaintedNew)
+      (\x -> case x of
+        PaintedNew y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "painted_new"))
+    , Argo.mapMaybe
+      (Just . TeamEditionOld)
+      (\x -> case x of
+        TeamEditionOld y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "team_edition_old"))
+    , Argo.mapMaybe
+      (Just . TeamEditionNew)
+      (\x -> case x of
+        TeamEditionNew y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "team_edition_new"))
+    , Argo.mapMaybe
+      (Just . SpecialEdition)
+      (\x -> case x of
+        SpecialEdition y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "special_edition"))
+    , Argo.mapMaybe
+      (Just . UserColorOld)
+      (\x -> case x of
+        UserColorOld y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "user_color_old"))
+    , Argo.mapMaybe
+      (Just . UserColorNew)
+      (\x -> case x of
+        UserColorNew y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "user_color_new"))
+    , Argo.mapMaybe
+      (Just . TitleId)
+      (\x -> case x of
+        TitleId y -> Just y
+        _ -> Nothing
+      )
+      (Argo.fromObjectCodec Argo.Allow (Argo.required id "title_id"))
+    ]
 
 bitPut :: ProductValue -> BitPut.BitPut
 bitPut val = case val of
