@@ -15,14 +15,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-20.04
+          - os: ubuntu
             ghc: 9.0.2
-          - os: macos-11
+          - os: macos
             ghc: 9.0.2
-          - os: windows-2019
+          - os: windows
             ghc: 9.0.2
     name: ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     steps:
 
       - uses: actions/checkout@v2
@@ -74,7 +74,7 @@ jobs:
   release:
     needs: build
     if: github.event_name == 'release'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
 
       - uses: actions/checkout@v2
@@ -87,7 +87,7 @@ jobs:
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-ubuntu
-          asset_path: artifact/ubuntu-20.04/rattletrap
+          asset_path: artifact/ubuntu/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -96,7 +96,7 @@ jobs:
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-macos
-          asset_path: artifact/macos-11/rattletrap
+          asset_path: artifact/macos/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -105,7 +105,7 @@ jobs:
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-windows.exe
-          asset_path: artifact/windows-2019/rattletrap
+          asset_path: artifact/windows/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -114,7 +114,7 @@ jobs:
         with:
           asset_content_type: application/gzip
           asset_name: rattletrap-${{ github.event.release.tag_name }}.tar.gz
-          asset_path: artifact/ubuntu-20.04/rattletrap-${{ github.event.release.tag_name }}.tar.gz
+          asset_path: artifact/ubuntu/rattletrap-${{ github.event.release.tag_name }}.tar.gz
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -123,12 +123,12 @@ jobs:
         with:
           asset_content_type: application/json
           asset_name: rattletrap-${{ github.event.release.tag_name }}-schema.json
-          asset_path: artifact/ubuntu-20.04/schema.json
+          asset_path: artifact/ubuntu/schema.json
           upload_url: ${{ github.event.release.upload_url }}
 
-      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' artifact/ubuntu-20.04/rattletrap-${{ github.event.release.tag_name }}.tar.gz
+      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' artifact/ubuntu/rattletrap-${{ github.event.release.tag_name }}.tar.gz
 
-      - run: mv artifact/ubuntu-20.04/rattletrap docker/rattletrap
+      - run: mv artifact/ubuntu/rattletrap docker/rattletrap
 
       - uses: docker/setup-buildx-action@v1
 
