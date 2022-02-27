@@ -21,8 +21,8 @@ instance Argo.HasCodec PlayStation where
     Argo.identified
       . Argo.fromArrayCodec Argo.Forbid
       $ PlayStation
-      <$> Argo.project name (Argo.element Argo.codec)
-      <*> Argo.project code (Argo.element Argo.codec)
+      <$> Argo.element name
+      <*> Argo.element code
 
 bitPut :: PlayStation -> BitPut.BitPut
 bitPut x =

@@ -17,8 +17,8 @@ instance Argo.HasCodec Byte where
     Argo.withIdentifier "ByteProperty"
       . Argo.fromArrayCodec Argo.Forbid
       $ Byte
-      <$> Argo.project key (Argo.element Argo.codec)
-      <*> Argo.project value (Argo.element Argo.codec)
+      <$> Argo.element key
+      <*> Argo.element value
 
 bytePut :: Byte -> BytePut.BytePut
 bytePut byte = Str.bytePut (key byte) <> foldMap Str.bytePut (value byte)

@@ -3,7 +3,6 @@ module Rattletrap.Vendor.Argo
   , Argo.map
   , Argo.mapMaybe
   , Argo.fromObjectCodec
-  , Argo.project
   , Argo.required
   , Argo.optional
   , Argo.identified
@@ -13,7 +12,7 @@ module Rattletrap.Vendor.Argo
   , Argo.Permission(Allow, Forbid)
   , oneOf
   , Argo.fromArrayCodec
-  , Argo.Internal.Codec.Array.element
+  , Argo.element
   , Argo.schema
   , Argo.decode
   , Argo.encode
@@ -25,7 +24,6 @@ module Rattletrap.Vendor.Argo
   ) where
 
 import qualified Argo
-import qualified Argo.Internal.Codec.Array
 import qualified Data.Foldable as Foldable
 
 oneOf :: Foldable t => t (Argo.Codec a) -> Argo.Codec a
