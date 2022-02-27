@@ -30,9 +30,9 @@ instance Argo.HasCodec Attribute where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Attribute
-      <$> Argo.project id (Argo.required "id" Argo.codec)
-      <*> Argo.project name (Argo.required "name" Argo.codec)
-      <*> Argo.project value (Argo.required "value" Argo.codec)
+      <$> Argo.required id "id"
+      <*> Argo.required name "name"
+      <*> Argo.required value "value"
 
 bitPut :: Attribute -> BitPut.BitPut
 bitPut attribute =

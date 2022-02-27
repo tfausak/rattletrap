@@ -17,9 +17,9 @@ instance Argo.HasCodec CompressedWordVector where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ CompressedWordVector
-      <$> Argo.project x (Argo.required "x" Argo.codec)
-      <*> Argo.project y (Argo.required "y" Argo.codec)
-      <*> Argo.project z (Argo.required "z" Argo.codec)
+      <$> Argo.required x "x"
+      <*> Argo.required y "y"
+      <*> Argo.required z "z"
 
 bitPut :: CompressedWordVector -> BitPut.BitPut
 bitPut compressedWordVector =

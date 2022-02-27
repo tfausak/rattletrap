@@ -21,8 +21,8 @@ instance Argo.HasCodec GameMode where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ GameMode
-      <$> Argo.project numBits (Argo.required "num_bits" Argo.codec)
-      <*> Argo.project word (Argo.required "word" Argo.codec)
+      <$> Argo.required numBits "num_bits"
+      <*> Argo.required word "word"
 
 bitPut :: GameMode -> BitPut.BitPut
 bitPut gameModeAttribute = do

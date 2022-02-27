@@ -16,8 +16,8 @@ instance Argo.HasCodec Loadouts where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Loadouts
-      <$> Argo.project blue (Argo.required "blue" Argo.codec)
-      <*> Argo.project orange (Argo.required "orange" Argo.codec)
+      <$> Argo.required blue "blue"
+      <*> Argo.required orange "orange"
 
 bitPut :: Loadouts -> BitPut.BitPut
 bitPut loadoutsAttribute = Loadout.bitPut (blue loadoutsAttribute)

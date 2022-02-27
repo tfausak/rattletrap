@@ -38,15 +38,13 @@ instance Argo.HasCodec Spawned where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Spawned
-      <$> Argo.project flag (Argo.required "flag" Argo.codec)
+      <$> Argo.required flag "flag"
       <*> Argo.optional nameIndex "name_index"
       <*> Argo.optional name "name"
-      <*> Argo.project objectId (Argo.required "object_id" Argo.codec)
-      <*> Argo.project objectName (Argo.required "object_name" Argo.codec)
-      <*> Argo.project className (Argo.required "class_name" Argo.codec)
-      <*> Argo.project
-            initialization
-            (Argo.required "initialization" Argo.codec)
+      <*> Argo.required objectId "object_id"
+      <*> Argo.required objectName "object_name"
+      <*> Argo.required className "class_name"
+      <*> Argo.required initialization "initialization"
 
 bitPut :: Spawned -> BitPut.BitPut
 bitPut spawnedReplication =

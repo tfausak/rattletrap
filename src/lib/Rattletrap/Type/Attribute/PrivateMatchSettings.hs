@@ -21,12 +21,12 @@ instance Argo.HasCodec PrivateMatchSettings where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ PrivateMatchSettings
-      <$> Argo.project mutators (Argo.required "mutators" Argo.codec)
-      <*> Argo.project joinableBy (Argo.required "joinable_by" Argo.codec)
-      <*> Argo.project maxPlayers (Argo.required "max_players" Argo.codec)
-      <*> Argo.project gameName (Argo.required "game_name" Argo.codec)
-      <*> Argo.project password (Argo.required "password" Argo.codec)
-      <*> Argo.project flag (Argo.required "flag" Argo.codec)
+      <$> Argo.required mutators "mutators"
+      <*> Argo.required joinableBy "joinable_by"
+      <*> Argo.required maxPlayers "max_players"
+      <*> Argo.required gameName "game_name"
+      <*> Argo.required password "password"
+      <*> Argo.required flag "flag"
 
 bitPut :: PrivateMatchSettings -> BitPut.BitPut
 bitPut privateMatchSettingsAttribute =

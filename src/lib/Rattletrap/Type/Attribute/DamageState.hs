@@ -23,12 +23,12 @@ instance Argo.HasCodec DamageState where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ DamageState
-      <$> Argo.project unknown1 (Argo.required "unknown1" Argo.codec)
-      <*> Argo.project unknown2 (Argo.required "unknown2" Argo.codec)
-      <*> Argo.project unknown3 (Argo.required "unknown3" Argo.codec)
-      <*> Argo.project unknown4 (Argo.required "unknown4" Argo.codec)
-      <*> Argo.project unknown5 (Argo.required "unknown5" Argo.codec)
-      <*> Argo.project unknown6 (Argo.required "unknown6" Argo.codec)
+      <$> Argo.required unknown1 "unknown1"
+      <*> Argo.required unknown2 "unknown2"
+      <*> Argo.required unknown3 "unknown3"
+      <*> Argo.required unknown4 "unknown4"
+      <*> Argo.required unknown5 "unknown5"
+      <*> Argo.required unknown6 "unknown6"
 
 bitPut :: DamageState -> BitPut.BitPut
 bitPut damageStateAttribute =

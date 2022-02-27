@@ -27,11 +27,11 @@ instance Argo.HasCodec Vector where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Vector
-      <$> Argo.project size (Argo.required "size" Argo.codec)
-      <*> Argo.project bias (Argo.required "bias" Argo.codec)
-      <*> Argo.project x (Argo.required "x" Argo.codec)
-      <*> Argo.project y (Argo.required "y" Argo.codec)
-      <*> Argo.project z (Argo.required "z" Argo.codec)
+      <$> Argo.required size "size"
+      <*> Argo.required bias "bias"
+      <*> Argo.required x "x"
+      <*> Argo.required y "y"
+      <*> Argo.required z "z"
 
 bitPut :: Vector -> BitPut.BitPut
 bitPut vector =

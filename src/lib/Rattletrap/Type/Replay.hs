@@ -34,8 +34,8 @@ instance (Argo.HasCodec h, Argo.HasCodec c) => Argo.HasCodec (ReplayWith h c) wh
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Replay
-      <$> Argo.project header (Argo.required "header" Argo.codec)
-      <*> Argo.project content (Argo.required "content" Argo.codec)
+      <$> Argo.required header "header"
+      <*> Argo.required content "content"
 
 bytePut :: Replay -> BytePut.BytePut
 bytePut x = Section.bytePut Header.bytePut (header x)

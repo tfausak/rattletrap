@@ -17,8 +17,8 @@ instance Argo.HasCodec ClassMapping where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ ClassMapping
-      <$> Argo.project name (Argo.required "name" Argo.codec)
-      <*> Argo.project streamId (Argo.required "stream_id" Argo.codec)
+      <$> Argo.required name "name"
+      <*> Argo.required streamId "stream_id"
 
 bytePut :: ClassMapping -> BytePut.BytePut
 bytePut x = Str.bytePut (name x) <> U32.bytePut (streamId x)

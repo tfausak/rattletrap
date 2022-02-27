@@ -18,8 +18,8 @@ instance Argo.HasCodec ExtendedExplosion where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ ExtendedExplosion
-      <$> Argo.project explosion (Argo.required "explosion" Argo.codec)
-      <*> Argo.project unknown (Argo.required "unknown" Argo.codec)
+      <$> Argo.required explosion "explosion"
+      <*> Argo.required unknown "unknown"
 
 bitPut :: ExtendedExplosion -> BitPut.BitPut
 bitPut x = Explosion.bitPut (explosion x) <> FlaggedInt.bitPut (unknown x)

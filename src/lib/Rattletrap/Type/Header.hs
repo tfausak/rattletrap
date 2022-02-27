@@ -71,19 +71,11 @@ instance Argo.HasCodec Header where
           )
       . Argo.fromObjectCodec Argo.Allow
       $ (,,,,)
-      <$> Argo.project
-            (\(x, _, _, _, _) -> x)
-            (Argo.required "engine_version" Argo.codec)
-      <*> Argo.project
-            (\(_, x, _, _, _) -> x)
-            (Argo.required "licensee_version" Argo.codec)
+      <$> Argo.required (\(x, _, _, _, _) -> x) "engine_version"
+      <*> Argo.required (\(_, x, _, _, _) -> x) "licensee_version"
       <*> Argo.optional (\(_, _, x, _, _) -> x) "patch_version"
-      <*> Argo.project
-            (\(_, _, _, x, _) -> x)
-            (Argo.required "label" Argo.codec)
-      <*> Argo.project
-            (\(_, _, _, _, x) -> x)
-            (Argo.required "properties" Argo.codec)
+      <*> Argo.required (\(_, _, _, x, _) -> x) "label"
+      <*> Argo.required (\(_, _, _, _, x) -> x) "properties"
 
 bytePut :: Header -> BytePut.BytePut
 bytePut x =

@@ -18,8 +18,8 @@ instance Argo.HasCodec CompressedWord where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ CompressedWord
-      <$> Argo.project limit (Argo.required "limit" Argo.codec)
-      <*> Argo.project value (Argo.required "value" Argo.codec)
+      <$> Argo.required limit "limit"
+      <*> Argo.required value "value"
 
 bitPut :: CompressedWord -> BitPut.BitPut
 bitPut compressedWord =

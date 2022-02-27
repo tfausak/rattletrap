@@ -23,8 +23,8 @@ instance Argo.HasCodec Replication where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Replication
-      <$> Argo.project actorId (Argo.required "actor_id" Argo.codec)
-      <*> Argo.project value (Argo.required "value" Argo.codec)
+      <$> Argo.required actorId "actor_id"
+      <*> Argo.required value "value"
 
 putReplications :: List.List Replication -> BitPut.BitPut
 putReplications xs =

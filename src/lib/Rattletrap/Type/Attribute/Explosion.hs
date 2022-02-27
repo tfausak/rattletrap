@@ -19,9 +19,9 @@ instance Argo.HasCodec Explosion where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Explosion
-      <$> Argo.project flag (Argo.required "flag" Argo.codec)
-      <*> Argo.project actorId (Argo.required "actor_id" Argo.codec)
-      <*> Argo.project location (Argo.required "location" Argo.codec)
+      <$> Argo.required flag "flag"
+      <*> Argo.required actorId "actor_id"
+      <*> Argo.required location "location"
 
 bitPut :: Explosion -> BitPut.BitPut
 bitPut explosionAttribute =

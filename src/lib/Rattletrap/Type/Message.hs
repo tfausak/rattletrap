@@ -21,9 +21,9 @@ instance Argo.HasCodec Message where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Message
-      <$> Argo.project frame (Argo.required "frame" Argo.codec)
-      <*> Argo.project name (Argo.required "name" Argo.codec)
-      <*> Argo.project value (Argo.required "value" Argo.codec)
+      <$> Argo.required frame "frame"
+      <*> Argo.required name "name"
+      <*> Argo.required value "value"
 
 bytePut :: Message -> BytePut.BytePut
 bytePut x =

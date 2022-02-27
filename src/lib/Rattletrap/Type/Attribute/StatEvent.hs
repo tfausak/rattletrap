@@ -16,8 +16,8 @@ instance Argo.HasCodec StatEvent where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ StatEvent
-      <$> Argo.project unknown (Argo.required "unknown" Argo.codec)
-      <*> Argo.project objectId (Argo.required "object_id" Argo.codec)
+      <$> Argo.required unknown "unknown"
+      <*> Argo.required objectId "object_id"
 
 bitPut :: StatEvent -> BitPut.BitPut
 bitPut statEventAttribute = BitPut.bool (unknown statEventAttribute)

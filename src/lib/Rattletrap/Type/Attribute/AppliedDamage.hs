@@ -21,10 +21,10 @@ instance Argo.HasCodec AppliedDamage where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ AppliedDamage
-      <$> Argo.project unknown1 (Argo.required "unknown1" Argo.codec)
-      <*> Argo.project location (Argo.required "location" Argo.codec)
-      <*> Argo.project unknown3 (Argo.required "unknown3" Argo.codec)
-      <*> Argo.project unknown4 (Argo.required "unknown4" Argo.codec)
+      <$> Argo.required unknown1 "unknown1"
+      <*> Argo.required location "location"
+      <*> Argo.required unknown3 "unknown3"
+      <*> Argo.required unknown4 "unknown4"
 
 bitPut :: AppliedDamage -> BitPut.BitPut
 bitPut appliedDamageAttribute =

@@ -36,9 +36,9 @@ instance Argo.HasCodec a => Argo.HasCodec (Dictionary a) where
           )
       . Argo.fromObjectCodec Argo.Allow
       $ (,,)
-      <$> Argo.project (\(x, _, _) -> x) (Argo.required "keys" Argo.codec)
-      <*> Argo.project (\(_, x, _) -> x) (Argo.required "last_key" Argo.codec)
-      <*> Argo.project (\(_, _, x) -> x) (Argo.required "value" Argo.codec)
+      <$> Argo.required (\(x, _, _) -> x) "keys"
+      <*> Argo.required (\(_, x, _) -> x) "last_key"
+      <*> Argo.required (\(_, _, x) -> x) "value"
 
 lookup :: Str.Str -> Dictionary a -> Maybe a
 lookup k = Prelude.lookup k . List.toList . elements

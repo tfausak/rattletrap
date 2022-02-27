@@ -23,7 +23,7 @@ instance Argo.HasCodec Rotation where
           )
           (Argo.fromObjectCodec
             Argo.Allow
-            (Argo.required "compressed_word_vector" Argo.codec)
+            (Argo.required id "compressed_word_vector")
           )
       Argo.<|> Argo.mapMaybe
                  (Just . Quaternion)
@@ -33,7 +33,7 @@ instance Argo.HasCodec Rotation where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required "quaternion" Argo.codec)
+                   (Argo.required id "quaternion")
                  )
 
 bitPut :: Rotation -> BitPut.BitPut

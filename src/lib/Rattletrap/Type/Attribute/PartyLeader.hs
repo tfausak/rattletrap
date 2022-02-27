@@ -22,7 +22,7 @@ instance Argo.HasCodec PartyLeader where
           (\x -> (systemId x, (,) <$> remoteId x <*> localId x))
       . Argo.fromObjectCodec Argo.Allow
       $ (,)
-      <$> Argo.project fst (Argo.required "system_id" Argo.codec)
+      <$> Argo.required fst "system_id"
       <*> Argo.optional snd "id"
 
 bitPut :: PartyLeader -> BitPut.BitPut

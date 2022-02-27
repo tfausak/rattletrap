@@ -16,8 +16,8 @@ instance Argo.HasCodec FlaggedByte where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ FlaggedByte
-      <$> Argo.project flag (Argo.required "flag" Argo.codec)
-      <*> Argo.project byte (Argo.required "byte" Argo.codec)
+      <$> Argo.required flag "flag"
+      <*> Argo.required byte "byte"
 
 bitPut :: FlaggedByte -> BitPut.BitPut
 bitPut flaggedByteAttribute = BitPut.bool (flag flaggedByteAttribute)

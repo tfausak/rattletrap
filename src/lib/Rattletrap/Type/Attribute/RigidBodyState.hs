@@ -22,9 +22,9 @@ instance Argo.HasCodec RigidBodyState where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ RigidBodyState
-      <$> Argo.project sleeping (Argo.required "sleeping" Argo.codec)
-      <*> Argo.project location (Argo.required "location" Argo.codec)
-      <*> Argo.project rotation (Argo.required "rotation" Argo.codec)
+      <$> Argo.required sleeping "sleeping"
+      <*> Argo.required location "location"
+      <*> Argo.required rotation "rotation"
       <*> Argo.optional linearVelocity "linear_velocity"
       <*> Argo.optional angularVelocity "angular_velocity"
 

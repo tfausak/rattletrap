@@ -22,10 +22,10 @@ instance Argo.HasCodec Quaternion where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Quaternion
-      <$> Argo.project x (Argo.required "x" Argo.codec)
-      <*> Argo.project y (Argo.required "y" Argo.codec)
-      <*> Argo.project z (Argo.required "z" Argo.codec)
-      <*> Argo.project w (Argo.required "w" Argo.codec)
+      <$> Argo.required x "x"
+      <*> Argo.required y "y"
+      <*> Argo.required z "z"
+      <*> Argo.required w "w"
 
 data Component
   = X

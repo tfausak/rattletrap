@@ -25,10 +25,10 @@ instance Argo.HasCodec Product where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Product
-      <$> Argo.project unknown (Argo.required "unknown" Argo.codec)
-      <*> Argo.project objectId (Argo.required "object_id" Argo.codec)
+      <$> Argo.required unknown "unknown"
+      <*> Argo.required objectId "object_id"
       <*> Argo.optional objectName "object_name"
-      <*> Argo.project value (Argo.required "value" Argo.codec)
+      <*> Argo.required value "value"
 
 putProductAttributes :: List.List Product -> BitPut.BitPut
 putProductAttributes attributes =

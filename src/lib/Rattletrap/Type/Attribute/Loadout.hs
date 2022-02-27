@@ -34,14 +34,14 @@ instance Argo.HasCodec Loadout where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Loadout
-      <$> Argo.project version (Argo.required "version" Argo.codec)
-      <*> Argo.project body (Argo.required "body" Argo.codec)
-      <*> Argo.project decal (Argo.required "decal" Argo.codec)
-      <*> Argo.project wheels (Argo.required "wheels" Argo.codec)
-      <*> Argo.project rocketTrail (Argo.required "rocket_trail" Argo.codec)
-      <*> Argo.project antenna (Argo.required "antenna" Argo.codec)
-      <*> Argo.project topper (Argo.required "topper" Argo.codec)
-      <*> Argo.project unknown1 (Argo.required "unknown1" Argo.codec)
+      <$> Argo.required version "version"
+      <*> Argo.required body "body"
+      <*> Argo.required decal "decal"
+      <*> Argo.required wheels "wheels"
+      <*> Argo.required rocketTrail "rocket_trail"
+      <*> Argo.required antenna "antenna"
+      <*> Argo.required topper "topper"
+      <*> Argo.required unknown1 "unknown1"
       <*> Argo.optional unknown2 "unknown2"
       <*> Argo.optional engineAudio "engine_audio"
       <*> Argo.optional trail "trail"

@@ -4,7 +4,7 @@ module Rattletrap.Vendor.Argo
   , Argo.mapMaybe
   , Argo.fromObjectCodec
   , Argo.project
-  , Argo.Internal.Codec.Object.required
+  , Argo.required
   , Argo.optional
   , Argo.identified
   , Argo.withIdentifier
@@ -26,5 +26,4 @@ module Rattletrap.Vendor.Argo
 
 import qualified Argo
 import qualified Argo.Internal.Codec.Array
-import qualified Argo.Internal.Codec.Object
 import qualified Control.Applicative

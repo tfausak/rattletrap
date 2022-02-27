@@ -22,10 +22,10 @@ instance Argo.HasCodec LoadoutsOnline where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ LoadoutsOnline
-      <$> Argo.project blue (Argo.required "blue" Argo.codec)
-      <*> Argo.project orange (Argo.required "orange" Argo.codec)
-      <*> Argo.project unknown1 (Argo.required "unknown1" Argo.codec)
-      <*> Argo.project unknown2 (Argo.required "unknown2" Argo.codec)
+      <$> Argo.required blue "blue"
+      <*> Argo.required orange "orange"
+      <*> Argo.required unknown1 "unknown1"
+      <*> Argo.required unknown2 "unknown2"
 
 bitPut :: LoadoutsOnline -> BitPut.BitPut
 bitPut loadoutsOnlineAttribute =

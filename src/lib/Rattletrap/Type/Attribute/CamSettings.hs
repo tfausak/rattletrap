@@ -23,12 +23,12 @@ instance Argo.HasCodec CamSettings where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ CamSettings
-      <$> Argo.project fov (Argo.required "fov" Argo.codec)
-      <*> Argo.project height (Argo.required "height" Argo.codec)
-      <*> Argo.project angle (Argo.required "angle" Argo.codec)
-      <*> Argo.project distance (Argo.required "distance" Argo.codec)
-      <*> Argo.project stiffness (Argo.required "stiffness" Argo.codec)
-      <*> Argo.project swivelSpeed (Argo.required "swivel_speed" Argo.codec)
+      <$> Argo.required fov "fov"
+      <*> Argo.required height "height"
+      <*> Argo.required angle "angle"
+      <*> Argo.required distance "distance"
+      <*> Argo.required stiffness "stiffness"
+      <*> Argo.required swivelSpeed "swivel_speed"
       <*> Argo.optional transitionSpeed "transition_speed"
 
 bitPut :: CamSettings -> BitPut.BitPut

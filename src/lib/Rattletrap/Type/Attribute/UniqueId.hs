@@ -19,9 +19,9 @@ instance Argo.HasCodec UniqueId where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ UniqueId
-      <$> Argo.project systemId (Argo.required "system_id" Argo.codec)
-      <*> Argo.project remoteId (Argo.required "remote_id" Argo.codec)
-      <*> Argo.project localId (Argo.required "local_id" Argo.codec)
+      <$> Argo.required systemId "system_id"
+      <*> Argo.required remoteId "remote_id"
+      <*> Argo.required localId "local_id"
 
 bitPut :: UniqueId -> BitPut.BitPut
 bitPut uniqueIdAttribute =

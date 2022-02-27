@@ -64,20 +64,18 @@ instance Argo.HasCodec f => Argo.HasCodec (ContentWith f) where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Content
-      <$> Argo.project levels (Argo.required "levels" Argo.codec)
-      <*> Argo.project keyframes (Argo.required "key_frames" Argo.codec)
-      <*> Argo.project streamSize (Argo.required "stream_size" Argo.codec)
-      <*> Argo.project frames (Argo.required "frames" Argo.codec)
-      <*> Argo.project messages (Argo.required "messages" Argo.codec)
-      <*> Argo.project marks (Argo.required "marks" Argo.codec)
-      <*> Argo.project packages (Argo.required "packages" Argo.codec)
-      <*> Argo.project objects (Argo.required "objects" Argo.codec)
-      <*> Argo.project names (Argo.required "names" Argo.codec)
-      <*> Argo.project
-            classMappings
-            (Argo.required "class_mappings" Argo.codec)
-      <*> Argo.project caches (Argo.required "caches" Argo.codec)
-      <*> Argo.project unknown (Argo.required "unknown" Argo.codec)
+      <$> Argo.required levels "levels"
+      <*> Argo.required keyframes "key_frames"
+      <*> Argo.required streamSize "stream_size"
+      <*> Argo.required frames "frames"
+      <*> Argo.required messages "messages"
+      <*> Argo.required marks "marks"
+      <*> Argo.required packages "packages"
+      <*> Argo.required objects "objects"
+      <*> Argo.required names "names"
+      <*> Argo.required classMappings "class_mappings"
+      <*> Argo.required caches "caches"
+      <*> Argo.required unknown "unknown"
 
 empty :: Content
 empty = Content

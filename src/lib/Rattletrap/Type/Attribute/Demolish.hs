@@ -22,20 +22,12 @@ instance Argo.HasCodec Demolish where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Demolish
-      <$> Argo.project attackerFlag (Argo.required "attacker_flag" Argo.codec)
-      <*> Argo.project
-            attackerActorId
-            (Argo.required "attacker_actor_id" Argo.codec)
-      <*> Argo.project victimFlag (Argo.required "victim_flag" Argo.codec)
-      <*> Argo.project
-            victimActorId
-            (Argo.required "victim_actor_id" Argo.codec)
-      <*> Argo.project
-            attackerVelocity
-            (Argo.required "attacker_velocity" Argo.codec)
-      <*> Argo.project
-            victimVelocity
-            (Argo.required "victim_velocity" Argo.codec)
+      <$> Argo.required attackerFlag "attacker_flag"
+      <*> Argo.required attackerActorId "attacker_actor_id"
+      <*> Argo.required victimFlag "victim_flag"
+      <*> Argo.required victimActorId "victim_actor_id"
+      <*> Argo.required attackerVelocity "attacker_velocity"
+      <*> Argo.required victimVelocity "victim_velocity"
 
 bitPut :: Demolish -> BitPut.BitPut
 bitPut demolishAttribute =

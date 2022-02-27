@@ -34,20 +34,14 @@ instance Argo.HasCodec RemoteId where
             PlayStation y -> Just y
             _ -> Nothing
           )
-          (Argo.fromObjectCodec
-            Argo.Allow
-            (Argo.required "play_station" Argo.codec)
-          )
+          (Argo.fromObjectCodec Argo.Allow (Argo.required id "play_station"))
       Argo.<|> Argo.mapMaybe
                  (Just . PsyNet)
                  (\x -> case x of
                    PsyNet y -> Just y
                    _ -> Nothing
                  )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required "psy_net" Argo.codec)
-                 )
+                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "psy_net"))
       Argo.<|> Argo.mapMaybe
                  (Just . Splitscreen)
                  (\x -> case x of
@@ -56,7 +50,7 @@ instance Argo.HasCodec RemoteId where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required "splitscreen" Argo.codec)
+                   (Argo.required id "splitscreen")
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Steam)
@@ -64,40 +58,28 @@ instance Argo.HasCodec RemoteId where
                    Steam y -> Just y
                    _ -> Nothing
                  )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required "steam" Argo.codec)
-                 )
+                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "steam"))
       Argo.<|> Argo.mapMaybe
                  (Just . Switch)
                  (\x -> case x of
                    Switch y -> Just y
                    _ -> Nothing
                  )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required "switch" Argo.codec)
-                 )
+                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "switch"))
       Argo.<|> Argo.mapMaybe
                  (Just . Xbox)
                  (\x -> case x of
                    Xbox y -> Just y
                    _ -> Nothing
                  )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required "xbox" Argo.codec)
-                 )
+                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "xbox"))
       Argo.<|> Argo.mapMaybe
                  (Just . Epic)
                  (\x -> case x of
                    Epic y -> Just y
                    _ -> Nothing
                  )
-                 (Argo.fromObjectCodec
-                   Argo.Allow
-                   (Argo.required "epic" Argo.codec)
-                 )
+                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "epic"))
 
 bitPut :: RemoteId -> BitPut.BitPut
 bitPut remoteId = case remoteId of
