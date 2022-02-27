@@ -1,5 +1,6 @@
 module Rattletrap.Type.Replay where
 
+import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Type.Content as Content
@@ -14,6 +15,7 @@ import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Vendor.Argo as Argo
+import qualified Rattletrap.Version as Version
 
 type Replay
   = ReplayWith
@@ -22,7 +24,8 @@ type Replay
 
 -- | A Rocket League replay.
 data ReplayWith header content = Replay
-  { header :: header
+  { schema :: Maybe Text.Text
+  , header :: header
   -- ^ This has most of the high-level metadata.
   , content :: content
   -- ^ This has most of the low-level game data.
@@ -34,8 +37,18 @@ instance (Argo.HasCodec h, Argo.HasCodec c) => Argo.HasCodec (ReplayWith h c) wh
     Argo.identified
       . Argo.fromObjectCodec Argo.Forbid
       $ Replay
-      <$> Argo.required header "header"
+      <$> Argo.optional schema "$schema"
+      <*> Argo.required header "header"
       <*> Argo.required content "content"
+
+defaultSchema :: Text.Text
+defaultSchema = Text.pack $ mconcat
+  [ "https://github.com/tfausak/rattletrap/releases/download/"
+  , Version.string
+  , "/rattletrap-"
+  , Version.string
+  , "-schema.json"
+  ]
 
 bytePut :: Replay -> BytePut.BytePut
 bytePut x = Section.bytePut Header.bytePut (header x)
@@ -56,7 +69,7 @@ byteGet fast skip = ByteGet.label "Replay" $ do
       else ByteGet.embed (getContent $ Section.body header)
         $ Section.body section
     pure section { Section.body }
-  pure Replay { header, content }
+  pure Replay { schema = Just defaultSchema, header, content }
 
 getContent :: Header.Header -> ByteGet.ByteGet Content.Content
 getContent h = Content.byteGet

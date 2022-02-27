@@ -58,13 +58,7 @@ schemaMain config = do
   Argo.Identifier i <- maybe (fail "missing identifier") pure m
   putOutput config . encodeJson config $ Argo.Object
     [ Argo.Member "$schema" "http://json-schema.org/draft-07/schema"
-    , Argo.Member "$id" . Argo.String . Text.pack $ mconcat
-      [ "https://github.com/tfausak/rattletrap/releases/download/"
-      , Version.string
-      , "/rattletrap-"
-      , Version.string
-      , "-schema.json"
-      ]
+    , Argo.Member "$id" $ Argo.String Replay.defaultSchema
     , Argo.Member "$ref" . Argo.String $ Text.pack "#/definitions/" <> i
     , Argo.Member "definitions"
     . Argo.Object
