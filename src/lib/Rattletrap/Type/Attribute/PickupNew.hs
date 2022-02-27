@@ -18,12 +18,8 @@ instance Argo.HasCodec PickupNew where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ PickupNew
-      <$> Argo.project
-            instigatorId
-            (Argo.optional (Argo.fromString "instigator_id") Argo.codec)
-      <*> Argo.project
-            pickedUp
-            (Argo.required (Argo.fromString "picked_up") Argo.codec)
+      <$> Argo.project instigatorId (Argo.optional "instigator_id" Argo.codec)
+      <*> Argo.project pickedUp (Argo.required "picked_up" Argo.codec)
 
 bitPut :: PickupNew -> BitPut.BitPut
 bitPut x =

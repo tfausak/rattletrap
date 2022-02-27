@@ -20,11 +20,9 @@ instance Argo.HasCodec Property where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Property
-      <$> Argo.project kind (Argo.required (Argo.fromString "kind") Argo.codec)
-      <*> Argo.project size (Argo.required (Argo.fromString "size") Argo.codec)
-      <*> Argo.project
-            value
-            (Argo.required (Argo.fromString "value") Argo.codec)
+      <$> Argo.project kind (Argo.required "kind" Argo.codec)
+      <*> Argo.project size (Argo.required "size" Argo.codec)
+      <*> Argo.project value (Argo.required "value" Argo.codec)
 
 bytePut :: Property -> BytePut.BytePut
 bytePut x =

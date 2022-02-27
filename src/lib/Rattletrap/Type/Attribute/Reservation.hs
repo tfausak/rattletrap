@@ -26,22 +26,12 @@ instance Argo.HasCodec Reservation where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Reservation
-      <$> Argo.project
-            number
-            (Argo.required (Argo.fromString "number") Argo.codec)
-      <*> Argo.project
-            uniqueId
-            (Argo.required (Argo.fromString "unique_id") Argo.codec)
-      <*> Argo.project name (Argo.optional (Argo.fromString "name") Argo.codec)
-      <*> Argo.project
-            unknown1
-            (Argo.required (Argo.fromString "unknow1n") Argo.codec)
-      <*> Argo.project
-            unknown2
-            (Argo.required (Argo.fromString "unknown2") Argo.codec)
-      <*> Argo.project
-            unknown3
-            (Argo.required (Argo.fromString "unknown3") Argo.codec)
+      <$> Argo.project number (Argo.required "number" Argo.codec)
+      <*> Argo.project uniqueId (Argo.required "unique_id" Argo.codec)
+      <*> Argo.project name (Argo.optional "name" Argo.codec)
+      <*> Argo.project unknown1 (Argo.required "unknow1n" Argo.codec)
+      <*> Argo.project unknown2 (Argo.required "unknown2" Argo.codec)
+      <*> Argo.project unknown3 (Argo.required "unknown3" Argo.codec)
 
 bitPut :: Reservation -> BitPut.BitPut
 bitPut reservationAttribute =

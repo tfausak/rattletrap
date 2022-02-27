@@ -34,7 +34,7 @@ instance Argo.HasCodec ProductValue where
           )
           (Argo.fromObjectCodec
             Argo.Allow
-            (Argo.required (Argo.fromString "painted_old") Argo.codec)
+            (Argo.required "painted_old" Argo.codec)
           )
       Argo.<|> Argo.mapMaybe
                  (Just . PaintedNew)
@@ -44,7 +44,7 @@ instance Argo.HasCodec ProductValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "painted_new") Argo.codec)
+                   (Argo.required "painted_new" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . TeamEditionOld)
@@ -54,10 +54,7 @@ instance Argo.HasCodec ProductValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required
-                     (Argo.fromString "team_edition_old")
-                     Argo.codec
-                   )
+                   (Argo.required "team_edition_old" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . TeamEditionNew)
@@ -67,10 +64,7 @@ instance Argo.HasCodec ProductValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required
-                     (Argo.fromString "team_edition_new")
-                     Argo.codec
-                   )
+                   (Argo.required "team_edition_new" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . SpecialEdition)
@@ -80,10 +74,7 @@ instance Argo.HasCodec ProductValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required
-                     (Argo.fromString "special_edition")
-                     Argo.codec
-                   )
+                   (Argo.required "special_edition" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . UserColorOld)
@@ -93,8 +84,7 @@ instance Argo.HasCodec ProductValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "user_color_old") Argo.codec
-                   )
+                   (Argo.required "user_color_old" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . UserColorNew)
@@ -104,8 +94,7 @@ instance Argo.HasCodec ProductValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "user_color_new") Argo.codec
-                   )
+                   (Argo.required "user_color_new" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . TitleId)
@@ -115,7 +104,7 @@ instance Argo.HasCodec ProductValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "title_id") Argo.codec)
+                   (Argo.required "title_id" Argo.codec)
                  )
 
 bitPut :: ProductValue -> BitPut.BitPut

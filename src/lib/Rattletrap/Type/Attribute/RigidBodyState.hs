@@ -22,21 +22,15 @@ instance Argo.HasCodec RigidBodyState where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ RigidBodyState
-      <$> Argo.project
-            sleeping
-            (Argo.required (Argo.fromString "sleeping") Argo.codec)
-      <*> Argo.project
-            location
-            (Argo.required (Argo.fromString "location") Argo.codec)
-      <*> Argo.project
-            rotation
-            (Argo.required (Argo.fromString "rotation") Argo.codec)
+      <$> Argo.project sleeping (Argo.required "sleeping" Argo.codec)
+      <*> Argo.project location (Argo.required "location" Argo.codec)
+      <*> Argo.project rotation (Argo.required "rotation" Argo.codec)
       <*> Argo.project
             linearVelocity
-            (Argo.optional (Argo.fromString "linear_velocity") Argo.codec)
+            (Argo.optional "linear_velocity" Argo.codec)
       <*> Argo.project
             angularVelocity
-            (Argo.optional (Argo.fromString "angular_velocity") Argo.codec)
+            (Argo.optional "angular_velocity" Argo.codec)
 
 bitPut :: RigidBodyState -> BitPut.BitPut
 bitPut rigidBodyStateAttribute =

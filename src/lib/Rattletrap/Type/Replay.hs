@@ -34,12 +34,8 @@ instance (Argo.HasCodec h, Argo.HasCodec c) => Argo.HasCodec (ReplayWith h c) wh
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Replay
-      <$> Argo.project
-            header
-            (Argo.required (Argo.fromString "header") Argo.codec)
-      <*> Argo.project
-            content
-            (Argo.required (Argo.fromString "content") Argo.codec)
+      <$> Argo.project header (Argo.required "header" Argo.codec)
+      <*> Argo.project content (Argo.required "content" Argo.codec)
 
 bytePut :: Replay -> BytePut.BytePut
 bytePut x = Section.bytePut Header.bytePut (header x)
@@ -71,30 +67,22 @@ getContent h = Content.byteGet
 
 getMatchType :: Header.Header -> Maybe Str.Str
 getMatchType header = do
-  Property.Property { Property.value } <-
-    Dictionary.lookup (Str.fromString "MatchType") $ Header.properties header
+  Property.Property { Property.value } <- Dictionary.lookup "MatchType"
+    $ Header.properties header
   case value of
     PropertyValue.Name x -> Just $ Property.Name.toStr x
     _ -> Nothing
 
 getNumFrames :: Header.Header -> Int
 getNumFrames header_ =
-  case
-      Dictionary.lookup
-        (Str.fromString "NumFrames")
-        (Header.properties header_)
-    of
-      Just (Property.Property _ _ (PropertyValue.Int numFrames)) ->
-        fromIntegral (I32.toInt32 (Property.Int.toI32 numFrames))
-      _ -> 0
+  case Dictionary.lookup "NumFrames" (Header.properties header_) of
+    Just (Property.Property _ _ (PropertyValue.Int numFrames)) ->
+      fromIntegral (I32.toInt32 (Property.Int.toI32 numFrames))
+    _ -> 0
 
 getMaxChannels :: Header.Header -> Word
 getMaxChannels header_ =
-  case
-      Dictionary.lookup
-        (Str.fromString "MaxChannels")
-        (Header.properties header_)
-    of
-      Just (Property.Property _ _ (PropertyValue.Int maxChannels)) ->
-        fromIntegral (I32.toInt32 (Property.Int.toI32 maxChannels))
-      _ -> 1023
+  case Dictionary.lookup "MaxChannels" (Header.properties header_) of
+    Just (Property.Property _ _ (PropertyValue.Int maxChannels)) ->
+      fromIntegral (I32.toInt32 (Property.Int.toI32 maxChannels))
+    _ -> 1023

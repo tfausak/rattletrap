@@ -20,11 +20,9 @@ instance Argo.HasCodec CustomDemolish where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ CustomDemolish
-      <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
-      <*> Argo.project id (Argo.required (Argo.fromString "id") Argo.codec)
-      <*> Argo.project
-            demolish
-            (Argo.required (Argo.fromString "demolish") Argo.codec)
+      <$> Argo.project flag (Argo.required "flag" Argo.codec)
+      <*> Argo.project id (Argo.required "id" Argo.codec)
+      <*> Argo.project demolish (Argo.required "demolish" Argo.codec)
 
 bitPut :: CustomDemolish -> BitPut.BitPut
 bitPut x =

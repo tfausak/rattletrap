@@ -38,10 +38,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
             Array y -> Just y
             _ -> Nothing
           )
-          (Argo.fromObjectCodec
-            Argo.Allow
-            (Argo.required (Argo.fromString "array") Argo.codec)
-          )
+          (Argo.fromObjectCodec Argo.Allow (Argo.required "array" Argo.codec))
       Argo.<|> Argo.mapMaybe
                  (Just . Bool)
                  (\x -> case x of
@@ -50,7 +47,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "bool") Argo.codec)
+                   (Argo.required "bool" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Byte)
@@ -60,7 +57,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "byte") Argo.codec)
+                   (Argo.required "byte" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Float)
@@ -70,7 +67,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "float") Argo.codec)
+                   (Argo.required "float" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Int)
@@ -80,7 +77,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "int") Argo.codec)
+                   (Argo.required "int" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Name)
@@ -90,7 +87,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "name") Argo.codec)
+                   (Argo.required "name" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . QWord)
@@ -100,7 +97,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "q_word") Argo.codec)
+                   (Argo.required "q_word" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Str)
@@ -110,7 +107,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "str") Argo.codec)
+                   (Argo.required "str" Argo.codec)
                  )
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut

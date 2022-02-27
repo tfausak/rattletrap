@@ -18,11 +18,9 @@ instance Argo.HasCodec MusicStinger where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ MusicStinger
-      <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
-      <*> Argo.project cue (Argo.required (Argo.fromString "cue") Argo.codec)
-      <*> Argo.project
-            trigger
-            (Argo.required (Argo.fromString "trigger") Argo.codec)
+      <$> Argo.project flag (Argo.required "flag" Argo.codec)
+      <*> Argo.project cue (Argo.required "cue" Argo.codec)
+      <*> Argo.project trigger (Argo.required "trigger" Argo.codec)
 
 bitPut :: MusicStinger -> BitPut.BitPut
 bitPut musicStingerAttribute =

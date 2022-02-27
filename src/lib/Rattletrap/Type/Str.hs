@@ -3,6 +3,7 @@ module Rattletrap.Type.Str where
 import qualified Data.ByteString as ByteString
 import qualified Data.Char as Char
 import qualified Data.Int as Int
+import qualified Data.String as String
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Text.Encoding.Error as Text
@@ -20,6 +21,9 @@ newtype Str
 
 instance Argo.HasCodec Str where
   codec = Argo.identified $ Argo.map fromText toText Argo.codec
+
+instance String.IsString Str where
+  fromString = fromString
 
 fromText :: Text.Text -> Str
 fromText = Str
@@ -51,7 +55,7 @@ getTextSize text =
     rawSize = if Text.null value
       then 0
       else fromIntegral (Text.length value) + 1 :: Int.Int32
-    size = if value == Text.pack "\x00\x00\x00None"
+    size = if value == "\x00\x00\x00None"
       then 0x05000000
       else scale * rawSize :: Int.Int32
   in I32.fromInt32 size

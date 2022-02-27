@@ -57,23 +57,16 @@ schemaMain config = do
       Accum.runAccum (Argo.schema $ Argo.codec @Replay.Replay) Map.empty
   Argo.Identifier i <- maybe (fail "missing identifier") pure m
   putOutput config . encodeJson config $ Argo.Object
-    [ Argo.Member (Argo.Name $ Text.pack "$schema") . Argo.String $ Text.pack
-      "http://json-schema.org/draft-07/schema"
-    , Argo.Member (Argo.Name $ Text.pack "$id")
-    . Argo.String
-    . Text.pack
-    $ mconcat
-        [ "https://github.com/tfausak/rattletrap/releases/download/"
-        , Version.string
-        , "/rattletrap-"
-        , Version.string
-        , "-schema.json"
-        ]
-    , Argo.Member (Argo.Name $ Text.pack "$ref")
-    . Argo.String
-    $ Text.pack "#/definitions/"
-    <> i
-    , Argo.Member (Argo.Name $ Text.pack "definitions")
+    [ Argo.Member "$schema" "http://json-schema.org/draft-07/schema"
+    , Argo.Member "$id" . Argo.String . Text.pack $ mconcat
+      [ "https://github.com/tfausak/rattletrap/releases/download/"
+      , Version.string
+      , "/rattletrap-"
+      , Version.string
+      , "-schema.json"
+      ]
+    , Argo.Member "$ref" . Argo.String $ Text.pack "#/definitions/" <> i
+    , Argo.Member "definitions"
     . Argo.Object
     . fmap
         (\(Argo.Identifier k, v) -> Argo.Member (Argo.Name k) (Argo.toValue v))

@@ -20,18 +20,14 @@ instance Argo.HasCodec Cache where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Cache
-      <$> Argo.project
-            classId
-            (Argo.required (Argo.fromString "class_id") Argo.codec)
+      <$> Argo.project classId (Argo.required "class_id" Argo.codec)
       <*> Argo.project
             parentCacheId
-            (Argo.required (Argo.fromString "parent_cache_id") Argo.codec)
-      <*> Argo.project
-            cacheId
-            (Argo.required (Argo.fromString "cache_id") Argo.codec)
+            (Argo.required "parent_cache_id" Argo.codec)
+      <*> Argo.project cacheId (Argo.required "cache_id" Argo.codec)
       <*> Argo.project
             attributeMappings
-            (Argo.required (Argo.fromString "attribute_mappings") Argo.codec)
+            (Argo.required "attribute_mappings" Argo.codec)
 
 bytePut :: Cache -> BytePut.BytePut
 bytePut x =

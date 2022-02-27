@@ -21,13 +21,9 @@ instance Argo.HasCodec Keyframe where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Keyframe
-      <$> Argo.project time (Argo.required (Argo.fromString "time") Argo.codec)
-      <*> Argo.project
-            frame
-            (Argo.required (Argo.fromString "frame") Argo.codec)
-      <*> Argo.project
-            position
-            (Argo.required (Argo.fromString "position") Argo.codec)
+      <$> Argo.project time (Argo.required "time" Argo.codec)
+      <*> Argo.project frame (Argo.required "frame" Argo.codec)
+      <*> Argo.project position (Argo.required "position" Argo.codec)
 
 bytePut :: Keyframe -> BytePut.BytePut
 bytePut x =

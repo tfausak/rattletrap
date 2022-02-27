@@ -11,7 +11,6 @@ module Rattletrap.Vendor.Argo
   , Argo.Internal.Schema.Identifier.Identifier(..)
   , toValue
   , Argo.Internal.Type.Permission.Permission(Allow, Forbid)
-  , Data.String.fromString
   , (Control.Applicative.<|>)
   , Argo.Internal.Codec.Array.fromArrayCodec
   , Argo.Internal.Codec.Array.element
@@ -34,7 +33,6 @@ import qualified Argo.Internal.Codec.Value
 import qualified Argo.Internal.Schema.Identifier
 import qualified Argo.Internal.Type.Permission
 import qualified Control.Applicative
-import qualified Data.String
 import qualified Data.Text
 import qualified Data.Typeable
 

@@ -31,9 +31,7 @@ instance Argo.HasCodec ReplicationValue where
             Spawned y -> Just y
             _ -> Nothing
           )
-          (Argo.fromObjectCodec
-            Argo.Allow
-            (Argo.required (Argo.fromString "spawned") Argo.codec)
+          (Argo.fromObjectCodec Argo.Allow (Argo.required "spawned" Argo.codec)
           )
       Argo.<|> Argo.mapMaybe
                  (Just . Updated)
@@ -43,7 +41,7 @@ instance Argo.HasCodec ReplicationValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "updated") Argo.codec)
+                   (Argo.required "updated" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Destroyed)
@@ -53,7 +51,7 @@ instance Argo.HasCodec ReplicationValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "destroyed") Argo.codec)
+                   (Argo.required "destroyed" Argo.codec)
                  )
 
 bitPut :: ReplicationValue -> BitPut.BitPut

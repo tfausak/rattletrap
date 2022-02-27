@@ -101,7 +101,7 @@ instance Argo.HasCodec AttributeValue where
           )
           (Argo.fromObjectCodec
             Argo.Allow
-            (Argo.required (Argo.fromString "applied_damage") Argo.codec)
+            (Argo.required "applied_damage" Argo.codec)
           )
       Argo.<|> Argo.mapMaybe
                  (Just . Boolean)
@@ -111,7 +111,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "boolean") Argo.codec)
+                   (Argo.required "boolean" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Byte)
@@ -121,7 +121,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "byte") Argo.codec)
+                   (Argo.required "byte" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . CamSettings)
@@ -131,7 +131,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "cam_settings") Argo.codec)
+                   (Argo.required "cam_settings" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . ClubColors)
@@ -141,7 +141,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "club_colors") Argo.codec)
+                   (Argo.required "club_colors" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . CustomDemolish)
@@ -151,10 +151,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required
-                     (Argo.fromString "custom_demolish")
-                     Argo.codec
-                   )
+                   (Argo.required "custom_demolish" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . DamageState)
@@ -164,7 +161,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "damage_state") Argo.codec)
+                   (Argo.required "damage_state" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Demolish)
@@ -174,7 +171,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "demolish") Argo.codec)
+                   (Argo.required "demolish" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Enum)
@@ -184,7 +181,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "enum") Argo.codec)
+                   (Argo.required "enum" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Explosion)
@@ -194,7 +191,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "explosion") Argo.codec)
+                   (Argo.required "explosion" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . ExtendedExplosion)
@@ -204,10 +201,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required
-                     (Argo.fromString "extended_explosion")
-                     Argo.codec
-                   )
+                   (Argo.required "extended_explosion" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . FlaggedInt)
@@ -217,7 +211,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "flagged_int") Argo.codec)
+                   (Argo.required "flagged_int" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . FlaggedByte)
@@ -227,7 +221,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "flagged_byte") Argo.codec)
+                   (Argo.required "flagged_byte" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Float)
@@ -237,7 +231,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "float") Argo.codec)
+                   (Argo.required "float" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . GameMode)
@@ -247,7 +241,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "game_mode") Argo.codec)
+                   (Argo.required "game_mode" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Int)
@@ -257,7 +251,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "int") Argo.codec)
+                   (Argo.required "int" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Int64)
@@ -267,7 +261,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "int64") Argo.codec)
+                   (Argo.required "int64" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Loadout)
@@ -277,7 +271,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "loadout") Argo.codec)
+                   (Argo.required "loadout" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . LoadoutOnline)
@@ -287,8 +281,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "loadout_online") Argo.codec
-                   )
+                   (Argo.required "loadout_online" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Loadouts)
@@ -298,7 +291,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "loadouts") Argo.codec)
+                   (Argo.required "loadouts" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . LoadoutsOnline)
@@ -308,10 +301,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required
-                     (Argo.fromString "loadouts_online")
-                     Argo.codec
-                   )
+                   (Argo.required "loadouts_online" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Location)
@@ -321,7 +311,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "location") Argo.codec)
+                   (Argo.required "location" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . MusicStinger)
@@ -331,7 +321,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "music_stinger") Argo.codec)
+                   (Argo.required "music_stinger" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . PartyLeader)
@@ -341,7 +331,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "party_leader") Argo.codec)
+                   (Argo.required "party_leader" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Pickup)
@@ -351,7 +341,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "pickup") Argo.codec)
+                   (Argo.required "pickup" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . PickupInfo)
@@ -361,7 +351,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "pickup_info") Argo.codec)
+                   (Argo.required "pickup_info" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . PickupNew)
@@ -371,7 +361,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "pickup_new") Argo.codec)
+                   (Argo.required "pickup_new" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . PlayerHistoryKey)
@@ -381,10 +371,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required
-                     (Argo.fromString "player_history_key")
-                     Argo.codec
-                   )
+                   (Argo.required "player_history_key" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . PrivateMatchSettings)
@@ -394,10 +381,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required
-                     (Argo.fromString "private_match_settings")
-                     Argo.codec
-                   )
+                   (Argo.required "private_match_settings" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . QWord)
@@ -407,7 +391,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "q_word") Argo.codec)
+                   (Argo.required "q_word" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Reservation)
@@ -417,7 +401,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "reservation") Argo.codec)
+                   (Argo.required "reservation" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . RigidBodyState)
@@ -427,10 +411,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required
-                     (Argo.fromString "rigid_body_state")
-                     Argo.codec
-                   )
+                   (Argo.required "rigid_body_state" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . StatEvent)
@@ -440,7 +421,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "stat_event") Argo.codec)
+                   (Argo.required "stat_event" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . String)
@@ -450,7 +431,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "string") Argo.codec)
+                   (Argo.required "string" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . TeamPaint)
@@ -460,7 +441,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "team_paint") Argo.codec)
+                   (Argo.required "team_paint" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Title)
@@ -470,7 +451,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "title") Argo.codec)
+                   (Argo.required "title" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . UniqueId)
@@ -480,7 +461,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "unique_id") Argo.codec)
+                   (Argo.required "unique_id" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . WeldedInfo)
@@ -490,7 +471,7 @@ instance Argo.HasCodec AttributeValue where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "welded_info") Argo.codec)
+                   (Argo.required "welded_info" Argo.codec)
                  )
 
 bitPut :: AttributeValue -> BitPut.BitPut

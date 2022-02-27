@@ -18,18 +18,10 @@ instance Argo.HasCodec ClubColors where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ ClubColors
-      <$> Argo.project
-            blueFlag
-            (Argo.required (Argo.fromString "blue_flag") Argo.codec)
-      <*> Argo.project
-            blueColor
-            (Argo.required (Argo.fromString "blue_color") Argo.codec)
-      <*> Argo.project
-            orangeFlag
-            (Argo.required (Argo.fromString "orange_flag") Argo.codec)
-      <*> Argo.project
-            orangeColor
-            (Argo.required (Argo.fromString "orange_color") Argo.codec)
+      <$> Argo.project blueFlag (Argo.required "blue_flag" Argo.codec)
+      <*> Argo.project blueColor (Argo.required "blue_color" Argo.codec)
+      <*> Argo.project orangeFlag (Argo.required "orange_flag" Argo.codec)
+      <*> Argo.project orangeColor (Argo.required "orange_color" Argo.codec)
 
 bitPut :: ClubColors -> BitPut.BitPut
 bitPut clubColorsAttribute =

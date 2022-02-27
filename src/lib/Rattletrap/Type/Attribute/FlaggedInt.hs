@@ -16,8 +16,8 @@ instance Argo.HasCodec FlaggedInt where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ FlaggedInt
-      <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
-      <*> Argo.project int (Argo.required (Argo.fromString "int") Argo.codec)
+      <$> Argo.project flag (Argo.required "flag" Argo.codec)
+      <*> Argo.project int (Argo.required "int" Argo.codec)
 
 bitPut :: FlaggedInt -> BitPut.BitPut
 bitPut flaggedIntAttribute = BitPut.bool (flag flaggedIntAttribute)

@@ -28,13 +28,9 @@ instance Argo.HasCodec Frame where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Frame
-      <$> Argo.project time (Argo.required (Argo.fromString "time") Argo.codec)
-      <*> Argo.project
-            delta
-            (Argo.required (Argo.fromString "delta") Argo.codec)
-      <*> Argo.project
-            replications
-            (Argo.required (Argo.fromString "replications") Argo.codec)
+      <$> Argo.project time (Argo.required "time" Argo.codec)
+      <*> Argo.project delta (Argo.required "delta" Argo.codec)
+      <*> Argo.project replications (Argo.required "replications" Argo.codec)
 
 putFrames :: List.List Frame -> BitPut.BitPut
 putFrames = foldMap bitPut . List.toList

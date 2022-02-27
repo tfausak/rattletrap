@@ -38,23 +38,15 @@ instance Argo.HasCodec Spawned where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Spawned
-      <$> Argo.project flag (Argo.required (Argo.fromString "flag") Argo.codec)
-      <*> Argo.project
-            nameIndex
-            (Argo.optional (Argo.fromString "name_index") Argo.codec)
-      <*> Argo.project name (Argo.optional (Argo.fromString "name") Argo.codec)
-      <*> Argo.project
-            objectId
-            (Argo.required (Argo.fromString "object_id") Argo.codec)
-      <*> Argo.project
-            objectName
-            (Argo.required (Argo.fromString "object_name") Argo.codec)
-      <*> Argo.project
-            className
-            (Argo.required (Argo.fromString "class_name") Argo.codec)
+      <$> Argo.project flag (Argo.required "flag" Argo.codec)
+      <*> Argo.project nameIndex (Argo.optional "name_index" Argo.codec)
+      <*> Argo.project name (Argo.optional "name" Argo.codec)
+      <*> Argo.project objectId (Argo.required "object_id" Argo.codec)
+      <*> Argo.project objectName (Argo.required "object_name" Argo.codec)
+      <*> Argo.project className (Argo.required "class_name" Argo.codec)
       <*> Argo.project
             initialization
-            (Argo.required (Argo.fromString "initialization") Argo.codec)
+            (Argo.required "initialization" Argo.codec)
 
 bitPut :: Spawned -> BitPut.BitPut
 bitPut spawnedReplication =
@@ -99,7 +91,7 @@ bitGet matchType version classAttributeMap actorId actorMap =
 
 hasNameIndex :: Maybe Str.Str -> Version.Version -> Bool
 hasNameIndex matchType version =
-  Version.atLeast 868 14 0 version && matchType /= Just (Str.fromString "Lan")
+  Version.atLeast 868 14 0 version && matchType /= Just "Lan"
 
 lookupName
   :: ClassAttributeMap.ClassAttributeMap

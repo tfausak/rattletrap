@@ -20,19 +20,13 @@ instance Argo.HasCodec TeamPaint where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ TeamPaint
-      <$> Argo.project team (Argo.required (Argo.fromString "team") Argo.codec)
-      <*> Argo.project
-            primaryColor
-            (Argo.required (Argo.fromString "primary_color") Argo.codec)
-      <*> Argo.project
-            accentColor
-            (Argo.required (Argo.fromString "accent_color") Argo.codec)
+      <$> Argo.project team (Argo.required "team" Argo.codec)
+      <*> Argo.project primaryColor (Argo.required "primary_color" Argo.codec)
+      <*> Argo.project accentColor (Argo.required "accent_color" Argo.codec)
       <*> Argo.project
             primaryFinish
-            (Argo.required (Argo.fromString "primary_finish") Argo.codec)
-      <*> Argo.project
-            accentFinish
-            (Argo.required (Argo.fromString "accent_finish") Argo.codec)
+            (Argo.required "primary_finish" Argo.codec)
+      <*> Argo.project accentFinish (Argo.required "accent_finish" Argo.codec)
 
 bitPut :: TeamPaint -> BitPut.BitPut
 bitPut teamPaintAttribute =

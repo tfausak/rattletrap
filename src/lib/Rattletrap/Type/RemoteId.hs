@@ -36,7 +36,7 @@ instance Argo.HasCodec RemoteId where
           )
           (Argo.fromObjectCodec
             Argo.Allow
-            (Argo.required (Argo.fromString "play_station") Argo.codec)
+            (Argo.required "play_station" Argo.codec)
           )
       Argo.<|> Argo.mapMaybe
                  (Just . PsyNet)
@@ -46,7 +46,7 @@ instance Argo.HasCodec RemoteId where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "psy_net") Argo.codec)
+                   (Argo.required "psy_net" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Splitscreen)
@@ -56,7 +56,7 @@ instance Argo.HasCodec RemoteId where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "splitscreen") Argo.codec)
+                   (Argo.required "splitscreen" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Steam)
@@ -66,7 +66,7 @@ instance Argo.HasCodec RemoteId where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "steam") Argo.codec)
+                   (Argo.required "steam" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Switch)
@@ -76,7 +76,7 @@ instance Argo.HasCodec RemoteId where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "switch") Argo.codec)
+                   (Argo.required "switch" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Xbox)
@@ -86,7 +86,7 @@ instance Argo.HasCodec RemoteId where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "xbox") Argo.codec)
+                   (Argo.required "xbox" Argo.codec)
                  )
       Argo.<|> Argo.mapMaybe
                  (Just . Epic)
@@ -96,7 +96,7 @@ instance Argo.HasCodec RemoteId where
                  )
                  (Argo.fromObjectCodec
                    Argo.Allow
-                   (Argo.required (Argo.fromString "epic") Argo.codec)
+                   (Argo.required "epic" Argo.codec)
                  )
 
 bitPut :: RemoteId -> BitPut.BitPut

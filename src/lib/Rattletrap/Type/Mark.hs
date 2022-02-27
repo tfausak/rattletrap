@@ -19,12 +19,8 @@ instance Argo.HasCodec Mark where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Mark
-      <$> Argo.project
-            value
-            (Argo.required (Argo.fromString "value") Argo.codec)
-      <*> Argo.project
-            frame
-            (Argo.required (Argo.fromString "frame") Argo.codec)
+      <$> Argo.project value (Argo.required "value" Argo.codec)
+      <*> Argo.project frame (Argo.required "frame" Argo.codec)
 
 bytePut :: Mark -> BytePut.BytePut
 bytePut x = Str.bytePut (value x) <> U32.bytePut (frame x)

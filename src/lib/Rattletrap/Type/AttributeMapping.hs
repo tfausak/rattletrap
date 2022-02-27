@@ -16,12 +16,8 @@ instance Argo.HasCodec AttributeMapping where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ AttributeMapping
-      <$> Argo.project
-            objectId
-            (Argo.required (Argo.fromString "object_id") Argo.codec)
-      <*> Argo.project
-            streamId
-            (Argo.required (Argo.fromString "stream_id") Argo.codec)
+      <$> Argo.project objectId (Argo.required "object_id" Argo.codec)
+      <*> Argo.project streamId (Argo.required "stream_id" Argo.codec)
 
 bytePut :: AttributeMapping -> BytePut.BytePut
 bytePut x = U32.bytePut (objectId x) <> U32.bytePut (streamId x)
