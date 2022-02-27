@@ -22,7 +22,9 @@ flag pedantic
 
 common library
   build-depends: base ^>= 4.14.3
-  default-extensions: NamedFieldPuns
+  default-extensions:
+    BangPatterns
+    NamedFieldPuns
   default-language: Haskell2010
   ghc-options:
     -Weverything
