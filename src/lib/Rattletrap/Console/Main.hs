@@ -1,6 +1,3 @@
-{- hlint ignore "Avoid restricted extensions" -}
-{-# LANGUAGE TypeApplications #-}
-
 module Rattletrap.Console.Main where
 
 import qualified Control.Exception as Exception
