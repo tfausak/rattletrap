@@ -52,7 +52,7 @@ library
 
   autogen-modules: Paths_rattletrap
   build-depends:
-    , argo == 0.2022.2.23
+    , argo == 0.2022.2.27
     , array ^>= 0.5.4
     , bytestring ^>= 0.10.12
     , containers ^>= 0.6.5
