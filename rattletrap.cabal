@@ -21,7 +21,7 @@ flag pedantic
   manual: True
 
 common library
-  build-depends: base ^>= 4.14.3
+  build-depends: base ^>= 4.15.1
   default-extensions:
     BangPatterns
     NamedFieldPuns
@@ -59,11 +59,11 @@ library
     , argo == 0.2022.2.27
     , array ^>= 0.5.4
     , bytestring ^>= 0.10.12
-    , containers ^>= 0.6.5
+    , containers ^>= 0.6.4
     , filepath ^>= 1.4.2
     , http-client ^>= 0.7.11
     , http-client-tls ^>= 0.3.6
-    , text ^>= 1.2.4
+    , text ^>= 1.2.5
     , transformers ^>= 0.5.6
   exposed-modules:
     Paths_rattletrap

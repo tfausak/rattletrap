@@ -6,4 +6,5 @@
 *.tix
 /dist-newstyle/
 /.vscode/
-/cabal.project.local
+/cabal.project.freeze
+/cabal.project.local*
