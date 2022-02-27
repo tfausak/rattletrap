@@ -18,7 +18,7 @@ data Cache = Cache
 instance Argo.HasCodec Cache where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Cache
       <$> Argo.required classId "class_id"
       <*> Argo.required parentCacheId "parent_cache_id"

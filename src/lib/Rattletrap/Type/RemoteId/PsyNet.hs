@@ -19,7 +19,7 @@ instance Argo.HasCodec PsyNet where
         New y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "Left"
     , Argo.mapMaybe
       (\(a, b, c, d) -> Just $ Old a b c d)
@@ -27,7 +27,7 @@ instance Argo.HasCodec PsyNet where
         Old a b c d -> Just (a, b, c, d)
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "Right"
     ]
 

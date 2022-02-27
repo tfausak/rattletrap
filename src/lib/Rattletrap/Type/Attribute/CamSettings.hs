@@ -21,7 +21,7 @@ data CamSettings = CamSettings
 instance Argo.HasCodec CamSettings where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ CamSettings
       <$> Argo.required fov "fov"
       <*> Argo.required height "height"

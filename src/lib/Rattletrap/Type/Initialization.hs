@@ -21,7 +21,7 @@ data Initialization = Initialization
 instance Argo.HasCodec Initialization where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Initialization
       <$> Argo.optional location "location"
       <*> Argo.optional rotation "rotation"

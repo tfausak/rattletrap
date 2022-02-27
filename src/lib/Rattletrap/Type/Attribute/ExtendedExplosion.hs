@@ -16,7 +16,7 @@ data ExtendedExplosion = ExtendedExplosion
 instance Argo.HasCodec ExtendedExplosion where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ ExtendedExplosion
       <$> Argo.required explosion "explosion"
       <*> Argo.required unknown "unknown"

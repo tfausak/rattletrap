@@ -20,7 +20,7 @@ instance Argo.HasCodec Rotation where
         CompressedWordVector y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "compressed_word_vector"
     , Argo.mapMaybe
       (Just . Quaternion)
@@ -28,7 +28,7 @@ instance Argo.HasCodec Rotation where
         Quaternion y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "quaternion"
     ]
 

@@ -16,7 +16,7 @@ data Int8Vector = Int8Vector
 instance Argo.HasCodec Int8Vector where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Int8Vector
       <$> Argo.optional x "x"
       <*> Argo.optional y "y"

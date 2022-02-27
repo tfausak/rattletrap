@@ -26,7 +26,7 @@ data Frame = Frame
 instance Argo.HasCodec Frame where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Frame
       <$> Argo.required time "time"
       <*> Argo.required delta "delta"

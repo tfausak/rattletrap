@@ -18,7 +18,7 @@ data Property = Property
 instance Argo.HasCodec Property where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Property
       <$> Argo.required kind "kind"
       <*> Argo.required size "size"

@@ -19,7 +19,7 @@ data AppliedDamage = AppliedDamage
 instance Argo.HasCodec AppliedDamage where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ AppliedDamage
       <$> Argo.required unknown1 "unknown1"
       <*> Argo.required location "location"

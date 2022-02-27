@@ -20,7 +20,7 @@ data Quaternion = Quaternion
 instance Argo.HasCodec Quaternion where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Quaternion
       <$> Argo.required x "x"
       <*> Argo.required y "y"

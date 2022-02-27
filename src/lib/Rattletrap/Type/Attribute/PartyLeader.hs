@@ -20,7 +20,7 @@ instance Argo.HasCodec PartyLeader where
       . Argo.map
           (\(x, y) -> PartyLeader x (fmap fst y) (fmap snd y))
           (\x -> (systemId x, (,) <$> remoteId x <*> localId x))
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ (,)
       <$> Argo.required fst "system_id"
       <*> Argo.optional snd "id"

@@ -31,7 +31,7 @@ instance Argo.HasCodec ProductValue where
         PaintedOld y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "painted_old"
     , Argo.mapMaybe
       (Just . PaintedNew)
@@ -39,7 +39,7 @@ instance Argo.HasCodec ProductValue where
         PaintedNew y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "painted_new"
     , Argo.mapMaybe
       (Just . TeamEditionOld)
@@ -47,7 +47,7 @@ instance Argo.HasCodec ProductValue where
         TeamEditionOld y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "team_edition_old"
     , Argo.mapMaybe
       (Just . TeamEditionNew)
@@ -55,7 +55,7 @@ instance Argo.HasCodec ProductValue where
         TeamEditionNew y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "team_edition_new"
     , Argo.mapMaybe
       (Just . SpecialEdition)
@@ -63,7 +63,7 @@ instance Argo.HasCodec ProductValue where
         SpecialEdition y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "special_edition"
     , Argo.mapMaybe
       (Just . UserColorOld)
@@ -71,7 +71,7 @@ instance Argo.HasCodec ProductValue where
         UserColorOld y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "user_color_old"
     , Argo.mapMaybe
       (Just . UserColorNew)
@@ -79,7 +79,7 @@ instance Argo.HasCodec ProductValue where
         UserColorNew y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "user_color_new"
     , Argo.mapMaybe
       (Just . TitleId)
@@ -87,7 +87,7 @@ instance Argo.HasCodec ProductValue where
         TitleId y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "title_id"
     ]
 

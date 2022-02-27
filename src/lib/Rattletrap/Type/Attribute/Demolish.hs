@@ -20,7 +20,7 @@ data Demolish = Demolish
 instance Argo.HasCodec Demolish where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Demolish
       <$> Argo.required attackerFlag "attacker_flag"
       <*> Argo.required attackerActorId "attacker_actor_id"

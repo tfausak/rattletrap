@@ -25,7 +25,7 @@ data Vector = Vector
 instance Argo.HasCodec Vector where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Vector
       <$> Argo.required size "size"
       <*> Argo.required bias "bias"

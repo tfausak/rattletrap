@@ -36,7 +36,7 @@ data Spawned = Spawned
 instance Argo.HasCodec Spawned where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Spawned
       <$> Argo.required flag "flag"
       <*> Argo.optional nameIndex "name_index"

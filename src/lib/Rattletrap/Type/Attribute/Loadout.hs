@@ -32,7 +32,7 @@ data Loadout = Loadout
 instance Argo.HasCodec Loadout where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Loadout
       <$> Argo.required version "version"
       <*> Argo.required body "body"

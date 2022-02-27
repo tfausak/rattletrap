@@ -33,7 +33,7 @@ instance Argo.HasCodec RemoteId where
         PlayStation y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "play_station"
     , Argo.mapMaybe
       (Just . PsyNet)
@@ -41,7 +41,7 @@ instance Argo.HasCodec RemoteId where
         PsyNet y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "psy_net"
     , Argo.mapMaybe
       (Just . Splitscreen)
@@ -49,7 +49,7 @@ instance Argo.HasCodec RemoteId where
         Splitscreen y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "splitscreen"
     , Argo.mapMaybe
       (Just . Steam)
@@ -57,7 +57,7 @@ instance Argo.HasCodec RemoteId where
         Steam y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "steam"
     , Argo.mapMaybe
       (Just . Switch)
@@ -65,7 +65,7 @@ instance Argo.HasCodec RemoteId where
         Switch y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "switch"
     , Argo.mapMaybe
       (Just . Xbox)
@@ -73,7 +73,7 @@ instance Argo.HasCodec RemoteId where
         Xbox y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "xbox"
     , Argo.mapMaybe
       (Just . Epic)
@@ -81,7 +81,7 @@ instance Argo.HasCodec RemoteId where
         Epic y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "epic"
     ]
 

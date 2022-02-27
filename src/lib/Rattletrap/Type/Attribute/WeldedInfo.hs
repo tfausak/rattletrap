@@ -21,7 +21,7 @@ data WeldedInfo = WeldedInfo
 instance Argo.HasCodec WeldedInfo where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ WeldedInfo
       <$> Argo.required active "active"
       <*> Argo.required actorId "actor_id"

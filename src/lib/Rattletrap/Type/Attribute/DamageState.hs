@@ -21,7 +21,7 @@ data DamageState = DamageState
 instance Argo.HasCodec DamageState where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ DamageState
       <$> Argo.required unknown1 "unknown1"
       <*> Argo.required unknown2 "unknown2"

@@ -69,7 +69,7 @@ instance Argo.HasCodec Header where
             , properties x
             )
           )
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ (,,,,)
       <$> Argo.required (\(x, _, _, _, _) -> x) "engine_version"
       <*> Argo.required (\(_, x, _, _, _) -> x) "licensee_version"

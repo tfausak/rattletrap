@@ -26,7 +26,7 @@ data Section a = Section
 instance Argo.HasCodec a => Argo.HasCodec (Section a) where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Section
       <$> Argo.required size "size"
       <*> Argo.required crc "crc"

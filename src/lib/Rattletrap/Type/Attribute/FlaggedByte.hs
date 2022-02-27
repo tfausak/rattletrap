@@ -14,7 +14,7 @@ data FlaggedByte = FlaggedByte
 instance Argo.HasCodec FlaggedByte where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ FlaggedByte
       <$> Argo.required flag "flag"
       <*> Argo.required byte "byte"

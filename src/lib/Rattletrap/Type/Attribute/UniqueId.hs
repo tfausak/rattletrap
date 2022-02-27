@@ -17,7 +17,7 @@ data UniqueId = UniqueId
 instance Argo.HasCodec UniqueId where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ UniqueId
       <$> Argo.required systemId "system_id"
       <*> Argo.required remoteId "remote_id"

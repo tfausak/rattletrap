@@ -32,7 +32,7 @@ data ReplayWith header content = Replay
 instance (Argo.HasCodec h, Argo.HasCodec c) => Argo.HasCodec (ReplayWith h c) where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Replay
       <$> Argo.required header "header"
       <*> Argo.required content "content"

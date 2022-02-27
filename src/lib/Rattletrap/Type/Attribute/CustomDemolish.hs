@@ -18,7 +18,7 @@ data CustomDemolish = CustomDemolish
 instance Argo.HasCodec CustomDemolish where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ CustomDemolish
       <$> Argo.required flag "flag"
       <*> Argo.required id "id"

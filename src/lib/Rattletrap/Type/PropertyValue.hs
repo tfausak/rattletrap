@@ -37,7 +37,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
         Array y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "array"
     , Argo.mapMaybe
       (Just . Bool)
@@ -45,7 +45,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
         Bool y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "bool"
     , Argo.mapMaybe
       (Just . Byte)
@@ -53,7 +53,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
         Byte y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "byte"
     , Argo.mapMaybe
       (Just . Float)
@@ -61,7 +61,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
         Float y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "float"
     , Argo.mapMaybe
       (Just . Int)
@@ -69,7 +69,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
         Int y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "int"
     , Argo.mapMaybe
       (Just . Name)
@@ -77,7 +77,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
         Name y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "name"
     , Argo.mapMaybe
       (Just . QWord)
@@ -85,7 +85,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
         QWord y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "q_word"
     , Argo.mapMaybe
       (Just . Str)
@@ -93,7 +93,7 @@ instance Argo.HasCodec a => Argo.HasCodec (PropertyValue a) where
         Str y -> Just y
         _ -> Nothing
       )
-    . Argo.fromObjectCodec Argo.Allow
+    . Argo.fromObjectCodec Argo.Forbid
     $ Argo.required id "str"
     ]
 

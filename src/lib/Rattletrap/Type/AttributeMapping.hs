@@ -14,7 +14,7 @@ data AttributeMapping = AttributeMapping
 instance Argo.HasCodec AttributeMapping where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ AttributeMapping
       <$> Argo.required objectId "object_id"
       <*> Argo.required streamId "stream_id"

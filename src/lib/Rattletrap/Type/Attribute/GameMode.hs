@@ -19,7 +19,7 @@ data GameMode = GameMode
 instance Argo.HasCodec GameMode where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ GameMode
       <$> Argo.required numBits "num_bits"
       <*> Argo.required word "word"

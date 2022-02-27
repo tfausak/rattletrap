@@ -31,14 +31,15 @@ instance Argo.HasCodec ReplicationValue where
             Spawned y -> Just y
             _ -> Nothing
           )
-          (Argo.fromObjectCodec Argo.Allow (Argo.required id "spawned"))
+          (Argo.fromObjectCodec Argo.Forbid (Argo.required id "spawned"))
       Argo.<|> Argo.mapMaybe
                  (Just . Updated)
                  (\x -> case x of
                    Updated y -> Just y
                    _ -> Nothing
                  )
-                 (Argo.fromObjectCodec Argo.Allow (Argo.required id "updated"))
+                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "updated")
+                 )
       Argo.<|> Argo.mapMaybe
                  (Just . Destroyed)
                  (\x -> case x of
@@ -46,7 +47,7 @@ instance Argo.HasCodec ReplicationValue where
                    _ -> Nothing
                  )
                  (Argo.fromObjectCodec
-                   Argo.Allow
+                   Argo.Forbid
                    (Argo.required id "destroyed")
                  )
 

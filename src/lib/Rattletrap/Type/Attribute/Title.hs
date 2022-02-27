@@ -20,7 +20,7 @@ data Title = Title
 instance Argo.HasCodec Title where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Title
       <$> Argo.required unknown1 "unknown1"
       <*> Argo.required unknown2 "unknown2"

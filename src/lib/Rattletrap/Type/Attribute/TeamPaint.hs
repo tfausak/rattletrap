@@ -18,7 +18,7 @@ data TeamPaint = TeamPaint
 instance Argo.HasCodec TeamPaint where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ TeamPaint
       <$> Argo.required team "team"
       <*> Argo.required primaryColor "primary_color"

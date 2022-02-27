@@ -62,7 +62,7 @@ data ContentWith frames = Content
 instance Argo.HasCodec f => Argo.HasCodec (ContentWith f) where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Content
       <$> Argo.required levels "levels"
       <*> Argo.required keyframes "key_frames"

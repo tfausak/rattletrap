@@ -20,7 +20,7 @@ data RigidBodyState = RigidBodyState
 instance Argo.HasCodec RigidBodyState where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ RigidBodyState
       <$> Argo.required sleeping "sleeping"
       <*> Argo.required location "location"

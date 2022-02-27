@@ -34,7 +34,7 @@ instance Argo.HasCodec a => Argo.HasCodec (Dictionary a) where
             , Map.mapKeys Str.toText . Map.fromList . List.toList $ elements x
             )
           )
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ (,,)
       <$> Argo.required (\(x, _, _) -> x) "keys"
       <*> Argo.required (\(_, x, _) -> x) "last_key"

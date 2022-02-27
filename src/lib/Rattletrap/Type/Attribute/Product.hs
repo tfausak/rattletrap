@@ -23,7 +23,7 @@ data Product = Product
 instance Argo.HasCodec Product where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Product
       <$> Argo.required unknown "unknown"
       <*> Argo.required objectId "object_id"

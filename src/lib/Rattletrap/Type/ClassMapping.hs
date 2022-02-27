@@ -15,7 +15,7 @@ data ClassMapping = ClassMapping
 instance Argo.HasCodec ClassMapping where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ ClassMapping
       <$> Argo.required name "name"
       <*> Argo.required streamId "stream_id"

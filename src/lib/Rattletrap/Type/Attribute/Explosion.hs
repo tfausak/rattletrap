@@ -17,7 +17,7 @@ data Explosion = Explosion
 instance Argo.HasCodec Explosion where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Explosion
       <$> Argo.required flag "flag"
       <*> Argo.required actorId "actor_id"

@@ -14,7 +14,7 @@ data StatEvent = StatEvent
 instance Argo.HasCodec StatEvent where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ StatEvent
       <$> Argo.required unknown "unknown"
       <*> Argo.required objectId "object_id"

@@ -16,7 +16,7 @@ data PickupNew = PickupNew
 instance Argo.HasCodec PickupNew where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ PickupNew
       <$> Argo.optional instigatorId "instigator_id"
       <*> Argo.required pickedUp "picked_up"

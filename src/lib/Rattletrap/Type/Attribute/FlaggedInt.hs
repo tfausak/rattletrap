@@ -14,7 +14,7 @@ data FlaggedInt = FlaggedInt
 instance Argo.HasCodec FlaggedInt where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ FlaggedInt
       <$> Argo.required flag "flag"
       <*> Argo.required int "int"

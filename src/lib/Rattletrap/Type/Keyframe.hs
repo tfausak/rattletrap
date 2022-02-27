@@ -19,7 +19,7 @@ data Keyframe = Keyframe
 instance Argo.HasCodec Keyframe where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Keyframe
       <$> Argo.required time "time"
       <*> Argo.required frame "frame"

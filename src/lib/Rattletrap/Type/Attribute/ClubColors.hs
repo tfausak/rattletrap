@@ -16,7 +16,7 @@ data ClubColors = ClubColors
 instance Argo.HasCodec ClubColors where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ ClubColors
       <$> Argo.required blueFlag "blue_flag"
       <*> Argo.required blueColor "blue_color"

@@ -20,7 +20,7 @@ data LoadoutsOnline = LoadoutsOnline
 instance Argo.HasCodec LoadoutsOnline where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ LoadoutsOnline
       <$> Argo.required blue "blue"
       <*> Argo.required orange "orange"

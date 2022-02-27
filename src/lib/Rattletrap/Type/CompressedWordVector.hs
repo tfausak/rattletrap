@@ -15,7 +15,7 @@ data CompressedWordVector = CompressedWordVector
 instance Argo.HasCodec CompressedWordVector where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ CompressedWordVector
       <$> Argo.required x "x"
       <*> Argo.required y "y"

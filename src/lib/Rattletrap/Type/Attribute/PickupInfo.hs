@@ -20,7 +20,7 @@ data PickupInfo = PickupInfo
 instance Argo.HasCodec PickupInfo where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ PickupInfo
       <$> Argo.required unknown1 "unknown1"
       <*> Argo.required unknown2 "unknown2"

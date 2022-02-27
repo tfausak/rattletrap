@@ -28,7 +28,7 @@ data Attribute = Attribute
 instance Argo.HasCodec Attribute where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Attribute
       <$> Argo.required id "id"
       <*> Argo.required name "name"

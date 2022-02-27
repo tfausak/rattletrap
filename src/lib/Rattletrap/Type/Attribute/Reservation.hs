@@ -24,7 +24,7 @@ data Reservation = Reservation
 instance Argo.HasCodec Reservation where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Reservation
       <$> Argo.required number "number"
       <*> Argo.required uniqueId "unique_id"

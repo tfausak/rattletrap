@@ -16,7 +16,7 @@ data CompressedWord = CompressedWord
 instance Argo.HasCodec CompressedWord where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ CompressedWord
       <$> Argo.required limit "limit"
       <*> Argo.required value "value"

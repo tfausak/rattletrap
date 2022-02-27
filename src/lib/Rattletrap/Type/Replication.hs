@@ -21,7 +21,7 @@ data Replication = Replication
 instance Argo.HasCodec Replication where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ Replication
       <$> Argo.required actorId "actor_id"
       <*> Argo.required value "value"

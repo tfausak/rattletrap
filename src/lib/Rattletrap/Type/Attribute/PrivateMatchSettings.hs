@@ -19,7 +19,7 @@ data PrivateMatchSettings = PrivateMatchSettings
 instance Argo.HasCodec PrivateMatchSettings where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ PrivateMatchSettings
       <$> Argo.required mutators "mutators"
       <*> Argo.required joinableBy "joinable_by"

@@ -16,7 +16,7 @@ data MusicStinger = MusicStinger
 instance Argo.HasCodec MusicStinger where
   codec =
     Argo.identified
-      . Argo.fromObjectCodec Argo.Allow
+      . Argo.fromObjectCodec Argo.Forbid
       $ MusicStinger
       <$> Argo.required flag "flag"
       <*> Argo.required cue "cue"
