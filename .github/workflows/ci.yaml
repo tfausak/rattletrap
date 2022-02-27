@@ -63,7 +63,6 @@ jobs:
       - uses: svenstaro/upx-action@v2
         with:
           file: artifact/${{ matrix.os }}/rattletrap
-          args: --best
 
       - run: cp output/schema.json artifact/${{ matrix.os }}
 
