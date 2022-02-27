@@ -91,355 +91,274 @@ data AttributeValue
   deriving (Eq, Show)
 
 instance Argo.HasCodec AttributeValue where
-  codec =
-    Argo.identified
-      $ Argo.mapMaybe
-          (Just . AppliedDamage)
-          (\x -> case x of
-            AppliedDamage y -> Just y
-            _ -> Nothing
-          )
-          (Argo.fromObjectCodec Argo.Forbid (Argo.required id "applied_damage")
-          )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Boolean)
-                 (\x -> case x of
-                   Boolean y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "boolean")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Byte)
-                 (\x -> case x of
-                   Byte y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "byte"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . CamSettings)
-                 (\x -> case x of
-                   CamSettings y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "cam_settings")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . ClubColors)
-                 (\x -> case x of
-                   ClubColors y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "club_colors")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . CustomDemolish)
-                 (\x -> case x of
-                   CustomDemolish y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "custom_demolish")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . DamageState)
-                 (\x -> case x of
-                   DamageState y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "damage_state")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Demolish)
-                 (\x -> case x of
-                   Demolish y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "demolish")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Enum)
-                 (\x -> case x of
-                   Enum y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "enum"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . Explosion)
-                 (\x -> case x of
-                   Explosion y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "explosion")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . ExtendedExplosion)
-                 (\x -> case x of
-                   ExtendedExplosion y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "extended_explosion")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . FlaggedInt)
-                 (\x -> case x of
-                   FlaggedInt y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "flagged_int")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . FlaggedByte)
-                 (\x -> case x of
-                   FlaggedByte y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "flagged_byte")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Float)
-                 (\x -> case x of
-                   Float y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "float"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . GameMode)
-                 (\x -> case x of
-                   GameMode y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "game_mode")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Int)
-                 (\x -> case x of
-                   Int y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "int"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . Int64)
-                 (\x -> case x of
-                   Int64 y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "int64"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . Loadout)
-                 (\x -> case x of
-                   Loadout y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "loadout")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . LoadoutOnline)
-                 (\x -> case x of
-                   LoadoutOnline y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "loadout_online")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Loadouts)
-                 (\x -> case x of
-                   Loadouts y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "loadouts")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . LoadoutsOnline)
-                 (\x -> case x of
-                   LoadoutsOnline y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "loadouts_online")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Location)
-                 (\x -> case x of
-                   Location y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "location")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . MusicStinger)
-                 (\x -> case x of
-                   MusicStinger y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "music_stinger")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . PartyLeader)
-                 (\x -> case x of
-                   PartyLeader y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "party_leader")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Pickup)
-                 (\x -> case x of
-                   Pickup y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "pickup"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . PickupInfo)
-                 (\x -> case x of
-                   PickupInfo y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "pickup_info")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . PickupNew)
-                 (\x -> case x of
-                   PickupNew y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "pickup_new")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . PlayerHistoryKey)
-                 (\x -> case x of
-                   PlayerHistoryKey y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "player_history_key")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . PrivateMatchSettings)
-                 (\x -> case x of
-                   PrivateMatchSettings y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "private_match_settings")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . QWord)
-                 (\x -> case x of
-                   QWord y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "q_word"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . Reservation)
-                 (\x -> case x of
-                   Reservation y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "reservation")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . RigidBodyState)
-                 (\x -> case x of
-                   RigidBodyState y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "rigid_body_state")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . StatEvent)
-                 (\x -> case x of
-                   StatEvent y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "stat_event")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . String)
-                 (\x -> case x of
-                   String y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "string"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . TeamPaint)
-                 (\x -> case x of
-                   TeamPaint y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "team_paint")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Title)
-                 (\x -> case x of
-                   Title y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "title"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . UniqueId)
-                 (\x -> case x of
-                   UniqueId y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "unique_id")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . WeldedInfo)
-                 (\x -> case x of
-                   WeldedInfo y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "welded_info")
-                 )
+  codec = Argo.identified $ Argo.oneOf
+    [ Argo.mapMaybe
+      (Just . AppliedDamage)
+      (\x -> case x of
+        AppliedDamage y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "applied_damage"
+    , Argo.mapMaybe
+      (Just . Boolean)
+      (\x -> case x of
+        Boolean y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "boolean"
+    , Argo.mapMaybe
+      (Just . Byte)
+      (\x -> case x of
+        Byte y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "byte"
+    , Argo.mapMaybe
+      (Just . CamSettings)
+      (\x -> case x of
+        CamSettings y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "cam_settings"
+    , Argo.mapMaybe
+      (Just . ClubColors)
+      (\x -> case x of
+        ClubColors y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "club_colors"
+    , Argo.mapMaybe
+      (Just . CustomDemolish)
+      (\x -> case x of
+        CustomDemolish y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "custom_demolish"
+    , Argo.mapMaybe
+      (Just . DamageState)
+      (\x -> case x of
+        DamageState y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "damage_state"
+    , Argo.mapMaybe
+      (Just . Demolish)
+      (\x -> case x of
+        Demolish y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "demolish"
+    , Argo.mapMaybe
+      (Just . Enum)
+      (\x -> case x of
+        Enum y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "enum"
+    , Argo.mapMaybe
+      (Just . Explosion)
+      (\x -> case x of
+        Explosion y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "explosion"
+    , Argo.mapMaybe
+      (Just . ExtendedExplosion)
+      (\x -> case x of
+        ExtendedExplosion y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "extended_explosion"
+    , Argo.mapMaybe
+      (Just . FlaggedInt)
+      (\x -> case x of
+        FlaggedInt y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "flagged_int"
+    , Argo.mapMaybe
+      (Just . FlaggedByte)
+      (\x -> case x of
+        FlaggedByte y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "flagged_byte"
+    , Argo.mapMaybe
+      (Just . Float)
+      (\x -> case x of
+        Float y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "float"
+    , Argo.mapMaybe
+      (Just . GameMode)
+      (\x -> case x of
+        GameMode y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "game_mode"
+    , Argo.mapMaybe
+      (Just . Int)
+      (\x -> case x of
+        Int y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "int"
+    , Argo.mapMaybe
+      (Just . Int64)
+      (\x -> case x of
+        Int64 y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "int64"
+    , Argo.mapMaybe
+      (Just . Loadout)
+      (\x -> case x of
+        Loadout y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "loadout"
+    , Argo.mapMaybe
+      (Just . LoadoutOnline)
+      (\x -> case x of
+        LoadoutOnline y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "loadout_online"
+    , Argo.mapMaybe
+      (Just . Loadouts)
+      (\x -> case x of
+        Loadouts y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "loadouts"
+    , Argo.mapMaybe
+      (Just . LoadoutsOnline)
+      (\x -> case x of
+        LoadoutsOnline y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "loadouts_online"
+    , Argo.mapMaybe
+      (Just . Location)
+      (\x -> case x of
+        Location y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "location"
+    , Argo.mapMaybe
+      (Just . MusicStinger)
+      (\x -> case x of
+        MusicStinger y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "music_stinger"
+    , Argo.mapMaybe
+      (Just . PartyLeader)
+      (\x -> case x of
+        PartyLeader y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "party_leader"
+    , Argo.mapMaybe
+      (Just . Pickup)
+      (\x -> case x of
+        Pickup y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "pickup"
+    , Argo.mapMaybe
+      (Just . PickupInfo)
+      (\x -> case x of
+        PickupInfo y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "pickup_info"
+    , Argo.mapMaybe
+      (Just . PickupNew)
+      (\x -> case x of
+        PickupNew y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "pickup_new"
+    , Argo.mapMaybe
+      (Just . PlayerHistoryKey)
+      (\x -> case x of
+        PlayerHistoryKey y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "player_history_key"
+    , Argo.mapMaybe
+      (Just . PrivateMatchSettings)
+      (\x -> case x of
+        PrivateMatchSettings y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "private_match_settings"
+    , Argo.mapMaybe
+      (Just . QWord)
+      (\x -> case x of
+        QWord y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "q_word"
+    , Argo.mapMaybe
+      (Just . Reservation)
+      (\x -> case x of
+        Reservation y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "reservation"
+    , Argo.mapMaybe
+      (Just . RigidBodyState)
+      (\x -> case x of
+        RigidBodyState y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "rigid_body_state"
+    , Argo.mapMaybe
+      (Just . StatEvent)
+      (\x -> case x of
+        StatEvent y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "stat_event"
+    , Argo.mapMaybe
+      (Just . String)
+      (\x -> case x of
+        String y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "string"
+    , Argo.mapMaybe
+      (Just . TeamPaint)
+      (\x -> case x of
+        TeamPaint y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "team_paint"
+    , Argo.mapMaybe
+      (Just . Title)
+      (\x -> case x of
+        Title y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "title"
+    , Argo.mapMaybe
+      (Just . UniqueId)
+      (\x -> case x of
+        UniqueId y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "unique_id"
+    , Argo.mapMaybe
+      (Just . WeldedInfo)
+      (\x -> case x of
+        WeldedInfo y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "welded_info"
+    ]
 
 bitPut :: AttributeValue -> BitPut.BitPut
 bitPut value = case value of

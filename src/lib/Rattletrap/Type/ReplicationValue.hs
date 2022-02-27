@@ -23,33 +23,29 @@ data ReplicationValue
   deriving (Eq, Show)
 
 instance Argo.HasCodec ReplicationValue where
-  codec =
-    Argo.identified
-      $ Argo.mapMaybe
-          (Just . Spawned)
-          (\x -> case x of
-            Spawned y -> Just y
-            _ -> Nothing
-          )
-          (Argo.fromObjectCodec Argo.Forbid (Argo.required id "spawned"))
-      Argo.<|> Argo.mapMaybe
-                 (Just . Updated)
-                 (\x -> case x of
-                   Updated y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec Argo.Forbid (Argo.required id "updated")
-                 )
-      Argo.<|> Argo.mapMaybe
-                 (Just . Destroyed)
-                 (\x -> case x of
-                   Destroyed y -> Just y
-                   _ -> Nothing
-                 )
-                 (Argo.fromObjectCodec
-                   Argo.Forbid
-                   (Argo.required id "destroyed")
-                 )
+  codec = Argo.identified $ Argo.oneOf
+    [ Argo.mapMaybe
+      (Just . Spawned)
+      (\x -> case x of
+        Spawned y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "spawned"
+    , Argo.mapMaybe
+      (Just . Updated)
+      (\x -> case x of
+        Updated y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "updated"
+    , Argo.mapMaybe
+      (Just . Destroyed)
+      (\x -> case x of
+        Destroyed y -> Just y
+        _ -> Nothing
+      )
+      . Argo.fromObjectCodec Argo.Forbid $ Argo.required id "destroyed"
+    ]
 
 bitPut :: ReplicationValue -> BitPut.BitPut
 bitPut value = case value of
