@@ -7,7 +7,7 @@ import qualified Text.Printf as Printf
 
 main :: IO ()
 main = do
-  let directory = "output"
+  let directory = "output" :: FilePath
   generateSchema directory
   mapM_ (testReplay directory) replays
 
