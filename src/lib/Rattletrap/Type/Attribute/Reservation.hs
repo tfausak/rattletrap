@@ -28,7 +28,7 @@ instance Argo.HasCodec Reservation where
       $ Reservation
       <$> Argo.project number (Argo.required "number" Argo.codec)
       <*> Argo.project uniqueId (Argo.required "unique_id" Argo.codec)
-      <*> Argo.project name (Argo.optional "name" Argo.codec)
+      <*> Argo.optional name "name"
       <*> Argo.project unknown1 (Argo.required "unknow1n" Argo.codec)
       <*> Argo.project unknown2 (Argo.required "unknown2" Argo.codec)
       <*> Argo.project unknown3 (Argo.required "unknown3" Argo.codec)

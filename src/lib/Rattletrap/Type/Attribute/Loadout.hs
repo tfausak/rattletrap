@@ -42,17 +42,15 @@ instance Argo.HasCodec Loadout where
       <*> Argo.project antenna (Argo.required "antenna" Argo.codec)
       <*> Argo.project topper (Argo.required "topper" Argo.codec)
       <*> Argo.project unknown1 (Argo.required "unknown1" Argo.codec)
-      <*> Argo.project unknown2 (Argo.optional "unknown2" Argo.codec)
-      <*> Argo.project engineAudio (Argo.optional "engine_audio" Argo.codec)
-      <*> Argo.project trail (Argo.optional "trail" Argo.codec)
-      <*> Argo.project
-            goalExplosion
-            (Argo.optional "goal_explosion" Argo.codec)
-      <*> Argo.project banner (Argo.optional "banner" Argo.codec)
-      <*> Argo.project unknown3 (Argo.optional "unknown3" Argo.codec)
-      <*> Argo.project unknown4 (Argo.optional "unknown4" Argo.codec)
-      <*> Argo.project unknown5 (Argo.optional "unknown5" Argo.codec)
-      <*> Argo.project unknown6 (Argo.optional "unknown6" Argo.codec)
+      <*> Argo.optional unknown2 "unknown2"
+      <*> Argo.optional engineAudio "engine_audio"
+      <*> Argo.optional trail "trail"
+      <*> Argo.optional goalExplosion "goal_explosion"
+      <*> Argo.optional banner "banner"
+      <*> Argo.optional unknown3 "unknown3"
+      <*> Argo.optional unknown4 "unknown4"
+      <*> Argo.optional unknown5 "unknown5"
+      <*> Argo.optional unknown6 "unknown6"
 
 bitPut :: Loadout -> BitPut.BitPut
 bitPut loadoutAttribute =

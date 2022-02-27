@@ -39,8 +39,8 @@ instance Argo.HasCodec Spawned where
       . Argo.fromObjectCodec Argo.Allow
       $ Spawned
       <$> Argo.project flag (Argo.required "flag" Argo.codec)
-      <*> Argo.project nameIndex (Argo.optional "name_index" Argo.codec)
-      <*> Argo.project name (Argo.optional "name" Argo.codec)
+      <*> Argo.optional nameIndex "name_index"
+      <*> Argo.optional name "name"
       <*> Argo.project objectId (Argo.required "object_id" Argo.codec)
       <*> Argo.project objectName (Argo.required "object_name" Argo.codec)
       <*> Argo.project className (Argo.required "class_name" Argo.codec)

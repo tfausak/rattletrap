@@ -25,12 +25,8 @@ instance Argo.HasCodec RigidBodyState where
       <$> Argo.project sleeping (Argo.required "sleeping" Argo.codec)
       <*> Argo.project location (Argo.required "location" Argo.codec)
       <*> Argo.project rotation (Argo.required "rotation" Argo.codec)
-      <*> Argo.project
-            linearVelocity
-            (Argo.optional "linear_velocity" Argo.codec)
-      <*> Argo.project
-            angularVelocity
-            (Argo.optional "angular_velocity" Argo.codec)
+      <*> Argo.optional linearVelocity "linear_velocity"
+      <*> Argo.optional angularVelocity "angular_velocity"
 
 bitPut :: RigidBodyState -> BitPut.BitPut
 bitPut rigidBodyStateAttribute =

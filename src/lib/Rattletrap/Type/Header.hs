@@ -77,9 +77,7 @@ instance Argo.HasCodec Header where
       <*> Argo.project
             (\(_, x, _, _, _) -> x)
             (Argo.required "licensee_version" Argo.codec)
-      <*> Argo.project
-            (\(_, _, x, _, _) -> x)
-            (Argo.optional "patch_version" Argo.codec)
+      <*> Argo.optional (\(_, _, x, _, _) -> x) "patch_version"
       <*> Argo.project
             (\(_, _, _, x, _) -> x)
             (Argo.required "label" Argo.codec)

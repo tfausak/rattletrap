@@ -23,8 +23,8 @@ instance Argo.HasCodec Initialization where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Initialization
-      <$> Argo.project location (Argo.optional "location" Argo.codec)
-      <*> Argo.project rotation (Argo.optional "rotation" Argo.codec)
+      <$> Argo.optional location "location"
+      <*> Argo.optional rotation "rotation"
 
 bitPut :: Initialization -> BitPut.BitPut
 bitPut initialization =

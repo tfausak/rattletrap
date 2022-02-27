@@ -18,9 +18,9 @@ instance Argo.HasCodec Int8Vector where
     Argo.identified
       . Argo.fromObjectCodec Argo.Allow
       $ Int8Vector
-      <$> Argo.project x (Argo.optional "x" Argo.codec)
-      <*> Argo.project y (Argo.optional "y" Argo.codec)
-      <*> Argo.project z (Argo.optional "z" Argo.codec)
+      <$> Argo.optional x "x"
+      <*> Argo.optional y "y"
+      <*> Argo.optional z "z"
 
 bitPut :: Int8Vector -> BitPut.BitPut
 bitPut int8Vector =

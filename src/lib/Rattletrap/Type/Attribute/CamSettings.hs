@@ -29,9 +29,7 @@ instance Argo.HasCodec CamSettings where
       <*> Argo.project distance (Argo.required "distance" Argo.codec)
       <*> Argo.project stiffness (Argo.required "stiffness" Argo.codec)
       <*> Argo.project swivelSpeed (Argo.required "swivel_speed" Argo.codec)
-      <*> Argo.project
-            transitionSpeed
-            (Argo.optional "transition_speed" Argo.codec)
+      <*> Argo.optional transitionSpeed "transition_speed"
 
 bitPut :: CamSettings -> BitPut.BitPut
 bitPut camSettingsAttribute =

@@ -5,7 +5,7 @@ module Rattletrap.Vendor.Argo
   , Argo.fromObjectCodec
   , Argo.project
   , Argo.Internal.Codec.Object.required
-  , optional
+  , Argo.optional
   , Argo.identified
   , Argo.withIdentifier
   , Argo.Identifier(..)
@@ -25,16 +25,6 @@ module Rattletrap.Vendor.Argo
   ) where
 
 import qualified Argo
-import qualified Argo.Internal.Class.HasCodec
 import qualified Argo.Internal.Codec.Array
 import qualified Argo.Internal.Codec.Object
-import qualified Argo.Internal.Codec.Value
 import qualified Control.Applicative
-import qualified Data.Typeable
-
-optional
-  :: Data.Typeable.Typeable a
-  => Argo.Name
-  -> Argo.Internal.Codec.Value.Value a
-  -> Argo.Internal.Codec.Object.Object (Maybe a)
-optional = Argo.Internal.Class.HasCodec.optionalNullable

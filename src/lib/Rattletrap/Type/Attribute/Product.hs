@@ -27,7 +27,7 @@ instance Argo.HasCodec Product where
       $ Product
       <$> Argo.project unknown (Argo.required "unknown" Argo.codec)
       <*> Argo.project objectId (Argo.required "object_id" Argo.codec)
-      <*> Argo.project objectName (Argo.optional "object_name" Argo.codec)
+      <*> Argo.optional objectName "object_name"
       <*> Argo.project value (Argo.required "value" Argo.codec)
 
 putProductAttributes :: List.List Product -> BitPut.BitPut
