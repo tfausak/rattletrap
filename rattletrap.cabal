@@ -20,6 +20,14 @@ flag pedantic
   default: False
   manual: True
 
+flag optimize
+  default: False
+  manual: True
+
+flag strict
+  default: False
+  manual: True
+
 common library
   build-depends: base ^>= 4.15.1
   default-extensions:
@@ -45,11 +53,17 @@ common library
   if flag(pedantic)
     ghc-options: -Werror
 
+  if flag(optimize)
+    ghc-options: -O2
+
+  if flag(strict)
+    default-extensions: Strict
+
 common executable
   import: library
 
   build-depends: rattletrap
-  ghc-options: -rtsopts -threaded
+  ghc-options: -rtsopts -threaded -with-rtsopts=-A32m
 
 library
   import: library
