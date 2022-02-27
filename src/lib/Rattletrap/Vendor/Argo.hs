@@ -1,20 +1,20 @@
 module Rattletrap.Vendor.Argo
   ( Argo.HasCodec(codec)
-  , Argo.Internal.Codec.Codec.map
-  , Argo.Internal.Codec.Codec.mapMaybe
-  , Argo.Internal.Codec.Object.fromObjectCodec
-  , Argo.Internal.Codec.Codec.project
+  , Argo.map
+  , Argo.mapMaybe
+  , Argo.fromObjectCodec
+  , Argo.project
   , Argo.Internal.Codec.Object.required
   , optional
-  , Argo.Internal.Codec.Value.identified
+  , Argo.identified
   , withIdentifier
-  , Argo.Internal.Schema.Identifier.Identifier(..)
-  , toValue
-  , Argo.Internal.Type.Permission.Permission(Allow, Forbid)
+  , Argo.Identifier(..)
+  , Argo.toValue
+  , Argo.Permission(Allow, Forbid)
   , (Control.Applicative.<|>)
-  , Argo.Internal.Codec.Array.fromArrayCodec
+  , Argo.fromArrayCodec
   , Argo.Internal.Codec.Array.element
-  , Argo.Internal.Codec.Codec.schema
+  , Argo.schema
   , Argo.decode
   , Argo.encode
   , Argo.encodeWith
@@ -27,11 +27,9 @@ module Rattletrap.Vendor.Argo
 import qualified Argo
 import qualified Argo.Internal.Class.HasCodec
 import qualified Argo.Internal.Codec.Array
-import qualified Argo.Internal.Codec.Codec
 import qualified Argo.Internal.Codec.Object
 import qualified Argo.Internal.Codec.Value
 import qualified Argo.Internal.Schema.Identifier
-import qualified Argo.Internal.Type.Permission
 import qualified Control.Applicative
 import qualified Data.Text
 import qualified Data.Typeable
@@ -42,9 +40,6 @@ optional
   -> Argo.Internal.Codec.Value.Value a
   -> Argo.Internal.Codec.Object.Object (Maybe a)
 optional = Argo.Internal.Class.HasCodec.optionalNullable
-
-toValue :: Argo.HasCodec a => a -> Argo.Value
-toValue = Argo.Internal.Codec.Value.encodeWith Argo.codec
 
 withIdentifier
   :: String
