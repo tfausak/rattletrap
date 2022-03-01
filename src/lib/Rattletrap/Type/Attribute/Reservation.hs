@@ -29,7 +29,7 @@ instance Argo.HasCodec Reservation where
       <$> Argo.required number "number"
       <*> Argo.required uniqueId "unique_id"
       <*> Argo.optional name "name"
-      <*> Argo.required unknown1 "unknow1n"
+      <*> Argo.required unknown1 "unknown1"
       <*> Argo.required unknown2 "unknown2"
       <*> Argo.required unknown3 "unknown3"
 
