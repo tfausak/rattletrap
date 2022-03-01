@@ -29,7 +29,7 @@ flag strict
   manual: True
 
 common library
-  build-depends: base ^>= 4.15.1
+  build-depends: base ^>= 4.15.0
   default-extensions:
     BangPatterns
     NamedFieldPuns
