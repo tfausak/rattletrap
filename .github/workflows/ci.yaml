@@ -12,34 +12,33 @@ on:
 jobs:
 
   hlint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: curl --location --output hlint.tar.gz https://github.com/ndmitchell/hlint/releases/download/v3.3.1/hlint-3.3.1-x86_64-linux.tar.gz
-      - run: gzip --decompress hlint.tar.gz
-      - run: tar --extract --file hlint.tar
-      - run: echo '::add-matcher::config/hlint-problem-matcher.json'
-      - run: hlint-3.3.1/hlint --hint config/hlint.yaml src
+      - uses: tfausak/hlint-action@v1
+        with:
+          config: config/hlint.yaml
 
   brittany:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: echo '::add-matcher::config/brittany-problem-matcher.json'
-      - run: git ls-files '*.hs' | xargs docker run --volume "$PWD:$PWD" --workdir "$PWD" itprotv/brittany:64830d767a4eb58aff4e1f1d72fcb489be367893 brittany --check-mode --config-file config/brittany.yaml
+      - uses: tfausak/brittany-action@v1
+        with:
+          config: config/brittany.yaml
 
   build:
     strategy:
       matrix:
         include:
-          - os: ubuntu-20.04
-            ghc: 9.0.1
-          - os: macos-11
-            ghc: 9.0.1
-          - os: windows-2019
-            ghc: 9.0.1
-    name: ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+          - platform: ubuntu
+            ghc: 9.2.2
+          - platform: macos
+            ghc: 9.2.2
+          - platform: windows
+            ghc: 9.2.2
+    name: ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform }}-latest
     steps:
 
       - uses: actions/checkout@v2
@@ -56,8 +55,8 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ${{ steps.setup-haskell.outputs.cabal-store }}
-          key: ${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}
-          restore-keys: ${{ matrix.os }}-${{ matrix.ghc }}-
+          key: ${{ matrix.platform }}-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}
+          restore-keys: ${{ matrix.platform }}-${{ matrix.ghc }}-
 
       - run: cabal build
 
@@ -71,18 +70,17 @@ jobs:
 
       - run: mkdir artifact
 
-      - run: mkdir artifact/${{ matrix.os }}
+      - run: mkdir artifact/${{ matrix.platform }}
 
-      - run: cabal sdist --output-dir artifact/${{ matrix.os }}
+      - run: cabal sdist --output-dir artifact/${{ matrix.platform }}
 
-      - run: cabal exec runghc src/util/copy-executable.hs artifact/${{ matrix.os }}
+      - run: cabal exec runghc src/util/copy-executable.hs artifact/${{ matrix.platform }}
 
       - uses: svenstaro/upx-action@v2
         with:
-          file: artifact/${{ matrix.os }}/rattletrap
-          args: --best
+          file: artifact/${{ matrix.platform }}/rattletrap
 
-      - run: cp output/schema.json artifact/${{ matrix.os }}
+      - run: cp output/schema.json artifact/${{ matrix.platform }}
 
       - uses: actions/upload-artifact@v2
         with:
@@ -91,7 +89,7 @@ jobs:
   release:
     needs: build
     if: github.event_name == 'release'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
 
       - uses: actions/checkout@v2
@@ -104,7 +102,7 @@ jobs:
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-ubuntu
-          asset_path: artifact/ubuntu-20.04/rattletrap
+          asset_path: artifact/ubuntu/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -113,7 +111,7 @@ jobs:
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-macos
-          asset_path: artifact/macos-11/rattletrap
+          asset_path: artifact/macos/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -122,7 +120,7 @@ jobs:
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-windows.exe
-          asset_path: artifact/windows-2019/rattletrap
+          asset_path: artifact/windows/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -131,7 +129,7 @@ jobs:
         with:
           asset_content_type: application/gzip
           asset_name: rattletrap-${{ github.event.release.tag_name }}.tar.gz
-          asset_path: artifact/ubuntu-20.04/rattletrap-${{ github.event.release.tag_name }}.tar.gz
+          asset_path: artifact/ubuntu/rattletrap-${{ github.event.release.tag_name }}.tar.gz
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -140,12 +138,12 @@ jobs:
         with:
           asset_content_type: application/json
           asset_name: rattletrap-${{ github.event.release.tag_name }}-schema.json
-          asset_path: artifact/ubuntu-20.04/schema.json
+          asset_path: artifact/ubuntu/schema.json
           upload_url: ${{ github.event.release.upload_url }}
 
-      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' artifact/ubuntu-20.04/rattletrap-${{ github.event.release.tag_name }}.tar.gz
+      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' artifact/ubuntu/rattletrap-${{ github.event.release.tag_name }}.tar.gz
 
-      - run: mv artifact/ubuntu-20.04/rattletrap docker/rattletrap
+      - run: mv artifact/ubuntu/rattletrap docker/rattletrap
 
       - uses: docker/setup-buildx-action@v1
 
