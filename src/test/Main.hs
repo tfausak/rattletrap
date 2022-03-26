@@ -135,6 +135,7 @@ replays =
   , ("b9f9", "a party leader") -- https://github.com/tfausak/rattletrap/commit/bba2cfd
   , ("c14f", "some mutators") -- https://github.com/tfausak/rattletrap/commit/bba2cfd
   , ("c23b", "new psynet id") -- https://github.com/tfausak/rattletrap/pull/118
+  , ("c62c", "more boolean attributes") -- https://github.com/nickbabcock/boxcars/pull/77
   , ("c837", "a spectator") -- https://github.com/tfausak/rattletrap/commit/bba2cfd
   , ("cc4c", "after Starbase ARC") -- https://github.com/tfausak/rattletrap/pull/20
   , ("d044", "hoops mutators") -- https://github.com/tfausak/rattletrap/pull/34
