@@ -52,6 +52,7 @@ replays :: [(String, String)]
 replays =
   [ ("0008", "a flip time") -- https://github.com/tfausak/rattletrap/commit/ee7afa0
   , ("000b", "nintendo switch") -- https://github.com/tfausak/rattletrap/pull/60
+  , ("0121", "RLCS 2") -- https://github.com/nickbabcock/boxcars/pull/120
   , ("0416", "v1.78 demolition") -- https://github.com/tfausak/rattletrap/pull/164
   , ("07e9", "a game mode before Neo Tokyo") -- https://github.com/tfausak/rattletrap/commit/b806f9b
   , ("0ad2", "some Latin-1 text") -- https://github.com/tfausak/rattletrap/commit/13a8b2d
