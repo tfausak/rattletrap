@@ -134,6 +134,7 @@ replays =
   , ("a7f0", "a ready attribute") -- https://github.com/tfausak/rattletrap/commit/78af1fd
   , ("a9df", "salty shores patch 1.45") -- https://github.com/tfausak/rattletrap/pull/78
   , ("aa70", "patch 1.50 - TitleID attribute") -- https://github.com/tfausak/rattletrap/pull/93
+  , ("ae46", "mvp") -- https://github.com/nickbabcock/boxcars/pull/80
   , ("afb1", "patch 1.37") -- https://github.com/tfausak/rattletrap/pull/48
   , ("b9f9", "a party leader") -- https://github.com/tfausak/rattletrap/commit/bba2cfd
   , ("c14f", "some mutators") -- https://github.com/tfausak/rattletrap/commit/bba2cfd
