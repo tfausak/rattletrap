@@ -80,6 +80,7 @@ classesWithLocation = Set.fromList $ fmap
   , "Archetypes.Ball.Ball_Breakout"
   , "Archetypes.Ball.Ball_Default"
   , "Archetypes.Ball.Ball_Puck"
+  , "Archetypes.Ball.Ball_Trajectory"
   , "Archetypes.Ball.CubeBall"
   , "Archetypes.Car.Car_Default"
   , "Archetypes.GameEvent.GameEvent_Season:CarArchetype"
@@ -90,6 +91,7 @@ classesWithLocation = Set.fromList $ fmap
   , "TAGame.Ball_Haunted_TA"
   , "TAGame.Ball_TA"
   , "TAGame.CameraSettingsActor_TA"
+  , "TAGame.Cannon_TA"
   , "TAGame.Car_Season_TA"
   , "TAGame.Car_TA"
   , "TAGame.CarComponent_Boost_TA"
@@ -105,6 +107,7 @@ classesWithLocation = Set.fromList $ fmap
   , "TAGame.GameEvent_Soccar_TA"
   , "TAGame.GameEvent_SoccarPrivate_TA"
   , "TAGame.GameEvent_SoccarSplitscreen_TA"
+  , "TAGame.GameEvent_Tutorial_TA"
   , "TAGame.GRI_TA"
   , "TAGame.MaxTimeWarningData_TA"
   , "TAGame.PickupTimer_TA"
@@ -141,6 +144,7 @@ classesWithRotation = Set.fromList $ fmap
   , "Archetypes.Ball.Ball_Breakout"
   , "Archetypes.Ball.Ball_Default"
   , "Archetypes.Ball.Ball_Puck"
+  , "Archetypes.Ball.Ball_Trajectory"
   , "Archetypes.Ball.CubeBall"
   , "Archetypes.Car.Car_Default"
   , "Archetypes.GameEvent.GameEvent_Season:CarArchetype"
@@ -167,6 +171,8 @@ objectClasses = Map.fromList $ fmap
   , ("Archetypes.Ball.Ball_God", "TAGame.Ball_God_TA")
   , ("Archetypes.Ball.Ball_Haunted", "TAGame.Ball_Haunted_TA")
   , ("Archetypes.Ball.Ball_Puck", "TAGame.Ball_TA")
+  , ("Archetypes.Ball.Ball_Training", "TAGame.Ball_TA")
+  , ("Archetypes.Ball.Ball_Trajectory", "TAGame.Ball_TA")
   , ("Archetypes.Ball.CubeBall", "TAGame.Ball_TA")
   , ("Archetypes.Car.Car_Default", "TAGame.Car_TA")
   , ("Archetypes.CarComponents.CarComponent_Boost", "TAGame.CarComponent_Boost_TA")
@@ -205,6 +211,7 @@ objectClasses = Map.fromList $ fmap
   , ("Archetypes.SpecialPickups.SpecialPickup_Tornado", "TAGame.SpecialPickup_Tornado_TA")
   , ("Archetypes.Teams.Team0", "TAGame.Team_Soccar_TA")
   , ("Archetypes.Teams.Team1", "TAGame.Team_Soccar_TA")
+  , ("Archetypes.Tutorial.Cannon", "TAGame.Cannon_TA")
   , ("GameInfo_Basketball.GameInfo.GameInfo_Basketball:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Breakout.GameInfo.GameInfo_Breakout:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_FootBall.GameInfo.GameInfo_FootBall:Archetype", "TAGame.GameEvent_Football_TA")
@@ -217,6 +224,8 @@ objectClasses = Map.fromList $ fmap
   , ("GameInfo_Items.GameInfo.GameInfo_Items:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Season.GameInfo.GameInfo_Season:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Soccar.GameInfo.GameInfo_Soccar:GameReplicationInfoArchetype", "TAGame.GRI_TA")
+  , ("GameInfo_Tutorial.GameEvent.GameEvent_Tutorial_Aerial", "TAGame.GameEvent_Tutorial_TA")
+  , ("GameInfo_Tutorial.GameInfo.GameInfo_Tutorial:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("Haunted_TrainStation_P.TheWorld:PersistentLevel.HauntedBallTrapTrigger_TA_0", "TAGame.HauntedBallTrapTrigger_TA")
   , ("Haunted_TrainStation_P.TheWorld:PersistentLevel.HauntedBallTrapTrigger_TA_1", "TAGame.HauntedBallTrapTrigger_TA")
   , ("ProjectX.Default__NetModeReplicator_X", "ProjectX.NetModeReplicator")
@@ -238,12 +247,15 @@ attributeTypes = Map.fromList $ fmap
   [ ("Engine.Actor:bBlockActors", AttributeType.Boolean)
   , ("Engine.Actor:bCollideActors", AttributeType.Boolean)
   , ("Engine.Actor:bHidden", AttributeType.Boolean)
+  , ("Engine.Actor:bTearOff", AttributeType.Boolean)
   , ("Engine.Actor:DrawScale", AttributeType.Float)
   , ("Engine.Actor:RemoteRole", AttributeType.Enum)
   , ("Engine.Actor:Role", AttributeType.Enum)
+  , ("Engine.Actor:Rotation", AttributeType.Rotation)
   , ("Engine.GameReplicationInfo:bMatchIsOver", AttributeType.Boolean)
   , ("Engine.GameReplicationInfo:GameClass", AttributeType.FlaggedInt)
   , ("Engine.GameReplicationInfo:ServerName", AttributeType.String)
+  , ("Engine.Pawn:HealthMax", AttributeType.Int)
   , ("Engine.Pawn:PlayerReplicationInfo", AttributeType.FlaggedInt)
   , ("Engine.PlayerReplicationInfo:bBot", AttributeType.Boolean)
   , ("Engine.PlayerReplicationInfo:bIsSpectator", AttributeType.Boolean)
@@ -292,10 +304,13 @@ attributeTypes = Map.fromList $ fmap
   , ("TAGame.CameraSettingsActor_TA:CameraYaw", AttributeType.Byte)
   , ("TAGame.CameraSettingsActor_TA:PRI", AttributeType.FlaggedInt)
   , ("TAGame.CameraSettingsActor_TA:ProfileSettings", AttributeType.CamSettings)
+  , ("TAGame.Cannon_TA:FireCount", AttributeType.Byte)
+  , ("TAGame.Cannon_TA:Pitch", AttributeType.Float)
   , ("TAGame.Car_TA:AddedBallForceMultiplier", AttributeType.Float)
   , ("TAGame.Car_TA:AddedCarForceMultiplier", AttributeType.Float)
   , ("TAGame.Car_TA:AttachedPickup", AttributeType.FlaggedInt)
   , ("TAGame.Car_TA:ClubColors", AttributeType.ClubColors)
+  , ("TAGame.Car_TA:ReplicatedCarScale", AttributeType.Float)
   , ("TAGame.Car_TA:ReplicatedDemolish_CustomFX", AttributeType.CustomDemolish)
   , ("TAGame.Car_TA:ReplicatedDemolish", AttributeType.Demolish)
   , ("TAGame.Car_TA:ReplicatedDemolishGoalExplosion", AttributeType.CustomDemolish)
@@ -325,10 +340,15 @@ attributeTypes = Map.fromList $ fmap
   , ("TAGame.CrowdManager_TA:ReplicatedGlobalOneShotSound", AttributeType.FlaggedInt)
   , ("TAGame.GameEvent_Soccar_TA:bBallHasBeenHit", AttributeType.Boolean)
   , ("TAGame.GameEvent_Soccar_TA:bClubMatch", AttributeType.Boolean)
+  , ("TAGame.GameEvent_Soccar_TA:bMatchEnded", AttributeType.Boolean)
+  , ("TAGame.GameEvent_Soccar_TA:bNoContest", AttributeType.Boolean)
   , ("TAGame.GameEvent_Soccar_TA:bOverTime", AttributeType.Boolean)
   , ("TAGame.GameEvent_Soccar_TA:bUnlimitedTime", AttributeType.Boolean)
   , ("TAGame.GameEvent_Soccar_TA:GameTime", AttributeType.Int)
+  , ("TAGame.GameEvent_Soccar_TA:GameWinner", AttributeType.FlaggedInt)
+  , ("TAGame.GameEvent_Soccar_TA:MatchWinner", AttributeType.FlaggedInt)
   , ("TAGame.GameEvent_Soccar_TA:MaxScore", AttributeType.Int)
+  , ("TAGame.GameEvent_Soccar_TA:MVP", AttributeType.FlaggedInt)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedMusicStinger", AttributeType.MusicStinger)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedScoredOnTeam", AttributeType.Byte)
   , ("TAGame.GameEvent_Soccar_TA:ReplicatedServerPerformanceState", AttributeType.Byte)
@@ -338,6 +358,7 @@ attributeTypes = Map.fromList $ fmap
   , ("TAGame.GameEvent_Soccar_TA:SeriesLength", AttributeType.Int)
   , ("TAGame.GameEvent_Soccar_TA:SubRulesArchetype", AttributeType.FlaggedInt)
   , ("TAGame.GameEvent_SoccarPrivate_TA:MatchSettings", AttributeType.PrivateMatchSettings)
+  , ("TAGame.GameEvent_TA:bAllowReadyUp", AttributeType.Boolean)
   , ("TAGame.GameEvent_TA:bCanVoteToForfeit", AttributeType.Boolean)
   , ("TAGame.GameEvent_TA:bHasLeaveMatchPenalty", AttributeType.Boolean)
   , ("TAGame.GameEvent_TA:BotSkill", AttributeType.Int)
@@ -385,6 +406,7 @@ attributeTypes = Map.fromList $ fmap
   , ("TAGame.PRI_TA:PrimaryTitle", AttributeType.Title)
   , ("TAGame.PRI_TA:ReplicatedGameEvent", AttributeType.FlaggedInt)
   , ("TAGame.PRI_TA:ReplicatedWorstNetQualityBeyondLatency", AttributeType.Byte)
+  , ("TAGame.PRI_TA:RepStatTitles", AttributeType.RepStatTitle)
   , ("TAGame.PRI_TA:SecondaryTitle", AttributeType.Title)
   , ("TAGame.PRI_TA:SkillTier", AttributeType.FlaggedByte)
   , ("TAGame.PRI_TA:SpectatorShortcut", AttributeType.Int)
@@ -416,6 +438,7 @@ attributeTypes = Map.fromList $ fmap
   , ("TAGame.Team_TA:GameEvent", AttributeType.FlaggedInt)
   , ("TAGame.Team_TA:LogoData", AttributeType.FlaggedInt)
   , ("TAGame.Vehicle_TA:bDriving", AttributeType.Boolean)
+  , ("TAGame.Vehicle_TA:bPodiumMode", AttributeType.Boolean)
   , ("TAGame.Vehicle_TA:bReplicatedHandbrake", AttributeType.Boolean)
   , ("TAGame.Vehicle_TA:ReplicatedSteer", AttributeType.Byte)
   , ("TAGame.Vehicle_TA:ReplicatedThrottle", AttributeType.Byte)

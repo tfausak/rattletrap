@@ -129,8 +129,10 @@ library
     Rattletrap.Type.Attribute.Product
     Rattletrap.Type.Attribute.ProductValue
     Rattletrap.Type.Attribute.QWord
+    Rattletrap.Type.Attribute.RepStatTitle
     Rattletrap.Type.Attribute.Reservation
     Rattletrap.Type.Attribute.RigidBodyState
+    Rattletrap.Type.Attribute.Rotation
     Rattletrap.Type.Attribute.StatEvent
     Rattletrap.Type.Attribute.String
     Rattletrap.Type.Attribute.TeamPaint
@@ -174,6 +176,7 @@ library
     Rattletrap.Type.RemoteId.Epic
     Rattletrap.Type.RemoteId.PlayStation
     Rattletrap.Type.RemoteId.PsyNet
+    Rattletrap.Type.RemoteId.QQ
     Rattletrap.Type.RemoteId.Splitscreen
     Rattletrap.Type.RemoteId.Steam
     Rattletrap.Type.RemoteId.Switch
