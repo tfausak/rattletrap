@@ -80,6 +80,7 @@ classesWithLocation = Set.fromList $ fmap
   , "Archetypes.Ball.Ball_Breakout"
   , "Archetypes.Ball.Ball_Default"
   , "Archetypes.Ball.Ball_Puck"
+  , "Archetypes.Ball.Ball_Trajectory"
   , "Archetypes.Ball.CubeBall"
   , "Archetypes.Car.Car_Default"
   , "Archetypes.GameEvent.GameEvent_Season:CarArchetype"
@@ -141,6 +142,7 @@ classesWithRotation = Set.fromList $ fmap
   , "Archetypes.Ball.Ball_Breakout"
   , "Archetypes.Ball.Ball_Default"
   , "Archetypes.Ball.Ball_Puck"
+  , "Archetypes.Ball.Ball_Trajectory"
   , "Archetypes.Ball.CubeBall"
   , "Archetypes.Car.Car_Default"
   , "Archetypes.GameEvent.GameEvent_Season:CarArchetype"
@@ -167,6 +169,7 @@ objectClasses = Map.fromList $ fmap
   , ("Archetypes.Ball.Ball_God", "TAGame.Ball_God_TA")
   , ("Archetypes.Ball.Ball_Haunted", "TAGame.Ball_Haunted_TA")
   , ("Archetypes.Ball.Ball_Puck", "TAGame.Ball_TA")
+  , ("Archetypes.Ball.Ball_Trajectory", "TAGame.Ball_TA")
   , ("Archetypes.Ball.CubeBall", "TAGame.Ball_TA")
   , ("Archetypes.Car.Car_Default", "TAGame.Car_TA")
   , ("Archetypes.CarComponents.CarComponent_Boost", "TAGame.CarComponent_Boost_TA")

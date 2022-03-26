@@ -8,6 +8,7 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.RemoteId.Epic as Epic
 import qualified Rattletrap.Type.RemoteId.PlayStation as PlayStation
 import qualified Rattletrap.Type.RemoteId.PsyNet as PsyNet
+import qualified Rattletrap.Type.RemoteId.QQ as QQ
 import qualified Rattletrap.Type.RemoteId.Splitscreen as Splitscreen
 import qualified Rattletrap.Type.RemoteId.Steam as Steam
 import qualified Rattletrap.Type.RemoteId.Switch as Switch
@@ -19,6 +20,7 @@ import qualified Rattletrap.Utility.Json as Json
 data RemoteId
   = PlayStation PlayStation.PlayStation
   | PsyNet PsyNet.PsyNet
+  | QQ QQ.QQ
   | Splitscreen Splitscreen.Splitscreen
   -- ^ Really only 24 bits.
   | Steam Steam.Steam
@@ -31,6 +33,7 @@ instance Json.FromJSON RemoteId where
   parseJSON = Json.withObject "RemoteId" $ \object -> Foldable.asum
     [ fmap PlayStation $ Json.required object "play_station"
     , fmap PsyNet $ Json.required object "psy_net"
+    , fmap QQ $ Json.required object "qq"
     , fmap Splitscreen $ Json.required object "splitscreen"
     , fmap Steam $ Json.required object "steam"
     , fmap Switch $ Json.required object "switch"
@@ -42,6 +45,7 @@ instance Json.ToJSON RemoteId where
   toJSON x = case x of
     PlayStation y -> Json.object [Json.pair "play_station" y]
     PsyNet y -> Json.object [Json.pair "psy_net" y]
+    QQ y -> Json.object [Json.pair "qq" y]
     Splitscreen y -> Json.object [Json.pair "splitscreen" y]
     Steam y -> Json.object [Json.pair "steam" y]
     Switch y -> Json.object [Json.pair "switch" y]
@@ -53,6 +57,7 @@ schema = Schema.named "remote-id" . Schema.oneOf $ fmap
   (\(k, v) -> Schema.object [(Json.pair k v, True)])
   [ ("play_station", Schema.ref PlayStation.schema)
   , ("psy_net", Schema.ref PsyNet.schema)
+  , ("qq", Schema.ref QQ.schema)
   , ("splitscreen", Schema.ref Splitscreen.schema)
   , ("steam", Schema.ref Steam.schema)
   , ("switch", Schema.ref Switch.schema)
@@ -64,6 +69,7 @@ bitPut :: RemoteId -> BitPut.BitPut
 bitPut remoteId = case remoteId of
   PlayStation x -> PlayStation.bitPut x
   PsyNet x -> PsyNet.bitPut x
+  QQ x -> QQ.bitPut x
   Splitscreen x -> Splitscreen.bitPut x
   Steam x -> Steam.bitPut x
   Switch x -> Switch.bitPut x
@@ -76,6 +82,7 @@ bitGet version systemId = case U8.toWord8 systemId of
   1 -> fmap Steam Steam.bitGet
   2 -> fmap PlayStation $ PlayStation.bitGet version
   4 -> fmap Xbox Xbox.bitGet
+  5 -> fmap QQ QQ.bitGet
   6 -> fmap Switch Switch.bitGet
   7 -> fmap PsyNet $ PsyNet.bitGet version
   11 -> fmap Epic Epic.bitGet
