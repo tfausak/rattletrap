@@ -105,6 +105,7 @@ replays =
   , ("7083", "weird basketball capitalization") -- https://github.com/tfausak/rattletrap/pull/63
   , ("7109", "a boost modifier") -- https://github.com/tfausak/rattletrap/commit/ee7afa0
   , ("7256", "special edition") -- https://github.com/tfausak/rattletrap/pull/103
+  , ("7588", "another malformed byte property") -- https://github.com/nickbabcock/boxcars/pull/68
   , ("75ce", "primary and secondary titles") -- https://github.com/tfausak/rattletrap/pull/69
   , ("7bf6", "an online loadouts attribute") -- https://github.com/tfausak/rattletrap/commit/89d02f7
   , ("81d1", "gridiron") -- https://github.com/tfausak/rattletrap/pull/180
