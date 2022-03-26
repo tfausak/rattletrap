@@ -91,6 +91,7 @@ classesWithLocation = Set.fromList $ fmap
   , "TAGame.Ball_Haunted_TA"
   , "TAGame.Ball_TA"
   , "TAGame.CameraSettingsActor_TA"
+  , "TAGame.Cannon_TA"
   , "TAGame.Car_Season_TA"
   , "TAGame.Car_TA"
   , "TAGame.CarComponent_Boost_TA"
@@ -106,6 +107,7 @@ classesWithLocation = Set.fromList $ fmap
   , "TAGame.GameEvent_Soccar_TA"
   , "TAGame.GameEvent_SoccarPrivate_TA"
   , "TAGame.GameEvent_SoccarSplitscreen_TA"
+  , "TAGame.GameEvent_Tutorial_TA"
   , "TAGame.GRI_TA"
   , "TAGame.MaxTimeWarningData_TA"
   , "TAGame.PickupTimer_TA"
@@ -169,6 +171,7 @@ objectClasses = Map.fromList $ fmap
   , ("Archetypes.Ball.Ball_God", "TAGame.Ball_God_TA")
   , ("Archetypes.Ball.Ball_Haunted", "TAGame.Ball_Haunted_TA")
   , ("Archetypes.Ball.Ball_Puck", "TAGame.Ball_TA")
+  , ("Archetypes.Ball.Ball_Training", "TAGame.Ball_TA")
   , ("Archetypes.Ball.Ball_Trajectory", "TAGame.Ball_TA")
   , ("Archetypes.Ball.CubeBall", "TAGame.Ball_TA")
   , ("Archetypes.Car.Car_Default", "TAGame.Car_TA")
@@ -208,6 +211,7 @@ objectClasses = Map.fromList $ fmap
   , ("Archetypes.SpecialPickups.SpecialPickup_Tornado", "TAGame.SpecialPickup_Tornado_TA")
   , ("Archetypes.Teams.Team0", "TAGame.Team_Soccar_TA")
   , ("Archetypes.Teams.Team1", "TAGame.Team_Soccar_TA")
+  , ("Archetypes.Tutorial.Cannon", "TAGame.Cannon_TA")
   , ("GameInfo_Basketball.GameInfo.GameInfo_Basketball:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Breakout.GameInfo.GameInfo_Breakout:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_FootBall.GameInfo.GameInfo_FootBall:Archetype", "TAGame.GameEvent_Football_TA")
@@ -220,6 +224,8 @@ objectClasses = Map.fromList $ fmap
   , ("GameInfo_Items.GameInfo.GameInfo_Items:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Season.GameInfo.GameInfo_Season:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("GameInfo_Soccar.GameInfo.GameInfo_Soccar:GameReplicationInfoArchetype", "TAGame.GRI_TA")
+  , ("GameInfo_Tutorial.GameEvent.GameEvent_Tutorial_Aerial", "TAGame.GameEvent_Tutorial_TA")
+  , ("GameInfo_Tutorial.GameInfo.GameInfo_Tutorial:GameReplicationInfoArchetype", "TAGame.GRI_TA")
   , ("Haunted_TrainStation_P.TheWorld:PersistentLevel.HauntedBallTrapTrigger_TA_0", "TAGame.HauntedBallTrapTrigger_TA")
   , ("Haunted_TrainStation_P.TheWorld:PersistentLevel.HauntedBallTrapTrigger_TA_1", "TAGame.HauntedBallTrapTrigger_TA")
   , ("ProjectX.Default__NetModeReplicator_X", "ProjectX.NetModeReplicator")
@@ -244,6 +250,7 @@ attributeTypes = Map.fromList $ fmap
   , ("Engine.Actor:DrawScale", AttributeType.Float)
   , ("Engine.Actor:RemoteRole", AttributeType.Enum)
   , ("Engine.Actor:Role", AttributeType.Enum)
+  , ("Engine.Actor:Rotation", AttributeType.Rotation)
   , ("Engine.GameReplicationInfo:bMatchIsOver", AttributeType.Boolean)
   , ("Engine.GameReplicationInfo:GameClass", AttributeType.FlaggedInt)
   , ("Engine.GameReplicationInfo:ServerName", AttributeType.String)
@@ -295,6 +302,8 @@ attributeTypes = Map.fromList $ fmap
   , ("TAGame.CameraSettingsActor_TA:CameraYaw", AttributeType.Byte)
   , ("TAGame.CameraSettingsActor_TA:PRI", AttributeType.FlaggedInt)
   , ("TAGame.CameraSettingsActor_TA:ProfileSettings", AttributeType.CamSettings)
+  , ("TAGame.Cannon_TA:FireCount", AttributeType.Byte)
+  , ("TAGame.Cannon_TA:Pitch", AttributeType.Float)
   , ("TAGame.Car_TA:AddedBallForceMultiplier", AttributeType.Float)
   , ("TAGame.Car_TA:AddedCarForceMultiplier", AttributeType.Float)
   , ("TAGame.Car_TA:AttachedPickup", AttributeType.FlaggedInt)

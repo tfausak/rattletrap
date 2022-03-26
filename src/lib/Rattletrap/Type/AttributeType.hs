@@ -33,6 +33,7 @@ data AttributeType
   | QWord
   | Reservation
   | RigidBodyState
+  | Rotation
   | StatEvent
   | String
   | TeamPaint

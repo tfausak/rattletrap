@@ -131,6 +131,7 @@ library
     Rattletrap.Type.Attribute.QWord
     Rattletrap.Type.Attribute.Reservation
     Rattletrap.Type.Attribute.RigidBodyState
+    Rattletrap.Type.Attribute.Rotation
     Rattletrap.Type.Attribute.StatEvent
     Rattletrap.Type.Attribute.String
     Rattletrap.Type.Attribute.TeamPaint

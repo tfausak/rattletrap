@@ -88,6 +88,7 @@ replays =
   , ("419a", "a club match") -- https://github.com/tfausak/rattletrap/commit/8e35043
   , ("42f0", "reservations after Neo Tokyo") -- https://github.com/tfausak/rattletrap/commit/163684f
   , ("42f2", "anniversary ball") -- https://github.com/tfausak/rattletrap/issues/147
+  , ("43a9", "tutorial") -- https://github.com/nickbabcock/boxcars/pull/70
   , ("4bc3", "with timed out attribute") -- https://github.com/tfausak/rattletrap/pull/98
   , ("504e", "some messages") -- https://github.com/tfausak/rattletrap/commit/1d4a538
   , ("520e", "no pickup attribute") -- https://github.com/tfausak/rattletrap/pull/38

@@ -39,6 +39,7 @@ import qualified Rattletrap.Type.Attribute.PrivateMatchSettings as PrivateMatchS
 import qualified Rattletrap.Type.Attribute.QWord as QWord
 import qualified Rattletrap.Type.Attribute.Reservation as Reservation
 import qualified Rattletrap.Type.Attribute.RigidBodyState as RigidBodyState
+import qualified Rattletrap.Type.Attribute.Rotation as Rotation
 import qualified Rattletrap.Type.Attribute.StatEvent as StatEvent
 import qualified Rattletrap.Type.Attribute.String as String
 import qualified Rattletrap.Type.Attribute.TeamPaint as TeamPaint
@@ -84,6 +85,7 @@ data AttributeValue
   | QWord QWord.QWord
   | Reservation Reservation.Reservation
   | RigidBodyState RigidBodyState.RigidBodyState
+  | Rotation Rotation.Rotation
   | StatEvent StatEvent.StatEvent
   | String String.String
   | TeamPaint TeamPaint.TeamPaint
@@ -126,6 +128,7 @@ instance Json.FromJSON AttributeValue where
     , fmap QWord $ Json.required object "q_word"
     , fmap Reservation $ Json.required object "reservation"
     , fmap RigidBodyState $ Json.required object "rigid_body_state"
+    , fmap Rotation $ Json.required object "rotation"
     , fmap StatEvent $ Json.required object "stat_event"
     , fmap String $ Json.required object "string"
     , fmap TeamPaint $ Json.required object "team_paint"
@@ -169,6 +172,7 @@ instance Json.ToJSON AttributeValue where
     QWord y -> Json.object [Json.pair "q_word" y]
     Reservation y -> Json.object [Json.pair "reservation" y]
     RigidBodyState y -> Json.object [Json.pair "rigid_body_state" y]
+    Rotation y -> Json.object [Json.pair "rotation" y]
     StatEvent y -> Json.object [Json.pair "stat_event" y]
     String y -> Json.object [Json.pair "string" y]
     TeamPaint y -> Json.object [Json.pair "team_paint" y]
@@ -211,6 +215,7 @@ schema = Schema.named "attribute-value" . Schema.oneOf $ fmap
   , ("q_word", QWord.schema)
   , ("reservation", Reservation.schema)
   , ("rigid_body_state", RigidBodyState.schema)
+  , ("rotation", Rotation.schema)
   , ("stat_event", StatEvent.schema)
   , ("string", String.schema)
   , ("team_paint", TeamPaint.schema)
@@ -253,6 +258,7 @@ bitPut value = case value of
   QWord x -> QWord.bitPut x
   Reservation x -> Reservation.bitPut x
   RigidBodyState x -> RigidBodyState.bitPut x
+  Rotation x -> Rotation.bitPut x
   StatEvent x -> StatEvent.bitPut x
   String x -> String.bitPut x
   TeamPaint x -> TeamPaint.bitPut x
@@ -311,6 +317,7 @@ bitGet version objectMap name = BitGet.label "AttributeValue" $ do
     AttributeType.Reservation -> fmap Reservation $ Reservation.bitGet version
     AttributeType.RigidBodyState ->
       fmap RigidBodyState $ RigidBodyState.bitGet version
+    AttributeType.Rotation -> fmap Rotation Rotation.bitGet
     AttributeType.StatEvent -> fmap StatEvent StatEvent.bitGet
     AttributeType.String -> fmap String String.bitGet
     AttributeType.TeamPaint -> fmap TeamPaint TeamPaint.bitGet
