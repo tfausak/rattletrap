@@ -95,6 +95,7 @@ replays =
   , ("540d", "a demolish attribute") -- https://github.com/tfausak/rattletrap/commit/65ce033
   , ("551c", "private match settings") -- https://github.com/tfausak/rattletrap/commit/5c9ebfc
   , ("5a06", "esports items") -- https://github.com/tfausak/rattletrap/pull/114
+  , ("5e0b", "max channels") -- https://github.com/tfausak/rattletrap/issues/254
   , ("6210", "different player history key") -- https://github.com/tfausak/rattletrap/pull/63
   , ("6320", "a forfeit attribute") -- https://github.com/tfausak/rattletrap/pull/20
   , ("6688", "a malformed byte property") -- https://github.com/tfausak/rattletrap/commit/b1ec18b

@@ -65,23 +65,25 @@ getMaxBits x =
   in if x < 1024 && x == 2 ^ n then n + 1 else n
 
 bitGet :: Word -> BitGet.BitGet CompressedWord
-bitGet limit = do
-  value <- step limit (getMaxBits_ limit) 0 0
+bitGet = bitGetNew
+
+bitGetNew :: Word -> BitGet.BitGet CompressedWord
+bitGetNew limit = do
+  value <- if limit < 1
+    then pure 0
+    else do
+      let
+        numBits =
+          max (0 :: Int)
+            . subtract 1
+            . ceiling
+            . logBase (2 :: Double)
+            $ fromIntegral limit
+      partial <- BitGet.bits numBits
+      let next = partial + Bits.shiftL 1 numBits
+      if next > limit
+        then pure partial
+        else do
+          x <- BitGet.bool
+          pure $ if x then next else partial
   pure CompressedWord { limit, value }
-
-getMaxBits_ :: Word -> Word
-getMaxBits_ x = do
-  let
-    n :: Word
-    n = max 1 (ceiling (logBase (2 :: Double) (fromIntegral (max 1 x))))
-  if x < 1024 && x == 2 ^ n then n + 1 else n
-
-step :: Word -> Word -> Word -> Word -> BitGet.BitGet Word
-step limit_ maxBits position value_ = do
-  let x = Bits.shiftL 1 (fromIntegral position) :: Word
-  if position < maxBits && value_ + x <= limit_
-    then do
-      bit <- BitGet.bool
-      let newValue = if bit then value_ + x else value_
-      step limit_ maxBits (position + 1) newValue
-    else pure value_
