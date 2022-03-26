@@ -255,6 +255,7 @@ attributeTypes = Map.fromList $ fmap
   , ("Engine.GameReplicationInfo:bMatchIsOver", AttributeType.Boolean)
   , ("Engine.GameReplicationInfo:GameClass", AttributeType.FlaggedInt)
   , ("Engine.GameReplicationInfo:ServerName", AttributeType.String)
+  , ("Engine.Pawn:HealthMax", AttributeType.Int)
   , ("Engine.Pawn:PlayerReplicationInfo", AttributeType.FlaggedInt)
   , ("Engine.PlayerReplicationInfo:bBot", AttributeType.Boolean)
   , ("Engine.PlayerReplicationInfo:bIsSpectator", AttributeType.Boolean)

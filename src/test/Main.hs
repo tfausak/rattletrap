@@ -148,6 +148,7 @@ replays =
   , ("d428", "a private hockey match") -- https://github.com/tfausak/rattletrap/commit/4c104b2
   , ("d44c", "ranked tournament") -- https://github.com/tfausak/rattletrap/pull/167
   , ("d52e", "psynet system id") -- https://github.com/tfausak/rattletrap/pull/99
+  , ("d5d6", "health max") -- https://github.com/nickbabcock/boxcars/pull/80
   , ("d7fb", "an explosion attribute") -- https://github.com/tfausak/rattletrap/commit/c554e3e
   , ("d818", "heatseeker") -- https://github.com/tfausak/rattletrap/pull/160
   , ("db70", "new lag indicator") -- https://github.com/tfausak/rattletrap/pull/69
