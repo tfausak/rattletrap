@@ -108,11 +108,12 @@ getNumFrames header_ =
 
 getMaxChannels :: Header.Header -> Word
 getMaxChannels header_ =
-  case
-      Dictionary.lookup
-        (Str.fromString "MaxChannels")
-        (Header.properties header_)
-    of
-      Just (Property.Property _ _ (PropertyValue.Int maxChannels)) ->
-        fromIntegral (I32.toInt32 (Property.Int.toI32 maxChannels))
-      _ -> 1023
+  subtract 1
+    $ case
+        Dictionary.lookup
+          (Str.fromString "MaxChannels")
+          (Header.properties header_)
+      of
+        Just (Property.Property _ _ (PropertyValue.Int maxChannels)) ->
+          fromIntegral (I32.toInt32 (Property.Int.toI32 maxChannels))
+        _ -> 1023
