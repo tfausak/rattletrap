@@ -37,6 +37,7 @@ import qualified Rattletrap.Type.Attribute.PickupNew as PickupNew
 import qualified Rattletrap.Type.Attribute.PlayerHistoryKey as PlayerHistoryKey
 import qualified Rattletrap.Type.Attribute.PrivateMatchSettings as PrivateMatchSettings
 import qualified Rattletrap.Type.Attribute.QWord as QWord
+import qualified Rattletrap.Type.Attribute.RepStatTitle as RepStatTitle
 import qualified Rattletrap.Type.Attribute.Reservation as Reservation
 import qualified Rattletrap.Type.Attribute.RigidBodyState as RigidBodyState
 import qualified Rattletrap.Type.Attribute.Rotation as Rotation
@@ -83,6 +84,7 @@ data AttributeValue
   | PlayerHistoryKey PlayerHistoryKey.PlayerHistoryKey
   | PrivateMatchSettings PrivateMatchSettings.PrivateMatchSettings
   | QWord QWord.QWord
+  | RepStatTitle RepStatTitle.RepStatTitle
   | Reservation Reservation.Reservation
   | RigidBodyState RigidBodyState.RigidBodyState
   | Rotation Rotation.Rotation
@@ -126,6 +128,7 @@ instance Json.FromJSON AttributeValue where
     , fmap PlayerHistoryKey $ Json.required object "player_history_key"
     , fmap PrivateMatchSettings $ Json.required object "private_match_settings"
     , fmap QWord $ Json.required object "q_word"
+    , fmap RepStatTitle $ Json.required object "rep_stat_title"
     , fmap Reservation $ Json.required object "reservation"
     , fmap RigidBodyState $ Json.required object "rigid_body_state"
     , fmap Rotation $ Json.required object "rotation"
@@ -170,6 +173,7 @@ instance Json.ToJSON AttributeValue where
     PrivateMatchSettings y ->
       Json.object [Json.pair "private_match_settings" y]
     QWord y -> Json.object [Json.pair "q_word" y]
+    RepStatTitle y -> Json.object [Json.pair "rep_stat_title" y]
     Reservation y -> Json.object [Json.pair "reservation" y]
     RigidBodyState y -> Json.object [Json.pair "rigid_body_state" y]
     Rotation y -> Json.object [Json.pair "rotation" y]
@@ -213,6 +217,7 @@ schema = Schema.named "attribute-value" . Schema.oneOf $ fmap
   , ("player_history_key", PlayerHistoryKey.schema)
   , ("private_match_settings", PrivateMatchSettings.schema)
   , ("q_word", QWord.schema)
+  , ("rep_stat_title", RepStatTitle.schema)
   , ("reservation", Reservation.schema)
   , ("rigid_body_state", RigidBodyState.schema)
   , ("rotation", Rotation.schema)
@@ -256,6 +261,7 @@ bitPut value = case value of
   PlayerHistoryKey x -> PlayerHistoryKey.bitPut x
   PrivateMatchSettings x -> PrivateMatchSettings.bitPut x
   QWord x -> QWord.bitPut x
+  RepStatTitle x -> RepStatTitle.bitPut x
   Reservation x -> Reservation.bitPut x
   RigidBodyState x -> RigidBodyState.bitPut x
   Rotation x -> Rotation.bitPut x
@@ -314,6 +320,7 @@ bitGet version objectMap name = BitGet.label "AttributeValue" $ do
     AttributeType.PrivateMatchSettings ->
       fmap PrivateMatchSettings PrivateMatchSettings.bitGet
     AttributeType.QWord -> fmap QWord QWord.bitGet
+    AttributeType.RepStatTitle -> fmap RepStatTitle RepStatTitle.bitGet
     AttributeType.Reservation -> fmap Reservation $ Reservation.bitGet version
     AttributeType.RigidBodyState ->
       fmap RigidBodyState $ RigidBodyState.bitGet version

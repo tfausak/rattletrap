@@ -31,6 +31,7 @@ data AttributeType
   | PlayerHistoryKey
   | PrivateMatchSettings
   | QWord
+  | RepStatTitle
   | Reservation
   | RigidBodyState
   | Rotation

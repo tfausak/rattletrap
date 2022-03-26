@@ -92,6 +92,7 @@ replays =
   , ("43a9", "tutorial") -- https://github.com/nickbabcock/boxcars/pull/70
   , ("4bc3", "with timed out attribute") -- https://github.com/tfausak/rattletrap/pull/98
   , ("504e", "some messages") -- https://github.com/tfausak/rattletrap/commit/1d4a538
+  , ("5123", "rep stat title") -- https://github.com/nickbabcock/boxcars/pull/78
   , ("520e", "no pickup attribute") -- https://github.com/tfausak/rattletrap/pull/38
   , ("524f", "quat edge case") -- https://github.com/tfausak/rattletrap/pull/87
   , ("52aa", "a match-ending attribute") -- https://github.com/tfausak/rattletrap/commit/5c64a6d

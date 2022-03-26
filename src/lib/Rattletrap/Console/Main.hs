@@ -46,8 +46,10 @@ import qualified Rattletrap.Type.Attribute.PrivateMatchSettings as Attribute.Pri
 import qualified Rattletrap.Type.Attribute.Product as Attribute.Product
 import qualified Rattletrap.Type.Attribute.ProductValue as Attribute.ProductValue
 import qualified Rattletrap.Type.Attribute.QWord as Attribute.QWord
+import qualified Rattletrap.Type.Attribute.RepStatTitle as Attribute.RepStatTitle
 import qualified Rattletrap.Type.Attribute.Reservation as Attribute.Reservation
 import qualified Rattletrap.Type.Attribute.RigidBodyState as Attribute.RigidBodyState
+import qualified Rattletrap.Type.Attribute.Rotation as Attribute.Rotation
 import qualified Rattletrap.Type.Attribute.StatEvent as Attribute.StatEvent
 import qualified Rattletrap.Type.Attribute.String as Attribute.String
 import qualified Rattletrap.Type.Attribute.TeamPaint as Attribute.TeamPaint
@@ -195,8 +197,10 @@ schema =
         , Attribute.Product.schema
         , Attribute.ProductValue.schema
         , Attribute.QWord.schema
+        , Attribute.RepStatTitle.schema
         , Attribute.Reservation.schema
         , Attribute.RigidBodyState.schema
+        , Attribute.Rotation.schema
         , Attribute.StatEvent.schema
         , Attribute.String.schema
         , Attribute.TeamPaint.schema

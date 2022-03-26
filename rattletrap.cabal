@@ -129,6 +129,7 @@ library
     Rattletrap.Type.Attribute.Product
     Rattletrap.Type.Attribute.ProductValue
     Rattletrap.Type.Attribute.QWord
+    Rattletrap.Type.Attribute.RepStatTitle
     Rattletrap.Type.Attribute.Reservation
     Rattletrap.Type.Attribute.RigidBodyState
     Rattletrap.Type.Attribute.Rotation
