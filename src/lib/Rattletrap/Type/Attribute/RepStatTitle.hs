@@ -43,9 +43,9 @@ schema = Schema.named "attribute-rep-stat-title" $ Schema.object
 bitPut :: RepStatTitle -> BitPut.BitPut
 bitPut x =
   BitPut.bool (unknown x)
-  <> Str.bitPut (name x)
-  <> FlaggedInt.bitPut (target x)
-  <> U32.bitPut (value x)
+    <> Str.bitPut (name x)
+    <> FlaggedInt.bitPut (target x)
+    <> U32.bitPut (value x)
 
 bitGet :: BitGet.BitGet RepStatTitle
 bitGet = BitGet.label "RepStatTitle" $ do
