@@ -2,7 +2,6 @@
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 {- hlint ignore "Avoid restricted extensions" -}
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
 
 module Rattletrap.Utility.Json
@@ -18,31 +17,16 @@ module Rattletrap.Utility.Json
 
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Encode.Pretty as Aeson
+import qualified Data.Aeson.Key as Key
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
-
-# if MIN_VERSION_aeson(2, 0, 0)
-
-import qualified Data.Aeson.Key as Key
 
 toKey :: String -> Key.Key
 toKey = Key.fromString
 
 fromKey :: Key.Key -> String
 fromKey = Key.toString
-
-# else
-
-import qualified Data.Text as Text
-
-toKey :: String -> Text.Text
-toKey = Text.pack
-
-fromKey :: Text.Text -> String
-fromKey = Text.unpack
-
-# endif
 
 instance Aeson.KeyValue (String, Aeson.Value) where
   k .= v = (fromKey k, Aeson.toJSON v)
