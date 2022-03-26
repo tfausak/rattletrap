@@ -150,6 +150,7 @@ replays =
   , ("dcb3", "a pawn type attribute") -- https://github.com/tfausak/rattletrap/commit/7d7f438
   , ("dd14", "v1.88") -- https://github.com/tfausak/rattletrap/pull/170
   , ("de56", "a problematic product attribute") -- https://github.com/tfausak/rattletrap/issues/51
+  , ("e2f9", "bTearOff") -- https://github.com/nickbabcock/boxcars/pull/76
   , ("e80d", "unlimited time") -- https://github.com/tfausak/rattletrap/pull/76
   , ("e978", "distracted") -- https://github.com/tfausak/rattletrap/issues/156
   , ("eae3", "an actor/object ID collision") -- https://github.com/tfausak/rattletrap/commit/d8fad06

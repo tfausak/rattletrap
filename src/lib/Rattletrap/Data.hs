@@ -247,6 +247,7 @@ attributeTypes = Map.fromList $ fmap
   [ ("Engine.Actor:bBlockActors", AttributeType.Boolean)
   , ("Engine.Actor:bCollideActors", AttributeType.Boolean)
   , ("Engine.Actor:bHidden", AttributeType.Boolean)
+  , ("Engine.Actor:bTearOff", AttributeType.Boolean)
   , ("Engine.Actor:DrawScale", AttributeType.Float)
   , ("Engine.Actor:RemoteRole", AttributeType.Enum)
   , ("Engine.Actor:Role", AttributeType.Enum)
