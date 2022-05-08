@@ -26,14 +26,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - platform: ubuntu-latest
+          - platform: ubuntu
             ghc: 9.2.2
-          - platform: macos-latest
+          - platform: macos
             ghc: 9.2.2
-          - platform: windows-2019
-            ghc: 9.2.1
+          - platform: windows
+            ghc: 9.2.2
     name: ${{ matrix.platform }}
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform }}-latest
     steps:
 
       - uses: actions/checkout@v2
