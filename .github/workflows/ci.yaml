@@ -31,7 +31,7 @@ jobs:
           - platform: macos-latest
             ghc: 9.2.2
           - platform: windows-2019
-            ghc: 9.2.2
+            ghc: 9.2.1
     name: ${{ matrix.platform }}
     runs-on: ${{ matrix.platform }}
     steps:
