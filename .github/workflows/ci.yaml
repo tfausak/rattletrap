@@ -26,15 +26,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - platform: ubuntu
+          - platform: ubuntu-latest
             ghc: 9.2.2
-          - platform: macos
+          - platform: macos-latest
             ghc: 9.2.2
-          # Using 9.2.1 to work around problem with 9.2.2. See issue #260.
-          - platform: windows
-            ghc: 9.2.1
+          - platform: windows-2019
+            ghc: 9.2.2
     name: ${{ matrix.platform }}
-    runs-on: ${{ matrix.platform }}-latest
+    runs-on: ${{ matrix.platform }}
     steps:
 
       - uses: actions/checkout@v2
