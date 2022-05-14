@@ -1,11 +1,4 @@
-/.stack-work/
-/stack.yaml.lock
-*.aux
-*.exe
-*.hp
-*.prof
-*.ps
-*.tix
-/dist-newstyle/
 /.vscode/
-/cabal.project.local
+/cabal.project.freeze
+/cabal.project.local*
+/dist-newstyle/
