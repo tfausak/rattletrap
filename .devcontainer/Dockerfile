@@ -1,4 +1,4 @@
-FROM haskell:9.0.1
+FROM haskell:9.2.2-slim
 ARG USER=haskell
 RUN useradd --create-home --shell "$( which bash )" "$USER"
 USER "$USER"
