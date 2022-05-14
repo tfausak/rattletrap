@@ -33,11 +33,13 @@ common library
     -Wno-missing-export-lists
     -Wno-missing-exported-signatures
     -Wno-missing-import-lists
-    -Wno-missing-kind-signatures
     -Wno-missing-safe-haskell-mode
     -Wno-prepositive-qualified-module
     -Wno-safe
     -Wno-unsafe
+
+  if impl(ghc >= 9.2)
+    ghc-options: -Wno-missing-kind-signatures
 
   if flag(pedantic)
     ghc-options: -Werror
