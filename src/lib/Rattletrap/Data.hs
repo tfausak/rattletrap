@@ -410,6 +410,7 @@ attributeTypes = Map.fromList $ fmap
   , ("TAGame.PRI_TA:SecondaryTitle", AttributeType.Title)
   , ("TAGame.PRI_TA:SkillTier", AttributeType.FlaggedByte)
   , ("TAGame.PRI_TA:SpectatorShortcut", AttributeType.Int)
+  , ("TAGame.PRI_TA:CurrentVoiceRoom", AttributeType.String)
   , ("TAGame.PRI_TA:SteeringSensitivity", AttributeType.Float)
   , ("TAGame.PRI_TA:TimeTillItem", AttributeType.Int)
   , ("TAGame.PRI_TA:Title", AttributeType.Int)
