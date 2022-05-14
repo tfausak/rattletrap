@@ -31,8 +31,7 @@ jobs:
           - platform: macos
             ghc: 9.2.2
           - platform: windows
-            # Using 9.0 to work around a problem with 9.2. See issue #260.
-            ghc: 9.0.2
+            ghc: 9.2.2
     name: ${{ matrix.platform }}
     runs-on: ${{ matrix.platform }}-latest
     steps:
