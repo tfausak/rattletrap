@@ -279,12 +279,12 @@ getInput :: String -> Config.Config -> IO ByteString.ByteString
 getInput name config = case Config.input config of
   Nothing -> do
     isTerminalDevice <- IO.hIsTerminalDevice IO.stdin
-    Monad.when isTerminalDevice
-      . IO.hPutStr IO.stderr
-      $ unlines
-        [ "-- You did not supply any input, so Rattletrap will read from STDIN."
-        , "-- If that is unexpected, try running: " <> FilePath.combine "." name <> " --help"
-        ]
+    Monad.when isTerminalDevice . IO.hPutStr IO.stderr $ unlines
+      [ "-- You did not supply any input, so Rattletrap will read from STDIN."
+      , "-- If that is unexpected, try running: "
+      <> FilePath.combine "." name
+      <> " --help"
+      ]
     ByteString.getContents
   Just fileOrUrl -> case Client.parseUrlThrow fileOrUrl of
     Nothing -> ByteString.readFile fileOrUrl
