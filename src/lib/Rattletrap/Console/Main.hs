@@ -104,6 +104,7 @@ import qualified Rattletrap.Version as Version
 import qualified System.Console.GetOpt as Console
 import qualified System.Environment as Environment
 import qualified System.Exit as Exit
+import qualified System.FilePath as FilePath
 import qualified System.IO as IO
 
 main :: IO ()
@@ -121,7 +122,7 @@ rattletrap name arguments = do
       then versionMain
       else if Config.schema config
         then schemaMain config
-        else defaultMain config
+        else defaultMain name config
 
 helpMain :: String -> IO ()
 helpMain name = do
@@ -136,9 +137,9 @@ versionMain = do
 schemaMain :: Config.Config -> IO ()
 schemaMain config = putOutput config $ encodeJson config schema
 
-defaultMain :: Config.Config -> IO ()
-defaultMain config = do
-  input <- getInput config
+defaultMain :: String -> Config.Config -> IO ()
+defaultMain name config = do
+  input <- getInput name config
   let decode = getDecoder config
   replay <- case decode input of
     Left (ls, e) -> do
@@ -274,9 +275,17 @@ getEncoder config = case Config.getMode config of
   Mode.Decode -> encodeJson config
   Mode.Encode -> Rattletrap.encodeReplayFile $ Config.fast config
 
-getInput :: Config.Config -> IO ByteString.ByteString
-getInput config = case Config.input config of
-  Nothing -> ByteString.getContents
+getInput :: String -> Config.Config -> IO ByteString.ByteString
+getInput name config = case Config.input config of
+  Nothing -> do
+    isTerminalDevice <- IO.hIsTerminalDevice IO.stdin
+    Monad.when isTerminalDevice . IO.hPutStr IO.stderr $ unlines
+      [ "-- You did not supply any input, so Rattletrap will read from STDIN."
+      , "-- If that is unexpected, try running: "
+      <> FilePath.combine "." name
+      <> " --help"
+      ]
+    ByteString.getContents
   Just fileOrUrl -> case Client.parseUrlThrow fileOrUrl of
     Nothing -> ByteString.readFile fileOrUrl
     Just request -> do
