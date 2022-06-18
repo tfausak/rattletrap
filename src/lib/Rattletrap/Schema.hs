@@ -15,10 +15,12 @@ named n j = Schema { name = Text.pack n, json = j }
 ref :: Schema -> Json.Value
 ref s = Json.object [Json.pair "$ref" $ Text.pack "#/definitions/" <> name s]
 
-object :: [((String, Json.Value), Bool)] -> Json.Value
+object :: [((Json.Key, Json.Value), Bool)] -> Json.Value
 object xs = Json.object
   [ Json.pair "type" "object"
-  , Json.pair "properties" . Json.object $ fmap (uncurry Json.pair . fst) xs
+  , Json.pair "properties" . Json.object $ fmap
+    ((\(k, v) -> Json.pair (Json.keyToString k) v) . fst)
+    xs
   , Json.pair "required" . fmap (fst . fst) $ filter snd xs
   ]
 

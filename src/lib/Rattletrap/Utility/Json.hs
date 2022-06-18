@@ -1,12 +1,8 @@
 {- hlint ignore "Avoid restricted flags" -}
-{-# OPTIONS_GHC -Wno-orphans #-}
-
-{- hlint ignore "Avoid restricted extensions" -}
-{-# LANGUAGE FlexibleInstances #-}
-
 module Rattletrap.Utility.Json
   ( module Rattletrap.Utility.Json
   , Aeson.FromJSON(parseJSON)
+  , Key.Key
   , Aeson.ToJSON(toJSON)
   , Aeson.Value
   , Aeson.encode
@@ -22,28 +18,22 @@ import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as ByteString
 import qualified Data.ByteString.Lazy as LazyByteString
 
-toKey :: String -> Key.Key
-toKey = Key.fromString
-
-fromKey :: Key.Key -> String
-fromKey = Key.toString
-
-instance Aeson.KeyValue (String, Aeson.Value) where
-  k .= v = (fromKey k, Aeson.toJSON v)
+keyToString :: Key.Key -> String
+keyToString = Key.toString
 
 required
   :: Aeson.FromJSON value => Aeson.Object -> String -> Aeson.Parser value
-required object key = object Aeson..: toKey key
+required object key = object Aeson..: Key.fromString key
 
 optional
   :: Aeson.FromJSON value
   => Aeson.Object
   -> String
   -> Aeson.Parser (Maybe value)
-optional object key = object Aeson..:? toKey key
+optional object key = object Aeson..:? Key.fromString key
 
 pair :: (Aeson.ToJSON value, Aeson.KeyValue pair) => String -> value -> pair
-pair key value = toKey key Aeson..= value
+pair key value = Key.fromString key Aeson..= value
 
 decode :: Aeson.FromJSON a => ByteString.ByteString -> Either String a
 decode = Aeson.eitherDecodeStrict'
