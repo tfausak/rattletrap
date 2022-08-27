@@ -27,12 +27,14 @@ jobs:
       matrix:
         include:
           - platform: ubuntu
+            ghc: 9.4.2
+          - platform: ubuntu
             ghc: 9.2.2
           - platform: macos
             ghc: 9.2.2
           - platform: windows
             ghc: 9.2.2
-    name: ${{ matrix.platform }}
+    name: GHC ${{ matrix.ghc }} on ${{ matrix.platform }}
     runs-on: ${{ matrix.platform }}-latest
     steps:
 
@@ -65,17 +67,17 @@ jobs:
 
       - run: mkdir artifact
 
-      - run: mkdir artifact/${{ matrix.platform }}
+      - run: mkdir artifact/${{ matrix.platform }}/${{ matrix.ghc }}
 
-      - run: cabal sdist --output-dir artifact/${{ matrix.platform }}
+      - run: cabal sdist --output-dir artifact/${{ matrix.platform }}/${{ matrix.ghc }}
 
-      - run: cabal exec runghc src/util/copy-executable.hs artifact/${{ matrix.platform }}
+      - run: cabal exec runghc src/util/copy-executable.hs artifact/${{ matrix.platform }}/${{ matrix.ghc }}
 
       - uses: svenstaro/upx-action@v2
         with:
-          file: artifact/${{ matrix.platform }}/rattletrap
+          file: artifact/${{ matrix.platform }}/${{ matrix.ghc }}/rattletrap
 
-      - run: cp output/schema.json artifact/${{ matrix.platform }}
+      - run: cp output/schema.json artifact/${{ matrix.platform }}/${{ matrix.ghc }}
 
       - uses: actions/upload-artifact@v2
         with:
@@ -97,7 +99,7 @@ jobs:
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-ubuntu
-          asset_path: artifact/ubuntu/rattletrap
+          asset_path: artifact/ubuntu/9.2.2/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -106,7 +108,7 @@ jobs:
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-macos
-          asset_path: artifact/macos/rattletrap
+          asset_path: artifact/macos/9.2.2/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -115,7 +117,7 @@ jobs:
         with:
           asset_content_type: application/octet-stream
           asset_name: rattletrap-${{ github.event.release.tag_name }}-windows.exe
-          asset_path: artifact/windows/rattletrap
+          asset_path: artifact/windows/9.2.2/rattletrap
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -124,7 +126,7 @@ jobs:
         with:
           asset_content_type: application/gzip
           asset_name: rattletrap-${{ github.event.release.tag_name }}.tar.gz
-          asset_path: artifact/ubuntu/rattletrap-${{ github.event.release.tag_name }}.tar.gz
+          asset_path: artifact/ubuntu/9.2.2/rattletrap-${{ github.event.release.tag_name }}.tar.gz
           upload_url: ${{ github.event.release.upload_url }}
 
       - uses: actions/upload-release-asset@v1
@@ -133,12 +135,12 @@ jobs:
         with:
           asset_content_type: application/json
           asset_name: rattletrap-${{ github.event.release.tag_name }}-schema.json
-          asset_path: artifact/ubuntu/schema.json
+          asset_path: artifact/ubuntu/9.2.2/schema.json
           upload_url: ${{ github.event.release.upload_url }}
 
-      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' artifact/ubuntu/rattletrap-${{ github.event.release.tag_name }}.tar.gz
+      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' artifact/ubuntu/9.2.2/rattletrap-${{ github.event.release.tag_name }}.tar.gz
 
-      - run: mv artifact/ubuntu/rattletrap docker/rattletrap
+      - run: mv artifact/ubuntu/9.2.2/rattletrap docker/rattletrap
 
       - uses: docker/setup-buildx-action@v1
 
