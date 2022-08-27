@@ -67,6 +67,8 @@ jobs:
 
       - run: mkdir artifact
 
+      - run: mkdir artifact/${{ matrix.platform }}
+
       - run: mkdir artifact/${{ matrix.platform }}/${{ matrix.ghc }}
 
       - run: cabal sdist --output-dir artifact/${{ matrix.platform }}/${{ matrix.ghc }}
