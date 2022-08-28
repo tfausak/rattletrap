@@ -1,15 +1,14 @@
 {
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "dockerComposeFile": "compose.yaml",
   "extensions": [
     "taylorfausak.purple-yolk"
   ],
-  "postCreateCommand": "cabal update",
+  "initializeCommand": ".devcontainer/initialize.sh",
+  "onCreateCommand": ".devcontainer/on-create.sh",
+  "service": "devcontainer",
   "settings": {
-    "purple-yolk.brittany.command": "false",
-    "purple-yolk.hlint.command": "false",
-    "purple-yolk.hlint.onSave": false,
-    "purple-yolk.ghci.command": "cabal repl --repl-options -ddump-json"
-  }
+    "editor.formatOnSave": false,
+    "purple-yolk.haskell.linter.onSave": false
+  },
+  "workspaceFolder": "/workspaces/rattletrap"
 }

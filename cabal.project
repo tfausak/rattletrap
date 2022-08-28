@@ -1,0 +1,7 @@
+packages: .
+
+-- https://github.com/vincenthz/hs-memory/pull/93
+source-repository-package
+  location: https://github.com/parsonsmatt/hs-memory
+  tag: 696383fbfb334c9247f9b406e1489b9ab294927d
+  type: git

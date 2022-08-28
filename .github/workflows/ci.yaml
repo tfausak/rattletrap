@@ -25,13 +25,10 @@ jobs:
   build:
     strategy:
       matrix:
-        include:
-          - platform: ubuntu
-            ghc: 9.2.2
-          - platform: macos
-            ghc: 9.2.2
-          - platform: windows
-            ghc: 9.2.2
+        platform:
+          - ubuntu
+          - macos
+          - windows
     name: ${{ matrix.platform }}
     runs-on: ${{ matrix.platform }}-latest
     steps:
@@ -41,17 +38,18 @@ jobs:
       - id: setup-haskell
         uses: haskell/actions/setup@v1
         with:
-          ghc-version: ${{ matrix.ghc }}
+          ghc-version: 9.4.2
+          cabal-version: 3.8.1.0
 
-      - run: cabal configure --enable-tests --flags pedantic --jobs --test-show-details direct
+      - run: cabal configure --enable-optimization=2 --enable-tests --flags pedantic --jobs --test-show-details direct
 
       - run: cabal freeze && cat cabal.project.freeze
 
       - uses: actions/cache@v2
         with:
           path: ${{ steps.setup-haskell.outputs.cabal-store }}
-          key: ${{ matrix.platform }}-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}
-          restore-keys: ${{ matrix.platform }}-${{ matrix.ghc }}-
+          key: ${{ matrix.platform }}-${{ hashFiles('cabal.project.freeze') }}
+          restore-keys: ${{ matrix.platform }}-
 
       - run: cabal build
 
