@@ -39,7 +39,7 @@ common library
     -Wno-unsafe
 
   if impl(ghc >= 9.2)
-    -Wno-missing-kind-signatures
+    ghc-options: -Wno-missing-kind-signatures
 
   if flag(pedantic)
     ghc-options: -Werror
