@@ -112,6 +112,7 @@ replays =
   , ("7256", "special edition") -- https://github.com/tfausak/rattletrap/pull/103
   , ("7588", "another malformed byte property") -- https://github.com/nickbabcock/boxcars/pull/68
   , ("75ce", "primary and secondary titles") -- https://github.com/tfausak/rattletrap/pull/69
+  , ("79ae", "voice update replay") -- https://github.com/tfausak/rattletrap/pull/265
   , ("7bf6", "an online loadouts attribute") -- https://github.com/tfausak/rattletrap/commit/89d02f7
   , ("81d1", "gridiron") -- https://github.com/tfausak/rattletrap/pull/180
   , ("89cb", "remote user data") -- https://github.com/tfausak/rattletrap/commit/163684f
@@ -161,11 +162,11 @@ replays =
   , ("e978", "distracted") -- https://github.com/tfausak/rattletrap/issues/156
   , ("eae3", "an actor/object ID collision") -- https://github.com/tfausak/rattletrap/commit/d8fad06
   , ("eae8", "custom team colors") -- https://github.com/tfausak/rattletrap/commit/809240f
+  , ("ecd5", "new match guid attribute") -- https://github.com/tfausak/rattletrap/issues/270
   , ("edbb", "remote role") -- https://github.com/tfausak/rattletrap/pull/106
   , ("f299", "a location attribute") -- https://github.com/tfausak/rattletrap/commit/21b09c5
   , ("f7b9", "a hockey game event") -- https://github.com/tfausak/rattletrap/commit/3e16d7f
   , ("f811", "no frames") -- https://github.com/tfausak/rattletrap/commit/bf4b6af
   , ("fdc7", "an MVP") -- https://github.com/tfausak/rattletrap/commit/65019d2
   , ("ffb7", "with difficulty") -- https://github.com/tfausak/rattletrap/pull/167
-  , ("voice_update", "voice update replay") -- https://github.com/tfausak/rattletrap/pull/265
   ]

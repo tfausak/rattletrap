@@ -10,8 +10,8 @@ and points, or low-level details like positions and cameras. Generating replays
 can be used to modify replays in order to force everyone into the same car or
 change the map a game was played on.
 
-Rattletrap supports every version of Rocket League up to [2.08][], which was
-released on 2021-11-16. If a replay can be played by the Rocket League client,
+Rattletrap supports every version of Rocket League up to [2.21][], which was
+released on 2022-10-11. If a replay can be played by the Rocket League client,
 it can be parsed by Rattletrap. (If not, that's a bug. Please report it!)
 
 ## Install
@@ -136,7 +136,7 @@ $ rattletrap -i input.replay |
 [Docker badge]: https://img.shields.io/docker/v/taylorfausak/rattletrap?label=docker&logo=docker&logoColor=white
 [docker]: https://hub.docker.com/r/taylorfausak/rattletrap
 [Rocket League]: https://www.rocketleague.com
-[2.08]: https://www.rocketleague.com/news/patch-notes-v2-08-season-5-update/
+[2.21]: https://www.rocketleague.com/news/patch-notes-v2-21/
 [Ball Chasing]: https://ballchasing.com
 [Haskell]: https://www.haskell.org
 [the latest release]: https://github.com/tfausak/rattletrap/releases/latest
