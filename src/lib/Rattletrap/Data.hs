@@ -277,6 +277,7 @@ attributeTypes = Map.fromList $ fmap
   , ("ProjectX.GRI_X:MatchGUID", AttributeType.String)
   , ("ProjectX.GRI_X:ReplicatedGameMutatorIndex", AttributeType.Int)
   , ("ProjectX.GRI_X:ReplicatedGamePlaylist", AttributeType.Int)
+  , ("ProjectX.GRI_X:ReplicatedServerRegion", AttributeType.String)
   , ("ProjectX.GRI_X:Reservations", AttributeType.Reservation)
   , ("TAGame.Ball_Breakout_TA:AppliedDamage", AttributeType.AppliedDamage)
   , ("TAGame.Ball_Breakout_TA:DamageIndex", AttributeType.Int)
