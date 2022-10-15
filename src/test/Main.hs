@@ -161,6 +161,7 @@ replays =
   , ("e978", "distracted") -- https://github.com/tfausak/rattletrap/issues/156
   , ("eae3", "an actor/object ID collision") -- https://github.com/tfausak/rattletrap/commit/d8fad06
   , ("eae8", "custom team colors") -- https://github.com/tfausak/rattletrap/commit/809240f
+  , ("ecd5", "new match guid attribute") -- https://github.com/tfausak/rattletrap/issues/270
   , ("edbb", "remote role") -- https://github.com/tfausak/rattletrap/pull/106
   , ("f299", "a location attribute") -- https://github.com/tfausak/rattletrap/commit/21b09c5
   , ("f7b9", "a hockey game event") -- https://github.com/tfausak/rattletrap/commit/3e16d7f
