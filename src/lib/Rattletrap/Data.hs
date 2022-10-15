@@ -175,6 +175,7 @@ objectClasses = Map.fromList $ fmap
   , ("Archetypes.Ball.Ball_Trajectory", "TAGame.Ball_TA")
   , ("Archetypes.Ball.CubeBall", "TAGame.Ball_TA")
   , ("Archetypes.Car.Car_Default", "TAGame.Car_TA")
+  , ("Archetypes.Car.Car_PostGameLobby", "TAGame.Car_TA")
   , ("Archetypes.CarComponents.CarComponent_Boost", "TAGame.CarComponent_Boost_TA")
   , ("Archetypes.CarComponents.CarComponent_Dodge", "TAGame.CarComponent_Dodge_TA")
   , ("Archetypes.CarComponents.CarComponent_DoubleJump", "TAGame.CarComponent_DoubleJump_TA")
