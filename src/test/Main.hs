@@ -168,5 +168,5 @@ replays =
   , ("f811", "no frames") -- https://github.com/tfausak/rattletrap/commit/bf4b6af
   , ("fdc7", "an MVP") -- https://github.com/tfausak/rattletrap/commit/65019d2
   , ("ffb7", "with difficulty") -- https://github.com/tfausak/rattletrap/pull/167
-  , ("voice_update", "voice update replay") -- https://github.com/tfausak/rattletrap/pull/265
+  , ("79ae", "voice update replay") -- https://github.com/tfausak/rattletrap/pull/265
   ]
