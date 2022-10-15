@@ -164,6 +164,7 @@ replays =
   , ("eae8", "custom team colors") -- https://github.com/tfausak/rattletrap/commit/809240f
   , ("ecd5", "new match guid attribute") -- https://github.com/tfausak/rattletrap/issues/270
   , ("edbb", "remote role") -- https://github.com/tfausak/rattletrap/pull/106
+  , ("f08e", "post game lobby") -- https://github.com/jjbott/RocketLeagueReplayParser/issues/46
   , ("f299", "a location attribute") -- https://github.com/tfausak/rattletrap/commit/21b09c5
   , ("f7b9", "a hockey game event") -- https://github.com/tfausak/rattletrap/commit/3e16d7f
   , ("f811", "no frames") -- https://github.com/tfausak/rattletrap/commit/bf4b6af
