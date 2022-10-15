@@ -41,6 +41,9 @@ common library
   if impl(ghc >= 9.2)
     ghc-options: -Wno-missing-kind-signatures
 
+  if impl(ghc >= 9.4)
+    ghc-options: -fprof-late
+
   if flag(pedantic)
     ghc-options: -Werror
 
