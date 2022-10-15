@@ -273,6 +273,7 @@ attributeTypes = Map.fromList $ fmap
   , ("Engine.TeamInfo:Score", AttributeType.Int)
   , ("ProjectX.GRI_X:bGameStarted", AttributeType.Boolean)
   , ("ProjectX.GRI_X:GameServerID", AttributeType.QWord)
+  , ("ProjectX.GRI_X:MatchGuid", AttributeType.String)
   , ("ProjectX.GRI_X:MatchGUID", AttributeType.String)
   , ("ProjectX.GRI_X:ReplicatedGameMutatorIndex", AttributeType.Int)
   , ("ProjectX.GRI_X:ReplicatedGamePlaylist", AttributeType.Int)
