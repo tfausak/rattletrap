@@ -22,6 +22,7 @@ import qualified Rattletrap.Type.Attribute.FlaggedByte as FlaggedByte
 import qualified Rattletrap.Type.Attribute.FlaggedInt as FlaggedInt
 import qualified Rattletrap.Type.Attribute.Float as Float
 import qualified Rattletrap.Type.Attribute.GameMode as GameMode
+import qualified Rattletrap.Type.Attribute.GameServer as GameServer
 import qualified Rattletrap.Type.Attribute.Int as Int
 import qualified Rattletrap.Type.Attribute.Int64 as Int64
 import qualified Rattletrap.Type.Attribute.Loadout as Loadout
@@ -69,6 +70,7 @@ data AttributeValue
   | FlaggedByte FlaggedByte.FlaggedByte
   | Float Float.Float
   | GameMode GameMode.GameMode
+  | GameServer GameServer.GameServer
   | Int Int.Int
   | Int64 Int64.Int64
   | Loadout Loadout.Loadout
@@ -113,6 +115,7 @@ instance Json.FromJSON AttributeValue where
     , fmap FlaggedInt $ Json.required object "flagged_int"
     , fmap Float $ Json.required object "float"
     , fmap GameMode $ Json.required object "game_mode"
+    , fmap GameServer $ Json.required object "game_server"
     , fmap Int $ Json.required object "int"
     , fmap Int64 $ Json.required object "int64"
     , fmap Loadout $ Json.required object "loadout"
@@ -157,6 +160,7 @@ instance Json.ToJSON AttributeValue where
     FlaggedInt y -> Json.object [Json.pair "flagged_int" y]
     Float y -> Json.object [Json.pair "float" y]
     GameMode y -> Json.object [Json.pair "game_mode" y]
+    GameServer y -> Json.object [Json.pair "game_server" y]
     Int y -> Json.object [Json.pair "int" y]
     Int64 y -> Json.object [Json.pair "int64" y]
     Loadout y -> Json.object [Json.pair "loadout" y]
@@ -202,6 +206,7 @@ schema = Schema.named "attribute-value" . Schema.oneOf $ fmap
   , ("flagged_int", FlaggedInt.schema)
   , ("float", Float.schema)
   , ("game_mode", GameMode.schema)
+  , ("game_server", GameServer.schema)
   , ("int", Int.schema)
   , ("int64", Int64.schema)
   , ("loadout_online", LoadoutOnline.schema)
@@ -246,6 +251,7 @@ bitPut value = case value of
   FlaggedByte x -> FlaggedByte.bitPut x
   Float x -> Float.bitPut x
   GameMode x -> GameMode.bitPut x
+  GameServer x -> GameServer.bitPut x
   Int x -> Int.bitPut x
   Int64 x -> Int64.putInt64Attribute x
   Loadout x -> Loadout.bitPut x
@@ -301,6 +307,7 @@ bitGet version objectMap name = BitGet.label "AttributeValue" $ do
     AttributeType.FlaggedByte -> fmap FlaggedByte FlaggedByte.bitGet
     AttributeType.Float -> fmap Float Float.bitGet
     AttributeType.GameMode -> fmap GameMode $ GameMode.bitGet version
+    AttributeType.GameServer -> fmap GameServer GameServer.bitGet
     AttributeType.Int -> fmap Int Int.bitGet
     AttributeType.Int64 -> fmap Int64 Int64.bitGet
     AttributeType.Loadout -> fmap Loadout Loadout.bitGet
