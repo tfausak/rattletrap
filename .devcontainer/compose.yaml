@@ -1,7 +1,7 @@
 services:
   devcontainer:
     command: sh -c 'while sleep 1; do :; done'
-    image: ghcr.io/acilearning/docker-haskell:9.4.2
+    image: public.ecr.aws/acilearning/haskell:9.4.3
     init: true
     volumes:
       - ..:/workspaces/rattletrap
