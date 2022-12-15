@@ -8,6 +8,7 @@ import qualified Rattletrap.Type.Attribute as Attribute
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
@@ -36,11 +37,12 @@ bitPut x =
 
 bitGet
   :: Version.Version
+  -> Maybe Str.Str
   -> ClassAttributeMap.ClassAttributeMap
   -> Map.Map CompressedWord.CompressedWord U32.U32
   -> CompressedWord.CompressedWord
   -> BitGet.BitGet Updated
-bitGet version classes actors actor =
+bitGet version buildVersion classes actors actor =
   BitGet.label "Updated" . fmap Updated . List.untilM $ do
     p <- BitGet.bool
-    Monad.whenMaybe p $ Attribute.bitGet version classes actors actor
+    Monad.whenMaybe p $ Attribute.bitGet version buildVersion classes actors actor

@@ -10,6 +10,7 @@ import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Property.Int as Property.Int
 import qualified Rattletrap.Type.Property.Name as Property.Name
+import qualified Rattletrap.Type.Property.Str as Property.Str
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Type.Str as Str
@@ -86,6 +87,7 @@ getContent h = Content.byteGet
   (Header.version h)
   (getNumFrames h)
   (getMaxChannels h)
+  (getBuildVersion h)
 
 getMatchType :: Header.Header -> Maybe Str.Str
 getMatchType header = do
@@ -117,3 +119,10 @@ getMaxChannels header_ =
         Just (Property.Property _ _ (PropertyValue.Int maxChannels)) ->
           fromIntegral (I32.toInt32 (Property.Int.toI32 maxChannels))
         _ -> 1023
+
+getBuildVersion :: Header.Header -> Maybe Str.Str
+getBuildVersion header = do
+  property <- Dictionary.lookup (Str.fromString "BuildVersion") $ Header.properties header
+  case Property.value property of
+    PropertyValue.Str x -> Just $ Property.Str.toStr x
+    _ -> Nothing

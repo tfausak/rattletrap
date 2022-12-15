@@ -4,7 +4,7 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.QWord as QWord
-import qualified Rattletrap.Type.U64 as U64
+import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Utility.Json as Json
 
 newtype GameServer
@@ -23,5 +23,5 @@ schema = Schema.named "attribute-game-server" $ Schema.ref QWord.schema
 bitPut :: GameServer -> BitPut.BitPut
 bitPut (GameServer x) = QWord.bitPut x
 
-bitGet :: BitGet.BitGet GameServer
-bitGet = BitGet.label "GameServer" $ fmap GameServer QWord.bitGet
+bitGet :: Maybe Str.Str -> BitGet.BitGet GameServer
+bitGet buildVersion = BitGet.label "GameServer" $ fmap GameServer QWord.bitGet

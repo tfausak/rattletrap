@@ -280,10 +280,11 @@ bitPut value = case value of
 
 bitGet
   :: Version.Version
+  -> Maybe Str.Str
   -> Map.Map U32.U32 Str.Str
   -> Str.Str
   -> BitGet.BitGet AttributeValue
-bitGet version objectMap name = BitGet.label "AttributeValue" $ do
+bitGet version buildVersion objectMap name = BitGet.label "AttributeValue" $ do
   constructor <- case Map.lookup (Str.toText name) Data.attributeTypes of
     Nothing ->
       BitGet.throw . UnknownAttribute.UnknownAttribute $ Str.toString name
@@ -307,7 +308,7 @@ bitGet version objectMap name = BitGet.label "AttributeValue" $ do
     AttributeType.FlaggedByte -> fmap FlaggedByte FlaggedByte.bitGet
     AttributeType.Float -> fmap Float Float.bitGet
     AttributeType.GameMode -> fmap GameMode $ GameMode.bitGet version
-    AttributeType.GameServer -> fmap GameServer GameServer.bitGet
+    AttributeType.GameServer -> fmap GameServer $ GameServer.bitGet buildVersion
     AttributeType.Int -> fmap Int Int.bitGet
     AttributeType.Int64 -> fmap Int64 Int64.bitGet
     AttributeType.Loadout -> fmap Loadout Loadout.bitGet

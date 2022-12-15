@@ -188,8 +188,10 @@ byteGet
   -> Word
   -- ^ The maximum number of channels in the stream, usually from
   -- 'Rattletrap.Header.getMaxChannels'.
+  -> Maybe Str.Str
+  -- ^ 'Rattletrap.Header.getBuildVersion'
   -> ByteGet.ByteGet Content
-byteGet matchType version numFrames maxChannels = ByteGet.label "Content" $ do
+byteGet matchType version numFrames maxChannels buildVersion = ByteGet.label "Content" $ do
   levels <- ByteGet.label "levels" $ List.byteGet Str.byteGet
   keyframes <- ByteGet.label "keyframes" $ List.byteGet Keyframe.byteGet
   streamSize <- ByteGet.label "streamSize" U32.byteGet
@@ -210,6 +212,7 @@ byteGet matchType version numFrames maxChannels = ByteGet.label "Content" $ do
     getFrames = BitGet.toByteGet $ Frame.decodeFramesBits
       matchType
       version
+      buildVersion
       numFrames
       maxChannels
       classAttributeMap
