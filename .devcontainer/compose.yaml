@@ -5,6 +5,8 @@ services:
     init: true
     volumes:
       - ..:/workspaces/rattletrap
+      - cabal:/home/haskell/.cabal
+      - cabal-store:/cabal-store
     working_dir: /workspaces/rattletrap
 volumes:
   cabal: null
