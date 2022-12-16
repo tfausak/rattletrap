@@ -284,58 +284,64 @@ bitGet
   -> Map.Map U32.U32 Str.Str
   -> Str.Str
   -> BitGet.BitGet AttributeValue
-bitGet version buildVersion objectMap name = BitGet.label "AttributeValue" $ do
-  constructor <- case Map.lookup (Str.toText name) Data.attributeTypes of
-    Nothing ->
-      BitGet.throw . UnknownAttribute.UnknownAttribute $ Str.toString name
-    Just x -> pure x
-  case constructor of
-    AttributeType.AppliedDamage ->
-      fmap AppliedDamage $ AppliedDamage.bitGet version
-    AttributeType.Boolean -> fmap Boolean Boolean.bitGet
-    AttributeType.Byte -> fmap Byte Byte.bitGet
-    AttributeType.CamSettings -> fmap CamSettings $ CamSettings.bitGet version
-    AttributeType.ClubColors -> fmap ClubColors ClubColors.bitGet
-    AttributeType.CustomDemolish ->
-      fmap CustomDemolish $ CustomDemolish.bitGet version
-    AttributeType.DamageState -> fmap DamageState $ DamageState.bitGet version
-    AttributeType.Demolish -> fmap Demolish $ Demolish.bitGet version
-    AttributeType.Enum -> fmap Enum Enum.bitGet
-    AttributeType.Explosion -> fmap Explosion $ Explosion.bitGet version
-    AttributeType.ExtendedExplosion ->
-      fmap ExtendedExplosion $ ExtendedExplosion.bitGet version
-    AttributeType.FlaggedInt -> fmap FlaggedInt FlaggedInt.bitGet
-    AttributeType.FlaggedByte -> fmap FlaggedByte FlaggedByte.bitGet
-    AttributeType.Float -> fmap Float Float.bitGet
-    AttributeType.GameMode -> fmap GameMode $ GameMode.bitGet version
-    AttributeType.GameServer -> fmap GameServer $ GameServer.bitGet buildVersion
-    AttributeType.Int -> fmap Int Int.bitGet
-    AttributeType.Int64 -> fmap Int64 Int64.bitGet
-    AttributeType.Loadout -> fmap Loadout Loadout.bitGet
-    AttributeType.LoadoutOnline ->
-      fmap LoadoutOnline $ LoadoutOnline.bitGet version objectMap
-    AttributeType.Loadouts -> fmap Loadouts Loadouts.bitGet
-    AttributeType.LoadoutsOnline ->
-      fmap LoadoutsOnline $ LoadoutsOnline.bitGet version objectMap
-    AttributeType.Location -> fmap Location $ Location.bitGet version
-    AttributeType.MusicStinger -> fmap MusicStinger MusicStinger.bitGet
-    AttributeType.PartyLeader -> fmap PartyLeader $ PartyLeader.bitGet version
-    AttributeType.Pickup -> fmap Pickup Pickup.bitGet
-    AttributeType.PickupInfo -> fmap PickupInfo PickupInfo.bitGet
-    AttributeType.PickupNew -> fmap PickupNew PickupNew.bitGet
-    AttributeType.PlayerHistoryKey ->
-      fmap PlayerHistoryKey PlayerHistoryKey.bitGet
-    AttributeType.PrivateMatchSettings ->
-      fmap PrivateMatchSettings PrivateMatchSettings.bitGet
-    AttributeType.QWord -> fmap QWord QWord.bitGet
-    AttributeType.RepStatTitle -> fmap RepStatTitle RepStatTitle.bitGet
-    AttributeType.Reservation -> fmap Reservation $ Reservation.bitGet version
-    AttributeType.RigidBodyState ->
-      fmap RigidBodyState $ RigidBodyState.bitGet version
-    AttributeType.Rotation -> fmap Rotation Rotation.bitGet
-    AttributeType.StatEvent -> fmap StatEvent StatEvent.bitGet
-    AttributeType.String -> fmap String String.bitGet
-    AttributeType.TeamPaint -> fmap TeamPaint TeamPaint.bitGet
-    AttributeType.Title -> fmap Title Title.bitGet
-    AttributeType.UniqueId -> fmap UniqueId $ UniqueId.bitGet version
-    AttributeType.WeldedInfo -> fmap WeldedInfo $ WeldedInfo.bitGet version
+bitGet version buildVersion objectMap name =
+  BitGet.label "AttributeValue" $ do
+    constructor <- case Map.lookup (Str.toText name) Data.attributeTypes of
+      Nothing ->
+        BitGet.throw . UnknownAttribute.UnknownAttribute $ Str.toString name
+      Just x -> pure x
+    case constructor of
+      AttributeType.AppliedDamage ->
+        fmap AppliedDamage $ AppliedDamage.bitGet version
+      AttributeType.Boolean -> fmap Boolean Boolean.bitGet
+      AttributeType.Byte -> fmap Byte Byte.bitGet
+      AttributeType.CamSettings ->
+        fmap CamSettings $ CamSettings.bitGet version
+      AttributeType.ClubColors -> fmap ClubColors ClubColors.bitGet
+      AttributeType.CustomDemolish ->
+        fmap CustomDemolish $ CustomDemolish.bitGet version
+      AttributeType.DamageState ->
+        fmap DamageState $ DamageState.bitGet version
+      AttributeType.Demolish -> fmap Demolish $ Demolish.bitGet version
+      AttributeType.Enum -> fmap Enum Enum.bitGet
+      AttributeType.Explosion -> fmap Explosion $ Explosion.bitGet version
+      AttributeType.ExtendedExplosion ->
+        fmap ExtendedExplosion $ ExtendedExplosion.bitGet version
+      AttributeType.FlaggedInt -> fmap FlaggedInt FlaggedInt.bitGet
+      AttributeType.FlaggedByte -> fmap FlaggedByte FlaggedByte.bitGet
+      AttributeType.Float -> fmap Float Float.bitGet
+      AttributeType.GameMode -> fmap GameMode $ GameMode.bitGet version
+      AttributeType.GameServer ->
+        fmap GameServer $ GameServer.bitGet buildVersion
+      AttributeType.Int -> fmap Int Int.bitGet
+      AttributeType.Int64 -> fmap Int64 Int64.bitGet
+      AttributeType.Loadout -> fmap Loadout Loadout.bitGet
+      AttributeType.LoadoutOnline ->
+        fmap LoadoutOnline $ LoadoutOnline.bitGet version objectMap
+      AttributeType.Loadouts -> fmap Loadouts Loadouts.bitGet
+      AttributeType.LoadoutsOnline ->
+        fmap LoadoutsOnline $ LoadoutsOnline.bitGet version objectMap
+      AttributeType.Location -> fmap Location $ Location.bitGet version
+      AttributeType.MusicStinger -> fmap MusicStinger MusicStinger.bitGet
+      AttributeType.PartyLeader ->
+        fmap PartyLeader $ PartyLeader.bitGet version
+      AttributeType.Pickup -> fmap Pickup Pickup.bitGet
+      AttributeType.PickupInfo -> fmap PickupInfo PickupInfo.bitGet
+      AttributeType.PickupNew -> fmap PickupNew PickupNew.bitGet
+      AttributeType.PlayerHistoryKey ->
+        fmap PlayerHistoryKey PlayerHistoryKey.bitGet
+      AttributeType.PrivateMatchSettings ->
+        fmap PrivateMatchSettings PrivateMatchSettings.bitGet
+      AttributeType.QWord -> fmap QWord QWord.bitGet
+      AttributeType.RepStatTitle -> fmap RepStatTitle RepStatTitle.bitGet
+      AttributeType.Reservation ->
+        fmap Reservation $ Reservation.bitGet version
+      AttributeType.RigidBodyState ->
+        fmap RigidBodyState $ RigidBodyState.bitGet version
+      AttributeType.Rotation -> fmap Rotation Rotation.bitGet
+      AttributeType.StatEvent -> fmap StatEvent StatEvent.bitGet
+      AttributeType.String -> fmap String String.bitGet
+      AttributeType.TeamPaint -> fmap TeamPaint TeamPaint.bitGet
+      AttributeType.Title -> fmap Title Title.bitGet
+      AttributeType.UniqueId -> fmap UniqueId $ UniqueId.bitGet version
+      AttributeType.WeldedInfo -> fmap WeldedInfo $ WeldedInfo.bitGet version

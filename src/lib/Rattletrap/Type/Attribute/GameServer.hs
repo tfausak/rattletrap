@@ -15,9 +15,7 @@ data GameServer
 
 instance Json.FromJSON GameServer where
   parseJSON = Json.withObject "GameServer" $ \x -> Foldable.asum
-    [ fmap Old $ Json.required x "old"
-    , fmap New $ Json.required x "new"
-    ]
+    [fmap Old $ Json.required x "old", fmap New $ Json.required x "new"]
 
 instance Json.ToJSON GameServer where
   toJSON x = case x of
@@ -27,9 +25,7 @@ instance Json.ToJSON GameServer where
 schema :: Schema.Schema
 schema = Schema.named "attribute-game-server" . Schema.oneOf $ fmap
   (\(k, v) -> Schema.object [(Json.pair k v, True)])
-  [ ("old", Schema.ref QWord.schema)
-  , ("new", Schema.ref Str.schema)
-  ]
+  [("old", Schema.ref QWord.schema), ("new", Schema.ref Str.schema)]
 
 bitPut :: GameServer -> BitPut.BitPut
 bitPut x = case x of
@@ -37,7 +33,8 @@ bitPut x = case x of
   New y -> Str.bitPut y
 
 bitGet :: Maybe Str.Str -> BitGet.BitGet GameServer
-bitGet buildVersion = BitGet.label "GameServer" $
-  if buildVersion >= Just (Str.fromString "221120.42953.406184")
-    then BitGet.label "New" $ fmap New Str.bitGet
-    else BitGet.label "Old" $ fmap Old QWord.bitGet
+bitGet buildVersion =
+  BitGet.label "GameServer"
+    $ if buildVersion >= Just (Str.fromString "221120.42953.406184")
+        then BitGet.label "New" $ fmap New Str.bitGet
+        else BitGet.label "Old" $ fmap Old QWord.bitGet

@@ -56,7 +56,15 @@ decodeReplicationsBits
        , List.List Replication
        )
 decodeReplicationsBits matchType version buildVersion limit classes actorMap =
-  decodeReplicationsBitsWith matchType version buildVersion limit classes actorMap 0 []
+  decodeReplicationsBitsWith
+    matchType
+    version
+    buildVersion
+    limit
+    classes
+    actorMap
+    0
+    []
 
 decodeReplicationsBitsWith
   :: Maybe Str.Str
@@ -105,6 +113,11 @@ bitGet
 bitGet matchType version buildVersion limit classes actorMap =
   BitGet.label "Replication" $ do
     actorId <- BitGet.label "actorId" $ CompressedWord.bitGet limit
-    (newActorMap, value) <- BitGet.label "value"
-      $ ReplicationValue.bitGet matchType version buildVersion classes actorId actorMap
+    (newActorMap, value) <- BitGet.label "value" $ ReplicationValue.bitGet
+      matchType
+      version
+      buildVersion
+      classes
+      actorId
+      actorMap
     pure (newActorMap, Replication { actorId, value })

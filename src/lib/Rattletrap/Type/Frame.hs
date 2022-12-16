@@ -87,7 +87,9 @@ decodeFramesBitsWith
   -> Int
   -> [Frame]
   -> BitGet.BitGet
-       ( Map.Map CompressedWord.CompressedWord U32.U32
+       ( Map.Map
+           CompressedWord.CompressedWord
+           U32.U32
        , List.List Frame
        )
 decodeFramesBitsWith matchType version buildVersion count limit classes actorMap index frames
@@ -118,15 +120,16 @@ bitGet
   -> Map.Map CompressedWord.CompressedWord U32.U32
   -> BitGet.BitGet
        (Map.Map CompressedWord.CompressedWord U32.U32, Frame)
-bitGet matchType version buildVersion limit classes actorMap = BitGet.label "Frame" $ do
-  time <- BitGet.label "time" F32.bitGet
-  delta <- BitGet.label "delta" F32.bitGet
-  (newActorMap, replications) <-
-    BitGet.label "replications" $ Replication.decodeReplicationsBits
-      matchType
-      version
-      buildVersion
-      limit
-      classes
-      actorMap
-  pure (newActorMap, Frame { time, delta, replications })
+bitGet matchType version buildVersion limit classes actorMap =
+  BitGet.label "Frame" $ do
+    time <- BitGet.label "time" F32.bitGet
+    delta <- BitGet.label "delta" F32.bitGet
+    (newActorMap, replications) <-
+      BitGet.label "replications" $ Replication.decodeReplicationsBits
+        matchType
+        version
+        buildVersion
+        limit
+        classes
+        actorMap
+    pure (newActorMap, Frame { time, delta, replications })

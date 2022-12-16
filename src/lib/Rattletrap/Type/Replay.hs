@@ -122,7 +122,8 @@ getMaxChannels header_ =
 
 getBuildVersion :: Header.Header -> Maybe Str.Str
 getBuildVersion header = do
-  property <- Dictionary.lookup (Str.fromString "BuildVersion") $ Header.properties header
+  property <- Dictionary.lookup (Str.fromString "BuildVersion")
+    $ Header.properties header
   case Property.value property of
     PropertyValue.Str x -> Just $ Property.Str.toStr x
     _ -> Nothing

@@ -45,4 +45,5 @@ bitGet
 bitGet version buildVersion classes actors actor =
   BitGet.label "Updated" . fmap Updated . List.untilM $ do
     p <- BitGet.bool
-    Monad.whenMaybe p $ Attribute.bitGet version buildVersion classes actors actor
+    Monad.whenMaybe p
+      $ Attribute.bitGet version buildVersion classes actors actor
