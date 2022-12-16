@@ -7,17 +7,20 @@ on:
 jobs:
 
   hlint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: tfausak/hlint-action@v1
+      - uses: actions/checkout@v3
+      - uses: haskell/actions/hlint-setup@v2
         with:
-          config: config/hlint.yaml
+          version: 3.5
+      - uses: haskell/actions/hlint-run@v2
+        with:
+          fail-on: status
 
   brittany:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: tfausak/brittany-action@v1
         with:
           config: config/brittany.yaml
@@ -33,7 +36,7 @@ jobs:
     runs-on: ${{ matrix.platform }}-latest
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - id: setup-haskell
         uses: haskell/actions/setup@v1
@@ -85,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: actions/download-artifact@v2
 
