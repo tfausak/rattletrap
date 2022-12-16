@@ -54,6 +54,7 @@ bitPut value = case value of
 bitGet
   :: Maybe Str.Str
   -> Version.Version
+  -> Maybe Str.Str
   -> ClassAttributeMap.ClassAttributeMap
   -> CompressedWord.CompressedWord
   -> Map.Map CompressedWord.CompressedWord U32.U32
@@ -61,7 +62,7 @@ bitGet
        ( Map.Map CompressedWord.CompressedWord U32.U32
        , ReplicationValue
        )
-bitGet matchType version classAttributeMap actorId actorMap =
+bitGet matchType version buildVersion classAttributeMap actorId actorMap =
   BitGet.label "ReplicationValue" $ do
     isOpen <- BitGet.bool
     if isOpen
@@ -79,6 +80,7 @@ bitGet matchType version classAttributeMap actorId actorMap =
           else do
             updated <- Updated.bitGet
               version
+              buildVersion
               classAttributeMap
               actorMap
               actorId

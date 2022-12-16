@@ -16,6 +16,7 @@ data AttributeType
   | FlaggedByte
   | Float
   | GameMode
+  | GameServer
   | Int
   | Int64
   | Loadout

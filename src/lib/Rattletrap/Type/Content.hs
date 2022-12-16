@@ -188,45 +188,49 @@ byteGet
   -> Word
   -- ^ The maximum number of channels in the stream, usually from
   -- 'Rattletrap.Header.getMaxChannels'.
+  -> Maybe Str.Str
+  -- ^ 'Rattletrap.Header.getBuildVersion'
   -> ByteGet.ByteGet Content
-byteGet matchType version numFrames maxChannels = ByteGet.label "Content" $ do
-  levels <- ByteGet.label "levels" $ List.byteGet Str.byteGet
-  keyframes <- ByteGet.label "keyframes" $ List.byteGet Keyframe.byteGet
-  streamSize <- ByteGet.label "streamSize" U32.byteGet
-  stream <-
-    ByteGet.label "stream" . ByteGet.byteString . fromIntegral $ U32.toWord32
-      streamSize
-  messages <- ByteGet.label "messages" $ List.byteGet Message.byteGet
-  marks <- ByteGet.label "marks" $ List.byteGet Mark.byteGet
-  packages <- ByteGet.label "packages" $ List.byteGet Str.byteGet
-  objects <- ByteGet.label "objects" $ List.byteGet Str.byteGet
-  names <- ByteGet.label "names" $ List.byteGet Str.byteGet
-  classMappings <- ByteGet.label "classMappings"
-    $ List.byteGet ClassMapping.byteGet
-  caches <- ByteGet.label "caches" $ List.byteGet Cache.byteGet
-  let
-    classAttributeMap =
-      ClassAttributeMap.make objects classMappings caches names
-    getFrames = BitGet.toByteGet $ Frame.decodeFramesBits
-      matchType
-      version
-      numFrames
-      maxChannels
-      classAttributeMap
-  frames <- ByteGet.label "frames" $ ByteGet.embed getFrames stream
-  unknown <- ByteGet.label "unknown"
-    $ fmap LazyByteString.unpack ByteGet.remaining
-  pure Content
-    { levels
-    , keyframes
-    , streamSize
-    , frames
-    , messages
-    , marks
-    , packages
-    , objects
-    , names
-    , classMappings
-    , caches
-    , unknown
-    }
+byteGet matchType version numFrames maxChannels buildVersion =
+  ByteGet.label "Content" $ do
+    levels <- ByteGet.label "levels" $ List.byteGet Str.byteGet
+    keyframes <- ByteGet.label "keyframes" $ List.byteGet Keyframe.byteGet
+    streamSize <- ByteGet.label "streamSize" U32.byteGet
+    stream <-
+      ByteGet.label "stream" . ByteGet.byteString . fromIntegral $ U32.toWord32
+        streamSize
+    messages <- ByteGet.label "messages" $ List.byteGet Message.byteGet
+    marks <- ByteGet.label "marks" $ List.byteGet Mark.byteGet
+    packages <- ByteGet.label "packages" $ List.byteGet Str.byteGet
+    objects <- ByteGet.label "objects" $ List.byteGet Str.byteGet
+    names <- ByteGet.label "names" $ List.byteGet Str.byteGet
+    classMappings <- ByteGet.label "classMappings"
+      $ List.byteGet ClassMapping.byteGet
+    caches <- ByteGet.label "caches" $ List.byteGet Cache.byteGet
+    let
+      classAttributeMap =
+        ClassAttributeMap.make objects classMappings caches names
+      getFrames = BitGet.toByteGet $ Frame.decodeFramesBits
+        matchType
+        version
+        buildVersion
+        numFrames
+        maxChannels
+        classAttributeMap
+    frames <- ByteGet.label "frames" $ ByteGet.embed getFrames stream
+    unknown <- ByteGet.label "unknown"
+      $ fmap LazyByteString.unpack ByteGet.remaining
+    pure Content
+      { levels
+      , keyframes
+      , streamSize
+      , frames
+      , messages
+      , marks
+      , packages
+      , objects
+      , names
+      , classMappings
+      , caches
+      , unknown
+      }

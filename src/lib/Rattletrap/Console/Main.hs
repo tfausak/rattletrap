@@ -29,6 +29,7 @@ import qualified Rattletrap.Type.Attribute.FlaggedByte as Attribute.FlaggedByte
 import qualified Rattletrap.Type.Attribute.FlaggedInt as Attribute.FlaggedInt
 import qualified Rattletrap.Type.Attribute.Float as Attribute.Float
 import qualified Rattletrap.Type.Attribute.GameMode as Attribute.GameMode
+import qualified Rattletrap.Type.Attribute.GameServer as Attribute.GameServer
 import qualified Rattletrap.Type.Attribute.Int as Attribute.Int
 import qualified Rattletrap.Type.Attribute.Int64 as Attribute.Int64
 import qualified Rattletrap.Type.Attribute.Loadout as Attribute.Loadout
@@ -181,6 +182,7 @@ schema =
         , Attribute.FlaggedInt.schema
         , Attribute.Float.schema
         , Attribute.GameMode.schema
+        , Attribute.GameServer.schema
         , Attribute.Int.schema
         , Attribute.Int64.schema
         , Attribute.Loadout.schema

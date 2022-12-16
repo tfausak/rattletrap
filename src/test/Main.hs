@@ -99,6 +99,7 @@ replays =
   , ("540d", "a demolish attribute") -- https://github.com/tfausak/rattletrap/commit/65ce033
   , ("54ae", "replicated car scale") -- https://github.com/nickbabcock/boxcars/pull/79
   , ("551c", "private match settings") -- https://github.com/tfausak/rattletrap/commit/5c9ebfc
+  , ("59d3", "v2.23") -- https://github.com/tfausak/rattletrap/issues/274
   , ("5a06", "esports items") -- https://github.com/tfausak/rattletrap/pull/114
   , ("5e0b", "max channels") -- https://github.com/tfausak/rattletrap/issues/254
   , ("6210", "different player history key") -- https://github.com/tfausak/rattletrap/pull/63

@@ -114,6 +114,7 @@ library
     Rattletrap.Type.Attribute.FlaggedInt
     Rattletrap.Type.Attribute.Float
     Rattletrap.Type.Attribute.GameMode
+    Rattletrap.Type.Attribute.GameServer
     Rattletrap.Type.Attribute.Int
     Rattletrap.Type.Attribute.Int64
     Rattletrap.Type.Attribute.Loadout

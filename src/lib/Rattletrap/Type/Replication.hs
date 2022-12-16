@@ -47,6 +47,7 @@ bitPut replication = CompressedWord.bitPut (actorId replication)
 decodeReplicationsBits
   :: Maybe Str.Str
   -> Version.Version
+  -> Maybe Str.Str
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> Map.Map CompressedWord.CompressedWord U32.U32
@@ -54,12 +55,21 @@ decodeReplicationsBits
        ( Map.Map CompressedWord.CompressedWord U32.U32
        , List.List Replication
        )
-decodeReplicationsBits matchType version limit classes actorMap =
-  decodeReplicationsBitsWith matchType version limit classes actorMap 0 []
+decodeReplicationsBits matchType version buildVersion limit classes actorMap =
+  decodeReplicationsBitsWith
+    matchType
+    version
+    buildVersion
+    limit
+    classes
+    actorMap
+    0
+    []
 
 decodeReplicationsBitsWith
   :: Maybe Str.Str
   -> Version.Version
+  -> Maybe Str.Str
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> Map.Map CompressedWord.CompressedWord U32.U32
@@ -69,17 +79,18 @@ decodeReplicationsBitsWith
        ( Map.Map CompressedWord.CompressedWord U32.U32
        , List.List Replication
        )
-decodeReplicationsBitsWith matchType version limit classes actorMap index replications
+decodeReplicationsBitsWith matchType version buildVersion limit classes actorMap index replications
   = do
     hasReplication <- BitGet.bool
     if hasReplication
       then do
         (newActorMap, replication) <-
           BitGet.label ("element (" <> show index <> ")")
-            $ bitGet matchType version limit classes actorMap
+            $ bitGet matchType version buildVersion limit classes actorMap
         decodeReplicationsBitsWith
             matchType
             version
+            buildVersion
             limit
             classes
             newActorMap
@@ -91,6 +102,7 @@ decodeReplicationsBitsWith matchType version limit classes actorMap index replic
 bitGet
   :: Maybe Str.Str
   -> Version.Version
+  -> Maybe Str.Str
   -> Word
   -> ClassAttributeMap.ClassAttributeMap
   -> Map.Map CompressedWord.CompressedWord U32.U32
@@ -98,9 +110,14 @@ bitGet
        ( Map.Map CompressedWord.CompressedWord U32.U32
        , Replication
        )
-bitGet matchType version limit classes actorMap =
+bitGet matchType version buildVersion limit classes actorMap =
   BitGet.label "Replication" $ do
     actorId <- BitGet.label "actorId" $ CompressedWord.bitGet limit
-    (newActorMap, value) <- BitGet.label "value"
-      $ ReplicationValue.bitGet matchType version classes actorId actorMap
+    (newActorMap, value) <- BitGet.label "value" $ ReplicationValue.bitGet
+      matchType
+      version
+      buildVersion
+      classes
+      actorId
+      actorMap
     pure (newActorMap, Replication { actorId, value })
