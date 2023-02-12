@@ -11,10 +11,10 @@ import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
 data LoadoutsOnline = LoadoutsOnline
-  { blue :: LoadoutOnline.LoadoutOnline
-  , orange :: LoadoutOnline.LoadoutOnline
-  , unknown1 :: Bool
-  , unknown2 :: Bool
+  { blue :: LoadoutOnline.LoadoutOnline,
+    orange :: LoadoutOnline.LoadoutOnline,
+    unknown1 :: Bool,
+    unknown2 :: Bool
   }
   deriving (Eq, Show)
 
@@ -24,23 +24,26 @@ instance Json.FromJSON LoadoutsOnline where
     orange <- Json.required object "orange"
     unknown1 <- Json.required object "unknown1"
     unknown2 <- Json.required object "unknown2"
-    pure LoadoutsOnline { blue, orange, unknown1, unknown2 }
+    pure LoadoutsOnline {blue, orange, unknown1, unknown2}
 
 instance Json.ToJSON LoadoutsOnline where
-  toJSON x = Json.object
-    [ Json.pair "blue" $ blue x
-    , Json.pair "orange" $ orange x
-    , Json.pair "unknown1" $ unknown1 x
-    , Json.pair "unknown2" $ unknown2 x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "blue" $ blue x,
+        Json.pair "orange" $ orange x,
+        Json.pair "unknown1" $ unknown1 x,
+        Json.pair "unknown2" $ unknown2 x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-loadouts-online" $ Schema.object
-  [ (Json.pair "blue" $ Schema.ref LoadoutOnline.schema, True)
-  , (Json.pair "orange" $ Schema.ref LoadoutOnline.schema, True)
-  , (Json.pair "unknown1" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown2" $ Schema.ref Schema.boolean, True)
-  ]
+schema =
+  Schema.named "attribute-loadouts-online" $
+    Schema.object
+      [ (Json.pair "blue" $ Schema.ref LoadoutOnline.schema, True),
+        (Json.pair "orange" $ Schema.ref LoadoutOnline.schema, True),
+        (Json.pair "unknown1" $ Schema.ref Schema.boolean, True),
+        (Json.pair "unknown2" $ Schema.ref Schema.boolean, True)
+      ]
 
 bitPut :: LoadoutsOnline -> BitPut.BitPut
 bitPut loadoutsOnlineAttribute =
@@ -49,11 +52,11 @@ bitPut loadoutsOnlineAttribute =
     <> BitPut.bool (unknown1 loadoutsOnlineAttribute)
     <> BitPut.bool (unknown2 loadoutsOnlineAttribute)
 
-bitGet
-  :: Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet LoadoutsOnline
+bitGet ::
+  Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet LoadoutsOnline
 bitGet version objectMap = BitGet.label "LoadoutsOnline" $ do
   blue <- BitGet.label "blue" $ LoadoutOnline.bitGet version objectMap
   orange <- BitGet.label "orange" $ LoadoutOnline.bitGet version objectMap
   unknown1 <- BitGet.label "unknown1" BitGet.bool
   unknown2 <- BitGet.label "unknown2" BitGet.bool
-  pure LoadoutsOnline { blue, orange, unknown1, unknown2 }
+  pure LoadoutsOnline {blue, orange, unknown1, unknown2}

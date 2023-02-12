@@ -119,17 +119,20 @@ rattletrap name arguments = do
   config <- getConfig arguments
   if Config.help config
     then helpMain name
-    else if Config.version config
-      then versionMain
-      else if Config.schema config
-        then schemaMain config
-        else defaultMain name config
+    else
+      if Config.version config
+        then versionMain
+        else
+          if Config.schema config
+            then schemaMain config
+            else defaultMain name config
 
 helpMain :: String -> IO ()
 helpMain name = do
-  putStr $ Console.usageInfo
-    (unwords [name, "version", Version.string])
-    Option.all
+  putStr $
+    Console.usageInfo
+      (unwords [name, "version", Version.string])
+      Option.all
 
 versionMain :: IO ()
 versionMain = do
@@ -144,13 +147,14 @@ defaultMain name config = do
   let decode = getDecoder config
   replay <- case decode input of
     Left (ls, e) -> do
-      IO.hPutStr IO.stderr $ unlines
-        [ "ERROR: " <> Exception.displayException e
-        , "-- Context: " <> List.intercalate ", " ls
-        , "-- You are using Rattletrap version " <> Version.string
-        , "-- " <> show config
-        , "-- Please report this problem at https://github.com/tfausak/rattletrap/issues/new"
-        ]
+      IO.hPutStr IO.stderr $
+        unlines
+          [ "ERROR: " <> Exception.displayException e,
+            "-- Context: " <> List.intercalate ", " ls,
+            "-- You are using Rattletrap version " <> Version.string,
+            "-- " <> show config,
+            "-- Please report this problem at https://github.com/tfausak/rattletrap/issues/new"
+          ]
       Exit.exitFailure
     Right x -> pure x
   let encode = getEncoder config
@@ -159,114 +163,114 @@ defaultMain name config = do
 schema :: Json.Value
 schema =
   let contentSchema = Content.schema $ List.schema Frame.schema
-  in
-    Json.object
-      [ Json.pair "$schema" "http://json-schema.org/draft-07/schema"
-      , Json.pair "$id" Replay.schemaUrl
-      , Json.pair "$ref" "#/definitions/replay"
-      , Json.pair "definitions" . Json.object $ fmap
-        (\s -> Json.pair (Text.unpack $ Schema.name s) $ Schema.json s)
-        [ Attribute.schema
-        , Attribute.AppliedDamage.schema
-        , Attribute.Boolean.schema
-        , Attribute.Byte.schema
-        , Attribute.CamSettings.schema
-        , Attribute.ClubColors.schema
-        , Attribute.CustomDemolish.schema
-        , Attribute.DamageState.schema
-        , Attribute.Demolish.schema
-        , Attribute.Enum.schema
-        , Attribute.Explosion.schema
-        , Attribute.ExtendedExplosion.schema
-        , Attribute.FlaggedByte.schema
-        , Attribute.FlaggedInt.schema
-        , Attribute.Float.schema
-        , Attribute.GameMode.schema
-        , Attribute.GameServer.schema
-        , Attribute.Int.schema
-        , Attribute.Int64.schema
-        , Attribute.Loadout.schema
-        , Attribute.LoadoutOnline.schema
-        , Attribute.Loadouts.schema
-        , Attribute.LoadoutsOnline.schema
-        , Attribute.Location.schema
-        , Attribute.MusicStinger.schema
-        , Attribute.PartyLeader.schema
-        , Attribute.Pickup.schema
-        , Attribute.PickupInfo.schema
-        , Attribute.PickupNew.schema
-        , Attribute.PlayerHistoryKey.schema
-        , Attribute.PrivateMatchSettings.schema
-        , Attribute.Product.schema
-        , Attribute.ProductValue.schema
-        , Attribute.QWord.schema
-        , Attribute.RepStatTitle.schema
-        , Attribute.Reservation.schema
-        , Attribute.RigidBodyState.schema
-        , Attribute.Rotation.schema
-        , Attribute.StatEvent.schema
-        , Attribute.String.schema
-        , Attribute.TeamPaint.schema
-        , Attribute.Title.schema
-        , Attribute.UniqueId.schema
-        , Attribute.WeldedInfo.schema
-        , AttributeMapping.schema
-        , AttributeValue.schema
-        , Cache.schema
-        , ClassMapping.schema
-        , CompressedWord.schema
-        , CompressedWordVector.schema
-        , contentSchema
-        , Dictionary.schema Property.schema
-        , F32.schema
-        , Frame.schema
-        , Header.schema
-        , I32.schema
-        , I64.schema
-        , I8.schema
-        , Initialization.schema
-        , Int8Vector.schema
-        , Keyframe.schema
-        , List.schema Attribute.Product.schema
-        , Mark.schema
-        , Message.schema
-        , Property.schema
-        , Property.Array.schema Property.schema
-        , Property.Byte.schema
-        , PropertyValue.schema Property.schema
-        , Quaternion.schema
-        , RemoteId.schema
-        , RemoteId.PlayStation.schema
-        , RemoteId.PsyNet.schema
-        , RemoteId.Switch.schema
-        , Replay.schema (Section.schema Header.schema)
-        . Section.schema
-        $ contentSchema
-        , Replication.Destroyed.schema
-        , Replication.schema
-        , Replication.Spawned.schema
-        , Replication.Updated.schema
-        , ReplicationValue.schema
-        , Rotation.schema
-        , Schema.boolean
-        , Schema.integer
-        , Schema.null
-        , Schema.number
-        , Schema.string
-        , Section.schema contentSchema
-        , Section.schema Header.schema
-        , Str.schema
-        , U32.schema
-        , U64.schema
-        , U8.schema
-        , Vector.schema
+   in Json.object
+        [ Json.pair "$schema" "http://json-schema.org/draft-07/schema",
+          Json.pair "$id" Replay.schemaUrl,
+          Json.pair "$ref" "#/definitions/replay",
+          Json.pair "definitions" . Json.object $
+            fmap
+              (\s -> Json.pair (Text.unpack $ Schema.name s) $ Schema.json s)
+              [ Attribute.schema,
+                Attribute.AppliedDamage.schema,
+                Attribute.Boolean.schema,
+                Attribute.Byte.schema,
+                Attribute.CamSettings.schema,
+                Attribute.ClubColors.schema,
+                Attribute.CustomDemolish.schema,
+                Attribute.DamageState.schema,
+                Attribute.Demolish.schema,
+                Attribute.Enum.schema,
+                Attribute.Explosion.schema,
+                Attribute.ExtendedExplosion.schema,
+                Attribute.FlaggedByte.schema,
+                Attribute.FlaggedInt.schema,
+                Attribute.Float.schema,
+                Attribute.GameMode.schema,
+                Attribute.GameServer.schema,
+                Attribute.Int.schema,
+                Attribute.Int64.schema,
+                Attribute.Loadout.schema,
+                Attribute.LoadoutOnline.schema,
+                Attribute.Loadouts.schema,
+                Attribute.LoadoutsOnline.schema,
+                Attribute.Location.schema,
+                Attribute.MusicStinger.schema,
+                Attribute.PartyLeader.schema,
+                Attribute.Pickup.schema,
+                Attribute.PickupInfo.schema,
+                Attribute.PickupNew.schema,
+                Attribute.PlayerHistoryKey.schema,
+                Attribute.PrivateMatchSettings.schema,
+                Attribute.Product.schema,
+                Attribute.ProductValue.schema,
+                Attribute.QWord.schema,
+                Attribute.RepStatTitle.schema,
+                Attribute.Reservation.schema,
+                Attribute.RigidBodyState.schema,
+                Attribute.Rotation.schema,
+                Attribute.StatEvent.schema,
+                Attribute.String.schema,
+                Attribute.TeamPaint.schema,
+                Attribute.Title.schema,
+                Attribute.UniqueId.schema,
+                Attribute.WeldedInfo.schema,
+                AttributeMapping.schema,
+                AttributeValue.schema,
+                Cache.schema,
+                ClassMapping.schema,
+                CompressedWord.schema,
+                CompressedWordVector.schema,
+                contentSchema,
+                Dictionary.schema Property.schema,
+                F32.schema,
+                Frame.schema,
+                Header.schema,
+                I32.schema,
+                I64.schema,
+                I8.schema,
+                Initialization.schema,
+                Int8Vector.schema,
+                Keyframe.schema,
+                List.schema Attribute.Product.schema,
+                Mark.schema,
+                Message.schema,
+                Property.schema,
+                Property.Array.schema Property.schema,
+                Property.Byte.schema,
+                PropertyValue.schema Property.schema,
+                Quaternion.schema,
+                RemoteId.schema,
+                RemoteId.PlayStation.schema,
+                RemoteId.PsyNet.schema,
+                RemoteId.Switch.schema,
+                Replay.schema (Section.schema Header.schema)
+                  . Section.schema
+                  $ contentSchema,
+                Replication.Destroyed.schema,
+                Replication.schema,
+                Replication.Spawned.schema,
+                Replication.Updated.schema,
+                ReplicationValue.schema,
+                Rotation.schema,
+                Schema.boolean,
+                Schema.integer,
+                Schema.null,
+                Schema.number,
+                Schema.string,
+                Section.schema contentSchema,
+                Section.schema Header.schema,
+                Str.schema,
+                U32.schema,
+                U64.schema,
+                U8.schema,
+                Vector.schema
+              ]
         ]
-      ]
 
-getDecoder
-  :: Config.Config
-  -> ByteString.ByteString
-  -> Either ([String], Exception.SomeException) Replay.Replay
+getDecoder ::
+  Config.Config ->
+  ByteString.ByteString ->
+  Either ([String], Exception.SomeException) Replay.Replay
 getDecoder config = case Config.getMode config of
   Mode.Decode ->
     Rattletrap.decodeReplayFile (Config.fast config) (Config.skipCrc config)
@@ -281,12 +285,13 @@ getInput :: String -> Config.Config -> IO ByteString.ByteString
 getInput name config = case Config.input config of
   Nothing -> do
     isTerminalDevice <- IO.hIsTerminalDevice IO.stdin
-    Monad.when isTerminalDevice . IO.hPutStr IO.stderr $ unlines
-      [ "-- You did not supply any input, so Rattletrap will read from STDIN."
-      , "-- If that is unexpected, try running: "
-      <> FilePath.combine "." name
-      <> " --help"
-      ]
+    Monad.when isTerminalDevice . IO.hPutStr IO.stderr $
+      unlines
+        [ "-- You did not supply any input, so Rattletrap will read from STDIN.",
+          "-- If that is unexpected, try running: "
+            <> FilePath.combine "." name
+            <> " --help"
+        ]
     ByteString.getContents
   Just fileOrUrl -> case Client.parseUrlThrow fileOrUrl of
     Nothing -> ByteString.readFile fileOrUrl
@@ -299,18 +304,17 @@ putOutput :: Config.Config -> LazyByteString.ByteString -> IO ()
 putOutput =
   maybe LazyByteString.putStr LazyByteString.writeFile . Config.output
 
-encodeJson :: Json.ToJSON a => Config.Config -> a -> LazyByteString.ByteString
+encodeJson :: (Json.ToJSON a) => Config.Config -> a -> LazyByteString.ByteString
 encodeJson = Bool.bool Json.encodePretty Json.encode . Config.compact
 
 getConfig :: [String] -> IO Config.Config
 getConfig arguments = do
-  let
-    (flags, unexpectedArguments, unknownOptions, problems) =
-      Console.getOpt' Console.Permute Option.all arguments
+  let (flags, unexpectedArguments, unknownOptions, problems) =
+        Console.getOpt' Console.Permute Option.all arguments
   Monad.forM_ unexpectedArguments $ \x ->
     IO.hPutStrLn IO.stderr $ "WARNING: unexpected argument `" <> x <> "'"
-  Monad.forM_ unknownOptions
-    $ \x -> IO.hPutStrLn IO.stderr $ "WARNING: unknown option `" <> x <> "'"
+  Monad.forM_ unknownOptions $
+    \x -> IO.hPutStrLn IO.stderr $ "WARNING: unknown option `" <> x <> "'"
   Monad.forM_ problems $ \x -> IO.hPutStr IO.stderr $ "ERROR: " <> x
   Monad.unless (null problems) Exit.exitFailure
   either fail pure $ Monad.foldM Config.applyFlag Config.initial flags

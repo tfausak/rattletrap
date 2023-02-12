@@ -8,11 +8,11 @@ import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
 
 data TeamPaint = TeamPaint
-  { team :: U8.U8
-  , primaryColor :: U8.U8
-  , accentColor :: U8.U8
-  , primaryFinish :: U32.U32
-  , accentFinish :: U32.U32
+  { team :: U8.U8,
+    primaryColor :: U8.U8,
+    accentColor :: U8.U8,
+    primaryFinish :: U32.U32,
+    accentFinish :: U32.U32
   }
   deriving (Eq, Show)
 
@@ -23,31 +23,35 @@ instance Json.FromJSON TeamPaint where
     accentColor <- Json.required object "accent_color"
     primaryFinish <- Json.required object "primary_finish"
     accentFinish <- Json.required object "accent_finish"
-    pure TeamPaint
-      { team
-      , primaryColor
-      , accentColor
-      , primaryFinish
-      , accentFinish
-      }
+    pure
+      TeamPaint
+        { team,
+          primaryColor,
+          accentColor,
+          primaryFinish,
+          accentFinish
+        }
 
 instance Json.ToJSON TeamPaint where
-  toJSON x = Json.object
-    [ Json.pair "team" $ team x
-    , Json.pair "primary_color" $ primaryColor x
-    , Json.pair "accent_color" $ accentColor x
-    , Json.pair "primary_finish" $ primaryFinish x
-    , Json.pair "accent_finish" $ accentFinish x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "team" $ team x,
+        Json.pair "primary_color" $ primaryColor x,
+        Json.pair "accent_color" $ accentColor x,
+        Json.pair "primary_finish" $ primaryFinish x,
+        Json.pair "accent_finish" $ accentFinish x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-team-paint" $ Schema.object
-  [ (Json.pair "team" $ Schema.ref U8.schema, True)
-  , (Json.pair "primary_color" $ Schema.ref U8.schema, True)
-  , (Json.pair "accent_color" $ Schema.ref U8.schema, True)
-  , (Json.pair "primary_finish" $ Schema.ref U32.schema, True)
-  , (Json.pair "accent_finish" $ Schema.ref U32.schema, True)
-  ]
+schema =
+  Schema.named "attribute-team-paint" $
+    Schema.object
+      [ (Json.pair "team" $ Schema.ref U8.schema, True),
+        (Json.pair "primary_color" $ Schema.ref U8.schema, True),
+        (Json.pair "accent_color" $ Schema.ref U8.schema, True),
+        (Json.pair "primary_finish" $ Schema.ref U32.schema, True),
+        (Json.pair "accent_finish" $ Schema.ref U32.schema, True)
+      ]
 
 bitPut :: TeamPaint -> BitPut.BitPut
 bitPut teamPaintAttribute =
@@ -64,10 +68,11 @@ bitGet = BitGet.label "TeamPaint" $ do
   accentColor <- BitGet.label "accentColor" U8.bitGet
   primaryFinish <- BitGet.label "primaryFinish" U32.bitGet
   accentFinish <- BitGet.label "accentFinish" U32.bitGet
-  pure TeamPaint
-    { team
-    , primaryColor
-    , accentColor
-    , primaryFinish
-    , accentFinish
-    }
+  pure
+    TeamPaint
+      { team,
+        primaryColor,
+        accentColor,
+        primaryFinish,
+        accentFinish
+      }

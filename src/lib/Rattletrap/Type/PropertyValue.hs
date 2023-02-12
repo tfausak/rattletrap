@@ -17,33 +17,34 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Utility.Json as Json
 
 data PropertyValue a
-  = Array (Property.Array.Array a)
-  -- ^ Yes, a list of dictionaries. No, it doesn't make sense. These usually
-  -- only have one element.
+  = -- | Yes, a list of dictionaries. No, it doesn't make sense. These usually
+    -- only have one element.
+    Array (Property.Array.Array a)
   | Bool Property.Bool.Bool
-  | Byte Property.Byte.Byte
-  -- ^ This is a strange name for essentially a key-value pair.
+  | -- | This is a strange name for essentially a key-value pair.
+    Byte Property.Byte.Byte
   | Float Property.Float.Float
   | Int Property.Int.Int
-  | Name Property.Name.Name
-  -- ^ It's unclear how exactly this is different than a 'StrProperty'.
+  | -- | It's unclear how exactly this is different than a 'StrProperty'.
+    Name Property.Name.Name
   | QWord Property.QWord.QWord
   | Str Property.Str.Str
   deriving (Eq, Show)
 
-instance Json.FromJSON a => Json.FromJSON (PropertyValue a) where
-  parseJSON = Json.withObject "PropertyValue" $ \object -> Foldable.asum
-    [ fmap Array $ Json.required object "array"
-    , fmap Bool $ Json.required object "bool"
-    , fmap Byte $ Json.required object "byte"
-    , fmap Float $ Json.required object "float"
-    , fmap Int $ Json.required object "int"
-    , fmap Name $ Json.required object "name"
-    , fmap QWord $ Json.required object "q_word"
-    , fmap Str $ Json.required object "str"
-    ]
+instance (Json.FromJSON a) => Json.FromJSON (PropertyValue a) where
+  parseJSON = Json.withObject "PropertyValue" $ \object ->
+    Foldable.asum
+      [ fmap Array $ Json.required object "array",
+        fmap Bool $ Json.required object "bool",
+        fmap Byte $ Json.required object "byte",
+        fmap Float $ Json.required object "float",
+        fmap Int $ Json.required object "int",
+        fmap Name $ Json.required object "name",
+        fmap QWord $ Json.required object "q_word",
+        fmap Str $ Json.required object "str"
+      ]
 
-instance Json.ToJSON a => Json.ToJSON (PropertyValue a) where
+instance (Json.ToJSON a) => Json.ToJSON (PropertyValue a) where
   toJSON x = case x of
     Array y -> Json.object [Json.pair "array" y]
     Bool y -> Json.object [Json.pair "bool" y]
@@ -55,17 +56,19 @@ instance Json.ToJSON a => Json.ToJSON (PropertyValue a) where
     Str y -> Json.object [Json.pair "str" y]
 
 schema :: Schema.Schema -> Schema.Schema
-schema s = Schema.named "property-value" . Schema.oneOf $ fmap
-  (\(k, v) -> Schema.object [(Json.pair k v, True)])
-  [ ("array", Schema.ref $ Property.Array.schema s)
-  , ("bool", Schema.ref Property.Bool.schema)
-  , ("byte", Schema.ref Property.Byte.schema)
-  , ("float", Schema.ref Property.Float.schema)
-  , ("int", Schema.ref Property.Int.schema)
-  , ("name", Schema.ref Property.Name.schema)
-  , ("q_word", Schema.ref Property.QWord.schema)
-  , ("str", Schema.ref Property.Str.schema)
-  ]
+schema s =
+  Schema.named "property-value" . Schema.oneOf $
+    fmap
+      (\(k, v) -> Schema.object [(Json.pair k v, True)])
+      [ ("array", Schema.ref $ Property.Array.schema s),
+        ("bool", Schema.ref Property.Bool.schema),
+        ("byte", Schema.ref Property.Byte.schema),
+        ("float", Schema.ref Property.Float.schema),
+        ("int", Schema.ref Property.Int.schema),
+        ("name", Schema.ref Property.Name.schema),
+        ("q_word", Schema.ref Property.QWord.schema),
+        ("str", Schema.ref Property.Str.schema)
+      ]
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
 bytePut putProperty value = case value of

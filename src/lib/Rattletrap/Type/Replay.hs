@@ -18,17 +18,17 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Version as Version
 
-type Replay
-  = ReplayWith
-      (Section.Section Header.Header)
-      (Section.Section Content.Content)
+type Replay =
+  ReplayWith
+    (Section.Section Header.Header)
+    (Section.Section Content.Content)
 
 -- | A Rocket League replay.
 data ReplayWith header content = Replay
-  { header :: header
-  -- ^ This has most of the high-level metadata.
-  , content :: content
-  -- ^ This has most of the low-level game data.
+  { -- | This has most of the high-level metadata.
+    header :: header,
+    -- | This has most of the low-level game data.
+    content :: content
   }
   deriving (Eq, Show)
 
@@ -36,33 +36,38 @@ instance (Json.FromJSON h, Json.FromJSON c) => Json.FromJSON (ReplayWith h c) wh
   parseJSON = Json.withObject "Replay" $ \object -> do
     header <- Json.required object "header"
     content <- Json.required object "content"
-    pure Replay { header, content }
+    pure Replay {header, content}
 
 instance (Json.ToJSON h, Json.ToJSON c) => Json.ToJSON (ReplayWith h c) where
-  toJSON x = Json.object
-    [ Json.pair "$schema" schemaUrl
-    , Json.pair "header" $ header x
-    , Json.pair "content" $ content x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "$schema" schemaUrl,
+        Json.pair "header" $ header x,
+        Json.pair "content" $ content x
+      ]
 
 schema :: Schema.Schema -> Schema.Schema -> Schema.Schema
-schema h c = Schema.named "replay" $ Schema.object
-  [ (Json.pair "header" $ Schema.ref h, True)
-  , (Json.pair "content" $ Schema.ref c, True)
-  ]
+schema h c =
+  Schema.named "replay" $
+    Schema.object
+      [ (Json.pair "header" $ Schema.ref h, True),
+        (Json.pair "content" $ Schema.ref c, True)
+      ]
 
 schemaUrl :: String
-schemaUrl = mconcat
-  [ "https://github.com/tfausak/rattletrap/releases/download/"
-  , Version.string
-  , "/rattletrap-"
-  , Version.string
-  , "-schema.json"
-  ]
+schemaUrl =
+  mconcat
+    [ "https://github.com/tfausak/rattletrap/releases/download/",
+      Version.string,
+      "/rattletrap-",
+      Version.string,
+      "-schema.json"
+    ]
 
 bytePut :: Replay -> BytePut.BytePut
-bytePut x = Section.bytePut Header.bytePut (header x)
-  <> Section.bytePut Content.bytePut (content x)
+bytePut x =
+  Section.bytePut Header.bytePut (header x)
+    <> Section.bytePut Content.bytePut (content x)
 
 byteGet :: Bool -> Bool -> ByteGet.ByteGet Replay
 byteGet fast skip = ByteGet.label "Replay" $ do
@@ -70,28 +75,31 @@ byteGet fast skip = ByteGet.label "Replay" $ do
     section <-
       Section.byteGet skip $ ByteGet.byteString . fromIntegral . U32.toWord32
     body <- ByteGet.embed Header.byteGet $ Section.body section
-    pure section { Section.body }
+    pure section {Section.body}
   content <- ByteGet.label "content" $ do
     section <-
       Section.byteGet skip $ ByteGet.byteString . fromIntegral . U32.toWord32
-    body <- if fast
-      then pure Content.empty
-      else ByteGet.embed (getContent $ Section.body header)
-        $ Section.body section
-    pure section { Section.body }
-  pure Replay { header, content }
+    body <-
+      if fast
+        then pure Content.empty
+        else
+          ByteGet.embed (getContent $ Section.body header) $
+            Section.body section
+    pure section {Section.body}
+  pure Replay {header, content}
 
 getContent :: Header.Header -> ByteGet.ByteGet Content.Content
-getContent h = Content.byteGet
-  (getMatchType h)
-  (Header.version h)
-  (getNumFrames h)
-  (getMaxChannels h)
-  (getBuildVersion h)
+getContent h =
+  Content.byteGet
+    (getMatchType h)
+    (Header.version h)
+    (getNumFrames h)
+    (getMaxChannels h)
+    (getBuildVersion h)
 
 getMatchType :: Header.Header -> Maybe Str.Str
 getMatchType header = do
-  Property.Property { Property.value } <-
+  Property.Property {Property.value} <-
     Dictionary.lookup (Str.fromString "MatchType") $ Header.properties header
   case value of
     PropertyValue.Name x -> Just $ Property.Name.toStr x
@@ -99,31 +107,28 @@ getMatchType header = do
 
 getNumFrames :: Header.Header -> Int
 getNumFrames header_ =
-  case
-      Dictionary.lookup
-        (Str.fromString "NumFrames")
-        (Header.properties header_)
-    of
-      Just (Property.Property _ _ (PropertyValue.Int numFrames)) ->
-        fromIntegral (I32.toInt32 (Property.Int.toI32 numFrames))
-      _ -> 0
+  case Dictionary.lookup
+    (Str.fromString "NumFrames")
+    (Header.properties header_) of
+    Just (Property.Property _ _ (PropertyValue.Int numFrames)) ->
+      fromIntegral (I32.toInt32 (Property.Int.toI32 numFrames))
+    _ -> 0
 
 getMaxChannels :: Header.Header -> Word
 getMaxChannels header_ =
-  subtract 1
-    $ case
-        Dictionary.lookup
-          (Str.fromString "MaxChannels")
-          (Header.properties header_)
-      of
-        Just (Property.Property _ _ (PropertyValue.Int maxChannels)) ->
-          fromIntegral (I32.toInt32 (Property.Int.toI32 maxChannels))
-        _ -> 1023
+  subtract 1 $
+    case Dictionary.lookup
+      (Str.fromString "MaxChannels")
+      (Header.properties header_) of
+      Just (Property.Property _ _ (PropertyValue.Int maxChannels)) ->
+        fromIntegral (I32.toInt32 (Property.Int.toI32 maxChannels))
+      _ -> 1023
 
 getBuildVersion :: Header.Header -> Maybe Str.Str
 getBuildVersion header = do
-  property <- Dictionary.lookup (Str.fromString "BuildVersion")
-    $ Header.properties header
+  property <-
+    Dictionary.lookup (Str.fromString "BuildVersion") $
+      Header.properties header
   case Property.value property of
     PropertyValue.Str x -> Just $ Property.Str.toStr x
     _ -> Nothing

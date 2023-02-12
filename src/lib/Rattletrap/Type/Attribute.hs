@@ -2,7 +2,6 @@ module Rattletrap.Type.Attribute where
 
 import qualified Control.Exception as Exception
 import qualified Data.Map as Map
-import Prelude hiding (id)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Exception.MissingAttributeLimit as MissingAttributeLimit
@@ -16,13 +15,14 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
+import Prelude hiding (id)
 
 data Attribute = Attribute
-  { id :: CompressedWord.CompressedWord
-  , name :: Str.Str
-  -- ^ Read-only! Changing an attribute's name requires editing the class
-  -- attribute map.
-  , value :: AttributeValue.AttributeValue
+  { id :: CompressedWord.CompressedWord,
+    -- | Read-only! Changing an attribute's name requires editing the class
+    -- attribute map.
+    name :: Str.Str,
+    value :: AttributeValue.AttributeValue
   }
   deriving (Eq, Show)
 
@@ -31,72 +31,80 @@ instance Json.FromJSON Attribute where
     id <- Json.required object "id"
     name <- Json.required object "name"
     value <- Json.required object "value"
-    pure Attribute { id, name, value }
+    pure Attribute {id, name, value}
 
 instance Json.ToJSON Attribute where
-  toJSON x = Json.object
-    [ Json.pair "id" $ id x
-    , Json.pair "name" $ name x
-    , Json.pair "value" $ value x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "id" $ id x,
+        Json.pair "name" $ name x,
+        Json.pair "value" $ value x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute" $ Schema.object
-  [ (Json.pair "id" $ Schema.ref CompressedWord.schema, True)
-  , (Json.pair "name" $ Schema.ref Str.schema, True)
-  , (Json.pair "value" $ Schema.ref AttributeValue.schema, True)
-  ]
+schema =
+  Schema.named "attribute" $
+    Schema.object
+      [ (Json.pair "id" $ Schema.ref CompressedWord.schema, True),
+        (Json.pair "name" $ Schema.ref Str.schema, True),
+        (Json.pair "value" $ Schema.ref AttributeValue.schema, True)
+      ]
 
 bitPut :: Attribute -> BitPut.BitPut
 bitPut attribute =
   CompressedWord.bitPut (Rattletrap.Type.Attribute.id attribute)
     <> AttributeValue.bitPut (value attribute)
 
-bitGet
-  :: Version.Version
-  -> Maybe Str.Str
-  -> ClassAttributeMap.ClassAttributeMap
-  -> Map.Map CompressedWord.CompressedWord U32.U32
-  -> CompressedWord.CompressedWord
-  -> BitGet.BitGet Attribute
+bitGet ::
+  Version.Version ->
+  Maybe Str.Str ->
+  ClassAttributeMap.ClassAttributeMap ->
+  Map.Map CompressedWord.CompressedWord U32.U32 ->
+  CompressedWord.CompressedWord ->
+  BitGet.BitGet Attribute
 bitGet version buildVersion classes actors actor =
   BitGet.label "Attribute" $ do
     attributes <- lookupAttributeMap classes actors actor
     limit <- lookupAttributeIdLimit attributes actor
     id <- BitGet.label "id" $ CompressedWord.bitGet limit
     name <- lookupAttributeName classes attributes id
-    value <- BitGet.label "value" $ AttributeValue.bitGet
-      version
-      buildVersion
-      (ClassAttributeMap.objectMap classes)
-      name
-    pure Attribute { id, name, value }
+    value <-
+      BitGet.label "value" $
+        AttributeValue.bitGet
+          version
+          buildVersion
+          (ClassAttributeMap.objectMap classes)
+          name
+    pure Attribute {id, name, value}
 
-lookupAttributeMap
-  :: ClassAttributeMap.ClassAttributeMap
-  -> Map.Map CompressedWord.CompressedWord U32.U32
-  -> CompressedWord.CompressedWord
-  -> BitGet.BitGet (Map.Map U32.U32 U32.U32)
-lookupAttributeMap classes actors actor = fromMaybe
-  (UnknownActor.UnknownActor $ CompressedWord.value actor)
-  (ClassAttributeMap.getAttributeMap classes actors actor)
+lookupAttributeMap ::
+  ClassAttributeMap.ClassAttributeMap ->
+  Map.Map CompressedWord.CompressedWord U32.U32 ->
+  CompressedWord.CompressedWord ->
+  BitGet.BitGet (Map.Map U32.U32 U32.U32)
+lookupAttributeMap classes actors actor =
+  fromMaybe
+    (UnknownActor.UnknownActor $ CompressedWord.value actor)
+    (ClassAttributeMap.getAttributeMap classes actors actor)
 
-lookupAttributeIdLimit
-  :: Map.Map U32.U32 U32.U32
-  -> CompressedWord.CompressedWord
-  -> BitGet.BitGet Word
-lookupAttributeIdLimit attributes actor = fromMaybe
-  (MissingAttributeLimit.MissingAttributeLimit $ CompressedWord.value actor)
-  (ClassAttributeMap.getAttributeIdLimit attributes)
+lookupAttributeIdLimit ::
+  Map.Map U32.U32 U32.U32 ->
+  CompressedWord.CompressedWord ->
+  BitGet.BitGet Word
+lookupAttributeIdLimit attributes actor =
+  fromMaybe
+    (MissingAttributeLimit.MissingAttributeLimit $ CompressedWord.value actor)
+    (ClassAttributeMap.getAttributeIdLimit attributes)
 
-lookupAttributeName
-  :: ClassAttributeMap.ClassAttributeMap
-  -> Map.Map U32.U32 U32.U32
-  -> CompressedWord.CompressedWord
-  -> BitGet.BitGet Str.Str
-lookupAttributeName classes attributes attribute = fromMaybe
-  (MissingAttributeName.MissingAttributeName $ CompressedWord.value attribute)
-  (ClassAttributeMap.getAttributeName classes attributes attribute)
+lookupAttributeName ::
+  ClassAttributeMap.ClassAttributeMap ->
+  Map.Map U32.U32 U32.U32 ->
+  CompressedWord.CompressedWord ->
+  BitGet.BitGet Str.Str
+lookupAttributeName classes attributes attribute =
+  fromMaybe
+    (MissingAttributeName.MissingAttributeName $ CompressedWord.value attribute)
+    (ClassAttributeMap.getAttributeName classes attributes attribute)
 
-fromMaybe :: Exception.Exception e => e -> Maybe a -> BitGet.BitGet a
+fromMaybe :: (Exception.Exception e) => e -> Maybe a -> BitGet.BitGet a
 fromMaybe message = maybe (BitGet.throw message) pure

@@ -7,14 +7,14 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
 
 data Title = Title
-  { unknown1 :: Bool
-  , unknown2 :: Bool
-  , unknown3 :: U32.U32
-  , unknown4 :: U32.U32
-  , unknown5 :: U32.U32
-  , unknown6 :: U32.U32
-  , unknown7 :: U32.U32
-  , unknown8 :: Bool
+  { unknown1 :: Bool,
+    unknown2 :: Bool,
+    unknown3 :: U32.U32,
+    unknown4 :: U32.U32,
+    unknown5 :: U32.U32,
+    unknown6 :: U32.U32,
+    unknown7 :: U32.U32,
+    unknown8 :: Bool
   }
   deriving (Eq, Show)
 
@@ -28,40 +28,44 @@ instance Json.FromJSON Title where
     unknown6 <- Json.required object "unknown6"
     unknown7 <- Json.required object "unknown7"
     unknown8 <- Json.required object "unknown8"
-    pure Title
-      { unknown1
-      , unknown2
-      , unknown3
-      , unknown4
-      , unknown5
-      , unknown6
-      , unknown7
-      , unknown8
-      }
+    pure
+      Title
+        { unknown1,
+          unknown2,
+          unknown3,
+          unknown4,
+          unknown5,
+          unknown6,
+          unknown7,
+          unknown8
+        }
 
 instance Json.ToJSON Title where
-  toJSON x = Json.object
-    [ Json.pair "unknown1" $ unknown1 x
-    , Json.pair "unknown2" $ unknown2 x
-    , Json.pair "unknown3" $ unknown3 x
-    , Json.pair "unknown4" $ unknown4 x
-    , Json.pair "unknown5" $ unknown5 x
-    , Json.pair "unknown6" $ unknown6 x
-    , Json.pair "unknown7" $ unknown7 x
-    , Json.pair "unknown8" $ unknown8 x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "unknown1" $ unknown1 x,
+        Json.pair "unknown2" $ unknown2 x,
+        Json.pair "unknown3" $ unknown3 x,
+        Json.pair "unknown4" $ unknown4 x,
+        Json.pair "unknown5" $ unknown5 x,
+        Json.pair "unknown6" $ unknown6 x,
+        Json.pair "unknown7" $ unknown7 x,
+        Json.pair "unknown8" $ unknown8 x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-title" $ Schema.object
-  [ (Json.pair "unknown1" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown2" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown3" $ Schema.ref U32.schema, True)
-  , (Json.pair "unknown4" $ Schema.ref U32.schema, True)
-  , (Json.pair "unknown5" $ Schema.ref U32.schema, True)
-  , (Json.pair "unknown6" $ Schema.ref U32.schema, True)
-  , (Json.pair "unknown7" $ Schema.ref U32.schema, True)
-  , (Json.pair "unknown8" $ Schema.ref Schema.boolean, True)
-  ]
+schema =
+  Schema.named "attribute-title" $
+    Schema.object
+      [ (Json.pair "unknown1" $ Schema.ref Schema.boolean, True),
+        (Json.pair "unknown2" $ Schema.ref Schema.boolean, True),
+        (Json.pair "unknown3" $ Schema.ref U32.schema, True),
+        (Json.pair "unknown4" $ Schema.ref U32.schema, True),
+        (Json.pair "unknown5" $ Schema.ref U32.schema, True),
+        (Json.pair "unknown6" $ Schema.ref U32.schema, True),
+        (Json.pair "unknown7" $ Schema.ref U32.schema, True),
+        (Json.pair "unknown8" $ Schema.ref Schema.boolean, True)
+      ]
 
 bitPut :: Title -> BitPut.BitPut
 bitPut titleAttribute =
@@ -84,13 +88,14 @@ bitGet = BitGet.label "Title" $ do
   unknown6 <- BitGet.label "unknown6" U32.bitGet
   unknown7 <- BitGet.label "unknown7" U32.bitGet
   unknown8 <- BitGet.label "unknown8" BitGet.bool
-  pure Title
-    { unknown1
-    , unknown2
-    , unknown3
-    , unknown4
-    , unknown5
-    , unknown6
-    , unknown7
-    , unknown8
-    }
+  pure
+    Title
+      { unknown1,
+        unknown2,
+        unknown3,
+        unknown4,
+        unknown5,
+        unknown6,
+        unknown7,
+        unknown8
+      }

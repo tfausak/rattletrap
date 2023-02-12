@@ -12,39 +12,41 @@ import qualified Rattletrap.Utility.Bytes as Bytes
 import qualified Rattletrap.Utility.Json as Json
 
 data PlayStation = PlayStation
-  { name :: Text.Text
-  , code :: [Word.Word8]
+  { name :: Text.Text,
+    code :: [Word.Word8]
   }
   deriving (Eq, Show)
 
 instance Json.FromJSON PlayStation where
   parseJSON json = do
     (name, code) <- Json.parseJSON json
-    pure PlayStation { name, code }
+    pure PlayStation {name, code}
 
 instance Json.ToJSON PlayStation where
   toJSON x = Json.toJSON (name x, code x)
 
 schema :: Schema.Schema
-schema = Schema.named "remote-id-play-station" $ Schema.tuple
-  [Schema.ref Schema.string, Schema.json $ Schema.array Schema.number]
+schema =
+  Schema.named "remote-id-play-station" $
+    Schema.tuple
+      [Schema.ref Schema.string, Schema.json $ Schema.array Schema.number]
 
 bitPut :: PlayStation -> BitPut.BitPut
 bitPut x =
-  let
-    nameBytes = Bytes.padBytes (16 :: Int) . Bytes.encodeLatin1 $ name x
-    codeBytes = ByteString.pack $ code x
-  in BitPut.byteString nameBytes <> BitPut.byteString codeBytes
+  let nameBytes = Bytes.padBytes (16 :: Int) . Bytes.encodeLatin1 $ name x
+      codeBytes = ByteString.pack $ code x
+   in BitPut.byteString nameBytes <> BitPut.byteString codeBytes
 
 bitGet :: Version.Version -> BitGet.BitGet PlayStation
 bitGet version = BitGet.label "PlayStation" $ do
   name <- BitGet.label "name" getCode
   code <- BitGet.label "code" $ getName version
-  pure PlayStation { name, code }
+  pure PlayStation {name, code}
 
 getCode :: BitGet.BitGet Text.Text
-getCode = fmap (Text.dropWhileEnd (== '\x00') . Text.decodeLatin1)
-  $ BitGet.byteString 16
+getCode =
+  fmap (Text.dropWhileEnd (== '\x00') . Text.decodeLatin1) $
+    BitGet.byteString 16
 
 getName :: Version.Version -> BitGet.BitGet [Word.Word8]
 getName version =

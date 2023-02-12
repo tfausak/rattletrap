@@ -15,10 +15,11 @@ data Rotation
   deriving (Eq, Show)
 
 instance Json.FromJSON Rotation where
-  parseJSON = Json.withObject "Rotation" $ \object -> Foldable.asum
-    [ fmap CompressedWordVector $ Json.required object "compressed_word_vector"
-    , fmap Quaternion $ Json.required object "quaternion"
-    ]
+  parseJSON = Json.withObject "Rotation" $ \object ->
+    Foldable.asum
+      [ fmap CompressedWordVector $ Json.required object "compressed_word_vector",
+        fmap Quaternion $ Json.required object "quaternion"
+      ]
 
 instance Json.ToJSON Rotation where
   toJSON x = case x of
@@ -27,11 +28,13 @@ instance Json.ToJSON Rotation where
     Quaternion y -> Json.object [Json.pair "quaternion" y]
 
 schema :: Schema.Schema
-schema = Schema.named "rotation" . Schema.oneOf $ fmap
-  (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
-  [ ("compressed_word_vector", CompressedWordVector.schema)
-  , ("quaternion", Quaternion.schema)
-  ]
+schema =
+  Schema.named "rotation" . Schema.oneOf $
+    fmap
+      (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
+      [ ("compressed_word_vector", CompressedWordVector.schema),
+        ("quaternion", Quaternion.schema)
+      ]
 
 bitPut :: Rotation -> BitPut.BitPut
 bitPut r = case r of
@@ -39,6 +42,7 @@ bitPut r = case r of
   Quaternion q -> Quaternion.bitPut q
 
 bitGet :: Version.Version -> BitGet.BitGet Rotation
-bitGet version = if Version.atLeast 868 22 7 version
-  then fmap Quaternion Quaternion.bitGet
-  else fmap CompressedWordVector CompressedWordVector.bitGet
+bitGet version =
+  if Version.atLeast 868 22 7 version
+    then fmap Quaternion Quaternion.bitGet
+    else fmap CompressedWordVector CompressedWordVector.bitGet

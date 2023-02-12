@@ -26,16 +26,17 @@ data ProductValue
   deriving (Eq, Show)
 
 instance Json.FromJSON ProductValue where
-  parseJSON = Json.withObject "ProductValue" $ \object -> Foldable.asum
-    [ fmap PaintedOld $ Json.required object "painted_old"
-    , fmap PaintedNew $ Json.required object "painted_new"
-    , fmap TeamEditionOld $ Json.required object "team_edition_old"
-    , fmap TeamEditionNew $ Json.required object "team_edition_new"
-    , fmap SpecialEdition $ Json.required object "special_edition"
-    , fmap UserColorOld $ Json.required object "user_color_old"
-    , fmap UserColorNew $ Json.required object "user_color_new"
-    , fmap TitleId $ Json.required object "title_id"
-    ]
+  parseJSON = Json.withObject "ProductValue" $ \object ->
+    Foldable.asum
+      [ fmap PaintedOld $ Json.required object "painted_old",
+        fmap PaintedNew $ Json.required object "painted_new",
+        fmap TeamEditionOld $ Json.required object "team_edition_old",
+        fmap TeamEditionNew $ Json.required object "team_edition_new",
+        fmap SpecialEdition $ Json.required object "special_edition",
+        fmap UserColorOld $ Json.required object "user_color_old",
+        fmap UserColorNew $ Json.required object "user_color_new",
+        fmap TitleId $ Json.required object "title_id"
+      ]
 
 instance Json.ToJSON ProductValue where
   toJSON x = case x of
@@ -49,17 +50,19 @@ instance Json.ToJSON ProductValue where
     TitleId y -> Json.object [Json.pair "title_id" y]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-product-value" . Schema.oneOf $ fmap
-  (\(k, v) -> Schema.object [(Json.pair k v, True)])
-  [ ("painted_old", Schema.ref CompressedWord.schema)
-  , ("painted_new", Schema.ref Schema.integer)
-  , ("team_edition_old", Schema.ref CompressedWord.schema)
-  , ("team_edition_new", Schema.ref Schema.integer)
-  , ("special_edition", Schema.ref Schema.integer)
-  , ("user_color_old", Schema.json $ Schema.maybe Schema.integer)
-  , ("user_color_new", Schema.ref U32.schema)
-  , ("title_id", Schema.ref Str.schema)
-  ]
+schema =
+  Schema.named "attribute-product-value" . Schema.oneOf $
+    fmap
+      (\(k, v) -> Schema.object [(Json.pair k v, True)])
+      [ ("painted_old", Schema.ref CompressedWord.schema),
+        ("painted_new", Schema.ref Schema.integer),
+        ("team_edition_old", Schema.ref CompressedWord.schema),
+        ("team_edition_new", Schema.ref Schema.integer),
+        ("special_edition", Schema.ref Schema.integer),
+        ("user_color_old", Schema.json $ Schema.maybe Schema.integer),
+        ("user_color_new", Schema.ref U32.schema),
+        ("title_id", Schema.ref Str.schema)
+      ]
 
 bitPut :: ProductValue -> BitPut.BitPut
 bitPut val = case val of
@@ -74,8 +77,8 @@ bitPut val = case val of
   UserColorNew x -> U32.bitPut x
   TitleId x -> Str.bitPut x
 
-bitGet
-  :: Version.Version -> U32.U32 -> Maybe Str.Str -> BitGet.BitGet ProductValue
+bitGet ::
+  Version.Version -> U32.U32 -> Maybe Str.Str -> BitGet.BitGet ProductValue
 bitGet version objectId maybeObjectName =
   BitGet.label "ProductValue" $ case fmap Str.toString maybeObjectName of
     Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
@@ -85,31 +88,36 @@ bitGet version objectId maybeObjectName =
     Just "TAGame.ProductAttribute_UserColor_TA" -> decodeColor version
     Just x -> BitGet.throw $ UnknownProduct.UnknownProduct x
     Nothing ->
-      BitGet.throw . MissingProductName.MissingProductName $ U32.toWord32
-        objectId
+      BitGet.throw . MissingProductName.MissingProductName $
+        U32.toWord32
+          objectId
 
 decodeSpecialEdition :: BitGet.BitGet ProductValue
 decodeSpecialEdition =
   BitGet.label "SpecialEdition" . fmap SpecialEdition $ BitGet.bits 31
 
 decodePainted :: Version.Version -> BitGet.BitGet ProductValue
-decodePainted version = BitGet.label "Painted" $ if hasNewPainted version
-  then fmap PaintedNew $ BitGet.bits 31
-  else fmap PaintedOld $ CompressedWord.bitGet 13
+decodePainted version =
+  BitGet.label "Painted" $
+    if hasNewPainted version
+      then fmap PaintedNew $ BitGet.bits 31
+      else fmap PaintedOld $ CompressedWord.bitGet 13
 
 decodeTeamEdition :: Version.Version -> BitGet.BitGet ProductValue
 decodeTeamEdition version =
-  BitGet.label "TeamEdition" $ if hasNewPainted version
-    then fmap TeamEditionNew $ BitGet.bits 31
-    else fmap TeamEditionOld $ CompressedWord.bitGet 13
+  BitGet.label "TeamEdition" $
+    if hasNewPainted version
+      then fmap TeamEditionNew $ BitGet.bits 31
+      else fmap TeamEditionOld $ CompressedWord.bitGet 13
 
 decodeColor :: Version.Version -> BitGet.BitGet ProductValue
 decodeColor version =
-  BitGet.label "UserColor" $ if Version.atLeast 868 23 8 version
-    then fmap UserColorNew U32.bitGet
-    else do
-      hasValue <- BitGet.bool
-      fmap UserColorOld $ Monad.whenMaybe hasValue (BitGet.bits 31)
+  BitGet.label "UserColor" $
+    if Version.atLeast 868 23 8 version
+      then fmap UserColorNew U32.bitGet
+      else do
+        hasValue <- BitGet.bool
+        fmap UserColorOld $ Monad.whenMaybe hasValue (BitGet.bits 31)
 
 hasNewPainted :: Version.Version -> Bool
 hasNewPainted = Version.atLeast 868 18 0

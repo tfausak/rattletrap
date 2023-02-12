@@ -10,11 +10,11 @@ import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
 
 data RigidBodyState = RigidBodyState
-  { sleeping :: Bool
-  , location :: Vector.Vector
-  , rotation :: Rotation.Rotation
-  , linearVelocity :: Maybe Vector.Vector
-  , angularVelocity :: Maybe Vector.Vector
+  { sleeping :: Bool,
+    location :: Vector.Vector,
+    rotation :: Rotation.Rotation,
+    linearVelocity :: Maybe Vector.Vector,
+    angularVelocity :: Maybe Vector.Vector
   }
   deriving (Eq, Show)
 
@@ -25,35 +25,39 @@ instance Json.FromJSON RigidBodyState where
     rotation <- Json.required object "rotation"
     linearVelocity <- Json.optional object "linear_velocity"
     angularVelocity <- Json.optional object "angular_velocity"
-    pure RigidBodyState
-      { sleeping
-      , location
-      , rotation
-      , linearVelocity
-      , angularVelocity
-      }
+    pure
+      RigidBodyState
+        { sleeping,
+          location,
+          rotation,
+          linearVelocity,
+          angularVelocity
+        }
 
 instance Json.ToJSON RigidBodyState where
-  toJSON x = Json.object
-    [ Json.pair "sleeping" $ sleeping x
-    , Json.pair "location" $ location x
-    , Json.pair "rotation" $ rotation x
-    , Json.pair "linear_velocity" $ linearVelocity x
-    , Json.pair "angular_velocity" $ angularVelocity x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "sleeping" $ sleeping x,
+        Json.pair "location" $ location x,
+        Json.pair "rotation" $ rotation x,
+        Json.pair "linear_velocity" $ linearVelocity x,
+        Json.pair "angular_velocity" $ angularVelocity x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-rigid-body-state" $ Schema.object
-  [ (Json.pair "sleeping" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "location" $ Schema.ref Vector.schema, True)
-  , (Json.pair "rotation" $ Schema.ref Rotation.schema, True)
-  , ( Json.pair "linear_velocity" . Schema.json $ Schema.maybe Vector.schema
-    , False
-    )
-  , ( Json.pair "angular_velocity" . Schema.json $ Schema.maybe Vector.schema
-    , False
-    )
-  ]
+schema =
+  Schema.named "attribute-rigid-body-state" $
+    Schema.object
+      [ (Json.pair "sleeping" $ Schema.ref Schema.boolean, True),
+        (Json.pair "location" $ Schema.ref Vector.schema, True),
+        (Json.pair "rotation" $ Schema.ref Rotation.schema, True),
+        ( Json.pair "linear_velocity" . Schema.json $ Schema.maybe Vector.schema,
+          False
+        ),
+        ( Json.pair "angular_velocity" . Schema.json $ Schema.maybe Vector.schema,
+          False
+        )
+      ]
 
 bitPut :: RigidBodyState -> BitPut.BitPut
 bitPut rigidBodyStateAttribute =
@@ -68,14 +72,17 @@ bitGet version = BitGet.label "RigidBodyState" $ do
   sleeping <- BitGet.label "sleeping" BitGet.bool
   location <- BitGet.label "location" $ Vector.bitGet version
   rotation <- BitGet.label "rotation" $ Rotation.bitGet version
-  linearVelocity <- BitGet.label "linearVelocity"
-    $ Monad.whenMaybe (not sleeping) (Vector.bitGet version)
-  angularVelocity <- BitGet.label "angularVelocity"
-    $ Monad.whenMaybe (not sleeping) (Vector.bitGet version)
-  pure RigidBodyState
-    { sleeping
-    , location
-    , rotation
-    , linearVelocity
-    , angularVelocity
-    }
+  linearVelocity <-
+    BitGet.label "linearVelocity" $
+      Monad.whenMaybe (not sleeping) (Vector.bitGet version)
+  angularVelocity <-
+    BitGet.label "angularVelocity" $
+      Monad.whenMaybe (not sleeping) (Vector.bitGet version)
+  pure
+    RigidBodyState
+      { sleeping,
+        location,
+        rotation,
+        linearVelocity,
+        angularVelocity
+      }

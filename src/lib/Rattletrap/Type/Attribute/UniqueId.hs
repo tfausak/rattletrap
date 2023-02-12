@@ -9,9 +9,9 @@ import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
 data UniqueId = UniqueId
-  { systemId :: U8.U8
-  , remoteId :: RemoteId.RemoteId
-  , localId :: U8.U8
+  { systemId :: U8.U8,
+    remoteId :: RemoteId.RemoteId,
+    localId :: U8.U8
   }
   deriving (Eq, Show)
 
@@ -20,21 +20,24 @@ instance Json.FromJSON UniqueId where
     systemId <- Json.required object "system_id"
     remoteId <- Json.required object "remote_id"
     localId <- Json.required object "local_id"
-    pure UniqueId { systemId, remoteId, localId }
+    pure UniqueId {systemId, remoteId, localId}
 
 instance Json.ToJSON UniqueId where
-  toJSON x = Json.object
-    [ Json.pair "system_id" $ systemId x
-    , Json.pair "remote_id" $ remoteId x
-    , Json.pair "local_id" $ localId x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "system_id" $ systemId x,
+        Json.pair "remote_id" $ remoteId x,
+        Json.pair "local_id" $ localId x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-unique-id" $ Schema.object
-  [ (Json.pair "system_id" $ Schema.ref U8.schema, True)
-  , (Json.pair "remote_id" $ Schema.ref RemoteId.schema, True)
-  , (Json.pair "local_id" $ Schema.ref U8.schema, True)
-  ]
+schema =
+  Schema.named "attribute-unique-id" $
+    Schema.object
+      [ (Json.pair "system_id" $ Schema.ref U8.schema, True),
+        (Json.pair "remote_id" $ Schema.ref RemoteId.schema, True),
+        (Json.pair "local_id" $ Schema.ref U8.schema, True)
+      ]
 
 bitPut :: UniqueId -> BitPut.BitPut
 bitPut uniqueIdAttribute =
@@ -47,4 +50,4 @@ bitGet version = BitGet.label "UniqueId" $ do
   systemId <- BitGet.label "systemId" U8.bitGet
   remoteId <- BitGet.label "remoteId" $ RemoteId.bitGet version systemId
   localId <- BitGet.label "localId" U8.bitGet
-  pure UniqueId { systemId, remoteId, localId }
+  pure UniqueId {systemId, remoteId, localId}

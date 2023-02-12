@@ -8,7 +8,8 @@ import qualified Rattletrap.Utility.Json as Json
 
 newtype Rotation = Rotation
   { value :: Int8Vector.Int8Vector
-  } deriving (Eq, Show)
+  }
+  deriving (Eq, Show)
 
 instance Json.FromJSON Rotation where
   parseJSON = fmap Rotation . Json.parseJSON
@@ -25,4 +26,4 @@ bitPut = Int8Vector.bitPut . value
 bitGet :: BitGet.BitGet Rotation
 bitGet = BitGet.label "Rotation" $ do
   value <- BitGet.label "value" Int8Vector.bitGet
-  pure Rotation { value }
+  pure Rotation {value}

@@ -1,6 +1,5 @@
 module Rattletrap.Type.Attribute.CustomDemolish where
 
-import Prelude hiding (id)
 import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
@@ -8,11 +7,12 @@ import qualified Rattletrap.Type.Attribute.Demolish as Demolish
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
+import Prelude hiding (id)
 
 data CustomDemolish = CustomDemolish
-  { flag :: Bool
-  , id :: I32.I32
-  , demolish :: Demolish.Demolish
+  { flag :: Bool,
+    id :: I32.I32,
+    demolish :: Demolish.Demolish
   }
   deriving (Eq, Show)
 
@@ -21,21 +21,24 @@ instance Json.FromJSON CustomDemolish where
     flag <- Json.required object "flag"
     id <- Json.required object "id"
     demolish <- Json.required object "demolish"
-    pure CustomDemolish { flag, id, demolish }
+    pure CustomDemolish {flag, id, demolish}
 
 instance Json.ToJSON CustomDemolish where
-  toJSON x = Json.object
-    [ Json.pair "flag" $ flag x
-    , Json.pair "id" $ id x
-    , Json.pair "demolish" $ demolish x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "flag" $ flag x,
+        Json.pair "id" $ id x,
+        Json.pair "demolish" $ demolish x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-custom-demolish" $ Schema.object
-  [ (Json.pair "flag" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "id" $ Schema.ref I32.schema, True)
-  , (Json.pair "demolish" $ Schema.ref Demolish.schema, True)
-  ]
+schema =
+  Schema.named "attribute-custom-demolish" $
+    Schema.object
+      [ (Json.pair "flag" $ Schema.ref Schema.boolean, True),
+        (Json.pair "id" $ Schema.ref I32.schema, True),
+        (Json.pair "demolish" $ Schema.ref Demolish.schema, True)
+      ]
 
 bitPut :: CustomDemolish -> BitPut.BitPut
 bitPut x =
@@ -48,8 +51,9 @@ bitGet version = BitGet.label "CustomDemolish" $ do
   flag <- BitGet.label "flag" BitGet.bool
   id <- BitGet.label "id" I32.bitGet
   demolish <- BitGet.label "demolish" $ Demolish.bitGet version
-  pure CustomDemolish
-    { flag
-    , Rattletrap.Type.Attribute.CustomDemolish.id
-    , demolish
-    }
+  pure
+    CustomDemolish
+      { flag,
+        Rattletrap.Type.Attribute.CustomDemolish.id,
+        demolish
+      }

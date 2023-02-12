@@ -8,9 +8,9 @@ import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
 
 data Int8Vector = Int8Vector
-  { x :: Maybe I8.I8
-  , y :: Maybe I8.I8
-  , z :: Maybe I8.I8
+  { x :: Maybe I8.I8,
+    y :: Maybe I8.I8,
+    z :: Maybe I8.I8
   }
   deriving (Eq, Show)
 
@@ -19,18 +19,20 @@ instance Json.FromJSON Int8Vector where
     x <- Json.optional object "x"
     y <- Json.optional object "y"
     z <- Json.optional object "z"
-    pure Int8Vector { x, y, z }
+    pure Int8Vector {x, y, z}
 
 instance Json.ToJSON Int8Vector where
   toJSON a =
     Json.object [Json.pair "x" $ x a, Json.pair "y" $ y a, Json.pair "z" $ z a]
 
 schema :: Schema.Schema
-schema = Schema.named "int8Vector" $ Schema.object
-  [ (Json.pair "x" . Schema.json $ Schema.maybe I8.schema, False)
-  , (Json.pair "y" . Schema.json $ Schema.maybe I8.schema, False)
-  , (Json.pair "z" . Schema.json $ Schema.maybe I8.schema, False)
-  ]
+schema =
+  Schema.named "int8Vector" $
+    Schema.object
+      [ (Json.pair "x" . Schema.json $ Schema.maybe I8.schema, False),
+        (Json.pair "y" . Schema.json $ Schema.maybe I8.schema, False),
+        (Json.pair "z" . Schema.json $ Schema.maybe I8.schema, False)
+      ]
 
 bitPut :: Int8Vector -> BitPut.BitPut
 bitPut int8Vector =
@@ -48,7 +50,7 @@ bitGet = BitGet.label "Int8Vector" $ do
   x <- BitGet.label "x" decodeFieldBits
   y <- BitGet.label "y" decodeFieldBits
   z <- BitGet.label "z" decodeFieldBits
-  pure Int8Vector { x, y, z }
+  pure Int8Vector {x, y, z}
 
 decodeFieldBits :: BitGet.BitGet (Maybe I8.I8)
 decodeFieldBits = do

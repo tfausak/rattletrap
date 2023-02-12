@@ -4,48 +4,53 @@ import qualified Data.Text as Text
 import qualified Rattletrap.Utility.Json as Json
 
 data Schema = Schema
-  { name :: Text.Text
-  , json :: Json.Value
+  { name :: Text.Text,
+    json :: Json.Value
   }
   deriving (Eq, Show)
 
 named :: String -> Json.Value -> Schema
-named n j = Schema { name = Text.pack n, json = j }
+named n j = Schema {name = Text.pack n, json = j}
 
 ref :: Schema -> Json.Value
 ref s = Json.object [Json.pair "$ref" $ Text.pack "#/definitions/" <> name s]
 
 object :: [((Json.Key, Json.Value), Bool)] -> Json.Value
-object xs = Json.object
-  [ Json.pair "type" "object"
-  , Json.pair "properties" . Json.object $ fmap
-    ((\(k, v) -> Json.pair (Json.keyToString k) v) . fst)
-    xs
-  , Json.pair "required" . fmap (fst . fst) $ filter snd xs
-  ]
+object xs =
+  Json.object
+    [ Json.pair "type" "object",
+      Json.pair "properties" . Json.object $
+        fmap
+          ((\(k, v) -> Json.pair (Json.keyToString k) v) . fst)
+          xs,
+      Json.pair "required" . fmap (fst . fst) $ filter snd xs
+    ]
 
 maybe :: Schema -> Schema
-maybe s = Schema
-  { name = Text.pack "maybe-" <> name s
-  , json = oneOf [ref s, json Rattletrap.Schema.null]
-  }
+maybe s =
+  Schema
+    { name = Text.pack "maybe-" <> name s,
+      json = oneOf [ref s, json Rattletrap.Schema.null]
+    }
 
 oneOf :: [Json.Value] -> Json.Value
 oneOf xs = Json.object [Json.pair "oneOf" xs]
 
 tuple :: [Json.Value] -> Json.Value
-tuple xs = Json.object
-  [ Json.pair "type" "array"
-  , Json.pair "items" xs
-  , Json.pair "minItems" $ length xs
-  , Json.pair "maxItems" $ length xs
-  ]
+tuple xs =
+  Json.object
+    [ Json.pair "type" "array",
+      Json.pair "items" xs,
+      Json.pair "minItems" $ length xs,
+      Json.pair "maxItems" $ length xs
+    ]
 
 array :: Schema -> Schema
-array s = Schema
-  { name = Text.pack "array-" <> name s
-  , json = Json.object [Json.pair "type" "array", Json.pair "items" $ ref s]
-  }
+array s =
+  Schema
+    { name = Text.pack "array-" <> name s,
+      json = Json.object [Json.pair "type" "array", Json.pair "items" $ ref s]
+    }
 
 boolean :: Schema
 boolean = named "boolean" $ Json.object [Json.pair "type" "boolean"]

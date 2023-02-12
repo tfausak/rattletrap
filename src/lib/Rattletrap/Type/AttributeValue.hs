@@ -99,49 +99,50 @@ data AttributeValue
   deriving (Eq, Show)
 
 instance Json.FromJSON AttributeValue where
-  parseJSON = Json.withObject "AttributeValue" $ \object -> Foldable.asum
-    [ fmap AppliedDamage $ Json.required object "applied_damage"
-    , fmap Boolean $ Json.required object "boolean"
-    , fmap Byte $ Json.required object "byte"
-    , fmap CamSettings $ Json.required object "cam_settings"
-    , fmap ClubColors $ Json.required object "club_colors"
-    , fmap CustomDemolish $ Json.required object "custom_demolish"
-    , fmap DamageState $ Json.required object "damage_state"
-    , fmap Demolish $ Json.required object "demolish"
-    , fmap Enum $ Json.required object "enum"
-    , fmap Explosion $ Json.required object "explosion"
-    , fmap ExtendedExplosion $ Json.required object "extended_explosion"
-    , fmap FlaggedByte $ Json.required object "flagged_byte"
-    , fmap FlaggedInt $ Json.required object "flagged_int"
-    , fmap Float $ Json.required object "float"
-    , fmap GameMode $ Json.required object "game_mode"
-    , fmap GameServer $ Json.required object "game_server"
-    , fmap Int $ Json.required object "int"
-    , fmap Int64 $ Json.required object "int64"
-    , fmap Loadout $ Json.required object "loadout"
-    , fmap LoadoutOnline $ Json.required object "loadout_online"
-    , fmap Loadouts $ Json.required object "loadouts"
-    , fmap LoadoutsOnline $ Json.required object "loadouts_online"
-    , fmap Location $ Json.required object "location"
-    , fmap MusicStinger $ Json.required object "music_stinger"
-    , fmap PartyLeader $ Json.required object "party_leader"
-    , fmap Pickup $ Json.required object "pickup"
-    , fmap PickupInfo $ Json.required object "pickup_info"
-    , fmap PickupNew $ Json.required object "pickup_new"
-    , fmap PlayerHistoryKey $ Json.required object "player_history_key"
-    , fmap PrivateMatchSettings $ Json.required object "private_match_settings"
-    , fmap QWord $ Json.required object "q_word"
-    , fmap RepStatTitle $ Json.required object "rep_stat_title"
-    , fmap Reservation $ Json.required object "reservation"
-    , fmap RigidBodyState $ Json.required object "rigid_body_state"
-    , fmap Rotation $ Json.required object "rotation"
-    , fmap StatEvent $ Json.required object "stat_event"
-    , fmap String $ Json.required object "string"
-    , fmap TeamPaint $ Json.required object "team_paint"
-    , fmap Title $ Json.required object "title"
-    , fmap UniqueId $ Json.required object "unique_id"
-    , fmap WeldedInfo $ Json.required object "welded_info"
-    ]
+  parseJSON = Json.withObject "AttributeValue" $ \object ->
+    Foldable.asum
+      [ fmap AppliedDamage $ Json.required object "applied_damage",
+        fmap Boolean $ Json.required object "boolean",
+        fmap Byte $ Json.required object "byte",
+        fmap CamSettings $ Json.required object "cam_settings",
+        fmap ClubColors $ Json.required object "club_colors",
+        fmap CustomDemolish $ Json.required object "custom_demolish",
+        fmap DamageState $ Json.required object "damage_state",
+        fmap Demolish $ Json.required object "demolish",
+        fmap Enum $ Json.required object "enum",
+        fmap Explosion $ Json.required object "explosion",
+        fmap ExtendedExplosion $ Json.required object "extended_explosion",
+        fmap FlaggedByte $ Json.required object "flagged_byte",
+        fmap FlaggedInt $ Json.required object "flagged_int",
+        fmap Float $ Json.required object "float",
+        fmap GameMode $ Json.required object "game_mode",
+        fmap GameServer $ Json.required object "game_server",
+        fmap Int $ Json.required object "int",
+        fmap Int64 $ Json.required object "int64",
+        fmap Loadout $ Json.required object "loadout",
+        fmap LoadoutOnline $ Json.required object "loadout_online",
+        fmap Loadouts $ Json.required object "loadouts",
+        fmap LoadoutsOnline $ Json.required object "loadouts_online",
+        fmap Location $ Json.required object "location",
+        fmap MusicStinger $ Json.required object "music_stinger",
+        fmap PartyLeader $ Json.required object "party_leader",
+        fmap Pickup $ Json.required object "pickup",
+        fmap PickupInfo $ Json.required object "pickup_info",
+        fmap PickupNew $ Json.required object "pickup_new",
+        fmap PlayerHistoryKey $ Json.required object "player_history_key",
+        fmap PrivateMatchSettings $ Json.required object "private_match_settings",
+        fmap QWord $ Json.required object "q_word",
+        fmap RepStatTitle $ Json.required object "rep_stat_title",
+        fmap Reservation $ Json.required object "reservation",
+        fmap RigidBodyState $ Json.required object "rigid_body_state",
+        fmap Rotation $ Json.required object "rotation",
+        fmap StatEvent $ Json.required object "stat_event",
+        fmap String $ Json.required object "string",
+        fmap TeamPaint $ Json.required object "team_paint",
+        fmap Title $ Json.required object "title",
+        fmap UniqueId $ Json.required object "unique_id",
+        fmap WeldedInfo $ Json.required object "welded_info"
+      ]
 
 instance Json.ToJSON AttributeValue where
   toJSON x = case x of
@@ -189,50 +190,52 @@ instance Json.ToJSON AttributeValue where
     WeldedInfo y -> Json.object [Json.pair "welded_info" y]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-value" . Schema.oneOf $ fmap
-  (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
-  [ ("applied_damage", AppliedDamage.schema)
-  , ("boolean", Boolean.schema)
-  , ("byte", Byte.schema)
-  , ("cam_settings", CamSettings.schema)
-  , ("club_colors", ClubColors.schema)
-  , ("custom_demolish", CustomDemolish.schema)
-  , ("damage_state", DamageState.schema)
-  , ("demolish", Demolish.schema)
-  , ("enum", Enum.schema)
-  , ("explosion", Explosion.schema)
-  , ("extended_explosion", ExtendedExplosion.schema)
-  , ("flagged_byte", FlaggedByte.schema)
-  , ("flagged_int", FlaggedInt.schema)
-  , ("float", Float.schema)
-  , ("game_mode", GameMode.schema)
-  , ("game_server", GameServer.schema)
-  , ("int", Int.schema)
-  , ("int64", Int64.schema)
-  , ("loadout_online", LoadoutOnline.schema)
-  , ("loadout", Loadout.schema)
-  , ("loadouts_online", LoadoutsOnline.schema)
-  , ("loadouts", Loadouts.schema)
-  , ("location", Location.schema)
-  , ("music_stinger", MusicStinger.schema)
-  , ("party_leader", PartyLeader.schema)
-  , ("pickup_info", PickupInfo.schema)
-  , ("pickup_new", PickupNew.schema)
-  , ("pickup", Pickup.schema)
-  , ("player_history_key", PlayerHistoryKey.schema)
-  , ("private_match_settings", PrivateMatchSettings.schema)
-  , ("q_word", QWord.schema)
-  , ("rep_stat_title", RepStatTitle.schema)
-  , ("reservation", Reservation.schema)
-  , ("rigid_body_state", RigidBodyState.schema)
-  , ("rotation", Rotation.schema)
-  , ("stat_event", StatEvent.schema)
-  , ("string", String.schema)
-  , ("team_paint", TeamPaint.schema)
-  , ("title", Title.schema)
-  , ("unique_id", UniqueId.schema)
-  , ("welded_info", WeldedInfo.schema)
-  ]
+schema =
+  Schema.named "attribute-value" . Schema.oneOf $
+    fmap
+      (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
+      [ ("applied_damage", AppliedDamage.schema),
+        ("boolean", Boolean.schema),
+        ("byte", Byte.schema),
+        ("cam_settings", CamSettings.schema),
+        ("club_colors", ClubColors.schema),
+        ("custom_demolish", CustomDemolish.schema),
+        ("damage_state", DamageState.schema),
+        ("demolish", Demolish.schema),
+        ("enum", Enum.schema),
+        ("explosion", Explosion.schema),
+        ("extended_explosion", ExtendedExplosion.schema),
+        ("flagged_byte", FlaggedByte.schema),
+        ("flagged_int", FlaggedInt.schema),
+        ("float", Float.schema),
+        ("game_mode", GameMode.schema),
+        ("game_server", GameServer.schema),
+        ("int", Int.schema),
+        ("int64", Int64.schema),
+        ("loadout_online", LoadoutOnline.schema),
+        ("loadout", Loadout.schema),
+        ("loadouts_online", LoadoutsOnline.schema),
+        ("loadouts", Loadouts.schema),
+        ("location", Location.schema),
+        ("music_stinger", MusicStinger.schema),
+        ("party_leader", PartyLeader.schema),
+        ("pickup_info", PickupInfo.schema),
+        ("pickup_new", PickupNew.schema),
+        ("pickup", Pickup.schema),
+        ("player_history_key", PlayerHistoryKey.schema),
+        ("private_match_settings", PrivateMatchSettings.schema),
+        ("q_word", QWord.schema),
+        ("rep_stat_title", RepStatTitle.schema),
+        ("reservation", Reservation.schema),
+        ("rigid_body_state", RigidBodyState.schema),
+        ("rotation", Rotation.schema),
+        ("stat_event", StatEvent.schema),
+        ("string", String.schema),
+        ("team_paint", TeamPaint.schema),
+        ("title", Title.schema),
+        ("unique_id", UniqueId.schema),
+        ("welded_info", WeldedInfo.schema)
+      ]
 
 bitPut :: AttributeValue -> BitPut.BitPut
 bitPut value = case value of
@@ -278,12 +281,12 @@ bitPut value = case value of
   UniqueId x -> UniqueId.bitPut x
   WeldedInfo x -> WeldedInfo.bitPut x
 
-bitGet
-  :: Version.Version
-  -> Maybe Str.Str
-  -> Map.Map U32.U32 Str.Str
-  -> Str.Str
-  -> BitGet.BitGet AttributeValue
+bitGet ::
+  Version.Version ->
+  Maybe Str.Str ->
+  Map.Map U32.U32 Str.Str ->
+  Str.Str ->
+  BitGet.BitGet AttributeValue
 bitGet version buildVersion objectMap name =
   BitGet.label "AttributeValue" $ do
     constructor <- case Map.lookup (Str.toText name) Data.attributeTypes of

@@ -1,56 +1,230 @@
-# https://github.com/ndmitchell/hlint
-- arguments:
-    - -XNamedFieldPuns
-- extensions:
-  - default: false
-- flags:
-  - default: false
-- group: { name: dollar, enabled: true }
-- group: { name: generalise, enabled: true }
-- ignore: { name: Use <|> }
-- ignore: { name: Use lambda-case }
-- ignore: { name: Use <$> }
-- ignore: { name: Redundant id }
-- modules:
-  - { name: Control.Applicative, as: Applicative }
-  - { name: Control.Monad, as: Monad }
-  - { name: Data.Aeson, as: Aeson }
-  - { name: Data.Aeson.Encode.Pretty, as: Aeson }
-  - { name: Data.Aeson.Types, as: Aeson }
-  - { name: Data.Array.Unboxed, as: Array }
-  - { name: Data.Bifunctor, as: Bifunctor }
-  - { name: Data.Bits, as: Bits }
-  - { name: Data.ByteString, as: ByteString }
-  - { name: Data.ByteString.Builder, as: Builder }
-  - { name: Data.ByteString.Char8, as: Latin1 }
-  - { name: Data.ByteString.Lazy, as: LazyByteString }
-  - { name: Data.Char, as: Char }
-  - { name: Data.Foldable, as: Foldable }
-  - { name: Data.Functor.Identity, as: Identity }
-  - { name: Data.Int, as: Int }
-  - { name: Data.IntMap, as: IntMap }
-  - { name: Data.List, as: List }
-  - { name: Data.Map, as: Map }
-  - { name: Data.Maybe, as: Maybe }
-  - { name: Data.Ord, as: Ord }
-  - { name: Data.Set, as: Set }
-  - { name: Data.Text, as: Text }
-  - { name: Data.Text.Encoding, as: Text }
-  - { name: Data.Text.Encoding.Error, as: Text }
-  - { name: Data.Tuple, as: Tuple }
-  - { name: Data.Version, as: Version }
-  - { name: Data.Word, as: Word }
-  - { name: GHC.Clock, as: Clock }
-  - { name: GHC.Float, as: Float }
-  - { name: Network.HTTP.Client, as: Client }
-  - { name: Network.HTTP.Client.TLS, as: Client }
-  - { name: System.Console.GetOpt, as: Console }
-  - { name: System.Directory, as: Directory }
-  - { name: System.Environment, as: Environment }
-  - { name: System.Exit, as: Exit }
-  - { name: System.FilePath, as: FilePath }
-  - { name: System.IO, as: IO }
-  - { name: System.Process, as: Process }
-  - { name: Test.HUnit, as: Test }
-  - { name: Text.Printf, as: Printf }
-  - { name: Text.Read, as: Read }
+[
+  {
+    "arguments": [
+      "-XNamedFieldPuns"
+    ]
+  },
+  {
+    "extensions": [
+      {
+        "default": false
+      }
+    ]
+  },
+  {
+    "flags": [
+      {
+        "default": false
+      }
+    ]
+  },
+  {
+    "group": {
+      "enabled": true,
+      "name": "dollar"
+    }
+  },
+  {
+    "group": {
+      "enabled": true,
+      "name": "generalise"
+    }
+  },
+  {
+    "ignore": {
+      "name": "Use <|>"
+    }
+  },
+  {
+    "ignore": {
+      "name": "Use lambda-case"
+    }
+  },
+  {
+    "ignore": {
+      "name": "Use <$>"
+    }
+  },
+  {
+    "ignore": {
+      "name": "Use tuple-section"
+    }
+  },
+  {
+    "ignore": {
+      "name": "Redundant id"
+    }
+  },
+  {
+    "modules": [
+      {
+        "as": "Applicative",
+        "name": "Control.Applicative"
+      },
+      {
+        "as": "Monad",
+        "name": "Control.Monad"
+      },
+      {
+        "as": "Aeson",
+        "name": "Data.Aeson"
+      },
+      {
+        "as": "Aeson",
+        "name": "Data.Aeson.Encode.Pretty"
+      },
+      {
+        "as": "Aeson",
+        "name": "Data.Aeson.Types"
+      },
+      {
+        "as": "Array",
+        "name": "Data.Array.Unboxed"
+      },
+      {
+        "as": "Bifunctor",
+        "name": "Data.Bifunctor"
+      },
+      {
+        "as": "Bits",
+        "name": "Data.Bits"
+      },
+      {
+        "as": "ByteString",
+        "name": "Data.ByteString"
+      },
+      {
+        "as": "Builder",
+        "name": "Data.ByteString.Builder"
+      },
+      {
+        "as": "Latin1",
+        "name": "Data.ByteString.Char8"
+      },
+      {
+        "as": "LazyByteString",
+        "name": "Data.ByteString.Lazy"
+      },
+      {
+        "as": "Char",
+        "name": "Data.Char"
+      },
+      {
+        "as": "Foldable",
+        "name": "Data.Foldable"
+      },
+      {
+        "as": "Identity",
+        "name": "Data.Functor.Identity"
+      },
+      {
+        "as": "Int",
+        "name": "Data.Int"
+      },
+      {
+        "as": "IntMap",
+        "name": "Data.IntMap"
+      },
+      {
+        "as": "List",
+        "name": "Data.List"
+      },
+      {
+        "as": "Map",
+        "name": "Data.Map"
+      },
+      {
+        "as": "Maybe",
+        "name": "Data.Maybe"
+      },
+      {
+        "as": "Ord",
+        "name": "Data.Ord"
+      },
+      {
+        "as": "Set",
+        "name": "Data.Set"
+      },
+      {
+        "as": "Text",
+        "name": "Data.Text"
+      },
+      {
+        "as": "Text",
+        "name": "Data.Text.Encoding"
+      },
+      {
+        "as": "Text",
+        "name": "Data.Text.Encoding.Error"
+      },
+      {
+        "as": "Tuple",
+        "name": "Data.Tuple"
+      },
+      {
+        "as": "Version",
+        "name": "Data.Version"
+      },
+      {
+        "as": "Word",
+        "name": "Data.Word"
+      },
+      {
+        "as": "Clock",
+        "name": "GHC.Clock"
+      },
+      {
+        "as": "Float",
+        "name": "GHC.Float"
+      },
+      {
+        "as": "Client",
+        "name": "Network.HTTP.Client"
+      },
+      {
+        "as": "Client",
+        "name": "Network.HTTP.Client.TLS"
+      },
+      {
+        "as": "Console",
+        "name": "System.Console.GetOpt"
+      },
+      {
+        "as": "Directory",
+        "name": "System.Directory"
+      },
+      {
+        "as": "Environment",
+        "name": "System.Environment"
+      },
+      {
+        "as": "Exit",
+        "name": "System.Exit"
+      },
+      {
+        "as": "FilePath",
+        "name": "System.FilePath"
+      },
+      {
+        "as": "IO",
+        "name": "System.IO"
+      },
+      {
+        "as": "Process",
+        "name": "System.Process"
+      },
+      {
+        "as": "Test",
+        "name": "Test.HUnit"
+      },
+      {
+        "as": "Printf",
+        "name": "Text.Printf"
+      },
+      {
+        "as": "Read",
+        "name": "Text.Read"
+      }
+    ]
+  }
+]

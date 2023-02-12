@@ -1,11 +1,11 @@
 module Rattletrap.Type.Property.Float where
 
-import Prelude hiding (Float)
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.F32 as F32
 import qualified Rattletrap.Utility.Json as Json
+import Prelude hiding (Float)
 
 newtype Float
   = Float F32.F32

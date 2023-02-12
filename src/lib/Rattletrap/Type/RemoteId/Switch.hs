@@ -7,25 +7,26 @@ import qualified Rattletrap.Type.U64 as U64
 import qualified Rattletrap.Utility.Json as Json
 
 data Switch = Switch
-  { a :: U64.U64
-  , b :: U64.U64
-  , c :: U64.U64
-  , d :: U64.U64
+  { a :: U64.U64,
+    b :: U64.U64,
+    c :: U64.U64,
+    d :: U64.U64
   }
   deriving (Eq, Show)
 
 instance Json.FromJSON Switch where
   parseJSON json = do
     (a, b, c, d) <- Json.parseJSON json
-    pure Switch { a, b, c, d }
+    pure Switch {a, b, c, d}
 
 instance Json.ToJSON Switch where
   toJSON x = Json.toJSON (a x, b x, c x, d x)
 
 schema :: Schema.Schema
 schema =
-  Schema.named "remote-id-switch" . Schema.tuple . replicate 4 $ Schema.ref
-    U64.schema
+  Schema.named "remote-id-switch" . Schema.tuple . replicate 4 $
+    Schema.ref
+      U64.schema
 
 bitPut :: Switch -> BitPut.BitPut
 bitPut x =
@@ -37,4 +38,4 @@ bitGet = BitGet.label "Switch" $ do
   b <- U64.bitGet
   c <- U64.bitGet
   d <- U64.bitGet
-  pure Switch { a, b, c, d }
+  pure Switch {a, b, c, d}

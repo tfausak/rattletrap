@@ -9,9 +9,9 @@ import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
 data Explosion = Explosion
-  { flag :: Bool
-  , actorId :: I32.I32
-  , location :: Vector.Vector
+  { flag :: Bool,
+    actorId :: I32.I32,
+    location :: Vector.Vector
   }
   deriving (Eq, Show)
 
@@ -20,21 +20,24 @@ instance Json.FromJSON Explosion where
     flag <- Json.required object "flag"
     actorId <- Json.required object "actor_id"
     location <- Json.required object "location"
-    pure Explosion { flag, actorId, location }
+    pure Explosion {flag, actorId, location}
 
 instance Json.ToJSON Explosion where
-  toJSON x = Json.object
-    [ Json.pair "flag" $ flag x
-    , Json.pair "actor_id" $ actorId x
-    , Json.pair "location" $ location x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "flag" $ flag x,
+        Json.pair "actor_id" $ actorId x,
+        Json.pair "location" $ location x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-explosion" $ Schema.object
-  [ (Json.pair "flag" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "actor_id" $ Schema.ref I32.schema, True)
-  , (Json.pair "location" $ Schema.ref Vector.schema, True)
-  ]
+schema =
+  Schema.named "attribute-explosion" $
+    Schema.object
+      [ (Json.pair "flag" $ Schema.ref Schema.boolean, True),
+        (Json.pair "actor_id" $ Schema.ref I32.schema, True),
+        (Json.pair "location" $ Schema.ref Vector.schema, True)
+      ]
 
 bitPut :: Explosion -> BitPut.BitPut
 bitPut explosionAttribute =
@@ -47,4 +50,4 @@ bitGet version = BitGet.label "Explosion" $ do
   flag <- BitGet.label "flag" BitGet.bool
   actorId <- BitGet.label "actorId" I32.bitGet
   location <- BitGet.label "location" $ Vector.bitGet version
-  pure Explosion { flag, actorId, location }
+  pure Explosion {flag, actorId, location}

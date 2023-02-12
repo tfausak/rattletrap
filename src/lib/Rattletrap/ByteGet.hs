@@ -13,10 +13,10 @@ import qualified Rattletrap.Get as Get
 
 type ByteGet = Get.Get ByteString.ByteString Identity.Identity
 
-run
-  :: ByteGet a
-  -> ByteString.ByteString
-  -> Either ([String], Exception.SomeException) a
+run ::
+  ByteGet a ->
+  ByteString.ByteString ->
+  Either ([String], Exception.SomeException) a
 run g = fmap snd . Identity.runIdentity . Get.run g
 
 byteString :: Int -> ByteGet ByteString.ByteString
@@ -53,26 +53,26 @@ word8 = fmap ByteString.head $ byteString 1
 word32 :: ByteGet Word.Word32
 word32 = do
   x <- byteString 4
-  pure
-    $ Bits.shiftL (fromIntegral $ ByteString.index x 0) 0
-    + Bits.shiftL (fromIntegral $ ByteString.index x 1) 8
-    + Bits.shiftL (fromIntegral $ ByteString.index x 2) 16
-    + Bits.shiftL (fromIntegral $ ByteString.index x 3) 24
+  pure $
+    Bits.shiftL (fromIntegral $ ByteString.index x 0) 0
+      + Bits.shiftL (fromIntegral $ ByteString.index x 1) 8
+      + Bits.shiftL (fromIntegral $ ByteString.index x 2) 16
+      + Bits.shiftL (fromIntegral $ ByteString.index x 3) 24
 
 word64 :: ByteGet Word.Word64
 word64 = do
   x <- byteString 8
-  pure
-    $ Bits.shiftL (fromIntegral $ ByteString.index x 0) 0
-    + Bits.shiftL (fromIntegral $ ByteString.index x 1) 8
-    + Bits.shiftL (fromIntegral $ ByteString.index x 2) 16
-    + Bits.shiftL (fromIntegral $ ByteString.index x 3) 24
-    + Bits.shiftL (fromIntegral $ ByteString.index x 4) 32
-    + Bits.shiftL (fromIntegral $ ByteString.index x 5) 40
-    + Bits.shiftL (fromIntegral $ ByteString.index x 6) 48
-    + Bits.shiftL (fromIntegral $ ByteString.index x 7) 56
+  pure $
+    Bits.shiftL (fromIntegral $ ByteString.index x 0) 0
+      + Bits.shiftL (fromIntegral $ ByteString.index x 1) 8
+      + Bits.shiftL (fromIntegral $ ByteString.index x 2) 16
+      + Bits.shiftL (fromIntegral $ ByteString.index x 3) 24
+      + Bits.shiftL (fromIntegral $ ByteString.index x 4) 32
+      + Bits.shiftL (fromIntegral $ ByteString.index x 5) 40
+      + Bits.shiftL (fromIntegral $ ByteString.index x 6) 48
+      + Bits.shiftL (fromIntegral $ ByteString.index x 7) 56
 
-throw :: Exception.Exception e => e -> ByteGet a
+throw :: (Exception.Exception e) => e -> ByteGet a
 throw = Get.throw
 
 embed :: ByteGet a -> ByteString.ByteString -> ByteGet a

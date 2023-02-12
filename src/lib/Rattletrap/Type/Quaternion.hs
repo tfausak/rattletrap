@@ -11,10 +11,10 @@ import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Utility.Json as Json
 
 data Quaternion = Quaternion
-  { x :: Double
-  , y :: Double
-  , z :: Double
-  , w :: Double
+  { x :: Double,
+    y :: Double,
+    z :: Double,
+    w :: Double
   }
   deriving (Eq, Show)
 
@@ -24,23 +24,26 @@ instance Json.FromJSON Quaternion where
     y <- Json.required object "y"
     z <- Json.required object "z"
     w <- Json.required object "w"
-    pure Quaternion { x, y, z, w }
+    pure Quaternion {x, y, z, w}
 
 instance Json.ToJSON Quaternion where
-  toJSON a = Json.object
-    [ Json.pair "x" $ x a
-    , Json.pair "y" $ y a
-    , Json.pair "z" $ z a
-    , Json.pair "w" $ w a
-    ]
+  toJSON a =
+    Json.object
+      [ Json.pair "x" $ x a,
+        Json.pair "y" $ y a,
+        Json.pair "z" $ z a,
+        Json.pair "w" $ w a
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "quaternion" $ Schema.object
-  [ (Json.pair "x" $ Schema.ref Schema.number, True)
-  , (Json.pair "y" $ Schema.ref Schema.number, True)
-  , (Json.pair "z" $ Schema.ref Schema.number, True)
-  , (Json.pair "w" $ Schema.ref Schema.number, True)
-  ]
+schema =
+  Schema.named "quaternion" $
+    Schema.object
+      [ (Json.pair "x" $ Schema.ref Schema.number, True),
+        (Json.pair "y" $ Schema.ref Schema.number, True),
+        (Json.pair "z" $ Schema.ref Schema.number, True),
+        (Json.pair "w" $ Schema.ref Schema.number, True)
+      ]
 
 data Component
   = X
@@ -52,12 +55,11 @@ data Component
 toQuaternion :: Component -> Double -> Double -> Double -> Quaternion
 toQuaternion component a b c =
   let d = toPart a b c
-  in
-    case component of
-      X -> Quaternion d a b c
-      Y -> Quaternion a d b c
-      Z -> Quaternion a b d c
-      W -> Quaternion a b c d
+   in case component of
+        X -> Quaternion d a b c
+        Y -> Quaternion a d b c
+        Z -> Quaternion a b d c
+        W -> Quaternion a b c d
 
 toPart :: Double -> Double -> Double -> Double
 toPart a b c = sqrt (1 - (a * a) - (b * b) - (c * c))
@@ -82,23 +84,23 @@ decompressPart x_ =
 
 maxComponent :: Quaternion -> Component
 maxComponent quaternion =
-  let
-    x_ = x quaternion
-    y_ = y quaternion
-    z_ = z quaternion
-    w_ = w quaternion
-    parts = [(x_, X), (y_, Y), (z_, Z), (w_, W)]
-    biggestPart = maximumOn fst parts
-    roundTrip = decompressPart . compressPart
-    computedPart = Maybe.fromMaybe
-      biggestPart
-      (List.find (\(value, _) -> value /= roundTrip value) parts)
-  in snd
-    (if (biggestPart == computedPart)
-        || (abs (fst biggestPart - fst computedPart) > 0.00001)
-      then biggestPart
-      else computedPart
-    )
+  let x_ = x quaternion
+      y_ = y quaternion
+      z_ = z quaternion
+      w_ = w quaternion
+      parts = [(x_, X), (y_, Y), (z_, Z), (w_, W)]
+      biggestPart = maximumOn fst parts
+      roundTrip = decompressPart . compressPart
+      computedPart =
+        Maybe.fromMaybe
+          biggestPart
+          (List.find (\(value, _) -> value /= roundTrip value) parts)
+   in snd
+        ( if (biggestPart == computedPart)
+            || (abs (fst biggestPart - fst computedPart) > 0.00001)
+            then biggestPart
+            else computedPart
+        )
 
 maximumOn :: (Foldable t, Ord b) => (a -> b) -> t a -> a
 maximumOn f = List.maximumBy (Ord.comparing f)
@@ -118,24 +120,24 @@ maxValue = 1.0 / sqrt 2.0
 bitPut :: Quaternion -> BitPut.BitPut
 bitPut q =
   let c = maxComponent q
-  in
-    putComponent c <> case c of
-      X -> putParts (y q) (z q) (w q)
-      Y -> putParts (x q) (z q) (w q)
-      Z -> putParts (x q) (y q) (w q)
-      W -> putParts (x q) (y q) (z q)
+   in putComponent c <> case c of
+        X -> putParts (y q) (z q) (w q)
+        Y -> putParts (x q) (z q) (w q)
+        Z -> putParts (x q) (y q) (w q)
+        W -> putParts (x q) (y q) (z q)
 
 putComponent :: Component -> BitPut.BitPut
-putComponent component = CompressedWord.bitPut
-  (CompressedWord.CompressedWord
-    3
-    (case component of
-      X -> 0
-      Y -> 1
-      Z -> 2
-      W -> 3
+putComponent component =
+  CompressedWord.bitPut
+    ( CompressedWord.CompressedWord
+        3
+        ( case component of
+            X -> 0
+            Y -> 1
+            Z -> 2
+            W -> 3
+        )
     )
-  )
 
 putParts :: Double -> Double -> Double -> BitPut.BitPut
 putParts a b c = putPart a <> putPart b <> putPart c

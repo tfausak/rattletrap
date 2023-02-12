@@ -8,7 +8,8 @@ import qualified Rattletrap.Utility.Json as Json
 
 newtype Byte = Byte
   { value :: U8.U8
-  } deriving (Eq, Show)
+  }
+  deriving (Eq, Show)
 
 instance Json.FromJSON Byte where
   parseJSON = fmap Byte . Json.parseJSON
@@ -25,4 +26,4 @@ bitPut byteAttribute = U8.bitPut (value byteAttribute)
 bitGet :: BitGet.BitGet Byte
 bitGet = BitGet.label "Byte" $ do
   value <- BitGet.label "value" U8.bitGet
-  pure Byte { value }
+  pure Byte {value}

@@ -16,17 +16,18 @@ newtype I64
 
 instance Json.FromJSON I64 where
   parseJSON =
-    Json.withText "I64"
-      $ either fail (pure . fromInt64)
-      . Read.readEither
-      . Text.unpack
+    Json.withText "I64" $
+      either fail (pure . fromInt64)
+        . Read.readEither
+        . Text.unpack
 
 instance Json.ToJSON I64 where
   toJSON = Json.toJSON . show . toInt64
 
 schema :: Schema.Schema
-schema = Schema.named "i64"
-  $ Json.object [Json.pair "type" "string", Json.pair "pattern" "^-?[0-9]+$"]
+schema =
+  Schema.named "i64" $
+    Json.object [Json.pair "type" "string", Json.pair "pattern" "^-?[0-9]+$"]
 
 fromInt64 :: Int.Int64 -> I64
 fromInt64 = I64

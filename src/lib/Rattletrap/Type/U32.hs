@@ -19,11 +19,13 @@ instance Json.ToJSON U32 where
   toJSON = Json.toJSON . toWord32
 
 schema :: Schema.Schema
-schema = Schema.named "u32" $ Json.object
-  [ Json.pair "type" "integer"
-  , Json.pair "minimum" (minBound :: Word.Word32)
-  , Json.pair "maximum" (maxBound :: Word.Word32)
-  ]
+schema =
+  Schema.named "u32" $
+    Json.object
+      [ Json.pair "type" "integer",
+        Json.pair "minimum" (minBound :: Word.Word32),
+        Json.pair "maximum" (maxBound :: Word.Word32)
+      ]
 
 fromWord32 :: Word.Word32 -> U32
 fromWord32 = U32
