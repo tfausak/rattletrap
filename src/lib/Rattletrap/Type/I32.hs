@@ -19,11 +19,13 @@ instance Json.ToJSON I32 where
   toJSON = Json.toJSON . toInt32
 
 schema :: Schema.Schema
-schema = Schema.named "i32" $ Json.object
-  [ Json.pair "type" "integer"
-  , Json.pair "minimum" (minBound :: Int.Int32)
-  , Json.pair "maximum" (maxBound :: Int.Int32)
-  ]
+schema =
+  Schema.named "i32" $
+    Json.object
+      [ Json.pair "type" "integer",
+        Json.pair "minimum" (minBound :: Int.Int32),
+        Json.pair "maximum" (maxBound :: Int.Int32)
+      ]
 
 fromInt32 :: Int.Int32 -> I32
 fromInt32 = I32

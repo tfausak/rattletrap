@@ -8,7 +8,8 @@ import qualified Rattletrap.Utility.Json as Json
 
 newtype PlayerHistoryKey = PlayerHistoryKey
   { unknown :: Word.Word16
-  } deriving (Eq, Show)
+  }
+  deriving (Eq, Show)
 
 instance Json.FromJSON PlayerHistoryKey where
   parseJSON = fmap PlayerHistoryKey . Json.parseJSON
@@ -26,4 +27,4 @@ bitPut = BitPut.bits 14 . unknown
 bitGet :: BitGet.BitGet PlayerHistoryKey
 bitGet = BitGet.label "PlayerHistoryKey" $ do
   unknown <- BitGet.label "unknown" $ BitGet.bits 14
-  pure PlayerHistoryKey { unknown }
+  pure PlayerHistoryKey {unknown}

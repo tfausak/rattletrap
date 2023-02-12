@@ -17,16 +17,17 @@ fromList = Array
 toList :: Array a -> List.List (Dictionary.Dictionary a)
 toList (Array x) = x
 
-instance Json.FromJSON a => Json.FromJSON (Array a) where
+instance (Json.FromJSON a) => Json.FromJSON (Array a) where
   parseJSON = fmap fromList . Json.parseJSON
 
-instance Json.ToJSON a => Json.ToJSON (Array a) where
+instance (Json.ToJSON a) => Json.ToJSON (Array a) where
   toJSON = Json.toJSON . toList
 
 schema :: Schema.Schema -> Schema.Schema
 schema s =
-  Schema.named "property-array" . Schema.json . List.schema $ Dictionary.schema
-    s
+  Schema.named "property-array" . Schema.json . List.schema $
+    Dictionary.schema
+      s
 
 bytePut :: (a -> BytePut.BytePut) -> Array a -> BytePut.BytePut
 bytePut f = List.bytePut (Dictionary.bytePut f) . toList

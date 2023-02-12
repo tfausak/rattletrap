@@ -10,10 +10,10 @@ import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
 data AppliedDamage = AppliedDamage
-  { unknown1 :: U8.U8
-  , location :: Vector.Vector
-  , unknown3 :: I32.I32
-  , unknown4 :: I32.I32
+  { unknown1 :: U8.U8,
+    location :: Vector.Vector,
+    unknown3 :: I32.I32,
+    unknown4 :: I32.I32
   }
   deriving (Eq, Show)
 
@@ -23,23 +23,26 @@ instance Json.FromJSON AppliedDamage where
     location <- Json.required object "location"
     unknown3 <- Json.required object "unknown3"
     unknown4 <- Json.required object "unknown4"
-    pure AppliedDamage { unknown1, location, unknown3, unknown4 }
+    pure AppliedDamage {unknown1, location, unknown3, unknown4}
 
 instance Json.ToJSON AppliedDamage where
-  toJSON x = Json.object
-    [ Json.pair "unknown1" $ unknown1 x
-    , Json.pair "location" $ location x
-    , Json.pair "unknown3" $ unknown3 x
-    , Json.pair "unknown4" $ unknown4 x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "unknown1" $ unknown1 x,
+        Json.pair "location" $ location x,
+        Json.pair "unknown3" $ unknown3 x,
+        Json.pair "unknown4" $ unknown4 x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-applied-damage" $ Schema.object
-  [ (Json.pair "unknown1" $ Schema.ref U8.schema, True)
-  , (Json.pair "location" $ Schema.ref Vector.schema, True)
-  , (Json.pair "unknown3" $ Schema.ref I32.schema, True)
-  , (Json.pair "unknown4" $ Schema.ref I32.schema, True)
-  ]
+schema =
+  Schema.named "attribute-applied-damage" $
+    Schema.object
+      [ (Json.pair "unknown1" $ Schema.ref U8.schema, True),
+        (Json.pair "location" $ Schema.ref Vector.schema, True),
+        (Json.pair "unknown3" $ Schema.ref I32.schema, True),
+        (Json.pair "unknown4" $ Schema.ref I32.schema, True)
+      ]
 
 bitPut :: AppliedDamage -> BitPut.BitPut
 bitPut appliedDamageAttribute =
@@ -54,4 +57,4 @@ bitGet version = BitGet.label "AppliedDamage" $ do
   location <- BitGet.label "location" $ Vector.bitGet version
   unknown3 <- BitGet.label "unknown3" I32.bitGet
   unknown4 <- BitGet.label "unknown4" I32.bitGet
-  pure AppliedDamage { unknown1, location, unknown3, unknown4 }
+  pure AppliedDamage {unknown1, location, unknown3, unknown4}

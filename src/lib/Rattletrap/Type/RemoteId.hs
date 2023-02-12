@@ -21,8 +21,8 @@ data RemoteId
   = PlayStation PlayStation.PlayStation
   | PsyNet PsyNet.PsyNet
   | QQ QQ.QQ
-  | Splitscreen Splitscreen.Splitscreen
-  -- ^ Really only 24 bits.
+  | -- | Really only 24 bits.
+    Splitscreen Splitscreen.Splitscreen
   | Steam Steam.Steam
   | Switch Switch.Switch
   | Xbox Xbox.Xbox
@@ -30,16 +30,17 @@ data RemoteId
   deriving (Eq, Show)
 
 instance Json.FromJSON RemoteId where
-  parseJSON = Json.withObject "RemoteId" $ \object -> Foldable.asum
-    [ fmap PlayStation $ Json.required object "play_station"
-    , fmap PsyNet $ Json.required object "psy_net"
-    , fmap QQ $ Json.required object "qq"
-    , fmap Splitscreen $ Json.required object "splitscreen"
-    , fmap Steam $ Json.required object "steam"
-    , fmap Switch $ Json.required object "switch"
-    , fmap Xbox $ Json.required object "xbox"
-    , fmap Epic $ Json.required object "epic"
-    ]
+  parseJSON = Json.withObject "RemoteId" $ \object ->
+    Foldable.asum
+      [ fmap PlayStation $ Json.required object "play_station",
+        fmap PsyNet $ Json.required object "psy_net",
+        fmap QQ $ Json.required object "qq",
+        fmap Splitscreen $ Json.required object "splitscreen",
+        fmap Steam $ Json.required object "steam",
+        fmap Switch $ Json.required object "switch",
+        fmap Xbox $ Json.required object "xbox",
+        fmap Epic $ Json.required object "epic"
+      ]
 
 instance Json.ToJSON RemoteId where
   toJSON x = case x of
@@ -53,17 +54,19 @@ instance Json.ToJSON RemoteId where
     Epic y -> Json.object [Json.pair "epic" y]
 
 schema :: Schema.Schema
-schema = Schema.named "remote-id" . Schema.oneOf $ fmap
-  (\(k, v) -> Schema.object [(Json.pair k v, True)])
-  [ ("play_station", Schema.ref PlayStation.schema)
-  , ("psy_net", Schema.ref PsyNet.schema)
-  , ("qq", Schema.ref QQ.schema)
-  , ("splitscreen", Schema.ref Splitscreen.schema)
-  , ("steam", Schema.ref Steam.schema)
-  , ("switch", Schema.ref Switch.schema)
-  , ("xbox", Schema.ref Xbox.schema)
-  , ("epic", Schema.ref Epic.schema)
-  ]
+schema =
+  Schema.named "remote-id" . Schema.oneOf $
+    fmap
+      (\(k, v) -> Schema.object [(Json.pair k v, True)])
+      [ ("play_station", Schema.ref PlayStation.schema),
+        ("psy_net", Schema.ref PsyNet.schema),
+        ("qq", Schema.ref QQ.schema),
+        ("splitscreen", Schema.ref Splitscreen.schema),
+        ("steam", Schema.ref Steam.schema),
+        ("switch", Schema.ref Switch.schema),
+        ("xbox", Schema.ref Xbox.schema),
+        ("epic", Schema.ref Epic.schema)
+      ]
 
 bitPut :: RemoteId -> BitPut.BitPut
 bitPut remoteId = case remoteId of

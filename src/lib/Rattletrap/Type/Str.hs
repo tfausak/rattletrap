@@ -42,31 +42,32 @@ toString = Text.unpack . toText
 
 bytePut :: Str -> BytePut.BytePut
 bytePut text =
-  let
-    size = getTextSize text
-    encode = getTextEncoder size
-  in I32.bytePut size <> (BytePut.byteString . encode . addNull $ toText text)
+  let size = getTextSize text
+      encode = getTextEncoder size
+   in I32.bytePut size <> (BytePut.byteString . encode . addNull $ toText text)
 
 bitPut :: Str -> BitPut.BitPut
 bitPut = BitPut.fromBytePut . bytePut
 
 getTextSize :: Str -> I32.I32
 getTextSize text =
-  let
-    value = toText text
-    scale = if Text.all Char.isLatin1 value then 1 else -1 :: Int.Int32
-    rawSize = if Text.null value
-      then 0
-      else fromIntegral (Text.length value) + 1 :: Int.Int32
-    size = if value == Text.pack "\x00\x00\x00None"
-      then 0x05000000
-      else scale * rawSize :: Int.Int32
-  in I32.fromInt32 size
+  let value = toText text
+      scale = if Text.all Char.isLatin1 value then 1 else -1 :: Int.Int32
+      rawSize =
+        if Text.null value
+          then 0
+          else fromIntegral (Text.length value) + 1 :: Int.Int32
+      size =
+        if value == Text.pack "\x00\x00\x00None"
+          then 0x05000000
+          else scale * rawSize :: Int.Int32
+   in I32.fromInt32 size
 
 getTextEncoder :: I32.I32 -> Text.Text -> ByteString.ByteString
-getTextEncoder size text = if I32.toInt32 size < 0
-  then Text.encodeUtf16LE text
-  else Bytes.encodeLatin1 text
+getTextEncoder size text =
+  if I32.toInt32 size < 0
+    then Text.encodeUtf16LE text
+    else Bytes.encodeLatin1 text
 
 addNull :: Text.Text -> Text.Text
 addNull text = if Text.null text then text else Text.snoc text '\x00'
@@ -83,18 +84,18 @@ bitGet = do
   bytes <- BitGet.byteString (normalizeTextSize rawSize)
   pure (fromText (dropNull (getTextDecoder rawSize bytes)))
 
-normalizeTextSize :: Integral a => I32.I32 -> a
+normalizeTextSize :: (Integral a) => I32.I32 -> a
 normalizeTextSize size = case I32.toInt32 size of
   0x05000000 -> 8
   x -> if x < 0 then (-2 * fromIntegral x) else fromIntegral x
 
 getTextDecoder :: I32.I32 -> ByteString.ByteString -> Text.Text
 getTextDecoder size bytes =
-  let
-    decode = if I32.toInt32 size < 0
-      then Text.decodeUtf16LEWith Text.lenientDecode
-      else Text.decodeLatin1
-  in decode bytes
+  let decode =
+        if I32.toInt32 size < 0
+          then Text.decodeUtf16LEWith Text.lenientDecode
+          else Text.decodeLatin1
+   in decode bytes
 
 dropNull :: Text.Text -> Text.Text
 dropNull = Text.dropWhileEnd (== '\x00')

@@ -8,7 +8,8 @@ import qualified Rattletrap.Utility.Json as Json
 
 newtype QWord = QWord
   { value :: U64.U64
-  } deriving (Eq, Show)
+  }
+  deriving (Eq, Show)
 
 instance Json.FromJSON QWord where
   parseJSON = fmap QWord . Json.parseJSON
@@ -25,4 +26,4 @@ bitPut qWordAttribute = U64.bitPut (value qWordAttribute)
 bitGet :: BitGet.BitGet QWord
 bitGet = BitGet.label "QWord" $ do
   value <- BitGet.label "value" U64.bitGet
-  pure QWord { value }
+  pure QWord {value}

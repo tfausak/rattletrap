@@ -19,11 +19,13 @@ instance Json.ToJSON U8 where
   toJSON = Json.toJSON . toWord8
 
 schema :: Schema.Schema
-schema = Schema.named "u8" $ Json.object
-  [ Json.pair "type" "integer"
-  , Json.pair "minimum" (minBound :: Word.Word8)
-  , Json.pair "maximum" (maxBound :: Word.Word8)
-  ]
+schema =
+  Schema.named "u8" $
+    Json.object
+      [ Json.pair "type" "integer",
+        Json.pair "minimum" (minBound :: Word.Word8),
+        Json.pair "maximum" (maxBound :: Word.Word8)
+      ]
 
 fromWord8 :: Word.Word8 -> U8
 fromWord8 = U8

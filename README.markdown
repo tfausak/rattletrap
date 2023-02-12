@@ -1,8 +1,8 @@
 # [Rattletrap][]
 
-[![Version badge][]][version]
-[![Build badge][]][build]
-[![Docker badge][]][docker]
+[![Workflow](https://github.com/tfausak/rattletrap/actions/workflows/workflow.yaml/badge.svg)](https://github.com/tfausak/rattletrap/actions/workflows/workflow.yaml)
+[![Hackage](https://img.shields.io/hackage/v/rattletrap)](https://hackage.haskell.org/package/rattletrap)
+[![Stackage](https://www.stackage.org/package/rattletrap/badge/nightly?label=stackage)](https://www.stackage.org/package/rattletrap)
 
 Rattletrap parses and generates [Rocket League][] replays. Parsing replays can
 be used to analyze data in order to collect high-level statistics like players
@@ -21,10 +21,10 @@ comfortable running things in terminals or command prompts. Otherwise consider
 using another tool like [Ball Chasing][].
 
 The best way to get Rattletrap is by downloading [the latest release][] for
-your platform. Rattletrap is also available as [a Docker image][docker].
+your platform.
 
 Rattletrap is written in [Haskell][]. To build Rattletrap from source, install
-[Stack][]. Then run `stack --resolver nightly-2021-08-14 install rattletrap`.
+[Stack][]. Then run `stack --resolver nightly-2023-02-12 install rattletrap`.
 If you'd like to use a program written in a different language, consider one of
 the following:
 
@@ -56,7 +56,7 @@ $ rattletrap --help
 ```
 
 ```
-rattletrap version 11.2.0
+rattletrap version 12.0.0
   -c           --compact         minify JSON output
   -f           --fast            only encode or decode the header
   -h           --help            show the help
@@ -133,8 +133,6 @@ $ rattletrap -i input.replay |
 [version]: https://hackage.haskell.org/package/rattletrap
 [Build badge]: https://github.com/tfausak/rattletrap/workflows/ci/badge.svg
 [build]: https://github.com/tfausak/rattletrap/actions
-[Docker badge]: https://img.shields.io/docker/v/taylorfausak/rattletrap?label=docker&logo=docker&logoColor=white
-[docker]: https://hub.docker.com/r/taylorfausak/rattletrap
 [Rocket League]: https://www.rocketleague.com
 [2.23]: https://www.rocketleague.com/news/patch-notes-v2-23/
 [Ball Chasing]: https://ballchasing.com

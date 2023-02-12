@@ -9,7 +9,8 @@ import qualified Rattletrap.Utility.Json as Json
 
 newtype Location = Location
   { value :: Vector.Vector
-  } deriving (Eq, Show)
+  }
+  deriving (Eq, Show)
 
 instance Json.FromJSON Location where
   parseJSON = fmap Location . Json.parseJSON
@@ -26,4 +27,4 @@ bitPut locationAttribute = Vector.bitPut (value locationAttribute)
 bitGet :: Version.Version -> BitGet.BitGet Location
 bitGet version = BitGet.label "Location" $ do
   value <- BitGet.label "value" $ Vector.bitGet version
-  pure Location { value }
+  pure Location {value}

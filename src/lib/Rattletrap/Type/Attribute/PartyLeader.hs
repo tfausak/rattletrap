@@ -9,9 +9,9 @@ import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
 data PartyLeader = PartyLeader
-  { systemId :: U8.U8
-  , remoteId :: Maybe RemoteId.RemoteId
-  , localId :: Maybe U8.U8
+  { systemId :: U8.U8,
+    remoteId :: Maybe RemoteId.RemoteId,
+    localId :: Maybe U8.U8
   }
   deriving (Eq, Show)
 
@@ -19,44 +19,52 @@ instance Json.FromJSON PartyLeader where
   parseJSON = Json.withObject "PartyLeader" $ \object -> do
     systemId <- Json.required object "system_id"
     maybeId <- Json.optional object "id"
-    pure PartyLeader
-      { systemId
-      , remoteId = fmap fst maybeId
-      , localId = fmap snd maybeId
-      }
+    pure
+      PartyLeader
+        { systemId,
+          remoteId = fmap fst maybeId,
+          localId = fmap snd maybeId
+        }
 
 instance Json.ToJSON PartyLeader where
-  toJSON x = Json.object
-    [ Json.pair "system_id" $ systemId x
-    , Json.pair "id" $ case (remoteId x, localId x) of
-      (Just r, Just l) -> Just (r, l)
-      _ -> Nothing
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "system_id" $ systemId x,
+        Json.pair "id" $ case (remoteId x, localId x) of
+          (Just r, Just l) -> Just (r, l)
+          _ -> Nothing
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-party-leader" $ Schema.object
-  [ (Json.pair "system_id" $ Schema.ref U8.schema, True)
-  , ( Json.pair "id" $ Schema.oneOf
-      [ Schema.tuple [Schema.ref RemoteId.schema, Schema.ref U8.schema]
-      , Schema.ref Schema.null
+schema =
+  Schema.named "attribute-party-leader" $
+    Schema.object
+      [ (Json.pair "system_id" $ Schema.ref U8.schema, True),
+        ( Json.pair "id" $
+            Schema.oneOf
+              [ Schema.tuple [Schema.ref RemoteId.schema, Schema.ref U8.schema],
+                Schema.ref Schema.null
+              ],
+          False
+        )
       ]
-    , False
-    )
-  ]
 
 bitPut :: PartyLeader -> BitPut.BitPut
 bitPut x =
-  U8.bitPut (systemId x) <> foldMap RemoteId.bitPut (remoteId x) <> foldMap
-    U8.bitPut
-    (localId x)
+  U8.bitPut (systemId x)
+    <> foldMap RemoteId.bitPut (remoteId x)
+    <> foldMap
+      U8.bitPut
+      (localId x)
 
 bitGet :: Version.Version -> BitGet.BitGet PartyLeader
 bitGet version = BitGet.label "PartyLeader" $ do
   systemId <- BitGet.label "systemId" U8.bitGet
-  (remoteId, localId) <- if systemId == U8.fromWord8 0
-    then pure (Nothing, Nothing)
-    else do
-      remoteId <- BitGet.label "remoteId" $ RemoteId.bitGet version systemId
-      localId <- BitGet.label "localId" U8.bitGet
-      pure (Just remoteId, Just localId)
-  pure PartyLeader { systemId, remoteId, localId }
+  (remoteId, localId) <-
+    if systemId == U8.fromWord8 0
+      then pure (Nothing, Nothing)
+      else do
+        remoteId <- BitGet.label "remoteId" $ RemoteId.bitGet version systemId
+        localId <- BitGet.label "localId" U8.bitGet
+        pure (Just remoteId, Just localId)
+  pure PartyLeader {systemId, remoteId, localId}

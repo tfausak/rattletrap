@@ -8,13 +8,13 @@ import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
 
 data PickupInfo = PickupInfo
-  { unknown1 :: Bool
-  , unknown2 :: Bool
-  , unknown3 :: U32.U32
-  , unknown4 :: I32.I32
-  , unknown5 :: I32.I32
-  , unknown6 :: Bool
-  , unknown7 :: Bool
+  { unknown1 :: Bool,
+    unknown2 :: Bool,
+    unknown3 :: U32.U32,
+    unknown4 :: I32.I32,
+    unknown5 :: I32.I32,
+    unknown6 :: Bool,
+    unknown7 :: Bool
   }
   deriving (Eq, Show)
 
@@ -27,37 +27,41 @@ instance Json.FromJSON PickupInfo where
     unknown5 <- Json.required object "unknown5"
     unknown6 <- Json.required object "unknown6"
     unknown7 <- Json.required object "unknown7"
-    pure PickupInfo
-      { unknown1
-      , unknown2
-      , unknown3
-      , unknown4
-      , unknown5
-      , unknown6
-      , unknown7
-      }
+    pure
+      PickupInfo
+        { unknown1,
+          unknown2,
+          unknown3,
+          unknown4,
+          unknown5,
+          unknown6,
+          unknown7
+        }
 
 instance Json.ToJSON PickupInfo where
-  toJSON x = Json.object
-    [ Json.pair "unknown1" $ unknown1 x
-    , Json.pair "unknown2" $ unknown2 x
-    , Json.pair "unknown3" $ unknown3 x
-    , Json.pair "unknown4" $ unknown4 x
-    , Json.pair "unknown5" $ unknown5 x
-    , Json.pair "unknown6" $ unknown6 x
-    , Json.pair "unknown7" $ unknown7 x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "unknown1" $ unknown1 x,
+        Json.pair "unknown2" $ unknown2 x,
+        Json.pair "unknown3" $ unknown3 x,
+        Json.pair "unknown4" $ unknown4 x,
+        Json.pair "unknown5" $ unknown5 x,
+        Json.pair "unknown6" $ unknown6 x,
+        Json.pair "unknown7" $ unknown7 x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "pickup-info" $ Schema.object
-  [ (Json.pair "unknown1" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown2" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown3" $ Schema.ref U32.schema, True)
-  , (Json.pair "unknown4" $ Schema.ref I32.schema, True)
-  , (Json.pair "unknown5" $ Schema.ref I32.schema, True)
-  , (Json.pair "unknown6" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown7" $ Schema.ref Schema.boolean, True)
-  ]
+schema =
+  Schema.named "pickup-info" $
+    Schema.object
+      [ (Json.pair "unknown1" $ Schema.ref Schema.boolean, True),
+        (Json.pair "unknown2" $ Schema.ref Schema.boolean, True),
+        (Json.pair "unknown3" $ Schema.ref U32.schema, True),
+        (Json.pair "unknown4" $ Schema.ref I32.schema, True),
+        (Json.pair "unknown5" $ Schema.ref I32.schema, True),
+        (Json.pair "unknown6" $ Schema.ref Schema.boolean, True),
+        (Json.pair "unknown7" $ Schema.ref Schema.boolean, True)
+      ]
 
 bitPut :: PickupInfo -> BitPut.BitPut
 bitPut x =
@@ -78,12 +82,13 @@ bitGet = BitGet.label "PickupInfo" $ do
   unknown5 <- BitGet.label "unknown5" I32.bitGet
   unknown6 <- BitGet.label "unknown6" BitGet.bool
   unknown7 <- BitGet.label "unknown7" BitGet.bool
-  pure PickupInfo
-    { unknown1
-    , unknown2
-    , unknown3
-    , unknown4
-    , unknown5
-    , unknown6
-    , unknown7
-    }
+  pure
+    PickupInfo
+      { unknown1,
+        unknown2,
+        unknown3,
+        unknown4,
+        unknown5,
+        unknown6,
+        unknown7
+      }

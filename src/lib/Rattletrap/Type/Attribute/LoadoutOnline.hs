@@ -14,7 +14,8 @@ import qualified Rattletrap.Utility.Json as Json
 
 newtype LoadoutOnline = LoadoutOnline
   { value :: List.List (List.List Product.Product)
-  } deriving (Eq, Show)
+  }
+  deriving (Eq, Show)
 
 instance Json.FromJSON LoadoutOnline where
   parseJSON = fmap LoadoutOnline . Json.parseJSON
@@ -32,16 +33,15 @@ schema =
 bitPut :: LoadoutOnline -> BitPut.BitPut
 bitPut loadoutAttribute =
   let attributes = List.toList $ value loadoutAttribute
-  in
-    (U8.bitPut . U8.fromWord8 . fromIntegral $ length attributes)
-      <> foldMap Product.putProductAttributes attributes
+   in (U8.bitPut . U8.fromWord8 . fromIntegral $ length attributes)
+        <> foldMap Product.putProductAttributes attributes
 
-bitGet
-  :: Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet LoadoutOnline
+bitGet ::
+  Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet LoadoutOnline
 bitGet version objectMap = BitGet.label "LoadoutOnline" $ do
   size <- BitGet.label "size" U8.bitGet
   value <-
     BitGet.label "value"
-    . List.replicateM (fromIntegral $ U8.toWord8 size)
-    $ Product.decodeProductAttributesBits version objectMap
-  pure LoadoutOnline { value }
+      . List.replicateM (fromIntegral $ U8.toWord8 size)
+      $ Product.decodeProductAttributesBits version objectMap
+  pure LoadoutOnline {value}

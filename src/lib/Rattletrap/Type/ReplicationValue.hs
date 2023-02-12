@@ -16,20 +16,21 @@ import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
 data ReplicationValue
-  = Spawned Spawned.Spawned
-  -- ^ Creates a new actor.
-  | Updated Updated.Updated
-  -- ^ Updates an existing actor.
-  | Destroyed Destroyed.Destroyed
-  -- ^ Destroys an existing actor.
+  = -- | Creates a new actor.
+    Spawned Spawned.Spawned
+  | -- | Updates an existing actor.
+    Updated Updated.Updated
+  | -- | Destroys an existing actor.
+    Destroyed Destroyed.Destroyed
   deriving (Eq, Show)
 
 instance Json.FromJSON ReplicationValue where
-  parseJSON = Json.withObject "ReplicationValue" $ \object -> Foldable.asum
-    [ fmap Spawned $ Json.required object "spawned"
-    , fmap Updated $ Json.required object "updated"
-    , fmap Destroyed $ Json.required object "destroyed"
-    ]
+  parseJSON = Json.withObject "ReplicationValue" $ \object ->
+    Foldable.asum
+      [ fmap Spawned $ Json.required object "spawned",
+        fmap Updated $ Json.required object "updated",
+        fmap Destroyed $ Json.required object "destroyed"
+      ]
 
 instance Json.ToJSON ReplicationValue where
   toJSON x = case x of
@@ -38,12 +39,14 @@ instance Json.ToJSON ReplicationValue where
     Destroyed y -> Json.object [Json.pair "destroyed" y]
 
 schema :: Schema.Schema
-schema = Schema.named "replicationValue" . Schema.oneOf $ fmap
-  (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
-  [ ("spawned", Spawned.schema)
-  , ("updated", Updated.schema)
-  , ("destroyed", Destroyed.schema)
-  ]
+schema =
+  Schema.named "replicationValue" . Schema.oneOf $
+    fmap
+      (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
+      [ ("spawned", Spawned.schema),
+        ("updated", Updated.schema),
+        ("destroyed", Destroyed.schema)
+      ]
 
 bitPut :: ReplicationValue -> BitPut.BitPut
 bitPut value = case value of
@@ -51,17 +54,17 @@ bitPut value = case value of
   Updated x -> BitPut.bool True <> BitPut.bool False <> Updated.bitPut x
   Destroyed x -> BitPut.bool False <> Destroyed.bitPut x
 
-bitGet
-  :: Maybe Str.Str
-  -> Version.Version
-  -> Maybe Str.Str
-  -> ClassAttributeMap.ClassAttributeMap
-  -> CompressedWord.CompressedWord
-  -> Map.Map CompressedWord.CompressedWord U32.U32
-  -> BitGet.BitGet
-       ( Map.Map CompressedWord.CompressedWord U32.U32
-       , ReplicationValue
-       )
+bitGet ::
+  Maybe Str.Str ->
+  Version.Version ->
+  Maybe Str.Str ->
+  ClassAttributeMap.ClassAttributeMap ->
+  CompressedWord.CompressedWord ->
+  Map.Map CompressedWord.CompressedWord U32.U32 ->
+  BitGet.BitGet
+    ( Map.Map CompressedWord.CompressedWord U32.U32,
+      ReplicationValue
+    )
 bitGet matchType version buildVersion classAttributeMap actorId actorMap =
   BitGet.label "ReplicationValue" $ do
     isOpen <- BitGet.bool
@@ -70,20 +73,22 @@ bitGet matchType version buildVersion classAttributeMap actorId actorMap =
         isNew <- BitGet.bool
         if isNew
           then do
-            (newActorMap, spawned) <- Spawned.bitGet
-              matchType
-              version
-              classAttributeMap
-              actorId
-              actorMap
+            (newActorMap, spawned) <-
+              Spawned.bitGet
+                matchType
+                version
+                classAttributeMap
+                actorId
+                actorMap
             pure (newActorMap, Spawned spawned)
           else do
-            updated <- Updated.bitGet
-              version
-              buildVersion
-              classAttributeMap
-              actorMap
-              actorId
+            updated <-
+              Updated.bitGet
+                version
+                buildVersion
+                classAttributeMap
+                actorMap
+                actorId
             pure (actorMap, Updated updated)
       else do
         destroyed <- Destroyed.bitGet

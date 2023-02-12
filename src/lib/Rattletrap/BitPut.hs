@@ -22,7 +22,7 @@ toBytePut b = BitBuilder.toBuilder $ run b BitBuilder.empty
 fromBytePut :: BytePut.BytePut -> BitPut
 fromBytePut = byteString . BytePut.toByteString
 
-bits :: Bits.Bits a => Int -> a -> BitPut
+bits :: (Bits.Bits a) => Int -> a -> BitPut
 bits n x = foldMap (bool . Bits.testBit x) [0 .. n - 1]
 
 bool :: Bool -> BitPut

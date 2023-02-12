@@ -9,12 +9,12 @@ import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
 data Demolish = Demolish
-  { attackerFlag :: Bool
-  , attackerActorId :: U32.U32
-  , victimFlag :: Bool
-  , victimActorId :: U32.U32
-  , attackerVelocity :: Vector.Vector
-  , victimVelocity :: Vector.Vector
+  { attackerFlag :: Bool,
+    attackerActorId :: U32.U32,
+    victimFlag :: Bool,
+    victimActorId :: U32.U32,
+    attackerVelocity :: Vector.Vector,
+    victimVelocity :: Vector.Vector
   }
   deriving (Eq, Show)
 
@@ -26,34 +26,38 @@ instance Json.FromJSON Demolish where
     victimActorId <- Json.required object "victim_actor_id"
     attackerVelocity <- Json.required object "attacker_velocity"
     victimVelocity <- Json.required object "victim_velocity"
-    pure Demolish
-      { attackerFlag
-      , attackerActorId
-      , victimFlag
-      , victimActorId
-      , attackerVelocity
-      , victimVelocity
-      }
+    pure
+      Demolish
+        { attackerFlag,
+          attackerActorId,
+          victimFlag,
+          victimActorId,
+          attackerVelocity,
+          victimVelocity
+        }
 
 instance Json.ToJSON Demolish where
-  toJSON x = Json.object
-    [ Json.pair "attacker_flag" $ attackerFlag x
-    , Json.pair "attacker_actor_id" $ attackerActorId x
-    , Json.pair "victim_flag" $ victimFlag x
-    , Json.pair "victim_actor_id" $ victimActorId x
-    , Json.pair "attacker_velocity" $ attackerVelocity x
-    , Json.pair "victim_velocity" $ victimVelocity x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "attacker_flag" $ attackerFlag x,
+        Json.pair "attacker_actor_id" $ attackerActorId x,
+        Json.pair "victim_flag" $ victimFlag x,
+        Json.pair "victim_actor_id" $ victimActorId x,
+        Json.pair "attacker_velocity" $ attackerVelocity x,
+        Json.pair "victim_velocity" $ victimVelocity x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-demolish" $ Schema.object
-  [ (Json.pair "attacker_flag" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "attacker_actor_id" $ Schema.ref U32.schema, True)
-  , (Json.pair "victim_flag" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "victim_actor_id" $ Schema.ref U32.schema, True)
-  , (Json.pair "attacker_velocity" $ Schema.ref Vector.schema, True)
-  , (Json.pair "victim_velocity" $ Schema.ref Vector.schema, True)
-  ]
+schema =
+  Schema.named "attribute-demolish" $
+    Schema.object
+      [ (Json.pair "attacker_flag" $ Schema.ref Schema.boolean, True),
+        (Json.pair "attacker_actor_id" $ Schema.ref U32.schema, True),
+        (Json.pair "victim_flag" $ Schema.ref Schema.boolean, True),
+        (Json.pair "victim_actor_id" $ Schema.ref U32.schema, True),
+        (Json.pair "attacker_velocity" $ Schema.ref Vector.schema, True),
+        (Json.pair "victim_velocity" $ Schema.ref Vector.schema, True)
+      ]
 
 bitPut :: Demolish -> BitPut.BitPut
 bitPut demolishAttribute =
@@ -72,11 +76,12 @@ bitGet version = BitGet.label "Demolish" $ do
   victimActorId <- BitGet.label "victimActorId" U32.bitGet
   attackerVelocity <- BitGet.label "attackerVelocity" $ Vector.bitGet version
   victimVelocity <- BitGet.label "victimVelocity" $ Vector.bitGet version
-  pure Demolish
-    { attackerFlag
-    , attackerActorId
-    , victimFlag
-    , victimActorId
-    , attackerVelocity
-    , victimVelocity
-    }
+  pure
+    Demolish
+      { attackerFlag,
+        attackerActorId,
+        victimFlag,
+        victimActorId,
+        attackerVelocity,
+        victimVelocity
+      }

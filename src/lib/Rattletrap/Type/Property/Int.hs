@@ -1,11 +1,11 @@
 module Rattletrap.Type.Property.Int where
 
-import Prelude hiding (Int)
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.I32 as I32
 import qualified Rattletrap.Utility.Json as Json
+import Prelude hiding (Int)
 
 newtype Int
   = Int I32.I32

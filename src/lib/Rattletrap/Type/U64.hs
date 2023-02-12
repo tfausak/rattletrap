@@ -16,17 +16,18 @@ newtype U64
 
 instance Json.FromJSON U64 where
   parseJSON =
-    Json.withText "U64"
-      $ either fail (pure . fromWord64)
-      . Read.readEither
-      . Text.unpack
+    Json.withText "U64" $
+      either fail (pure . fromWord64)
+        . Read.readEither
+        . Text.unpack
 
 instance Json.ToJSON U64 where
   toJSON = Json.toJSON . show . toWord64
 
 schema :: Schema.Schema
-schema = Schema.named "u64"
-  $ Json.object [Json.pair "type" "string", Json.pair "pattern" "^[0-9]+$"]
+schema =
+  Schema.named "u64" $
+    Json.object [Json.pair "type" "string", Json.pair "pattern" "^[0-9]+$"]
 
 fromWord64 :: Word.Word64 -> U64
 fromWord64 = U64

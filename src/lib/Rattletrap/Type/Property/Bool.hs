@@ -1,11 +1,11 @@
 module Rattletrap.Type.Property.Bool where
 
-import Prelude hiding (Bool)
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Utility.Json as Json
+import Prelude hiding (Bool)
 
 newtype Bool
   = Bool U8.U8

@@ -8,7 +8,8 @@ import qualified Rattletrap.Utility.Json as Json
 
 newtype Int64 = Int64
   { value :: I64.I64
-  } deriving (Eq, Show)
+  }
+  deriving (Eq, Show)
 
 instance Json.FromJSON Int64 where
   parseJSON = fmap Int64 . Json.parseJSON
@@ -25,4 +26,4 @@ putInt64Attribute int64Attribute = I64.bitPut (value int64Attribute)
 bitGet :: BitGet.BitGet Int64
 bitGet = BitGet.label "Int64" $ do
   value <- BitGet.label "value" I64.bitGet
-  pure Int64 { value }
+  pure Int64 {value}

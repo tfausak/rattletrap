@@ -7,8 +7,8 @@ import qualified Rattletrap.Type.Attribute.Loadout as Loadout
 import qualified Rattletrap.Utility.Json as Json
 
 data Loadouts = Loadouts
-  { blue :: Loadout.Loadout
-  , orange :: Loadout.Loadout
+  { blue :: Loadout.Loadout,
+    orange :: Loadout.Loadout
   }
   deriving (Eq, Show)
 
@@ -16,24 +16,27 @@ instance Json.FromJSON Loadouts where
   parseJSON = Json.withObject "Loadouts" $ \object -> do
     blue <- Json.required object "blue"
     orange <- Json.required object "orange"
-    pure Loadouts { blue, orange }
+    pure Loadouts {blue, orange}
 
 instance Json.ToJSON Loadouts where
   toJSON x =
     Json.object [Json.pair "blue" $ blue x, Json.pair "orange" $ orange x]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-loadouts" $ Schema.object
-  [ (Json.pair "blue" $ Schema.ref Loadout.schema, True)
-  , (Json.pair "orange" $ Schema.ref Loadout.schema, True)
-  ]
+schema =
+  Schema.named "attribute-loadouts" $
+    Schema.object
+      [ (Json.pair "blue" $ Schema.ref Loadout.schema, True),
+        (Json.pair "orange" $ Schema.ref Loadout.schema, True)
+      ]
 
 bitPut :: Loadouts -> BitPut.BitPut
-bitPut loadoutsAttribute = Loadout.bitPut (blue loadoutsAttribute)
-  <> Loadout.bitPut (orange loadoutsAttribute)
+bitPut loadoutsAttribute =
+  Loadout.bitPut (blue loadoutsAttribute)
+    <> Loadout.bitPut (orange loadoutsAttribute)
 
 bitGet :: BitGet.BitGet Loadouts
 bitGet = BitGet.label "Loadouts" $ do
   blue <- BitGet.label "blue" Loadout.bitGet
   orange <- BitGet.label "orange" Loadout.bitGet
-  pure Loadouts { blue, orange }
+  pure Loadouts {blue, orange}

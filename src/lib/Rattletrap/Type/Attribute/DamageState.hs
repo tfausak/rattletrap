@@ -10,12 +10,12 @@ import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
 
 data DamageState = DamageState
-  { unknown1 :: U8.U8
-  , unknown2 :: Bool
-  , unknown3 :: I32.I32
-  , unknown4 :: Vector.Vector
-  , unknown5 :: Bool
-  , unknown6 :: Bool
+  { unknown1 :: U8.U8,
+    unknown2 :: Bool,
+    unknown3 :: I32.I32,
+    unknown4 :: Vector.Vector,
+    unknown5 :: Bool,
+    unknown6 :: Bool
   }
   deriving (Eq, Show)
 
@@ -27,34 +27,38 @@ instance Json.FromJSON DamageState where
     unknown4 <- Json.required object "unknown4"
     unknown5 <- Json.required object "unknown5"
     unknown6 <- Json.required object "unknown6"
-    pure DamageState
-      { unknown1
-      , unknown2
-      , unknown3
-      , unknown4
-      , unknown5
-      , unknown6
-      }
+    pure
+      DamageState
+        { unknown1,
+          unknown2,
+          unknown3,
+          unknown4,
+          unknown5,
+          unknown6
+        }
 
 instance Json.ToJSON DamageState where
-  toJSON x = Json.object
-    [ Json.pair "unknown1" $ unknown1 x
-    , Json.pair "unknown2" $ unknown2 x
-    , Json.pair "unknown3" $ unknown3 x
-    , Json.pair "unknown4" $ unknown4 x
-    , Json.pair "unknown5" $ unknown5 x
-    , Json.pair "unknown6" $ unknown6 x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "unknown1" $ unknown1 x,
+        Json.pair "unknown2" $ unknown2 x,
+        Json.pair "unknown3" $ unknown3 x,
+        Json.pair "unknown4" $ unknown4 x,
+        Json.pair "unknown5" $ unknown5 x,
+        Json.pair "unknown6" $ unknown6 x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-damage-state" $ Schema.object
-  [ (Json.pair "unknown1" $ Schema.ref U8.schema, True)
-  , (Json.pair "unknown2" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown3" $ Schema.ref I32.schema, True)
-  , (Json.pair "unknown4" $ Schema.ref Vector.schema, True)
-  , (Json.pair "unknown5" $ Schema.ref Schema.boolean, True)
-  , (Json.pair "unknown6" $ Schema.ref Schema.boolean, True)
-  ]
+schema =
+  Schema.named "attribute-damage-state" $
+    Schema.object
+      [ (Json.pair "unknown1" $ Schema.ref U8.schema, True),
+        (Json.pair "unknown2" $ Schema.ref Schema.boolean, True),
+        (Json.pair "unknown3" $ Schema.ref I32.schema, True),
+        (Json.pair "unknown4" $ Schema.ref Vector.schema, True),
+        (Json.pair "unknown5" $ Schema.ref Schema.boolean, True),
+        (Json.pair "unknown6" $ Schema.ref Schema.boolean, True)
+      ]
 
 bitPut :: DamageState -> BitPut.BitPut
 bitPut damageStateAttribute =
@@ -73,11 +77,12 @@ bitGet version = BitGet.label "CustomDemolish" $ do
   unknown4 <- BitGet.label "unknown4" $ Vector.bitGet version
   unknown5 <- BitGet.label "unknown5" BitGet.bool
   unknown6 <- BitGet.label "unknown6" BitGet.bool
-  pure DamageState
-    { unknown1
-    , unknown2
-    , unknown3
-    , unknown4
-    , unknown5
-    , unknown6
-    }
+  pure
+    DamageState
+      { unknown1,
+        unknown2,
+        unknown3,
+        unknown4,
+        unknown5,
+        unknown6
+      }

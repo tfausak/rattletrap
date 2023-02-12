@@ -9,13 +9,13 @@ import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
 
 data CamSettings = CamSettings
-  { fov :: F32.F32
-  , height :: F32.F32
-  , angle :: F32.F32
-  , distance :: F32.F32
-  , stiffness :: F32.F32
-  , swivelSpeed :: F32.F32
-  , transitionSpeed :: Maybe F32.F32
+  { fov :: F32.F32,
+    height :: F32.F32,
+    angle :: F32.F32,
+    distance :: F32.F32,
+    stiffness :: F32.F32,
+    swivelSpeed :: F32.F32,
+    transitionSpeed :: Maybe F32.F32
   }
   deriving (Eq, Show)
 
@@ -28,39 +28,43 @@ instance Json.FromJSON CamSettings where
     stiffness <- Json.required object "stiffness"
     swivelSpeed <- Json.required object "swivel_speed"
     transitionSpeed <- Json.optional object "transition_speed"
-    pure CamSettings
-      { fov
-      , height
-      , angle
-      , distance
-      , stiffness
-      , swivelSpeed
-      , transitionSpeed
-      }
+    pure
+      CamSettings
+        { fov,
+          height,
+          angle,
+          distance,
+          stiffness,
+          swivelSpeed,
+          transitionSpeed
+        }
 
 instance Json.ToJSON CamSettings where
-  toJSON x = Json.object
-    [ Json.pair "fov" $ fov x
-    , Json.pair "height" $ height x
-    , Json.pair "angle" $ angle x
-    , Json.pair "distance" $ distance x
-    , Json.pair "stiffness" $ stiffness x
-    , Json.pair "swivel_speed" $ swivelSpeed x
-    , Json.pair "transition_speed" $ transitionSpeed x
-    ]
+  toJSON x =
+    Json.object
+      [ Json.pair "fov" $ fov x,
+        Json.pair "height" $ height x,
+        Json.pair "angle" $ angle x,
+        Json.pair "distance" $ distance x,
+        Json.pair "stiffness" $ stiffness x,
+        Json.pair "swivel_speed" $ swivelSpeed x,
+        Json.pair "transition_speed" $ transitionSpeed x
+      ]
 
 schema :: Schema.Schema
-schema = Schema.named "attribute-cam-settings" $ Schema.object
-  [ (Json.pair "fov" $ Schema.ref F32.schema, True)
-  , (Json.pair "height" $ Schema.ref F32.schema, True)
-  , (Json.pair "angle" $ Schema.ref F32.schema, True)
-  , (Json.pair "distance" $ Schema.ref F32.schema, True)
-  , (Json.pair "stiffness" $ Schema.ref F32.schema, True)
-  , (Json.pair "swivel_speed" $ Schema.ref F32.schema, True)
-  , ( Json.pair "transition_speed" . Schema.json $ Schema.maybe F32.schema
-    , False
-    )
-  ]
+schema =
+  Schema.named "attribute-cam-settings" $
+    Schema.object
+      [ (Json.pair "fov" $ Schema.ref F32.schema, True),
+        (Json.pair "height" $ Schema.ref F32.schema, True),
+        (Json.pair "angle" $ Schema.ref F32.schema, True),
+        (Json.pair "distance" $ Schema.ref F32.schema, True),
+        (Json.pair "stiffness" $ Schema.ref F32.schema, True),
+        (Json.pair "swivel_speed" $ Schema.ref F32.schema, True),
+        ( Json.pair "transition_speed" . Schema.json $ Schema.maybe F32.schema,
+          False
+        )
+      ]
 
 bitPut :: CamSettings -> BitPut.BitPut
 bitPut camSettingsAttribute =
@@ -80,14 +84,16 @@ bitGet version = BitGet.label "CamSettings" $ do
   distance <- BitGet.label "distance" F32.bitGet
   stiffness <- BitGet.label "stiffness" F32.bitGet
   swivelSpeed <- BitGet.label "swivelSpeed" F32.bitGet
-  transitionSpeed <- BitGet.label "transitionSpeed"
-    $ Monad.whenMaybe (Version.atLeast 868 20 0 version) F32.bitGet
-  pure CamSettings
-    { fov
-    , height
-    , angle
-    , distance
-    , stiffness
-    , swivelSpeed
-    , transitionSpeed
-    }
+  transitionSpeed <-
+    BitGet.label "transitionSpeed" $
+      Monad.whenMaybe (Version.atLeast 868 20 0 version) F32.bitGet
+  pure
+    CamSettings
+      { fov,
+        height,
+        angle,
+        distance,
+        stiffness,
+        swivelSpeed,
+        transitionSpeed
+      }
