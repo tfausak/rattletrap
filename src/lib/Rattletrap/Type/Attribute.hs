@@ -15,7 +15,6 @@ import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
-import Prelude hiding (id)
 
 data Attribute = Attribute
   { id :: CompressedWord.CompressedWord,
@@ -28,15 +27,15 @@ data Attribute = Attribute
 
 instance Json.FromJSON Attribute where
   parseJSON = Json.withObject "Attribute" $ \object -> do
-    id <- Json.required object "id"
+    id_ <- Json.required object "id"
     name <- Json.required object "name"
     value <- Json.required object "value"
-    pure Attribute {id, name, value}
+    pure Attribute {Rattletrap.Type.Attribute.id = id_, name, value}
 
 instance Json.ToJSON Attribute where
   toJSON x =
     Json.object
-      [ Json.pair "id" $ id x,
+      [ Json.pair "id" $ Rattletrap.Type.Attribute.id x,
         Json.pair "name" $ name x,
         Json.pair "value" $ value x
       ]
@@ -66,8 +65,8 @@ bitGet version buildVersion classes actors actor =
   BitGet.label "Attribute" $ do
     attributes <- lookupAttributeMap classes actors actor
     limit <- lookupAttributeIdLimit attributes actor
-    id <- BitGet.label "id" $ CompressedWord.bitGet limit
-    name <- lookupAttributeName classes attributes id
+    id_ <- BitGet.label "id" $ CompressedWord.bitGet limit
+    name <- lookupAttributeName classes attributes id_
     value <-
       BitGet.label "value" $
         AttributeValue.bitGet
@@ -75,7 +74,7 @@ bitGet version buildVersion classes actors actor =
           buildVersion
           (ClassAttributeMap.objectMap classes)
           name
-    pure Attribute {id, name, value}
+    pure Attribute {Rattletrap.Type.Attribute.id = id_, name, value}
 
 lookupAttributeMap ::
   ClassAttributeMap.ClassAttributeMap ->
