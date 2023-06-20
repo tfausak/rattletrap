@@ -22,7 +22,7 @@
           "id": "haskell",
           "uses": "haskell/actions/setup@v2",
           "with": {
-            "cabal-version": "3.8.1.0",
+            "cabal-version": "3.10.1.0",
             "ghc-version": "${{ matrix.ghc }}"
           }
         },
@@ -100,28 +100,18 @@
         "matrix": {
           "include": [
             {
-              "ghc": "9.4.4",
+              "ghc": "9.6.2",
               "platform": "macos",
               "version": "12"
             },
             {
-              "ghc": "9.2.7",
-              "platform": "ubuntu",
-              "version": "22.04"
-            },
-            {
-              "ghc": "9.4.4",
-              "platform": "ubuntu",
-              "version": "22.04"
-            },
-            {
-              "ghc": "9.6.1",
+              "ghc": "9.6.2",
               "platform": "ubuntu",
               "version": "22.04"
             },
             {
               "extension": ".exe",
-              "ghc": "9.4.4",
+              "ghc": "9.6.2",
               "platform": "windows",
               "version": "2022"
             }
@@ -185,39 +175,39 @@
           "uses": "svenstaro/upload-release-action@v2",
           "with": {
             "asset_name": "rattletrap-${{ github.event.release.tag_name }}-ubuntu",
-            "file": "artifact/ubuntu-9.4.4/rattletrap"
+            "file": "artifact/ubuntu-9.6.2/rattletrap"
           }
         },
         {
           "uses": "svenstaro/upload-release-action@v2",
           "with": {
             "asset_name": "rattletrap-${{ github.event.release.tag_name }}-macos",
-            "file": "artifact/macos-9.4.4/rattletrap"
+            "file": "artifact/macos-9.6.2/rattletrap"
           }
         },
         {
           "uses": "svenstaro/upload-release-action@v2",
           "with": {
             "asset_name": "rattletrap-${{ github.event.release.tag_name }}-windows.exe",
-            "file": "artifact/windows-9.4.4/rattletrap.exe"
+            "file": "artifact/windows-9.6.2/rattletrap.exe"
           }
         },
         {
           "uses": "svenstaro/upload-release-action@v2",
           "with": {
             "asset_name": "rattletrap-${{ github.event.release.tag_name }}.tar.gz",
-            "file": "artifact/ubuntu-9.4.4/rattletrap-${{ github.event.release.tag_name }}.tar.gz"
+            "file": "artifact/ubuntu-9.6.2/rattletrap-${{ github.event.release.tag_name }}.tar.gz"
           }
         },
         {
           "uses": "svenstaro/upload-release-action@v2",
           "with": {
             "asset_name": "rattletrap-${{ github.event.release.tag_name }}-schema.json",
-            "file": "artifact/ubuntu-9.4.4/schema.json"
+            "file": "artifact/ubuntu-9.6.2/schema.json"
           }
         },
         {
-          "run": "cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' artifact/ubuntu-9.4.4/rattletrap-${{ github.event.release.tag_name }}.tar.gz"
+          "run": "cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' artifact/ubuntu-9.6.2/rattletrap-${{ github.event.release.tag_name }}.tar.gz"
         }
       ]
     }

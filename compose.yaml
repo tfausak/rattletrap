@@ -1,21 +1,15 @@
 {
   "services": {
     "devcontainer": {
-      "command": "sh -c 'while sleep 1; do :; done'",
-      "image": "public.ecr.aws/acilearning/haskell:9.4.4",
+      "command": "sh -exc 'while sleep 1m; do :; done'",
+      "image": "public.ecr.aws/acilearning/haskell:9.6.1",
       "init": true,
       "volumes": [
         ".:/workspaces/rattletrap",
-        "cabal:/home/haskell/.cabal",
-        "cabal-store:/cabal-store"
+        "./volumes/cabal/cache:/home/vscode/.cache/cabal",
+        "./volumes/cabal/state:/home/vscode/.local/state/cabal"
       ],
       "working_dir": "/workspaces/rattletrap"
-    }
-  },
-  "volumes": {
-    "cabal": null,
-    "cabal-store": {
-      "external": true
     }
   }
 }
