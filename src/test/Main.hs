@@ -67,6 +67,7 @@ replays =
     ("1ae4", "a game time"), -- https://github.com/tfausak/rattletrap/commit/d08176e
     ("1bc2", "no padding after the frames"), -- https://github.com/tfausak/rattletrap/commit/c9a2dd8
     ("1d1d", "a camera pitch"), -- https://github.com/tfausak/rattletrap/commit/ee7afa0
+    ("1d25", "bumblebee"), -- https://github.com/tfausak/rattletrap/issues/280
     ("1ec9", "a V1.63 match"), -- https://github.com/tfausak/rattletrap/pull/132
     ("1ef9", "a private hoops match"), -- https://github.com/tfausak/rattletrap/commit/5570839
     ("1f37", "splitscreen players"), -- https://github.com/tfausak/rattletrap/commit/c4d2f32

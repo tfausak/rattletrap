@@ -452,6 +452,7 @@ attributeTypes =
         ("TAGame.Team_TA:GameEvent", AttributeType.FlaggedInt),
         ("TAGame.Team_TA:LogoData", AttributeType.FlaggedInt),
         ("TAGame.Vehicle_TA:bDriving", AttributeType.Boolean),
+        ("TAGame.Vehicle_TA:bHasPostMatchCelebration", AttributeType.Boolean),
         ("TAGame.Vehicle_TA:bPodiumMode", AttributeType.Boolean),
         ("TAGame.Vehicle_TA:bReplicatedHandbrake", AttributeType.Boolean),
         ("TAGame.Vehicle_TA:ReplicatedSteer", AttributeType.Byte),

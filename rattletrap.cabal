@@ -22,7 +22,7 @@ flag pedantic
   manual: True
 
 common library
-  build-depends: base ^>= 4.18.0.0
+  build-depends: base >= 4.16 && < 4.19
   default-extensions: NamedFieldPuns
   default-language: Haskell2010
   ghc-options:
@@ -54,15 +54,15 @@ library
 
   autogen-modules: Paths_rattletrap
   build-depends:
-    , aeson ^>= 2.1.2.1
-    , aeson-pretty ^>= 0.8.9
-    , array ^>= 0.5.5.0
-    , bytestring ^>= 0.11.4.0
-    , containers ^>= 0.6.7
-    , filepath ^>= 1.4.100.1
-    , http-client ^>= 0.7.13.1
-    , http-client-tls ^>= 0.3.6.2
-    , text ^>= 2.0.2
+    , aeson >= 2.0.3 && < 2.2
+    , aeson-pretty >= 0.8.9 && < 0.9
+    , array >= 0.5.4 && < 0.6
+    , bytestring >= 0.11.3 && < 0.12
+    , containers >= 0.6.5 && < 0.7
+    , filepath >= 1.4.2 && < 1.5
+    , http-client >= 0.7.13 && < 0.8
+    , http-client-tls >= 0.3.6 && < 0.4
+    , text >= 1.2.5 && < 1.3 || >= 2.0 && < 2.1
   exposed-modules:
     Paths_rattletrap
     Rattletrap
