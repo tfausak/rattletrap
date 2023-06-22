@@ -10,16 +10,16 @@ main = do
   Process.callCommand
     . unwords
     $ "npx"
-    : "ajv"
-    : "-s"
-    : FilePath.combine output schema
-    : concatMap
-      ( \entry ->
-          if isJson entry && not (isSchema entry)
-            then ["-d", FilePath.combine output entry]
-            else []
-      )
-      (List.sort entries)
+      : "ajv"
+      : "-s"
+      : FilePath.combine output schema
+      : concatMap
+        ( \entry ->
+            if isJson entry && not (isSchema entry)
+              then ["-d", FilePath.combine output entry]
+              else []
+        )
+        (List.sort entries)
 
 output :: FilePath
 output = "output"
