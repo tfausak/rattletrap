@@ -50,7 +50,7 @@ encode input output =
   Rattletrap.rattletrap "" ["--input", input, "--output", output]
 
 replays :: [(String, String)]
-replays = filter ((==) "0ae9" . fst)
+replays =
   [ ("0008", "a flip time"), -- https://github.com/tfausak/rattletrap/commit/ee7afa0
     ("000b", "nintendo switch"), -- https://github.com/tfausak/rattletrap/pull/60
     ("0121", "RLCS 2"), -- https://github.com/nickbabcock/boxcars/pull/120
