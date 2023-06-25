@@ -50,13 +50,14 @@ encode input output =
   Rattletrap.rattletrap "" ["--input", input, "--output", output]
 
 replays :: [(String, String)]
-replays =
+replays = filter ((==) "0ae9" . fst)
   [ ("0008", "a flip time"), -- https://github.com/tfausak/rattletrap/commit/ee7afa0
     ("000b", "nintendo switch"), -- https://github.com/tfausak/rattletrap/pull/60
     ("0121", "RLCS 2"), -- https://github.com/nickbabcock/boxcars/pull/120
     ("0416", "v1.78 demolition"), -- https://github.com/tfausak/rattletrap/pull/164
     ("07e9", "a game mode before Neo Tokyo"), -- https://github.com/tfausak/rattletrap/commit/b806f9b
     ("0ad2", "some Latin-1 text"), -- https://github.com/tfausak/rattletrap/commit/13a8b2d
+    ("0ae9", "fte"), -- https://github.com/jjbott/RocketLeagueReplayParser/issues/50
     ("0ca5", "with QQ remote ID"), -- https://github.com/nickbabcock/boxcars/pull/69
     ("0e76", "v1.95 rumble"), -- https://github.com/tfausak/rattletrap/pull/237
     ("1205", "rumble mode"), -- https://github.com/tfausak/rattletrap/commit/5256500
