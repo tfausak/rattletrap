@@ -72,6 +72,7 @@ replays =
     ("1ec9", "a V1.63 match"), -- https://github.com/tfausak/rattletrap/pull/132
     ("1ef9", "a private hoops match"), -- https://github.com/tfausak/rattletrap/commit/5570839
     ("1f37", "splitscreen players"), -- https://github.com/tfausak/rattletrap/commit/c4d2f32
+    ("204c", "dropshot"), -- https://github.com/nickbabcock/boxcars/issues/138
     ("2114", "a match save"), -- https://github.com/tfausak/rattletrap/commit/ee7afa0
     ("21a8", "v1.66"), -- https://github.com/tfausak/rattletrap/pull/142
     ("2266", "dropshot"), -- https://github.com/tfausak/rattletrap/pull/36
