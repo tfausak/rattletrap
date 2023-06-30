@@ -1,1 +1,2 @@
 packages: .
+constraints: aeson >= 2.2
