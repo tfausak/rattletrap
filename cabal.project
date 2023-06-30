@@ -1,2 +1,8 @@
 packages: .
 constraints: aeson >= 2.2
+
+-- https://github.com/informatikr/aeson-pretty/pull/43
+source-repository-package
+  location: https://github.com/9999years/aeson-pretty
+  tag: e7df125ea0fb55fcc7ac5d40b2cdb7e8d944d44b
+  type: git
