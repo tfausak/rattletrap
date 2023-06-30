@@ -54,7 +54,7 @@ library
 
   autogen-modules: Paths_rattletrap
   build-depends:
-    , aeson >= 2.0.3 && < 2.2
+    , aeson >= 2.0.3 && < 2.3
     , aeson-pretty >= 0.8.9 && < 0.9
     , array >= 0.5.4 && < 0.6
     , bytestring >= 0.11.3 && < 0.12
