@@ -33,7 +33,7 @@ optional ::
   Aeson.Parser (Maybe value)
 optional object key = object Aeson..:? Key.fromString key
 
-pair :: (Aeson.ToJSON value, Aeson.KeyValue pair) => String -> value -> pair
+pair :: (Aeson.ToJSON value, Aeson.KeyValue e pair) => String -> value -> pair
 pair key value = Key.fromString key Aeson..= value
 
 decode :: (Aeson.FromJSON a) => ByteString.ByteString -> Either String a
