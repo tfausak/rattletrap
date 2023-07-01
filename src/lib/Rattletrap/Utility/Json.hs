@@ -1,4 +1,6 @@
-{- hlint ignore "Avoid restricted flags" -}
+{- hlint ignore "Avoid restricted extensions" -}
+{-# LANGUAGE CPP #-}
+
 module Rattletrap.Utility.Json
   ( module Rattletrap.Utility.Json,
     Aeson.FromJSON (parseJSON),
@@ -33,7 +35,11 @@ optional ::
   Aeson.Parser (Maybe value)
 optional object key = object Aeson..:? Key.fromString key
 
+# if MIN_VERSION_aeson(2, 2, 0)
+pair :: (Aeson.ToJSON value, Aeson.KeyValue e pair) => String -> value -> pair
+# else
 pair :: (Aeson.ToJSON value, Aeson.KeyValue pair) => String -> value -> pair
+# endif
 pair key value = Key.fromString key Aeson..= value
 
 decode :: (Aeson.FromJSON a) => ByteString.ByteString -> Either String a
