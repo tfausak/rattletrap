@@ -5,11 +5,17 @@
       "image": "public.ecr.aws/acilearning/haskell:9.6.2",
       "init": true,
       "volumes": [
-        "..:/workspaces/rattletrap",
-        "./volumes/cabal/cache:/home/vscode/.cache/cabal",
-        "./volumes/cabal/state:/home/vscode/.local/state/cabal"
+        "..:/workspace",
+        "cabal-cache:/home/vscode/.cache/cabal",
+        "cabal-state:/home/vscode/.local/state/cabal"
       ],
-      "working_dir": "/workspaces/rattletrap"
+      "working_dir": "/workspace"
+    }
+  },
+  "volumes": {
+    "cabal-cache": null,
+    "cabal-state": {
+      "external": true
     }
   }
 }
