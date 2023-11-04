@@ -1,8 +1,8 @@
 {
   "services": {
     "devcontainer": {
-      "command": "sh -exc 'while sleep 1m; do :; done'",
-      "image": "public.ecr.aws/acilearning/haskell:9.6.1",
+      "command": "sh -exc 'sleep infinity'",
+      "image": "public.ecr.aws/acilearning/haskell:9.6.2",
       "init": true,
       "volumes": [
         "..:/workspaces/rattletrap",
