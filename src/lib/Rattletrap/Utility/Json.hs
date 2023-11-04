@@ -36,9 +36,9 @@ optional ::
 optional object key = object Aeson..:? Key.fromString key
 
 # if MIN_VERSION_aeson(2, 2, 0)
-pair :: (Aeson.ToJSON value, Aeson.KeyValue e pair) => String -> value -> pair
+pair :: (Aeson.ToJSON value, Aeson.KeyValue e p) => String -> value -> p
 # else
-pair :: (Aeson.ToJSON value, Aeson.KeyValue pair) => String -> value -> pair
+pair :: (Aeson.ToJSON value, Aeson.KeyValue p) => String -> value -> p
 # endif
 pair key value = Key.fromString key Aeson..= value
 
