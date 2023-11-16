@@ -1,7 +1,13 @@
+{-# LANGUAGE CPP #-}
+
 module Rattletrap.Type.ClassAttributeMap where
 
 import qualified Data.IntMap as IntMap
+#if MIN_VERSION_base(4,20,0)
+import qualified Data.List as List hiding (List)
+#else
 import qualified Data.List as List
+#endif
 import qualified Data.Map as Map
 import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
