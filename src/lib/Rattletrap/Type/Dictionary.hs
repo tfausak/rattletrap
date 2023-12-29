@@ -6,12 +6,12 @@ import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
-import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.List as RList
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Utility.Json as Json
 
 data Dictionary a = Dictionary
-  { elements :: List.List (Str.Str, a),
+  { elements :: RList.List (Str.Str, a),
     lastKey :: Str.Str
   }
   deriving (Eq, Show)
@@ -27,9 +27,9 @@ instance (Json.FromJSON a) => Json.FromJSON (Dictionary a) where
           Int ->
           [(Int, (Str.Str, a))] ->
           [Text.Text] ->
-          m (List.List (Str.Str, a))
+          m (RList.List (Str.Str, a))
         build m i xs ks = case ks of
-          [] -> pure . List.fromList . reverse $ fmap snd xs
+          [] -> pure . RList.fromList . reverse $ fmap snd xs
           k : t -> case Map.lookup k m of
             Nothing -> fail $ "missing required key " <> show k
             Just v -> build m (i + 1) ((i, (Str.fromText k, v)) : xs) t
@@ -39,12 +39,12 @@ instance (Json.FromJSON a) => Json.FromJSON (Dictionary a) where
 instance (Json.ToJSON a) => Json.ToJSON (Dictionary a) where
   toJSON x =
     Json.object
-      [ Json.pair "keys" . fmap fst . List.toList $ elements x,
+      [ Json.pair "keys" . fmap fst . RList.toList $ elements x,
         Json.pair "last_key" $ lastKey x,
         Json.pair "value"
           . Map.fromList
           . fmap (Bifunctor.first Str.toText)
-          . List.toList
+          . RList.toList
           $ elements x
       ]
 
@@ -64,11 +64,11 @@ schema s =
       ]
 
 lookup :: Str.Str -> Dictionary a -> Maybe a
-lookup k = Prelude.lookup k . List.toList . elements
+lookup k = Prelude.lookup k . RList.toList . elements
 
 bytePut :: (a -> BytePut.BytePut) -> Dictionary a -> BytePut.BytePut
 bytePut f x =
-  foldMap (\(k, v) -> Str.bytePut k <> f v) (List.toList $ elements x)
+  foldMap (\(k, v) -> Str.bytePut k <> f v) (RList.toList $ elements x)
     <> Str.bytePut (lastKey x)
 
 byteGet :: ByteGet.ByteGet a -> ByteGet.ByteGet (Dictionary a)
@@ -85,7 +85,7 @@ byteGetWith i xs f = do
     then
       pure
         Dictionary
-          { elements = List.fromList . reverse $ fmap snd xs,
+          { elements = RList.fromList . reverse $ fmap snd xs,
             lastKey = k
           }
     else do
