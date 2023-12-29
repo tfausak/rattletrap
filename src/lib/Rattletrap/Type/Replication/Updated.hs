@@ -7,7 +7,7 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute as Attribute
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
-import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.List as RList
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
@@ -15,7 +15,7 @@ import qualified Rattletrap.Utility.Json as Json
 import qualified Rattletrap.Utility.Monad as Monad
 
 newtype Updated = Updated
-  { attributes :: List.List Attribute.Attribute
+  { attributes :: RList.List Attribute.Attribute
   }
   deriving (Eq, Show)
 
@@ -28,14 +28,14 @@ instance Json.ToJSON Updated where
 schema :: Schema.Schema
 schema =
   Schema.named "replication-updated" . Schema.json $
-    List.schema
+    RList.schema
       Attribute.schema
 
 bitPut :: Updated -> BitPut.BitPut
 bitPut x =
   foldMap
     (\y -> BitPut.bool True <> Attribute.bitPut y)
-    (List.toList $ attributes x)
+    (RList.toList $ attributes x)
     <> BitPut.bool False
 
 bitGet ::
@@ -46,7 +46,7 @@ bitGet ::
   CompressedWord.CompressedWord ->
   BitGet.BitGet Updated
 bitGet version buildVersion classes actors actor =
-  BitGet.label "Updated" . fmap Updated . List.untilM $ do
+  BitGet.label "Updated" . fmap Updated . RList.untilM $ do
     p <- BitGet.bool
     Monad.whenMaybe p $
       Attribute.bitGet version buildVersion classes actors actor

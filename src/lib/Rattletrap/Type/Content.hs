@@ -13,7 +13,7 @@ import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.ClassMapping as ClassMapping
 import qualified Rattletrap.Type.Frame as Frame
 import qualified Rattletrap.Type.Keyframe as Keyframe
-import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.List as RList
 import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Str as Str
@@ -23,40 +23,40 @@ import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Bytes as Bytes
 import qualified Rattletrap.Utility.Json as Json
 
-type Content = ContentWith (List.List Frame.Frame)
+type Content = ContentWith (RList.List Frame.Frame)
 
 -- | Contains low-level game data about a 'Rattletrap.Replay.Replay'.
 data ContentWith frames = Content
   { -- | This typically only has one element, like @stadium_oob_audio_map@.
-    levels :: List.List Str.Str,
+    levels :: RList.List Str.Str,
     -- | A list of which frames are key frames. Although they aren't necessary
     -- for replay, key frames are frames that replicate every actor. They
     -- typically happen once every 10 seconds.
-    keyframes :: List.List Keyframe.Keyframe,
+    keyframes :: RList.List Keyframe.Keyframe,
     -- | The size of the stream in bytes. This is only really necessary because
     -- the stream has some arbitrary amount of padding at the end.
     streamSize :: U32.U32,
     -- | The actual game data. This is where all the interesting information is.
     frames :: frames,
     -- | Debugging messages. In newer replays, this is always empty.
-    messages :: List.List Message.Message,
+    messages :: RList.List Message.Message,
     -- | Tick marks shown on the scrubber when watching a replay.
-    marks :: List.List Mark.Mark,
+    marks :: RList.List Mark.Mark,
     -- | A list of @.upk@ files to load, like
     -- @..\\..\\TAGame\\CookedPCConsole\\Stadium_P.upk@.
-    packages :: List.List Str.Str,
+    packages :: RList.List Str.Str,
     -- | Objects in the stream. Used for the
     -- 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-    objects :: List.List Str.Str,
+    objects :: RList.List Str.Str,
     -- | It's not clear what these are used for. This list is usually not empty,
     -- but appears unused otherwise.
-    names :: List.List Str.Str,
+    names :: RList.List Str.Str,
     -- | A mapping between classes and their ID in the stream. Used for the
     -- 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-    classMappings :: List.List ClassMapping.ClassMapping,
+    classMappings :: RList.List ClassMapping.ClassMapping,
     -- | A list of classes along with their parent classes and attributes. Used
     -- for the 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-    caches :: List.List Cache.Cache,
+    caches :: RList.List Cache.Cache,
     unknown :: [Word.Word8]
   }
   deriving (Eq, Show)
@@ -112,53 +112,53 @@ schema :: Schema.Schema -> Schema.Schema
 schema s =
   Schema.named "content" $
     Schema.object
-      [ (Json.pair "levels" . Schema.json $ List.schema Str.schema, True),
-        (Json.pair "key_frames" . Schema.json $ List.schema Keyframe.schema, True),
+      [ (Json.pair "levels" . Schema.json $ RList.schema Str.schema, True),
+        (Json.pair "key_frames" . Schema.json $ RList.schema Keyframe.schema, True),
         (Json.pair "stream_size" $ Schema.ref U32.schema, True),
         (Json.pair "frames" $ Schema.json s, True),
-        (Json.pair "messages" . Schema.json $ List.schema Message.schema, True),
-        (Json.pair "marks" . Schema.json $ List.schema Mark.schema, True),
-        (Json.pair "packages" . Schema.json $ List.schema Str.schema, True),
-        (Json.pair "objects" . Schema.json $ List.schema Str.schema, True),
-        (Json.pair "names" . Schema.json $ List.schema Str.schema, True),
+        (Json.pair "messages" . Schema.json $ RList.schema Message.schema, True),
+        (Json.pair "marks" . Schema.json $ RList.schema Mark.schema, True),
+        (Json.pair "packages" . Schema.json $ RList.schema Str.schema, True),
+        (Json.pair "objects" . Schema.json $ RList.schema Str.schema, True),
+        (Json.pair "names" . Schema.json $ RList.schema Str.schema, True),
         ( Json.pair "class_mappings" . Schema.json $
-            List.schema
+            RList.schema
               ClassMapping.schema,
           True
         ),
-        (Json.pair "caches" . Schema.json $ List.schema Cache.schema, True),
+        (Json.pair "caches" . Schema.json $ RList.schema Cache.schema, True),
         (Json.pair "unknown" . Schema.json $ Schema.array U8.schema, True)
       ]
 
 empty :: Content
 empty =
   Content
-    { levels = List.empty,
-      keyframes = List.empty,
+    { levels = RList.empty,
+      keyframes = RList.empty,
       streamSize = U32.fromWord32 0,
-      frames = List.empty,
-      messages = List.empty,
-      marks = List.empty,
-      packages = List.empty,
-      objects = List.empty,
-      names = List.empty,
-      classMappings = List.empty,
-      caches = List.empty,
+      frames = RList.empty,
+      messages = RList.empty,
+      marks = RList.empty,
+      packages = RList.empty,
+      objects = RList.empty,
+      names = RList.empty,
+      classMappings = RList.empty,
+      caches = RList.empty,
       unknown = []
     }
 
 bytePut :: Content -> BytePut.BytePut
 bytePut x =
-  List.bytePut Str.bytePut (levels x)
-    <> List.bytePut Keyframe.bytePut (keyframes x)
+  RList.bytePut Str.bytePut (levels x)
+    <> RList.bytePut Keyframe.bytePut (keyframes x)
     <> putFrames x
-    <> List.bytePut Message.bytePut (messages x)
-    <> List.bytePut Mark.bytePut (marks x)
-    <> List.bytePut Str.bytePut (packages x)
-    <> List.bytePut Str.bytePut (objects x)
-    <> List.bytePut Str.bytePut (names x)
-    <> List.bytePut ClassMapping.bytePut (classMappings x)
-    <> List.bytePut Cache.bytePut (caches x)
+    <> RList.bytePut Message.bytePut (messages x)
+    <> RList.bytePut Mark.bytePut (marks x)
+    <> RList.bytePut Str.bytePut (packages x)
+    <> RList.bytePut Str.bytePut (objects x)
+    <> RList.bytePut Str.bytePut (names x)
+    <> RList.bytePut ClassMapping.bytePut (classMappings x)
+    <> RList.bytePut Cache.bytePut (caches x)
     <> foldMap BytePut.word8 (unknown x)
 
 putFrames :: Content -> BytePut.BytePut
@@ -199,22 +199,22 @@ byteGet ::
   ByteGet.ByteGet Content
 byteGet matchType version numFrames maxChannels buildVersion =
   ByteGet.label "Content" $ do
-    levels <- ByteGet.label "levels" $ List.byteGet Str.byteGet
-    keyframes <- ByteGet.label "keyframes" $ List.byteGet Keyframe.byteGet
+    levels <- ByteGet.label "levels" $ RList.byteGet Str.byteGet
+    keyframes <- ByteGet.label "keyframes" $ RList.byteGet Keyframe.byteGet
     streamSize <- ByteGet.label "streamSize" U32.byteGet
     stream <-
       ByteGet.label "stream" . ByteGet.byteString . fromIntegral $
         U32.toWord32
           streamSize
-    messages <- ByteGet.label "messages" $ List.byteGet Message.byteGet
-    marks <- ByteGet.label "marks" $ List.byteGet Mark.byteGet
-    packages <- ByteGet.label "packages" $ List.byteGet Str.byteGet
-    objects <- ByteGet.label "objects" $ List.byteGet Str.byteGet
-    names <- ByteGet.label "names" $ List.byteGet Str.byteGet
+    messages <- ByteGet.label "messages" $ RList.byteGet Message.byteGet
+    marks <- ByteGet.label "marks" $ RList.byteGet Mark.byteGet
+    packages <- ByteGet.label "packages" $ RList.byteGet Str.byteGet
+    objects <- ByteGet.label "objects" $ RList.byteGet Str.byteGet
+    names <- ByteGet.label "names" $ RList.byteGet Str.byteGet
     classMappings <-
       ByteGet.label "classMappings" $
-        List.byteGet ClassMapping.byteGet
-    caches <- ByteGet.label "caches" $ List.byteGet Cache.byteGet
+        RList.byteGet ClassMapping.byteGet
+    caches <- ByteGet.label "caches" $ RList.byteGet Cache.byteGet
     let classAttributeMap =
           ClassAttributeMap.make objects classMappings caches names
         getFrames =

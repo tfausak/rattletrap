@@ -12,7 +12,7 @@ import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
 import qualified Rattletrap.Type.Cache as Cache
 import qualified Rattletrap.Type.ClassMapping as ClassMapping
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
-import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.List as RList
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 
@@ -48,13 +48,13 @@ lookupR k = Map.lookup k . snd
 -- 'Rattletrap.Content.Content'.
 make ::
   -- | From 'Rattletrap.Content.objects'.
-  List.List Str.Str ->
+  RList.List Str.Str ->
   -- | From 'Rattletrap.Content.classMappings'.
-  List.List ClassMapping.ClassMapping ->
+  RList.List ClassMapping.ClassMapping ->
   -- | From 'Rattletrap.Content.caches'.
-  List.List Cache.Cache ->
+  RList.List Cache.Cache ->
   -- | From 'Rattletrap.Content.names'.
-  List.List Str.Str ->
+  RList.List Str.Str ->
   ClassAttributeMap
 make objects classMappings caches names =
   let objectMap_ = makeObjectMap objects
@@ -88,9 +88,9 @@ make objects classMappings caches names =
       nameMap_ = makeNameMap names
    in ClassAttributeMap objectMap_ objectClassMap_ value_ nameMap_
 
-makeNameMap :: List.List Str.Str -> IntMap.IntMap Str.Str
+makeNameMap :: RList.List Str.Str -> IntMap.IntMap Str.Str
 makeNameMap names =
-  IntMap.fromDistinctAscList (zip [0 ..] (List.toList names))
+  IntMap.fromDistinctAscList (zip [0 ..] (RList.toList names))
 
 getName :: IntMap.IntMap Str.Str -> U32.U32 -> Maybe Str.Str
 getName nameMap_ nameIndex =
@@ -125,7 +125,7 @@ getClassId objectMap_ classMap objectId = do
 
 makeClassCache ::
   Bimap U32.U32 Str.Str ->
-  List.List Cache.Cache ->
+  RList.List Cache.Cache ->
   [(Maybe Str.Str, U32.U32, U32.U32, U32.U32)]
 makeClassCache classMap caches =
   fmap
@@ -137,20 +137,20 @@ makeClassCache classMap caches =
               Cache.parentCacheId cache
             )
     )
-    (List.toList caches)
+    (RList.toList caches)
 
-makeClassMap :: List.List ClassMapping.ClassMapping -> Bimap U32.U32 Str.Str
+makeClassMap :: RList.List ClassMapping.ClassMapping -> Bimap U32.U32 Str.Str
 makeClassMap classMappings =
   bimap
     ( fmap
         ( \classMapping ->
             (ClassMapping.streamId classMapping, ClassMapping.name classMapping)
         )
-        (List.toList classMappings)
+        (RList.toList classMappings)
     )
 
 makeAttributeMap ::
-  List.List Cache.Cache -> Map.Map U32.U32 (Map.Map U32.U32 U32.U32)
+  RList.List Cache.Cache -> Map.Map U32.U32 (Map.Map U32.U32 U32.U32)
 makeAttributeMap caches =
   Map.fromList
     ( fmap
@@ -163,11 +163,11 @@ makeAttributeMap caches =
                           AttributeMapping.objectId attributeMapping
                         )
                     )
-                    (List.toList (Cache.attributeMappings cache))
+                    (RList.toList (Cache.attributeMappings cache))
                 )
             )
         )
-        (List.toList caches)
+        (RList.toList caches)
     )
 
 makeShallowParentMap ::
@@ -248,9 +248,9 @@ getParentClassByName className parentCacheId xs =
             )
         )
 
-makeObjectMap :: List.List Str.Str -> Map.Map U32.U32 Str.Str
+makeObjectMap :: RList.List Str.Str -> Map.Map U32.U32 Str.Str
 makeObjectMap objects =
-  Map.fromAscList (zip (fmap U32.fromWord32 [0 ..]) (List.toList objects))
+  Map.fromAscList (zip (fmap U32.fromWord32 [0 ..]) (RList.toList objects))
 
 getObjectName :: Map.Map U32.U32 Str.Str -> U32.U32 -> Maybe Str.Str
 getObjectName objectMap_ objectId = Map.lookup objectId objectMap_

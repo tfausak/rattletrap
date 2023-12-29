@@ -7,7 +7,7 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.F32 as F32
-import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.List as RList
 import qualified Rattletrap.Type.Replication as Replication
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
@@ -20,7 +20,7 @@ data Frame = Frame
     -- | Time in seconds since the last frame. Usually about 0.03 since there
     -- are 30 frames per second.
     delta :: F32.F32,
-    replications :: List.List Replication.Replication
+    replications :: RList.List Replication.Replication
   }
   deriving (Eq, Show)
 
@@ -45,13 +45,13 @@ schema =
     Schema.object
       [ (Json.pair "time" $ Schema.ref F32.schema, True),
         (Json.pair "delta" $ Schema.ref F32.schema, True),
-        ( Json.pair "replications" . Schema.json $ List.schema Replication.schema,
+        ( Json.pair "replications" . Schema.json $ RList.schema Replication.schema,
           True
         )
       ]
 
-putFrames :: List.List Frame -> BitPut.BitPut
-putFrames = foldMap bitPut . List.toList
+putFrames :: RList.List Frame -> BitPut.BitPut
+putFrames = foldMap bitPut . RList.toList
 
 bitPut :: Frame -> BitPut.BitPut
 bitPut frame =
@@ -66,7 +66,7 @@ decodeFramesBits ::
   Int ->
   Word ->
   ClassAttributeMap.ClassAttributeMap ->
-  BitGet.BitGet (List.List Frame)
+  BitGet.BitGet (RList.List Frame)
 decodeFramesBits matchType version buildVersion count limit classes =
   fmap snd $
     decodeFramesBitsWith
@@ -94,11 +94,11 @@ decodeFramesBitsWith ::
     ( Map.Map
         CompressedWord.CompressedWord
         U32.U32,
-      List.List Frame
+      RList.List Frame
     )
 decodeFramesBitsWith matchType version buildVersion count limit classes actorMap index frames =
   if index >= count
-    then pure (actorMap, List.fromList $ reverse frames)
+    then pure (actorMap, RList.fromList $ reverse frames)
     else do
       (newActorMap, frame) <-
         BitGet.label ("element (" <> show index <> ")") $

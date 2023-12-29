@@ -5,7 +5,7 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.ProductValue as ProductValue
-import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.List as RList
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
@@ -48,9 +48,9 @@ schema =
         (Json.pair "value" $ Schema.ref ProductValue.schema, True)
       ]
 
-putProductAttributes :: List.List Product -> BitPut.BitPut
+putProductAttributes :: RList.List Product -> BitPut.BitPut
 putProductAttributes attributes =
-  let v = List.toList attributes
+  let v = RList.toList attributes
    in (U8.bitPut . U8.fromWord8 . fromIntegral $ length v) <> foldMap bitPut v
 
 bitPut :: Product -> BitPut.BitPut
@@ -62,10 +62,10 @@ bitPut attribute =
 decodeProductAttributesBits ::
   Version.Version ->
   Map.Map U32.U32 Str.Str ->
-  BitGet.BitGet (List.List Product)
+  BitGet.BitGet (RList.List Product)
 decodeProductAttributesBits version objectMap = do
   size <- U8.bitGet
-  List.replicateM (fromIntegral $ U8.toWord8 size) $ bitGet version objectMap
+  RList.replicateM (fromIntegral $ U8.toWord8 size) $ bitGet version objectMap
 
 bitGet :: Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet Product
 bitGet version objectMap = BitGet.label "Product" $ do

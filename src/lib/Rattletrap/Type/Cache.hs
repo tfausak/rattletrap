@@ -4,7 +4,7 @@ import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.AttributeMapping as AttributeMapping
-import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.List as RList
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
 
@@ -12,7 +12,7 @@ data Cache = Cache
   { classId :: U32.U32,
     parentCacheId :: U32.U32,
     cacheId :: U32.U32,
-    attributeMappings :: List.List AttributeMapping.AttributeMapping
+    attributeMappings :: RList.List AttributeMapping.AttributeMapping
   }
   deriving (Eq, Show)
 
@@ -41,7 +41,7 @@ schema =
         (Json.pair "parent_cache_id" $ Schema.ref U32.schema, True),
         (Json.pair "cache_id" $ Schema.ref U32.schema, True),
         ( Json.pair "attribute_mappings" . Schema.json $
-            List.schema
+            RList.schema
               AttributeMapping.schema,
           True
         )
@@ -52,7 +52,7 @@ bytePut x =
   U32.bytePut (classId x)
     <> U32.bytePut (parentCacheId x)
     <> U32.bytePut (cacheId x)
-    <> List.bytePut AttributeMapping.bytePut (attributeMappings x)
+    <> RList.bytePut AttributeMapping.bytePut (attributeMappings x)
 
 byteGet :: ByteGet.ByteGet Cache
 byteGet = ByteGet.label "Cache" $ do
@@ -61,5 +61,5 @@ byteGet = ByteGet.label "Cache" $ do
   cacheId <- ByteGet.label "cacheId" U32.byteGet
   attributeMappings <-
     ByteGet.label "attributeMappings" $
-      List.byteGet AttributeMapping.byteGet
+      RList.byteGet AttributeMapping.byteGet
   pure Cache {classId, parentCacheId, cacheId, attributeMappings}

@@ -74,7 +74,7 @@ import qualified Rattletrap.Type.I8 as I8
 import qualified Rattletrap.Type.Initialization as Initialization
 import qualified Rattletrap.Type.Int8Vector as Int8Vector
 import qualified Rattletrap.Type.Keyframe as Keyframe
-import qualified Rattletrap.Type.List as List
+import qualified Rattletrap.Type.List as RList
 import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Property as Property
@@ -162,7 +162,7 @@ defaultMain name config = do
 
 schema :: Json.Value
 schema =
-  let contentSchema = Content.schema $ List.schema Frame.schema
+  let contentSchema = Content.schema $ RList.schema Frame.schema
    in Json.object
         [ Json.pair "$schema" "http://json-schema.org/draft-07/schema",
           Json.pair "$id" Replay.schemaUrl,
@@ -231,7 +231,7 @@ schema =
                 Initialization.schema,
                 Int8Vector.schema,
                 Keyframe.schema,
-                List.schema Attribute.Product.schema,
+                RList.schema Attribute.Product.schema,
                 Mark.schema,
                 Message.schema,
                 Property.schema,
