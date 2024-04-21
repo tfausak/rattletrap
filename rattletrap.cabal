@@ -62,7 +62,7 @@ library
     aeson-pretty >=0.8.9 && <0.9,
     array >=0.5.4 && <0.6,
     bytestring >=0.11.3 && <0.13,
-    containers >=0.6.5 && <0.7,
+    containers >=0.6.5 && <0.8,
     filepath >=1.4.2 && <1.5,
     http-client >=0.7.13 && <0.8,
     http-client-tls >=0.3.6 && <0.4,
