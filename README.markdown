@@ -1,7 +1,7 @@
-# [Rattletrap][]
+# [Rattletrap](https://github.com/tfausak/rattletrap)
 
 [![Workflow](https://github.com/tfausak/rattletrap/actions/workflows/workflow.yaml/badge.svg)](https://github.com/tfausak/rattletrap/actions/workflows/workflow.yaml)
-[![Hackage](https://img.shields.io/hackage/v/rattletrap)](https://hackage.haskell.org/package/rattletrap)
+[![Hackage](https://badgen.net/hackage/v/rattletrap)](https://hackage.haskell.org/package/rattletrap)
 [![Stackage](https://www.stackage.org/package/rattletrap/badge/nightly?label=stackage)](https://www.stackage.org/package/rattletrap)
 
 Rattletrap parses and generates [Rocket League][] replays. Parsing replays can
@@ -23,10 +23,8 @@ using another tool like [Ball Chasing][].
 The best way to get Rattletrap is by downloading [the latest release][] for
 your platform.
 
-Rattletrap is written in [Haskell][]. To build Rattletrap from source, install
-[Stack][]. Then run `stack --resolver nightly-2023-02-12 install rattletrap`.
-If you'd like to use a program written in a different language, consider one of
-the following:
+Rattletrap is written in [Haskell][]. If you'd like to use a program written in
+a different language, consider one of the following:
 
 - <https://github.com/jjbott/RocketLeagueReplayParser> (C#)
 - <https://github.com/nickbabcock/rrrocket> (Rust)
@@ -129,13 +127,7 @@ $ rattletrap -i input.replay |
 ```
 
 [Rattletrap]: https://github.com/tfausak/rattletrap
-[Version badge]: https://badgen.net/hackage/v/rattletrap?icon=haskell
-[version]: https://hackage.haskell.org/package/rattletrap
-[Build badge]: https://github.com/tfausak/rattletrap/workflows/ci/badge.svg
-[build]: https://github.com/tfausak/rattletrap/actions
 [Rocket League]: https://www.rocketleague.com
 [2.38]: https://www.rocketleague.com/en/news/patch-notes-v2-38
 [Ball Chasing]: https://ballchasing.com
-[Haskell]: https://www.haskell.org
 [the latest release]: https://github.com/tfausak/rattletrap/releases/latest
-[Stack]: https://docs.haskellstack.org/en/stable/README/
