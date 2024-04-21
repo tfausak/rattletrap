@@ -33,7 +33,7 @@ instance Json.ToJSON Boost where
 
 schema :: Schema.Schema
 schema =
-  Schema.named "attribute-applied-damage" $
+  Schema.named "boost" $
     Schema.object
       [ (Json.pair "grantCount" $ Schema.ref U8.schema, True),
         (Json.pair "boostAmount" $ Schema.ref U8.schema, True),
