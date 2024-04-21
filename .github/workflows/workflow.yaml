@@ -38,22 +38,22 @@ jobs:
     strategy:
       matrix:
         include:
-          - ghc: "9.8"
+          - ghc: 9.8
             platform: macos
             version: 13
-          - ghc: "9.8"
+          - ghc: 9.8
             platform: macos
             version: 14
-          - ghc: "9.4"
+          - ghc: 9.4
             platform: ubuntu
             version: 22.04
-          - ghc: "9.6"
+          - ghc: 9.6
             platform: ubuntu
             version: 22.04
-          - ghc: "9.8"
+          - ghc: 9.8
             platform: ubuntu
             version: 22.04
-          - ghc: "9.8"
+          - ghc: 9.8
             platform: windows
             version: 2022
   cabal:
@@ -94,8 +94,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
       - run: sh -exc 'for d in *; do cd $d; tar --extract --file artifact.tar --verbose; cd ..; done'
-      - run: cp ${{ env.PREFIX }}.tar.gz schema.json ../..
-        working-directory: rattletrap-${{ github.sha }}-ghc-9.8-ubuntu-22.04/artifact
+      - run: cp rattletrap-${{ github.sha }}-ghc-9.8-ubuntu-22.04/artifact/${{ env.PREFIX }}.tar.gz .
+      - run: cp rattletrap-${{ github.sha }}-ghc-9.8-ubuntu-22.04/artifact/schema.json ${{ env.PREFIX }}-schema.json
       - run: tar --auto-compress --create --file ../../${{ env.PREFIX }}-darwin-x64.tar.gz --verbose rattletrap
         working-directory: rattletrap-${{ github.sha }}-ghc-9.8-macos-13/artifact
       - run: tar --auto-compress --create --file ../../${{ env.PREFIX }}-darwin-arm64.tar.gz --verbose rattletrap
@@ -106,7 +106,7 @@ jobs:
         working-directory: rattletrap-${{ github.sha }}-ghc-9.8-windows-2022/artifact
       - uses: softprops/action-gh-release@v1
         with:
-          files: |-
+          files: |
             ${{ env.PREFIX }}*.tar.gz
             schema.json
       - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' ${{ env.PREFIX }}.tar.gz
