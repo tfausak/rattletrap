@@ -104,7 +104,7 @@ jobs:
         working-directory: rattletrap-${{ github.sha }}-ghc-9.8-ubuntu-22.04/artifact
       - run: tar --auto-compress --create --file ../../${{ env.PREFIX }}-win32-x64.tar.gz --verbose rattletrap.exe
         working-directory: rattletrap-${{ github.sha }}-ghc-9.8-windows-2022/artifact
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
           files: |
             ${{ env.PREFIX }}*.tar.gz
