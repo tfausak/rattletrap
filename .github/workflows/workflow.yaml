@@ -30,7 +30,7 @@ jobs:
       - run: tar --create --file artifact.tar --verbose artifact
       - uses: actions/upload-artifact@v4
         with:
-          name: rattletrap-${{ github.sha }}-${{ matrix.platform }}-${{ matrix.version }}-${{ matrix.ghc }}
+          name: rattletrap-${{ github.sha }}-ghc-${{ matrix.ghc }}-${{ matrix.platform }}-${{ matrix.version }}
           path: artifact.tar
       - run: cabal run -- rattletrap-test-suite
       - run: npm install ajv-cli
