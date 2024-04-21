@@ -16,6 +16,7 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute as Attribute
 import qualified Rattletrap.Type.Attribute.AppliedDamage as Attribute.AppliedDamage
 import qualified Rattletrap.Type.Attribute.Boolean as Attribute.Boolean
+import qualified Rattletrap.Type.Attribute.Boost as Attribute.Boost
 import qualified Rattletrap.Type.Attribute.Byte as Attribute.Byte
 import qualified Rattletrap.Type.Attribute.CamSettings as Attribute.CamSettings
 import qualified Rattletrap.Type.Attribute.ClubColors as Attribute.ClubColors
@@ -173,6 +174,7 @@ schema =
               [ Attribute.schema,
                 Attribute.AppliedDamage.schema,
                 Attribute.Boolean.schema,
+                Attribute.Boost.schema,
                 Attribute.Byte.schema,
                 Attribute.CamSettings.schema,
                 Attribute.ClubColors.schema,
