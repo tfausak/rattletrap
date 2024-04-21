@@ -9,6 +9,7 @@ import qualified Rattletrap.Exception.UnknownAttribute as UnknownAttribute
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.AppliedDamage as AppliedDamage
 import qualified Rattletrap.Type.Attribute.Boolean as Boolean
+import qualified Rattletrap.Type.Attribute.Boost as Boost
 import qualified Rattletrap.Type.Attribute.Byte as Byte
 import qualified Rattletrap.Type.Attribute.CamSettings as CamSettings
 import qualified Rattletrap.Type.Attribute.ClubColors as ClubColors
@@ -57,6 +58,7 @@ import qualified Rattletrap.Utility.Json as Json
 data AttributeValue
   = AppliedDamage AppliedDamage.AppliedDamage
   | Boolean Boolean.Boolean
+  | Boost Boost.Boost
   | Byte Byte.Byte
   | CamSettings CamSettings.CamSettings
   | ClubColors ClubColors.ClubColors
@@ -103,6 +105,7 @@ instance Json.FromJSON AttributeValue where
     Foldable.asum
       [ fmap AppliedDamage $ Json.required object "applied_damage",
         fmap Boolean $ Json.required object "boolean",
+        fmap Boost $ Json.required object "boost",
         fmap Byte $ Json.required object "byte",
         fmap CamSettings $ Json.required object "cam_settings",
         fmap ClubColors $ Json.required object "club_colors",
@@ -148,6 +151,7 @@ instance Json.ToJSON AttributeValue where
   toJSON x = case x of
     AppliedDamage y -> Json.object [Json.pair "applied_damage" y]
     Boolean y -> Json.object [Json.pair "boolean" y]
+    Boost y -> Json.object [Json.pair "boost" y]
     Byte y -> Json.object [Json.pair "byte" y]
     CamSettings y -> Json.object [Json.pair "cam_settings" y]
     ClubColors y -> Json.object [Json.pair "club_colors" y]
@@ -196,6 +200,7 @@ schema =
       (\(k, v) -> Schema.object [(Json.pair k $ Schema.ref v, True)])
       [ ("applied_damage", AppliedDamage.schema),
         ("boolean", Boolean.schema),
+        ("boost", Boost.schema),
         ("byte", Byte.schema),
         ("cam_settings", CamSettings.schema),
         ("club_colors", ClubColors.schema),
@@ -241,6 +246,7 @@ bitPut :: AttributeValue -> BitPut.BitPut
 bitPut value = case value of
   AppliedDamage x -> AppliedDamage.bitPut x
   Boolean x -> Boolean.bitPut x
+  Boost x -> Boost.bitPut x
   Byte x -> Byte.bitPut x
   CamSettings x -> CamSettings.bitPut x
   ClubColors x -> ClubColors.bitPut x
@@ -297,6 +303,7 @@ bitGet version buildVersion objectMap name =
       AttributeType.AppliedDamage ->
         fmap AppliedDamage $ AppliedDamage.bitGet version
       AttributeType.Boolean -> fmap Boolean Boolean.bitGet
+      AttributeType.Boost -> fmap Boost Boost.bitGet
       AttributeType.Byte -> fmap Byte Byte.bitGet
       AttributeType.CamSettings ->
         fmap CamSettings $ CamSettings.bitGet version

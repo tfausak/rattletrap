@@ -3,6 +3,7 @@ module Rattletrap.Type.AttributeType where
 data AttributeType
   = AppliedDamage
   | Boolean
+  | Boost
   | Byte
   | CamSettings
   | ClubColors

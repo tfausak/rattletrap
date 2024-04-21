@@ -337,6 +337,7 @@ attributeTypes =
         ("TAGame.CarComponent_Boost_TA:bUnlimitedBoost", AttributeType.Boolean),
         ("TAGame.CarComponent_Boost_TA:RechargeDelay", AttributeType.Float),
         ("TAGame.CarComponent_Boost_TA:RechargeRate", AttributeType.Float),
+        ("TAGame.CarComponent_Boost_TA:ReplicatedBoost", AttributeType.Boost),
         ("TAGame.CarComponent_Boost_TA:ReplicatedBoostAmount", AttributeType.Byte),
         ("TAGame.CarComponent_Boost_TA:UnlimitedBoostRefCount", AttributeType.Int),
         ("TAGame.CarComponent_Dodge_TA:DodgeImpulse", AttributeType.Location),
