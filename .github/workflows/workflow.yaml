@@ -1,242 +1,120 @@
-{
-  "jobs": {
-    "build": {
-      "name": "GHC ${{ matrix.ghc }} on ${{ matrix.platform }} ${{ matrix.version }}",
-      "runs-on": "${{ matrix.platform }}-${{ matrix.version }}",
-      "steps": [
-        {
-          "uses": "actions/checkout@v4"
-        },
-        {
-          "run": "mkdir artifact"
-        },
-        {
-          "id": "haskell",
-          "uses": "haskell-actions/setup@v2",
-          "with": {
-            "ghc-version": "${{ matrix.ghc }}"
-          }
-        },
-        {
-          "run": "cabal sdist --output-dir artifact"
-        },
-        {
-          "run": "cabal configure --enable-optimization=2 --enable-tests --flags=pedantic --jobs"
-        },
-        {
-          "run": "cat cabal.project.local"
-        },
-        {
-          "run": "cp cabal.project.local artifact"
-        },
-        {
-          "run": "cabal freeze"
-        },
-        {
-          "run": "cat cabal.project.freeze"
-        },
-        {
-          "run": "cp cabal.project.freeze artifact"
-        },
-        {
-          "run": "cabal outdated --v2-freeze-file"
-        },
-        {
-          "uses": "actions/cache@v4",
-          "with": {
-            "key": "${{ matrix.platform }}-${{ matrix.version }}-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}",
-            "path": "${{ steps.haskell.outputs.cabal-store }}",
-            "restore-keys": "${{ matrix.platform }}-${{ matrix.version }}-${{ matrix.ghc }}-"
-          }
-        },
-        {
-          "run": "cabal build --only-download"
-        },
-        {
-          "run": "cabal build --only-dependencies"
-        },
-        {
-          "run": "cabal build"
-        },
-        {
-          "run": "cp $( cabal list-bin rattletrap ) artifact"
-        },
-        {
-          "run": "cabal run -- rattletrap --schema --output=artifact/schema.json"
-        },
-        {
-          "run": "tar --create --file artifact.tar --verbose artifact"
-        },
-        {
-          "uses": "actions/upload-artifact@v4",
-          "with": {
-            "name": "rattletrap-${{ github.sha }}-${{ matrix.platform }}-${{ matrix.version }}-${{ matrix.ghc }}",
-            "path": "artifact.tar"
-          }
-        },
-        {
-          "run": "cabal run -- rattletrap-test-suite"
-        },
-        {
-          "run": "npm install ajv-cli"
-        },
-        {
-          "run": "runghc src/util/check-schema.hs"
-        }
-      ],
-      "strategy": {
-        "matrix": {
-          "include": [
-            {
-              "ghc": "9.8",
-              "platform": "macos",
-              "version": 13
-            },
-            {
-              "ghc": "9.8",
-              "platform": "macos",
-              "version": 14
-            },
-            {
-              "ghc": "9.4",
-              "platform": "ubuntu",
-              "version": 22.04
-            },
-            {
-              "ghc": "9.6",
-              "platform": "ubuntu",
-              "version": 22.04
-            },
-            {
-              "ghc": "9.8",
-              "platform": "ubuntu",
-              "version": 22.04
-            },
-            {
-              "ghc": "9.8",
-              "platform": "windows",
-              "version": 2022
-            }
-          ]
-        }
-      }
-    },
-    "cabal": {
-      "name": "Cabal",
-      "runs-on": "ubuntu-latest",
-      "steps": [
-        {
-          "uses": "actions/checkout@v4"
-        },
-        {
-          "run": "cabal check"
-        }
-      ]
-    },
-    "gild": {
-      "name": "Gild",
-      "runs-on": "ubuntu-latest",
-      "steps": [
-        {
-          "uses": "actions/checkout@v4"
-        },
-        {
-          "uses": "tfausak/cabal-gild-setup-action@v2"
-        },
-        {
-          "run": "cabal-gild --input rattletrap.cabal --mode check"
-        }
-      ]
-    },
-    "hlint": {
-      "name": "HLint",
-      "runs-on": "ubuntu-latest",
-      "steps": [
-        {
-          "uses": "actions/checkout@v4"
-        },
-        {
-          "uses": "haskell-actions/hlint-setup@v2"
-        },
-        {
-          "uses": "haskell-actions/hlint-run@v2",
-          "with": {
-            "fail-on": "status"
-          }
-        }
-      ]
-    },
-    "ormolu": {
-      "name": "Ormolu",
-      "runs-on": "ubuntu-latest",
-      "steps": [
-        {
-          "uses": "actions/checkout@v4"
-        },
-        {
-          "uses": "haskell-actions/run-ormolu@v15"
-        }
-      ]
-    },
-    "release": {
-      "env": {
-        "PREFIX": "rattletrap-${{ github.event.release.tag_name }}"
-      },
-      "if": "${{ github.event_name == 'release' }}",
-      "name": "Release",
-      "needs": "build",
-      "runs-on": "ubuntu-latest",
-      "steps": [
-        {
-          "uses": "actions/download-artifact@v4"
-        },
-        {
-          "run": "sh -exc 'for d in *; do cd $d; tar --extract --file artifact.tar --verbose; cd ..; done'"
-        },
-        {
-          "run": "cp ${{ env.PREFIX }}.tar.gz schema.json ../..",
-          "working-directory": "rattletrap-${{ github.sha }}-ghc-9.8-ubuntu-22.04/artifact"
-        },
-        {
-          "run": "tar --auto-compress --create --file ../../${{ env.PREFIX }}-darwin-x64.tar.gz --verbose rattletrap",
-          "working-directory": "rattletrap-${{ github.sha }}-ghc-9.8-macos-13/artifact"
-        },
-        {
-          "run": "tar --auto-compress --create --file ../../${{ env.PREFIX }}-darwin-arm64.tar.gz --verbose rattletrap",
-          "working-directory": "rattletrap-${{ github.sha }}-ghc-9.8-macos-14/artifact"
-        },
-        {
-          "run": "tar --auto-compress --create --file ../../${{ env.PREFIX }}-linux-x64.tar.gz --verbose rattletrap",
-          "working-directory": "rattletrap-${{ github.sha }}-ghc-9.8-ubuntu-22.04/artifact"
-        },
-        {
-          "run": "tar --auto-compress --create --file ../../${{ env.PREFIX }}-win32-x64.tar.gz --verbose rattletrap.exe",
-          "working-directory": "rattletrap-${{ github.sha }}-ghc-9.8-windows-2022/artifact"
-        },
-        {
-          "uses": "softprops/action-gh-release@v1",
-          "with": {
-            "files": "${{ env.PREFIX }}*.tar.gz\nschema.json"
-          }
-        },
-        {
-          "run": "cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' ${{ env.PREFIX }}.tar.gz"
-        }
-      ]
-    }
-  },
-  "name": "Workflow",
-  "on": {
-    "push": null,
-    "release": {
-      "types": [
-        "created"
-      ]
-    },
-    "schedule": [
-      {
-        "cron": "0 0 * * 1"
-      }
-    ]
-  }
-}
+jobs:
+  build:
+    name: GHC ${{ matrix.ghc }} on ${{ matrix.platform }} ${{ matrix.version }}
+    runs-on: ${{ matrix.platform }}-${{ matrix.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir artifact
+      - id: haskell
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc }}
+      - run: cabal sdist --output-dir artifact
+      - run: cabal configure --enable-optimization=2 --enable-tests --flags=pedantic --jobs
+      - run: cat cabal.project.local
+      - run: cp cabal.project.local artifact
+      - run: cabal freeze
+      - run: cat cabal.project.freeze
+      - run: cp cabal.project.freeze artifact
+      - run: cabal outdated --v2-freeze-file
+      - uses: actions/cache@v4
+        with:
+          key: ${{ matrix.platform }}-${{ matrix.version }}-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}
+          path: ${{ steps.haskell.outputs.cabal-store }}
+          restore-keys: ${{ matrix.platform }}-${{ matrix.version }}-${{ matrix.ghc }}-
+      - run: cabal build --only-download
+      - run: cabal build --only-dependencies
+      - run: cabal build
+      - run: cp $( cabal list-bin rattletrap ) artifact
+      - run: cabal run -- rattletrap --schema --output=artifact/schema.json
+      - run: tar --create --file artifact.tar --verbose artifact
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rattletrap-${{ github.sha }}-${{ matrix.platform }}-${{ matrix.version }}-${{ matrix.ghc }}
+          path: artifact.tar
+      - run: cabal run -- rattletrap-test-suite
+      - run: npm install ajv-cli
+      - run: runghc src/util/check-schema.hs
+    strategy:
+      matrix:
+        include:
+          - ghc: "9.8"
+            platform: macos
+            version: 13
+          - ghc: "9.8"
+            platform: macos
+            version: 14
+          - ghc: "9.4"
+            platform: ubuntu
+            version: 22.04
+          - ghc: "9.6"
+            platform: ubuntu
+            version: 22.04
+          - ghc: "9.8"
+            platform: ubuntu
+            version: 22.04
+          - ghc: "9.8"
+            platform: windows
+            version: 2022
+  cabal:
+    name: Cabal
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cabal check
+  gild:
+    name: Gild
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tfausak/cabal-gild-setup-action@v2
+      - run: cabal-gild --input rattletrap.cabal --mode check
+  hlint:
+    name: HLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/hlint-setup@v2
+      - uses: haskell-actions/hlint-run@v2
+        with:
+          fail-on: status
+  ormolu:
+    name: Ormolu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/run-ormolu@v15
+  release:
+    env:
+      PREFIX: rattletrap-${{ github.event.release.tag_name }}
+    if: ${{ github.event_name == 'release' }}
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+      - run: sh -exc 'for d in *; do cd $d; tar --extract --file artifact.tar --verbose; cd ..; done'
+      - run: cp ${{ env.PREFIX }}.tar.gz schema.json ../..
+        working-directory: rattletrap-${{ github.sha }}-ghc-9.8-ubuntu-22.04/artifact
+      - run: tar --auto-compress --create --file ../../${{ env.PREFIX }}-darwin-x64.tar.gz --verbose rattletrap
+        working-directory: rattletrap-${{ github.sha }}-ghc-9.8-macos-13/artifact
+      - run: tar --auto-compress --create --file ../../${{ env.PREFIX }}-darwin-arm64.tar.gz --verbose rattletrap
+        working-directory: rattletrap-${{ github.sha }}-ghc-9.8-macos-14/artifact
+      - run: tar --auto-compress --create --file ../../${{ env.PREFIX }}-linux-x64.tar.gz --verbose rattletrap
+        working-directory: rattletrap-${{ github.sha }}-ghc-9.8-ubuntu-22.04/artifact
+      - run: tar --auto-compress --create --file ../../${{ env.PREFIX }}-win32-x64.tar.gz --verbose rattletrap.exe
+        working-directory: rattletrap-${{ github.sha }}-ghc-9.8-windows-2022/artifact
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: |-
+            ${{ env.PREFIX }}*.tar.gz
+            schema.json
+      - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' ${{ env.PREFIX }}.tar.gz
+name: Workflow
+on:
+  push: null
+  release:
+    types:
+      - created
+  schedule:
+    - cron: 0 0 * * 1
