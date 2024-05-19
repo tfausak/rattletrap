@@ -1,7 +1,7 @@
 jobs:
   build:
-    name: GHC ${{ matrix.ghc }} on ${{ matrix.platform }} ${{ matrix.version }}
-    runs-on: ${{ matrix.platform }}-${{ matrix.version }}
+    name: GHC ${{ matrix.ghc }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - run: mkdir artifact
@@ -9,6 +9,7 @@ jobs:
         uses: haskell-actions/setup@v2
         with:
           ghc-version: ${{ matrix.ghc }}
+      - run: ghc-pkg list
       - run: cabal sdist --output-dir artifact
       - run: cabal configure --enable-optimization=2 --enable-tests --flags=pedantic --jobs
       - run: cat cabal.project.local
@@ -19,9 +20,9 @@ jobs:
       - run: cabal outdated --v2-freeze-file
       - uses: actions/cache@v4
         with:
-          key: ${{ matrix.platform }}-${{ matrix.version }}-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}
+          key: ${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}
           path: ${{ steps.haskell.outputs.cabal-store }}
-          restore-keys: ${{ matrix.platform }}-${{ matrix.version }}-${{ matrix.ghc }}-
+          restore-keys: ${{ matrix.os }}-${{ matrix.ghc }}-
       - run: cabal build --only-download
       - run: cabal build --only-dependencies
       - run: cabal build
@@ -30,7 +31,7 @@ jobs:
       - run: tar --create --file artifact.tar --verbose artifact
       - uses: actions/upload-artifact@v4
         with:
-          name: rattletrap-${{ github.sha }}-ghc-${{ matrix.ghc }}-${{ matrix.platform }}-${{ matrix.version }}
+          name: rattletrap-${{ github.sha }}-ghc-${{ matrix.ghc }}-${{ matrix.os }}
           path: artifact.tar
       - run: cabal run -- rattletrap-test-suite
       - run: npm install ajv-cli
@@ -38,24 +39,18 @@ jobs:
     strategy:
       matrix:
         include:
-          - ghc: 9.8
-            platform: macos
-            version: 13
-          - ghc: 9.8
-            platform: macos
-            version: 14
-          - ghc: 9.4
-            platform: ubuntu
-            version: 22.04
+          - ghc: '9.10'
+            os: macos-13
+          - ghc: '9.10'
+            os: macos-14
           - ghc: 9.6
-            platform: ubuntu
-            version: 22.04
+            os: ubuntu-22.04
           - ghc: 9.8
-            platform: ubuntu
-            version: 22.04
-          - ghc: 9.8
-            platform: windows
-            version: 2022
+            os: ubuntu-22.04
+          - ghc: '9.10'
+            os: ubuntu-22.04
+          - ghc: '9.10'
+            os: windows-2022
   cabal:
     name: Cabal
     runs-on: ubuntu-latest
@@ -74,7 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: haskell-actions/hlint-setup@v2
+      - uses: haskell-actions/hlint-setup@9e09cc3653fc13702000a35f638a27b064adfbbe
       - uses: haskell-actions/hlint-run@v2
         with:
           fail-on: status
@@ -94,16 +89,16 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
       - run: sh -exc 'for d in *; do cd $d; tar --extract --file artifact.tar --verbose; cd ..; done'
-      - run: cp rattletrap-${{ github.sha }}-ghc-9.8-ubuntu-22.04/artifact/${{ env.PREFIX }}.tar.gz .
-      - run: cp rattletrap-${{ github.sha }}-ghc-9.8-ubuntu-22.04/artifact/schema.json ${{ env.PREFIX }}-schema.json
+      - run: cp rattletrap-${{ github.sha }}-ghc-9.10-ubuntu-22.04/artifact/${{ env.PREFIX }}.tar.gz .
+      - run: cp rattletrap-${{ github.sha }}-ghc-9.10-ubuntu-22.04/artifact/schema.json ${{ env.PREFIX }}-schema.json
       - run: tar --auto-compress --create --file ../../${{ env.PREFIX }}-darwin-x64.tar.gz --verbose rattletrap
-        working-directory: rattletrap-${{ github.sha }}-ghc-9.8-macos-13/artifact
+        working-directory: rattletrap-${{ github.sha }}-ghc-9.10-macos-13/artifact
       - run: tar --auto-compress --create --file ../../${{ env.PREFIX }}-darwin-arm64.tar.gz --verbose rattletrap
-        working-directory: rattletrap-${{ github.sha }}-ghc-9.8-macos-14/artifact
+        working-directory: rattletrap-${{ github.sha }}-ghc-9.10-macos-14/artifact
       - run: tar --auto-compress --create --file ../../${{ env.PREFIX }}-linux-x64.tar.gz --verbose rattletrap
-        working-directory: rattletrap-${{ github.sha }}-ghc-9.8-ubuntu-22.04/artifact
+        working-directory: rattletrap-${{ github.sha }}-ghc-9.10-ubuntu-22.04/artifact
       - run: tar --auto-compress --create --file ../../${{ env.PREFIX }}-win32-x64.tar.gz --verbose rattletrap.exe
-        working-directory: rattletrap-${{ github.sha }}-ghc-9.8-windows-2022/artifact
+        working-directory: rattletrap-${{ github.sha }}-ghc-9.10-windows-2022/artifact
       - uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -112,7 +107,12 @@ jobs:
       - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' ${{ env.PREFIX }}.tar.gz
 name: Workflow
 on:
-  push: null
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
   release:
     types:
       - created
