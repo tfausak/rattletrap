@@ -87,7 +87,7 @@ bitGet = do
 normalizeTextSize :: (Integral a) => I32.I32 -> a
 normalizeTextSize size = case I32.toInt32 size of
   0x05000000 -> 8
-  x -> if x < 0 then (-2 * fromIntegral x) else fromIntegral x
+  x -> (if x < 0 then negate . (*) 2 else id) $ fromIntegral x
 
 getTextDecoder :: I32.I32 -> ByteString.ByteString -> Text.Text
 getTextDecoder size bytes =
