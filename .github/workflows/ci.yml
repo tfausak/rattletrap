@@ -105,7 +105,7 @@ jobs:
             ${{ env.PREFIX }}*.tar.gz
             ${{ env.PREFIX }}-schema.json
       - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' ${{ env.PREFIX }}.tar.gz
-name: Workflow
+name: CI
 on:
   pull_request:
     branches:
