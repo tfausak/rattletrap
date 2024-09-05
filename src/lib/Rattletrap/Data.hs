@@ -380,6 +380,7 @@ attributeTypes =
         ("TAGame.GameEvent_TA:bHasLeaveMatchPenalty", AttributeType.Boolean),
         ("TAGame.GameEvent_TA:BotSkill", AttributeType.Int),
         ("TAGame.GameEvent_TA:GameMode", AttributeType.GameMode),
+        ("TAGame.GameEvent_TA:MatchStartEpoch", AttributeType.Int64),
         ("TAGame.GameEvent_TA:MatchTypeClass", AttributeType.FlaggedInt),
         ("TAGame.GameEvent_TA:ReplicatedGameStateTimeRemaining", AttributeType.Int),
         ("TAGame.GameEvent_TA:ReplicatedRoundCountDownNumber", AttributeType.Int),

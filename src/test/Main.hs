@@ -114,6 +114,7 @@ replays =
     ("6f7c", "a map with numbers"), -- https://github.com/tfausak/rattletrap/commit/2629511
     ("7083", "weird basketball capitalization"), -- https://github.com/tfausak/rattletrap/pull/63
     ("7109", "a boost modifier"), -- https://github.com/tfausak/rattletrap/commit/ee7afa0
+    ("717a", "v2.43"), -- https://github.com/tfausak/rattletrap/issues/307
     ("7256", "special edition"), -- https://github.com/tfausak/rattletrap/pull/103
     ("7588", "another malformed byte property"), -- https://github.com/nickbabcock/boxcars/pull/68
     ("75ce", "primary and secondary titles"), -- https://github.com/tfausak/rattletrap/pull/69
