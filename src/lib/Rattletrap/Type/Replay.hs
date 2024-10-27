@@ -110,7 +110,7 @@ getNumFrames header_ =
   case Dictionary.lookup
     (Str.fromString "NumFrames")
     (Header.properties header_) of
-    Just (Property.Property _ _ (PropertyValue.Int numFrames)) ->
+    Just (Property.Property _ _ _ (PropertyValue.Int numFrames)) ->
       fromIntegral (I32.toInt32 (Property.Int.toI32 numFrames))
     _ -> 0
 
@@ -120,7 +120,7 @@ getMaxChannels header_ =
     case Dictionary.lookup
       (Str.fromString "MaxChannels")
       (Header.properties header_) of
-      Just (Property.Property _ _ (PropertyValue.Int maxChannels)) ->
+      Just (Property.Property _ _ _ (PropertyValue.Int maxChannels)) ->
         fromIntegral (I32.toInt32 (Property.Int.toI32 maxChannels))
       _ -> 1023
 

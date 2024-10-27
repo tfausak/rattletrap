@@ -13,6 +13,7 @@ import qualified Rattletrap.Type.Property.Int as Property.Int
 import qualified Rattletrap.Type.Property.Name as Property.Name
 import qualified Rattletrap.Type.Property.QWord as Property.QWord
 import qualified Rattletrap.Type.Property.Str as Property.Str
+import qualified Rattletrap.Type.Property.Struct as Property.Struct
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Utility.Json as Json
 
@@ -29,6 +30,7 @@ data PropertyValue a
     Name Property.Name.Name
   | QWord Property.QWord.QWord
   | Str Property.Str.Str
+  | Struct (Property.Struct.Struct a)
   deriving (Eq, Show)
 
 instance (Json.FromJSON a) => Json.FromJSON (PropertyValue a) where
@@ -41,7 +43,8 @@ instance (Json.FromJSON a) => Json.FromJSON (PropertyValue a) where
         fmap Int $ Json.required object "int",
         fmap Name $ Json.required object "name",
         fmap QWord $ Json.required object "q_word",
-        fmap Str $ Json.required object "str"
+        fmap Str $ Json.required object "str",
+        fmap Struct $ Json.required object "struct"
       ]
 
 instance (Json.ToJSON a) => Json.ToJSON (PropertyValue a) where
@@ -54,6 +57,7 @@ instance (Json.ToJSON a) => Json.ToJSON (PropertyValue a) where
     Name y -> Json.object [Json.pair "name" y]
     QWord y -> Json.object [Json.pair "q_word" y]
     Str y -> Json.object [Json.pair "str" y]
+    Struct y -> Json.object [Json.pair "struct" y]
 
 schema :: Schema.Schema -> Schema.Schema
 schema s =
@@ -67,7 +71,8 @@ schema s =
         ("int", Schema.ref Property.Int.schema),
         ("name", Schema.ref Property.Name.schema),
         ("q_word", Schema.ref Property.QWord.schema),
-        ("str", Schema.ref Property.Str.schema)
+        ("str", Schema.ref Property.Str.schema),
+        ("struct", Schema.ref $ Property.Struct.schema s)
       ]
 
 bytePut :: (a -> BytePut.BytePut) -> PropertyValue a -> BytePut.BytePut
@@ -80,6 +85,7 @@ bytePut putProperty value = case value of
   Name x -> Property.Name.bytePut x
   QWord x -> Property.QWord.bytePut x
   Str x -> Property.Str.bytePut x
+  Struct x -> Property.Struct.bytePut putProperty x
 
 byteGet :: ByteGet.ByteGet a -> Str.Str -> ByteGet.ByteGet (PropertyValue a)
 byteGet getProperty kind =
@@ -92,4 +98,5 @@ byteGet getProperty kind =
     "NameProperty" -> fmap Name Property.Name.byteGet
     "QWordProperty" -> fmap QWord Property.QWord.byteGet
     "StrProperty" -> fmap Str Property.Str.byteGet
+    "StructProperty" -> fmap Struct $ Property.Struct.byteGet getProperty
     x -> ByteGet.throw $ UnknownProperty.UnknownProperty x

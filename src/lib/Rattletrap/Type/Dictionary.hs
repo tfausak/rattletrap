@@ -1,7 +1,5 @@
 module Rattletrap.Type.Dictionary where
 
-import qualified Data.Bifunctor as Bifunctor
-import qualified Data.Map as Map
 import qualified Data.Text as Text
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
@@ -18,34 +16,15 @@ data Dictionary a = Dictionary
 
 instance (Json.FromJSON a) => Json.FromJSON (Dictionary a) where
   parseJSON = Json.withObject "Dictionary" $ \o -> do
-    keys <- Json.required o "keys"
-    lastKey_ <- Json.required o "last_key"
-    value <- Json.required o "value"
-    let build ::
-          (MonadFail m) =>
-          Map.Map Text.Text a ->
-          Int ->
-          [(Int, (Str.Str, a))] ->
-          [Text.Text] ->
-          m (RList.List (Str.Str, a))
-        build m i xs ks = case ks of
-          [] -> pure . RList.fromList . reverse $ fmap snd xs
-          k : t -> case Map.lookup k m of
-            Nothing -> fail $ "missing required key " <> show k
-            Just v -> build m (i + 1) ((i, (Str.fromText k, v)) : xs) t
-    elements_ <- build value 0 [] keys
-    pure Dictionary {elements = elements_, lastKey = lastKey_}
+    elements <- Json.required o "elements"
+    lastKey <- Json.required o "last_key"
+    pure Dictionary {elements = elements, lastKey = lastKey}
 
 instance (Json.ToJSON a) => Json.ToJSON (Dictionary a) where
   toJSON x =
     Json.object
-      [ Json.pair "keys" . fmap fst . RList.toList $ elements x,
-        Json.pair "last_key" $ lastKey x,
-        Json.pair "value"
-          . Map.fromList
-          . fmap (Bifunctor.first Str.toText)
-          . RList.toList
-          $ elements x
+      [ Json.pair "elements" . RList.toList $ elements x,
+        Json.pair "last_key" $ lastKey x
       ]
 
 schema :: Schema.Schema -> Schema.Schema
