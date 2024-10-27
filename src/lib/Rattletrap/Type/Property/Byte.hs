@@ -25,7 +25,13 @@ schema :: Schema.Schema
 schema =
   Schema.named "property-byte" $
     Schema.tuple
-      [Schema.ref Str.schema, Schema.json $ Schema.maybe Str.schema]
+      [ Schema.ref Str.schema,
+        Schema.oneOf
+          [ Schema.ref Schema.null,
+            Schema.object [(Json.pair "Left" $ Schema.ref U8.schema, True)],
+            Schema.object [(Json.pair "Right" $ Schema.ref Str.schema, True)]
+          ]
+      ]
 
 bytePut :: Byte -> BytePut.BytePut
 bytePut byte = Str.bytePut (key byte) <> foldMap (either U8.bytePut Str.bytePut) (value byte)

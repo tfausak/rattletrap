@@ -31,15 +31,8 @@ schema :: Schema.Schema -> Schema.Schema
 schema s =
   Schema.named ("dictionary-" <> Text.unpack (Schema.name s)) $
     Schema.object
-      [ (Json.pair "keys" . Schema.json $ Schema.array Str.schema, True),
-        (Json.pair "last_key" $ Schema.ref Str.schema, True),
-        ( Json.pair "value" $
-            Json.object
-              [ Json.pair "type" "object",
-                Json.pair "additionalProperties" $ Schema.ref s
-              ],
-          True
-        )
+      [ (Json.pair "elements" $ Schema.tuple [Schema.ref Str.schema, Schema.ref s], True),
+        (Json.pair "last_key" $ Schema.ref Str.schema, True)
       ]
 
 lookup :: Str.Str -> Dictionary a -> Maybe a
