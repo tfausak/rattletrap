@@ -29,11 +29,18 @@ instance (Json.ToJSON a) => Json.ToJSON (Dictionary a) where
 
 schema :: Schema.Schema -> Schema.Schema
 schema s =
-  Schema.named ("dictionary-" <> Text.unpack (Schema.name s)) $
-    Schema.object
-      [ (Json.pair "elements" $ Schema.tuple [Schema.ref Str.schema, Schema.ref s], True),
-        (Json.pair "last_key" $ Schema.ref Str.schema, True)
-      ]
+  let name = "dictionary-" <> Text.unpack (Schema.name s)
+   in Schema.named name $
+        Schema.object
+          [ ( Json.pair "elements"
+                . Schema.json
+                . Schema.array
+                . Schema.named (name <> "-element")
+                $ Schema.tuple [Schema.ref Str.schema, Schema.ref s],
+              True
+            ),
+            (Json.pair "last_key" $ Schema.ref Str.schema, True)
+          ]
 
 lookup :: Str.Str -> Dictionary a -> Maybe a
 lookup k = Prelude.lookup k . RList.toList . elements
