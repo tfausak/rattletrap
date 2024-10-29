@@ -224,6 +224,7 @@ schema =
                 CompressedWord.schema,
                 CompressedWordVector.schema,
                 contentSchema,
+                Dictionary.elementSchema Property.schema,
                 Dictionary.schema Property.schema,
                 F32.schema,
                 Frame.schema,
