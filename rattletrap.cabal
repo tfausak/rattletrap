@@ -1,6 +1,6 @@
 cabal-version: 2.2
 name: rattletrap
-version: 13.1.0
+version: 14.0.0
 synopsis: Parse and generate Rocket League replays.
 description: Rattletrap parses and generates Rocket League replays.
 build-type: Simple
