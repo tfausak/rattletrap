@@ -81,6 +81,7 @@ import qualified Rattletrap.Type.Message as Message
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Property.Array as Property.Array
 import qualified Rattletrap.Type.Property.Byte as Property.Byte
+import qualified Rattletrap.Type.Property.Struct as Property.Struct
 import qualified Rattletrap.Type.PropertyValue as PropertyValue
 import qualified Rattletrap.Type.Quaternion as Quaternion
 import qualified Rattletrap.Type.RemoteId as RemoteId
@@ -223,6 +224,7 @@ schema =
                 CompressedWord.schema,
                 CompressedWordVector.schema,
                 contentSchema,
+                Dictionary.elementSchema Property.schema,
                 Dictionary.schema Property.schema,
                 F32.schema,
                 Frame.schema,
@@ -239,6 +241,7 @@ schema =
                 Property.schema,
                 Property.Array.schema Property.schema,
                 Property.Byte.schema,
+                Property.Struct.schema Property.schema,
                 PropertyValue.schema Property.schema,
                 Quaternion.schema,
                 RemoteId.schema,

@@ -178,6 +178,7 @@ library
     Rattletrap.Type.Property.Name
     Rattletrap.Type.Property.QWord
     Rattletrap.Type.Property.Str
+    Rattletrap.Type.Property.Struct
     Rattletrap.Type.PropertyValue
     Rattletrap.Type.Quaternion
     Rattletrap.Type.RemoteId

@@ -1,1 +1,4 @@
 packages: .
+constraints:
+  -- https://github.com/snoyberg/http-client/issues/547
+  data-default-class >= 0.2

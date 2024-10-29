@@ -87,6 +87,7 @@ replays =
     ("383e", "older unknown content field"), -- https://github.com/tfausak/rattletrap/pull/123
     ("387f", "a frozen attribute"), -- https://github.com/tfausak/rattletrap/commit/93ce196
     ("3abd", "rlcs"), -- https://github.com/tfausak/rattletrap/pull/86
+    ("3bd0", "v2.45"), -- https://github.com/tfausak/rattletrap/issues/311
     ("3ea1", "a custom team name"), -- https://github.com/tfausak/rattletrap/commit/cf4d145
     ("4050", "v2.08 dodge impulse"), -- https://github.com/tfausak/rattletrap/issues/247
     ("4126", "a game mode after Neo Tokyo"), -- https://github.com/tfausak/rattletrap/commit/a1cf21e
