@@ -297,7 +297,7 @@ classHasRotation className =
 getAttributeIdLimit :: Map.Map U32.U32 U32.U32 -> Maybe Word
 getAttributeIdLimit attributeMap = do
   ((streamId, _), _) <- Map.maxViewWithKey attributeMap
-  pure (fromIntegral (U32.toWord32 streamId))
+  pure (fromIntegral (1 + U32.toWord32 streamId))
 
 getAttributeName ::
   ClassAttributeMap ->
