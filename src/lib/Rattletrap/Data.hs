@@ -329,6 +329,7 @@ attributeTypes =
         ("TAGame.Car_TA:ReplicatedCarScale", AttributeType.Float),
         ("TAGame.Car_TA:ReplicatedDemolish_CustomFX", AttributeType.CustomDemolish),
         ("TAGame.Car_TA:ReplicatedDemolish", AttributeType.Demolish),
+        ("TAGame.Car_TA:ReplicatedDemolishExtended", AttributeType.CustomDemolishExtended),
         ("TAGame.Car_TA:ReplicatedDemolishGoalExplosion", AttributeType.CustomDemolish),
         ("TAGame.Car_TA:RumblePickups", AttributeType.FlaggedInt),
         ("TAGame.Car_TA:TeamPaint", AttributeType.TeamPaint),
