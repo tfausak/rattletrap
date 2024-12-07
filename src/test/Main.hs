@@ -122,6 +122,7 @@ replays =
     ("79ae", "voice update replay"), -- https://github.com/tfausak/rattletrap/pull/265
     ("7bf6", "an online loadouts attribute"), -- https://github.com/tfausak/rattletrap/commit/89d02f7
     ("81d1", "gridiron"), -- https://github.com/tfausak/rattletrap/pull/180
+    ("83aa", "v2.46 replicated demolish extended"), -- https://github.com/tfausak/rattletrap/issues/316
     ("89cb", "remote user data"), -- https://github.com/tfausak/rattletrap/commit/163684f
     ("8ae5", "new painted items"), -- https://github.com/tfausak/rattletrap/pull/43
     ("92a6", "with server performance state"), -- https://github.com/tfausak/rattletrap/pull/93

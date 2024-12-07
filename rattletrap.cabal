@@ -110,6 +110,7 @@ library
     Rattletrap.Type.Attribute.CamSettings
     Rattletrap.Type.Attribute.ClubColors
     Rattletrap.Type.Attribute.CustomDemolish
+    Rattletrap.Type.Attribute.CustomDemolishExtended
     Rattletrap.Type.Attribute.DamageState
     Rattletrap.Type.Attribute.Demolish
     Rattletrap.Type.Attribute.Enum
@@ -169,6 +170,7 @@ library
     Rattletrap.Type.List
     Rattletrap.Type.Mark
     Rattletrap.Type.Message
+    Rattletrap.Type.ObjectTarget
     Rattletrap.Type.Property
     Rattletrap.Type.Property.Array
     Rattletrap.Type.Property.Bool

@@ -14,6 +14,7 @@ import qualified Rattletrap.Type.Attribute.Byte as Byte
 import qualified Rattletrap.Type.Attribute.CamSettings as CamSettings
 import qualified Rattletrap.Type.Attribute.ClubColors as ClubColors
 import qualified Rattletrap.Type.Attribute.CustomDemolish as CustomDemolish
+import qualified Rattletrap.Type.Attribute.CustomDemolishExtended as CustomDemolishExtended
 import qualified Rattletrap.Type.Attribute.DamageState as DamageState
 import qualified Rattletrap.Type.Attribute.Demolish as Demolish
 import qualified Rattletrap.Type.Attribute.Enum as Enum
@@ -63,6 +64,7 @@ data AttributeValue
   | CamSettings CamSettings.CamSettings
   | ClubColors ClubColors.ClubColors
   | CustomDemolish CustomDemolish.CustomDemolish
+  | CustomDemolishExtended CustomDemolishExtended.CustomDemolishExtended
   | DamageState DamageState.DamageState
   | Demolish Demolish.Demolish
   | Enum Enum.Enum
@@ -110,6 +112,7 @@ instance Json.FromJSON AttributeValue where
         fmap CamSettings $ Json.required object "cam_settings",
         fmap ClubColors $ Json.required object "club_colors",
         fmap CustomDemolish $ Json.required object "custom_demolish",
+        fmap CustomDemolishExtended $ Json.required object "custom_demolish_extended",
         fmap DamageState $ Json.required object "damage_state",
         fmap Demolish $ Json.required object "demolish",
         fmap Enum $ Json.required object "enum",
@@ -156,6 +159,7 @@ instance Json.ToJSON AttributeValue where
     CamSettings y -> Json.object [Json.pair "cam_settings" y]
     ClubColors y -> Json.object [Json.pair "club_colors" y]
     CustomDemolish y -> Json.object [Json.pair "custom_demolish" y]
+    CustomDemolishExtended y -> Json.object [Json.pair "custom_demolish_extended" y]
     DamageState y -> Json.object [Json.pair "damage_state" y]
     Demolish y -> Json.object [Json.pair "demolish" y]
     Enum y -> Json.object [Json.pair "enum" y]
@@ -205,6 +209,7 @@ schema =
         ("cam_settings", CamSettings.schema),
         ("club_colors", ClubColors.schema),
         ("custom_demolish", CustomDemolish.schema),
+        ("custom_demolish_extended", CustomDemolishExtended.schema),
         ("damage_state", DamageState.schema),
         ("demolish", Demolish.schema),
         ("enum", Enum.schema),
@@ -251,6 +256,7 @@ bitPut value = case value of
   CamSettings x -> CamSettings.bitPut x
   ClubColors x -> ClubColors.bitPut x
   CustomDemolish x -> CustomDemolish.bitPut x
+  CustomDemolishExtended x -> CustomDemolishExtended.bitPut x
   DamageState x -> DamageState.bitPut x
   Demolish x -> Demolish.bitPut x
   Enum x -> Enum.bitPut x
@@ -310,6 +316,7 @@ bitGet version buildVersion objectMap name =
       AttributeType.ClubColors -> fmap ClubColors ClubColors.bitGet
       AttributeType.CustomDemolish ->
         fmap CustomDemolish $ CustomDemolish.bitGet version
+      AttributeType.CustomDemolishExtended -> fmap CustomDemolishExtended $ CustomDemolishExtended.bitGet version
       AttributeType.DamageState ->
         fmap DamageState $ DamageState.bitGet version
       AttributeType.Demolish -> fmap Demolish $ Demolish.bitGet version

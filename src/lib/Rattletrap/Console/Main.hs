@@ -21,6 +21,7 @@ import qualified Rattletrap.Type.Attribute.Byte as Attribute.Byte
 import qualified Rattletrap.Type.Attribute.CamSettings as Attribute.CamSettings
 import qualified Rattletrap.Type.Attribute.ClubColors as Attribute.ClubColors
 import qualified Rattletrap.Type.Attribute.CustomDemolish as Attribute.CustomDemolish
+import qualified Rattletrap.Type.Attribute.CustomDemolishExtended as Attribute.CustomDemolishExtended
 import qualified Rattletrap.Type.Attribute.DamageState as Attribute.DamageState
 import qualified Rattletrap.Type.Attribute.Demolish as Attribute.Demolish
 import qualified Rattletrap.Type.Attribute.Enum as Attribute.Enum
@@ -78,6 +79,7 @@ import qualified Rattletrap.Type.Keyframe as Keyframe
 import qualified Rattletrap.Type.List as RList
 import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
+import qualified Rattletrap.Type.ObjectTarget as ObjectTarget
 import qualified Rattletrap.Type.Property as Property
 import qualified Rattletrap.Type.Property.Array as Property.Array
 import qualified Rattletrap.Type.Property.Byte as Property.Byte
@@ -180,6 +182,7 @@ schema =
                 Attribute.CamSettings.schema,
                 Attribute.ClubColors.schema,
                 Attribute.CustomDemolish.schema,
+                Attribute.CustomDemolishExtended.schema,
                 Attribute.DamageState.schema,
                 Attribute.Demolish.schema,
                 Attribute.Enum.schema,
@@ -238,6 +241,7 @@ schema =
                 RList.schema Attribute.Product.schema,
                 Mark.schema,
                 Message.schema,
+                ObjectTarget.schema,
                 Property.schema,
                 Property.Array.schema Property.schema,
                 Property.Byte.schema,

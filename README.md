@@ -9,8 +9,8 @@ and points, or low-level details like positions and cameras. Generating replays
 can be used to modify replays in order to force everyone into the same car or
 change the map a game was played on.
 
-Rattletrap supports every version of Rocket League up to [2.45][], which was
-released on 2024-10-22. If a replay can be played by the Rocket League client,
+Rattletrap supports every version of Rocket League up to [2.46][], which was
+released on 2024-12-03. If a replay can be played by the Rocket League client,
 it can be parsed by Rattletrap. (If not, that's a bug. Please report it!)
 
 ## Install
@@ -28,6 +28,7 @@ a different language, consider one of the following:
 - <https://github.com/jjbott/RocketLeagueReplayParser> (C#)
 - <https://github.com/nickbabcock/rrrocket> (Rust)
 - <https://github.com/Bakkes/CPPRP> (C++)
+- <https://github.com/Drogebot/RocketRP> (C#)
 
 ## Replays
 
@@ -127,6 +128,6 @@ $ rattletrap -i input.replay |
 
 [Rattletrap]: https://github.com/tfausak/rattletrap
 [Rocket League]: https://www.rocketleague.com
-[2.45]: https://www.rocketleague.com/en/news/patch-notes-v2-45
+[2.46]: https://www.rocketleague.com/en/news/patch-notes-v2-46
 [Ball Chasing]: https://ballchasing.com
 [the latest release]: https://github.com/tfausak/rattletrap/releases/latest
