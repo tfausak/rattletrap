@@ -41,7 +41,7 @@ instance Json.ToJSON CustomDemolishExtended where
 
 schema :: Schema.Schema
 schema =
-  Schema.named "attribute-demolish" $
+  Schema.named "attribute-custom-demolish-extended" $
     Schema.object
       [ (Json.pair "attacker_pri" $ Schema.ref ObjectTarget.schema, True),
         (Json.pair "self_demo_fx" $ Schema.ref ObjectTarget.schema, True),
