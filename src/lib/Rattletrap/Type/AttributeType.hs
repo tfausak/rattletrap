@@ -8,6 +8,7 @@ data AttributeType
   | CamSettings
   | ClubColors
   | CustomDemolish
+  | CustomDemolishExtended
   | DamageState
   | Demolish
   | Enum
