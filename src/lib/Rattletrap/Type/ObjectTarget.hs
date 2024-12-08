@@ -31,7 +31,7 @@ instance Json.ToJSON ObjectTarget where
 
 schema :: Schema.Schema
 schema =
-  Schema.named "attribute-demolish" $
+  Schema.named "object-target" $
     Schema.object
       [ (Json.pair "is_actor" $ Schema.ref Schema.boolean, True),
         (Json.pair "target_index" $ Schema.ref I32.schema, True)
