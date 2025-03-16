@@ -53,6 +53,7 @@ replays :: [(String, String)]
 replays =
   [ ("0008", "a flip time"), -- https://github.com/tfausak/rattletrap/commit/ee7afa0
     ("000b", "nintendo switch"), -- https://github.com/tfausak/rattletrap/pull/60
+    ("00df", "tracker wall dynamic mesh actor"), -- https://github.com/tfausak/rattletrap/issues/319
     ("0121", "RLCS 2"), -- https://github.com/nickbabcock/boxcars/pull/120
     ("0416", "v1.78 demolition"), -- https://github.com/tfausak/rattletrap/pull/164
     ("07e9", "a game mode before Neo Tokyo"), -- https://github.com/tfausak/rattletrap/commit/b806f9b
@@ -115,6 +116,7 @@ replays =
     ("6f7c", "a map with numbers"), -- https://github.com/tfausak/rattletrap/commit/2629511
     ("7083", "weird basketball capitalization"), -- https://github.com/tfausak/rattletrap/pull/63
     ("7109", "a boost modifier"), -- https://github.com/tfausak/rattletrap/commit/ee7afa0
+    ("7155", "pri breakout"), -- https://github.com/tfausak/rattletrap/issues/314
     ("717a", "v2.43"), -- https://github.com/tfausak/rattletrap/issues/307
     ("7256", "special edition"), -- https://github.com/tfausak/rattletrap/pull/103
     ("7588", "another malformed byte property"), -- https://github.com/nickbabcock/boxcars/pull/68
@@ -145,6 +147,7 @@ replays =
     ("aa70", "patch 1.50 - TitleID attribute"), -- https://github.com/tfausak/rattletrap/pull/93
     ("ae46", "mvp"), -- https://github.com/nickbabcock/boxcars/pull/80
     ("afb1", "patch 1.37"), -- https://github.com/tfausak/rattletrap/pull/48
+    ("b557", "v2.49"), -- https://github.com/tfausak/rattletrap/issues/325
     ("b9f9", "a party leader"), -- https://github.com/tfausak/rattletrap/commit/bba2cfd
     ("c14f", "some mutators"), -- https://github.com/tfausak/rattletrap/commit/bba2cfd
     ("c23b", "new psynet id"), -- https://github.com/tfausak/rattletrap/pull/118
@@ -166,6 +169,7 @@ replays =
     ("dd14", "v1.88"), -- https://github.com/tfausak/rattletrap/pull/170
     ("de56", "a problematic product attribute"), -- https://github.com/tfausak/rattletrap/issues/51
     ("e2f9", "bTearOff"), -- https://github.com/nickbabcock/boxcars/pull/76
+    ("e756", "territory demolish"), -- https://github.com/tfausak/rattletrap/issues/320
     ("e80d", "unlimited time"), -- https://github.com/tfausak/rattletrap/pull/76
     ("e978", "distracted"), -- https://github.com/tfausak/rattletrap/issues/156
     ("eae3", "an actor/object ID collision"), -- https://github.com/tfausak/rattletrap/commit/d8fad06
