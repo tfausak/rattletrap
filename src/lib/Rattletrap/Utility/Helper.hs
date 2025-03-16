@@ -9,9 +9,7 @@ import qualified Data.ByteString.Lazy as LazyByteString
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Exception.InvalidJson as InvalidJson
-import qualified Rattletrap.Type.Content as Content
 import qualified Rattletrap.Type.Replay as Replay
-import qualified Rattletrap.Type.Section as Section
 import qualified Rattletrap.Utility.Json as Json
 
 -- | Parses a raw replay.
@@ -36,11 +34,4 @@ decodeReplayJson =
 
 -- | Encodes a raw replay.
 encodeReplayFile :: Bool -> Replay.Replay -> LazyByteString.ByteString
-encodeReplayFile fast replay =
-  BytePut.toLazyByteString . Replay.bytePut $
-    if fast
-      then
-        replay
-          { Replay.content = Section.create Content.bytePut Content.empty
-          }
-      else replay
+encodeReplayFile fast = BytePut.toLazyByteString . Replay.bytePut fast

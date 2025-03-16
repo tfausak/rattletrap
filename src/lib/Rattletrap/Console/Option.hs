@@ -22,7 +22,7 @@ fast =
     ['f']
     ["fast"]
     (Console.NoArg Flag.Fast)
-    "only encode or decode the header"
+    "skip encoding or decoding the frames"
 
 help :: Option
 help = Console.Option ['h'] ["help"] (Console.NoArg Flag.Help) "show the help"

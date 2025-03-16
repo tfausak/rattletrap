@@ -147,11 +147,11 @@ empty =
       unknown = []
     }
 
-bytePut :: Content -> BytePut.BytePut
-bytePut x =
+bytePut :: Bool -> Content -> BytePut.BytePut
+bytePut fast x =
   RList.bytePut Str.bytePut (levels x)
     <> RList.bytePut Keyframe.bytePut (keyframes x)
-    <> putFrames x
+    <> putFrames x {frames = if fast then RList.empty else frames x}
     <> RList.bytePut Message.bytePut (messages x)
     <> RList.bytePut Mark.bytePut (marks x)
     <> RList.bytePut Str.bytePut (packages x)
@@ -185,6 +185,7 @@ putFrames x =
         <> BytePut.byteString (Bytes.padBytes (U32.toWord32 streamSize_) stream)
 
 byteGet ::
+  Bool ->
   Maybe Str.Str ->
   -- | Version numbers, usually from 'Rattletrap.Header.getVersion'.
   Version.Version ->
@@ -197,7 +198,7 @@ byteGet ::
   -- | 'Rattletrap.Header.getBuildVersion'
   Maybe Str.Str ->
   ByteGet.ByteGet Content
-byteGet matchType version numFrames maxChannels buildVersion =
+byteGet fast matchType version numFrames maxChannels buildVersion =
   ByteGet.label "Content" $ do
     levels <- ByteGet.label "levels" $ RList.byteGet Str.byteGet
     keyframes <- ByteGet.label "keyframes" $ RList.byteGet Keyframe.byteGet
@@ -218,14 +219,17 @@ byteGet matchType version numFrames maxChannels buildVersion =
     let classAttributeMap =
           ClassAttributeMap.make objects classMappings caches names
         getFrames =
-          BitGet.toByteGet $
-            Frame.decodeFramesBits
-              matchType
-              version
-              buildVersion
-              numFrames
-              maxChannels
-              classAttributeMap
+          if fast
+            then pure RList.empty
+            else
+              BitGet.toByteGet $
+                Frame.decodeFramesBits
+                  matchType
+                  version
+                  buildVersion
+                  numFrames
+                  maxChannels
+                  classAttributeMap
     frames <- ByteGet.label "frames" $ ByteGet.embed getFrames stream
     unknown <-
       ByteGet.label "unknown" $

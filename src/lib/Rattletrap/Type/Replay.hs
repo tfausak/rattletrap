@@ -64,10 +64,10 @@ schemaUrl =
       "-schema.json"
     ]
 
-bytePut :: Replay -> BytePut.BytePut
-bytePut x =
+bytePut :: Bool -> Replay -> BytePut.BytePut
+bytePut fast x =
   Section.bytePut Header.bytePut (header x)
-    <> Section.bytePut Content.bytePut (content x)
+    <> Section.bytePut (Content.bytePut fast) (content x)
 
 byteGet :: Bool -> Bool -> ByteGet.ByteGet Replay
 byteGet fast skip = ByteGet.label "Replay" $ do
@@ -80,17 +80,15 @@ byteGet fast skip = ByteGet.label "Replay" $ do
     section <-
       Section.byteGet skip $ ByteGet.byteString . fromIntegral . U32.toWord32
     body <-
-      if fast
-        then pure Content.empty
-        else
-          ByteGet.embed (getContent $ Section.body header) $
-            Section.body section
+      ByteGet.embed (getContent fast $ Section.body header) $
+        Section.body section
     pure section {Section.body}
   pure Replay {header, content}
 
-getContent :: Header.Header -> ByteGet.ByteGet Content.Content
-getContent h =
+getContent :: Bool -> Header.Header -> ByteGet.ByteGet Content.Content
+getContent fast h =
   Content.byteGet
+    fast
     (getMatchType h)
     (Header.version h)
     (getNumFrames h)
