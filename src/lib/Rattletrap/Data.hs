@@ -1,4 +1,3 @@
--- brittany --columns 120
 module Rattletrap.Data where
 
 import qualified Data.Bifunctor as Bifunctor
