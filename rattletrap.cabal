@@ -168,6 +168,8 @@ library
     Rattletrap.Type.List
     Rattletrap.Type.Mark
     Rattletrap.Type.Message
+    Rattletrap.Type.Name
+    Rattletrap.Type.ObjectName
     Rattletrap.Type.ObjectTarget
     Rattletrap.Type.Property
     Rattletrap.Type.Property.Array

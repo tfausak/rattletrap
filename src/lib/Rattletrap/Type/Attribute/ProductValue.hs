@@ -8,6 +8,7 @@ import qualified Rattletrap.Exception.MissingProductName as MissingProductName
 import qualified Rattletrap.Exception.UnknownProduct as UnknownProduct
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
+import qualified Rattletrap.Type.ObjectName as ObjectName
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
@@ -78,9 +79,9 @@ bitPut val = case val of
   TitleId x -> Str.bitPut x
 
 bitGet ::
-  Version.Version -> U32.U32 -> Maybe Str.Str -> BitGet.BitGet ProductValue
+  Version.Version -> U32.U32 -> Maybe ObjectName.ObjectName -> BitGet.BitGet ProductValue
 bitGet version objectId maybeObjectName =
-  BitGet.label "ProductValue" $ case fmap Str.toString maybeObjectName of
+  BitGet.label "ProductValue" $ case fmap (Str.toString . ObjectName.unwrap) maybeObjectName of
     Just "TAGame.ProductAttribute_Painted_TA" -> decodePainted version
     Just "TAGame.ProductAttribute_SpecialEdition_TA" -> decodeSpecialEdition
     Just "TAGame.ProductAttribute_TeamEdition_TA" -> decodeTeamEdition version

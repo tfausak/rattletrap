@@ -10,6 +10,8 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.Initialization as Initialization
+import qualified Rattletrap.Type.Name as Name
+import qualified Rattletrap.Type.ObjectName as ObjectName
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
@@ -22,14 +24,14 @@ data Spawned = Spawned
     nameIndex :: Maybe U32.U32,
     -- | Read-only! Changing a replication's name requires editing the
     -- 'nameIndex' and maybe the class attribute map.
-    name :: Maybe Str.Str,
+    name :: Maybe Name.Name,
     objectId :: U32.U32,
     -- | Read-only! Changing a replication's object requires editing the class
     -- attribute map.
-    objectName :: Str.Str,
+    objectName :: ObjectName.ObjectName,
     -- | Read-only! Changing a replication's class requires editing the class
     -- attribute map.
-    className :: Str.Str,
+    className :: ObjectName.ObjectName,
     initialization :: Initialization.Initialization
   }
   deriving (Eq, Show)
@@ -131,7 +133,7 @@ hasNameIndex matchType version =
 lookupName ::
   ClassAttributeMap.ClassAttributeMap ->
   Maybe U32.U32 ->
-  BitGet.BitGet (Maybe Str.Str)
+  BitGet.BitGet (Maybe Name.Name)
 lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
   Nothing -> pure Nothing
   Just nameIndex_ ->
@@ -143,7 +145,7 @@ lookupName classAttributeMap maybeNameIndex = case maybeNameIndex of
       Just name_ -> pure (Just name_)
 
 lookupObjectName ::
-  ClassAttributeMap.ClassAttributeMap -> U32.U32 -> BitGet.BitGet Str.Str
+  ClassAttributeMap.ClassAttributeMap -> U32.U32 -> BitGet.BitGet ObjectName.ObjectName
 lookupObjectName classAttributeMap objectId_ =
   case ClassAttributeMap.getObjectName
     (ClassAttributeMap.objectMap classAttributeMap)
@@ -154,11 +156,12 @@ lookupObjectName classAttributeMap objectId_ =
           objectId_
     Just objectName_ -> pure objectName_
 
-lookupClassName :: Str.Str -> BitGet.BitGet Str.Str
+lookupClassName :: ObjectName.ObjectName -> BitGet.BitGet ObjectName.ObjectName
 lookupClassName objectName_ =
   case ClassAttributeMap.getClassName objectName_ of
     Nothing ->
-      BitGet.throw . MissingClassName.MissingClassName $
-        Str.toString
-          objectName_
+      BitGet.throw
+        . MissingClassName.MissingClassName
+        . Str.toString
+        $ ObjectName.unwrap objectName_
     Just className_ -> pure className_

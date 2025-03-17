@@ -11,6 +11,7 @@ import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.AttributeValue as AttributeValue
 import qualified Rattletrap.Type.ClassAttributeMap as ClassAttributeMap
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
+import qualified Rattletrap.Type.ObjectName as ObjectName
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
@@ -20,7 +21,7 @@ data Attribute = Attribute
   { id :: CompressedWord.CompressedWord,
     -- | Read-only! Changing an attribute's name requires editing the class
     -- attribute map.
-    name :: Str.Str,
+    name :: ObjectName.ObjectName, -- TODO
     value :: AttributeValue.AttributeValue
   }
   deriving (Eq, Show)
@@ -99,7 +100,7 @@ lookupAttributeName ::
   ClassAttributeMap.ClassAttributeMap ->
   Map.Map U32.U32 U32.U32 ->
   CompressedWord.CompressedWord ->
-  BitGet.BitGet Str.Str
+  BitGet.BitGet ObjectName.ObjectName -- TODO
 lookupAttributeName classes attributes attribute =
   fromMaybe
     (MissingAttributeName.MissingAttributeName $ CompressedWord.value attribute)

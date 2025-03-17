@@ -6,6 +6,7 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.ProductValue as ProductValue
 import qualified Rattletrap.Type.List as RList
+import qualified Rattletrap.Type.ObjectName as ObjectName
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
@@ -16,7 +17,7 @@ data Product = Product
   { unknown :: Bool,
     objectId :: U32.U32,
     -- | read-only
-    objectName :: Maybe Str.Str,
+    objectName :: Maybe ObjectName.ObjectName,
     value :: ProductValue.ProductValue
   }
   deriving (Eq, Show)
@@ -61,13 +62,13 @@ bitPut attribute =
 
 decodeProductAttributesBits ::
   Version.Version ->
-  Map.Map U32.U32 Str.Str ->
+  Map.Map U32.U32 ObjectName.ObjectName ->
   BitGet.BitGet (RList.List Product)
 decodeProductAttributesBits version objectMap = do
   size <- U8.bitGet
   RList.replicateM (fromIntegral $ U8.toWord8 size) $ bitGet version objectMap
 
-bitGet :: Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet Product
+bitGet :: Version.Version -> Map.Map U32.U32 ObjectName.ObjectName -> BitGet.BitGet Product
 bitGet version objectMap = BitGet.label "Product" $ do
   unknown <- BitGet.label "unknown" BitGet.bool
   objectId <- BitGet.label "objectId" U32.bitGet

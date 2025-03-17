@@ -5,7 +5,7 @@ import qualified Rattletrap.BitGet as BitGet
 import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.LoadoutOnline as LoadoutOnline
-import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.ObjectName as ObjectName
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
 import qualified Rattletrap.Utility.Json as Json
@@ -53,7 +53,7 @@ bitPut loadoutsOnlineAttribute =
     <> BitPut.bool (unknown2 loadoutsOnlineAttribute)
 
 bitGet ::
-  Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet LoadoutsOnline
+  Version.Version -> Map.Map U32.U32 ObjectName.ObjectName -> BitGet.BitGet LoadoutsOnline
 bitGet version objectMap = BitGet.label "LoadoutsOnline" $ do
   blue <- BitGet.label "blue" $ LoadoutOnline.bitGet version objectMap
   orange <- BitGet.label "orange" $ LoadoutOnline.bitGet version objectMap

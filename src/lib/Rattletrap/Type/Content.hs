@@ -16,6 +16,8 @@ import qualified Rattletrap.Type.Keyframe as Keyframe
 import qualified Rattletrap.Type.List as RList
 import qualified Rattletrap.Type.Mark as Mark
 import qualified Rattletrap.Type.Message as Message
+import qualified Rattletrap.Type.Name as Name
+import qualified Rattletrap.Type.ObjectName as ObjectName
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
@@ -47,10 +49,10 @@ data ContentWith frames = Content
     packages :: RList.List Str.Str,
     -- | Objects in the stream. Used for the
     -- 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
-    objects :: RList.List Str.Str,
+    objects :: RList.List ObjectName.ObjectName,
     -- | It's not clear what these are used for. This list is usually not empty,
     -- but appears unused otherwise.
-    names :: RList.List Str.Str,
+    names :: RList.List Name.Name,
     -- | A mapping between classes and their ID in the stream. Used for the
     -- 'Rattletrap.Type.ClassAttributeMap.ClassAttributeMap'.
     classMappings :: RList.List ClassMapping.ClassMapping,
@@ -155,8 +157,8 @@ bytePut fast x =
     <> RList.bytePut Message.bytePut (messages x)
     <> RList.bytePut Mark.bytePut (marks x)
     <> RList.bytePut Str.bytePut (packages x)
-    <> RList.bytePut Str.bytePut (objects x)
-    <> RList.bytePut Str.bytePut (names x)
+    <> RList.bytePut ObjectName.bytePut (objects x)
+    <> RList.bytePut Name.bytePut (names x)
     <> RList.bytePut ClassMapping.bytePut (classMappings x)
     <> RList.bytePut Cache.bytePut (caches x)
     <> foldMap BytePut.word8 (unknown x)
@@ -210,8 +212,8 @@ byteGet fast matchType version numFrames maxChannels buildVersion =
     messages <- ByteGet.label "messages" $ RList.byteGet Message.byteGet
     marks <- ByteGet.label "marks" $ RList.byteGet Mark.byteGet
     packages <- ByteGet.label "packages" $ RList.byteGet Str.byteGet
-    objects <- ByteGet.label "objects" $ RList.byteGet Str.byteGet
-    names <- ByteGet.label "names" $ RList.byteGet Str.byteGet
+    objects <- ByteGet.label "objects" $ RList.byteGet ObjectName.byteGet
+    names <- ByteGet.label "names" $ RList.byteGet Name.byteGet
     classMappings <-
       ByteGet.label "classMappings" $
         RList.byteGet ClassMapping.byteGet

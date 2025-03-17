@@ -51,6 +51,7 @@ import qualified Rattletrap.Type.Attribute.Title as Title
 import qualified Rattletrap.Type.Attribute.UniqueId as UniqueId
 import qualified Rattletrap.Type.Attribute.WeldedInfo as WeldedInfo
 import qualified Rattletrap.Type.AttributeType as AttributeType
+import qualified Rattletrap.Type.ObjectName as ObjectName
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.Version as Version
@@ -296,14 +297,14 @@ bitPut value = case value of
 bitGet ::
   Version.Version ->
   Maybe Str.Str ->
-  Map.Map U32.U32 Str.Str ->
-  Str.Str ->
+  Map.Map U32.U32 ObjectName.ObjectName ->
+  ObjectName.ObjectName ->
   BitGet.BitGet AttributeValue
 bitGet version buildVersion objectMap name =
   BitGet.label "AttributeValue" $ do
-    constructor <- case Map.lookup (Str.toText name) Data.attributeTypes of
+    constructor <- case Map.lookup (Str.toText $ ObjectName.unwrap name) Data.attributeTypes of
       Nothing ->
-        BitGet.throw . UnknownAttribute.UnknownAttribute $ Str.toString name
+        BitGet.throw . UnknownAttribute.UnknownAttribute . Str.toString $ ObjectName.unwrap name
       Just x -> pure x
     case constructor of
       AttributeType.AppliedDamage ->

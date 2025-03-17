@@ -13,6 +13,8 @@ import qualified Rattletrap.Type.Cache as Cache
 import qualified Rattletrap.Type.ClassMapping as ClassMapping
 import qualified Rattletrap.Type.CompressedWord as CompressedWord
 import qualified Rattletrap.Type.List as RList
+import qualified Rattletrap.Type.Name as Name
+import qualified Rattletrap.Type.ObjectName as ObjectName
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 
@@ -23,13 +25,13 @@ import qualified Rattletrap.Type.U32 as U32
 -- structure is tedious; see 'make'.
 data ClassAttributeMap = ClassAttributeMap
   { -- | A map from object IDs to their names.
-    objectMap :: Map.Map U32.U32 Str.Str,
+    objectMap :: Map.Map U32.U32 ObjectName.ObjectName,
     -- | A map from object IDs to their class IDs.
     objectClassMap :: Map.Map U32.U32 U32.U32,
     -- | A map from class IDs to a map from attribute stream IDs to attribute
     -- IDs.
     value :: Map.Map U32.U32 (Map.Map U32.U32 U32.U32),
-    nameMap :: IntMap.IntMap Str.Str
+    nameMap :: IntMap.IntMap Name.Name
   }
   deriving (Eq, Show)
 
@@ -48,13 +50,13 @@ lookupR k = Map.lookup k . snd
 -- 'Rattletrap.Content.Content'.
 make ::
   -- | From 'Rattletrap.Content.objects'.
-  RList.List Str.Str ->
+  RList.List ObjectName.ObjectName ->
   -- | From 'Rattletrap.Content.classMappings'.
   RList.List ClassMapping.ClassMapping ->
   -- | From 'Rattletrap.Content.caches'.
   RList.List Cache.Cache ->
   -- | From 'Rattletrap.Content.names'.
-  RList.List Str.Str ->
+  RList.List Name.Name ->
   ClassAttributeMap
 make objects classMappings caches names =
   let objectMap_ = makeObjectMap objects
@@ -88,17 +90,17 @@ make objects classMappings caches names =
       nameMap_ = makeNameMap names
    in ClassAttributeMap objectMap_ objectClassMap_ value_ nameMap_
 
-makeNameMap :: RList.List Str.Str -> IntMap.IntMap Str.Str
+makeNameMap :: RList.List Name.Name -> IntMap.IntMap Name.Name
 makeNameMap names =
   IntMap.fromDistinctAscList (zip [0 ..] (RList.toList names))
 
-getName :: IntMap.IntMap Str.Str -> U32.U32 -> Maybe Str.Str
+getName :: IntMap.IntMap Name.Name -> U32.U32 -> Maybe Name.Name
 getName nameMap_ nameIndex =
   IntMap.lookup (fromIntegral (U32.toWord32 nameIndex)) nameMap_
 
 makeObjectClassMap ::
-  Map.Map U32.U32 Str.Str ->
-  Bimap U32.U32 Str.Str ->
+  Map.Map U32.U32 ObjectName.ObjectName ->
+  Bimap U32.U32 ObjectName.ObjectName ->
   Map.Map U32.U32 U32.U32
 makeObjectClassMap objectMap_ classMap = do
   let objectIds = Map.keys objectMap_
@@ -114,8 +116,8 @@ makeObjectClassMap objectMap_ classMap = do
   Map.fromList pairs
 
 getClassId ::
-  Map.Map U32.U32 Str.Str ->
-  Bimap U32.U32 Str.Str ->
+  Map.Map U32.U32 ObjectName.ObjectName ->
+  Bimap U32.U32 ObjectName.ObjectName ->
   U32.U32 ->
   Maybe U32.U32
 getClassId objectMap_ classMap objectId = do
@@ -124,9 +126,9 @@ getClassId objectMap_ classMap objectId = do
   lookupR className classMap
 
 makeClassCache ::
-  Bimap U32.U32 Str.Str ->
+  Bimap U32.U32 ObjectName.ObjectName ->
   RList.List Cache.Cache ->
-  [(Maybe Str.Str, U32.U32, U32.U32, U32.U32)]
+  [(Maybe ObjectName.ObjectName, U32.U32, U32.U32, U32.U32)]
 makeClassCache classMap caches =
   fmap
     ( \cache ->
@@ -139,7 +141,7 @@ makeClassCache classMap caches =
     )
     (RList.toList caches)
 
-makeClassMap :: RList.List ClassMapping.ClassMapping -> Bimap U32.U32 Str.Str
+makeClassMap :: RList.List ClassMapping.ClassMapping -> Bimap U32.U32 ObjectName.ObjectName
 makeClassMap classMappings =
   bimap
     ( fmap
@@ -171,7 +173,7 @@ makeAttributeMap caches =
     )
 
 makeShallowParentMap ::
-  [(Maybe Str.Str, U32.U32, U32.U32, U32.U32)] -> Map.Map U32.U32 U32.U32
+  [(Maybe ObjectName.ObjectName, U32.U32, U32.U32, U32.U32)] -> Map.Map U32.U32 U32.U32
 makeShallowParentMap classCache =
   Map.fromList
     ( Maybe.mapMaybe
@@ -185,7 +187,7 @@ makeShallowParentMap classCache =
     )
 
 makeParentMap ::
-  [(Maybe Str.Str, U32.U32, U32.U32, U32.U32)] -> Map.Map U32.U32 [U32.U32]
+  [(Maybe ObjectName.ObjectName, U32.U32, U32.U32, U32.U32)] -> Map.Map U32.U32 [U32.U32]
 makeParentMap classCache =
   let shallowParentMap = makeShallowParentMap classCache
    in Map.mapWithKey
@@ -200,16 +202,16 @@ getParentClasses shallowParentMap classId =
       parentClassId : getParentClasses shallowParentMap parentClassId
 
 getParentClass ::
-  Maybe Str.Str ->
+  Maybe ObjectName.ObjectName ->
   U32.U32 ->
-  [(Maybe Str.Str, U32.U32, U32.U32, U32.U32)] ->
+  [(Maybe ObjectName.ObjectName, U32.U32, U32.U32, U32.U32)] ->
   Maybe U32.U32
 getParentClass maybeClassName parentCacheId xs = case maybeClassName of
   Nothing -> getParentClassById parentCacheId xs
   Just className -> getParentClassByName className parentCacheId xs
 
 getParentClassById ::
-  U32.U32 -> [(Maybe Str.Str, U32.U32, U32.U32, U32.U32)] -> Maybe U32.U32
+  U32.U32 -> [(Maybe ObjectName.ObjectName, U32.U32, U32.U32, U32.U32)] -> Maybe U32.U32
 getParentClassById parentCacheId xs =
   case dropWhile (\(_, _, cacheId, _) -> cacheId /= parentCacheId) xs of
     [] ->
@@ -222,12 +224,12 @@ getParentClassById parentCacheId xs =
     (_, parentClassId, _, _) : _ -> Just parentClassId
 
 getParentClassByName ::
-  Str.Str ->
+  ObjectName.ObjectName ->
   U32.U32 ->
-  [(Maybe Str.Str, U32.U32, U32.U32, U32.U32)] ->
+  [(Maybe ObjectName.ObjectName, U32.U32, U32.U32, U32.U32)] ->
   Maybe U32.U32
 getParentClassByName className parentCacheId xs =
-  case Map.lookup (Str.toText className) Data.parentClasses of
+  case Map.lookup (Str.toText $ ObjectName.unwrap className) Data.parentClasses of
     Nothing -> getParentClassById parentCacheId xs
     Just parentClassName ->
       Maybe.maybe
@@ -240,7 +242,7 @@ getParentClassByName className parentCacheId xs =
                     (\(_, _, cacheId, _) -> cacheId <= parentCacheId)
                     ( filter
                         ( \(maybeClassName, _, _, _) ->
-                            fmap Str.toText maybeClassName == Just parentClassName
+                            fmap (Str.toText . ObjectName.unwrap) maybeClassName == Just parentClassName
                         )
                         xs
                     )
@@ -248,51 +250,51 @@ getParentClassByName className parentCacheId xs =
             )
         )
 
-makeObjectMap :: RList.List Str.Str -> Map.Map U32.U32 Str.Str
+makeObjectMap :: RList.List ObjectName.ObjectName -> Map.Map U32.U32 ObjectName.ObjectName
 makeObjectMap objects =
   Map.fromAscList (zip (fmap U32.fromWord32 [0 ..]) (RList.toList objects))
 
-getObjectName :: Map.Map U32.U32 Str.Str -> U32.U32 -> Maybe Str.Str
+getObjectName :: Map.Map U32.U32 ObjectName.ObjectName -> U32.U32 -> Maybe ObjectName.ObjectName
 getObjectName objectMap_ objectId = Map.lookup objectId objectMap_
 
-getClassName :: Str.Str -> Maybe Str.Str
+getClassName :: ObjectName.ObjectName -> Maybe ObjectName.ObjectName
 getClassName rawObjectName =
-  fmap Str.fromText $
+  fmap (ObjectName.MkObjectName . Str.fromText) $
     Map.lookup
-      (Str.toText $ normalizeObjectName rawObjectName)
+      (Str.toText . ObjectName.unwrap $ normalizeObjectName rawObjectName)
       Data.objectClasses
 
-normalizeObjectName :: Str.Str -> Str.Str
+normalizeObjectName :: ObjectName.ObjectName -> ObjectName.ObjectName
 normalizeObjectName objectName =
-  let name = Str.toText objectName
+  let name = Str.toText $ ObjectName.unwrap objectName
       crowdActor = Text.pack "TheWorld:PersistentLevel.CrowdActor_TA"
       crowdManager = Text.pack "TheWorld:PersistentLevel.CrowdManager_TA"
       boostPickup = Text.pack "TheWorld:PersistentLevel.VehiclePickup_Boost_TA"
       mapScoreboard = Text.pack "TheWorld:PersistentLevel.InMapScoreboard_TA"
       breakout = Text.pack "TheWorld:PersistentLevel.BreakOutActor_Platform_TA"
    in if Text.isInfixOf crowdActor name
-        then Str.fromText crowdActor
+        then ObjectName.MkObjectName $ Str.fromText crowdActor
         else
           if Text.isInfixOf crowdManager name
-            then Str.fromText crowdManager
+            then ObjectName.MkObjectName $ Str.fromText crowdManager
             else
               if Text.isInfixOf boostPickup name
-                then Str.fromText boostPickup
+                then ObjectName.MkObjectName $ Str.fromText boostPickup
                 else
                   if Text.isInfixOf mapScoreboard name
-                    then Str.fromText mapScoreboard
+                    then ObjectName.MkObjectName $ Str.fromText mapScoreboard
                     else
                       if Text.isInfixOf breakout name
-                        then Str.fromText breakout
+                        then ObjectName.MkObjectName $ Str.fromText breakout
                         else objectName
 
-classHasLocation :: Str.Str -> Bool
+classHasLocation :: ObjectName.ObjectName -> Bool
 classHasLocation className =
-  Set.member (Str.toText className) Data.classesWithLocation
+  Set.member (Str.toText $ ObjectName.unwrap className) Data.classesWithLocation
 
-classHasRotation :: Str.Str -> Bool
+classHasRotation :: ObjectName.ObjectName -> Bool
 classHasRotation className =
-  Set.member (Str.toText className) Data.classesWithRotation
+  Set.member (Str.toText $ ObjectName.unwrap className) Data.classesWithRotation
 
 getAttributeIdLimit :: Map.Map U32.U32 U32.U32 -> Maybe Word
 getAttributeIdLimit attributeMap = do
@@ -303,7 +305,7 @@ getAttributeName ::
   ClassAttributeMap ->
   Map.Map U32.U32 U32.U32 ->
   CompressedWord.CompressedWord ->
-  Maybe Str.Str
+  Maybe ObjectName.ObjectName -- TODO
 getAttributeName classAttributeMap attributeMap streamId = do
   let key = U32.fromWord32 (fromIntegral (CompressedWord.value streamId))
   attributeId <- Map.lookup key attributeMap

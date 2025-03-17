@@ -3,12 +3,13 @@ module Rattletrap.Type.ClassMapping where
 import qualified Rattletrap.ByteGet as ByteGet
 import qualified Rattletrap.BytePut as BytePut
 import qualified Rattletrap.Schema as Schema
+import qualified Rattletrap.Type.ObjectName as ObjectName
 import qualified Rattletrap.Type.Str as Str
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Utility.Json as Json
 
 data ClassMapping = ClassMapping
-  { name :: Str.Str,
+  { name :: ObjectName.ObjectName,
     streamId :: U32.U32
   }
   deriving (Eq, Show)
@@ -32,10 +33,10 @@ schema =
       ]
 
 bytePut :: ClassMapping -> BytePut.BytePut
-bytePut x = Str.bytePut (name x) <> U32.bytePut (streamId x)
+bytePut x = ObjectName.bytePut (name x) <> U32.bytePut (streamId x)
 
 byteGet :: ByteGet.ByteGet ClassMapping
 byteGet = ByteGet.label "ClassMapping" $ do
-  name <- ByteGet.label "name" Str.byteGet
+  name <- ByteGet.label "name" ObjectName.byteGet
   streamId <- ByteGet.label "streamId" U32.byteGet
   pure ClassMapping {name, streamId}

@@ -6,7 +6,7 @@ import qualified Rattletrap.BitPut as BitPut
 import qualified Rattletrap.Schema as Schema
 import qualified Rattletrap.Type.Attribute.Product as Product
 import qualified Rattletrap.Type.List as RList
-import qualified Rattletrap.Type.Str as Str
+import qualified Rattletrap.Type.ObjectName as ObjectName
 import qualified Rattletrap.Type.U32 as U32
 import qualified Rattletrap.Type.U8 as U8
 import qualified Rattletrap.Type.Version as Version
@@ -37,7 +37,7 @@ bitPut loadoutAttribute =
         <> foldMap Product.putProductAttributes attributes
 
 bitGet ::
-  Version.Version -> Map.Map U32.U32 Str.Str -> BitGet.BitGet LoadoutOnline
+  Version.Version -> Map.Map U32.U32 ObjectName.ObjectName -> BitGet.BitGet LoadoutOnline
 bitGet version objectMap = BitGet.label "LoadoutOnline" $ do
   size <- BitGet.label "size" U8.bitGet
   value <-
