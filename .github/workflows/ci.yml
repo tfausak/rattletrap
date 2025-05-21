@@ -11,7 +11,7 @@ jobs:
           cabal: latest
       - run: ghc-pkg list
       - run: cabal sdist --output-dir artifact
-      - run: cabal configure --enable-optimization=2 --enable-tests --flags=pedantic --jobs
+      - run: cabal configure --enable-documentation --enable-optimization=2 --enable-tests --flags=pedantic --haddock-for-hackage --jobs
       - run: cat cabal.project.local
       - run: cp cabal.project.local artifact
       - run: cabal update
@@ -27,6 +27,7 @@ jobs:
       - run: cabal build --only-download
       - run: cabal build --only-dependencies
       - run: cabal build
+      - run: cp dist-newstyle/rattletrap-*-docs.tar.gz artifact
       - run: cp $( cabal list-bin rattletrap ) artifact
       - run: cabal run -- rattletrap --schema --output=artifact/schema.json
       - run: tar --create --file artifact.tar --verbose artifact
@@ -106,6 +107,7 @@ jobs:
             ${{ env.PREFIX }}*.tar.gz
             ${{ env.PREFIX }}-schema.json
       - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' ${{ env.PREFIX }}.tar.gz
+      - run: cabal --http-transport=plain-http upload --documentation --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' ${{ env.PREFIX }}-docs.tar.gz
 name: CI
 on:
   pull_request:
