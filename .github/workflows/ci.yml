@@ -107,7 +107,7 @@ jobs:
             ${{ env.PREFIX }}*.tar.gz
             ${{ env.PREFIX }}-schema.json
       - run: cabal upload --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' ${{ env.PREFIX }}.tar.gz
-      - run: cabal --http-transport=plain-http upload --documentation --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' ${{ env.PREFIX }}-docs.tar.gz
+      - run: cabal --http-transport=plain-http upload --documentation --publish --username '${{ secrets.HACKAGE_USERNAME }}' --password '${{ secrets.HACKAGE_PASSWORD }}' rattletrap-${{ github.sha }}-ghc-9.12-ubuntu-24.04/artifact/${{ env.PREFIX }}-docs.tar.gz
 name: CI
 on:
   pull_request:
