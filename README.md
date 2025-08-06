@@ -3,6 +3,8 @@
 [![CI](https://github.com/tfausak/rattletrap/actions/workflows/ci.yml/badge.svg)](https://github.com/tfausak/rattletrap/actions/workflows/ci.yml)
 [![Hackage](https://badgen.net/hackage/v/rattletrap)](https://hackage.haskell.org/package/rattletrap)
 
+:warning: This package is not maintained anymore.
+
 Rattletrap parses and generates [Rocket League][] replays. Parsing replays can
 be used to analyze data in order to collect high-level statistics like players
 and points, or low-level details like positions and cameras. Generating replays
