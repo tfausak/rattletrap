@@ -24,7 +24,7 @@ using another tool like [Ball Chasing][].
 The best way to get Rattletrap is by downloading [the latest release][] for
 your platform.
 
-Rattletrap is written in [Haskell][]. If you'd like to use a program written in
+Rattletrap is written in Haskell. If you'd like to use a program written in
 a different language, consider one of the following:
 
 - <https://github.com/jjbott/RocketLeagueReplayParser> (C#)
