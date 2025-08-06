@@ -3,6 +3,8 @@
 [![CI](https://github.com/tfausak/rattletrap/actions/workflows/ci.yml/badge.svg)](https://github.com/tfausak/rattletrap/actions/workflows/ci.yml)
 [![Hackage](https://badgen.net/hackage/v/rattletrap)](https://hackage.haskell.org/package/rattletrap)
 
+:warning: This package is not maintained anymore.
+
 Rattletrap parses and generates [Rocket League][] replays. Parsing replays can
 be used to analyze data in order to collect high-level statistics like players
 and points, or low-level details like positions and cameras. Generating replays
@@ -22,7 +24,7 @@ using another tool like [Ball Chasing][].
 The best way to get Rattletrap is by downloading [the latest release][] for
 your platform.
 
-Rattletrap is written in [Haskell][]. If you'd like to use a program written in
+Rattletrap is written in Haskell. If you'd like to use a program written in
 a different language, consider one of the following:
 
 - <https://github.com/jjbott/RocketLeagueReplayParser> (C#)
